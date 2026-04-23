@@ -1,0 +1,6 @@
+# Supabase project config. See: https://supabase.com/docs/guides/local-development/cli/config
+# Disable gateway JWT verification for create-razorpay-order so requests reach the function.
+# The function still validates auth via supabase.auth.getUser() and returns 401 if unauthenticated.
+
+[functions.create-razorpay-order]
+verify_jwt = false

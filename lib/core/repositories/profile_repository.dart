@@ -1,0 +1,932 @@
+import 'dart:async';
+import 'package:flutter/foundation.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'package:banjarabio/core/models/backend_response.dart';
+import 'package:banjarabio/core/models/filter_criteria.dart';
+import 'package:banjarabio/core/models/profile_model.dart';
+import 'package:banjarabio/core/services/bookmark_notifier.dart';
+import 'package:banjarabio/core/repositories/photo_repository.dart';
+import 'package:banjarabio/core/services/local_cache_service.dart';
+import 'package:banjarabio/core/repositories/isolate_first_repository.dart';
+import 'package:banjarabio/core/repositories/referral_repository.dart';
+import 'package:banjarabio/notification/features/admin_notification_service.dart';
+import 'package:banjarabio/core/repositories/influencer_repository.dart';
+import 'package:banjarabio/core/session_manager.dart';
+
+/// [ProfileRepository]
+///
+/// Manages all Profile-related data operations: Fetching, Caching, Updating, and Filtering.
+///
+/// 🏆 10/10 Architecture Highlights:
+/// 1. **Triple-Layer Caching**: Serves data from Memory -> Disk (Hive) -> Network for instant UI.
+/// 2. **N+1 Optimization**: Uses `Future.wait` to fetch Photos, Bookmarks, and Matches in parallel.
+/// 3. **Isolate Offloading**: Parses large lists of JSON profiles on a background thread to prevent UI jank.
+/// 4. **Singleton Pattern**: Ensures cache lifecycle is managed correctly across the app.
+import 'package:banjarabio/core/services/read_replica_client.dart';
+
+/// Repository for managing user profiles and discovery feed
+class ProfileRepository extends IsolateFirstRepository {
+  // ---------------------------------------------------------------------------
+  // 1. Singleton Pattern & Dependencies
+  // ---------------------------------------------------------------------------
+  static final ProfileRepository _instance = ProfileRepository.internal();
+  factory ProfileRepository() => _instance;
+
+  @visibleForTesting
+  ProfileRepository.internal() : super();
+
+  SupabaseClient get _supabase => testClient ?? Supabase.instance.client;
+  // 🌐 Replica client for Discovery Feed (O(1) read scaling)
+  SupabaseClient get _readClient => testReadClient ?? ReadReplicaClient.getClient();
+  PhotoRepository get _photoRepository => testPhotoRepository ?? PhotoRepository();
+  LocalCacheService get _cacheService => testCacheService ?? LocalCacheService();
+  ReferralRepository get _referralRepository => testReferralRepository ?? ReferralRepository();
+  InfluencerRepository get _influencerRepository => testInfluencerRepository ?? InfluencerRepository();
+
+  /// 🧪 TEST-ONLY: Inject mock dependencies to avoid touching real services.
+  @visibleForTesting
+  SupabaseClient? testClient;
+  @visibleForTesting
+  SupabaseClient? testReadClient;
+  @visibleForTesting
+  PhotoRepository? testPhotoRepository;
+  @visibleForTesting
+  LocalCacheService? testCacheService;
+  @visibleForTesting
+  ReferralRepository? testReferralRepository;
+  @visibleForTesting
+  InfluencerRepository? testInfluencerRepository;
+
+  @visibleForTesting
+  Future<void>? activeFetchFuture;
+
+  // 🛡️ RECURSION GUARD: Prevents Stack Overflow during background refreshes
+  bool _isPerformingBackgroundFetch = false;
+
+  /// 🧪 TEST-ONLY: Clear memory cache to ensure test isolation.
+  @visibleForTesting
+  void clearMemoryCache() {
+    _cachedFeed = null;
+    _cachedOwnProfile = null;
+    _feedCacheTimestamp = null;
+    _lastFeedFilters = null;
+    _lastSearchQuery = null;
+  }
+
+  // ---------------------------------------------------------------------------
+  // 2. Memory Cache State (Layer 1)
+  // ---------------------------------------------------------------------------
+  // Cache is valid for 5 minutes before forcing a background refresh
+  static const _cacheDuration = Duration(minutes: 5);
+
+  // Own Profile Cache (Layer 1)
+  ProfileModel? _cachedOwnProfile;
+  DateTime? _cacheTimestamp;
+
+  // Feed Cache (Layer 1)
+  List<ProfileModel>? _cachedFeed;
+  FilterCriteria? _lastFeedFilters;
+  String? _lastSearchQuery;
+  DateTime? _feedCacheTimestamp;
+
+  // ---------------------------------------------------------------------------
+  // 3. Write Operations (Create / Update / Delete)
+  // ---------------------------------------------------------------------------
+
+  /// Creates a new profile in the `profiles` table.
+  /// Automatically checks for and completes any pending referrals.
+  Future<BackendResponse<ProfileModel>> createProfile(
+    Map<String, dynamic> profileData,
+  ) async {
+    try {
+      final response = await _supabase
+          .from('profiles')
+          .upsert(profileData, onConflict: 'user_id')
+          .select()
+          .single();
+
+      final profile = ProfileModel.fromJson(response);
+      _updateMemoryCache(profile);
+
+      // Check and complete referral flow if applicable
+      await _checkPendingReferral(profile.userId);
+      await _checkPendingPromoCode();
+
+      // 🔔 Admin Alert: Profile created
+      AdminNotificationService().notifyProfileCreated(
+        userId: profile.userId,
+        name: profile.fullName,
+        gender: profile.gender,
+      );
+
+      return BackendResponse.success(profile);
+    } catch (e) {
+      debugPrint('Error creating profile: $e');
+      return BackendResponse.failure(e.toString());
+    }
+  }
+
+  /// Updates generic profile fields.
+  Future<BackendResponse<ProfileModel>> updateProfile(
+    String userId,
+    Map<String, dynamic> updates,
+  ) async {
+    try {
+      final response = await _supabase
+          .from('profiles')
+          .update(updates)
+          .eq('user_id', userId)
+          .select()
+          .single();
+
+      final profile = ProfileModel.fromJson(response);
+      _updateMemoryCache(profile);
+
+      // Update local storage to keep offline data in sync
+      await _cacheService.saveOwnProfile(profile.toJson());
+
+      return BackendResponse.success(profile);
+    } catch (e) {
+      return BackendResponse.failure(e.toString());
+    }
+  }
+
+  /// [NEW] Updates the FCM token for push notifications.
+  /// This is critical for the 10M DAU scaling optimization (batching).
+  Future<BackendResponse<void>> updateFcmToken(String token) async {
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) return BackendResponse.failure('Not authenticated');
+
+      debugPrint('ProfileRepository: Updating FCM Token');
+      
+      final response = await _supabase
+          .from('profiles')
+          .update({'fcm_token': token})
+          .eq('user_id', userId)
+          .select()
+          .single()
+          .timeout(const Duration(seconds: 15));
+
+      final profile = ProfileModel.fromJson(response);
+      _updateMemoryCache(profile);
+      await _cacheService.saveOwnProfile(profile.toJson());
+
+      return BackendResponse.success(null);
+    } catch (e) {
+      debugPrint('ProfileRepository: updateFcmToken error: $e');
+      return BackendResponse.failure(e.toString());
+    }
+  }
+
+  /// Updates personal details via Secure RPC `fn_manage_profile`.
+  /// This ensures server-side validation rules are applied.
+  Future<BackendResponse<void>> updatePersonalData({
+    required String fullName,
+    required String surname,
+    required int age,
+    String? gender,
+  }) async {
+    return _callManageProfileRpc('update_personal', {
+      'full_name': fullName,
+      'surname': surname,
+      'age': age,
+      'gender': gender,
+    });
+  }
+
+  /// Updates bio/expectations via Secure RPC `fn_manage_profile`.
+  Future<BackendResponse<void>> updateBio({
+    String? aboutSelf,
+    String? partnerExpectations,
+    String? expectation,
+  }) async {
+    return _callManageProfileRpc('update_bio', {
+      'about_self': aboutSelf,
+      'partner_expectations': partnerExpectations,
+      'expectation': expectation,
+    });
+  }
+
+  /// Deletes the user account via Secure RPC.
+  Future<BackendResponse<void>> deleteProfile() async {
+    final result = await _callManageProfileRpc('delete_account', {});
+    if (result.isSuccess) {
+      clearCache(); // Wipe local data on successful delete
+      await _cacheService.clearOwnProfile();
+    }
+    return result;
+  }
+
+  /// Updates the `has_followed_instagram` flag to true.
+  /// This grants the user a 5% profile completion bonus.
+  Future<BackendResponse<void>> followInstagram() async {
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) return BackendResponse.failure('Not authenticated');
+
+      final response = await _supabase
+          .from('profiles')
+          .update({'has_followed_instagram': true})
+          .eq('user_id', userId)
+          .select()
+          .single();
+
+      final profile = ProfileModel.fromJson(response);
+      _updateMemoryCache(profile);
+      await _cacheService.saveOwnProfile(profile.toJson());
+
+      return BackendResponse.success(null);
+    } catch (e) {
+      return BackendResponse.failure(e.toString());
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // 4. Read Operations (The "Get" Logic)
+  // ---------------------------------------------------------------------------
+
+  /// Fetches a profile by ID
+  Future<BackendResponse<ProfileModel?>> getProfileById(String userId) async {
+    try {
+      // 🌐 PRO SCALE: Use Read Replica for single profile lookups
+      final response = await _readClient
+          .from('profiles')
+          .select()
+          .eq('user_id', userId)
+          .maybeSingle()
+          .timeout(const Duration(seconds: 15));
+
+      if (response == null) return BackendResponse.success(null);
+
+      var profile = ProfileModel.fromJson(response);
+      final photosRes = await _photoRepository.getPhotos(profile.id);
+      photosRes.fold(
+        onSuccess: (photos) => profile = profile.copyWith(photos: photos),
+        onFailure: (_) {},
+      );
+
+      return BackendResponse.success(profile);
+    } catch (e) {
+      return BackendResponse.failure(e.toString());
+    }
+  }
+
+  /// Fetches the current user's profile using "Stale-While-Revalidate" strategy.
+  /// 1. Returns Memory Cache (Instant).
+  /// 2. Returns Disk Cache (Fast/Offline).
+  /// 3. Fetches Network (Slow) and updates caches in background.
+  ///
+  /// Use [forceRefresh: true] after payment success to bypass cache and get
+  /// fresh unlock status (e.g. is_pdf_unlocked).
+  Future<BackendResponse<ProfileModel?>> getOwnProfile({
+    bool forceRefresh = false,
+  }) async {
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) return BackendResponse.success(null);
+
+      // Force refresh: bypass all caches, fetch from network (e.g. after payment)
+      if (forceRefresh) {
+        clearCache();
+        await _cacheService.clearOwnProfile();
+        return await _fetchAndCacheOwnProfile(userId);
+      }
+
+      // Layer 1: Memory Cache (Valid for 5 mins)
+      if (_isMemoryCacheValid(userId)) {
+        return BackendResponse.success(_cachedOwnProfile);
+      }
+
+      // Layer 2: Disk Cache (Hive)
+      final localJson = _cacheService.getOwnProfile();
+      if (localJson != null && localJson['user_id'] == userId) {
+        debugPrint('ProfileRepository: Returning Hive cached profile');
+
+        // Parse on main thread (single item is fast enough)
+        final localProfile = ProfileModel.fromJson(localJson);
+        _updateMemoryCache(localProfile);
+
+        // Layer 3: Background Network Fetch (Refresh data silently)
+        _fetchAndCacheOwnProfile(userId);
+
+        return BackendResponse.success(localProfile);
+      }
+
+      // Layer 3: Foreground Network Fetch (If no cache exists)
+      return await _fetchAndCacheOwnProfile(userId).catchError((e) {
+        debugPrint('ProfileRepository.getOwnProfile fetch error: $e');
+        return BackendResponse<ProfileModel?>.failure(e.toString());
+      });
+    } catch (e) {
+      debugPrint('ProfileRepository.getOwnProfile Error: $e');
+      return BackendResponse.failure(e.toString());
+    }
+  }
+
+  /// Main Feed Fetching Logic.
+  /// 🧬 PRO SCALE: Uses Cursor-based pagination and Batch Enrichment.
+  /// 1. Cursor: Uses `lastCreatedAt` to fetch next page (O(1) index lookup).
+  /// 2. Batch: Fetches Photos for ALL profiles in ONE network trip.
+  Future<BackendResponse<List<ProfileModel>>> getProfiles({
+    int limit = 20,
+    String? lastCreatedAt,
+    FilterCriteria? filters,
+    String? searchQuery,
+    bool forceRefresh = false,
+  }) async {
+    try {
+
+
+      // 🚀 GUEST FIX: Allow fetching profiles even if NOT authenticated (Guest Mode)
+      // The RPC 'fn_get_filtered_feed' now handles v_user_id IS NULL correctly.
+
+
+      // 0. 🧬 PRO SCALE: Stale-While-Revalidate (SWR) Caching
+      // 1. Memory Cache (Valid for 5 mins)
+      final isInitialLoad = lastCreatedAt == null;
+      if (isInitialLoad && !forceRefresh && _isFeedCacheValid(filters, searchQuery)) {
+        debugPrint('ProfileRepository: Returning Memory Cached Feed');
+        
+        // Avoid duplicate background refreshes
+        if (activeFetchFuture == null && !_isPerformingBackgroundFetch) {
+          _fetchAndCacheProfiles(
+            limit: limit,
+            filters: filters,
+            searchQuery: searchQuery,
+          );
+        }
+        return BackendResponse.success(_cachedFeed!);
+      }
+
+        // 2. Disk Cache (Hive) - Persistent across app restarts
+      if (isInitialLoad && !forceRefresh && filters == null && (searchQuery == null || searchQuery.isEmpty)) {
+        final diskFeedJson = _cacheService.getHomeFeed();
+        if (diskFeedJson.isNotEmpty) {
+          debugPrint('ProfileRepository: Returning Disk Cached Feed (SWR)');
+          
+          final diskProfiles = await mapListInBackground<ProfileModel>(
+            diskFeedJson,
+            ProfileModel.fromJson,
+          );
+          
+          _cachedFeed = diskProfiles;
+          _feedCacheTimestamp = DateTime.now(); // Mark as memory cached now
+
+          // Trigger background refresh to get fresh data
+          if (activeFetchFuture == null && !_isPerformingBackgroundFetch) {
+            _fetchAndCacheProfiles(
+              limit: limit,
+              filters: filters,
+              searchQuery: searchQuery,
+            );
+          }
+          
+          return BackendResponse.success(diskProfiles);
+        }
+      }
+
+      // 1. 🧬 PRO SCALE: Parallel Initialization
+      // 🚀 GUEST FIX: Skip getOwnProfile() for guests — they have no profile,
+      // so calling it is wasteful and adds latency.
+      final bool isGuest = _cacheService.isGuestMode();
+      
+      final rpcFuture = _readClient.rpc(
+        'fn_get_filtered_feed',
+        params: {
+          'p_limit': limit,
+          'p_last_created_at': lastCreatedAt,
+          'p_search_query': searchQuery?.trim().isNotEmpty == true ? searchQuery!.trim() : null,
+          'p_min_age': filters?.minAge,
+          'p_max_age': filters?.maxAge,
+          'p_state': filters?.state,
+          'p_district': filters?.district,
+          'p_taluka': filters?.taluka,
+        },
+      ).timeout(Duration(seconds: isGuest ? 10 : 20));
+
+      ProfileModel? ownProfile;
+      dynamic response;
+
+      if (isGuest) {
+        // Guest: Just fetch the feed, skip own profile entirely
+        response = await rpcFuture.catchError((e) {
+          debugPrint('ProfileRepository.getProfiles RPC error (Guest): $e');
+          return []; // Return empty list on error
+        });
+      } else {
+        // Logged-in: Fetch own profile and feed in parallel
+        final results = await Future.wait<dynamic>([
+          getOwnProfile().catchError((e) {
+            debugPrint('ProfileRepository.getProfiles getOwnProfile error: $e');
+            return BackendResponse<ProfileModel?>.failure(e.toString());
+          }),
+          rpcFuture.catchError((e) {
+            debugPrint('ProfileRepository.getProfiles RPC error: $e');
+            return []; // Return empty list on error
+          }),
+        ]);
+        final ownProfileRes = results[0] as BackendResponse<ProfileModel?>;
+        response = results[1];
+        ownProfile = ownProfileRes.data;
+        
+        // Gracefully continue even if own profile fetch failed — feed can still render
+        if (ownProfile == null && !ownProfileRes.isSuccess) {
+          debugPrint('ProfileRepository: Own profile fetch failed, continuing with feed only');
+        }
+      }
+
+      final List<dynamic> rawList = response as List;
+      if (rawList.isEmpty) return BackendResponse.success([]);
+
+      // 4. Parse on Isolate (Background Thread)
+      final List<ProfileModel> profiles =
+          await mapListInBackground<ProfileModel>(
+            rawList,
+            ProfileModel.fromJson,
+          );
+
+      // 5. 🧬 PRO SCALE: Batch Enrichment (Photos)
+      // This eliminates 20 separate photo API calls.
+      final profileIds = profiles.map((p) => p.id).toList();
+      final photosRes = await _photoRepository.getPrimaryPhotosForProfiles(profileIds);
+      
+      List<ProfileModel> enrichedProfiles = profiles;
+      if (photosRes.isSuccess) {
+        final photoMap = {for (var p in photosRes.data) p.profileId: p};
+        enrichedProfiles = profiles.map((p) {
+          final primaryPhoto = photoMap[p.id];
+          return primaryPhoto != null ? p.copyWith(photos: [primaryPhoto]) : p;
+        }).toList();
+      }
+
+      // 6. Update Feed Cache (Only for initial page loads)
+      if (lastCreatedAt == null) {
+        _cachedFeed = enrichedProfiles;
+        _lastFeedFilters = filters;
+        _lastSearchQuery = searchQuery;
+        _feedCacheTimestamp = DateTime.now();
+
+        // 7. 🧬 PRO SCALE: Persist Default Feed to Disk
+        // We only persist the "default" feed (no filters/search) to drive instant startup.
+        if (filters == null && (searchQuery == null || searchQuery.isEmpty)) {
+          final feedJson = enrichedProfiles.map((p) => p.toJson()).toList();
+          _cacheService.saveHomeFeed(feedJson);
+        }
+      }
+
+      return BackendResponse.success(enrichedProfiles);
+    } catch (e) {
+      debugPrint('ProfileRepository.getProfiles Error: $e');
+      return BackendResponse.failure(e.toString());
+    }
+  }
+
+  /// Lazy enrichment for a single profile.
+  /// Fetches photos, bookmark status, and match status.
+  Future<ProfileModel> getProfileMetadata(
+    ProfileModel profile,
+  ) async {
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) return profile;
+
+      final ownProfileRes = await getOwnProfile();
+      final myProfileId = ownProfileRes.data?.id;
+      if (myProfileId == null) return profile;
+
+      // Parallel Execution for a SINGLE profile
+      // 🌐 PRO SCALE: Use Read Replica for bookmark and match statuses
+      final results = await Future.wait<dynamic>([
+        _readClient
+            .from('bookmarks')
+            .select('profile_id')
+            .eq('user_id', userId)
+            .eq('profile_id', profile.id)
+            .maybeSingle()
+            .catchError((e) {
+              debugPrint('Error fetching bookmark for ${profile.id}: $e');
+              return null;
+            }),
+        _readClient
+            .from('profile_shares')
+            .select('sharer_id, recipient_id')
+            .eq('status', 'matched')
+            .or('and(sharer_id.eq.$myProfileId,recipient_id.eq.${profile.id}),and(sharer_id.eq.${profile.id},recipient_id.eq.$myProfileId)')
+            .maybeSingle()
+            .catchError((e) {
+              debugPrint('Error fetching match for ${profile.id}: $e');
+              return null;
+            }),
+        _photoRepository.getPhotos(profile.id).catchError((e) {
+          debugPrint('Error fetching photos for ${profile.id}: $e');
+          return BackendResponse<List<PhotoModel>>.success([]);
+        }),
+      ]);
+
+      final isBookmarked = results[0] != null;
+      final isMatched = results[1] != null;
+      List<PhotoModel> photos = [];
+      if (results[2] is BackendResponse<List<PhotoModel>>) {
+        photos = (results[2] as BackendResponse<List<PhotoModel>>).data;
+      }
+
+      return profile.copyWith(
+        isBookmarked: isBookmarked,
+        isMatched: isMatched,
+        photos: photos.isNotEmpty ? photos : profile.photos,
+      );
+    } catch (e) {
+      debugPrint('Error in getProfileMetadata: $e');
+      return profile;
+    }
+  }
+
+  /// 🧬 EXTREME PERFORMANCE: Predictive Metadata Engine
+  /// Fetches metadata for multiple profiles in parallel to prime the cache
+  /// before the user even scrolls to them.
+  Future<void> predictiveEnrichment(List<ProfileModel> upcomingProfiles) async {
+    final idsToEnrich = upcomingProfiles
+        .where((p) => !p.isEnriched)
+        .map((p) => p.id)
+        .toList();
+
+    if (idsToEnrich.isEmpty) return;
+
+    debugPrint('ProfileRepository: Predictively enriching ${idsToEnrich.length} profiles');
+
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      final ownProfileRes = await getOwnProfile();
+      final myProfileId = ownProfileRes.data?.id;
+
+      // 1. Parallel Batch Requests
+      // 🌐 PRO SCALE: Use Read Replica for all batch metadata enrichment
+      final results = await Future.wait([
+        // Photos Batch
+        _photoRepository.getPhotosBatch(idsToEnrich),
+        // Bookmarks Batch
+        if (userId != null)
+          _readClient.from('bookmarks').select('profile_id').inFilter('profile_id', idsToEnrich).eq('user_id', userId)
+        else
+          Future.value([]),
+        // Matches Batch
+        if (myProfileId != null)
+          _readClient.from('profile_shares')
+            .select('sharer_id, recipient_id')
+            .eq('status', 'matched')
+            .or('and(sharer_id.in.(${idsToEnrich.join(",")}),recipient_id.eq.$myProfileId),and(sharer_id.eq.$myProfileId,recipient_id.in.(${idsToEnrich.join(",")}))')
+        else
+          Future.value([]),
+      ]);
+
+      final photosMap = (results[0] as BackendResponse<Map<String, List<PhotoModel>>>).data;
+      final bookmarkedIds = (results[1] as List).map((e) => e['profile_id'].toString()).toSet();
+      
+      final matchesList = results[2] as List;
+      final matchedIds = <String>{};
+      for (final m in matchesList) {
+        final sId = m['sharer_id'].toString();
+        final rId = m['recipient_id'].toString();
+        if (sId == myProfileId) {
+          matchedIds.add(rId);
+        } else {
+          matchedIds.add(sId);
+        }
+      }
+
+      // 2. Update Feed Cache
+      if (_cachedFeed != null) {
+        for (final id in idsToEnrich) {
+          final idx = _cachedFeed!.indexWhere((p) => p.id == id);
+          if (idx != -1) {
+            final oldProfile = _cachedFeed![idx];
+            _cachedFeed![idx] = oldProfile.copyWith(
+              photos: photosMap[id] ?? oldProfile.photos,
+              isBookmarked: bookmarkedIds.contains(id),
+              isMatched: matchedIds.contains(id),
+            );
+            // Trigger pre-computation of UI data in the background isolate (simulated here by calling toDisplayMap)
+            _cachedFeed![idx].toDisplayMap();
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('ProfileRepository: Predictive enrichment failed: $e');
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // 5. Bookmark & Block Operations
+  // ---------------------------------------------------------------------------
+
+  Future<BackendResponse<List<ProfileModel>>> getBookmarkedProfiles() async {
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) return BackendResponse.success([]);
+
+      // Check Local Cache first
+      final localData = _cacheService.getBookmarks();
+      if (localData.isNotEmpty) {
+        final cachedProfiles = await mapListInBackground<ProfileModel>(
+          localData,
+          ProfileModel.fromJson,
+        );
+        _fetchAndCacheBookmarks(userId); // Background Sync
+        return BackendResponse.success(cachedProfiles);
+      }
+
+      return await _fetchAndCacheBookmarks(userId);
+    } catch (e) {
+      return BackendResponse.failure(e.toString());
+    }
+  }
+
+  Future<BackendResponse<void>> toggleBookmark(
+    String profileId,
+    bool isAdd,
+  ) async {
+    final action = isAdd ? 'add' : 'remove';
+    try {
+      final response = await _supabase.rpc(
+        'fn_manage_bookmarks',
+        params: {
+          'action': action,
+          'payload': {'profile_id': profileId},
+        },
+      );
+      BookmarkNotifier().updateBookmark(profileId, isAdd);
+      return BackendResponse.fromRpc(response);
+    } catch (e) {
+      // Handle race condition where user double taps
+      if (e.toString().contains('duplicate')) {
+        BookmarkNotifier().updateBookmark(profileId, isAdd);
+        return BackendResponse.success(null);
+      }
+      return BackendResponse.failure(e.toString());
+    }
+  }
+
+  /// Block a user via fn_manage_safety RPC (07_blocks_reports.sql)
+  Future<BackendResponse<void>> blockUser(String blockedUserId) async {
+    try {
+      final response = await _supabase.rpc(
+        'fn_manage_safety',
+        params: {
+          'action': 'block',
+          'payload': {'target_id': blockedUserId},
+        },
+      );
+      clearCache();
+      return BackendResponse.fromRpc(response);
+    } catch (e) {
+      return BackendResponse.failure(e.toString());
+    }
+  }
+
+  /// Unblock a user via fn_manage_safety RPC
+  Future<BackendResponse<void>> unblockUser(String blockedUserId) async {
+    try {
+      final response = await _supabase.rpc(
+        'fn_manage_safety',
+        params: {
+          'action': 'unblock',
+          'payload': {'target_id': blockedUserId},
+        },
+      );
+      clearCache();
+      return BackendResponse.fromRpc(response);
+    } catch (e) {
+      return BackendResponse.failure(e.toString());
+    }
+  }
+
+  /// Report a user via fn_manage_safety RPC (07_blocks_reports.sql)
+  Future<BackendResponse<void>> reportUser({
+    required String reportedUserId,
+    required String reason,
+    String? details,
+  }) async {
+    try {
+      final response = await _supabase.rpc(
+        'fn_manage_safety',
+        params: {
+          'action': 'report',
+          'payload': {
+            'target_id': reportedUserId,
+            'reason': reason,
+            if (details != null) 'details': details,
+          },
+        },
+      );
+      return BackendResponse.fromRpc(response);
+    } catch (e) {
+      return BackendResponse.failure(e.toString());
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // 6. Private Helpers & Query Logic
+  // ---------------------------------------------------------------------------
+
+  /// Helper to call the central RPC function
+  Future<BackendResponse<void>> _callManageProfileRpc(
+    String action,
+    Map<String, dynamic> payload,
+  ) async {
+    try {
+      debugPrint('RPC Call: fn_manage_profile -> $action');
+      final response = await _supabase.rpc(
+        'fn_manage_profile',
+        params: {'action': action, 'payload': payload},
+      );
+      clearCache(); // Force refresh after any update
+      return BackendResponse.fromRpc(response);
+    } catch (e) {
+      return BackendResponse.failure(e.toString());
+    }
+  }
+
+  // --- Filtering logic moved to server-side RPC (fn_get_filtered_feed) ---
+
+
+  Future<BackendResponse<ProfileModel?>> _fetchAndCacheOwnProfile(
+    String userId,
+  ) async {
+    try {
+      final response = await _supabase
+          .from('profiles')
+          .select()
+          .eq('user_id', userId)
+          .maybeSingle()
+          .timeout(const Duration(seconds: 15));
+
+      if (response == null) {
+        clearCache();
+        return BackendResponse.success(null);
+      }
+
+      // Debug: log raw is_pdf_unlocked from DB (helps diagnose payment→unlock sync)
+      debugPrint('ProfileRepository: Raw DB is_pdf_unlocked=${response['is_pdf_unlocked']}');
+
+      var profile = ProfileModel.fromJson(response);
+
+      // Fetch Photos
+      final photosRes = await _photoRepository.getPhotos(profile.id);
+      photosRes.fold(
+        onSuccess: (photos) => profile = profile.copyWith(photos: photos),
+        onFailure: (_) {},
+      );
+
+      // Update Caches
+      _updateMemoryCache(profile);
+      await _cacheService.saveOwnProfile(profile.toJson());
+
+      return BackendResponse.success(profile);
+    } catch (e) {
+      return BackendResponse.failure(e.toString());
+    }
+  }
+
+  Future<BackendResponse<List<ProfileModel>>> _fetchAndCacheBookmarks(
+    String userId,
+  ) async {
+    final response = await _supabase
+        .from('bookmarks')
+        .select('profile_id, profiles(*)')
+        .eq('user_id', userId)
+        .order('created_at', ascending: false);
+
+    final profiles = await mapListInBackground<ProfileModel>(
+      response as List,
+      _mapBookmark, // Helper function defined below
+    );
+
+    await _cacheService.saveBookmarks(profiles.map((p) => p.toJson()).toList());
+    return BackendResponse.success(profiles);
+  }
+
+  Future<void> _checkPendingReferral(String userId) async {
+    final pendingReferralId = _cacheService.getPendingReferralId();
+    if (pendingReferralId != null) {
+      final result = await _referralRepository.completeReferral(
+        pendingReferralId,
+        userId,
+      );
+
+      result.fold(
+        onSuccess: (_) async {
+          debugPrint('Referral completed successfully for $userId');
+          await _cacheService.clearPendingReferralId();
+        },
+        onFailure: (err) => debugPrint('Failed to complete referral: $err'),
+      );
+    }
+  }
+
+  Future<void> _checkPendingPromoCode() async {
+    final pendingPromoCode = _cacheService.getPendingPromoCode();
+    if (pendingPromoCode != null) {
+      debugPrint('ProfileRepository: Registering pending promo code: $pendingPromoCode');
+      final result =
+          await _influencerRepository.registerCreatorReferral(pendingPromoCode);
+
+      result.fold(
+        onSuccess: (_) async {
+          debugPrint('Influencer referral registered successfully');
+          await _cacheService.clearPendingPromoCode();
+        },
+        onFailure: (err) {
+          debugPrint('Failed to register influencer referral: $err');
+          if (err.contains('Invalid')) {
+            _cacheService.clearPendingPromoCode();
+          }
+        },
+      );
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // 7. Cache State Management
+  // ---------------------------------------------------------------------------
+
+  void _updateMemoryCache(ProfileModel profile) {
+    _cachedOwnProfile = profile;
+    _cacheTimestamp = DateTime.now();
+    // 🚀 Sync with SessionManager for global visibility (e.g., role-based UI checks)
+    SessionManager.instance.setCurrentProfile(profile);
+  }
+
+  bool _isMemoryCacheValid(String userId) {
+    return _cachedOwnProfile != null &&
+        _cachedOwnProfile!.userId == userId &&
+        _cacheTimestamp != null &&
+        DateTime.now().difference(_cacheTimestamp!) < _cacheDuration;
+  }
+
+  void clearCache() {
+    _cachedOwnProfile = null;
+    _cacheTimestamp = null;
+    _cachedFeed = null;
+    _feedCacheTimestamp = null;
+  }
+
+  bool _isFeedCacheValid(FilterCriteria? filters, String? query) {
+    return _cachedFeed != null &&
+        _feedCacheTimestamp != null &&
+        DateTime.now().difference(_feedCacheTimestamp!) < _cacheDuration &&
+        _lastFeedFilters == filters &&
+        _lastSearchQuery == query;
+  }
+
+  /// Background refresh helper for SWR
+  Future<void> _fetchAndCacheProfiles({
+    required int limit,
+    FilterCriteria? filters,
+    String? searchQuery,
+  }) async {
+    // 🛡️ RECURSION GUARD: Block re-entry to break the synchronous infinite cycle
+    if (_isPerformingBackgroundFetch) return;
+    _isPerformingBackgroundFetch = true;
+
+    try {
+      // 🧬 PRO SCALE: Use 'unawaited' or simply don't wait here if we want 
+      // it to be truly background. However, since we want to capture the 
+      // future for others to join, we store it.
+      final fetchFuture = getProfiles(
+        limit: limit,
+        filters: filters,
+        searchQuery: searchQuery,
+        forceRefresh: true,
+      );
+      
+      activeFetchFuture = fetchFuture;
+      
+      await fetchFuture;
+    } catch (e) {
+      debugPrint('ProfileRepository: Background refresh failed: $e');
+    } finally {
+      _isPerformingBackgroundFetch = false;
+      activeFetchFuture = null;
+    }
+  }
+
+  /// Applies an optimistic PDF unlock to the cached profile.
+  /// Call after payment verification succeeds for biodata_unlock to ensure the UI
+  /// shows unlocked immediately, regardless of DB replication lag or backend timing.
+  void applyOptimisticPdfUnlock() {
+    final profile = _cachedOwnProfile;
+    if (profile == null) return;
+    final updated = profile.copyWith(isPdfUnlocked: true);
+    _updateMemoryCache(updated);
+    _cacheService.saveOwnProfile(updated.toJson());
+    debugPrint('ProfileRepository: Optimistic PDF unlock applied to cache');
+  }
+
+  /// Static mapper for bookmarks (Must be static for Isolate)
+  static ProfileModel _mapBookmark(Map<String, dynamic> bookmark) {
+    final profileData = Map<String, dynamic>.from(bookmark['profiles']);
+    return ProfileModel.fromJson(profileData).copyWith(isBookmarked: true);
+  }
+}

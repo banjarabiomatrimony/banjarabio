@@ -1,0 +1,126 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    
+    // ============================================
+    // MEMORY OPTIMIZATION SETTINGS
+    // ============================================
+    
+    // Dart/Flutter Analysis Server memory limits
+    "dart.maxAnalysisServerMemory": "2048",
+    "dart.analysisServerFolding": false,
+    "dart.enableSdkFormatter": false,
+    "dart.lineLength": 120,
+    "dart.showTodos": false,
+    "dart.enableSnippets": false,
+    
+    // TypeScript/JavaScript memory limits
+    "typescript.tsserver.maxTsServerMemory": 2048,
+    "javascript.suggest.autoImports": false,
+    "typescript.suggest.autoImports": false,
+    
+    // ============================================
+    // FILE WATCHING EXCLUSIONS (Critical for memory)
+    // ============================================
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/**": true,
+        "**/.dart_tool/**": true,
+        "**/build/**": true,
+        "**/.flutter-plugins-dependencies": true,
+        "**/ios/Pods/**": true,
+        "**/ios/.symlinks/**": true,
+        "**/ios/Flutter/ephemeral/**": true,
+        "**/android/.gradle/**": true,
+        "**/android/app/build/**": true,
+        "**/android/build/**": true,
+        "**/.idea/**": true,
+        "**/*.iml": true,
+        "**/macos/Flutter/ephemeral/**": true,
+        "**/linux/flutter/ephemeral/**": true,
+        "**/windows/flutter/ephemeral/**": true,
+        "**/web/**": true
+    },
+    
+    // ============================================
+    // SEARCH INDEXING EXCLUSIONS
+    // ============================================
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/.dart_tool": true,
+        "**/build": true,
+        "**/.flutter-plugins-dependencies": true,
+        "**/ios/Pods": true,
+        "**/ios/.symlinks": true,
+        "**/ios/Flutter/ephemeral": true,
+        "**/android/.gradle": true,
+        "**/android/app/build": true,
+        "**/android/build": true,
+        "**/.idea": true,
+        "**/macos/Flutter/ephemeral": true,
+        "**/linux/flutter/ephemeral": true,
+        "**/windows/flutter/ephemeral": true,
+        "**/web": true
+    },
+    
+    // ============================================
+    // GIT OPTIMIZATION
+    // ============================================
+    "git.autofetch": false,
+    "git.enabled": true,
+    "git.autoRepositoryDetection": false,
+    "git.decorations.enabled": false,
+    "git.enableSmartCommit": false,
+    
+    // ============================================
+    // EDITOR PERFORMANCE OPTIMIZATIONS
+    // ============================================
+    "editor.semanticHighlighting.enabled": false,
+    "editor.bracketPairColorization.enabled": false,
+    "editor.guides.bracketPairs": false,
+    "editor.minimap.enabled": false,
+    "editor.codeLens": false,
+    "editor.occurrencesHighlight": "off",
+    "editor.selectionHighlight": false,
+    "editor.renderWhitespace": "none",
+    "editor.renderControlCharacters": false,
+    
+    // ============================================
+    // EXTENSIONS & LANGUAGE SERVERS
+    // ============================================
+    "extensions.autoCheckUpdates": false,
+    "extensions.autoUpdate": false,
+    
+    // ============================================
+    // TELEMETRY & BACKGROUND SERVICES
+    // ============================================
+    "telemetry.enableTelemetry": false,
+    "telemetry.enableCrashReporter": false,
+    "update.mode": "manual",
+    
+    // ============================================
+    // FILE ASSOCIATIONS (Reduce indexing)
+    // ============================================
+    "files.associations": {},
+    "files.exclude": {
+        "**/.dart_tool": true,
+        "**/build": true,
+        "**/.idea": true,
+        "**/*.iml": true
+    },
+    
+    // ============================================
+    // WORKSPACE TRUST (Reduce security checks)
+    // ============================================
+    "security.workspace.trust.enabled": false,
+    "editor.guides.indentation": false,
+    "cSpell.words": [
+        "Banjara",
+        "banjarabio",
+        "biodata",
+        "Glassmorphism",
+        "gotra",
+        "taluka"
+    ],
+    "cmake.sourceDirectory": "/Users/apple/Development/projects_flutter/companies/com.avishio/banjarabio/windows/runner"
+}

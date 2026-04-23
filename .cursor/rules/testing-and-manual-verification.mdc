@@ -1,0 +1,37 @@
+---
+description: Unit tests, widget tests, and debug logs for manual testing—apply when adding/validating features
+globs: test/**/*.dart, lib/features/**/*.dart, lib/presentation/**/*.dart
+alwaysApply: false
+---
+
+# Testing & Manual Verification Standards
+
+Follow `docs/TESTING_AND_LOGGING_STANDARDS.md` for full reference. Summary:
+
+## Unit tests
+
+- **Repository**: Mock Supabase/HTTP; assert RPC/API calls, success/failure, auth.
+- **Provider/Notifier**: Override repo with mock in ProviderContainer; test state, optimistic update, rollback.
+- **Layout**: `test/features/<feature>/repository/`, `providers/`, `widgets/`.
+
+## Widget tests
+
+- **Screens**: ProviderScope/ProviderContainer, mock repos; verify provider chain (merge, display).
+- **Shared widgets**: MaterialApp + Sizer if needed; test display states, callbacks, didUpdateWidget sync.
+- Use `testWidgets()` when using `pumpWidget`.
+
+## Manual testing logs
+
+- **Format**: `[FEATURE] Source > Action > Outcome`
+- **Tag**: UPPERCASE feature name (e.g. `[BOOKMARK]`, `[SHARE]`).
+- **Guards**: `if (kDebugMode) { debugPrint('...'); }`
+- **Entry points**: Leaf widget → Screen handler → Notifier (optimistic, success, failure).
+- **Example**: `[BOOKMARK] ProfileDetailScreen > User tapped SAVE on profile X > Calling Riverpod toggle`
+
+## Manual testing guide
+
+- Create `docs/{FEATURE}_MANUAL_TESTING_GUIDE.md` with: prerequisites, log table, entry points, step-by-step scenarios, checklist.
+
+## Reference
+
+- Bookmark: `lib/features/bookmarks/`, `test/features/bookmarks/`, `docs/BOOKMARK_MANUAL_TESTING_GUIDE.md`

@@ -1,0 +1,41 @@
+# Cursor Rules for BanjaraBio Flutter Project
+
+## 🚨 CRITICAL: Memory Leak Prevention
+
+**⚠️ MANDATORY: Before making ANY code changes, read:**
+- `MEMORY_LEAK_PREVENTION.md` - Complete guide for preventing memory leaks
+
+**All AI assistants MUST follow the rules in `MEMORY_LEAK_PREVENTION.md` when:**
+- Creating new widgets/screens
+- Modifying existing code
+- Refactoring components
+- Adding new features
+
+**Key Rules (see full guide for details):**
+- Always cancel StreamSubscriptions in dispose()
+- Always cancel Timers in dispose()
+- Always dispose Controllers and remove listeners
+- Always add timeout protection to Completers
+- Always unsubscribe RealtimeChannels
+- Always close ReceivePorts
+- Never dispose singletons from individual widgets
+
+---
+
+## Cursor Editor Optimization
+
+### Memory Management
+- Always use const constructors where possible
+- Avoid unnecessary rebuilds
+- Use RepaintBoundary for complex widgets
+- Limit file watching to active files only
+
+### Code Analysis
+- Disable semantic highlighting in Cursor settings
+- Reduce code lens and minimap rendering
+- Limit analysis to active files when possible
+
+### Build Optimization
+- Use incremental builds
+- Clean build cache regularly
+- Avoid full project rebuilds
