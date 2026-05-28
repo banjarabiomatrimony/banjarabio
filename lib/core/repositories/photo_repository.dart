@@ -306,12 +306,32 @@ class PhotoRepository extends IsolateFirstRepository {
   }
 
   /// Generates a resized URL using Supabase Storage Transformations.
-  /// 🧬 PRO SCALE: This reduces bandwidth by ~80% for thumbnails.
+  /// ✅ EGRESS FIX: Re-enabled. This reduces cached egress by ~80% by serving
+  /// CDN-cached resized variants instead of full-resolution originals.
+  /// The Supabase free plan now supports image transformations. If a 400 error
+  /// is seen for a specific URL, it falls back to the original in CustomImageWidget.
   String getResizedUrl(String publicUrl, {int? width, int? height, int quality = 80}) {
-    // 🧬 PRO SCALE: We've disabled server-side resizing because some Supabase 
-    // projects don't have Image Transformation enabled, causing 400 errors. 
-    // We now rely on Flutter's internal memCacheWidth/Height for memory safety.
-    return publicUrl;
+    // Only transform Supabase Storage URLs (public bucket URLs)
+    if (!publicUrl.contains('/storage/v1/object/public/')) {
+      return publicUrl;
+    }
+
+    try {
+      final uri = Uri.parse(publicUrl);
+      final params = <String, String>{
+        'quality': quality.clamp(40, 90).toString(),
+        'format': 'origin', // Keep original format (JPEG/PNG) — avoids WebP issues
+      };
+      if (width != null && width > 0) params['width'] = width.clamp(50, 1200).toString();
+      if (height != null && height > 0) params['height'] = height.clamp(50, 1200).toString();
+
+      // Replace /object/public/ with /render/image/public/ for transformation
+      final transformedPath = uri.path.replaceFirst('/object/public/', '/render/image/public/');
+      return uri.replace(path: transformedPath, queryParameters: params).toString();
+    } catch (e) {
+      debugPrint('getResizedUrl Error: $e');
+      return publicUrl; // Fail safe: serve original
+    }
   }
 
   // ---------------------------------------------------------------------------

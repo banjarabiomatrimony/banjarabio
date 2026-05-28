@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
@@ -30,10 +31,12 @@ class ProfileShareCard extends StatelessWidget {
           children: [
             // 1. Background Photo
             if (profile.photos.isNotEmpty)
-              Image.network(
-                profile.photos.first.publicUrl,
+              CachedNetworkImage(
+                imageUrl: profile.photos.first.publicUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(color: const Color(0xFF432C7A)),
+                width: 1080,
+                height: 1920,
+                errorWidget: (context, url, error) => Container(color: const Color(0xFF432C7A)),
               ),
               
             // 2. Dark Gradient Overlay (Premium feel)

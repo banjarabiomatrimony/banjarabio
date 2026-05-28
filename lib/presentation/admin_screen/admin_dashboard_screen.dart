@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
@@ -2493,7 +2494,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                                   child: CircleAvatar(
                                     radius: 28,
                                     backgroundImage: user.photos.isNotEmpty
-                                        ? NetworkImage(user.photos.first.publicUrl)
+                                        ? CachedNetworkImageProvider(
+                                            user.photos.first.publicUrl,
+                                            maxWidth: 112, // 2x 56px radius circle
+                                            maxHeight: 112,
+                                          )
                                         : null,
                                     child: user.photos.isEmpty
                                         ? const Icon(Icons.person, size: 32)
@@ -2959,10 +2964,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                           if (signedUrl == null) {
                             return const Center(child: CircularProgressIndicator());
                           }
-                          return Image.network(signedUrl, fit: BoxFit.cover);
+                          return CachedNetworkImage(imageUrl: signedUrl, fit: BoxFit.cover);
                         },
                       )
-                    : Image.network(pathOrUrl, fit: BoxFit.cover),
+                    : CachedNetworkImage(imageUrl: pathOrUrl, fit: BoxFit.cover),
           ),
         ),
       ],
@@ -3141,12 +3146,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                             if (url != null)
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(14),
-                                child: Image.network(
-                                  url, 
+                                child: CachedNetworkImage(
+                                  imageUrl: url, 
                                   fit: BoxFit.cover, 
                                   width: double.infinity, 
                                   height: double.infinity,
-                                  errorBuilder: (context, error, stackTrace) => Container(
+                                  errorWidget: (context, url, error) => Container(
                                     color: theme.disabledColor.withValues(alpha: 0.1),
                                     child: const Center(child: Icon(Icons.broken_image, color: Colors.red)),
                                   ),

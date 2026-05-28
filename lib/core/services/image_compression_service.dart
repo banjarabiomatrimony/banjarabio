@@ -40,8 +40,8 @@ class ImageCompressionService {
       final fileSize = originalFile.lengthSync();
       final fileSizeKB = fileSize / 1024;
 
-      // Don't compress if smaller than 200KB
-      if (fileSizeKB < 200) {
+      // Don't compress if smaller than 100KB — already small enough
+      if (fileSizeKB < 100) {
         return originalFile;
       }
 
@@ -86,8 +86,11 @@ class ImageCompressionService {
           originalFile.absolute.path,
           targetPath,
           quality: quality,
-          minWidth: minWidth ?? 1200, // HD Quality
-          minHeight: minHeight ?? 1200,
+          // minWidth/minHeight in this library mean: resize so the longest
+          // dimension does NOT exceed this value. Acts as a max-dimension cap.
+          // 1080px is sufficient for any mobile display (Full HD).
+          minWidth: minWidth ?? 1080,
+          minHeight: minHeight ?? 1080,
         );
       }
 

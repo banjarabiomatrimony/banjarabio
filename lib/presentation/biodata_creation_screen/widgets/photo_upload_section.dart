@@ -1,5 +1,6 @@
 import 'dart:io' as io;
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -562,26 +563,21 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
 
   Widget _buildImage(String photoPath) {
     if (kIsWeb || photoPath.startsWith('http')) {
-      return Image.network(
-        photoPath,
+      return CachedNetworkImage(
+        imageUrl: photoPath,
         width: double.infinity,
         height: double.infinity,
         fit: BoxFit.cover,
-        cacheWidth: 200,
-        cacheHeight: 200,
-        errorBuilder: (context, error, stackTrace) => _buildPlaceholder(),
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
-          return Center(
-            child: CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                        loadingProgress.expectedTotalBytes!
-                  : null,
-              strokeWidth: 2,
-            ),
-          );
-        },
+        memCacheWidth: 200,
+        memCacheHeight: 200,
+        errorWidget: (context, url, error) => _buildPlaceholder(),
+        placeholder: (context, url) => const Center(
+          child: SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+        ),
       );
     }
 
