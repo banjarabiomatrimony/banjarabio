@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:path_provider/path_provider.dart';
 
 /// [PersistentCacheManager]
 ///
@@ -122,13 +124,21 @@ class PersistentCacheManager {
   }
 
   /// Returns the approximate on-disk size of the image cache.
+  ///
+  /// Scans the cache directory for files and sums their sizes.
   static Future<String> getCacheSizeLabel() async {
     try {
-      final store = await instance.store.getAllObjects();
-      final totalBytes = store.fold<int>(
-        0,
-        (sum, info) => sum + (info.length ?? 0),
-      );
+      final dir = await getApplicationDocumentsDirectory();
+      final cacheDir = Directory('${dir.path}/$_cacheKey');
+      if (!await cacheDir.exists()) return '0 KB';
+
+      int totalBytes = 0;
+      await for (final entity in cacheDir.list(recursive: true)) {
+        if (entity is File) {
+          totalBytes += await entity.length();
+        }
+      }
+
       if (totalBytes == 0) return '0 KB';
       if (totalBytes < 1024 * 1024) {
         return '${(totalBytes / 1024).toStringAsFixed(1)} KB';
