@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:banjarabio/core/repositories/photo_repository.dart';
 import 'package:banjarabio/core/services/network_aware_quality_service.dart';
+import 'package:banjarabio/core/services/persistent_cache_manager.dart';
 import 'package:banjarabio/widgets/shimmer_widget.dart';
 
 
@@ -100,7 +101,12 @@ class CustomImageWidget extends StatelessWidget {
         // 🚨 CRASH FIX (OPPO/ANDROID 14): Added onError listener to catch
         // 'Decoded image has been disposed' exceptions during rapid scrolling.
         precacheImage(
-          CachedNetworkImageProvider(optimizedUrl), 
+          CachedNetworkImageProvider(
+            optimizedUrl,
+            maxWidth: params['targetWidth'],
+            maxHeight: params['targetWidth'], // square crop for thumbs
+            cacheManager: PersistentCacheManager.instance,
+          ), 
           context,
           onError: (exception, stackTrace) {
             debugPrint('Precache Background Error ($optimizedUrl): $exception');
@@ -287,6 +293,7 @@ class CustomImageWidget extends StatelessWidget {
       alignment: alignment ?? Alignment.center,
       imageUrl: optimizedUrl,
       color: color,
+      cacheManager: PersistentCacheManager.instance,
       // We still use memCache to ensure Flutter's image cache stays clean
       memCacheWidth: cacheWidth ?? _calculateOptimalCache(context, width),
       memCacheHeight: cacheHeight ?? _calculateOptimalCache(context, height),

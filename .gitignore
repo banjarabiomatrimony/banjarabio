@@ -74,3 +74,12 @@ android/app/secure/
 GoogleService-Info.plist
 google-services.json
 sentry_config.dart
+.github_token_backup
+*.p12
+*.key
+*.pem
+*.cer
+*.crt
+GoogleService-Info.plist
+google-services.json
+sentry_config.dart

@@ -1,5 +1,6 @@
 import 'dart:io' as io;
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/core/services/persistent_cache_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -570,6 +571,7 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
         fit: BoxFit.cover,
         memCacheWidth: 200,
         memCacheHeight: 200,
+        cacheManager: PersistentCacheManager.instance,
         errorWidget: (context, url, error) => _buildPlaceholder(),
         placeholder: (context, url) => const Center(
           child: SizedBox(

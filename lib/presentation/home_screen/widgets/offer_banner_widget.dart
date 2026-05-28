@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:banjarabio/core/services/persistent_cache_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:banjarabio/core/models/banner_model.dart';
 import 'package:banjarabio/core/repositories/banner_repository.dart';
@@ -101,6 +102,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget> {
                     child: CachedNetworkImage(
                       imageUrl: banner.imageUrl,
                       fit: BoxFit.cover,
+                      cacheManager: PersistentCacheManager.instance,
                       placeholder: (context, url) => ShimmerWidget.rectangular(height: 18.h),
                       errorWidget: (context, url, error) => Container(
                         color: Colors.grey[300],

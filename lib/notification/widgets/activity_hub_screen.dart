@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:banjarabio/core/services/persistent_cache_manager.dart';
 import 'package:banjarabio/notification/core/notification_history.dart';
 import 'package:banjarabio/notification/core/notification_payload.dart';
 import 'package:banjarabio/notification/features/notification_navigator.dart';
@@ -295,6 +296,7 @@ class _NotificationCard extends StatelessWidget {
           width: 48,
           height: 48,
           fit: BoxFit.cover,
+          cacheManager: PersistentCacheManager.instance,
           placeholder: (context2, url) => _placeholder(),
           errorWidget: (context2, url, error) => _placeholder(),
         ),

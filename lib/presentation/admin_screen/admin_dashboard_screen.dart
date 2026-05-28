@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:banjarabio/core/services/persistent_cache_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
@@ -2496,8 +2497,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                                     backgroundImage: user.photos.isNotEmpty
                                         ? CachedNetworkImageProvider(
                                             user.photos.first.publicUrl,
-                                            maxWidth: 112, // 2x 56px radius circle
+                                            maxWidth: 112,
                                             maxHeight: 112,
+                                            cacheManager: PersistentCacheManager.instance,
                                           )
                                         : null,
                                     child: user.photos.isEmpty
@@ -2964,10 +2966,18 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                           if (signedUrl == null) {
                             return const Center(child: CircularProgressIndicator());
                           }
-                          return CachedNetworkImage(imageUrl: signedUrl, fit: BoxFit.cover);
+                          return CachedNetworkImage(
+                            imageUrl: signedUrl,
+                            fit: BoxFit.cover,
+                            cacheManager: PersistentCacheManager.instance,
+                          );
                         },
                       )
-                    : CachedNetworkImage(imageUrl: pathOrUrl, fit: BoxFit.cover),
+                    : CachedNetworkImage(
+                        imageUrl: pathOrUrl,
+                        fit: BoxFit.cover,
+                        cacheManager: PersistentCacheManager.instance,
+                      ),
           ),
         ),
       ],
@@ -3151,6 +3161,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                                   fit: BoxFit.cover, 
                                   width: double.infinity, 
                                   height: double.infinity,
+                                  cacheManager: PersistentCacheManager.instance,
                                   errorWidget: (context, url, error) => Container(
                                     color: theme.disabledColor.withValues(alpha: 0.1),
                                     child: const Center(child: Icon(Icons.broken_image, color: Colors.red)),

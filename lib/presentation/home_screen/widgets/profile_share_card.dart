@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/services/persistent_cache_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -36,6 +37,7 @@ class ProfileShareCard extends StatelessWidget {
                 fit: BoxFit.cover,
                 width: 1080,
                 height: 1920,
+                cacheManager: PersistentCacheManager.instance,
                 errorWidget: (context, url, error) => Container(color: const Color(0xFF432C7A)),
               ),
               
