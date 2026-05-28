@@ -1,9 +1,26 @@
-# Credentials file (DO NOT COMMIT)
+# ─── Credentials & Secrets (NEVER COMMIT) ─────────────────────────────────────
 .credentials
+.github_token_backup
+env.json
+assets/env.json
+*.env
+.env*
+*.jks
+*.keystore
+*.p12
+*.key
+*.pem
+*.cer
+*.crt
+key.properties
+android/key.properties
+android/app/secure/
+GoogleService-Info.plist
+google-services.json
+sentry_config.dart
 
-# Miscellaneous
+# ─── Miscellaneous ────────────────────────────────────────────────────────────
 *.class
-*.log
 *.pyc
 *.swp
 .DS_Store
@@ -14,23 +31,26 @@
 .svn/
 .swiftpm/
 migrate_working_dir/
-restore_fn.py
-scripts/*.sh
-*.txt
-*.original.md
 
-# IntelliJ related
+# ─── Root-level debris prevention ─────────────────────────────────────────────
+# Prevent test logs, audit dumps, and scratch scripts from polluting root
+*.log
+*.txt
+!app-ads.txt
+!README.md
+!RELEASE_NOTES.md
+*.original.md
+*.py
+*.sh
+!scripts/*.sh
+
+# ─── IntelliJ / Android Studio ────────────────────────────────────────────────
 *.iml
 *.ipr
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
-
-# Flutter/Dart/Pub related
+# ─── Flutter / Dart / Pub ─────────────────────────────────────────────────────
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
@@ -40,46 +60,11 @@ scripts/*.sh
 /build/
 /coverage/
 
-# Symbolication related
+# ─── Symbolication & Obfuscation ──────────────────────────────────────────────
 app.*.symbols
-
-# Obfuscation related
 app.*.map.json
 
-# Android Studio will place build artifacts here
+# ─── Android build artifacts ──────────────────────────────────────────────────
 /android/app/debug
 /android/app/profile
 /android/app/release
-
-# Environment configuration (contains API keys - DO NOT COMMIT)
-env.json
-assets/env.json
-*.env
-.env*
-
-# Android keystore files (NEVER COMMIT)
-*.jks
-*.keystore
-key.properties
-android/key.properties
-android/app/secure/
-
-# Security/Large Files
-*.jks
-*.p12
-*.key
-*.pem
-*.cer
-*.crt
-GoogleService-Info.plist
-google-services.json
-sentry_config.dart
-.github_token_backup
-*.p12
-*.key
-*.pem
-*.cer
-*.crt
-GoogleService-Info.plist
-google-services.json
-sentry_config.dart
