@@ -2500,6 +2500,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                                             maxWidth: 112,
                                             maxHeight: 112,
                                             cacheManager: PersistentCacheManager.instance,
+                                            cacheKey: PersistentCacheManager.stableKeyFor(user.photos.first.publicUrl),
                                           )
                                         : null,
                                     child: user.photos.isEmpty
@@ -2970,6 +2971,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                             imageUrl: signedUrl,
                             fit: BoxFit.cover,
                             cacheManager: PersistentCacheManager.instance,
+                            cacheKey: PersistentCacheManager.stableKeyFor(signedUrl),
                           );
                         },
                       )
@@ -2977,6 +2979,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         imageUrl: pathOrUrl,
                         fit: BoxFit.cover,
                         cacheManager: PersistentCacheManager.instance,
+                        cacheKey: PersistentCacheManager.stableKeyFor(pathOrUrl),
                       ),
           ),
         ),
@@ -3162,6 +3165,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                                   width: double.infinity, 
                                   height: double.infinity,
                                   cacheManager: PersistentCacheManager.instance,
+                                  cacheKey: PersistentCacheManager.stableKeyFor(url),
                                   errorWidget: (context, url, error) => Container(
                                     color: theme.disabledColor.withValues(alpha: 0.1),
                                     child: const Center(child: Icon(Icons.broken_image, color: Colors.red)),

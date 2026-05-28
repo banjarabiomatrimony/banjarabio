@@ -297,6 +297,7 @@ class _NotificationCard extends StatelessWidget {
           height: 48,
           fit: BoxFit.cover,
           cacheManager: PersistentCacheManager.instance,
+          cacheKey: PersistentCacheManager.stableKeyFor(item.imageUrl!),
           placeholder: (context2, url) => _placeholder(),
           errorWidget: (context2, url, error) => _placeholder(),
         ),

@@ -232,6 +232,7 @@ class _InAppNotificationBannerState
           height: 48,
           fit: BoxFit.cover,
           cacheManager: PersistentCacheManager.instance,
+          cacheKey: PersistentCacheManager.stableKeyFor(widget.payload.imageUrl!),
           placeholder: (context2, url) => _buildCategoryIcon(),
           errorWidget: (context2, url, error) => _buildCategoryIcon(),
         ),

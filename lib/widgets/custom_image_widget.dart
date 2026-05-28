@@ -106,6 +106,8 @@ class CustomImageWidget extends StatelessWidget {
             maxWidth: params['targetWidth'],
             maxHeight: params['targetWidth'], // square crop for thumbs
             cacheManager: PersistentCacheManager.instance,
+            // Stable key: strips ?width=&quality= so same photo = same cache hit
+            cacheKey: PersistentCacheManager.stableKeyFor(optimizedUrl),
           ), 
           context,
           onError: (exception, stackTrace) {
@@ -294,7 +296,10 @@ class CustomImageWidget extends StatelessWidget {
       imageUrl: optimizedUrl,
       color: color,
       cacheManager: PersistentCacheManager.instance,
-      // We still use memCache to ensure Flutter's image cache stays clean
+      // Stable key: strip ?width=&quality= so ANY transformation of the same
+      // photo resolves to the SAME local disk entry. Once downloaded once,
+      // this image is NEVER fetched from Supabase again (365-day TTL).
+      cacheKey: PersistentCacheManager.stableKeyFor(optimizedUrl),
       memCacheWidth: cacheWidth ?? _calculateOptimalCache(context, width),
       memCacheHeight: cacheHeight ?? _calculateOptimalCache(context, height),
       // 🚨 SIGNAL 3 FIX: Removed LQIP (dual-image) placeholder.

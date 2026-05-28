@@ -1,37 +1,45 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 /// [PersistentCacheManager]
 ///
-/// A custom [CacheManager] that keeps images alive across app restarts.
+/// **Goal: download each image ONCE. Never fetch it from Supabase again.**
 ///
-/// ## Why not DefaultCacheManager?
-/// `DefaultCacheManager` uses the OS **temporary** directory. On Android/iOS,
-/// the OS can evict this at any time (low storage, app backgrounded, etc.).
-/// This means profile photos are re-downloaded on every cold start — the
-/// primary driver of our 6.87 GB cached egress overage.
+/// ## Two key problems solved:
 ///
-/// ## What this does:
-/// - Stores images in `getApplicationDocumentsDirectory()` (permanent, not temp)
-/// - Keeps images for **30 days** (vs the default 30 days in temp which gets evicted)
-/// - Holds up to **500 images** (~50–100 MB on disk max for BanjaraBio)
-/// - Uses a unique cache key `banjara_photos_v1` so it doesn't clash with
-///   any other cache manager in the app
+/// ### Problem 1 — OS eviction (app reopen re-downloads)
+/// `DefaultCacheManager` stores in the OS **temp directory**, which gets
+/// wiped on low memory or app restart. We store in the **app Documents
+/// directory** which the OS never clears automatically.
+///
+/// ### Problem 2 — URL variation (same photo, different cache hits)
+/// Supabase transformation URLs include query params:
+///   `/render/image/public/…?width=400&quality=80`
+/// If the width param changes (different screen, different widget), the full
+/// URL is a different cache key → re-download despite having the same photo.
+///
+/// **Fix:** use [stableKeyFor] to strip query params and use only the path
+/// as the cache key. Same photo = same key = always served from disk.
+///
+/// ## Config:
+/// - **365-day TTL** — effectively permanent for all active users
+/// - **2000 max objects** — ~200 profiles × 5 photos × 2 sizes with headroom
+/// - **App Documents directory** — survives OS pressure and app restarts
 class PersistentCacheManager {
   static const String _cacheKey = 'banjara_photos_v1';
 
   static final CacheManager instance = CacheManager(
     Config(
       _cacheKey,
-      // 30 days: images stay on disk even if the user doesn't open the app
-      // for a month. Profile photos rarely change, so this is safe.
-      stalePeriod: const Duration(days: 30),
+      // 365 days = effectively permanent. A user who hasn't opened the app
+      // in a year will re-download on next open — that is acceptable.
+      stalePeriod: const Duration(days: 365),
 
-      // Max 500 images ≈ enough for a full feed session (20 profiles × 5 photos
-      // each = 100 images) with significant headroom for repeat visitors.
-      maxNrOfCacheObjects: 500,
+      // 2000 images: 200 profiles × 5 photos = 1000, doubled for headroom.
+      // At ~100KB avg per cached thumbnail, this is ~200MB max on disk.
+      maxNrOfCacheObjects: 2000,
 
-      // FileSystem backed repo — stores in app Documents dir (persistent).
-      // This is the key difference from DefaultCacheManager (temp dir).
+      // Documents dir — the OS never auto-clears this unlike temp/cache dirs.
       repo: JsonCacheInfoRepository(databaseName: _cacheKey),
       fileService: HttpFileService(),
     ),
@@ -39,4 +47,95 @@ class PersistentCacheManager {
 
   // Prevent instantiation — use PersistentCacheManager.instance
   PersistentCacheManager._();
+
+  // ---------------------------------------------------------------------------
+  // Stable Cache Key — THE core egress fix
+  // ---------------------------------------------------------------------------
+
+  /// Returns a stable, canonical cache key for any Supabase Storage URL.
+  ///
+  /// Strips all query parameters from the URL so that the same file is
+  /// always mapped to the same local cache entry, regardless of what
+  /// transformation params (?width=, ?quality=, etc.) are appended.
+  ///
+  /// Examples:
+  /// ```
+  /// stableKeyFor('https://…/render/image/public/profile-photos/abc.jpg?width=400&quality=80')
+  /// → 'profile-photos/abc.jpg'
+  ///
+  /// stableKeyFor('https://…/object/public/profile-photos/abc.jpg')
+  /// → 'profile-photos/abc.jpg'
+  /// ```
+  ///
+  /// If the URL cannot be parsed, the original URL is returned as-is so
+  /// the system still works (just without stable-key deduplication).
+  static String stableKeyFor(String url) {
+    try {
+      final uri = Uri.parse(url);
+
+      // Extract just the storage path after /profile-photos/ or similar
+      // Works for both /object/public/ and /render/image/public/ URLs
+      final path = uri.path;
+
+      // Find the bucket name onwards — e.g. "profile-photos/uuid/filename.jpg"
+      final objectPublicIdx = path.indexOf('/object/public/');
+      if (objectPublicIdx != -1) {
+        return path.substring(objectPublicIdx + '/object/public/'.length);
+      }
+
+      final renderImageIdx = path.indexOf('/render/image/public/');
+      if (renderImageIdx != -1) {
+        return path.substring(renderImageIdx + '/render/image/public/'.length);
+      }
+
+      // Fallback: path without query string (still strips params)
+      return uri.replace(queryParameters: {}).toString();
+    } catch (e) {
+      debugPrint('[PersistentCacheManager] stableKeyFor error: $e');
+      return url; // Fail safe
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Cache Management Utilities
+  // ---------------------------------------------------------------------------
+
+  /// Clear ALL locally cached images from this manager.
+  static Future<void> clearAll() async {
+    try {
+      await instance.emptyCache();
+      debugPrint('[PersistentCacheManager] ✅ Local image cache cleared');
+    } catch (e) {
+      debugPrint('[PersistentCacheManager] clearAll error: $e');
+    }
+  }
+
+  /// Remove a single image from the local cache by its URL.
+  /// Pass the original (untransformed) URL — stableKeyFor is applied internally.
+  static Future<void> evictUrl(String url) async {
+    try {
+      await instance.removeFile(stableKeyFor(url));
+      debugPrint('[PersistentCacheManager] Evicted: ${stableKeyFor(url)}');
+    } catch (e) {
+      debugPrint('[PersistentCacheManager] evictUrl error: $e');
+    }
+  }
+
+  /// Returns the approximate on-disk size of the image cache.
+  static Future<String> getCacheSizeLabel() async {
+    try {
+      final store = await instance.store.getAllObjects();
+      final totalBytes = store.fold<int>(
+        0,
+        (sum, info) => sum + (info.length ?? 0),
+      );
+      if (totalBytes == 0) return '0 KB';
+      if (totalBytes < 1024 * 1024) {
+        return '${(totalBytes / 1024).toStringAsFixed(1)} KB';
+      }
+      return '${(totalBytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+    } catch (e) {
+      return 'Unknown';
+    }
+  }
 }

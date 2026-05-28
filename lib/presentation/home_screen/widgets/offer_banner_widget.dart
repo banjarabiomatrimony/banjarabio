@@ -103,6 +103,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget> {
                       imageUrl: banner.imageUrl,
                       fit: BoxFit.cover,
                       cacheManager: PersistentCacheManager.instance,
+                      cacheKey: PersistentCacheManager.stableKeyFor(banner.imageUrl),
                       placeholder: (context, url) => ShimmerWidget.rectangular(height: 18.h),
                       errorWidget: (context, url, error) => Container(
                         color: Colors.grey[300],
