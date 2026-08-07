@@ -458,101 +458,108 @@
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border-glass);
       border-radius: 28px;
-      padding: 48px 32px;
+      padding: 52px 36px;
       text-align: center;
       box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     }
 
     .social-hub-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
       margin-top: 36px;
     }
 
     .social-hub-card {
-      background: rgba(15, 23, 42, 0.65);
+      background: rgba(15, 23, 42, 0.7);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 24px 20px;
+      border-radius: 24px;
+      padding: 32px 24px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
       text-decoration: none;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       overflow: hidden;
     }
 
     .social-hub-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(255, 255, 255, 0.25);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+      transform: translateY(-8px);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.5);
     }
 
+    .social-hub-card.card-wa:hover { border-color: rgba(34, 197, 94, 0.5); box-shadow: 0 16px 40px rgba(34, 197, 94, 0.2); }
+    .social-hub-card.card-ig:hover { border-color: rgba(244, 63, 94, 0.5); box-shadow: 0 16px 40px rgba(244, 63, 94, 0.2); }
+    .social-hub-card.card-li:hover { border-color: rgba(56, 189, 248, 0.5); box-shadow: 0 16px 40px rgba(56, 189, 248, 0.2); }
+
     .social-icon-box {
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 14px;
-      font-size: 24px;
+      margin-bottom: 18px;
+      font-size: 28px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     }
 
-    .social-icon-wa { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
-    .social-icon-ig { background: rgba(225, 29, 72, 0.15); color: #fb7185; border: 1px solid rgba(225, 29, 72, 0.3); }
-    .social-icon-li { background: rgba(14, 116, 144, 0.15); color: #38bdf8; border: 1px solid rgba(14, 116, 144, 0.3); }
-    .social-icon-mail { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
-    .social-icon-play { background: rgba(245, 158, 11, 0.15); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.3); }
-    .social-icon-apple { background: rgba(255, 255, 255, 0.1); color: #e2e8f0; border: 1px solid rgba(255, 255, 255, 0.2); }
+    .social-icon-wa { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.35); }
+    .social-icon-ig { background: rgba(225, 29, 72, 0.15); color: #fb7185; border: 1px solid rgba(225, 29, 72, 0.35); }
+    .social-icon-li { background: rgba(14, 116, 144, 0.15); color: #38bdf8; border: 1px solid rgba(14, 116, 144, 0.35); }
 
     .social-hub-card h3 {
       font-family: 'Outfit', sans-serif;
-      font-size: 18px;
-      font-weight: 700;
+      font-size: 20px;
+      font-weight: 800;
       color: #ffffff;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .social-hub-card p {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-muted);
-      margin-bottom: 16px;
-      line-height: 1.4;
+      margin-bottom: 20px;
+      line-height: 1.5;
     }
 
-    .social-action-btn {
-      font-size: 13px;
+    .social-hub-badge {
+      font-size: 11px;
       font-weight: 700;
-      padding: 8px 16px;
-      border-radius: 10px;
-      transition: all 0.2s ease;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-wa { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+    .badge-ig { background: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
+    .badge-li { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+
+    .social-action-btn {
+      font-size: 14px;
+      font-weight: 800;
+      padding: 10px 20px;
+      border-radius: 12px;
+      transition: all 0.25s ease;
       width: 100%;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .action-wa { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
-    .social-hub-card:hover .action-wa { background: #22c55e; color: #ffffff; }
+    .social-hub-card:hover .action-wa { background: linear-gradient(135deg, #22c55e, #15803d); color: #ffffff; box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4); }
 
     .action-ig { background: rgba(225, 29, 72, 0.2); color: #f43f5e; }
-    .social-hub-card:hover .action-ig { background: #e11d48; color: #ffffff; }
+    .social-hub-card:hover .action-ig { background: linear-gradient(135deg, #e11d48, #be123c); color: #ffffff; box-shadow: 0 6px 20px rgba(225, 29, 72, 0.4); }
 
     .action-li { background: rgba(14, 116, 144, 0.2); color: #38bdf8; }
-    .social-hub-card:hover .action-li { background: #0284c7; color: #ffffff; }
-
-    .action-mail { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
-    .social-hub-card:hover .action-mail { background: #3b82f6; color: #ffffff; }
-
-    .action-play { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
-    .social-hub-card:hover .action-play { background: #f59e0b; color: #ffffff; }
-
-    .action-apple { background: rgba(255, 255, 255, 0.08); color: #94a3b8; }
+    .social-hub-card:hover .action-li { background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff; box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4); }
 
     /* Stats Grid */
     .stats-bar {
@@ -1086,48 +1093,47 @@
     <!-- Connect & Community Hub Section -->
     <section class="social-hub-section">
       <h2 class="section-title">Connect With BanjaraBio</h2>
-      <p class="section-sub">Join our official community channels, get 24/7 helpdesk support, and follow our social handles.</p>
+      <p class="section-sub">Join our official community channels, get direct 1-tap helpdesk support, and follow our social handles.</p>
 
       <div class="social-hub-grid">
 
         <!-- WhatsApp Helpdesk -->
-        <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" class="social-hub-card">
+        <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" class="social-hub-card card-wa">
           <div class="social-icon-box social-icon-wa">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
           </div>
+          <div class="social-hub-badge badge-wa">⚡ 24/7 Voice & Chat Support</div>
           <h3>WhatsApp Helpdesk</h3>
-          <p>+91 8186050406 (24/7 Voice & Chat)</p>
-          <div class="social-action-btn action-wa">Chat Support ↗</div>
+          <p>Direct 1-tap support & free bio-data creation assistance (<strong>+91 8186050406</strong>)</p>
+          <div class="social-action-btn action-wa">
+            <span>💬</span> Chat Support ↗
+          </div>
         </a>
 
         <!-- Instagram Community -->
-        <a href="https://www.instagram.com/banjarabio.matrimony/" target="_blank" class="social-hub-card">
+        <a href="https://www.instagram.com/banjarabio.matrimony/" target="_blank" class="social-hub-card card-ig">
           <div class="social-icon-box social-icon-ig">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
           </div>
+          <div class="social-hub-badge badge-ig">📸 Community Highlights</div>
           <h3>Instagram Community</h3>
-          <p>@banjarabio.matrimony</p>
-          <div class="social-action-btn action-ig">Follow Us ↗</div>
+          <p>Official handle <strong>@banjarabio.matrimony</strong> for success stories & Melava events</p>
+          <div class="social-action-btn action-ig">
+            <span>📷</span> Follow Handle ↗
+          </div>
         </a>
 
-        <!-- LinkedIn Page -->
-        <a href="https://www.linkedin.com/company/banjarabio/" target="_blank" class="social-hub-card">
+        <!-- LinkedIn Official -->
+        <a href="https://www.linkedin.com/company/banjarabio/" target="_blank" class="social-hub-card card-li">
           <div class="social-icon-box social-icon-li">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
           </div>
+          <div class="social-hub-badge badge-li">💼 Corporate Trust</div>
           <h3>LinkedIn Official</h3>
-          <p>BanjaraBio Matrimony</p>
-          <div class="social-action-btn action-li">Connect ↗</div>
-        </a>
-
-        <!-- Official Email Desk -->
-        <a href="mailto:support@banjarabio.com" class="social-hub-card">
-          <div class="social-icon-box social-icon-mail">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          <p>Organization announcements, trust milestones & corporate partnership updates (<strong>BanjaraBio Matrimony</strong>)</p>
+          <div class="social-action-btn action-li">
+            <span>💼</span> Connect ↗
           </div>
-          <h3>Official Email Desk</h3>
-          <p>support@banjarabio.com</p>
-          <div class="social-action-btn action-mail">Send Email ↗</div>
         </a>
 
       </div>
