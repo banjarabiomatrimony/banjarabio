@@ -6,104 +6,81 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- SEO Title & Meta Descriptions -->
-  <title>BanjaraBio Matrimony — Official Gor Banjara Matrimony Platform</title>
-  <meta name="description" content="BanjaraBio is the premier, trusted matrimonial app for the Gor Banjara community worldwide. Verified profiles, Gotra matching, Bio-data PDF builder, and Digital Melava events.">
-  <meta name="keywords" content="BanjaraBio, Banjara Matrimony, Gor Banjara, Banjara Rishta, Banjara Biodata PDF, Gotra Match, Banjara App, Sevalal Maharaj">
-  <meta name="author" content="BanjaraBio Matrimony">
-
-  <!-- Open Graph / Social Media Meta Tags -->
+  <title>BanjaraBio Matrimony — Premier Gor Banjara Matrimony Platform</title>
+  <meta name="description" content="Find verified Gor Banjara brides and grooms with Gotra matching, instant bio-data PDF creation, and traditional community trust. Join thousands of Banjara families worldwide.">
+  
+  <!-- OpenGraph / Social Meta Tags -->
+  <meta property="og:title" content="BanjaraBio Matrimony — Premier Gor Banjara Matrimony App">
+  <meta property="og:description" content="Discover verified Gor Banjara candidate profiles with Gotra matching and bio-data PDF export.">
+  <meta property="og:image" content="https://banjarabio.com/favicon.png">
+  <meta property="og:url" content="https://banjarabio.com">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://banjarabio.com/">
-  <meta property="og:title" content="BanjaraBio Matrimony — Official Gor Banjara Community App">
-  <meta property="og:description" content="Find verified Gor Banjara profiles with Gotra matching, Bio-data builder, and privacy protection. Download the app today!">
-  <meta property="og:image" content="https://banjarabio.com/icons/Icon-512.png">
 
-  <!-- Twitter Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="BanjaraBio Matrimony — Gor Banjara Community App">
-  <meta name="twitter:description" content="100% Verified Gor Banjara Matrimonial Platform with Gotra Filters & Bio-Data Generator.">
-  <meta name="twitter:image" content="https://banjarabio.com/icons/Icon-512.png">
-
-  <!-- Mobile & PWA Specs -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="BanjaraBio">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
   <link rel="icon" type="image/png" href="favicon.png"/>
-  <link rel="manifest" href="manifest.json">
 
-  <!-- Premium Google Fonts -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg-dark: #070a12;
-      --card-bg: rgba(18, 26, 43, 0.75);
+      --bg-dark: #070a14;
+      --card-bg: rgba(15, 23, 42, 0.75);
       --gold-primary: #f59e0b;
-      --gold-secondary: #d97706;
+      --gold-light: #fbbf24;
       --rose-primary: #e11d48;
-      --rose-hover: #be123c;
+      --rose-light: #f43f5e;
+      --green-wa: #22c55e;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --border-glow: rgba(245, 158, 11, 0.25);
+      --border-glass: rgba(255, 255, 255, 0.12);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #090d16 55%, #030712 100%);
+      background: #070a14;
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 16px;
+      padding: 0;
       overflow-x: hidden;
     }
 
-    /* Background Ambient Glows */
-    .bg-glow-top {
-      position: absolute;
-      top: -120px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 700px;
-      height: 700px;
-      background: radial-gradient(circle, rgba(225, 29, 72, 0.18) 0%, rgba(0, 0, 0, 0) 70%);
+    /* Ambient Background Glows */
+    .ambient-glow {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(140px);
       pointer-events: none;
       z-index: 0;
     }
+    .glow-1 { top: -100px; left: 50%; transform: translateX(-50%); width: 700px; height: 400px; background: rgba(225, 29, 72, 0.18); }
+    .glow-2 { top: 30%; left: 5%; width: 450px; height: 450px; background: rgba(245, 158, 11, 0.12); }
+    .glow-3 { bottom: 15%; right: 5%; width: 500px; height: 500px; background: rgba(34, 197, 94, 0.08); }
 
-    .bg-glow-mid {
-      position: absolute;
-      top: 600px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 800px;
-      height: 800px;
-      background: radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* Top Navigation Header */
+    /* Header Nav */
     header {
-      position: relative;
-      z-index: 20;
       width: 100%;
-      max-width: 1100px;
+      max-width: 1200px;
+      margin: 20px auto 40px auto;
+      padding: 14px 24px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 24px 8px;
+      position: sticky;
+      top: 16px;
+      z-index: 100;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
     .nav-brand {
@@ -114,222 +91,270 @@
     }
 
     .brand-logo {
-      width: 44px;
-      height: 44px;
-      background: linear-gradient(135deg, var(--rose-primary), var(--gold-secondary));
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--rose-primary), var(--gold-primary));
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
-      box-shadow: 0 4px 15px rgba(225, 29, 72, 0.4);
+      font-size: 22px;
+      box-shadow: 0 0 15px rgba(225, 29, 72, 0.4);
     }
 
     .brand-title {
       font-family: 'Outfit', sans-serif;
       font-weight: 800;
-      font-size: 22px;
-      color: #ffffff;
+      font-size: 24px;
+      background: linear-gradient(135deg, #ffffff 30%, #fcd34d 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .nav-badge {
-      background: rgba(245, 158, 11, 0.15);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      color: #fbbf24;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 600;
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+
+    .nav-links a.active {
+      color: var(--gold-light);
+      font-weight: 700;
+    }
+
+    .btn-header-wa {
+      background: linear-gradient(135deg, #22c55e, #15803d);
+      color: #ffffff !important;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-weight: 700 !important;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s !important;
+    }
+
+    .btn-header-wa:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5) !important;
     }
 
     /* Main Container */
     main {
-      position: relative;
-      z-index: 10;
       width: 100%;
-      max-width: 1100px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 60px;
+      max-width: 1200px;
+      z-index: 1;
+      padding: 0 16px 80px 16px;
     }
 
-    /* Dynamic Redirect Banner */
+    /* Redirect Banner for Deep Links */
     .redirect-banner {
-      display: none; /* hidden by default, shown by JS when profile link accessed */
-      width: 100%;
-      max-width: 600px;
-      background: rgba(30, 41, 59, 0.85);
-      backdrop-filter: blur(16px);
-      border: 1px dashed rgba(245, 158, 11, 0.5);
+      display: none;
+      background: linear-gradient(135deg, rgba(225, 29, 72, 0.25), rgba(245, 158, 11, 0.25));
+      border: 1px solid var(--gold-light);
       border-radius: 20px;
-      padding: 20px 24px;
-      margin-top: 10px;
-      margin-bottom: 30px;
+      padding: 24px;
+      margin-bottom: 40px;
       text-align: center;
-      box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-      animation: slideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-15px); }
-      to { opacity: 1; transform: translateY(0); }
+      box-shadow: 0 0 30px rgba(245, 158, 11, 0.2);
     }
 
     .spinner-row {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      margin-bottom: 6px;
+      gap: 14px;
+      margin-bottom: 8px;
     }
 
     .spinner {
-      width: 18px;
-      height: 18px;
-      border: 2px solid rgba(245, 158, 11, 0.2);
-      border-top-color: var(--gold-primary);
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(255,255,255,0.2);
+      border-top: 3px solid var(--gold-light);
       border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+      animation: spin 1s linear infinite;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
 
     .redirect-title {
-      font-weight: 700;
-      font-size: 15px;
-      color: #fde68a;
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
     }
 
     .redirect-sub {
-      font-size: 13px;
-      color: #94a3b8;
+      font-size: 14px;
+      color: var(--text-muted);
     }
 
     /* Hero Section */
     .hero {
       text-align: center;
-      max-width: 800px;
-      padding: 40px 0 30px;
+      padding: 40px 0 60px 0;
+      max-width: 900px;
+      margin: 0 auto;
     }
 
     .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(225, 29, 72, 0.12);
-      border: 1px solid rgba(225, 29, 72, 0.3);
-      color: #f43f5e;
-      padding: 8px 18px;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: var(--gold-light);
+      padding: 8px 20px;
       border-radius: 999px;
       font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 20px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      letter-spacing: 0.5px;
     }
 
     .hero h1 {
       font-family: 'Outfit', sans-serif;
-      font-size: 44px;
+      font-size: 56px;
       font-weight: 900;
       line-height: 1.15;
+      color: #ffffff;
+      margin-bottom: 20px;
       letter-spacing: -1px;
-      background: linear-gradient(135deg, #ffffff 40%, #fcd34d 100%);
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, #fbbf24 20%, #f43f5e 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 20px;
     }
 
     .hero p {
-      font-size: 18px;
-      color: #94a3b8;
+      font-size: 19px;
+      color: var(--text-muted);
       line-height: 1.6;
-      margin-bottom: 36px;
+      margin-bottom: 40px;
     }
 
-    /* Hero Buttons */
     .cta-group {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       justify-content: center;
-      gap: 16px;
+      gap: 20px;
+      flex-wrap: wrap;
     }
 
-    .btn {
+    .btn-hero {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      padding: 16px 32px;
+      gap: 12px;
+      padding: 16px 36px;
       border-radius: 16px;
-      font-weight: 700;
-      font-size: 16px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 17px;
+      font-weight: 800;
       text-decoration: none;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      cursor: pointer;
+      transition: all 0.3s ease;
     }
 
     .btn-primary {
       background: linear-gradient(135deg, var(--rose-primary), #be123c);
       color: #ffffff;
-      box-shadow: 0 10px 25px -5px rgba(225, 29, 72, 0.5);
+      box-shadow: 0 10px 30px rgba(225, 29, 72, 0.4);
     }
-
     .btn-primary:hover {
-      background: linear-gradient(135deg, #f43f5e, var(--rose-primary));
       transform: translateY(-3px);
-      box-shadow: 0 15px 35px -5px rgba(225, 29, 72, 0.7);
+      box-shadow: 0 15px 40px rgba(225, 29, 72, 0.6);
     }
 
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      color: #f8fafc;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border-glass);
+      color: #ffffff;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
-
     .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.15);
       transform: translateY(-3px);
-      border-color: rgba(245, 158, 11, 0.5);
+      border-color: var(--gold-light);
+      box-shadow: 0 15px 40px rgba(245, 158, 11, 0.2);
     }
 
-    /* Features Grid Section */
-    .features-section {
-      width: 100%;
-      margin-top: 60px;
+    /* Stats Grid */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin: 40px 0 80px 0;
     }
 
-    .section-title {
+    .stat-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      padding: 24px;
       text-align: center;
+    }
+
+    .stat-num {
       font-family: 'Outfit', sans-serif;
-      font-size: 30px;
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--gold-light);
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Features Section */
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 36px;
       font-weight: 800;
+      text-align: center;
       color: #ffffff;
       margin-bottom: 12px;
     }
 
     .section-sub {
       text-align: center;
-      color: #94a3b8;
-      font-size: 16px;
-      margin-bottom: 40px;
+      font-size: 17px;
+      color: var(--text-muted);
+      margin-bottom: 48px;
     }
 
     .features-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
-      width: 100%;
+      gap: 28px;
+      margin-bottom: 80px;
     }
 
     .feature-card {
       background: var(--card-bg);
       backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 32px 24px;
+      border: 1px solid var(--border-glass);
+      border-radius: 24px;
+      padding: 36px 28px;
       transition: all 0.3s ease;
       display: flex;
       flex-direction: column;
@@ -337,17 +362,17 @@
     }
 
     .feature-card:hover {
-      transform: translateY(-6px);
+      transform: translateY(-8px);
       border-color: rgba(245, 158, 11, 0.4);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px var(--border-glow);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(245, 158, 11, 0.15);
     }
 
-    .feature-icon {
+    .feature-icon-box {
       width: 56px;
       height: 56px;
-      background: rgba(245, 158, 11, 0.12);
-      border: 1px solid rgba(245, 158, 11, 0.25);
       border-radius: 16px;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -357,118 +382,192 @@
 
     .feature-card h3 {
       font-family: 'Outfit', sans-serif;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
       color: #ffffff;
       margin-bottom: 10px;
     }
 
     .feature-card p {
-      font-size: 14px;
-      color: #94a3b8;
+      font-size: 15px;
+      color: var(--text-muted);
       line-height: 1.6;
     }
 
-    /* How It Works Section */
-    .steps-section {
-      width: 100%;
-      margin-top: 80px;
-      background: rgba(15, 23, 42, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 24px;
-      padding: 48px 32px;
+    /* Steps Section */
+    .steps-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      border-radius: 28px;
+      padding: 48px 36px;
+      margin-bottom: 80px;
     }
 
     .steps-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 32px;
-      margin-top: 40px;
+      margin-top: 36px;
     }
 
     .step-item {
-      text-align: center;
+      position: relative;
     }
 
-    .step-number {
-      width: 44px;
-      height: 44px;
-      background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
-      color: #090d16;
+    .step-num {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--rose-primary), var(--gold-primary));
+      color: #ffffff;
       font-family: 'Outfit', sans-serif;
-      font-weight: 900;
       font-size: 20px;
-      border-radius: 50%;
+      font-weight: 800;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 16px;
-      box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(225, 29, 72, 0.4);
     }
 
     .step-item h4 {
       font-family: 'Outfit', sans-serif;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
       color: #ffffff;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .step-item p {
       font-size: 14px;
-      color: #94a3b8;
-      line-height: 1.5;
+      color: var(--text-muted);
+      line-height: 1.6;
     }
 
     /* Footer */
     footer {
-      position: relative;
-      z-index: 10;
       width: 100%;
-      max-width: 1100px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 32px 0 48px;
+      background: #030712;
+      border-top: 1px solid var(--border-glass);
+      padding: 60px 24px 30px 24px;
+      margin-top: auto;
+      z-index: 10;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-brand h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .footer-brand p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .footer-col h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul {
+      list-style: none;
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col ul a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 24px;
+      display: flex;
       justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
       gap: 16px;
       font-size: 14px;
       color: #64748b;
     }
 
-    footer a {
-      color: #94a3b8;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
+    .footer-bottom a { color: var(--text-muted); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--gold-light); }
 
-    footer a:hover {
-      color: var(--gold-primary);
-    }
-
-    .footer-links {
+    /* Floating WhatsApp Button */
+    .wa-float {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #22c55e, #15803d);
+      border-radius: 50%;
       display: flex;
-      gap: 20px;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: #ffffff;
+      box-shadow: 0 10px 25px rgba(34, 197, 94, 0.5);
+      z-index: 999;
+      text-decoration: none;
+      transition: transform 0.3s;
+      animation: pulse-ring 2s infinite;
     }
 
-    /* Mobile Responsive Optimizations */
-    @media (max-width: 640px) {
-      .hero h1 { font-size: 32px; }
-      .hero p { font-size: 15px; }
-      .section-title { font-size: 24px; }
-      .cta-group { flex-direction: column; width: 100%; }
-      .btn { width: 100%; }
+    .wa-float:hover {
+      transform: scale(1.1);
+    }
+
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(34, 197, 94, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    }
+
+    @media (max-width: 768px) {
+      header { flex-direction: column; gap: 16px; margin: 10px auto 30px auto; }
+      .nav-links { flex-wrap: wrap; justify-content: center; gap: 14px; }
+      .hero h1 { font-size: 36px; }
+      .hero p { font-size: 16px; }
+      .steps-card { padding: 28px 20px; }
     }
   </style>
 
+  <!-- Deep Link Handler Script -->
   <script>
     (function() {
       var path = window.location.pathname;
       var search = window.location.search;
       var playStoreUrl = "https://play.google.com/store/apps/details?id=com.avishio.banjarabio";
       
-      // Parse profile ID if present in path e.g. /profile/123
       var profileId = null;
       if (path.indexOf('/profile/') !== -1) {
         profileId = path.split('/profile/')[1];
@@ -500,7 +599,6 @@
         var start = Date.now();
         window.location.href = customScheme;
 
-        // Auto fallback to Google Play Store if app not opened within 1.8s
         setTimeout(function() {
           if (Date.now() - start < 2200) {
             window.location.href = playStoreUrl;
@@ -512,28 +610,30 @@
 </head>
 <body>
 
-  <div class="bg-glow-top"></div>
-  <div class="bg-glow-mid"></div>
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
 
-  <!-- Top Navigation -->
+  <!-- Header -->
   <header>
     <a href="/" class="nav-brand">
       <div class="brand-logo">💍</div>
       <div class="brand-title">BanjaraBio</div>
     </a>
-    <nav class="nav-links" style="display: flex; gap: 20px;">
-      <a href="/" style="color:#f59e0b; text-decoration:none; font-weight:600;">Home</a>
-      <a href="/about-us" style="color:#94a3b8; text-decoration:none; font-weight:500;">About Us</a>
-      <a href="/melava" style="color:#94a3b8; text-decoration:none; font-weight:500;">Melava Hub</a>
-      <a href="/privacy-policy" style="color:#94a3b8; text-decoration:none; font-weight:500;">Privacy</a>
-      <a href="/contact-us" style="color:#94a3b8; text-decoration:none; font-weight:500;">Contact Us</a>
+    <nav class="nav-links">
+      <a href="/" class="active">Home</a>
+      <a href="/about-us">About Us</a>
+      <a href="/melava">Melava Hub</a>
+      <a href="/privacy-policy">Privacy</a>
+      <a href="/contact-us">Contact Us</a>
+      <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" class="btn-header-wa">💬 WhatsApp Support</a>
     </nav>
   </header>
 
-  <!-- Main Content Body -->
+  <!-- Main Content -->
   <main>
 
-    <!-- Dynamic Redirect Notification (Visible on Deep Link Profile Requests) -->
+    <!-- Deep Link Banner -->
     <div id="redirect-banner" class="redirect-banner">
       <div class="spinner-row">
         <div class="spinner"></div>
@@ -542,118 +642,169 @@
       <span id="redirect-sub" class="redirect-sub">Redirecting to BanjaraBio Mobile App...</span>
     </div>
 
-    <!-- Hero Showcase -->
+    <!-- Hero Section -->
     <section class="hero">
       <div class="hero-badge">
-        <span>👑</span> Premier Gor Banjara Matrimony App
+        <span>🚩 जय सेवालाल!</span> Premier Gor Banjara Matrimony Platform
       </div>
-      <h1>Find Your Ideal Gor Banjara Life Partner</h1>
-      <p>The safest, most trusted matrimonial platform crafted specifically for the Gor Banjara community worldwide. Featuring verified profiles, Gotra matching, digital bio-data creator, and Melava event updates.</p>
+      <h1>Connecting Gor Banjara Hearts <span>Worldwide</span></h1>
+      <p>The safest, most trusted matrimonial platform crafted specifically for the Gor Banjara community. Featuring multi-level verified profiles, strict Gotra matching, instant bio-data PDF builder, and regional Melava event updates.</p>
 
       <div class="cta-group">
-        <a id="hero-open-app" href="banjarabio://home" class="btn btn-primary">
+        <a id="hero-open-app" href="banjarabio://home" class="btn-hero btn-primary">
           <span>📲</span> Open BanjaraBio App
         </a>
-        <a id="hero-playstore" href="https://play.google.com/store/apps/details?id=com.avishio.banjarabio" class="btn btn-secondary">
+        <a id="hero-playstore" href="https://play.google.com/store/apps/details?id=com.avishio.banjarabio" class="btn-hero btn-secondary">
           <span>🛍️</span> Get it on Google Play
         </a>
       </div>
     </section>
 
-    <!-- App Features Grid -->
-    <section class="features-section">
-      <h2 class="section-title">Why Gor Banjara Families Trust BanjaraBio</h2>
-      <p class="section-sub">Designed to honor traditional Banjara values while providing modern privacy and convenience.</p>
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Verified Banjara Profiles</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">50+</div>
+        <div class="stat-label">Gotras & Clans Supported</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">10,000+</div>
+        <div class="stat-label">Bio-Data PDFs Generated</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">4.9 ★</div>
+        <div class="stat-label">Community Trust Score</div>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <section>
+      <h2 class="section-title">Why Families Choose BanjaraBio</h2>
+      <p class="section-sub">Honoring traditional Gor Banjara values with modern privacy & digital convenience.</p>
 
       <div class="features-grid">
-        
-        <!-- Feature 1 -->
+
         <div class="feature-card">
-          <div class="feature-icon">🛡️</div>
+          <div class="feature-icon-box">🛡️</div>
           <h3>100% Verified Profiles</h3>
-          <p>Multi-level Trust Score verification powered by Government ID (Aadhaar/Voter ID) checks and community trust approvals.</p>
+          <p>Multi-level Trust Score verification powered by Aadhaar checks, photo selfies, and community trust approvals.</p>
         </div>
 
-        <!-- Feature 2 -->
         <div class="feature-card">
-          <div class="feature-icon">🌾</div>
+          <div class="feature-icon-box">🌾</div>
           <h3>Gotra & Clan Matching</h3>
-          <p>Strict Gotra and Mama Gotra filter algorithms respecting traditional Banjara marriage customs and lineage boundaries.</p>
+          <p>Strict Gotra and Mama Gotra filters respecting traditional Banjara marriage customs and lineage boundaries.</p>
         </div>
 
-        <!-- Feature 3 -->
         <div class="feature-card">
-          <div class="feature-icon">📄</div>
-          <h3>Instant Bio-Data PDF Builder</h3>
-          <p>Create and export beautiful, professional matrimonial bio-data PDFs formatted with traditional Banjara cultural styling.</p>
+          <div class="feature-icon-box">📄</div>
+          <h3>Bio-Data PDF Builder</h3>
+          <p>Create and export professional, printable bio-data PDFs formatted with cultural Banjara styling.</p>
         </div>
 
-        <!-- Feature 4 -->
         <div class="feature-card">
-          <div class="feature-icon">🎪</div>
+          <div class="feature-icon-box">🎪</div>
           <h3>Digital Melava Hub</h3>
-          <p>Stay updated on upcoming community matrimony gatherings, digital events, and partnership Melavas across regions.</p>
+          <p>Stay updated on upcoming regional matrimony gatherings, digital events, and trust partnerships.</p>
         </div>
 
-        <!-- Feature 5 -->
         <div class="feature-card">
-          <div class="feature-icon">🔒</div>
-          <h3>Privacy & Photo Control</h3>
-          <p>Full control over your profile photo visibility and contact information. Approve request views before sharing details.</p>
+          <div class="feature-icon-box">🔒</div>
+          <h3>Photo & Contact Privacy</h3>
+          <p>Full control over profile photo visibility. Blur photos until view requests are accepted by candidates.</p>
         </div>
 
-        <!-- Feature 6 -->
         <div class="feature-card">
-          <div class="feature-icon">🤝</div>
+          <div class="feature-icon-box">🤝</div>
           <h3>Staff & Volunteer Support</h3>
-          <p>Dedicated community staff and volunteers to assist elders and non-technical families in creating candidate profiles.</p>
+          <p>Dedicated Tanda volunteers and staff to assist elders and non-technical families in registering profiles.</p>
         </div>
 
       </div>
     </section>
 
-    <!-- How It Works Section -->
-    <section class="steps-section">
-      <h2 class="section-title">How BanjaraBio Works</h2>
-      <p class="section-sub">3 simple steps to start your search for a compatible life partner.</p>
+    <!-- Onboarding Steps -->
+    <section class="steps-card">
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-sub">3 simple steps to find your compatible Gor Banjara life partner.</p>
 
       <div class="steps-grid">
         <div class="step-item">
-          <div class="step-number">1</div>
-          <h4>Register Profile</h4>
-          <p>Download the app and sign in securely with your mobile number & OTP verification.</p>
+          <div class="step-num">1</div>
+          <h4>Register Account</h4>
+          <p>Download the BanjaraBio app and log in securely via mobile OTP verification.</p>
         </div>
 
         <div class="step-item">
-          <div class="step-number">2</div>
-          <h4>Set Gotra & Preferences</h4>
-          <p>Fill in candidate details, Gotra, education, location, and partner expectations.</p>
+          <div class="step-num">2</div>
+          <h4>Fill Gotra & Bio</h4>
+          <p>Add candidate details, Gotra, education, career, and partner expectations.</p>
         </div>
 
         <div class="step-item">
-          <div class="step-number">3</div>
-          <h4>Connect & Share Bio-Data</h4>
-          <p>Discover matches, export PDF bio-data, and share candidate profiles directly to WhatsApp.</p>
+          <div class="step-num">3</div>
+          <h4>Connect & Export PDF</h4>
+          <p>Discover matched profiles, generate bio-data PDFs, and share via WhatsApp.</p>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- Page Footer -->
+  <!-- Footer -->
   <footer>
-    <div>
-      &copy; 2026 BanjaraBio Matrimony. All rights reserved.
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h3>💍 BanjaraBio Matrimony</h3>
+        <p>The premier, trusted matrimonial platform for the Gor Banjara community worldwide. Preserving Gotra lineage, privacy, and family honor. 🚩 जय सेवालाल!</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="/">Home Page</a></li>
+          <li><a href="/about-us">About Our Mission</a></li>
+          <li><a href="/melava">Melava Hub & Events</a></li>
+          <li><a href="/contact-us">Contact & Helpdesk</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal & Trust</h4>
+        <ul>
+          <li><a href="/privacy-policy">Privacy Policy</a></li>
+          <li><a href="/terms-and-conditions">Terms & Conditions</a></li>
+          <li><a href="/privacy-policy#photos">Photo Privacy Controls</a></li>
+          <li><a href="/terms-and-conditions#conduct">Community Conduct</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Official Connect</h4>
+        <ul>
+          <li><a href="https://wa.me/918186050406" target="_blank">💬 WhatsApp: 8186050406</a></li>
+          <li><a href="mailto:banjarabiomatrimony@gmail.com">📧 banjarabiomatrimony@gmail.com</a></li>
+          <li><a href="https://www.instagram.com/banjarabio.matrimony/" target="_blank">📸 @banjarabio.matrimony</a></li>
+          <li><span style="font-size:12px; color:#f43f5e; font-weight:600;">⚠️ Direct Calling Unavailable</span></li>
+        </ul>
+      </div>
     </div>
-    <div class="footer-links">
-      <a href="/">Home</a>
-      <a href="/about-us">About Us</a>
-      <a href="/melava">Melava Hub</a>
-      <a href="/privacy-policy">Privacy Policy</a>
-      <a href="/terms-and-conditions">Terms</a>
-      <a href="/contact-us">Contact Us</a>
+
+    <div class="footer-bottom">
+      <div>&copy; 2026 BanjaraBio Matrimony. All rights reserved.</div>
+      <div>
+        <a href="/privacy-policy">Privacy</a> &bull; 
+        <a href="/terms-and-conditions">Terms</a> &bull; 
+        <a href="/contact-us">Support</a>
+      </div>
     </div>
   </footer>
+
+  <!-- Floating WhatsApp Button -->
+  <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" class="wa-float" title="Chat on WhatsApp (8186050406)">💬</a>
 
 </body>
 </html>

@@ -6,47 +6,70 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Digital Melava Hub — BanjaraBio Matrimony</title>
-  <meta name="description" content="Explore upcoming Gor Banjara matrimonial Melava gatherings, digital events, and community trust partnerships.">
+  <title>Melava Hub — BanjaraBio Matrimony</title>
+  <meta name="description" content="Discover upcoming Gor Banjara Matrimonial Melava events, register candidates digitally, and partner with BanjaraBio for community gatherings.">
   <link rel="icon" type="image/png" href="favicon.png"/>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg-dark: #070a12;
-      --card-bg: rgba(18, 26, 43, 0.8);
+      --bg-dark: #070a14;
+      --card-bg: rgba(15, 23, 42, 0.75);
       --gold-primary: #f59e0b;
+      --gold-light: #fbbf24;
       --rose-primary: #e11d48;
+      --rose-light: #f43f5e;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
+      --border-glass: rgba(255, 255, 255, 0.12);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #090d16 65%, #030712 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #070a14;
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 16px;
+      padding: 0;
+      overflow-x: hidden;
     }
 
+    .ambient-glow {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(140px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glow-1 { top: -100px; left: 50%; transform: translateX(-50%); width: 700px; height: 400px; background: rgba(225, 29, 72, 0.15); }
+    .glow-2 { bottom: 20%; right: 5%; width: 450px; height: 450px; background: rgba(245, 158, 11, 0.12); }
+
+    /* Header Nav */
     header {
       width: 100%;
-      max-width: 1000px;
+      max-width: 1200px;
+      margin: 20px auto 40px auto;
+      padding: 14px 24px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 24px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      margin-bottom: 40px;
+      position: sticky;
+      top: 16px;
+      z-index: 100;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
     .nav-brand {
@@ -57,58 +80,89 @@
     }
 
     .brand-logo {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       background: linear-gradient(135deg, var(--rose-primary), var(--gold-primary));
-      border-radius: 10px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 22px;
+      box-shadow: 0 0 15px rgba(225, 29, 72, 0.4);
     }
 
     .brand-title {
       font-family: 'Outfit', sans-serif;
       font-weight: 800;
-      font-size: 22px;
-      color: #ffffff;
+      font-size: 24px;
+      background: linear-gradient(135deg, #ffffff 30%, #fcd34d 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .nav-links {
       display: flex;
-      gap: 20px;
+      align-items: center;
+      gap: 24px;
     }
 
     .nav-links a {
-      color: #94a3b8;
+      color: var(--text-muted);
       text-decoration: none;
       font-weight: 500;
-      font-size: 14px;
-      transition: color 0.2s;
+      font-size: 15px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .nav-links a:hover, .nav-links a.active {
-      color: var(--gold-primary);
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
     }
 
+    .nav-links a.active {
+      color: var(--gold-light);
+      font-weight: 700;
+    }
+
+    .btn-header-wa {
+      background: linear-gradient(135deg, #22c55e, #15803d);
+      color: #ffffff !important;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-weight: 700 !important;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s !important;
+    }
+
+    .btn-header-wa:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5) !important;
+    }
+
+    /* Main Container */
     main {
       width: 100%;
-      max-width: 900px;
-      background: var(--card-bg);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 24px;
-      padding: 40px 32px;
-      margin-bottom: 60px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      max-width: 1000px;
+      z-index: 1;
+      padding: 0 16px 80px 16px;
     }
 
-    .badge {
-      display: inline-block;
+    .page-hero {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       background: rgba(245, 158, 11, 0.15);
       border: 1px solid rgba(245, 158, 11, 0.3);
-      color: #fbbf24;
-      padding: 6px 14px;
+      color: var(--gold-light);
+      padding: 6px 16px;
       border-radius: 999px;
       font-size: 13px;
       font-weight: 600;
@@ -117,91 +171,205 @@
 
     h1 {
       font-family: 'Outfit', sans-serif;
-      font-size: 32px;
+      font-size: 42px;
       font-weight: 800;
       color: #ffffff;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
+      line-height: 1.25;
+    }
+
+    .melava-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      border-radius: 28px;
+      padding: 44px 36px;
+      margin-bottom: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     }
 
     p {
       font-size: 16px;
       color: #cbd5e1;
-      line-height: 1.6;
-      margin-bottom: 32px;
+      line-height: 1.8;
+      margin-bottom: 24px;
     }
 
-    .event-card {
+    h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--gold-light);
+      margin-top: 36px;
+      margin-bottom: 18px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin: 28px 0;
+    }
+
+    .feature-card {
       background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(245, 158, 11, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 20px;
       padding: 28px;
-      margin-bottom: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
     }
 
-    .event-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .event-tag {
-      background: rgba(225, 29, 72, 0.2);
-      color: #f43f5e;
-      font-size: 12px;
-      font-weight: 700;
-      padding: 4px 12px;
-      border-radius: 999px;
-    }
-
-    .event-card h3 {
+    .feature-card h3 {
       font-family: 'Outfit', sans-serif;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 700;
       color: #ffffff;
+      margin-bottom: 10px;
     }
 
-    .event-card p {
+    .feature-card p {
       font-size: 14px;
-      color: #94a3b8;
+      color: var(--text-muted);
       margin-bottom: 0;
+      line-height: 1.6;
     }
 
-    .btn-event {
+    .btn-melava-action {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 14px 24px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--rose-primary), #be123c);
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #22c55e, #15803d);
       color: #ffffff;
-      text-decoration: none;
       font-weight: 700;
-      font-size: 15px;
-      align-self: flex-start;
-      margin-top: 8px;
+      font-size: 16px;
+      text-decoration: none;
+      margin-top: 16px;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
     }
 
+    /* Footer */
     footer {
       width: 100%;
-      max-width: 1000px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 32px 0;
+      background: #030712;
+      border-top: 1px solid var(--border-glass);
+      padding: 60px 24px 30px 24px;
+      margin-top: auto;
+      z-index: 10;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-brand h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .footer-brand p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .footer-col h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col ul a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 24px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
       font-size: 14px;
       color: #64748b;
     }
 
-    footer a { color: #94a3b8; text-decoration: none; }
-    footer a:hover { color: var(--gold-primary); }
+    .footer-bottom a { color: var(--text-muted); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--gold-light); }
+
+    /* Floating WhatsApp Button */
+    .wa-float {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #22c55e, #15803d);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: #ffffff;
+      box-shadow: 0 10px 25px rgba(34, 197, 94, 0.5);
+      z-index: 999;
+      text-decoration: none;
+      transition: transform 0.3s;
+      animation: pulse-ring 2s infinite;
+    }
+
+    .wa-float:hover {
+      transform: scale(1.1);
+    }
+
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(34, 197, 94, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    }
+
+    @media (max-width: 768px) {
+      header { flex-direction: column; gap: 16px; margin: 10px auto 30px auto; }
+      .nav-links { flex-wrap: wrap; justify-content: center; gap: 14px; }
+      h1 { font-size: 32px; }
+      .melava-card { padding: 28px 20px; }
+    }
   </style>
 </head>
 <body>
 
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <!-- Header -->
   <header>
     <a href="/" class="nav-brand">
       <div class="brand-logo">💍</div>
@@ -211,43 +379,103 @@
       <a href="/">Home</a>
       <a href="/about-us">About Us</a>
       <a href="/melava" class="active">Melava Hub</a>
-      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/privacy-policy">Privacy</a>
       <a href="/contact-us">Contact Us</a>
+      <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" class="btn-header-wa">💬 WhatsApp Support</a>
     </nav>
   </header>
 
+  <!-- Main Content -->
   <main>
-    <div class="badge">🎪 Community Gatherings & Digital Events</div>
-    <h1>Gor Banjara Melava Hub</h1>
-    <p>Discover regional marriage Melavas, digital partnership events, and community trust gatherings across India. Join in person or explore verified candidate profiles online through the BanjaraBio app.</p>
 
-    <!-- Event 1 -->
-    <div class="event-card">
-      <div class="event-header">
-        <span class="event-tag">UPCOMING EVENT</span>
-        <span style="font-size: 13px; color:#f59e0b; font-weight:600;">📍 Maharashtra & Telangana Region</span>
-      </div>
-      <h3>Maha Banjara Matrimonial Melava</h3>
-      <p>A grand regional gathering bringing together candidate families from Pune, Sambhajinagar, Nanded, Hyderabad, and surrounding Tanda communities. Explore digital profile registration kiosks on site!</p>
-      <a href="https://play.google.com/store/apps/details?id=com.avishio.banjarabio" class="btn-event">📲 Register Profile in App</a>
+    <div class="page-hero">
+      <div class="badge-pill">🎉 Digital & On-Ground Matrimonial Gatherings</div>
+      <h1>Gor Banjara Melava Hub</h1>
     </div>
 
-    <!-- Event 2 -->
-    <div class="event-card">
-      <div class="event-header">
-        <span class="event-tag" style="background:rgba(245,158,11,0.2); color:#fbbf24;">DIGITAL PARTNERSHIP</span>
-        <span style="font-size: 13px; color:#94a3b8; font-weight:600;">🤝 Trust MoU Initiative</span>
+    <div class="melava-card">
+      <p><strong>BanjaraBio Melava Hub</strong> bridges traditional community gatherings with cutting-edge mobile technology. We partner with local Banjara Samitis, Trusts, and Community Leaders to host digital and physical matrimony melavas across Maharashtra, Telangana, Karnataka, and Andhra Pradesh.</p>
+
+      <h2>For Candidate Families</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div style="font-size:30px; margin-bottom:10px;">⚡</div>
+          <h3>1-Click Spot Registration</h3>
+          <p>Scan QR codes at Melava venues to instantly sync candidate bio-data with the BanjaraBio app without tedious paper forms.</p>
+        </div>
+
+        <div class="feature-card">
+          <div style="font-size:30px; margin-bottom:10px;">📋</div>
+          <h3>Digital Melava Booklets</h3>
+          <p>Access categorized profile lists (Engineers, Doctors, Govt Employees, Farmers) directly on your mobile device during Melava events.</p>
+        </div>
+
+        <div class="feature-card">
+          <div style="font-size:30px; margin-bottom:10px;">🔍</div>
+          <h3>Gotra Filtered Search</h3>
+          <p>Filter Melava attendees by Gotra, district, and educational preferences in real-time on your phone.</p>
+        </div>
       </div>
-      <h3>Community Trust Partnership Network</h3>
-      <p>Are you a Banjara Seva Sangh leader or Trust trustee? Partner with BanjaraBio to host digital Melavas for your district community members.</p>
-      <a href="/contact-us" class="btn-event" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2);">Contact Community Desk</a>
+
+      <h2>For Melava Organizers & Trusts</h2>
+      <p>Are you organizing a Gor Banjara Vadhu-Var Melava in your city or district? Partner with BanjaraBio to digitize registration, generate printable bio-data books, and broadcast event updates to thousands of community members.</p>
+
+      <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio,%20we%20want%20to%20partner%20for%20a%20Melava" target="_blank" class="btn-melava-action">🤝 Partner With Us on WhatsApp</a>
     </div>
+
   </main>
 
+  <!-- Footer -->
   <footer>
-    <div>&copy; 2026 BanjaraBio Matrimony. All rights reserved.</div>
-    <div><a href="/privacy-policy">Privacy Policy</a></div>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h3>💍 BanjaraBio Matrimony</h3>
+        <p>The premier, trusted matrimonial platform for the Gor Banjara community worldwide. Preserving Gotra lineage, privacy, and family honor. 🚩 जय सेवालाल!</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="/">Home Page</a></li>
+          <li><a href="/about-us">About Our Mission</a></li>
+          <li><a href="/melava">Melava Hub & Events</a></li>
+          <li><a href="/contact-us">Contact & Helpdesk</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal & Trust</h4>
+        <ul>
+          <li><a href="/privacy-policy">Privacy Policy</a></li>
+          <li><a href="/terms-and-conditions">Terms & Conditions</a></li>
+          <li><a href="/privacy-policy#photos">Photo Privacy Controls</a></li>
+          <li><a href="/terms-and-conditions#conduct">Community Conduct</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Official Connect</h4>
+        <ul>
+          <li><a href="https://wa.me/918186050406" target="_blank">💬 WhatsApp: 8186050406</a></li>
+          <li><a href="mailto:banjarabiomatrimony@gmail.com">📧 banjarabiomatrimony@gmail.com</a></li>
+          <li><a href="https://www.instagram.com/banjarabio.matrimony/" target="_blank">📸 @banjarabio.matrimony</a></li>
+          <li><span style="font-size:12px; color:#f43f5e; font-weight:600;">⚠️ Direct Calling Unavailable</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>&copy; 2026 BanjaraBio Matrimony. All rights reserved.</div>
+      <div>
+        <a href="/privacy-policy">Privacy</a> &bull; 
+        <a href="/terms-and-conditions">Terms</a> &bull; 
+        <a href="/contact-us">Support</a>
+      </div>
+    </div>
   </footer>
+
+  <!-- Floating WhatsApp Button -->
+  <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" class="wa-float" title="Chat on WhatsApp (8186050406)">💬</a>
 
 </body>
 </html>

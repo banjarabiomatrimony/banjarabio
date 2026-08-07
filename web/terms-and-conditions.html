@@ -7,46 +7,69 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Terms & Conditions — BanjaraBio Matrimony</title>
-  <meta name="description" content="Terms and conditions, community code of conduct, and service guidelines for BanjaraBio Matrimony.">
+  <meta name="description" content="Terms and Conditions of service for BanjaraBio Matrimony app. Read user conduct, Gotra verification terms, and service guidelines.">
   <link rel="icon" type="image/png" href="favicon.png"/>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg-dark: #070a12;
-      --card-bg: rgba(18, 26, 43, 0.8);
+      --bg-dark: #070a14;
+      --card-bg: rgba(15, 23, 42, 0.75);
       --gold-primary: #f59e0b;
+      --gold-light: #fbbf24;
       --rose-primary: #e11d48;
+      --rose-light: #f43f5e;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
+      --border-glass: rgba(255, 255, 255, 0.12);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #090d16 65%, #030712 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #070a14;
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 16px;
+      padding: 0;
+      overflow-x: hidden;
     }
 
+    .ambient-glow {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(140px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glow-1 { top: -100px; left: 50%; transform: translateX(-50%); width: 700px; height: 400px; background: rgba(225, 29, 72, 0.15); }
+    .glow-2 { bottom: 20%; left: 5%; width: 450px; height: 450px; background: rgba(245, 158, 11, 0.12); }
+
+    /* Header Nav */
     header {
       width: 100%;
-      max-width: 1000px;
+      max-width: 1200px;
+      margin: 20px auto 40px auto;
+      padding: 14px 24px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 24px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      margin-bottom: 40px;
+      position: sticky;
+      top: 16px;
+      z-index: 100;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
     .nav-brand {
@@ -57,104 +80,256 @@
     }
 
     .brand-logo {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       background: linear-gradient(135deg, var(--rose-primary), var(--gold-primary));
-      border-radius: 10px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 22px;
+      box-shadow: 0 0 15px rgba(225, 29, 72, 0.4);
     }
 
     .brand-title {
       font-family: 'Outfit', sans-serif;
       font-weight: 800;
-      font-size: 22px;
-      color: #ffffff;
+      font-size: 24px;
+      background: linear-gradient(135deg, #ffffff 30%, #fcd34d 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .nav-links {
       display: flex;
-      gap: 20px;
+      align-items: center;
+      gap: 24px;
     }
 
     .nav-links a {
-      color: #94a3b8;
+      color: var(--text-muted);
       text-decoration: none;
       font-weight: 500;
-      font-size: 14px;
-      transition: color 0.2s;
+      font-size: 15px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .nav-links a:hover, .nav-links a.active {
-      color: var(--gold-primary);
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
     }
 
+    .nav-links a.active {
+      color: var(--gold-light);
+      font-weight: 700;
+    }
+
+    .btn-header-wa {
+      background: linear-gradient(135deg, #22c55e, #15803d);
+      color: #ffffff !important;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-weight: 700 !important;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s !important;
+    }
+
+    .btn-header-wa:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5) !important;
+    }
+
+    /* Main Container */
     main {
       width: 100%;
-      max-width: 900px;
-      background: var(--card-bg);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 24px;
-      padding: 40px 32px;
-      margin-bottom: 60px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      max-width: 1000px;
+      z-index: 1;
+      padding: 0 16px 80px 16px;
+    }
+
+    .page-hero {
+      text-align: center;
+      margin-bottom: 36px;
     }
 
     h1 {
       font-family: 'Outfit', sans-serif;
-      font-size: 32px;
+      font-size: 40px;
       font-weight: 800;
       color: #ffffff;
       margin-bottom: 8px;
     }
 
     .last-updated {
-      font-size: 13px;
-      color: var(--gold-primary);
-      margin-bottom: 30px;
+      font-size: 14px;
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    .terms-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      border-radius: 28px;
+      padding: 44px 36px;
+      margin-bottom: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     }
 
     h2 {
       font-family: 'Outfit', sans-serif;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
-      color: #fcd34d;
-      margin-top: 28px;
-      margin-bottom: 12px;
+      color: var(--gold-light);
+      margin-top: 32px;
+      margin-bottom: 14px;
     }
 
     p, li {
       font-size: 15px;
       color: #cbd5e1;
       line-height: 1.7;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     ul {
       margin-left: 24px;
+      margin-bottom: 20px;
+    }
+
+    .warning-box {
+      background: rgba(225, 29, 72, 0.1);
+      border: 1px solid rgba(225, 29, 72, 0.3);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    /* Footer */
+    footer {
+      width: 100%;
+      background: #030712;
+      border-top: 1px solid var(--border-glass);
+      padding: 60px 24px 30px 24px;
+      margin-top: auto;
+      z-index: 10;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-brand h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .footer-brand p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .footer-col h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gold-light);
       margin-bottom: 16px;
     }
 
-    footer {
-      width: 100%;
-      max-width: 1000px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 32px 0;
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col ul a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 24px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
       font-size: 14px;
       color: #64748b;
     }
 
-    footer a { color: #94a3b8; text-decoration: none; }
-    footer a:hover { color: var(--gold-primary); }
+    .footer-bottom a { color: var(--text-muted); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--gold-light); }
+
+    /* Floating WhatsApp Button */
+    .wa-float {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #22c55e, #15803d);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: #ffffff;
+      box-shadow: 0 10px 25px rgba(34, 197, 94, 0.5);
+      z-index: 999;
+      text-decoration: none;
+      transition: transform 0.3s;
+      animation: pulse-ring 2s infinite;
+    }
+
+    .wa-float:hover {
+      transform: scale(1.1);
+    }
+
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(34, 197, 94, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    }
+
+    @media (max-width: 768px) {
+      header { flex-direction: column; gap: 16px; margin: 10px auto 30px auto; }
+      .nav-links { flex-wrap: wrap; justify-content: center; gap: 14px; }
+      h1 { font-size: 32px; }
+      .terms-card { padding: 28px 20px; }
+    }
   </style>
 </head>
 <body>
 
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <!-- Header -->
   <header>
     <a href="/" class="nav-brand">
       <div class="brand-logo">💍</div>
@@ -164,45 +339,109 @@
       <a href="/">Home</a>
       <a href="/about-us">About Us</a>
       <a href="/melava">Melava Hub</a>
-      <a href="/privacy-policy">Privacy Policy</a>
-      <a href="/terms-and-conditions" class="active">Terms</a>
+      <a href="/privacy-policy">Privacy</a>
+      <a href="/contact-us">Contact Us</a>
+      <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" class="btn-header-wa">💬 WhatsApp Support</a>
     </nav>
   </header>
 
+  <!-- Main Content -->
   <main>
-    <h1>Terms & Conditions</h1>
-    <div class="last-updated">Last Updated: August 1, 2026</div>
 
-    <p>By accessing or using the <strong>BanjaraBio Matrimony</strong> mobile application or website, you agree to be bound by these Terms and Conditions. Please read them carefully before creating an account.</p>
+    <div class="page-hero">
+      <h1>Terms & Conditions</h1>
+      <div class="last-updated">Last Updated: August 7, 2026</div>
+    </div>
 
-    <h2>1. Eligibility Criteria</h2>
-    <ul>
-      <li>You must be of legal marriageable age as per Indian law (18 years for females, 21 years for males).</li>
-      <li>Profiles must belong to genuine candidates or be created by parents, relatives, or authorized guardians on behalf of the candidate.</li>
-    </ul>
+    <div class="terms-card">
+      <p>By accessing or using the <strong>BanjaraBio Matrimony</strong> application or website (https://banjarabio.com), you agree to be bound by these Terms and Conditions. Please read them carefully.</p>
 
-    <h2>2. Code of Conduct & Community Integrity</h2>
-    <p>BanjaraBio is built exclusively to support matrimonial alliances within the Gor Banjara community. Users agree to:</p>
-    <ul>
-      <li>Provide accurate Gotra, Pada, Clan, and personal details.</li>
-      <li>Not upload offensive, misleading, or fraudulent photographs or bio-data details.</li>
-      <li>Respect the privacy and dignity of candidate families during communication.</li>
-    </ul>
+      <h2>1. Eligibility Requirements</h2>
+      <p>BanjaraBio is an exclusive matrimonial matching network for the Gor Banjara community:</p>
+      <ul>
+        <li>Candidates must be of legal marriageable age as per Indian laws (18+ for Females, 21+ for Males).</li>
+        <li>Users must provide authentic profile information including genuine Gotra, Mama Gotra, and family background.</li>
+        <li>Accounts created for fraudulent purposes or non-matrimonial intentions will be permanently banned.</li>
+      </ul>
 
-    <h2>3. Zero Tolerance for Fraud & Harassment</h2>
-    <p>Any account reported for financial fraud, misrepresentation, abusive messages, or unauthorized sharing of candidate information will be permanently banned immediately.</p>
+      <div id="conduct" class="warning-box">
+        <h2 style="margin-top:0; color:#f43f5e;">2. Community Code of Conduct</h2>
+        <p>To preserve family dignity and trust within the Gor Banjara community:</p>
+        <ul>
+          <li>Harassment, abusive language, or inappropriate photo sharing will result in an immediate lifetime ban.</li>
+          <li>Users must not screenshot or redistribute candidate bio-data or photos without explicit permission.</li>
+          <li>Commercial usage or scraping of candidate details is strictly prohibited.</li>
+        </ul>
+      </div>
 
-    <h2>4. Subscription & Payment Terms</h2>
-    <p>Optional premium features (such as contact view unlocks and bio-data PDF styling) are processed securely through Razorpay. Fees paid for digital services are non-refundable once unlocked.</p>
+      <h2>3. Bio-Data & Verification Accuracy</h2>
+      <p>While BanjaraBio implements Multi-level Verification algorithms and optional Aadhaar badges, candidate families are strongly encouraged to independently verify all background, Gotra lineage, and employment details prior to finalizing marriage proposals.</p>
 
-    <h2>5. Contact Us</h2>
-    <p>If you have any questions regarding these terms, please contact us at <a href="mailto:support@banjarabio.com" style="color:#f59e0b;">support@banjarabio.com</a>.</p>
+      <h2>4. Intellectual Property</h2>
+      <p>All brand logos, application code, UI design elements, and printable PDF bio-data templates of BanjaraBio are the exclusive intellectual property of BanjaraBio Matrimony.</p>
+
+      <h2>5. Support & Legal Inquiries</h2>
+      <p>For questions or reports regarding terms violation, contact us at:</p>
+      <p>
+        <strong>Email:</strong> banjarabiomatrimony@gmail.com<br>
+        <strong>WhatsApp Support:</strong> +91 8186050406<br>
+        <strong>Official Website:</strong> https://banjarabio.com
+      </p>
+    </div>
+
   </main>
 
+  <!-- Footer -->
   <footer>
-    <div>&copy; 2026 BanjaraBio Matrimony. All rights reserved.</div>
-    <div><a href="/privacy-policy">Privacy Policy</a></div>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h3>💍 BanjaraBio Matrimony</h3>
+        <p>The premier, trusted matrimonial platform for the Gor Banjara community worldwide. Preserving Gotra lineage, privacy, and family honor. 🚩 जय सेवालाल!</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="/">Home Page</a></li>
+          <li><a href="/about-us">About Our Mission</a></li>
+          <li><a href="/melava">Melava Hub & Events</a></li>
+          <li><a href="/contact-us">Contact & Helpdesk</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal & Trust</h4>
+        <ul>
+          <li><a href="/privacy-policy">Privacy Policy</a></li>
+          <li><a href="/terms-and-conditions">Terms & Conditions</a></li>
+          <li><a href="/privacy-policy#photos">Photo Privacy Controls</a></li>
+          <li><a href="/terms-and-conditions#conduct">Community Conduct</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Official Connect</h4>
+        <ul>
+          <li><a href="https://wa.me/918186050406" target="_blank">💬 WhatsApp: 8186050406</a></li>
+          <li><a href="mailto:banjarabiomatrimony@gmail.com">📧 banjarabiomatrimony@gmail.com</a></li>
+          <li><a href="https://www.instagram.com/banjarabio.matrimony/" target="_blank">📸 @banjarabio.matrimony</a></li>
+          <li><span style="font-size:12px; color:#f43f5e; font-weight:600;">⚠️ Direct Calling Unavailable</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>&copy; 2026 BanjaraBio Matrimony. All rights reserved.</div>
+      <div>
+        <a href="/privacy-policy">Privacy</a> &bull; 
+        <a href="/terms-and-conditions">Terms</a> &bull; 
+        <a href="/contact-us">Support</a>
+      </div>
+    </div>
   </footer>
+
+  <!-- Floating WhatsApp Button -->
+  <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" class="wa-float" title="Chat on WhatsApp (8186050406)">💬</a>
 
 </body>
 </html>

@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Contact Us — BanjaraBio Matrimony</title>
-  <meta name="description" content="Get in touch with BanjaraBio Matrimony support team, staff assistance, and community helpline.">
+  <meta name="description" content="Get in touch with BanjaraBio Matrimony support team on WhatsApp at 8186050406 or email banjarabiomatrimony@gmail.com. Follow @banjarabio.matrimony on Instagram.">
   <link rel="icon" type="image/png" href="favicon.png"/>
 
   <!-- Google Fonts -->
@@ -17,36 +17,63 @@
 
   <style>
     :root {
-      --bg-dark: #070a12;
-      --card-bg: rgba(18, 26, 43, 0.8);
+      --bg-dark: #070a14;
+      --card-bg: rgba(15, 23, 42, 0.75);
       --gold-primary: #f59e0b;
+      --gold-light: #fbbf24;
       --rose-primary: #e11d48;
+      --rose-light: #f43f5e;
+      --green-wa: #22c55e;
+      --insta-pink: #e1306c;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
+      --border-glass: rgba(255, 255, 255, 0.12);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #090d16 65%, #030712 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #070a14;
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 16px;
+      padding: 0;
+      overflow-x: hidden;
     }
 
+    /* Ambient Background Glows */
+    .ambient-glow {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(140px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glow-1 { top: -100px; left: 50%; transform: translateX(-50%); width: 600px; height: 350px; background: rgba(225, 29, 72, 0.15); }
+    .glow-2 { bottom: 10%; left: 5%; width: 400px; height: 400px; background: rgba(245, 158, 11, 0.1); }
+    .glow-3 { top: 40%; right: 5%; width: 450px; height: 450px; background: rgba(34, 197, 94, 0.08); }
+
+    /* Header Nav */
     header {
       width: 100%;
-      max-width: 1000px;
+      max-width: 1200px;
+      margin: 20px auto 40px auto;
+      padding: 14px 24px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 24px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      margin-bottom: 40px;
+      position: sticky;
+      top: 16px;
+      z-index: 100;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
     .nav-brand {
@@ -57,137 +84,434 @@
     }
 
     .brand-logo {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       background: linear-gradient(135deg, var(--rose-primary), var(--gold-primary));
-      border-radius: 10px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 22px;
+      box-shadow: 0 0 15px rgba(225, 29, 72, 0.4);
     }
 
     .brand-title {
       font-family: 'Outfit', sans-serif;
       font-weight: 800;
-      font-size: 22px;
-      color: #ffffff;
+      font-size: 24px;
+      background: linear-gradient(135deg, #ffffff 30%, #fcd34d 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .nav-links {
       display: flex;
-      gap: 20px;
+      align-items: center;
+      gap: 24px;
     }
 
     .nav-links a {
-      color: #94a3b8;
+      color: var(--text-muted);
       text-decoration: none;
       font-weight: 500;
-      font-size: 14px;
-      transition: color 0.2s;
+      font-size: 15px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .nav-links a:hover, .nav-links a.active {
-      color: var(--gold-primary);
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
     }
 
+    .nav-links a.active {
+      color: var(--gold-light);
+      font-weight: 700;
+    }
+
+    .btn-header-wa {
+      background: linear-gradient(135deg, #22c55e, #15803d);
+      color: #ffffff !important;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-weight: 700 !important;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s !important;
+    }
+
+    .btn-header-wa:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5) !important;
+    }
+
+    /* Main Container */
     main {
       width: 100%;
-      max-width: 900px;
-      background: var(--card-bg);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 24px;
-      padding: 40px 32px;
-      margin-bottom: 60px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      max-width: 1100px;
+      z-index: 1;
+      padding: 0 16px 80px 16px;
+    }
+
+    .page-hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: var(--gold-light);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 16px;
     }
 
     h1 {
       font-family: 'Outfit', sans-serif;
-      font-size: 32px;
+      font-size: 42px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Calling Notice Alert Box */
+    .notice-banner {
+      background: rgba(225, 29, 72, 0.12);
+      border: 1px solid rgba(225, 29, 72, 0.35);
+      border-radius: 16px;
+      padding: 16px 24px;
+      margin-bottom: 36px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .notice-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .notice-text {
+      font-size: 15px;
+      color: #fecdd3;
+      line-height: 1.5;
+    }
+
+    .notice-text strong {
+      color: #ffffff;
+    }
+
+    /* Contact Grid */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 50px;
+    }
+
+    .contact-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      border-radius: 24px;
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(245, 158, 11, 0.4);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(245, 158, 11, 0.15);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .card-icon-box {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+
+    .icon-wa { background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.3); }
+    .icon-mail { background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .icon-insta { background: rgba(225, 48, 108, 0.15); border: 1px solid rgba(225, 48, 108, 0.3); }
+
+    .status-badge {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    .status-online { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+    .status-desk { background: rgba(245, 158, 11, 0.2); color: #fde047; }
+    .status-social { background: rgba(225, 48, 108, 0.2); color: #f472b6; }
+
+    .card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .card-detail {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--gold-light);
+      margin-bottom: 12px;
+      word-break: break-word;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 24px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 15px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    .btn-wa-action {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+    }
+    .btn-wa-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(34, 197, 94, 0.5);
+    }
+
+    .btn-mail-action {
+      background: linear-gradient(135deg, var(--rose-primary), #be123c);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
+    }
+    .btn-mail-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(225, 29, 72, 0.5);
+    }
+
+    .btn-insta-action {
+      background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(225, 48, 108, 0.3);
+    }
+    .btn-insta-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(225, 48, 108, 0.5);
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      border-radius: 28px;
+      padding: 40px;
+    }
+
+    .faq-section h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 24px;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .faq-item {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 20px 24px;
+    }
+
+    .faq-item h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 17px;
+      color: var(--gold-light);
+      margin-bottom: 8px;
+    }
+
+    .faq-item p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    footer {
+      width: 100%;
+      background: #030712;
+      border-top: 1px solid var(--border-glass);
+      padding: 60px 24px 30px 24px;
+      margin-top: auto;
+      z-index: 10;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-brand h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
       font-weight: 800;
       color: #ffffff;
       margin-bottom: 12px;
     }
 
-    p {
-      font-size: 16px;
-      color: #cbd5e1;
+    .footer-brand p {
+      font-size: 14px;
+      color: var(--text-muted);
       line-height: 1.6;
-      margin-bottom: 32px;
     }
 
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
+    .footer-col h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 16px;
     }
 
-    .contact-card {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 28px 24px;
+    .footer-col ul {
+      list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .contact-icon {
-      font-size: 32px;
-    }
-
-    .contact-card h3 {
-      font-family: 'Outfit', sans-serif;
-      font-size: 20px;
-      font-weight: 700;
-      color: #ffffff;
-    }
-
-    .contact-card p {
-      font-size: 14px;
-      color: #94a3b8;
-      margin-bottom: 0;
-    }
-
-    .btn-contact {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 20px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--rose-primary), #be123c);
-      color: #ffffff;
+    .footer-col ul a {
+      color: var(--text-muted);
       text-decoration: none;
-      font-weight: 600;
       font-size: 14px;
-      margin-top: 8px;
-      transition: transform 0.2s;
+      transition: color 0.2s;
     }
 
-    .btn-contact:hover {
-      transform: translateY(-2px);
+    .footer-col ul a:hover {
+      color: #ffffff;
     }
 
-    footer {
-      width: 100%;
-      max-width: 1000px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 32px 0;
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 24px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
       font-size: 14px;
       color: #64748b;
     }
 
-    footer a { color: #94a3b8; text-decoration: none; }
-    footer a:hover { color: var(--gold-primary); }
+    .footer-bottom a { color: var(--text-muted); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--gold-light); }
+
+    /* Floating WhatsApp Button */
+    .wa-float {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #22c55e, #15803d);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: #ffffff;
+      box-shadow: 0 10px 25px rgba(34, 197, 94, 0.5);
+      z-index: 999;
+      text-decoration: none;
+      transition: transform 0.3s;
+      animation: pulse-ring 2s infinite;
+    }
+
+    .wa-float:hover {
+      transform: scale(1.1);
+    }
+
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(34, 197, 94, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    }
+
+    @media (max-width: 768px) {
+      header { flex-direction: column; gap: 16px; margin: 10px auto 30px auto; }
+      .nav-links { flex-wrap: wrap; justify-content: center; gap: 14px; }
+      h1 { font-size: 32px; }
+      .faq-section { padding: 24px; }
+    }
   </style>
 </head>
 <body>
 
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <!-- Header -->
   <header>
     <a href="/" class="nav-brand">
       <div class="brand-logo">💍</div>
@@ -197,46 +521,155 @@
       <a href="/">Home</a>
       <a href="/about-us">About Us</a>
       <a href="/melava">Melava Hub</a>
-      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/privacy-policy">Privacy</a>
       <a href="/contact-us" class="active">Contact Us</a>
+      <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" class="btn-header-wa">💬 WhatsApp Support</a>
     </nav>
   </header>
 
+  <!-- Main Content -->
   <main>
-    <h1>Contact & Support</h1>
-    <p>Have questions about profile verification, Gotra matching, or need assistance registering candidate profiles? Our community support team is here to help!</p>
 
-    <div class="contact-grid">
-      <!-- Card 1 -->
-      <div class="contact-card">
-        <div class="contact-icon">📧</div>
-        <h3>Email Support</h3>
-        <p>Send your queries or feedback directly to our technical and verification desk.</p>
-        <a href="mailto:support@banjarabio.com" class="btn-contact">Email Us</a>
-      </div>
+    <div class="page-hero">
+      <div class="badge-pill">🚩 जय सेवालाल! • Support Desk</div>
+      <h1>Contact & Community Helpline</h1>
+      <p class="hero-subtitle">Need assistance with profile creation, Aadhaar verification, or bio-data export? Connect directly with our team on WhatsApp, Email, or Instagram.</p>
+    </div>
 
-      <!-- Card 2 -->
-      <div class="contact-card">
-        <div class="contact-icon">💬</div>
-        <h3>WhatsApp Helpline</h3>
-        <p>Chat directly with our staff for bio-data help and offline registration assistance.</p>
-        <a href="https://play.google.com/store/apps/details?id=com.avishio.banjarabio" class="btn-contact">Open WhatsApp Help</a>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="contact-card">
-        <div class="contact-icon">🤝</div>
-        <h3>Community Volunteer Network</h3>
-        <p>Interested in becoming a verified BanjaraBio volunteer to help local families?</p>
-        <a href="/melava" class="btn-contact">Join Volunteer Network</a>
+    <!-- Calling Notice -->
+    <div class="notice-banner">
+      <div class="notice-icon">⚠️</div>
+      <div class="notice-text">
+        <strong>Direct Phone Calling is NOT Available.</strong><br>
+        To ensure fast, tracked, and dedicated support for all candidate families, please send us a message on <strong>WhatsApp (8186050406)</strong> or <strong>Email</strong>. Our staff typically responds within minutes!
       </div>
     </div>
+
+    <!-- Contact Cards Grid -->
+    <div class="contact-grid">
+
+      <!-- Card 1: WhatsApp -->
+      <div class="contact-card">
+        <div>
+          <div class="card-top">
+            <div class="card-icon-box icon-wa">💬</div>
+            <span class="status-badge status-online">🟢 Fast Chat</span>
+          </div>
+          <div class="card-title">WhatsApp Support</div>
+          <div class="card-detail">8186050406</div>
+          <p class="card-desc">Instant assistance for parents, candidates, and Tanda volunteers. Send bio-data queries or photo verification requests directly.</p>
+        </div>
+        <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support%2C%20I%20need%20help%20with%20my%20profile" target="_blank" class="btn-action btn-wa-action">
+          <span>💬</span> Chat on WhatsApp
+        </a>
+      </div>
+
+      <!-- Card 2: Email -->
+      <div class="contact-card">
+        <div>
+          <div class="card-top">
+            <div class="card-icon-box icon-mail">📧</div>
+            <span class="status-badge status-desk">📬 24/7 Desk</span>
+          </div>
+          <div class="card-title">Email Helpdesk</div>
+          <div class="card-detail">banjarabiomatrimony@gmail.com</div>
+          <p class="card-desc">For formal inquiries, Trust Score documentation, staff account requests, and partnership proposals.</p>
+        </div>
+        <a href="mailto:banjarabiomatrimony@gmail.com" class="btn-action btn-mail-action">
+          <span>📧</span> Send Email
+        </a>
+      </div>
+
+      <!-- Card 3: Instagram -->
+      <div class="contact-card">
+        <div>
+          <div class="card-top">
+            <div class="card-icon-box icon-insta">📸</div>
+            <span class="status-badge status-social">✨ Official Handle</span>
+          </div>
+          <div class="card-title">Instagram Community</div>
+          <div class="card-detail">@banjarabio.matrimony</div>
+          <p class="card-desc">Follow our official Instagram page for success stories, Melava event dates, and community announcements.</p>
+        </div>
+        <a href="https://www.instagram.com/banjarabio.matrimony/" target="_blank" class="btn-action btn-insta-action">
+          <span>📸</span> Follow on Instagram
+        </a>
+      </div>
+
+    </div>
+
+    <!-- FAQ Box -->
+    <div class="faq-section">
+      <h2>Frequently Asked Support Questions</h2>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h4>How do I create a candidate bio-data PDF?</h4>
+          <p>Download the BanjaraBio app, complete profile details, and tap the <strong>"Export Bio-Data PDF"</strong> button to generate printable traditional bio-data instantly.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Why is direct phone calling not available?</h4>
+          <p>We handle thousands of candidate queries daily. Messaging on WhatsApp (8186050406) ensures your profile ID and request are logged and answered accurately without delay.</p>
+        </div>
+        <div class="faq-item">
+          <h4>How can village volunteers assist families?</h4>
+          <p>BanjaraBio has staff & volunteer features built into the app to help elders create profiles. Message us on WhatsApp to get registered as an official volunteer.</p>
+        </div>
+      </div>
+    </div>
+
   </main>
 
+  <!-- Footer -->
   <footer>
-    <div>&copy; 2026 BanjaraBio Matrimony. All rights reserved.</div>
-    <div><a href="/privacy-policy">Privacy Policy</a></div>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h3>💍 BanjaraBio Matrimony</h3>
+        <p>The premier, trusted matrimonial platform for the Gor Banjara community worldwide. Preserving Gotra lineage, privacy, and family honor. 🚩 जय सेवालाल!</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="/">Home Page</a></li>
+          <li><a href="/about-us">About Our Mission</a></li>
+          <li><a href="/melava">Melava Hub & Events</a></li>
+          <li><a href="/contact-us">Contact & Helpdesk</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal & Trust</h4>
+        <ul>
+          <li><a href="/privacy-policy">Privacy Policy</a></li>
+          <li><a href="/terms-and-conditions">Terms & Conditions</a></li>
+          <li><a href="/privacy-policy#photos">Photo Privacy Controls</a></li>
+          <li><a href="/terms-and-conditions#conduct">Community Conduct</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Official Connect</h4>
+        <ul>
+          <li><a href="https://wa.me/918186050406" target="_blank">💬 WhatsApp: 8186050406</a></li>
+          <li><a href="mailto:banjarabiomatrimony@gmail.com">📧 banjarabiomatrimony@gmail.com</a></li>
+          <li><a href="https://www.instagram.com/banjarabio.matrimony/" target="_blank">📸 @banjarabio.matrimony</a></li>
+          <li><span style="font-size:12px; color:#f43f5e; font-weight:600;">⚠️ Direct Calling Unavailable</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>&copy; 2026 BanjaraBio Matrimony. All rights reserved.</div>
+      <div>
+        <a href="/privacy-policy">Privacy</a> &bull; 
+        <a href="/terms-and-conditions">Terms</a> &bull; 
+        <a href="/contact-us">Support</a>
+      </div>
+    </div>
   </footer>
+
+  <!-- Floating WhatsApp Button -->
+  <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" class="wa-float" title="Chat on WhatsApp (8186050406)">💬</a>
 
 </body>
 </html>
