@@ -495,15 +495,19 @@
     .social-hub-card.card-li:hover { border-color: rgba(56, 189, 248, 0.5); box-shadow: 0 16px 40px rgba(56, 189, 248, 0.2); }
 
     .social-icon-box {
-      width: 64px;
-      height: 64px;
-      border-radius: 20px;
+      width: 96px;
+      height: 96px;
+      border-radius: 26px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 18px;
-      font-size: 28px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      margin-bottom: 20px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+      transition: transform 0.3s ease;
+    }
+
+    .social-hub-card:hover .social-icon-box {
+      transform: scale(1.12);
     }
 
     .social-icon-wa { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.35); }
@@ -1100,39 +1104,39 @@
         <!-- WhatsApp Helpdesk -->
         <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" class="social-hub-card card-wa">
           <div class="social-icon-box social-icon-wa">
-            <img src="assets/social/whatsapp.svg" alt="WhatsApp" style="width:36px; height:36px; object-fit:contain;">
+            <img src="assets/social/whatsapp.svg" alt="WhatsApp" style="width:58px; height:58px; object-fit:contain;">
           </div>
           <div class="social-hub-badge badge-wa">⚡ 24/7 Voice & Chat Support</div>
           <h3>WhatsApp Helpdesk</h3>
           <p>Direct 1-tap support & free bio-data creation assistance (<strong>+91 8186050406</strong>)</p>
           <div class="social-action-btn action-wa">
-            <img src="assets/social/whatsapp.svg" alt="WhatsApp" style="width:18px; height:18px; object-fit:contain;"> Chat Support ↗
+            <img src="assets/social/whatsapp.svg" alt="WhatsApp" style="width:20px; height:20px; object-fit:contain;"> Chat Support ↗
           </div>
         </a>
 
         <!-- Instagram Community -->
         <a href="https://www.instagram.com/banjarabio.matrimony/" target="_blank" class="social-hub-card card-ig">
           <div class="social-icon-box social-icon-ig">
-            <img src="assets/social/instagram.svg" alt="Instagram" style="width:36px; height:36px; object-fit:contain;">
+            <img src="assets/social/instagram.svg" alt="Instagram" style="width:58px; height:58px; object-fit:contain;">
           </div>
           <div class="social-hub-badge badge-ig">📸 Community Highlights</div>
           <h3>Instagram Community</h3>
           <p>Official handle <strong>@banjarabio.matrimony</strong> for success stories & Melava events</p>
           <div class="social-action-btn action-ig">
-            <img src="assets/social/instagram.svg" alt="Instagram" style="width:18px; height:18px; object-fit:contain;"> Follow Handle ↗
+            <img src="assets/social/instagram.svg" alt="Instagram" style="width:20px; height:20px; object-fit:contain;"> Follow Handle ↗
           </div>
         </a>
 
         <!-- LinkedIn Official -->
         <a href="https://www.linkedin.com/company/banjarabio/" target="_blank" class="social-hub-card card-li">
           <div class="social-icon-box social-icon-li">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            <img src="assets/social/linkedin.svg" alt="LinkedIn" style="width:58px; height:58px; object-fit:contain;">
           </div>
           <div class="social-hub-badge badge-li">💼 Corporate Trust</div>
           <h3>LinkedIn Official</h3>
           <p>Organization announcements, trust milestones & corporate partnership updates (<strong>BanjaraBio Matrimony</strong>)</p>
           <div class="social-action-btn action-li">
-            <span>💼</span> Connect ↗
+            <img src="assets/social/linkedin.svg" alt="LinkedIn" style="width:20px; height:20px; object-fit:contain;"> Connect ↗
           </div>
         </a>
 
@@ -1255,14 +1259,14 @@
 
       <div class="footer-col">
         <h4>Official Connect</h4>
-        <ul>
-          <li><a href="https://wa.me/918186050406" target="_blank">💬 WhatsApp: 8186050406</a></li>
-          <li><a href="https://www.instagram.com/banjarabio.matrimony/" target="_blank">📸 Instagram: @banjarabio.matrimony</a></li>
-          <li><a href="https://www.linkedin.com/company/banjarabio/" target="_blank">💼 LinkedIn: BanjaraBio</a></li>
-          <li><a href="https://play.google.com/store/apps/details?id=com.avishio.banjarabio" target="_blank">🛍️ Google Play Store</a></li>
-          <li><span style="font-size:13px; color:#94a3b8;">🍏 App Store: <strong style="color:#fbbf24;">Coming Soon</strong></span></li>
-          <li><a href="mailto:banjarabiomatrimony@gmail.com">📧 banjarabiomatrimony@gmail.com</a></li>
-          <li><span style="font-size:12px; color:#f43f5e; font-weight:600;">⚠️ Direct Calling Unavailable</span></li>
+        <ul style="display:flex; flex-direction:column; gap:8px;">
+          <li><a href="https://wa.me/918186050406" target="_blank" style="display:inline-flex; align-items:center; gap:10px;"><img src="assets/social/whatsapp.svg" alt="WhatsApp" style="width:18px; height:18px; object-fit:contain;"> WhatsApp: 8186050406</a></li>
+          <li><a href="https://www.instagram.com/banjarabio.matrimony/" target="_blank" style="display:inline-flex; align-items:center; gap:10px;"><img src="assets/social/instagram.svg" alt="Instagram" style="width:18px; height:18px; object-fit:contain;"> Instagram: @banjarabio.matrimony</a></li>
+          <li><a href="https://www.linkedin.com/company/banjarabio/" target="_blank" style="display:inline-flex; align-items:center; gap:10px;"><img src="assets/social/linkedin.svg" alt="LinkedIn" style="width:18px; height:18px; object-fit:contain;"> LinkedIn: BanjaraBio</a></li>
+          <li><a href="https://play.google.com/store/apps/details?id=com.avishio.banjarabio" target="_blank" style="display:inline-flex; align-items:center; gap:10px;"><img src="assets/social/playstore.svg" alt="Google Play Store" style="width:18px; height:18px; object-fit:contain;"> Google Play Store</a></li>
+          <li><span style="font-size:13px; color:#94a3b8; display:inline-flex; align-items:center; gap:10px;"><img src="assets/social/appstore.svg" alt="App Store" style="width:18px; height:18px; object-fit:contain;"> App Store: <strong style="color:#fbbf24;">Coming Soon</strong></span></li>
+          <li><a href="mailto:banjarabiomatrimony@gmail.com" style="display:inline-flex; align-items:center; gap:10px;"><img src="assets/social/gmail.svg" alt="Gmail" style="width:18px; height:18px; object-fit:contain;"> banjarabiomatrimony@gmail.com</a></li>
+          <li><span style="font-size:12px; color:#f43f5e; font-weight:600; display:inline-flex; align-items:center; gap:8px;"><img src="assets/social/phone.svg" alt="Phone" style="width:16px; height:16px; object-fit:contain; filter: invert(36%) sepia(85%) saturate(2486%) hue-rotate(334deg) brightness(97%) contrast(97%);"> Direct Calling Unavailable</span></li>
         </ul>
       </div>
     </div>
