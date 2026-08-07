@@ -1,0 +1,14 @@
+{
+  "cleanUrls": true,
+  "routes": [
+    {
+      "src": "/.well-known/assetlinks.json",
+      "headers": { "content-type": "application/json" },
+      "dest": "/.well-known/assetlinks.json"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}

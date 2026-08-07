@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Service to handle deep linking (Universal Links & App Links)
 class DeepLinkService {
@@ -78,93 +79,130 @@ class DeepLinkService {
         await handleDeepLink(initialLink);
       }
     } catch (e) {
-      debugPrint('DeepLinkService: Initial link error: $e');
+      AppLogger.error('DeepLinkService', 'DeepLinkService: Initial link error: $e');
     }
   }
 
   Future<void> handleDeepLink(Uri? uri) async {
     if (uri == null) return;
-    debugPrint('DeepLinkService: Handling deep link: $uri');
+    AppLogger.debug('DeepLinkService', 'DeepLinkService: Handling deep link: $uri');
 
     final path = uri.path;
     final queryParams = uri.queryParameters;
 
-    // 💡 PRO TIP: Handle promo/referrer from query params globally (common for web redirects)
+    // 💡 PRO TIP: Handle promo/referrer from query params globally (common for web redirects & Play Store referral links)
     final qPromo = queryParams['promo'] ?? queryParams['referrer'];
     if (qPromo != null) {
-      if (qPromo.startsWith('invite/')) {
+      if (qPromo.startsWith('profile/')) {
+        final pid = qPromo.split('profile/').last;
+        if (pid.isNotEmpty && pid != 'profile') {
+          await _navigateToProfile(pid);
+          return;
+        }
+      } else if (qPromo.startsWith('invite/')) {
         await _handleInvite(qPromo.split('invite/').last);
+        return;
       } else if (qPromo.startsWith('promo/')) {
         await _handlePromo(qPromo.split('promo/').last);
+        return;
       } else {
         await _handlePromo(qPromo);
       }
     }
 
-    // Standard URL: https://banjarabio.com/profile/123
-    if (path.contains('/profile/')) {
-      final profileId = path.split('/profile/').last;
-      await _navigateToProfile(profileId);
-      return;
-    }
+    final isCustomScheme = uri.scheme == 'banjarabio';
+    final isWebDomain = uri.host == 'banjarabio.vercel.app' ||
+        uri.host == 'banjarabio.com' ||
+        uri.host == 'www.banjarabio.com' ||
+        uri.host == 'banjarabio.in' ||
+        uri.host == 'www.banjarabio.in' ||
+        uri.host == 'banjarabio.app' ||
+        uri.host == 'www.banjarabio.app';
 
-    // Standard URL: https://banjarabio.com/invite/456
-    if (path.contains('/invite/')) {
-      final referralId = path.split('/invite/').last;
-      await _handleInvite(referralId);
-      return;
-    }
-
-    // Standard URL: https://banjarabio.com/promo/SAVE20
-    if (path.contains('/promo/')) {
-      final promoCode = path.split('/promo/').last;
-      await _handlePromo(promoCode);
-      return;
-    }
-
-    // Custom Scheme: banjarabio://profile?id=789
-    if (uri.scheme == 'banjarabio' && uri.host == 'profile') {
-      final profileId = queryParams['id'];
-      if (profileId != null) {
-        await _navigateToProfile(profileId);
+    // 1. Profile Routing
+    // e.g. banjarabio://profile/123, banjarabio://profile?id=123, https://banjarabio.com/profile/123, https://banjarabio.com/profile?id=123
+    if ((isCustomScheme && uri.host == 'profile') || (isWebDomain && path.startsWith('/profile')) || path.startsWith('/profile')) {
+      String? profileId = queryParams['id'];
+      if (profileId == null || profileId.isEmpty) {
+        final segments = uri.pathSegments;
+        if (segments.isNotEmpty) {
+          profileId = segments.last;
+        }
       }
-      return;
+      if (profileId != null && profileId.isNotEmpty && profileId != 'profile') {
+        await _navigateToProfile(profileId);
+        return;
+      }
     }
 
-    // Custom Scheme: banjarabio://rewards
-    if (uri.scheme == 'banjarabio' && uri.host == 'rewards') {
+    // 2. Invite/Referral Routing
+    // e.g. banjarabio://invite/456, banjarabio://invite?id=456, https://banjarabio.com/invite/456, https://banjarabio.com/invite?id=456
+    if ((isCustomScheme && uri.host == 'invite') || (isWebDomain && path.startsWith('/invite')) || path.startsWith('/invite')) {
+      String? referralId = queryParams['id'] ?? queryParams['code'];
+      if (referralId == null || referralId.isEmpty) {
+        final segments = uri.pathSegments;
+        if (segments.isNotEmpty) {
+          referralId = segments.last;
+        }
+      }
+      if (referralId != null && referralId.isNotEmpty && referralId != 'invite') {
+        await _handleInvite(referralId);
+        return;
+      }
+    }
+
+    // 3. Promo Routing
+    // e.g. banjarabio://promo/SAVE20, banjarabio://promo?code=SAVE20, https://banjarabio.com/promo/SAVE20, https://banjarabio.com/promo?code=SAVE20
+    if ((isCustomScheme && uri.host == 'promo') || (isWebDomain && path.startsWith('/promo')) || path.startsWith('/promo')) {
+      String? promoCode = queryParams['code'] ?? queryParams['id'];
+      if (promoCode == null || promoCode.isEmpty) {
+        final segments = uri.pathSegments;
+        if (segments.isNotEmpty) {
+          promoCode = segments.last;
+        }
+      }
+      if (promoCode != null && promoCode.isNotEmpty && promoCode != 'promo') {
+        await _handlePromo(promoCode);
+        return;
+      }
+    }
+
+    // 4. Rewards Routing
+    // e.g. banjarabio://rewards, https://banjarabio.com/rewards
+    if ((isCustomScheme && uri.host == 'rewards') || (isWebDomain && path.startsWith('/rewards')) || path.startsWith('/rewards')) {
       await _handleRewards();
       return;
     }
 
-    // Custom Scheme: banjarabio://promo?code=SAVE20
-    if (uri.scheme == 'banjarabio' && uri.host == 'promo') {
-      final promoCode = queryParams['code'];
-      if (promoCode != null) {
-        await _handlePromo(promoCode);
-      }
-      return;
-    }
-
-    // Direct Route matching
-    if (path == '/staff-dashboard') {
+    // 5. Staff Dashboard Routing
+    // e.g. banjarabio://staff-dashboard, https://banjarabio.com/staff-dashboard
+    if ((isCustomScheme && uri.host == 'staff-dashboard') || (isWebDomain && path.startsWith('/staff-dashboard'))) {
       await _navigateDirectlyTo(AppRoutes.staffDashboard);
       return;
     }
 
-    if (path == '/admin-dashboard') {
+    // 6. Admin Dashboard Routing
+    // e.g. banjarabio://admin-dashboard, https://banjarabio.com/admin-dashboard
+    if ((isCustomScheme && uri.host == 'admin-dashboard') || (isWebDomain && path.startsWith('/admin-dashboard'))) {
       await _navigateDirectlyTo(AppRoutes.adminDashboard);
+      return;
+    }
+
+    // 7. Subscription Screen Routing
+    // e.g. banjarabio://subscription, https://banjarabio.com/subscription, or path /subscription
+    if ((isCustomScheme && uri.host == 'subscription') || (isWebDomain && path.startsWith('/subscription')) || path == '/subscription') {
+      await _navigateDirectlyTo(AppRoutes.subscription);
       return;
     }
   }
 
   /// Navigate directly to a specific named route
   Future<void> _navigateDirectlyTo(String routeName) async {
-    debugPrint('DeepLinkService: Navigating directly to $routeName');
+    AppLogger.debug('DeepLinkService', 'DeepLinkService: Navigating directly to $routeName');
 
     final client = _supabase;
     if (client == null || client.auth.currentSession == null) {
-      debugPrint('DeepLinkService: Unauthenticated. Cannot navigate to $routeName.');
+      AppLogger.debug('DeepLinkService', 'DeepLinkService: Unauthenticated. Cannot navigate to $routeName.');
       return;
     }
 
@@ -183,13 +221,13 @@ class DeepLinkService {
 
   /// Handle promo deep link
   Future<void> _handlePromo(String promoCode) async {
-    debugPrint('DeepLinkService: Handling promo code: $promoCode');
+    AppLogger.debug('DeepLinkService', 'DeepLinkService: Handling promo code: $promoCode');
     await _cache.savePendingPromoCode(promoCode);
   }
 
   /// Handle rewards deep link
   Future<void> _handleRewards() async {
-    debugPrint('DeepLinkService: Handling rewards deep link');
+    AppLogger.debug('DeepLinkService', 'DeepLinkService: Handling rewards deep link');
     await _cache.savePendingRewardsFlag(true);
     
     if (onRewardsTriggered != null) {
@@ -199,17 +237,17 @@ class DeepLinkService {
 
   /// Handle invite deep link
   Future<void> _handleInvite(String inviteId) async {
-    debugPrint('DeepLinkService: Handling invite ID: $inviteId');
+    AppLogger.debug('DeepLinkService', 'DeepLinkService: Handling invite ID: $inviteId');
     await _cache.savePendingReferralId(inviteId);
   }
 
   /// Navigate to profile detail screen
   Future<void> _navigateToProfile(String profileId) async {
-    debugPrint('DeepLinkService: Navigating to profile $profileId');
+    AppLogger.debug('DeepLinkService', 'DeepLinkService: Navigating to profile $profileId');
 
     final client = _supabase;
     if (client == null) {
-      debugPrint('DeepLinkService: Supabase not available. Deferring profile navigation.');
+      AppLogger.debug('DeepLinkService', 'DeepLinkService: Supabase not available. Deferring profile navigation.');
       await _cache.savePendingProfileId(profileId);
       return;
     }
@@ -221,6 +259,22 @@ class DeepLinkService {
       debugPrint(
           'DeepLinkService: User not authenticated. Saving pending profile ID.');
       await _cache.savePendingProfileId(profileId);
+
+      void navigateToAuth() {
+        if (_navigatorState != null) {
+          _navigatorState!.pushNamed(AppRoutes.authentication);
+        }
+      }
+
+      if (testNavigatorState != null) {
+        navigateToAuth();
+      } else {
+        try {
+          WidgetsBinding.instance.addPostFrameCallback((_) => navigateToAuth());
+        } catch (_) {
+          navigateToAuth();
+        }
+      }
       return;
     }
 
@@ -231,7 +285,7 @@ class DeepLinkService {
           arguments: profileId,
         );
       } else {
-        debugPrint('DeepLinkService: Navigator state is null');
+        AppLogger.debug('DeepLinkService', 'DeepLinkService: Navigator state is null');
       }
     }
 
@@ -239,7 +293,11 @@ class DeepLinkService {
     if (testNavigatorState != null) {
       navigate();
     } else {
-      WidgetsBinding.instance.addPostFrameCallback((_) => navigate());
+      try {
+        WidgetsBinding.instance.addPostFrameCallback((_) => navigate());
+      } catch (_) {
+        navigate();
+      }
     }
   }
 

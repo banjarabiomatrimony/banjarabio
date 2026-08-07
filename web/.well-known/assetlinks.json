@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.avishio.banjarabio",
+      "sha256_cert_fingerprints": [
+        "40:36:8E:02:34:B4:12:2A:64:81:40:3F:1E:CF:09:F3:CB:73:C9:85:F0:95:CB:C2:96:64:42:6D:8A:88:DD:0E",
+        "48:49:3C:B2:66:92:BE:4F:EF:F5:66:DC:F9:DB:66:C8:70:ED:4D:E6:FC:4D:BB:F3:E6:74:40:B8:76:2B:03:D4"
+      ]
+    }
+  }
+]

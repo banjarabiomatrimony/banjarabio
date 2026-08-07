@@ -4,8 +4,8 @@ import 'package:banjarabio/notification/core/notification_payload.dart';
 
 void main() {
   group('NotificationCategory', () {
-    test('has 7 values', () {
-      expect(NotificationCategory.values.length, 7);
+    test('has 10 values', () {
+      expect(NotificationCategory.values.length, 10);
     });
 
     test('contains all expected categories', () {
@@ -13,6 +13,7 @@ void main() {
       expect(names, containsAll([
         'interestReceived', 'matchFound', 'chatMessage',
         'profileView', 'nudge', 'system', 'general',
+        'staffTask', 'adminAlert', 'verificationReview',
       ]));
     });
   });

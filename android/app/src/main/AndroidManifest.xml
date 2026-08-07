@@ -7,13 +7,15 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
-    <!-- Camera and storage permissions for photo upload -->
+    <!-- Camera permissions for photo upload -->
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <!-- Google Play Policy: Remove broad READ_MEDIA permissions in favor of System Photo Picker -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" tools:node="remove"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" tools:node="remove"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" tools:node="remove"/>
 
     <!-- Notification permission (Android 13+ / API 33) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
@@ -63,13 +65,6 @@
                 <data android:scheme="io.supabase.banjarabio" android:host="login-callback"/>
             </intent-filter>
 
-            <!-- App Links for Deep Linking -->
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="banjarabio.com" />
-            </intent-filter>
 
             <!-- Custom Scheme Deep Linking -->
             <intent-filter>
@@ -77,6 +72,20 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="banjarabio" />
+            </intent-filter>
+
+            <!-- HTTPS Web App Links Deep Linking -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="banjarabio.vercel.app" />
+                <data android:scheme="https" android:host="banjarabio.com" />
+                <data android:scheme="https" android:host="www.banjarabio.com" />
+                <data android:scheme="https" android:host="banjarabio.in" />
+                <data android:scheme="https" android:host="www.banjarabio.in" />
+                <data android:scheme="https" android:host="banjarabio.app" />
+                <data android:scheme="https" android:host="www.banjarabio.app" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

@@ -1,24 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="$FLUTTER_BASE_HREF">
-
+  <base href="/">
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="BanjaraBio - Connect with your community">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="BanjaraBio Matrimony Profile - View & Connect with your community">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -29,10 +16,101 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>BanjaraBio</title>
+  <title>BanjaraBio Matrimony</title>
   <link rel="manifest" href="manifest.json">
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+      padding: 20px;
+    }
+    .card {
+      background: #1e293b;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      max-width: 400px;
+      width: 100%;
+    }
+    .logo {
+      font-size: 40px;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: 22px;
+      margin-bottom: 8px;
+      color: #fbbf24;
+    }
+    p {
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .btn {
+      display: inline-block;
+      background-color: #e11d48;
+      color: white;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 16px;
+      transition: background-color 0.2s;
+    }
+    .btn:hover {
+      background-color: #be123c;
+    }
+  </style>
+
+  <script>
+    (function() {
+      var path = window.location.pathname;
+      var search = window.location.search;
+      var playStoreUrl = "https://play.google.com/store/apps/details?id=com.avishio.banjarabio";
+      
+      // Parse profile ID if present in path e.g. /profile/123
+      var profileId = null;
+      if (path.indexOf('/profile/') !== -1) {
+        profileId = path.split('/profile/')[1];
+      } else {
+        var params = new URLSearchParams(search);
+        profileId = params.get('profile') || params.get('id');
+      }
+
+      if (profileId) {
+        playStoreUrl += "&referrer=profile_" + encodeURIComponent(profileId);
+        
+        // Try custom scheme launch first for mobile browsers
+        var customScheme = "banjarabio://profile/" + profileId;
+        var start = Date.now();
+        window.location.href = customScheme;
+
+        // If app doesn't open within 1.5 seconds, redirect to Play Store
+        setTimeout(function() {
+          if (Date.now() - start < 2000) {
+            window.location.href = playStoreUrl;
+          }
+        }, 1500);
+      }
+    })();
+  </script>
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+  <div class="card">
+    <div class="logo">🌾</div>
+    <h1>BanjaraBio Matrimony</h1>
+    <p>Opening BanjaraBio app... If you are not redirected automatically, tap the button below to view the profile in Google Play Store.</p>
+    <a id="playstore-btn" href="https://play.google.com/store/apps/details?id=com.avishio.banjarabio" class="btn">Open in Play Store</a>
+  </div>
 </body>
 </html>

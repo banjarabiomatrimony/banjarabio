@@ -11,6 +11,7 @@ import 'package:banjarabio/core/repositories/usage_repository.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/core/services/isolate_manager.dart';
 import 'package:banjarabio/core/repositories/isolate_first_repository.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// [ShareRepository]
 ///
@@ -95,7 +96,7 @@ class ShareRepository extends IsolateFirstRepository {
       if (!ShareConfig.isValidSharingMethod(method)) {
         return BackendResponse.failure('Invalid sharing method: $sharingMethod');
       }
-      debugPrint('RPC Call: fn_manage_shares -> create_share');
+      AppLogger.debug('ShareRepository', 'RPC Call: fn_manage_shares -> create_share');
 
       final rpcResponse = await _supabase.rpc(
         'fn_manage_shares',
@@ -112,19 +113,21 @@ class ShareRepository extends IsolateFirstRepository {
       );
 
       // 3. Platform Action (WhatsApp / System Dialog)
-      // We construct the Universal Link for the profile.
-      // This will open the app directly if installed, or redirect to a landing page/store.
-      final shareUrl = 'https://banjarabio.com/profile/$sharedProfileId';
-      
-      // Fallback for Play Store referrals (Deferred Deep Linking)
-      // final shareUrl = 'https://play.google.com/store/apps/details?id=com.avishio.banjarabio&referrer=profile/$sharedProfileId';
-      
-      final shareMessage =
-          'Check out this profile on BanjaraBio: ${profileName ?? "User"}';
+      // Vercel deep link with fallback redirect to Play Store for direct profile access.
+      final profileLink = 'https://banjarabio.vercel.app/profile/$sharedProfileId';
+      final userName = profileName != null && profileName.isNotEmpty ? profileName : 'BanjaraBio User';
+
+      final shareMessage = '''
+🚩 *BanjaraBio Matrimony Profile* 🚩
+बंजारा समाजातील स्थळ पहा: *$userName*
+
+📲 *प्रोफाईल व ॲप लिंक (View Profile):*
+$profileLink
+'''.trim();
 
       await _executePlatformShare(
         method: sharingMethod,
-        url: shareUrl,
+        url: profileLink,
         message: shareMessage,
       );
 
@@ -163,9 +166,8 @@ class ShareRepository extends IsolateFirstRepository {
   }) async {
     switch (method.toLowerCase()) {
       case 'whatsapp':
-        // Refactored to use system share dialog instead of direct WhatsApp link
-        // This allows sharing with any contact/group as per new requirements
-        await Share.share('$message\n\n$url', subject: 'BanjaraBio Profile');
+        // System share dialog containing complete share message with App link & Profile link
+        await Share.share(message, subject: 'BanjaraBio Profile');
         break;
 
       case 'link':
@@ -173,16 +175,16 @@ class ShareRepository extends IsolateFirstRepository {
         break;
 
       case 'in_app':
-      // For in_app sharing, we don't open any external platform dialog.
-      // The RPC call has already recorded the share/interest internally.
-      debugPrint('Internal share recorded. Skipping platform share dialog.');
-      break;
+        // For in_app sharing, we don't open any external platform dialog.
+        // The RPC call has already recorded the share/interest internally.
+        AppLogger.warn('ShareRepository', 'Internal share recorded. Skipping platform share dialog.');
+        break;
 
-    default:
-      await Share.share('$message\n\n$url', subject: 'BanjaraBio Profile');
-      break;
+      default:
+        await Share.share(message, subject: 'BanjaraBio Profile');
+        break;
+    }
   }
-}
 
   // ---------------------------------------------------------------------------
   // 3. Fetching Lists (Sent / Received)
