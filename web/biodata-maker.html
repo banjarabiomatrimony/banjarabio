@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Gor Banjara Matrimonial Bio-Data Maker — BanjaraBio</title>
-  <meta name="description" content="Generate beautiful, printable Gor Banjara Matrimonial Bio-Data PDFs in seconds. Pick from 10 traditional templates and share directly on WhatsApp.">
+  <meta name="description" content="Generate beautiful, printable Gor Banjara Matrimonial Bio-Data PDFs in seconds. Customize traditional templates with Gotra details and export directly to WhatsApp.">
   <link rel="icon" type="image/png" href="favicon.png"/>
 
   <!-- Google Fonts -->
@@ -23,6 +23,7 @@
       --gold-light: #fbbf24;
       --rose-primary: #e11d48;
       --rose-light: #f43f5e;
+      --green-wa: #22c55e;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --border-glass: rgba(255, 255, 255, 0.12);
@@ -144,17 +145,65 @@
       box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5) !important;
     }
 
+    /* Mobile Hamburger */
+    .mobile-hamburger {
+      display: none;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid var(--border-glass);
+      color: #ffffff;
+      font-size: 22px;
+      padding: 6px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .mobile-menu-drawer {
+      display: none;
+      position: fixed;
+      top: 80px;
+      left: 16px;
+      right: 16px;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(25px);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      padding: 24px;
+      flex-direction: column;
+      gap: 16px;
+      z-index: 99;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    }
+
+    .mobile-menu-drawer.show {
+      display: flex;
+    }
+
+    .mobile-menu-drawer a {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 10px;
+      border-radius: 10px;
+      transition: background 0.2s;
+    }
+
+    .mobile-menu-drawer a:hover, .mobile-menu-drawer a.active {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--gold-light);
+    }
+
     /* Main Container */
     main {
       width: 100%;
-      max-width: 1100px;
+      max-width: 1200px;
       z-index: 1;
       padding: 0 16px 80px 16px;
     }
 
     .page-hero {
       text-align: center;
-      margin-bottom: 44px;
+      margin-bottom: 36px;
     }
 
     .badge-pill {
@@ -176,66 +225,264 @@
       font-size: 42px;
       font-weight: 800;
       color: #ffffff;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       line-height: 1.25;
     }
 
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      margin-bottom: 40px;
+    .hero-sub {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.6;
     }
 
-    .feature-card {
+    /* Bio-Data Builder Simulator Grid */
+    .builder-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 36px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .builder-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .builder-form-card {
       background: var(--card-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border-glass);
       border-radius: 24px;
       padding: 32px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     }
 
-    .icon-box {
-      font-size: 36px;
+    .form-section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding-bottom: 10px;
+    }
+
+    .form-group {
       margin-bottom: 16px;
     }
 
-    .card-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--gold-light);
-      margin-bottom: 10px;
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
     }
 
-    p {
-      font-size: 15px;
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
       color: #cbd5e1;
-      line-height: 1.7;
+      margin-bottom: 6px;
     }
 
-    .cta-card {
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid var(--border-glass);
-      border-radius: 28px;
-      padding: 40px;
+    input, select, textarea {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+    }
+
+    /* Live Preview Card */
+    .preview-wrapper {
+      position: sticky;
+      top: 100px;
+    }
+
+    .preview-card {
+      background: #0f172a;
+      border: 4px double var(--gold-primary);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.7), 0 0 30px rgba(245, 158, 11, 0.2);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    /* Theme Variants */
+    .theme-gold { background: #0f172a; border-color: #f59e0b; }
+    .theme-saffron { background: #1a0c00; border-color: #f97316; }
+    .theme-rose { background: #1a050b; border-color: #e11d48; }
+    .theme-emerald { background: #021a12; border-color: #10b981; }
+
+    .preview-header {
       text-align: center;
+      border-bottom: 2px solid rgba(245, 158, 11, 0.3);
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+      position: relative;
     }
 
-    .btn-app-dl {
+    .preview-blessing-badge {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 16px 32px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, var(--rose-primary), #be123c);
+      gap: 6px;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fef08a;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+    }
+
+    .preview-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
       color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+
+    .preview-candidate-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--gold-light);
+      text-align: center;
+      margin: 12px 0 4px 0;
+    }
+
+    .preview-sub {
+      text-align: center;
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 16px;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .preview-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 8px 12px;
+    }
+
+    .preview-label {
+      font-size: 11px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       font-weight: 700;
-      font-size: 18px;
-      text-decoration: none;
+    }
+
+    .preview-val {
+      font-size: 13px;
+      color: #ffffff;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .preview-watermark {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px dashed rgba(255,255,255,0.15);
+      padding-top: 12px;
+      margin-top: 16px;
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    .preview-actions {
+      display: flex;
+      gap: 12px;
       margin-top: 20px;
-      box-shadow: 0 4px 20px rgba(225, 29, 72, 0.4);
+    }
+
+    .btn-action-wa {
+      flex: 1;
+      background: linear-gradient(135deg, #22c55e, #15803d);
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-action-wa:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(34, 197, 94, 0.6);
+    }
+
+    .btn-action-print {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid var(--border-glass);
+      color: #ffffff;
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-action-print:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    /* Print Stylesheet */
+    @media print {
+      body * { visibility: hidden; }
+      #printable-preview, #printable-preview * { visibility: visible; }
+      #printable-preview {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        color: #000;
+        background: #fff;
+        border: 4px double #d97706;
+      }
+      .preview-item { background: #f8fafc; border-color: #e2e8f0; }
+      .preview-val { color: #0f172a; }
+      .preview-label { color: #475569; }
+      .preview-actions, header, footer, .ambient-glow, .page-hero, .builder-form-card, .wa-float { display: none !important; }
     }
 
     /* Footer */
@@ -341,14 +588,17 @@
 
     @keyframes pulse-ring {
       0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-      70% { box-shadow: 0 0 0 15px rgba(34, 197, 94, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(34, 197, 94, 0); }
       100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
     }
 
     @media (max-width: 768px) {
-      header { flex-direction: column; gap: 16px; margin: 10px auto 30px auto; }
-      .nav-links { flex-wrap: wrap; justify-content: center; gap: 12px; }
+      header { margin: 10px auto 20px auto; }
+      .nav-links { display: none; }
+      .mobile-hamburger { display: block; }
       h1 { font-size: 32px; }
+      .form-row { grid-template-columns: 1fr; }
+      .preview-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -357,12 +607,13 @@
   <div class="ambient-glow glow-1"></div>
   <div class="ambient-glow glow-2"></div>
 
-  <!-- Header -->
+  <!-- Header Nav -->
   <header>
     <a href="/" class="nav-brand">
       <img src="logo.png" alt="BanjaraBio Logo" class="brand-logo-img">
       <div class="brand-title">BanjaraBio</div>
     </a>
+
     <nav class="nav-links">
       <a href="/">Home</a>
       <a href="/gotra-guide">Gotra Guide</a>
@@ -373,40 +624,199 @@
       <a href="/faq">FAQ</a>
       <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" class="btn-header-wa">💬 Support</a>
     </nav>
+
+    <button class="mobile-hamburger" id="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
   </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-menu-drawer" id="mobile-drawer">
+    <a href="/">🏠 Home</a>
+    <a href="/gotra-guide">🚩 Gotra Guide</a>
+    <a href="/trust-and-verification">🛡️ Trust System</a>
+    <a href="/biodata-maker" class="active">📄 Bio-Data Maker</a>
+    <a href="/melava">🎪 Melava Hub</a>
+    <a href="/success-stories">💕 Success Stories</a>
+    <a href="/faq">❓ FAQ</a>
+    <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" style="color:#4ade80;">💬 WhatsApp Helpdesk</a>
+  </div>
 
   <!-- Main Content -->
   <main>
 
     <div class="page-hero">
-      <div class="badge-pill">📄 Instant Matrimonial PDF Generator</div>
-      <h1>Create Gor Banjara Bio-Data in 2 Minutes</h1>
+      <div class="badge-pill">✨ Real-Time PDF Creator Simulator</div>
+      <h1>Gor Banjara Matrimonial Bio-Data Builder</h1>
+      <p class="hero-sub">Type candidate details below to see a real-time glassmorphic Gor Banjara Bio-Data card render live. Download or export directly to WhatsApp!</p>
     </div>
 
-    <div class="feature-grid">
-      <div class="feature-card">
-        <div class="icon-box">🎨</div>
-        <div class="card-title">10 Elegant Templates</div>
-        <p>Choose from 10 traditional and modern Gor Banjara bio-data templates with gold borders and Jai Sevalal symbols.</p>
+    <!-- Builder Simulator Grid -->
+    <div class="builder-container">
+
+      <!-- Form Inputs -->
+      <div class="builder-form-card">
+        
+        <div class="form-section-title">👤 Candidate Profile Details</div>
+
+        <div class="form-group">
+          <label for="input-name">Candidate Full Name</label>
+          <input type="text" id="input-name" value="Pooja Rathod" placeholder="e.g. Rahul Pawar / Pooja Rathod" oninput="updatePreview()">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="input-gender">Gender</label>
+            <select id="input-gender" onchange="updatePreview()">
+              <option value="Bride (Vadhu)">Bride (Vadhu)</option>
+              <option value="Groom (Var)">Groom (Var)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="input-dob">Date of Birth</label>
+            <input type="text" id="input-dob" value="14 Aug 1998" placeholder="e.g. 14 Aug 1998" oninput="updatePreview()">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="input-height">Height</label>
+            <input type="text" id="input-height" value="5 ft 5 in" placeholder="e.g. 5 ft 5 in" oninput="updatePreview()">
+          </div>
+          <div class="form-group">
+            <label for="input-marital">Marital Status</label>
+            <select id="input-marital" onchange="updatePreview()">
+              <option value="Never Married">Never Married</option>
+              <option value="Divorced">Divorced</option>
+              <option value="Widowed">Widowed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-section-title" style="margin-top:24px;">🚩 Gor Lineage & Gotra Info</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="input-gotra">Self Gotra (Pather)</label>
+            <select id="input-gotra" onchange="updatePreview()">
+              <option value="Rathod (Bhilavath)">Rathod (Bhilavath)</option>
+              <option value="Rathod (Karamtoth)">Rathod (Karamtoth)</option>
+              <option value="Pawar (Amgoth)">Pawar (Amgoth)</option>
+              <option value="Pawar (Vankdoth)">Pawar (Vankdoth)</option>
+              <option value="Jadhav (Ajmera)">Jadhav (Ajmera)</option>
+              <option value="Jadhav (Dharavath)">Jadhav (Dharavath)</option>
+              <option value="Chauhan (Lavidiya)">Chauhan (Lavidiya)</option>
+              <option value="Ade (Dharmasoth)">Ade (Dharmasoth)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="input-mama-gotra">Mama Gotra (Maternal)</label>
+            <input type="text" id="input-mama-gotra" value="Pawar - Amgoth" placeholder="e.g. Pawar - Amgoth" oninput="updatePreview()">
+          </div>
+        </div>
+
+        <div class="form-section-title" style="margin-top:24px;">🎓 Education & Career</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="input-edu">Education</label>
+            <input type="text" id="input-edu" value="B.Tech Computer Science" placeholder="e.g. B.Tech / M.B.B.S / M.Com" oninput="updatePreview()">
+          </div>
+          <div class="form-group">
+            <label for="input-job">Occupation / Employer</label>
+            <input type="text" id="input-job" value="Senior Software Engineer, Pune" placeholder="e.g. Software Engineer / Govt Officer" oninput="updatePreview()">
+          </div>
+        </div>
+
+        <div class="form-section-title" style="margin-top:24px;">🏡 Location & Contact</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="input-location">Native Tanda / City</label>
+            <input type="text" id="input-location" value="Nanded, Maharashtra" placeholder="e.g. Nanded, MH / Nizamabad, TS" oninput="updatePreview()">
+          </div>
+          <div class="form-group">
+            <label for="input-contact">Parent Contact No.</label>
+            <input type="text" id="input-contact" value="+91 98765 43210" placeholder="e.g. +91 9876543210" oninput="updatePreview()">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:16px;">
+          <label for="input-theme">Bio-Data Color Theme</label>
+          <select id="input-theme" onchange="changeTheme()">
+            <option value="theme-gold">👑 Royal Heritage Gold</option>
+            <option value="theme-saffron">🚩 Traditional Gor Saffron</option>
+            <option value="theme-rose">💕 Romantic Velvet Rose</option>
+            <option value="theme-emerald">🌿 Prosperity Emerald</option>
+          </select>
+        </div>
+
       </div>
 
-      <div class="feature-card">
-        <div class="icon-box">🚩</div>
-        <div class="card-title">Gotra & Lineage Ready</div>
-        <p>Pre-formatted fields for Gotra, Pada, Mama Gotra, Native Tanda, Height, Qualification, and Family Tree.</p>
+      <!-- Live Preview Canvas -->
+      <div class="preview-wrapper">
+        <div class="preview-card theme-gold" id="printable-preview">
+          
+          <div class="preview-header">
+            <div class="preview-blessing-badge">🚩 जय सेवालाल! &bull; Gor Banjara Matrimonial</div>
+            <div class="preview-title">BanjaraBio Matrimony</div>
+          </div>
+
+          <div class="preview-candidate-name" id="prev-name">Pooja Rathod</div>
+          <div class="preview-sub"><span id="prev-gender">Bride (Vadhu)</span> &bull; <span id="prev-marital">Never Married</span></div>
+
+          <div class="preview-grid">
+            <div class="preview-item">
+              <div class="preview-label">Gotra (Pather)</div>
+              <div class="preview-val" id="prev-gotra">Rathod (Bhilavath)</div>
+            </div>
+            <div class="preview-item">
+              <div class="preview-label">Mama Gotra</div>
+              <div class="preview-val" id="prev-mama">Pawar - Amgoth</div>
+            </div>
+            <div class="preview-item">
+              <div class="preview-label">Date of Birth</div>
+              <div class="preview-val" id="prev-dob">14 Aug 1998</div>
+            </div>
+            <div class="preview-item">
+              <div class="preview-label">Height</div>
+              <div class="preview-val" id="prev-height">5 ft 5 in</div>
+            </div>
+            <div class="preview-item">
+              <div class="preview-label">Qualification</div>
+              <div class="preview-val" id="prev-edu">B.Tech Computer Science</div>
+            </div>
+            <div class="preview-item">
+              <div class="preview-label">Occupation</div>
+              <div class="preview-val" id="prev-job">Senior Software Engineer, Pune</div>
+            </div>
+            <div class="preview-item">
+              <div class="preview-label">Native Tanda / City</div>
+              <div class="preview-val" id="prev-location">Nanded, Maharashtra</div>
+            </div>
+            <div class="preview-item">
+              <div class="preview-label">Parent Contact</div>
+              <div class="preview-val" id="prev-contact">+91 98765 43210</div>
+            </div>
+          </div>
+
+          <div class="preview-watermark">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <img src="sevalal.jpeg" alt="Sant Sevalal Maharaj" style="width:20px; height:20px; border-radius:50%; object-fit:cover; border:1px solid #f59e0b;">
+              <span style="color:#fcd34d; font-weight:700;">Verified BanjaraBio Format</span>
+            </div>
+            <div>Generated via BanjaraBio.com</div>
+          </div>
+
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="preview-actions">
+          <a id="btn-export-wa" href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support,%20I%20want%20to%20generate%20this%20BioData:%20Pooja%20Rathod" target="_blank" class="btn-action-wa">
+            <span>💬 Export via WhatsApp</span>
+          </a>
+          <button onclick="window.print()" class="btn-action-print">🖨️ Print / Save PDF</button>
+        </div>
       </div>
 
-      <div class="feature-card">
-        <div class="icon-box">📲</div>
-        <div class="card-title">1-Click WhatsApp Share</div>
-        <p>Export your bio-data as a high-resolution PDF and instantly share it with family members or WhatsApp matrimony groups.</p>
-      </div>
-    </div>
-
-    <div class="cta-card">
-      <h2 style="font-family:'Outfit',sans-serif; color:var(--gold-light); font-size:30px; margin-bottom:12px;">Create Your Free Bio-Data PDF Now</h2>
-      <p>Download the BanjaraBio app on Android to enter your details once and export unlimited bio-data PDF templates anytime.</p>
-      <a href="https://play.google.com/store/apps/details?id=com.avishio.banjarabio" target="_blank" class="btn-app-dl">📲 Open BanjaraBio App</a>
     </div>
 
   </main>
@@ -421,7 +831,7 @@
         </div>
         <p>The premier, trusted matrimonial platform for the Gor Banjara community worldwide. Preserving Gotra lineage, privacy, and family honor.</p>
         <div style="display:inline-flex; align-items:center; gap:8px; margin-top:10px; background:rgba(245, 158, 11, 0.12); padding:6px 12px; border-radius:16px; border:1px solid rgba(245, 158, 11, 0.3);">
-          <img src="sevalal-maharaj.png" alt="Sant Sevalal Maharaj" style="width:24px; height:24px; border-radius:50%; object-fit:cover; border:1px solid #f59e0b;">
+          <img src="sevalal.jpeg" alt="Sant Sevalal Maharaj" style="width:24px; height:24px; border-radius:50%; object-fit:cover; border:1px solid #f59e0b;">
           <span style="color:#fef08a; font-size:12px; font-weight:700;">🚩 जय सेवालाल! Guided by Sevalal Maharaj Principles</span>
         </div>
       </div>
@@ -434,6 +844,8 @@
           <li><a href="/trust-and-verification">Trust & Safety</a></li>
           <li><a href="/biodata-maker">Bio-Data Maker</a></li>
           <li><a href="/melava">Melava Hub</a></li>
+          <li><a href="/success-stories">Success Stories</a></li>
+          <li><a href="/faq">FAQ</a></li>
         </ul>
       </div>
 
@@ -474,5 +886,56 @@
   <!-- Floating WhatsApp Button -->
   <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" class="wa-float" title="Chat on WhatsApp (8186050406)">💬</a>
 
+  <script>
+    function toggleMobileMenu() {
+      var drawer = document.getElementById('mobile-drawer');
+      drawer.classList.toggle('show');
+    }
+
+    function updatePreview() {
+      var name = document.getElementById('input-name').value || 'Candidate Name';
+      var gender = document.getElementById('input-gender').value;
+      var dob = document.getElementById('input-dob').value || 'N/A';
+      var height = document.getElementById('input-height').value || 'N/A';
+      var marital = document.getElementById('input-marital').value;
+      var gotra = document.getElementById('input-gotra').value;
+      var mama = document.getElementById('input-mama-gotra').value || 'N/A';
+      var edu = document.getElementById('input-edu').value || 'N/A';
+      var job = document.getElementById('input-job').value || 'N/A';
+      var location = document.getElementById('input-location').value || 'N/A';
+      var contact = document.getElementById('input-contact').value || 'N/A';
+
+      document.getElementById('prev-name').innerText = name;
+      document.getElementById('prev-gender').innerText = gender;
+      document.getElementById('prev-marital').innerText = marital;
+      document.getElementById('prev-gotra').innerText = gotra;
+      document.getElementById('prev-mama').innerText = mama;
+      document.getElementById('prev-dob').innerText = dob;
+      document.getElementById('prev-height').innerText = height;
+      document.getElementById('prev-edu').innerText = edu;
+      document.getElementById('prev-job').innerText = job;
+      document.getElementById('prev-location').innerText = location;
+      document.getElementById('prev-contact').innerText = contact;
+
+      var waMsg = "Hi BanjaraBio Support, I would like to create a Bio-Data PDF for:\n" +
+        "Name: " + name + "\n" +
+        "Gender: " + gender + "\n" +
+        "Gotra: " + gotra + "\n" +
+        "Mama Gotra: " + mama + "\n" +
+        "DOB: " + dob + "\n" +
+        "Qualification: " + edu + "\n" +
+        "Contact: " + contact;
+
+      document.getElementById('btn-export-wa').href = "https://wa.me/918186050406?text=" + encodeURIComponent(waMsg);
+    }
+
+    function changeTheme() {
+      var theme = document.getElementById('input-theme').value;
+      var preview = document.getElementById('printable-preview');
+      preview.className = "preview-card " + theme;
+    }
+  </script>
+
 </body>
 </html>
+
