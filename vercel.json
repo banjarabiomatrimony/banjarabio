@@ -4,11 +4,11 @@
     {
       "src": "/.well-known/assetlinks.json",
       "headers": { "content-type": "application/json" },
-      "dest": "/.well-known/assetlinks.json"
+      "dest": "/web/.well-known/assetlinks.json"
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/web/index.html"
     }
   ]
 }
