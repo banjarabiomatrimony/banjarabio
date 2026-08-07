@@ -394,5 +394,30 @@ void main() {
       expect(r1.data.first.id, 'p-rec');
       expect(r2.data.first.id, r1.data.first.id);
     });
+
+    test('getProfileById queries by profile id or user_id', () async {
+      final profileTable = fakeReadSupabase.from('profiles') as dynamic;
+      final mockData = [
+        {
+          'id': 'c8d9e1f2-1234-5678-90ab-cdef12345678',
+          'user_id': 'u-auth-1234-5678-90ab-cdef12345678',
+          'full_name': 'Deep Link Target',
+          'surname': 'Banjara',
+          'age': 28,
+          'gender': 'Male',
+          'created_at': DateTime.now().toIso8601String(),
+        }
+      ];
+      profileTable.builder.responseData = mockData;
+
+      final resultById = await profileRepository.getProfileById('c8d9e1f2-1234-5678-90ab-cdef12345678');
+      expect(resultById.isSuccess, true);
+      expect(resultById.data?.fullName, 'Deep Link Target');
+
+      profileTable.builder.responseData = mockData;
+      final resultByUserId = await profileRepository.getProfileById('u-auth-1234-5678-90ab-cdef12345678');
+      expect(resultByUserId.isSuccess, true);
+      expect(resultByUserId.data?.fullName, 'Deep Link Target');
+    });
   });
 }

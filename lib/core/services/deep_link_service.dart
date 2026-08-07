@@ -115,9 +115,7 @@ class DeepLinkService {
         uri.host == 'banjarabio.com' ||
         uri.host == 'www.banjarabio.com' ||
         uri.host == 'banjarabio.in' ||
-        uri.host == 'www.banjarabio.in' ||
-        uri.host == 'banjarabio.app' ||
-        uri.host == 'www.banjarabio.app';
+        uri.host == 'www.banjarabio.in';
 
     // 1. Profile Routing
     // e.g. banjarabio://profile/123, banjarabio://profile?id=123, https://banjarabio.com/profile/123, https://banjarabio.com/profile?id=123

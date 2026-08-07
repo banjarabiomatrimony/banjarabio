@@ -164,6 +164,6 @@ GRANT EXECUTE ON FUNCTION public.fn_staff_actions(TEXT, JSONB) TO authenticated;
 
 INSERT INTO public.whatsapp_templates (name, category, message_template) VALUES
 ('Welcome & Verify', 'welcome', 'Namaste {name}! I am calling from BanjaraBio Matrimony. I see your profile is {completion}% complete. Can we help you finish it for better matches? 🙏'),
-('New Matches available', 'follow_up', 'Hi {name}, we found 3 new profiles matching your preferences! Your profile has {views} recent views. Open the app to check them out: https://banjarabio.app'),
+('New Matches available', 'follow_up', 'Hi {name}, we found 3 new profiles matching your preferences! Your profile has {views} recent views. Open the app to check them out: https://banjarabio.com'),
 ('Premium Benefits', 'premium_pitch', 'Hello {name}, did you know premium members get 10x more responses? I can help you with a special discount today!'),
 ('Daily Follow-up', 're_engage', 'Namaste {name}, just checking in to see if you had any trouble using the app. We are here to help you find your perfect match!');

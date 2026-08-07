@@ -1,14 +1,10 @@
 {
+  "outputDirectory": "web",
   "cleanUrls": true,
-  "routes": [
+  "rewrites": [
     {
-      "src": "/.well-known/assetlinks.json",
-      "headers": { "content-type": "application/json" },
-      "dest": "/web/.well-known/assetlinks.json"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/web/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

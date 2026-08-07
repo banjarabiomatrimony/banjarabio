@@ -49,25 +49,40 @@ void main() {
       verifyNever(() => mockCache.savePendingReferralId(any()));
     });
 
-    test('handles /profile/ path and defers when unauthenticated', () async {
-      final uri = Uri.parse('https://banjarabio.com/profile/abc-123');
+    test('handles path-based profile link (banjarabio://profile/abc-123)', () async {
+      final uri = Uri.parse('banjarabio://profile/abc-123');
       await service.handleDeepLink(uri);
-
       verify(() => mockCache.savePendingProfileId('abc-123')).called(1);
     });
 
-    test('handles /invite/ path', () async {
-      final uri = Uri.parse('https://banjarabio.com/invite/ref-456');
+    test('handles parameter-based profile link (banjarabio://profile?id=xyz-789)', () async {
+      final uri = Uri.parse('banjarabio://profile?id=xyz-789');
       await service.handleDeepLink(uri);
+      verify(() => mockCache.savePendingProfileId('xyz-789')).called(1);
+    });
 
+    test('handles path-based invite link (banjarabio://invite/ref-456)', () async {
+      final uri = Uri.parse('banjarabio://invite/ref-456');
+      await service.handleDeepLink(uri);
       verify(() => mockCache.savePendingReferralId('ref-456')).called(1);
     });
 
-    test('handles banjarabio://profile?id= custom scheme', () async {
-      final uri = Uri.parse('banjarabio://profile?id=xyz-789');
+    test('handles parameter-based invite link (banjarabio://invite?id=ref-789)', () async {
+      final uri = Uri.parse('banjarabio://invite?id=ref-789');
       await service.handleDeepLink(uri);
+      verify(() => mockCache.savePendingReferralId('ref-789')).called(1);
+    });
 
-      verify(() => mockCache.savePendingProfileId('xyz-789')).called(1);
+    test('handles path-based promo link (banjarabio://promo/SAVE20)', () async {
+      final uri = Uri.parse('banjarabio://promo/SAVE20');
+      await service.handleDeepLink(uri);
+      verify(() => mockCache.savePendingPromoCode('SAVE20')).called(1);
+    });
+
+    test('handles parameter-based promo link (banjarabio://promo?code=DISCOUNT30)', () async {
+      final uri = Uri.parse('banjarabio://promo?code=DISCOUNT30');
+      await service.handleDeepLink(uri);
+      verify(() => mockCache.savePendingPromoCode('DISCOUNT30')).called(1);
     });
 
     test('handles banjarabio://rewards custom scheme', () async {
@@ -91,11 +106,34 @@ void main() {
       verify(() => mockCache.savePendingRewardsFlag(true)).called(1);
     });
 
-    test('handles banjarabio://promo?code= custom scheme', () async {
-      final uri = Uri.parse('banjarabio://promo?code=SAVE20');
+    test('handles legacy /profile/ path', () async {
+      final uri = Uri.parse('https://banjarabio.com/profile/abc-123');
       await service.handleDeepLink(uri);
+      verify(() => mockCache.savePendingProfileId('abc-123')).called(1);
+    });
 
+    test('handles legacy /invite/ path', () async {
+      final uri = Uri.parse('https://banjarabio.com/invite/ref-456');
+      await service.handleDeepLink(uri);
+      verify(() => mockCache.savePendingReferralId('ref-456')).called(1);
+    });
+
+    test('handles legacy /promo/ path', () async {
+      final uri = Uri.parse('https://banjarabio.com/promo/SAVE20');
+      await service.handleDeepLink(uri);
       verify(() => mockCache.savePendingPromoCode('SAVE20')).called(1);
+    });
+
+    test('handles universal web profile link (https://banjarabio.com/profile?id=abc-999)', () async {
+      final uri = Uri.parse('https://banjarabio.com/profile?id=abc-999');
+      await service.handleDeepLink(uri);
+      verify(() => mockCache.savePendingProfileId('abc-999')).called(1);
+    });
+
+    test('handles play store referrer profile link (referrer=profile/xyz-888)', () async {
+      final uri = Uri.parse('https://play.google.com/store/apps/details?id=com.avishio.banjarabio&referrer=profile/xyz-888');
+      await service.handleDeepLink(uri);
+      verify(() => mockCache.savePendingProfileId('xyz-888')).called(1);
     });
 
     test('handles unknown URI path gracefully', () async {

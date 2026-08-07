@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/profile_share_card.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Service to handle premium image generation and sharing.
 class ShareService {
@@ -13,6 +15,37 @@ class ShareService {
   ShareService._();
 
   final ScreenshotController _screenshotController = ScreenshotController();
+
+  /// Launches WhatsApp directly with formatted Marathi candidate text and link.
+  Future<bool> launchWhatsAppDirectly({
+    required String text,
+    String? phone,
+  }) async {
+    try {
+      final encodedText = Uri.encodeComponent(text);
+      final phoneString = (phone != null && phone.isNotEmpty) ? 'phone=$phone&' : '';
+      
+      // 1. Try whatsapp:// scheme (Native App)
+      final nativeUri = Uri.parse('whatsapp://send?${phoneString}text=$encodedText');
+      if (await canLaunchUrl(nativeUri)) {
+        return await launchUrl(nativeUri, mode: LaunchMode.externalApplication);
+      }
+      
+      // 2. Fallback to wa.me URL
+      final webUri = Uri.parse('https://wa.me/?text=$encodedText');
+      if (await canLaunchUrl(webUri)) {
+        return await launchUrl(webUri, mode: LaunchMode.externalApplication);
+      }
+
+      // 3. System share sheet fallback
+      await Share.share(text);
+      return true;
+    } catch (e) {
+      AppLogger.error('ShareService', 'Direct WhatsApp launch failed: $e');
+      await Share.share(text);
+      return false;
+    }
+  }
 
   /// Captures a premium profile card as an image and shares it.
   Future<void> shareProfileStatus(
@@ -66,11 +99,47 @@ class ShareService {
       );
       
     } catch (e) {
-      debugPrint('BANJARABIO_SHARE: Error sharing profile: $e');
+      AppLogger.error('ShareService', 'BANJARABIO_SHARE: Error sharing profile: $e');
       if (context.mounted && Navigator.of(context).canPop()) {
         Navigator.of(context).pop();
       }
-      // Show error toast or dialog if needed
+    }
+  }
+
+  /// Specialized WhatsApp share for relatives forwarding candidate profiles to their children/relatives.
+  Future<void> shareProfileToCandidateWhatsApp(
+    BuildContext context,
+    ProfileModel profile, {
+    String? relationLabel,
+    bool directLaunchOnly = true,
+  }) async {
+    final String relationText = (relationLabel != null && relationLabel.isNotEmpty)
+        ? relationLabel
+        : 'नातेवाईक';
+
+    final String gotraStr = (profile.gotra != null && profile.gotra!.isNotEmpty)
+        ? ' • गोत्र: ${profile.gotra}'
+        : '';
+
+    final String customCaption =
+        'जय सेवालाल! 🚩 बंजाराबायो (BanjaraBio) वर $relationText साठी एक उत्तम बायो-डाटा स्थळ सापडले आहे:\n\n'
+        '👤 नाव: ${profile.fullName}\n'
+        '🎂 वय: ${profile.age} वर्षे $gotraStr\n'
+        '🎓 शिक्षण: ${profile.education.isNotEmpty ? profile.education : "माहिती उपलब्ध"}\n'
+        '💼 व्यवसाय: ${profile.profession.isNotEmpty ? profile.profession : "माहिती उपलब्ध"}\n'
+        '📍 ठिकाण: ${profile.district ?? profile.state ?? ""}\n\n'
+        '📲 *प्रोफाईल व ॲप लिंक (View Profile):*\n'
+        'https://banjarabio.com/profile/${profile.id}';
+
+    if (directLaunchOnly) {
+      await launchWhatsAppDirectly(text: customCaption);
+    } else {
+      await shareProfileStatus(
+        context,
+        profile,
+        customCaption: customCaption,
+      );
     }
   }
 }
+

@@ -84,8 +84,6 @@
                 <data android:scheme="https" android:host="www.banjarabio.com" />
                 <data android:scheme="https" android:host="banjarabio.in" />
                 <data android:scheme="https" android:host="www.banjarabio.in" />
-                <data android:scheme="https" android:host="banjarabio.app" />
-                <data android:scheme="https" android:host="www.banjarabio.app" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

@@ -10,6 +10,7 @@ import 'package:banjarabio/core/repositories/photo_repository.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/core/repositories/isolate_first_repository.dart';
 import 'package:banjarabio/core/repositories/referral_repository.dart';
+import 'package:banjarabio/core/repositories/subscription_repository.dart';
 import 'package:banjarabio/notification/features/admin_notification_service.dart';
 import 'package:banjarabio/core/repositories/influencer_repository.dart';
 import 'package:banjarabio/core/session_manager.dart';
@@ -24,6 +25,7 @@ import 'package:banjarabio/core/session_manager.dart';
 /// 3. **Isolate Offloading**: Parses large lists of JSON profiles on a background thread to prevent UI jank.
 /// 4. **Singleton Pattern**: Ensures cache lifecycle is managed correctly across the app.
 import 'package:banjarabio/core/services/read_replica_client.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Repository for managing user profiles and discovery feed
 class ProfileRepository extends IsolateFirstRepository {
@@ -72,6 +74,9 @@ class ProfileRepository extends IsolateFirstRepository {
     _feedCacheTimestamp = null;
     _lastFeedFilters = null;
     _lastSearchQuery = null;
+    _isDistrictFallback = false;
+    _lastRequestedDistrict = null;
+    _lastSelectedState = null;
   }
 
   // ---------------------------------------------------------------------------
@@ -89,6 +94,28 @@ class ProfileRepository extends IsolateFirstRepository {
   FilterCriteria? _lastFeedFilters;
   String? _lastSearchQuery;
   DateTime? _feedCacheTimestamp;
+
+  // District Fallback Discovery State
+  bool _isDistrictFallback = false;
+  String? _lastRequestedDistrict;
+  String? _lastSelectedState;
+
+  bool get isDistrictFallback => _isDistrictFallback;
+  String? get lastRequestedDistrict => _lastRequestedDistrict;
+  String? get lastSelectedState => _lastSelectedState;
+
+  // Stream for live feed updates across the app (SWR background refresh sync)
+  final StreamController<List<ProfileModel>> _feedStreamController =
+      StreamController<List<ProfileModel>>.broadcast();
+
+  /// Stream of feed updates broadcast whenever fresh profiles are fetched from API
+  Stream<List<ProfileModel>> get onFeedUpdated => _feedStreamController.stream;
+
+  void _notifyFeedUpdated(List<ProfileModel> profiles) {
+    if (!_feedStreamController.isClosed) {
+      _feedStreamController.add(profiles);
+    }
+  }
 
   // ---------------------------------------------------------------------------
   // 3. Write Operations (Create / Update / Delete)
@@ -122,7 +149,7 @@ class ProfileRepository extends IsolateFirstRepository {
 
       return BackendResponse.success(profile);
     } catch (e) {
-      debugPrint('Error creating profile: $e');
+      AppLogger.error('ProfileRepository', 'Error creating profile: $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -159,7 +186,7 @@ class ProfileRepository extends IsolateFirstRepository {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) return BackendResponse.failure('Not authenticated');
 
-      debugPrint('ProfileRepository: Updating FCM Token');
+      AppLogger.debug('ProfileRepository', 'ProfileRepository: Updating FCM Token');
       
       final response = await _supabase
           .from('profiles')
@@ -175,7 +202,33 @@ class ProfileRepository extends IsolateFirstRepository {
 
       return BackendResponse.success(null);
     } catch (e) {
-      debugPrint('ProfileRepository: updateFcmToken error: $e');
+      AppLogger.error('ProfileRepository', 'ProfileRepository: updateFcmToken error: $e');
+      return BackendResponse.failure(e.toString());
+    }
+  }
+
+  /// [NEW] Logs user browse intent to Supabase for CRM and relative-search analytics.
+  Future<BackendResponse<void>> logBrowseIntent({
+    required String relation,
+    String? targetGender,
+    String? state,
+    String? district,
+  }) async {
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) return BackendResponse.failure('Not authenticated');
+
+      AppLogger.debug('ProfileRepository', 'ProfileRepository: Logging browse intent for $relation ($targetGender)');
+      await _supabase.rpc('fn_log_user_browse_intent', params: {
+        'p_relation': relation,
+        'p_target_gender': targetGender,
+        'p_state': state,
+        'p_district': district,
+      });
+
+      return BackendResponse.success(null);
+    } catch (e) {
+      AppLogger.error('ProfileRepository', 'ProfileRepository: logBrowseIntent error: $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -247,16 +300,39 @@ class ProfileRepository extends IsolateFirstRepository {
   // 4. Read Operations (The "Get" Logic)
   // ---------------------------------------------------------------------------
 
-  /// Fetches a profile by ID
-  Future<BackendResponse<ProfileModel?>> getProfileById(String userId) async {
+  /// Fetches a profile by ID (supports profile `id` OR auth `user_id`)
+  Future<BackendResponse<ProfileModel?>> getProfileById(String idOrUserId) async {
     try {
-      // 🌐 PRO SCALE: Use Read Replica for single profile lookups
-      final response = await _readClient
-          .from('profiles')
-          .select()
-          .eq('user_id', userId)
-          .maybeSingle()
-          .timeout(const Duration(seconds: 15));
+      final cleanId = idOrUserId.trim();
+      if (cleanId.isEmpty) return BackendResponse.success(null);
+
+      // Check if input is a valid UUID
+      final isUuid = RegExp(
+        r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+      ).hasMatch(cleanId);
+
+      dynamic response;
+      if (isUuid) {
+        // Query by either table primary key 'id' OR 'user_id' for deep link parity
+        response = await _readClient
+            .from('profiles')
+            .select()
+            .or('id.eq.$cleanId,user_id.eq.$cleanId')
+            .maybeSingle()
+            .timeout(const Duration(seconds: 15));
+      } else {
+        // Fallback for human readable display ID (e.g. BBM-12345678 or short string)
+        final shortUuid = cleanId.replaceAll(
+          RegExp(r'^BB[MF]?-', caseSensitive: false),
+          '',
+        );
+        response = await _readClient
+            .from('profiles')
+            .select()
+            .ilike('id', '%$shortUuid%')
+            .maybeSingle()
+            .timeout(const Duration(seconds: 15));
+      }
 
       if (response == null) return BackendResponse.success(null);
 
@@ -269,6 +345,7 @@ class ProfileRepository extends IsolateFirstRepository {
 
       return BackendResponse.success(profile);
     } catch (e) {
+      AppLogger.error('ProfileRepository', 'Error in getProfileById: $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -302,7 +379,7 @@ class ProfileRepository extends IsolateFirstRepository {
       // Layer 2: Disk Cache (Hive)
       final localJson = _cacheService.getOwnProfile();
       if (localJson != null && localJson['user_id'] == userId) {
-        debugPrint('ProfileRepository: Returning Hive cached profile');
+        AppLogger.debug('ProfileRepository', 'ProfileRepository: Returning Hive cached profile');
 
         // Parse on main thread (single item is fast enough)
         final localProfile = ProfileModel.fromJson(localJson);
@@ -316,11 +393,11 @@ class ProfileRepository extends IsolateFirstRepository {
 
       // Layer 3: Foreground Network Fetch (If no cache exists)
       return await _fetchAndCacheOwnProfile(userId).catchError((e) {
-        debugPrint('ProfileRepository.getOwnProfile fetch error: $e');
+        AppLogger.error('ProfileRepository', 'ProfileRepository.getOwnProfile fetch error: $e');
         return BackendResponse<ProfileModel?>.failure(e.toString());
       });
     } catch (e) {
-      debugPrint('ProfileRepository.getOwnProfile Error: $e');
+      AppLogger.error('ProfileRepository', 'ProfileRepository.getOwnProfile Error: $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -347,7 +424,7 @@ class ProfileRepository extends IsolateFirstRepository {
       // 1. Memory Cache (Valid for 5 mins)
       final isInitialLoad = lastCreatedAt == null;
       if (isInitialLoad && !forceRefresh && _isFeedCacheValid(filters, searchQuery)) {
-        debugPrint('ProfileRepository: Returning Memory Cached Feed');
+        AppLogger.debug('ProfileRepository', 'ProfileRepository: Returning Memory Cached Feed');
         
         // Avoid duplicate background refreshes
         if (activeFetchFuture == null && !_isPerformingBackgroundFetch) {
@@ -364,7 +441,7 @@ class ProfileRepository extends IsolateFirstRepository {
       if (isInitialLoad && !forceRefresh && filters == null && (searchQuery == null || searchQuery.isEmpty)) {
         final diskFeedJson = _cacheService.getHomeFeed();
         if (diskFeedJson.isNotEmpty) {
-          debugPrint('ProfileRepository: Returning Disk Cached Feed (SWR)');
+          AppLogger.debug('ProfileRepository', 'ProfileRepository: Returning Disk Cached Feed (SWR)');
           
           final diskProfiles = await mapListInBackground<ProfileModel>(
             diskFeedJson,
@@ -391,6 +468,7 @@ class ProfileRepository extends IsolateFirstRepository {
       // 🚀 GUEST FIX: Skip getOwnProfile() for guests — they have no profile,
       // so calling it is wasteful and adds latency.
       final bool isGuest = _cacheService.isGuestMode();
+      final bool isRelativeBrowse = _cacheService.isRelativeBrowseMode();
       
       final rpcFuture = _readClient.rpc(
         'fn_get_filtered_feed',
@@ -403,8 +481,11 @@ class ProfileRepository extends IsolateFirstRepository {
           'p_state': filters?.state,
           'p_district': filters?.district,
           'p_taluka': filters?.taluka,
+          // 🔍 PATHWAY A: Pass explicit gender for relative browse users
+          // (they have no own profile, so auto-detection returns NULL)
+          'p_gender': filters?.gender,
         },
-      ).timeout(Duration(seconds: isGuest ? 10 : 20));
+      ).timeout(Duration(seconds: (isGuest || isRelativeBrowse) ? 10 : 20));
 
       ProfileModel? ownProfile;
       dynamic response;
@@ -412,18 +493,18 @@ class ProfileRepository extends IsolateFirstRepository {
       if (isGuest) {
         // Guest: Just fetch the feed, skip own profile entirely
         response = await rpcFuture.catchError((e) {
-          debugPrint('ProfileRepository.getProfiles RPC error (Guest): $e');
+          AppLogger.error('ProfileRepository', 'ProfileRepository.getProfiles RPC error (Guest): $e');
           return []; // Return empty list on error
         });
       } else {
         // Logged-in: Fetch own profile and feed in parallel
         final results = await Future.wait<dynamic>([
           getOwnProfile().catchError((e) {
-            debugPrint('ProfileRepository.getProfiles getOwnProfile error: $e');
+            AppLogger.error('ProfileRepository', 'ProfileRepository.getProfiles getOwnProfile error: $e');
             return BackendResponse<ProfileModel?>.failure(e.toString());
           }),
           rpcFuture.catchError((e) {
-            debugPrint('ProfileRepository.getProfiles RPC error: $e');
+            AppLogger.error('ProfileRepository', 'ProfileRepository.getProfiles RPC error: $e');
             return []; // Return empty list on error
           }),
         ]);
@@ -433,12 +514,84 @@ class ProfileRepository extends IsolateFirstRepository {
         
         // Gracefully continue even if own profile fetch failed — feed can still render
         if (ownProfile == null && !ownProfileRes.isSuccess) {
-          debugPrint('ProfileRepository: Own profile fetch failed, continuing with feed only');
+          AppLogger.error('ProfileRepository', 'ProfileRepository: Own profile fetch failed, continuing with feed only');
         }
       }
 
       final List<dynamic> rawList = response as List;
-      if (rawList.isEmpty) return BackendResponse.success([]);
+
+      // 🔍 DISTRICT CASCADE FALLBACK: If district filter is active but yields 0 results,
+      // retry without district to show state-wide or all-India profiles.
+      // This prevents empty screens for relative browse users in smaller districts.
+      if (rawList.isEmpty && filters?.district != null && lastCreatedAt == null) {
+        AppLogger.debug('ProfileRepository', '🔍 District cascade: No profiles in ${filters!.district}, falling back to wider search');
+        final fallbackResponse = await _readClient.rpc(
+          'fn_get_filtered_feed',
+          params: {
+            'p_limit': limit,
+            'p_last_created_at': null,
+            'p_search_query': searchQuery?.trim().isNotEmpty == true ? searchQuery!.trim() : null,
+            'p_min_age': filters.minAge,
+            'p_max_age': filters.maxAge,
+            'p_state': filters.state,
+            'p_district': null, // Remove district filter
+            'p_taluka': null,   // Remove taluka filter
+            'p_gender': filters.gender,
+          },
+        ).timeout(const Duration(seconds: 15));
+
+        final fallbackList = fallbackResponse as List;
+        if (fallbackList.isEmpty) {
+          if (lastCreatedAt == null) {
+            _isDistrictFallback = false;
+            _lastRequestedDistrict = null;
+            _lastSelectedState = null;
+          }
+          return BackendResponse.success([]);
+        }
+
+        final fallbackProfiles = await mapListInBackground<ProfileModel>(
+          fallbackList, ProfileModel.fromJson,
+        );
+        final fallbackIds = fallbackProfiles.map((p) => p.id).toList();
+        final fallbackPhotos = await _photoRepository.getPrimaryPhotosForProfiles(fallbackIds);
+        List<ProfileModel> fallbackEnriched = fallbackProfiles;
+        if (fallbackPhotos.isSuccess) {
+          final photoMap = {for (var p in fallbackPhotos.data) p.profileId: p};
+          fallbackEnriched = fallbackProfiles.map((p) {
+            final primaryPhoto = photoMap[p.id];
+            return primaryPhoto != null ? p.copyWith(photos: [primaryPhoto]) : p;
+          }).toList();
+        }
+
+        if (lastCreatedAt == null) {
+          _isDistrictFallback = true;
+          _lastRequestedDistrict = filters.district;
+          _lastSelectedState = filters.state;
+
+          _cachedFeed = fallbackEnriched;
+          _lastFeedFilters = filters;
+          _lastSearchQuery = searchQuery;
+          _feedCacheTimestamp = DateTime.now();
+          _notifyFeedUpdated(fallbackEnriched);
+        }
+        return BackendResponse.success(fallbackEnriched);
+      }
+
+      if (rawList.isEmpty) {
+        if (lastCreatedAt == null) {
+          _isDistrictFallback = false;
+          _lastRequestedDistrict = null;
+          _lastSelectedState = null;
+        }
+        return BackendResponse.success([]);
+      }
+
+      if (lastCreatedAt == null) {
+        _isDistrictFallback = false;
+        _lastRequestedDistrict = null;
+        _lastSelectedState = null;
+      }
 
       // 4. Parse on Isolate (Background Thread)
       final List<ProfileModel> profiles =
@@ -474,11 +627,12 @@ class ProfileRepository extends IsolateFirstRepository {
           final feedJson = enrichedProfiles.map((p) => p.toJson()).toList();
           _cacheService.saveHomeFeed(feedJson);
         }
+        _notifyFeedUpdated(enrichedProfiles);
       }
 
       return BackendResponse.success(enrichedProfiles);
     } catch (e) {
-      debugPrint('ProfileRepository.getProfiles Error: $e');
+      AppLogger.error('ProfileRepository', 'ProfileRepository.getProfiles Error: $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -506,7 +660,7 @@ class ProfileRepository extends IsolateFirstRepository {
             .eq('profile_id', profile.id)
             .maybeSingle()
             .catchError((e) {
-              debugPrint('Error fetching bookmark for ${profile.id}: $e');
+              AppLogger.error('ProfileRepository', 'Error fetching bookmark for ${profile.id}: $e');
               return null;
             }),
         _readClient
@@ -516,11 +670,11 @@ class ProfileRepository extends IsolateFirstRepository {
             .or('and(sharer_id.eq.$myProfileId,recipient_id.eq.${profile.id}),and(sharer_id.eq.${profile.id},recipient_id.eq.$myProfileId)')
             .maybeSingle()
             .catchError((e) {
-              debugPrint('Error fetching match for ${profile.id}: $e');
+              AppLogger.error('ProfileRepository', 'Error fetching match for ${profile.id}: $e');
               return null;
             }),
         _photoRepository.getPhotos(profile.id).catchError((e) {
-          debugPrint('Error fetching photos for ${profile.id}: $e');
+          AppLogger.error('ProfileRepository', 'Error fetching photos for ${profile.id}: $e');
           return BackendResponse<List<PhotoModel>>.success([]);
         }),
       ]);
@@ -538,7 +692,7 @@ class ProfileRepository extends IsolateFirstRepository {
         photos: photos.isNotEmpty ? photos : profile.photos,
       );
     } catch (e) {
-      debugPrint('Error in getProfileMetadata: $e');
+      AppLogger.error('ProfileRepository', 'Error in getProfileMetadata: $e');
       return profile;
     }
   }
@@ -554,7 +708,7 @@ class ProfileRepository extends IsolateFirstRepository {
 
     if (idsToEnrich.isEmpty) return;
 
-    debugPrint('ProfileRepository: Predictively enriching ${idsToEnrich.length} profiles');
+    AppLogger.debug('ProfileRepository', 'ProfileRepository: Predictively enriching ${idsToEnrich.length} profiles');
 
     try {
       final userId = _supabase.auth.currentUser?.id;
@@ -613,7 +767,7 @@ class ProfileRepository extends IsolateFirstRepository {
         }
       }
     } catch (e) {
-      debugPrint('ProfileRepository: Predictive enrichment failed: $e');
+      AppLogger.error('ProfileRepository', 'ProfileRepository: Predictive enrichment failed: $e');
     }
   }
 
@@ -736,7 +890,7 @@ class ProfileRepository extends IsolateFirstRepository {
     Map<String, dynamic> payload,
   ) async {
     try {
-      debugPrint('RPC Call: fn_manage_profile -> $action');
+      AppLogger.debug('ProfileRepository', 'RPC Call: fn_manage_profile -> $action');
       final response = await _supabase.rpc(
         'fn_manage_profile',
         params: {'action': action, 'payload': payload},
@@ -768,7 +922,7 @@ class ProfileRepository extends IsolateFirstRepository {
       }
 
       // Debug: log raw is_pdf_unlocked from DB (helps diagnose payment→unlock sync)
-      debugPrint('ProfileRepository: Raw DB is_pdf_unlocked=${response['is_pdf_unlocked']}');
+      AppLogger.debug('ProfileRepository', 'ProfileRepository: Raw DB is_pdf_unlocked=${response['is_pdf_unlocked']}');
 
       var profile = ProfileModel.fromJson(response);
 
@@ -817,7 +971,7 @@ class ProfileRepository extends IsolateFirstRepository {
 
       result.fold(
         onSuccess: (_) async {
-          debugPrint('Referral completed successfully for $userId');
+          AppLogger.debug('ProfileRepository', 'Referral completed successfully for $userId');
           await _cacheService.clearPendingReferralId();
         },
         onFailure: (err) => debugPrint('Failed to complete referral: $err'),
@@ -828,17 +982,17 @@ class ProfileRepository extends IsolateFirstRepository {
   Future<void> _checkPendingPromoCode() async {
     final pendingPromoCode = _cacheService.getPendingPromoCode();
     if (pendingPromoCode != null) {
-      debugPrint('ProfileRepository: Registering pending promo code: $pendingPromoCode');
+      AppLogger.debug('ProfileRepository', 'ProfileRepository: Registering pending promo code: $pendingPromoCode');
       final result =
           await _influencerRepository.registerCreatorReferral(pendingPromoCode);
 
       result.fold(
         onSuccess: (_) async {
-          debugPrint('Influencer referral registered successfully');
+          AppLogger.debug('ProfileRepository', 'Influencer referral registered successfully');
           await _cacheService.clearPendingPromoCode();
         },
         onFailure: (err) {
-          debugPrint('Failed to register influencer referral: $err');
+          AppLogger.error('ProfileRepository', 'Failed to register influencer referral: $err');
           if (err.contains('Invalid')) {
             _cacheService.clearPendingPromoCode();
           }
@@ -856,6 +1010,11 @@ class ProfileRepository extends IsolateFirstRepository {
     _cacheTimestamp = DateTime.now();
     // 🚀 Sync with SessionManager for global visibility (e.g., role-based UI checks)
     SessionManager.instance.setCurrentProfile(profile);
+    // 🎁 Sync trial-aware premium status: paid subscription OR within 7-day trial
+    SessionManager.instance.setPremium(
+      profile.isPremium ||
+          SubscriptionRepository.isWithinFreeTrial(profile.createdAt),
+    );
   }
 
   bool _isMemoryCacheValid(String userId) {
@@ -905,7 +1064,7 @@ class ProfileRepository extends IsolateFirstRepository {
       
       await fetchFuture;
     } catch (e) {
-      debugPrint('ProfileRepository: Background refresh failed: $e');
+      AppLogger.error('ProfileRepository', 'ProfileRepository: Background refresh failed: $e');
     } finally {
       _isPerformingBackgroundFetch = false;
       activeFetchFuture = null;
@@ -921,7 +1080,7 @@ class ProfileRepository extends IsolateFirstRepository {
     final updated = profile.copyWith(isPdfUnlocked: true);
     _updateMemoryCache(updated);
     _cacheService.saveOwnProfile(updated.toJson());
-    debugPrint('ProfileRepository: Optimistic PDF unlock applied to cache');
+    AppLogger.debug('ProfileRepository', 'ProfileRepository: Optimistic PDF unlock applied to cache');
   }
 
   /// Static mapper for bookmarks (Must be static for Isolate)
