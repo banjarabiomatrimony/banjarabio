@@ -505,6 +505,7 @@
     .social-icon-wa { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
     .social-icon-ig { background: rgba(225, 29, 72, 0.15); color: #fb7185; border: 1px solid rgba(225, 29, 72, 0.3); }
     .social-icon-li { background: rgba(14, 116, 144, 0.15); color: #38bdf8; border: 1px solid rgba(14, 116, 144, 0.3); }
+    .social-icon-mail { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
     .social-icon-play { background: rgba(245, 158, 11, 0.15); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.3); }
     .social-icon-apple { background: rgba(255, 255, 255, 0.1); color: #e2e8f0; border: 1px solid rgba(255, 255, 255, 0.2); }
 
@@ -544,6 +545,9 @@
 
     .action-li { background: rgba(14, 116, 144, 0.2); color: #38bdf8; }
     .social-hub-card:hover .action-li { background: #0284c7; color: #ffffff; }
+
+    .action-mail { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+    .social-hub-card:hover .action-mail { background: #3b82f6; color: #ffffff; }
 
     .action-play { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
     .social-hub-card:hover .action-play { background: #f59e0b; color: #ffffff; }
@@ -950,13 +954,11 @@
         
         window.addEventListener('DOMContentLoaded', function() {
           var redirectBanner = document.getElementById('redirect-banner');
-          var appBtn = document.getElementById('hero-open-app');
           var playBtn = document.getElementById('hero-playstore');
           var redirectTitle = document.getElementById('redirect-title');
           var redirectSub = document.getElementById('redirect-sub');
 
           if (redirectBanner) redirectBanner.style.display = 'block';
-          if (appBtn) appBtn.href = customScheme;
           if (playBtn) playBtn.href = playStoreUrl;
 
           if (redirectTitle) redirectTitle.innerText = "Opening Candidate Profile in App...";
@@ -1020,18 +1022,12 @@
       <p>The safest, most trusted matrimonial platform crafted specifically for the Gor Banjara community. Featuring multi-level verified profiles, strict Gotra matching, instant bio-data PDF builder, and regional Melava event updates.</p>
 
       <div class="cta-group">
-        <a id="hero-open-app" href="banjarabio://home" class="btn-hero btn-primary">
-          <span>📲</span> Open App
-        </a>
-        <a id="hero-playstore" href="https://play.google.com/store/apps/details?id=com.avishio.banjarabio" target="_blank" class="btn-hero btn-secondary">
-          <span>🛍️</span> Google Play
+        <a id="hero-playstore" href="https://play.google.com/store/apps/details?id=com.avishio.banjarabio" target="_blank" class="btn-hero btn-primary">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.996 1.996 0 0 1-.61-1.424V3.238c0-.53.21-1.04.609-1.424zM15.206 13.414l2.793 2.793-11.8 6.743 9.007-9.536zm0-2.828L6.2 1.05l11.8 6.743-2.794 2.793zm1.414 1.414l3.964 2.265a1.5 1.5 0 0 1 0 2.57l-3.964 2.265v-7.1z"/></svg> Google Play Store
         </a>
         <div class="btn-hero btn-appstore" title="iOS App Coming Soon">
           <span>🍏</span> App Store <span class="badge-coming-soon">Coming Soon</span>
         </div>
-        <a id="hero-whatsapp" href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" class="btn-hero btn-wa">
-          <span>💬</span> WhatsApp
-        </a>
       </div>
     </section>
 
@@ -1087,61 +1083,51 @@
       </div>
     </section>
 
-    <!-- Social & App Hub Section -->
+    <!-- Connect & Community Hub Section -->
     <section class="social-hub-section">
-      <h2 class="section-title">Connect & Download BanjaraBio</h2>
-      <p class="section-sub">Access verified Gor Banjara matrimony candidates on your phone & follow our official handles.</p>
+      <h2 class="section-title">Connect With BanjaraBio</h2>
+      <p class="section-sub">Join our official community channels, get 24/7 helpdesk support, and follow our social handles.</p>
 
       <div class="social-hub-grid">
 
-        <!-- PlayStore -->
-        <a href="https://play.google.com/store/apps/details?id=com.avishio.banjarabio" target="_blank" class="social-hub-card">
-          <div class="social-icon-box social-icon-play">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.996 1.996 0 0 1-.61-1.424V3.238c0-.53.21-1.04.609-1.424zM15.206 13.414l2.793 2.793-11.8 6.743 9.007-9.536zm0-2.828L6.2 1.05l11.8 6.743-2.794 2.793zm1.414 1.414l3.964 2.265a1.5 1.5 0 0 1 0 2.57l-3.964 2.265v-7.1z"/></svg>
-          </div>
-          <h3>Google Play Store</h3>
-          <p>Download Android App</p>
-          <div class="social-action-btn action-play">Get App ↗</div>
-        </a>
-
-        <!-- AppStore -->
-        <div class="social-hub-card" style="opacity: 0.85;">
-          <div class="social-icon-box social-icon-apple">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.3c.64-.78 1.08-1.85.96-2.93-.93.04-2.06.62-2.73 1.4-.59.69-1.11 1.79-.97 2.85 1.05.08 2.1-.54 2.74-1.32z"/></svg>
-          </div>
-          <h3>Apple App Store</h3>
-          <p>iOS Mobile App</p>
-          <div class="social-action-btn action-apple">Coming Soon ⏳</div>
-        </div>
-
-        <!-- WhatsApp -->
-        <a href="https://wa.me/918186050406" target="_blank" class="social-hub-card">
+        <!-- WhatsApp Helpdesk -->
+        <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" class="social-hub-card">
           <div class="social-icon-box social-icon-wa">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
           </div>
           <h3>WhatsApp Helpdesk</h3>
-          <p>+91 8186050406</p>
+          <p>+91 8186050406 (24/7 Voice & Chat)</p>
           <div class="social-action-btn action-wa">Chat Support ↗</div>
         </a>
 
-        <!-- Instagram -->
+        <!-- Instagram Community -->
         <a href="https://www.instagram.com/banjarabio.matrimony/" target="_blank" class="social-hub-card">
           <div class="social-icon-box social-icon-ig">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
           </div>
-          <h3>Instagram Handle</h3>
+          <h3>Instagram Community</h3>
           <p>@banjarabio.matrimony</p>
           <div class="social-action-btn action-ig">Follow Us ↗</div>
         </a>
 
-        <!-- LinkedIn -->
+        <!-- LinkedIn Page -->
         <a href="https://www.linkedin.com/company/banjarabio/" target="_blank" class="social-hub-card">
           <div class="social-icon-box social-icon-li">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
           </div>
-          <h3>LinkedIn Page</h3>
+          <h3>LinkedIn Official</h3>
           <p>BanjaraBio Matrimony</p>
           <div class="social-action-btn action-li">Connect ↗</div>
+        </a>
+
+        <!-- Official Email Desk -->
+        <a href="mailto:support@banjarabio.com" class="social-hub-card">
+          <div class="social-icon-box social-icon-mail">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          </div>
+          <h3>Official Email Desk</h3>
+          <p>support@banjarabio.com</p>
+          <div class="social-action-btn action-mail">Send Email ↗</div>
         </a>
 
       </div>
