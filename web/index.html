@@ -259,32 +259,38 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 24px;
       flex-wrap: wrap;
+      margin-top: 36px;
     }
 
     .btn-hero {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 12px;
-      padding: 16px 36px;
-      border-radius: 16px;
+      justify-content: flex-start;
+      gap: 16px;
+      padding: 18px 36px;
+      min-height: 74px;
+      min-width: 270px;
+      border-radius: 20px;
       font-family: 'Outfit', sans-serif;
-      font-size: 17px;
-      font-weight: 800;
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      box-sizing: border-box;
+    }
+
+    .btn-hero:hover {
+      transform: translateY(-5px) scale(1.04);
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--rose-primary), #be123c);
+      background: linear-gradient(135deg, #e11d48, #be123c);
       color: #ffffff;
-      box-shadow: 0 10px 30px rgba(225, 29, 72, 0.4);
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 14px 40px rgba(225, 29, 72, 0.5);
     }
     .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 40px rgba(225, 29, 72, 0.6);
+      box-shadow: 0 20px 50px rgba(225, 29, 72, 0.7);
     }
 
     .btn-secondary {
@@ -307,6 +313,53 @@
     .btn-wa:hover {
       transform: translateY(-3px);
       box-shadow: 0 15px 40px rgba(34, 197, 94, 0.6);
+    }
+
+    .btn-appstore {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(245, 158, 11, 0.45);
+      color: #ffffff;
+      cursor: default;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+    }
+    .btn-appstore:hover {
+      border-color: rgba(245, 158, 11, 0.8);
+      box-shadow: 0 18px 48px rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-store-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      line-height: 1.2;
+    }
+
+    .btn-store-sub {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      opacity: 0.9;
+    }
+
+    .btn-store-main {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    .badge-coming-soon {
+      font-size: 11px;
+      font-weight: 800;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.35), rgba(217, 119, 6, 0.45));
+      color: #fef08a;
+      border: 1px solid rgba(245, 158, 11, 0.7);
+      padding: 3px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.5px;
+      margin-left: 8px;
+      text-transform: uppercase;
     }
 
     /* Sant Sevalal Maharaj Blessing Section */
@@ -432,23 +485,6 @@
       }
     }
 
-    .btn-appstore {
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid var(--border-glass);
-      color: var(--text-muted);
-      cursor: default;
-    }
-
-    .badge-coming-soon {
-      font-size: 11px;
-      font-weight: 700;
-      background: rgba(245, 158, 11, 0.2);
-      color: var(--gold-light);
-      border: 1px solid rgba(245, 158, 11, 0.35);
-      padding: 2px 8px;
-      border-radius: 999px;
-      letter-spacing: 0.3px;
-    }
 
     /* Social & App Connect Hub */
     .social-hub-section {
@@ -1034,10 +1070,22 @@
 
       <div class="cta-group">
         <a id="hero-playstore" href="https://play.google.com/store/apps/details?id=com.avishio.banjarabio" target="_blank" class="btn-hero btn-primary">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.996 1.996 0 0 1-.61-1.424V3.238c0-.53.21-1.04.609-1.424zM15.206 13.414l2.793 2.793-11.8 6.743 9.007-9.536zm0-2.828L6.2 1.05l11.8 6.743-2.794 2.793zm1.414 1.414l3.964 2.265a1.5 1.5 0 0 1 0 2.57l-3.964 2.265v-7.1z"/></svg> Google Play Store
+          <img src="assets/social/playstore.svg" alt="Google Play Store" style="width:40px; height:40px; object-fit:contain; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.35));">
+          <div class="btn-store-text">
+            <span class="btn-store-sub" style="color: rgba(255,255,255,0.9);">GET IT ON</span>
+            <span class="btn-store-main" style="color: #ffffff;">Google Play Store</span>
+          </div>
         </a>
+
         <div class="btn-hero btn-appstore" title="iOS App Coming Soon">
-          <span>🍏</span> App Store <span class="badge-coming-soon">Coming Soon</span>
+          <img src="assets/social/appstore.svg" alt="App Store" style="width:40px; height:40px; object-fit:contain; filter: brightness(0) invert(1) drop-shadow(0 2px 5px rgba(0,0,0,0.4));">
+          <div class="btn-store-text">
+            <div style="display:flex; align-items:center; flex-wrap:nowrap;">
+              <span class="btn-store-sub" style="color: #94a3b8;">DOWNLOAD ON</span>
+              <span class="badge-coming-soon">Coming Soon</span>
+            </div>
+            <span class="btn-store-main" style="color: #f8fafc;">App Store</span>
+          </div>
         </div>
       </div>
     </section>
