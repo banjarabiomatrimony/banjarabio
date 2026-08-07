@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Privacy Policy — BanjaraBio Matrimony</title>
-  <meta name="description" content="Privacy Policy for BanjaraBio Matrimony app. Learn how we protect candidate data, photos, Gotra information, and Aadhaar verification details.">
+  <title>Gor Banjara Success Stories — BanjaraBio Matrimony</title>
+  <meta name="description" content="Read heart-warming marriage success stories of Gor Banjara couples and families who found their soulmates through BanjaraBio Matrimony.">
   <link rel="icon" type="image/png" href="favicon.png"/>
 
   <!-- Google Fonts -->
@@ -49,8 +49,8 @@
       pointer-events: none;
       z-index: 0;
     }
-    .glow-1 { top: -100px; left: 50%; transform: translateX(-50%); width: 700px; height: 400px; background: rgba(225, 29, 72, 0.15); }
-    .glow-2 { bottom: 20%; right: 5%; width: 450px; height: 450px; background: rgba(245, 158, 11, 0.1); }
+    .glow-1 { top: -100px; left: 50%; transform: translateX(-50%); width: 750px; height: 450px; background: rgba(245, 158, 11, 0.15); }
+    .glow-2 { bottom: 20%; left: 5%; width: 450px; height: 450px; background: rgba(225, 29, 72, 0.12); }
 
     /* Header Nav */
     header {
@@ -103,18 +103,15 @@
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 20px;
     }
 
     .nav-links a {
       color: var(--text-muted);
       text-decoration: none;
       font-weight: 500;
-      font-size: 15px;
+      font-size: 14px;
       transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
     .nav-links a:hover, .nav-links a.active {
@@ -145,68 +142,89 @@
     /* Main Container */
     main {
       width: 100%;
-      max-width: 1000px;
+      max-width: 1100px;
       z-index: 1;
       padding: 0 16px 80px 16px;
     }
 
     .page-hero {
       text-align: center;
-      margin-bottom: 36px;
+      margin-bottom: 44px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: var(--gold-light);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 16px;
     }
 
     h1 {
       font-family: 'Outfit', sans-serif;
-      font-size: 40px;
+      font-size: 42px;
       font-weight: 800;
       color: #ffffff;
-      margin-bottom: 8px;
+      margin-bottom: 16px;
+      line-height: 1.25;
     }
 
-    .last-updated {
-      font-size: 14px;
-      color: var(--gold-light);
-      font-weight: 600;
+    .story-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+      margin-bottom: 40px;
     }
 
-    .policy-card {
+    .story-card {
       background: var(--card-bg);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border-glass);
       border-radius: 28px;
-      padding: 44px 36px;
-      margin-bottom: 40px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      padding: 32px;
     }
 
-    h2 {
+    .couple-names {
       font-family: 'Outfit', sans-serif;
-      font-size: 22px;
-      font-weight: 700;
+      font-size: 24px;
+      font-weight: 800;
       color: var(--gold-light);
-      margin-top: 32px;
-      margin-bottom: 14px;
+      margin-bottom: 8px;
     }
 
-    p, li {
-      font-size: 15px;
-      color: #cbd5e1;
-      line-height: 1.7;
+    .location-tag {
+      font-size: 13px;
+      color: var(--rose-light);
+      font-weight: 600;
       margin-bottom: 16px;
     }
 
-    ul {
-      margin-left: 24px;
-      margin-bottom: 20px;
+    p {
+      font-size: 15px;
+      color: #cbd5e1;
+      line-height: 1.7;
     }
 
-    .highlight-box {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      border-radius: 16px;
-      padding: 20px;
-      margin: 20px 0;
+    .btn-app-dl {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--rose-primary), #be123c);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 16px;
+      text-decoration: none;
+      margin-top: 16px;
+      box-shadow: 0 4px 15px rgba(225, 29, 72, 0.4);
     }
 
     /* Footer */
@@ -312,15 +330,14 @@
 
     @keyframes pulse-ring {
       0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-      70% { box-shadow: 0 0 0 15px rgba(34, 197, 94, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+      70% { box-shadow: 0 0 0 15px rgba(34, 197, 94, 0.7); }
+      100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
     }
 
     @media (max-width: 768px) {
       header { flex-direction: column; gap: 16px; margin: 10px auto 30px auto; }
-      .nav-links { flex-wrap: wrap; justify-content: center; gap: 14px; }
+      .nav-links { flex-wrap: wrap; justify-content: center; gap: 12px; }
       h1 { font-size: 32px; }
-      .policy-card { padding: 28px 20px; }
     }
   </style>
 </head>
@@ -341,7 +358,7 @@
       <a href="/trust-and-verification">Trust System</a>
       <a href="/biodata-maker">Bio-Data Maker</a>
       <a href="/melava">Melava Hub</a>
-      <a href="/success-stories">Success Stories</a>
+      <a href="/success-stories" class="active">Success Stories</a>
       <a href="/faq">FAQ</a>
       <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" class="btn-header-wa">💬 Support</a>
     </nav>
@@ -351,53 +368,34 @@
   <main>
 
     <div class="page-hero">
-      <h1>Privacy Policy</h1>
-      <div class="last-updated">Last Updated: August 7, 2026</div>
+      <div class="badge-pill">❤️ Community Trust & Success</div>
+      <h1>Gor Banjara Success Stories</h1>
     </div>
 
-    <div class="policy-card">
-      <p>Welcome to <strong>BanjaraBio Matrimony</strong> ("BanjaraBio", "we", "us", or "our"). We respect your privacy and are committed to protecting the personal data of our users within the Gor Banjara community. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application and website (https://banjarabio.com).</p>
-
-      <h2>1. Information We Collect</h2>
-      <p>To provide personalized matrimonial matching and bio-data services, we collect:</p>
-      <ul>
-        <li><strong>Account Details:</strong> Mobile number, Full Name, Date of Birth, Gender, Marital Status.</li>
-        <li><strong>Cultural & Gotra Lineage:</strong> Gotra, Mama Gotra, Pada, Clan, Sub-caste, and Native Village.</li>
-        <li><strong>Verification Documents:</strong> Optional Government-issued IDs (Aadhaar / Voter ID) strictly used for Trust Score badge verification.</li>
-        <li><strong>Photos & Bio-Data:</strong> Candidate photographs, educational qualification, career details, and family background.</li>
-      </ul>
-
-      <div id="photos" class="highlight-box">
-        <h2 style="margin-top:0;">2. Photo & Contact Privacy Controls</h2>
-        <p>We respect family sensitivity around candidate photographs and phone details:</p>
-        <ul>
-          <li><strong>Photo Blur Feature:</strong> You can choose to keep your profile photos blurred until you explicitly accept a view request from a candidate family.</li>
-          <li><strong>Contact Masking:</strong> Phone numbers are hidden by default and only disclosed to mutually interested or verified candidates.</li>
-        </ul>
+    <div class="story-grid">
+      <div class="story-card">
+        <div class="couple-names">Rahul Rathod &amp; Pooja Pawar</div>
+        <div class="location-tag">📍 Nanded, Maharashtra &bull; Gotra Matched</div>
+        <p>"Finding a candidate with exact Gotra alignment and verifiable family background was so easy on BanjaraBio. The PDF bio-data generator saved us so much time sharing with relatives on WhatsApp!"</p>
       </div>
 
-      <h2>3. How We Use Your Information</h2>
-      <p>Your data is exclusively used for matrimonial matching purposes:</p>
-      <ul>
-        <li>To generate Gotra-compliant partner recommendations.</li>
-        <li>To allow export of customized bio-data PDF documents.</li>
-        <li>To send match notifications via Firebase Cloud Messaging (FCM) and WhatsApp follow-ups.</li>
-        <li>To prevent fraudulent profiles through Trust Score verification algorithms.</li>
-      </ul>
+      <div class="story-card">
+        <div class="couple-names">Vikas Jadhav &amp; Sunita Chauhan</div>
+        <div class="location-tag">📍 Nizamabad, Telangana &bull; Verified Badge</div>
+        <p>"As parents, security was our top concern. BanjaraBio's Aadhaar verification badge and Photo Blur feature gave us complete peace of mind."</p>
+      </div>
 
-      <h2>4. Data Security & Storage</h2>
-      <p>We do NOT sell, rent, or trade your personal information to third-party advertisers. Your data is stored securely using encrypted Supabase PostgreSQL databases and protected by industry-standard row-level security (RLS) policies.</p>
+      <div class="story-card">
+        <div class="couple-names">Anand Ade &amp; Priya Rathod</div>
+        <div class="location-tag">📍 Kalaburagi, Karnataka &bull; Melava Match</div>
+        <p>"We connected through the BanjaraBio Vadhu-Var Melava hub. The app helped us organize our meetings respectfully within our community culture."</p>
+      </div>
+    </div>
 
-      <h2>5. Account Deletion & Rights</h2>
-      <p>You have full control over your data. You may request account deletion or data removal at any time directly through the app settings or by contacting our support team at <a href="mailto:banjarabiomatrimony@gmail.com" style="color:#f59e0b;">banjarabiomatrimony@gmail.com</a>.</p>
-
-      <h2>6. Contact Support</h2>
-      <p>For privacy inquiries, reach out to our team at:</p>
-      <p>
-        <strong>Email:</strong> banjarabiomatrimony@gmail.com<br>
-        <strong>WhatsApp Helpdesk:</strong> +91 8186050406<br>
-        <strong>Website:</strong> https://banjarabio.com
-      </p>
+    <div class="story-card" style="text-align:center; max-width:800px; margin:0 auto;">
+      <h2 style="font-family:'Outfit',sans-serif; color:var(--gold-light); margin-bottom:12px;">Start Your Rishta Journey Today</h2>
+      <p>Join thousands of Gor Banjara candidates and families on BanjaraBio Matrimony.</p>
+      <a href="https://play.google.com/store/apps/details?id=com.avishio.banjarabio" target="_blank" class="btn-app-dl">📲 Download BanjaraBio App</a>
     </div>
 
   </main>
@@ -418,10 +416,6 @@
           <li><a href="/trust-and-verification">Trust & Safety</a></li>
           <li><a href="/biodata-maker">Bio-Data Maker</a></li>
           <li><a href="/melava">Melava Hub</a></li>
-          <li><a href="/success-stories">Success Stories</a></li>
-          <li><a href="/faq">FAQ</a></li>
-          <li><a href="/about-us">About Us</a></li>
-          <li><a href="/contact-us">Contact Us</a></li>
         </ul>
       </div>
 

@@ -23,6 +23,38 @@
       "destination": "/melava.html"
     },
     {
+      "source": "/gotra-guide",
+      "destination": "/gotra-guide.html"
+    },
+    {
+      "source": "/trust-and-verification",
+      "destination": "/trust-and-verification.html"
+    },
+    {
+      "source": "/biodata-maker",
+      "destination": "/biodata-maker.html"
+    },
+    {
+      "source": "/success-stories",
+      "destination": "/success-stories.html"
+    },
+    {
+      "source": "/faq",
+      "destination": "/faq.html"
+    },
+    {
+      "source": "/p/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/profile/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/invite/:path*",
+      "destination": "/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
