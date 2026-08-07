@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Contact Us — BanjaraBio Matrimony</title>
+  <meta name="description" content="Get in touch with BanjaraBio Matrimony support team, staff assistance, and community helpline.">
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #070a12;
+      --card-bg: rgba(18, 26, 43, 0.8);
+      --gold-primary: #f59e0b;
+      --rose-primary: #e11d48;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #090d16 65%, #030712 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 16px;
+    }
+
+    header {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 40px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--rose-primary), var(--gold-primary));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      color: #ffffff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--gold-primary);
+    }
+
+    main {
+      width: 100%;
+      max-width: 900px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 40px 32px;
+      margin-bottom: 60px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 16px;
+      color: #cbd5e1;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .contact-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .contact-icon {
+      font-size: 32px;
+    }
+
+    .contact-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .contact-card p {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-bottom: 0;
+    }
+
+    .btn-contact {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--rose-primary), #be123c);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      margin-top: 8px;
+      transition: transform 0.2s;
+    }
+
+    .btn-contact:hover {
+      transform: translateY(-2px);
+    }
+
+    footer {
+      width: 100%;
+      max-width: 1000px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 32px 0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #64748b;
+    }
+
+    footer a { color: #94a3b8; text-decoration: none; }
+    footer a:hover { color: var(--gold-primary); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="/" class="nav-brand">
+      <div class="brand-logo">💍</div>
+      <div class="brand-title">BanjaraBio</div>
+    </a>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/about-us">About Us</a>
+      <a href="/melava">Melava Hub</a>
+      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/contact-us" class="active">Contact Us</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Contact & Support</h1>
+    <p>Have questions about profile verification, Gotra matching, or need assistance registering candidate profiles? Our community support team is here to help!</p>
+
+    <div class="contact-grid">
+      <!-- Card 1 -->
+      <div class="contact-card">
+        <div class="contact-icon">📧</div>
+        <h3>Email Support</h3>
+        <p>Send your queries or feedback directly to our technical and verification desk.</p>
+        <a href="mailto:support@banjarabio.com" class="btn-contact">Email Us</a>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="contact-card">
+        <div class="contact-icon">💬</div>
+        <h3>WhatsApp Helpline</h3>
+        <p>Chat directly with our staff for bio-data help and offline registration assistance.</p>
+        <a href="https://play.google.com/store/apps/details?id=com.avishio.banjarabio" class="btn-contact">Open WhatsApp Help</a>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="contact-card">
+        <div class="contact-icon">🤝</div>
+        <h3>Community Volunteer Network</h3>
+        <p>Interested in becoming a verified BanjaraBio volunteer to help local families?</p>
+        <a href="/melava" class="btn-contact">Join Volunteer Network</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div>&copy; 2026 BanjaraBio Matrimony. All rights reserved.</div>
+    <div><a href="/privacy-policy">Privacy Policy</a></div>
+  </footer>
+
+</body>
+</html>

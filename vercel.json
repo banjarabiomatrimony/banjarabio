@@ -3,6 +3,26 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/privacy-policy",
+      "destination": "/privacy-policy.html"
+    },
+    {
+      "source": "/terms-and-conditions",
+      "destination": "/terms-and-conditions.html"
+    },
+    {
+      "source": "/about-us",
+      "destination": "/about-us.html"
+    },
+    {
+      "source": "/contact-us",
+      "destination": "/contact-us.html"
+    },
+    {
+      "source": "/melava",
+      "destination": "/melava.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

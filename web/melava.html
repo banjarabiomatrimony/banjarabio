@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Digital Melava Hub — BanjaraBio Matrimony</title>
+  <meta name="description" content="Explore upcoming Gor Banjara matrimonial Melava gatherings, digital events, and community trust partnerships.">
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #070a12;
+      --card-bg: rgba(18, 26, 43, 0.8);
+      --gold-primary: #f59e0b;
+      --rose-primary: #e11d48;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #090d16 65%, #030712 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 16px;
+    }
+
+    header {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 40px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--rose-primary), var(--gold-primary));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      color: #ffffff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--gold-primary);
+    }
+
+    main {
+      width: 100%;
+      max-width: 900px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 40px 32px;
+      margin-bottom: 60px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 16px;
+      color: #cbd5e1;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .event-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .event-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .event-tag {
+      background: rgba(225, 29, 72, 0.2);
+      color: #f43f5e;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    .event-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .event-card p {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-bottom: 0;
+    }
+
+    .btn-event {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 24px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--rose-primary), #be123c);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 15px;
+      align-self: flex-start;
+      margin-top: 8px;
+    }
+
+    footer {
+      width: 100%;
+      max-width: 1000px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 32px 0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #64748b;
+    }
+
+    footer a { color: #94a3b8; text-decoration: none; }
+    footer a:hover { color: var(--gold-primary); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="/" class="nav-brand">
+      <div class="brand-logo">💍</div>
+      <div class="brand-title">BanjaraBio</div>
+    </a>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/about-us">About Us</a>
+      <a href="/melava" class="active">Melava Hub</a>
+      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/contact-us">Contact Us</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="badge">🎪 Community Gatherings & Digital Events</div>
+    <h1>Gor Banjara Melava Hub</h1>
+    <p>Discover regional marriage Melavas, digital partnership events, and community trust gatherings across India. Join in person or explore verified candidate profiles online through the BanjaraBio app.</p>
+
+    <!-- Event 1 -->
+    <div class="event-card">
+      <div class="event-header">
+        <span class="event-tag">UPCOMING EVENT</span>
+        <span style="font-size: 13px; color:#f59e0b; font-weight:600;">📍 Maharashtra & Telangana Region</span>
+      </div>
+      <h3>Maha Banjara Matrimonial Melava</h3>
+      <p>A grand regional gathering bringing together candidate families from Pune, Sambhajinagar, Nanded, Hyderabad, and surrounding Tanda communities. Explore digital profile registration kiosks on site!</p>
+      <a href="https://play.google.com/store/apps/details?id=com.avishio.banjarabio" class="btn-event">📲 Register Profile in App</a>
+    </div>
+
+    <!-- Event 2 -->
+    <div class="event-card">
+      <div class="event-header">
+        <span class="event-tag" style="background:rgba(245,158,11,0.2); color:#fbbf24;">DIGITAL PARTNERSHIP</span>
+        <span style="font-size: 13px; color:#94a3b8; font-weight:600;">🤝 Trust MoU Initiative</span>
+      </div>
+      <h3>Community Trust Partnership Network</h3>
+      <p>Are you a Banjara Seva Sangh leader or Trust trustee? Partner with BanjaraBio to host digital Melavas for your district community members.</p>
+      <a href="/contact-us" class="btn-event" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2);">Contact Community Desk</a>
+    </div>
+  </main>
+
+  <footer>
+    <div>&copy; 2026 BanjaraBio Matrimony. All rights reserved.</div>
+    <div><a href="/privacy-policy">Privacy Policy</a></div>
+  </footer>
+
+</body>
+</html>
