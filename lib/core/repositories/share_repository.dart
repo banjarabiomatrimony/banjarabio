@@ -113,8 +113,8 @@ class ShareRepository extends IsolateFirstRepository {
       );
 
       // 3. Platform Action (WhatsApp / System Dialog)
-      // Vercel deep link with fallback redirect to Play Store for direct profile access.
-      final profileLink = 'https://banjarabio.vercel.app/profile/$sharedProfileId';
+      // Custom domain deep link with fallback redirect to Play Store for direct profile access.
+      final profileLink = 'https://banjarabio.com/profile/$sharedProfileId';
       final userName = profileName != null && profileName.isNotEmpty ? profileName : 'BanjaraBio User';
 
       final shareMessage = '''
