@@ -1,74 +1,319 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <base href="/">
   <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="BanjaraBio Matrimony Profile - View & Connect with your community">
 
-  <!-- iOS meta tags & icons -->
+  <!-- SEO Title & Meta Descriptions -->
+  <title>BanjaraBio Matrimony — Gor Banjara Community Matrimony</title>
+  <meta name="description" content="BanjaraBio is the premier matrimonial app for the Gor Banjara community. Connect with verified profiles, explore bio-data, and find your perfect life partner.">
+  <meta name="keywords" content="BanjaraBio, Banjara Matrimony, Gor Banjara, Matrimonial App, Banjara Biodata, Banjara Rishta">
+  <meta name="author" content="BanjaraBio Matrimony">
+
+  <!-- Open Graph / Social Media Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://banjarabio.com/">
+  <meta property="og:title" content="BanjaraBio Matrimony — Gor Banjara Community Matrimony">
+  <meta property="og:description" content="Connect with verified Gor Banjara profiles safely. Download the BanjaraBio app today!">
+  <meta property="og:image" content="https://banjarabio.com/icons/Icon-512.png">
+
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BanjaraBio Matrimony">
+  <meta name="twitter:description" content="Gor Banjara Community Matrimonial Platform — Verified Profiles & Direct App Deep Linking.">
+  <meta name="twitter:image" content="https://banjarabio.com/icons/Icon-512.png">
+
+  <!-- Mobile & PWA Specs -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="BanjaraBio">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>BanjaraBio Matrimony</title>
   <link rel="manifest" href="manifest.json">
 
+  <!-- Premium Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+
   <style>
+    :root {
+      --bg-dark: #070a12;
+      --card-bg: rgba(18, 26, 43, 0.75);
+      --gold-primary: #f59e0b;
+      --gold-secondary: #d97706;
+      --rose-primary: #e11d48;
+      --rose-hover: #be123c;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-glow: rgba(245, 158, 11, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: #0f172a;
-      color: #f8fafc;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #090d16 65%, #030712 100%);
+      color: var(--text-main);
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      margin: 0;
-      text-align: center;
-      padding: 20px;
+      padding: 24px 16px;
+      overflow-x: hidden;
     }
-    .card {
-      background: #1e293b;
-      padding: 32px;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-      max-width: 400px;
+
+    /* Ambient Background Glow Circles */
+    .bg-glow-1 {
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(225, 29, 72, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-glow-2 {
+      position: absolute;
+      bottom: -150px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Main Container Card */
+    .glass-card {
+      position: relative;
+      z-index: 10;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      padding: 40px 32px;
+      max-width: 440px;
       width: 100%;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7),
+                  0 0 30px var(--border-glow);
+      text-align: center;
+      animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-    .logo {
-      font-size: 40px;
-      margin-bottom: 16px;
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
     }
-    h1 {
-      font-size: 22px;
-      margin-bottom: 8px;
+
+    /* Badge Header */
+    .community-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.3);
       color: #fbbf24;
-    }
-    p {
-      color: #94a3b8;
-      font-size: 14px;
-      line-height: 1.5;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
       margin-bottom: 24px;
     }
-    .btn {
-      display: inline-block;
-      background-color: #e11d48;
-      color: white;
-      text-decoration: none;
-      padding: 14px 28px;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 16px;
-      transition: background-color 0.2s;
+
+    /* App Logo Header */
+    .logo-wrapper {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #e11d48, #d97706);
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(225, 29, 72, 0.4);
+      animation: pulseGlow 3s infinite ease-in-out;
     }
-    .btn:hover {
-      background-color: #be123c;
+
+    .logo-wrapper span {
+      font-size: 42px;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 10px 25px rgba(225, 29, 72, 0.4);
+      }
+      50% {
+        box-shadow: 0 15px 35px rgba(245, 158, 11, 0.6);
+      }
+    }
+
+    /* Headings */
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 30%, #fcd34d 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .tagline {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+
+    /* Dynamic Redirect Box */
+    .redirect-box {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px dashed rgba(245, 158, 11, 0.3);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 28px;
+    }
+
+    .spinner-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(245, 158, 11, 0.2);
+      border-top-color: var(--gold-primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .redirect-title {
+      font-weight: 600;
+      font-size: 14px;
+      color: #fde68a;
+    }
+
+    .redirect-sub {
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    /* Action Buttons */
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 16px 24px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 15px;
+      text-decoration: none;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--rose-primary), #be123c);
+      color: #ffffff;
+      box-shadow: 0 10px 20px -5px rgba(225, 29, 72, 0.5);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #f43f5e, var(--rose-primary));
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px -5px rgba(225, 29, 72, 0.7);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #f8fafc;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+
+    /* Trust Pillars Footer */
+    .trust-pillars {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 20px;
+    }
+
+    .pillar-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .pillar-icon {
+      font-size: 18px;
+    }
+
+    .pillar-text {
+      font-size: 11px;
+      font-weight: 500;
+      color: #94a3b8;
+    }
+
+    /* Page Footer */
+    footer {
+      position: relative;
+      z-index: 10;
+      margin-top: 28px;
+      font-size: 12px;
+      color: #64748b;
+      text-align: center;
+    }
+
+    footer a {
+      color: #94a3b8;
+      text-decoration: underline;
     }
   </style>
 
@@ -88,29 +333,96 @@
       }
 
       if (profileId) {
-        playStoreUrl += "&referrer=profile_" + encodeURIComponent(profileId);
+        var cleanId = encodeURIComponent(profileId);
+        playStoreUrl += "&referrer=profile_" + cleanId;
+        var customScheme = "banjarabio://profile/" + cleanId;
         
-        // Try custom scheme launch first for mobile browsers
-        var customScheme = "banjarabio://profile/" + profileId;
+        window.addEventListener('DOMContentLoaded', function() {
+          var appBtn = document.getElementById('open-app-btn');
+          var playBtn = document.getElementById('playstore-btn');
+          var redirectTitle = document.getElementById('redirect-title');
+          var redirectSub = document.getElementById('redirect-sub');
+
+          if (appBtn) appBtn.href = customScheme;
+          if (playBtn) playBtn.href = playStoreUrl;
+
+          if (redirectTitle) redirectTitle.innerText = "Opening Candidate Profile in App...";
+          if (redirectSub) redirectSub.innerText = "Target ID: " + profileId;
+        });
+
         var start = Date.now();
         window.location.href = customScheme;
 
-        // If app doesn't open within 1.5 seconds, redirect to Play Store
+        // Auto fallback to Google Play Store if app not installed within 1.8s
         setTimeout(function() {
-          if (Date.now() - start < 2000) {
+          if (Date.now() - start < 2200) {
             window.location.href = playStoreUrl;
           }
-        }, 1500);
+        }, 1800);
       }
     })();
   </script>
 </head>
 <body>
-  <div class="card">
-    <div class="logo">🌾</div>
+
+  <div class="bg-glow-1"></div>
+  <div class="bg-glow-2"></div>
+
+  <main class="glass-card">
+    <!-- Header Community Badge -->
+    <div class="community-badge">
+      <span>🚩</span> जय सेवालाल! • Gor Banjara Matrimony
+    </div>
+
+    <!-- App Logo Icon -->
+    <div class="logo-wrapper">
+      <span>💍</span>
+    </div>
+
+    <!-- Title & Tagline -->
     <h1>BanjaraBio Matrimony</h1>
-    <p>Opening BanjaraBio app... If you are not redirected automatically, tap the button below to view the profile in Google Play Store.</p>
-    <a id="playstore-btn" href="https://play.google.com/store/apps/details?id=com.avishio.banjarabio" class="btn">Open in Play Store</a>
-  </div>
+    <p class="tagline">The trusted matrimonial platform created exclusively for the Gor Banjara community worldwide.</p>
+
+    <!-- Dynamic Redirect Box -->
+    <div class="redirect-box">
+      <div class="spinner-row">
+        <div class="spinner"></div>
+        <span id="redirect-title" class="redirect-title">Opening BanjaraBio Mobile App...</span>
+      </div>
+      <span id="redirect-sub" class="redirect-sub">Redirecting you directly to candidate details...</span>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="button-group">
+      <a id="open-app-btn" href="banjarabio://home" class="btn btn-primary">
+        <span>📲</span> Open in BanjaraBio App
+      </a>
+      <a id="playstore-btn" href="https://play.google.com/store/apps/details?id=com.avishio.banjarabio" class="btn btn-secondary">
+        <span>🛍️</span> Download on Google Play Store
+      </a>
+    </div>
+
+    <!-- Trust Pillars -->
+    <div class="trust-pillars">
+      <div class="pillar-item">
+        <span class="pillar-icon">🔒</span>
+        <span class="pillar-text">100% Verified</span>
+      </div>
+      <div class="pillar-item">
+        <span class="pillar-icon">🛡️</span>
+        <span class="pillar-text">Private & Safe</span>
+      </div>
+      <div class="pillar-item">
+        <span class="pillar-icon">👑</span>
+        <span class="pillar-text">Gor Banjara</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Page Footer -->
+  <footer>
+    &copy; 2026 BanjaraBio Matrimony. All rights reserved. • <a href="https://banjarabio.com">banjarabio.com</a>
+  </footer>
+
 </body>
 </html>
