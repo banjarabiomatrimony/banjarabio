@@ -261,16 +261,23 @@ class NudgeEngine {
     );
 
     // Schedule daily notification via LocalNotificationService
-    await LocalNotificationService().scheduleDaily(
-      id: 202020,
-      title: selected.$1,
-      body: selected.$2,
-      payload: payload,
-    );
+    try {
+      await LocalNotificationService().scheduleDaily(
+        id: 202020,
+        title: selected.$1,
+        body: selected.$2,
+        payload: payload,
+      );
 
-    AppLogger.debug(
-      'NudgeEngine',
-      'Scheduled daily Mass-Market nudge: "${selected.$1}" (Index: $index)',
-    );
+      AppLogger.debug(
+        'NudgeEngine',
+        'Scheduled daily Mass-Market nudge: "${selected.$1}" (Index: $index)',
+      );
+    } catch (e) {
+      AppLogger.error(
+        'NudgeEngine',
+        'Failed to schedule Mass-Market nudge safely: $e',
+      );
+    }
   }
 }

@@ -331,15 +331,22 @@ class LocalNotificationService implements NotificationBase {
       ),
     );
 
-    await _localPlugin.periodicallyShow(
-      id,
-      title,
-      body,
-      RepeatInterval.daily,
-      details,
-      payload: payload.toJsonString(),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-    );
+    try {
+      await _localPlugin.periodicallyShow(
+        id,
+        title,
+        body,
+        RepeatInterval.daily,
+        details,
+        payload: payload.toJsonString(),
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      );
+    } catch (e) {
+      AppLogger.error(
+        'LocalNotificationService',
+        'Failed to schedule daily notification: $e',
+      );
+    }
   }
 
   @override

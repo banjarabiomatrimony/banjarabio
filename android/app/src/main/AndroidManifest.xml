@@ -90,12 +90,6 @@
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data android:name="flutterEmbedding" android:value="2" />
 
-        <!-- 🚨 DO NOT REMOVE: Disable Impeller on Android – V2105 (and similar
-             MediaTek devices) has Vulkan driver bugs that cause native crashes
-             (Signal 3 / BLASTBufferQueue buffer exhaustion) after multiple page
-             transitions. Keep Skia until target device drivers are stable. -->
-        <meta-data android:name="io.flutter.embedding.android.EnableImpeller" android:value="false" />
-
         <!-- Override Razorpay's CheckoutActivity to remove orientation restrictions
              for large screen device support (Android 16+) -->
         <activity
