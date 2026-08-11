@@ -57,3 +57,17 @@
 # App uses Play Integrity at runtime (not SafetyNet)
 -dontwarn com.google.android.gms.safetynet.**
 -dontwarn com.google.firebase.appcheck.safetynet.**
+
+# Data Models & DTO Serialization (Prevent R8 field renaming/stripping)
+-keep class com.avishio.banjarabio.core.models.** { *; }
+-keepclassmembers class com.avishio.banjarabio.core.models.** { *; }
+
+# Google Sign-In & Auth APIs
+-keep class io.flutter.plugins.googlesignin.** { *; }
+-keep class com.google.android.gms.auth.api.signin.** { *; }
+-keep class com.google.android.gms.common.api.** { *; }
+
+# App Links & Supabase Flutter Client
+-keep class com.llfeng.app_links.** { *; }
+-keep class io.supabase.flutter.** { *; }
+

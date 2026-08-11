@@ -43,6 +43,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   /// immediately on subscription. Only set to true when the user actively
   /// taps a login button on THIS screen instance.
   bool _userInitiatedLogin = false;
+  Timer? _loadingTimeoutTimer;
   String _loginType = kDebugMode ? 'Tester' : 'User';
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -59,10 +60,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   void _setupAuthListener() {
     _authSubscription = _authRepository.authStateChanges.listen((status) {
       if (status == AppAuthStatus.authenticated) {
-        // In embedded mode, only react to auth events that the user triggered
-        // on THIS screen. Ignore stale/cached session events (tokenRefreshed).
-        if (widget.embedded && !_userInitiatedLogin) {
-          debugPrint('AuthenticationScreen: Ignoring stale auth event (embedded, no user action)');
+        // In embedded mode, only ignore stale auth events if user did NOT initiate login
+        // AND screen is not currently in a loading state. If _isLoading is true,
+        // the user DID trigger a login action (e.g. Google Sign-In or Email).
+        if (widget.embedded && !_userInitiatedLogin && !_isLoading) {
+          debugPrint('AuthenticationScreen: Ignoring stale auth event (embedded, no active user action)');
           return;
         }
         _handleSuccessfulAuth();
@@ -76,8 +78,32 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     }
   }
 
+  void _startLoadingTimeout() {
+    _loadingTimeoutTimer?.cancel();
+    _loadingTimeoutTimer = Timer(const Duration(seconds: 15), () {
+      if (mounted && _isLoading && !_isHandlingAuth) {
+        debugPrint('AuthenticationScreen: Loading watchdog timeout (15s). Checking auth status...');
+        if (_authRepository.isAuthenticated) {
+          _handleSuccessfulAuth();
+        } else {
+          setState(() {
+            _isLoading = false;
+            _errorMessage = AppLocalizations.of(context)?.loginFailedRetry ??
+                'Login timeout. Please try again.';
+          });
+        }
+      }
+    });
+  }
+
+  void _cancelLoadingTimeout() {
+    _loadingTimeoutTimer?.cancel();
+    _loadingTimeoutTimer = null;
+  }
+
   @override
   void dispose() {
+    _cancelLoadingTimeout();
     _authSubscription?.cancel();
     _emailController.dispose();
     _passwordController.dispose();
@@ -102,6 +128,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   Future<void> _handleSuccessfulAuth() async {
     if (_isHandlingAuth || !mounted) return;
     _isHandlingAuth = true;
+    _cancelLoadingTimeout();
 
     try {
       final callbackRes = await _authRepository.handleAuthCallback();
@@ -146,12 +173,14 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     _userInitiatedLogin = true;
     AnalyticsService.logSignUpStart('google');
     setState(() { _isLoading = true; _errorMessage = null; });
+    _startLoadingTimeout();
 
     try {
       final response = await _authRepository.signInWithGoogle();
       await response.fold(
         onSuccess: (_) {/* OAuth redirect — auth listener handles it */},
         onFailure: (error) {
+          _cancelLoadingTimeout();
           if (mounted) {
             setState(() {
               _isLoading = false;
@@ -163,6 +192,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         },
       );
     } catch (e) {
+      _cancelLoadingTimeout();
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -187,6 +217,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     }
 
     setState(() { _isLoading = true; _errorMessage = null; });
+    _startLoadingTimeout();
 
     try {
       final response = await _authRepository.signInWithEmail(
@@ -198,6 +229,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
           if (success) {
             await _handleSuccessfulAuth();
           } else {
+            _cancelLoadingTimeout();
             if (mounted) {
               setState(() {
                 _isLoading = false;
@@ -208,6 +240,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
           }
         },
         onFailure: (error) {
+          _cancelLoadingTimeout();
           if (mounted) {
             setState(() {
               _isLoading = false;
@@ -219,6 +252,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         },
       );
     } catch (e) {
+      _cancelLoadingTimeout();
       if (mounted) {
         setState(() {
           _isLoading = false;
