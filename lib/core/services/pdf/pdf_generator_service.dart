@@ -9,6 +9,7 @@ import 'package:banjarabio/core/services/pdf/templates/biodata_template_factory.
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:banjarabio/core/services/app_logger.dart';
 
 class PdfGenerationParams {
   final BiodataContent content;
@@ -91,7 +92,7 @@ class PdfIsolateManager {
     try {
       await _initFuture;
     } catch (e) {
-      debugPrint('PdfIsolateManager init failed: $e');
+      AppLogger.error('PdfGeneratorService', 'PdfIsolateManager init failed: $e');
 
       // Cleanup partial state if spawn failed
       _receivePort?.close();
@@ -272,7 +273,7 @@ Future<void> _biodataIsolateEntry(_PdfInitMessage initMessage) async {
               .asUint8List();
         }
 
-        debugPrint('[PDF ISOLATE] Processing Request #${message.id}');
+        AppLogger.debug('PdfGeneratorService', '[PDF ISOLATE] Processing Request #${message.id}');
 
         // 1. Load fonts from pre-loaded bytes (no AssetManifest in isolate)
         final fontBytes = initMessage.fontBytes;
@@ -315,7 +316,9 @@ Future<void> _biodataIsolateEntry(_PdfInitMessage initMessage) async {
           profilePhoto: profilePhotoBytes != null && profilePhotoBytes.isNotEmpty
               ? pw.MemoryImage(profilePhotoBytes)
               : null,
-          isLocked: params.isPremiumTemplate && !params.isPaid,
+          // Temp bypass for growth campaign: premium features are free, keep original check dormant.
+          // In future, change to: params.isPremiumTemplate && !params.isPaid
+          isLocked: false,
         );
         template.isLandscape = params.isLandscape;
 
@@ -334,8 +337,8 @@ Future<void> _biodataIsolateEntry(_PdfInitMessage initMessage) async {
           ),
         );
       } catch (e, stack) {
-        debugPrint('[PDF ISOLATE] Request #${message.id} Failed: $e');
-        debugPrint(stack.toString());
+        AppLogger.error('PdfGeneratorService', '[PDF ISOLATE] Request #${message.id} Failed: $e');
+        AppLogger.debug('PdfGeneratorService', stack.toString());
         initMessage.sendPort.send(
           _PdfWorkerResponse(id: message.id, error: e.toString()),
         );

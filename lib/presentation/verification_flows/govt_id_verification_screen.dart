@@ -8,6 +8,8 @@ import 'package:banjarabio/core/repositories/trust_score_repository.dart';
 import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/services/photo_picker_service.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 class GovtIdVerificationScreen extends StatefulWidget {
   const GovtIdVerificationScreen({super.key});
@@ -57,7 +59,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
         });
       }
     } catch (e) {
-      debugPrint('Error picking image: $e');
+      AppLogger.error('GovtIdVerificationScreen', 'Error picking image: $e');
     }
   }
 
@@ -184,7 +186,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
             const Icon(Icons.security, size: 60, color: Colors.blue),
             SizedBox(height: 2.h),
             Text(AppLocalizations.of(context)?.selectDocumentType ?? 'Select Document Type',
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: AppTypography.headingSmall, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 4.h),
             ..._docTypes.map(
@@ -211,7 +213,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
           children: [
             Text(
               'Upload $_selectedDocType Photos',
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: AppTypography.bodyLarge, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 3.h),
             _buildPhotoUploadBox(
@@ -235,7 +237,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
           children: [
             Text(
               'Enter $_selectedDocType Number',
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: AppTypography.bodyLarge, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 3.h),
             TextField(
@@ -256,7 +258,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
         return Column(
           children: [
             Text(AppLocalizations.of(context)?.reviewDetails ?? 'Review Details',
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: AppTypography.headingSmall, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 3.h),
             ListTile(

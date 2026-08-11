@@ -177,7 +177,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get adFreeExperience => 'जाहिरात-मुक्त अनुभव';
 
   @override
-  String addClearPhotos(String max) {
+  String addClearPhotos(int max) {
     return 'स्पष्ट फोटो जोडा (जास्तीत जास्त $max)';
   }
 
@@ -279,7 +279,7 @@ class AppLocalizationsMr extends AppLocalizations {
       'सर्व विभागांचे पुनरावलोकन करा आणि तुमचे प्रोफाइल पूर्ण करण्यासाठी \"बायोडेटा जतन करा\" वर क्लिक करा. तुमचा बायोडेटा तुमच्या गोपनीयता सेटिंग्जवर आधारित समुदायातील इतर सदस्यांना दिसेल.';
 
   @override
-  String anErrorOccurred(Object error) {
+  String anErrorOccurred(String error) {
     return 'त्रुटी आली: $error';
   }
 
@@ -413,7 +413,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get messagingLimitReached => 'संदेश मर्यादा संपली';
 
   @override
-  String bookmarksCount(String count) {
+  String bookmarksCount(int count) {
     return '$count बुकमार्क';
   }
 
@@ -575,7 +575,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get createProfile => 'प्रोफाइल तयार करा';
 
   @override
-  String criticalFailure(Object error) {
+  String criticalFailure(String error) {
     return 'गंभीर अपयश: $error';
   }
 
@@ -621,17 +621,17 @@ class AppLocalizationsMr extends AppLocalizations {
   String get daughter => 'मुलगी';
 
   @override
-  String daysAgo(String count) {
+  String daysAgo(int count) {
     return '$countदि पूर्वी';
   }
 
   @override
-  String daysLeft(Object days) {
+  String daysLeft(int days) {
     return '$days दिवस शिल्लक';
   }
 
   @override
-  String daysRemaining(Object days) {
+  String daysRemaining(int days) {
     return '$days दिवस शिल्लक';
   }
 
@@ -646,7 +646,7 @@ class AppLocalizationsMr extends AppLocalizations {
       'ही क्रिया कायमस्वरूपी आहे आणि पूर्ववत करता येणार नाही.';
 
   @override
-  String deleteCount(Object count) {
+  String deleteCount(int count) {
     return 'हटवा ($count)';
   }
 
@@ -714,7 +714,7 @@ class AppLocalizationsMr extends AppLocalizations {
       'तुम्हाला खात्री आहे की तुम्ही मागे जाऊ इच्छिता? तुमची प्रगती ड्राफ्ट म्हणून सेव्ह केली आहे.';
 
   @override
-  String discountPercentage(Object percentage, Object score) {
+  String discountPercentage(int percentage, int score) {
     return '$percentage% सूट (ट्रस्ट स्कोर $score)';
   }
 
@@ -939,12 +939,12 @@ class AppLocalizationsMr extends AppLocalizations {
       'Google सह साइन इन अयशस्वी. कृपया पुन्हा प्रयत्न करा.';
 
   @override
-  String failedToBlockUser(Object error) {
+  String failedToBlockUser(String error) {
     return 'वापरकर्त्याला ब्लॉक करण्यात अयशस्वी: $error';
   }
 
   @override
-  String failedToDeleteAccount(Object error) {
+  String failedToDeleteAccount(String error) {
     return 'खाते हटवण्यात अयशस्वी: $error';
   }
 
@@ -958,7 +958,7 @@ class AppLocalizationsMr extends AppLocalizations {
       'PDF पूर्वावलोकन व्युत्पन्न करण्यात अयशस्वी';
 
   @override
-  String failedToLoadBookmarks(Object error) {
+  String failedToLoadBookmarks(String error) {
     return 'बुकमार्क लोड करण्यात अयशस्वी: $error';
   }
 
@@ -968,7 +968,7 @@ class AppLocalizationsMr extends AppLocalizations {
   }
 
   @override
-  String failedToLoadProfileError(Object error) {
+  String failedToLoadProfileError(String error) {
     return 'प्रोफाइल लोड करण्यात अयशस्वी: $error';
   }
 
@@ -1026,12 +1026,12 @@ class AppLocalizationsMr extends AppLocalizations {
   }
 
   @override
-  String failedToSubmitReport(Object error) {
+  String failedToSubmitReport(String error) {
     return 'रिपोर्ट सबमिट करण्यात अयशस्वी: $error';
   }
 
   @override
-  String failedToUpdateBookmark(Object error) {
+  String failedToUpdateBookmark(String error) {
     return 'बुकमार्क अपडेट करण्यात अयशस्वी: $error';
   }
 
@@ -1049,7 +1049,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get failedToUpdateProfile => 'प्रोफाईल अपडेट करण्यात अयशस्वी';
 
   @override
-  String failedToUploadPhoto(int index) {
+  String failedToUploadPhoto(String index) {
     return 'फोटो $index अपलोड करता आला नाही';
   }
 
@@ -1163,7 +1163,7 @@ class AppLocalizationsMr extends AppLocalizations {
       '५% बायोडेटा पूर्ण बोनस मिळवण्यासाठी आणि नवीन मॅचसह अपडेट राहण्यासाठी आम्हाला इंस्टाग्रामवर फॉलो करा.';
 
   @override
-  String forMonths(Object count) {
+  String forMonths(int count) {
     return '$count महिन्यांसाठी';
   }
 
@@ -1309,7 +1309,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get homemaker => 'गृहिणी';
 
   @override
-  String hoursAgo(String count) {
+  String hoursAgo(int count) {
     return '$countता पूर्वी';
   }
 
@@ -1530,7 +1530,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get mastersDegree => 'मास्टर पदवी';
 
   @override
-  String matchNOfTotal(int current, int total) {
+  String matchNOfTotal(String current, String total) {
     return 'मॅच $current / $total';
   }
 
@@ -1574,7 +1574,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get minAge => 'किमान वय';
 
   @override
-  String minutesAgo(String count) {
+  String minutesAgo(int count) {
     return '$countमि पूर्वी';
   }
 
@@ -1851,7 +1851,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get permissionRequired => 'परवानगी आवश्यक';
 
   @override
-  String permissionRequiredMessage(Object type) {
+  String permissionRequiredMessage(String type) {
     return 'फोटो अपलोड करण्यासाठी $type परवानगी आवश्यक आहे. कृपया ती अॅप सेटिंग्जमध्ये सक्षम करा.';
   }
 
@@ -1868,7 +1868,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get photoAdded => 'फोटो जोडला';
 
   @override
-  String photoAddedWithKb(String kb) {
+  String photoAddedWithKb(int kb) {
     return 'फोटो जोडला ($kb KB)';
   }
 
@@ -1902,7 +1902,7 @@ class AppLocalizationsMr extends AppLocalizations {
       'डेटा वाचवण्यासाठी फोटो कॉम्प्रेस केले जातात.';
 
   @override
-  String photosCount(String count) {
+  String photosCount(int count) {
     return '$count फोटो';
   }
 
@@ -1995,7 +1995,7 @@ class AppLocalizationsMr extends AppLocalizations {
       'तुम्ही खरी व्यक्ती आहात हे सत्यापित करण्यासाठी कृपया सेल्फी घ्या. तुम्ही प्रज्वलित क्षेत्रात असल्याची खात्री करा.';
 
   @override
-  String pointsCount(String points) {
+  String pointsCount(int points) {
     return '+$points गुण';
   }
 
@@ -2028,7 +2028,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get previous => 'मागे';
 
   @override
-  String pricePerMonth(Object price) {
+  String pricePerMonth(int price) {
     return '₹$price/महिना';
   }
 
@@ -2149,7 +2149,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get profile => 'प्रोफाइल';
 
   @override
-  String profileBoostPerMonth(String count) {
+  String profileBoostPerMonth(int count) {
     return '$count प्रोफाइल बूस्ट/महिना';
   }
 
@@ -2186,7 +2186,7 @@ class AppLocalizationsMr extends AppLocalizations {
   }
 
   @override
-  String profileStrengthLabel(Object strength) {
+  String profileStrengthLabel(String strength) {
     return 'प्रोफाइल सामर्थ्य: $strength';
   }
 
@@ -2194,7 +2194,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get profileViewLimitReached => 'प्रोफाइल पाहण्याची मर्यादा गाठली';
 
   @override
-  String profileViewsPerDay(String count) {
+  String profileViewsPerDay(int count) {
     return '$count प्रोफाइल दृश्य/दिवस';
   }
 
@@ -2263,7 +2263,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get referralInvite => 'संदर्भ आमंत्रण';
 
   @override
-  String referralInviteMessage(Object link) {
+  String referralInviteMessage(String link) {
     return 'बंजाराबायोमध्ये सामील व्हा, आमच्या समुदायासाठी सर्वात विश्वसनीय वैवाहिक ॲप! सुरू करण्यासाठी माझी लिंक वापरा: $link';
   }
 
@@ -2566,7 +2566,7 @@ class AppLocalizationsMr extends AppLocalizations {
   }
 
   @override
-  String sharesPerMonth(String count) {
+  String sharesPerMonth(int count) {
     return '$count शेअर्स/महिना';
   }
 
@@ -2641,7 +2641,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get stay => 'थांबा';
 
   @override
-  String stepNOfTotal(int current, int total) {
+  String stepNOfTotal(String current, String total) {
     return 'पायरी $current पैकी $total';
   }
 
@@ -2797,7 +2797,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get trustScoreDiscounts => 'ट्रस्ट स्कोअर आणि सवलत';
 
   @override
-  String trustScoreShareMessage(String score, String url) {
+  String trustScoreShareMessage(int score, String url) {
     return 'मी नुकताच माझा प्रोफाईल बंजाराबायोवर $score ट्रस्ट स्कोअरसह व्हेरिफाय केला आहे! माझा प्रोफाईल पहा आणि आमच्या समुदायात सामील व्हा: $url';
   }
 
@@ -3218,7 +3218,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get yourTrustScore => 'तुमचा विश्वास स्कोअर';
 
   @override
-  String yrs(Object count) {
+  String yrs(int count) {
     return '$count वर्ष';
   }
 
@@ -3234,17 +3234,17 @@ class AppLocalizationsMr extends AppLocalizations {
   String get mutualMatch => 'परस्पर जुळवणी';
 
   @override
-  String toContact(Object name) {
+  String toContact(String name) {
     return 'ला: $name';
   }
 
   @override
-  String fromContact(Object name) {
+  String fromContact(String name) {
     return 'कडून: $name';
   }
 
   @override
-  String countProfileViews(num count) {
+  String countProfileViews(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -3264,7 +3264,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get contactLabel => 'संपर्क';
 
   @override
-  String profileSharedVia(Object profileName, Object title) {
+  String profileSharedVia(String profileName, String title) {
     return '$title द्वारे $profileName शेअर केले गेले';
   }
 
@@ -3681,22 +3681,22 @@ class AppLocalizationsMr extends AppLocalizations {
   String get lifetime => 'आजीवन';
 
   @override
-  String mrpPrice(Object price) {
+  String mrpPrice(int price) {
     return 'MRP ₹$price';
   }
 
   @override
-  String bulkDiscount(Object percent) {
+  String bulkDiscount(int percent) {
     return '$percent% सूट';
   }
 
   @override
-  String youSave(Object amount) {
+  String youSave(int amount) {
     return 'तुम्ही वाचवता ₹$amount';
   }
 
   @override
-  String totalSavings(Object amount) {
+  String totalSavings(int amount) {
     return 'एकूण बचत: ₹$amount';
   }
 
@@ -3707,12 +3707,12 @@ class AppLocalizationsMr extends AppLocalizations {
   String get couponDiscountApplied => 'कूपन सवलत लागू';
 
   @override
-  String contactUnlocks(Object count) {
+  String contactUnlocks(int count) {
     return '$count संपर्क अनलॉक/महिना';
   }
 
   @override
-  String handpickedMatches(Object count) {
+  String handpickedMatches(int count) {
     return '$count निवडक सामने/आठवडा';
   }
 
@@ -3779,21 +3779,22 @@ class AppLocalizationsMr extends AppLocalizations {
 
   @override
   String extraViewsUnlocked(int count) {
-    return '$count Extra Views Unlocked!';
+    return '$count अतिरिक्त व्ह्यू दाखवले!';
   }
 
   @override
-  String get sendHeartInterested => 'Send a heart to show you\'re interested.';
+  String get sendHeartInterested =>
+      'तुम्ही उत्सुक आहात हे दाखवण्यासाठी हार्ट पाठवा.';
 
   @override
   String get notMatchedCannotMessage =>
-      'You are not matched with this profile, so you can\'t direct message them.';
+      'तुम्ही या प्रोफाइलशी जुळलेले नाही, म्हणून तुम्ही त्यांना थेट संदेश पाठवू शकत नाही.';
 
   @override
-  String get oneMessageUnlocked => '1 Message Unlocked!';
+  String get oneMessageUnlocked => '१ मेसेज अनलॉक झाला!';
 
   @override
-  String get seenAllProfiles => 'You\'ve seen all profiles!';
+  String get seenAllProfiles => 'तुम्ही सर्व प्रोफाइल पाहिली आहेत!';
 
   @override
   String get signInRequired => 'साइन इन करणे आवश्यक आहे';
@@ -3969,4 +3970,57 @@ class AppLocalizationsMr extends AppLocalizations {
   @override
   String get successSubmission =>
       'यश! तुमची विनंती पुनरावलोकनासाठी सबमिट केली गेली आहे.';
+
+  @override
+  String get melavas => 'मेळावे';
+
+  @override
+  String get upcomingMelavas => 'आगामी मेळावे';
+
+  @override
+  String get callOrganizer => 'आयोजकाला कॉल करा';
+
+  @override
+  String get viewVenue => 'ठिकाण पहा';
+
+  @override
+  String get organizer => 'आयोजक';
+
+  @override
+  String get venue => 'ठिकाण';
+
+  @override
+  String get eventDetails => 'कार्यक्रमाची माहिती';
+
+  @override
+  String get browseMatchesTitle => '🔍 स्थळ शोधा (Browse Matches)';
+
+  @override
+  String get browseMatchesDesc =>
+      'मुलगा, मुलगी, नातेवाईक यांच्यासाठी योग्य स्थळ शोधा.';
+
+  @override
+  String get browseMatchesSubtitle =>
+      'काही प्रश्नांची उत्तरे द्या आणि योग्य स्थळे पहा';
+
+  @override
+  String get forWhomSearching => 'कोणासाठी स्थळ शोधत आहात?';
+
+  @override
+  String get lookingForGender => 'वर हवा की वधू हवी?';
+
+  @override
+  String get groomBoy => '👦 वर (Groom)';
+
+  @override
+  String get brideGirl => '👧 वधू (Bride)';
+
+  @override
+  String get selectDistrict => 'जिल्हा निवडा';
+
+  @override
+  String get proceedToLogin => 'पुढे जा → लॉग इन करा';
+
+  @override
+  String get sibling => 'भाऊ/बहीण';
 }

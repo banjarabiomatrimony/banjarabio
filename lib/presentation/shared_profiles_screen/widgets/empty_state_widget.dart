@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
-import 'package:sizer/sizer.dart';
+import 'package:banjarabio/widgets/branded_empty_state.dart';
 
-/// Empty state widget with helpful guidance and call-to-action
+/// Reusable Empty state widget built on top of BrandedEmptyState to ensure design consistency.
 class EmptyStateWidget extends StatelessWidget {
   final bool isSharedByMe;
   final bool isMatched;
@@ -17,99 +17,34 @@ class EmptyStateWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    IconData icon;
+    String title;
+    String description;
+    String ctaText;
 
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 32.w,
-              height: 32.w,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    theme.colorScheme.primary.withValues(alpha: 0.15),
-                    theme.colorScheme.primary.withValues(alpha: 0.05),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.05),
-                    blurRadius: 20,
-                    spreadRadius: 5,
-                  ),
-                ],
-              ),
-              child: Center(
-                child: Icon(
-                  isMatched
-                      ? Icons.favorite_rounded
-                      : isSharedByMe
-                      ? Icons.share_rounded
-                      : Icons.inbox_rounded,
-                  color: isMatched
-                      ? const Color(0xFFFF4081)
-                      : theme.colorScheme.primary,
-                  size: 14.w,
-                ),
-              ),
-            ),
-            SizedBox(height: 3.h),
-            Text(
-              isMatched
-                  ? AppLocalizations.of(context)?.noMatchesYet ?? 'No Matches Yet'
-                  : isSharedByMe
-                  ? AppLocalizations.of(context)?.noProfilesSharedYet ?? 'No Profiles Shared Yet'
-                  : AppLocalizations.of(context)?.noProfilesReceived ?? 'No Profiles Received',
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 1.h),
-            Text(
-              isMatched
-                  ? AppLocalizations.of(context)?.mutualMatchesDesc ?? 'Mutual matches will appear here when both users share interest in each other'
-                  : isSharedByMe
-                  ? AppLocalizations.of(context)?.startSharingProfilesDesc ?? 'Start sharing profiles with family and friends to help find the perfect match'
-                  : AppLocalizations.of(context)?.profilesSharedWithYouDesc ?? 'Profiles shared with you by family and friends will appear here',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 4.h),
-            if (isSharedByMe)
-              ElevatedButton.icon(
-                onPressed: onStartSharing,
-                icon: const Icon(
-                  Icons.home_rounded,
-                  color: Colors.white,
-                  size: 20,
-                ),
-                label: Text(AppLocalizations.of(context)?.browseProfiles ?? 'Browse Profiles'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: theme.colorScheme.primary,
-                  foregroundColor: Colors.white,
-                  elevation: 2,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 10.w,
-                    vertical: 1.8.h,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
+    if (isMatched) {
+      icon = Icons.favorite_rounded;
+      title = AppLocalizations.of(context)?.noMatchesYet ?? 'No Matches Yet';
+      description = AppLocalizations.of(context)?.mutualMatchesDesc ?? 'Mutual matches will appear here when both users share interest in each other. Explore profiles to start matching!';
+      ctaText = AppLocalizations.of(context)?.browseProfiles ?? 'Browse Profiles';
+    } else if (isSharedByMe) {
+      icon = Icons.share_rounded;
+      title = AppLocalizations.of(context)?.noProfilesSharedYet ?? 'No Profiles Shared Yet';
+      description = AppLocalizations.of(context)?.startSharingProfilesDesc ?? 'Start sharing profiles with family and friends to help find the perfect match.';
+      ctaText = AppLocalizations.of(context)?.browseProfiles ?? 'Browse Profiles';
+    } else {
+      icon = Icons.inbox_rounded;
+      title = AppLocalizations.of(context)?.noProfilesReceived ?? 'No Profiles Received';
+      description = AppLocalizations.of(context)?.profilesSharedWithYouDesc ?? 'Profiles shared with you by family and friends will appear here. Get started by exploring recommendations!';
+      ctaText = AppLocalizations.of(context)?.browseProfiles ?? 'Browse Profiles';
+    }
+
+    return BrandedEmptyState(
+      icon: icon,
+      title: title,
+      description: description,
+      ctaText: ctaText,
+      onCtaPressed: onStartSharing,
     );
   }
 }

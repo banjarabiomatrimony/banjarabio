@@ -3,6 +3,7 @@ import 'package:sizer/sizer.dart';
 import 'package:lottie/lottie.dart';
 import 'package:banjarabio/core/models/daily_reward_model.dart';
 import 'package:banjarabio/core/repositories/daily_reward_repository.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 class DailyRewardDialog extends StatefulWidget {
   final DailyRewardModel initialStatus;
@@ -132,7 +133,7 @@ class _DailyRewardDialogState extends State<DailyRewardDialog> with SingleTicker
             Text(
               'Daily Rewards 🎁',
               style: TextStyle(
-                fontSize: 18.sp,
+                fontSize: AppTypography.headingMedium,
                 fontWeight: FontWeight.bold,
                 color: theme.colorScheme.primary,
               ),
@@ -141,7 +142,7 @@ class _DailyRewardDialogState extends State<DailyRewardDialog> with SingleTicker
             SizedBox(height: 1.h),
             Text(
               'Keep your 7-day streak alive to unlock the jackpot! Missing a day resets the streak.',
-              style: TextStyle(fontSize: 11.sp, color: theme.colorScheme.onSurfaceVariant),
+              style: TextStyle(fontSize: AppTypography.bodySmall, color: theme.colorScheme.onSurfaceVariant),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
@@ -198,14 +199,14 @@ class _DailyRewardDialogState extends State<DailyRewardDialog> with SingleTicker
                             'Day $day ${isJackpot ? "👑 JACKPOT" : ""}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 11.sp,
+                              fontSize: AppTypography.bodySmall,
                               color: isCompleted ? Colors.green.shade700 : (isToday ? theme.colorScheme.primary : theme.colorScheme.onSurface),
                             ),
                           ),
                           Text(
                             tier['label'],
                             style: TextStyle(
-                              fontSize: 10.sp,
+                              fontSize: AppTypography.bodySmall,
                               color: isCompleted ? theme.colorScheme.onSurfaceVariant : (isToday ? theme.colorScheme.onSurface : theme.colorScheme.onSurfaceVariant),
                             ),
                           ),
@@ -233,7 +234,7 @@ class _DailyRewardDialogState extends State<DailyRewardDialog> with SingleTicker
                   ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
                   : Text(
                       _status.isClaimedToday ? 'Come back tomorrow!' : 'Claim ${ _rewardTiers[_status.streakCount > 7 ? 6 : _status.streakCount - 1]['label'] }',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp, color: _status.isClaimedToday ? theme.colorScheme.onSurfaceVariant : Colors.white),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: AppTypography.bodyMedium, color: _status.isClaimedToday ? theme.colorScheme.onSurfaceVariant : Colors.white),
                     ),
             ),
           ],

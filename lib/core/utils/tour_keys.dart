@@ -11,6 +11,7 @@ class TourKeys {
   // Bottom Bar Keys
   static final GlobalKey homeTabKey = GlobalKey();
   static final GlobalKey sharedTabKey = GlobalKey();
+  static final GlobalKey melavaTabKey = GlobalKey();
   static final GlobalKey profileTabKey = GlobalKey();
   static final GlobalKey settingsTabKey = GlobalKey();
   

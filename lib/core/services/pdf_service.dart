@@ -18,6 +18,10 @@ class PdfService {
     Uint8List? templateImageBytes,
     Color? accentColor,
     String language = 'English',
+    double marginLeft = 60,
+    double marginTop = 70,
+    double marginRight = 60,
+    double marginBottom = 70,
   }) async {
     final params = _PdfParams(
       profile: profile,
@@ -27,6 +31,10 @@ class PdfService {
       templateImageBytes: templateImageBytes,
       accentColor: accentColor,
       language: language,
+      marginLeft: marginLeft,
+      marginTop: marginTop,
+      marginRight: marginRight,
+      marginBottom: marginBottom,
     );
 
     // In a test environment, skip actual generation to avoid complex asset/isolate issues.
@@ -51,6 +59,10 @@ class PdfService {
       templateImageBytes: params.templateImageBytes,
       accentColor: params.accentColor,
       language: params.language,
+      marginLeft: params.marginLeft,
+      marginTop: params.marginTop,
+      marginRight: params.marginRight,
+      marginBottom: params.marginBottom,
     );
   }
 
@@ -63,6 +75,10 @@ class PdfService {
     Uint8List? templateImageBytes,
     Color? accentColor,
     String language = 'English',
+    double marginLeft = 60,
+    double marginTop = 70,
+    double marginRight = 60,
+    double marginBottom = 70,
   }) async {
     // 1. Load fonts
     pw.Font font;
@@ -110,6 +126,10 @@ class PdfService {
       logo: logoImage,
       profilePhoto: profileImage,
       isLocked: isLocked,
+      marginLeft: marginLeft,
+      marginTop: marginTop,
+      marginRight: marginRight,
+      marginBottom: marginBottom,
     );
 
     final pdf = await template.generate();
@@ -126,6 +146,10 @@ class _PdfParams {
   final Uint8List? templateImageBytes;
   final Color? accentColor;
   final String language;
+  final double marginLeft;
+  final double marginTop;
+  final double marginRight;
+  final double marginBottom;
 
   _PdfParams({
     required this.profile,
@@ -135,5 +159,9 @@ class _PdfParams {
     this.templateImageBytes,
     this.accentColor,
     required this.language,
+    required this.marginLeft,
+    required this.marginTop,
+    required this.marginRight,
+    required this.marginBottom,
   });
 }

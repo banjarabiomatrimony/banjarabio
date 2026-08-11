@@ -7,6 +7,7 @@ import 'package:banjarabio/shared/billing/razorpay_billing_constants.dart';
 import 'package:banjarabio/shared/billing/razorpay_billing_registry.dart';
 import 'package:banjarabio/notification/features/admin_notification_service.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Repository for payment-related operations and persistence.
 ///
@@ -51,7 +52,7 @@ class PaymentRepository {
         mapper: (data) => PaymentModel.fromJson(data as Map<String, dynamic>),
       );
     } catch (e, stack) {
-      debugPrint('PaymentRepository.createPaymentRecord via RPC error: $e');
+      AppLogger.error('PaymentRepository', 'PaymentRepository.createPaymentRecord via RPC error: $e');
       return BackendResponse.failure(
         e.toString(),
         stackTrace: stack,
@@ -91,7 +92,7 @@ class PaymentRepository {
       );
       return BackendResponse.fromRpc(response);
     } catch (e, stack) {
-      debugPrint('PaymentRepository.updatePaymentStatus via RPC error: $e');
+      AppLogger.error('PaymentRepository', 'PaymentRepository.updatePaymentStatus via RPC error: $e');
       return BackendResponse.failure(
         e.toString(),
         stackTrace: stack,
@@ -152,7 +153,7 @@ class PaymentRepository {
       );
       return BackendResponse.success(null);
     } catch (e, stack) {
-      debugPrint('PaymentRepository: Error recording payment: $e');
+      AppLogger.error('PaymentRepository', 'PaymentRepository: Error recording payment: $e');
       return BackendResponse.failure(e.toString(), stackTrace: stack);
     }
   }
@@ -167,7 +168,7 @@ class PaymentRepository {
         onFailure: (error) => BackendResponse.failure(error),
       );
     } catch (e) {
-      debugPrint('PaymentRepository: Error checking unlock status: $e');
+      AppLogger.error('PaymentRepository', 'PaymentRepository: Error checking unlock status: $e');
       return BackendResponse.failure(e.toString());
     }
   }

@@ -6,6 +6,7 @@ import 'package:banjarabio/core/models/subscription_config.dart';
 import 'package:banjarabio/core/services/ad_reward_service.dart';
 import 'package:banjarabio/core/supabase_client.dart' as app_supabase;
 import 'package:banjarabio/core/repositories/subscription_repository.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Repository for tracking user activity and enforcing limits
 class UsageRepository {
@@ -95,7 +96,7 @@ class UsageRepository {
             BackendResponse.failure('Failed to get plan info: $error'),
       );
     } catch (e, stack) {
-      debugPrint('UsageRepository.canViewProfile: Error = $e');
+      AppLogger.error('UsageRepository', 'UsageRepository.canViewProfile: Error = $e');
       return BackendResponse.failure(
         e.toString(),
         stackTrace: stack,
@@ -117,7 +118,7 @@ class UsageRepository {
         onRetry: () => incrementProfileView(),
       );
     } catch (e) {
-      debugPrint('UsageRepository.incrementProfileView via RPC error: $e');
+      AppLogger.error('UsageRepository', 'UsageRepository.incrementProfileView via RPC error: $e');
       // 🚨 CRITICAL: Do NOT block navigation if tracking fails
       // Just return success so the user can see the profile
       return BackendResponse.success(null);
@@ -149,7 +150,7 @@ class UsageRepository {
             BackendResponse.failure('Plan fetch failed: $error'),
       );
     } catch (e) {
-      debugPrint('UsageRepository.getRemainingProfileViews: Error = $e');
+      AppLogger.error('UsageRepository', 'UsageRepository.getRemainingProfileViews: Error = $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -202,7 +203,7 @@ class UsageRepository {
         onFailure: (error) => BackendResponse.failure(error),
       );
     } catch (e) {
-      debugPrint('UsageRepository.canShareProfile: Error = $e');
+      AppLogger.error('UsageRepository', 'UsageRepository.canShareProfile: Error = $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -255,7 +256,7 @@ class UsageRepository {
         onFailure: (error) => BackendResponse.failure(error),
       );
     } catch (e) {
-      debugPrint('UsageRepository.getRemainingShares: Error = $e');
+      AppLogger.error('UsageRepository', 'UsageRepository.getRemainingShares: Error = $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -294,7 +295,7 @@ class UsageRepository {
         onFailure: (error) => BackendResponse.failure(error),
       );
     } catch (e) {
-      debugPrint('UsageRepository.canAddBookmark: Error = $e');
+      AppLogger.error('UsageRepository', 'UsageRepository.canAddBookmark: Error = $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -334,7 +335,7 @@ class UsageRepository {
         onFailure: (error) => BackendResponse.failure(error),
       );
     } catch (e) {
-      debugPrint('UsageRepository.getRemainingBookmarks: Error = $e');
+      AppLogger.error('UsageRepository', 'UsageRepository.getRemainingBookmarks: Error = $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -376,7 +377,7 @@ class UsageRepository {
         onFailure: (error) => BackendResponse.failure(error),
       );
     } catch (e) {
-      debugPrint('UsageRepository.canUploadPhoto: Error = $e');
+      AppLogger.error('UsageRepository', 'UsageRepository.canUploadPhoto: Error = $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -419,7 +420,7 @@ class UsageRepository {
         onFailure: (error) => BackendResponse.failure(error),
       );
     } catch (e) {
-      debugPrint('UsageRepository.getRemainingPhotos: Error = $e');
+      AppLogger.error('UsageRepository', 'UsageRepository.getRemainingPhotos: Error = $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -434,8 +435,24 @@ class UsageRepository {
       );
       return BackendResponse.fromRpc(response);
     } catch (e) {
-      debugPrint('UsageRepository.incrementShareCount via RPC error: $e');
+      AppLogger.error('UsageRepository', 'UsageRepository.incrementShareCount via RPC error: $e');
       return BackendResponse.failure(e.toString());
+    }
+  }
+
+  /// Increment PDF download count
+  /// Tracks usage toward the 100,000-download goal
+  Future<BackendResponse<void>> incrementPdfDownloadCount() async {
+    try {
+      final response = await _supabase.rpc(
+        'fn_track_usage',
+        params: {'metric': 'pdf_downloads', 'increment': 1},
+      );
+      return BackendResponse.fromRpc(response);
+    } catch (e) {
+      AppLogger.error('UsageRepository', 'UsageRepository.incrementPdfDownloadCount via RPC error: $e');
+      // 🚨 CRITICAL: Non-blocking tracking
+      return BackendResponse.success(null);
     }
   }
 
@@ -446,7 +463,7 @@ class UsageRepository {
       final bonusMsgs = usage['bonus_messages_today'] as int? ?? 0;
       return BackendResponse.success(bonusMsgs);
     } catch (e) {
-      debugPrint('UsageRepository.getRemainingBonusMessages error: $e');
+      AppLogger.error('UsageRepository', 'UsageRepository.getRemainingBonusMessages error: $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -466,7 +483,7 @@ class UsageRepository {
       );
       return BackendResponse.fromRpc(response);
     } catch (e) {
-      debugPrint('UsageRepository.grantAdReward via RPC error: $e');
+      AppLogger.error('UsageRepository', 'UsageRepository.grantAdReward via RPC error: $e');
       return BackendResponse.failure(e.toString());
     }
     */

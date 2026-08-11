@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:banjarabio/notification/core/notification_payload.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Tracks delivery status of push notifications for fallback logic.
 ///
@@ -49,7 +50,7 @@ class DeliveryTracker {
     final record = _records.remove(notificationId);
     if (record != null) {
       record.escalationTimer.cancel();
-      debugPrint('📡 [Tracker] Marked as seen: $notificationId');
+      AppLogger.debug('DeliveryTracker', '📡 [Tracker] Marked as seen: $notificationId');
     }
   }
 
@@ -59,7 +60,7 @@ class DeliveryTracker {
       record.escalationTimer.cancel();
     }
     _records.clear();
-    debugPrint('📡 [Tracker] All notifications marked as seen');
+    AppLogger.debug('DeliveryTracker', '📡 [Tracker] All notifications marked as seen');
   }
 
   /// Called when escalation timer fires.

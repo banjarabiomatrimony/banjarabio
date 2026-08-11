@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banjarabio/core/models/backend_response.dart';
 import 'package:banjarabio/core/models/daily_reward_model.dart';
 import 'package:banjarabio/core/supabase_client.dart' as app_supabase;
+import 'package:banjarabio/core/services/app_logger.dart';
 
 class DailyRewardRepository {
   // Singleton
@@ -60,7 +61,7 @@ class DailyRewardRepository {
         ),
       );
     } catch (e) {
-      debugPrint('getRewardStatus error: $e');
+      AppLogger.error('DailyRewardRepository', 'getRewardStatus error: $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -81,7 +82,7 @@ class DailyRewardRepository {
       }
       return BackendResponse.failure('Failed to parse claim response');
     } catch (e) {
-      debugPrint('claimDailyReward error: $e');
+      AppLogger.error('DailyRewardRepository', 'claimDailyReward error: $e');
       if (e.toString().contains('ALREADY_CLAIMED_TODAY')) {
         return BackendResponse.failure('You have already claimed your reward today!');
       }

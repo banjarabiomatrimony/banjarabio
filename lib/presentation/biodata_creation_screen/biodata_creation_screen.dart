@@ -3,11 +3,11 @@ import 'dart:io' as io;
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+
 
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
-import 'package:banjarabio/core/models/sibling_model.dart';
+
 import 'package:banjarabio/core/repositories/admin_repository.dart';
 import 'package:banjarabio/core/repositories/staff_repository.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
@@ -22,6 +22,12 @@ import 'package:banjarabio/presentation/biodata_creation_screen/widgets/family_d
 import 'package:banjarabio/presentation/biodata_creation_screen/widgets/location_preferences_section.dart';
 import 'package:banjarabio/presentation/biodata_creation_screen/widgets/personal_details_section.dart';
 import 'package:banjarabio/presentation/biodata_creation_screen/widgets/photo_upload_section.dart';
+import 'package:banjarabio/presentation/biodata_creation_screen/widgets/creation_progress_indicator.dart';
+import 'package:banjarabio/presentation/biodata_creation_screen/widgets/creation_navigation_buttons.dart';
+import 'package:banjarabio/presentation/biodata_creation_screen/widgets/creation_discard_dialog.dart';
+import 'package:banjarabio/presentation/biodata_creation_screen/widgets/creation_form_data_mapper.dart';
+import 'package:banjarabio/presentation/biodata_creation_screen/models/creation_step_config.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Biodata Creation Screen for structured profile building
 /// Implements traditional matrimonial format with mobile-optimized input
@@ -38,7 +44,6 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
   final _formKey = GlobalKey<FormState>();
 
   int _currentStep = 0;
-  final int _totalSteps = 5;
   bool _isLoading = false;
 
   // Debouncing for auto-save
@@ -58,50 +63,30 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
   final ProfileRepository _profileRepository = ProfileRepository();
   final PhotoRepository _photoRepository = PhotoRepository();
 
-  // Form data storage
-  Map<String, dynamic> _formData = {
-    'name': '',
-    'phone_number': '',
-    'surname': '',
-    'gotra': '',
-    'age': '',
-    'dateOfBirth': null as DateTime?,
-    'gender': 'Female',
-    'height': "5'5\"",
-    'complexion': '',
-    'bloodGroup': '',
-    'maritalStatus': 'Never Married',
-    'education': '',
-    'profession': '',
-    'annualIncome': '',
-    'state': '',
-    'district': '',
-    'taluka': '',
-    'village': '',
-    'location': '',
-    'nativePlace': '',
-    'fatherName': '',
-    'fatherOccupation': '',
-    'motherName': '',
-    'jobDetails': '',
-    'company': '',
-    'siblingsCount': '0',
-    'sisterCount': '0',
-    'brotherCount': '0',
-    'siblings': <SiblingModel>[],
-    'birthPlace': '',
-    'birthTime': '',
-    'educationDetails': '',
-    'familyType': '',
-    'familyStatus': '',
-    'marriageReadiness': true,
-    'aboutSelf': '',
-    'partnerExpectations': '',
-    'photos': <String>[],
-    'tempPhotos': <String>[], // Store temporary photo paths
-  };
+  // --- Dynamic Step Configuration ---
+  /// Computed creation mode based on edit/admin flags
+  CreationMode get _creationMode => CreationStepConfig.modeFromFlags(
+        isEditMode: _isEditMode,
+        isAdminEdit: _isAdminEdit,
+      );
 
-  // Validation states
+  /// Active steps for the current mode
+  List<CreationStep> get _activeSteps => CreationStepConfig.getSteps(_creationMode);
+
+  /// Total number of active steps
+  int get _totalSteps => _activeSteps.length;
+
+  /// Whether we're in lite (signup) mode
+  bool get _isLite => CreationStepConfig.isLiteMode(_creationMode);
+
+  /// The logical step for the current index
+  CreationStep get _currentCreationStep => _activeSteps[_currentStep];
+
+  // Form data storage
+  Map<String, dynamic> _formData = CreationFormDataMapper.createEmptyFormData();
+
+  // Validation states — initialized for all possible sections;
+  // only the active ones are checked during navigation.
   final Map<String, bool> _sectionValidation = {
     'personal': false,
     'family': false,
@@ -125,7 +110,7 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
     if (_scrollController.hasClients && _isPointerDown) {
       final FocusScopeNode currentFocus = FocusScope.of(context);
       if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-        debugPrint('BiodataCreationScreen: Hiding keyboard on manual scroll');
+        AppLogger.debug('BiodataCreationScreen', 'BiodataCreationScreen: Hiding keyboard on manual scroll');
         currentFocus.focusedChild?.unfocus();
       }
     }
@@ -168,7 +153,7 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
       // If we are in edit mode, ensure draft matches this profile
       if (_isEditMode && _existingProfile != null) {
         if (draft['id'] != _existingProfile!.id) {
-          debugPrint('Draft ID mismatch, not loading');
+          AppLogger.debug('BiodataCreationScreen', 'Draft ID mismatch, not loading');
           return;
         }
       } else if (_isEditMode && !draft.containsKey('id')) {
@@ -179,7 +164,7 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
         return;
       }
 
-      debugPrint('BiodataCreationScreen: Loading draft data');
+      AppLogger.debug('BiodataCreationScreen', 'BiodataCreationScreen: Loading draft data');
       _populateFormFromMap(draft);
       if (mounted) {
         final l10n = AppLocalizations.of(context);
@@ -205,47 +190,7 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
   }
 
   void _initializeForm() {
-    _formData = {
-      'name': '',
-      'phone_number': '',
-      'surname': '',
-      'gotra': '',
-      'age': '',
-      'dateOfBirth': null as DateTime?,
-      'gender': 'Female',
-      'height': "5'5\"",
-      'complexion': '',
-      'bloodGroup': '',
-      'maritalStatus': 'Never Married',
-      'education': '',
-      'profession': '',
-      'annualIncome': '',
-      'state': '',
-      'district': '',
-      'taluka': '',
-      'village': '',
-      'location': '',
-      'nativePlace': '',
-      'fatherName': '',
-      'fatherOccupation': '',
-      'motherName': '',
-      'jobDetails': '',
-      'company': '',
-      'siblingsCount': '0',
-      'sisterCount': '0',
-      'brotherCount': '0',
-      'siblings': <SiblingModel>[],
-      'birthPlace': '',
-      'birthTime': '',
-      'educationDetails': '',
-      'familyType': '',
-      'familyStatus': '',
-      'marriageReadiness': true,
-      'aboutSelf': '',
-      'partnerExpectations': '',
-      'photos': <String>[],
-      'tempPhotos': <String>[],
-    };
+    _formData = CreationFormDataMapper.createEmptyFormData();
   }
 
   /// Check and wait for authentication to be ready
@@ -291,11 +236,11 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
             file.deleteSync();
           }
         } catch (e) {
-          debugPrint('Error deleting temp file $path: $e');
+          AppLogger.error('BiodataCreationScreen', 'Error deleting temp file $path: $e');
         }
       }
     } catch (e) {
-      debugPrint('Error in cleanupTempFiles: $e');
+      AppLogger.error('BiodataCreationScreen', 'Error in cleanupTempFiles: $e');
     }
   }
 
@@ -310,7 +255,7 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
   }
 
   Future<void> _nextStep() async {
-    final missingFields = _getMissingFields(step: _currentStep);
+    final missingFields = _getMissingFields(step: _currentCreationStep);
  
     if (missingFields.isNotEmpty && !_isAdminEdit) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -392,7 +337,7 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
         dataToSave.remove('id');
       }
 
-      debugPrint('BiodataCreationScreen: Auto-saving draft...');
+      AppLogger.debug('BiodataCreationScreen', 'BiodataCreationScreen: Auto-saving draft...');
       SessionManager.instance.saveBiodataDraft(dataToSave);
       
       // ✅ Special for Staff: Immediate DB Persistence
@@ -413,7 +358,7 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
       // Safety check: if no fields were populated (besides IDs/updated_at), skip
       if (profileData.length <= 3) return;
 
-      debugPrint('BiodataCreationScreen: Background auto-save for admin/staff: ${profileData.keys}');
+      AppLogger.debug('BiodataCreationScreen', 'BiodataCreationScreen: Background auto-save for admin/staff: ${profileData.keys}');
       
       final currentProfile = SessionManager.instance.currentProfile;
       final currentRole = currentProfile?.role ?? 'user';
@@ -425,254 +370,65 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
           profileData,
         );
         if (!staffRes.isSuccess) {
-          debugPrint('BiodataCreationScreen: Staff background save failed: ${staffRes.errorMessage}');
+          AppLogger.error('BiodataCreationScreen', 'BiodataCreationScreen: Staff background save failed: ${staffRes.errorMessage}');
         } else {
-          debugPrint('BiodataCreationScreen: Staff background save successful');
+          AppLogger.debug('BiodataCreationScreen', 'BiodataCreationScreen: Staff background save successful');
         }
       } else if (currentRole == 'admin' || AdminConfig.isAdminEmail(AppSupabaseClient.currentUser?.email ?? '')) {
         await AdminRepository().adminUpdateProfile(
           _existingProfile!.userId,
           profileData,
         );
-        debugPrint('BiodataCreationScreen: Admin background save successful');
+        AppLogger.debug('BiodataCreationScreen', 'BiodataCreationScreen: Admin background save successful');
       } else {
-        debugPrint('BiodataCreationScreen: Background save skipped - role "$currentRole" not authorized');
+        AppLogger.warn('BiodataCreationScreen', 'BiodataCreationScreen: Background save skipped - role "$currentRole" not authorized');
       }
     } catch (e) {
-      debugPrint('BiodataCreationScreen: Background auto-save failed: $e');
+      AppLogger.error('BiodataCreationScreen', 'BiodataCreationScreen: Background auto-save failed: $e');
     }
   }
 
-  /// Builds a sparse map of profile data for updates.
-  /// Only includes fields that are present in _formData.
+  /// Delegates to CreationFormDataMapper for sparse profile data.
   Map<String, dynamic> _buildSparseProfileData() {
-    final userId = _isAdminEdit && _existingProfile != null
-        ? _existingProfile!.userId
-        : AppSupabaseClient.currentUserId;
-
-    final data = <String, dynamic>{
-      'user_id': userId,
-    };
-
-    if (_isAdminEdit) {
-      data['target_user_id'] = userId;
-    }
-
-    // Helper to map and add if present
-    void addIfPresent(String formKey, String dbKey, {dynamic Function(dynamic)? transform}) {
-      if (_formData.containsKey(formKey)) {
-        final val = _formData[formKey];
-        data[dbKey] = transform != null ? transform(val) : val;
-      }
-    }
-
-    addIfPresent('profileCreatedBy', 'profile_created_by');
-    addIfPresent('name', 'full_name');
-    addIfPresent('phone_number', 'phone_number');
-    addIfPresent('surname', 'surname');
-    addIfPresent('gotra', 'gotra');
-    addIfPresent('age', 'age', transform: (v) => int.tryParse(v.toString()));
-    addIfPresent('dateOfBirth', 'date_of_birth', transform: (v) => (v as DateTime?)?.toIso8601String());
-    addIfPresent('gender', 'gender');
-    addIfPresent('height', 'height');
-    addIfPresent('complexion', 'complexion');
-    addIfPresent('bloodGroup', 'blood_group');
-    addIfPresent('maritalStatus', 'marital_status');
-    addIfPresent('education', 'education');
-    addIfPresent('profession', 'profession');
-    addIfPresent('annualIncome', 'annual_income');
-    addIfPresent('state', 'state');
-    addIfPresent('district', 'district');
-    addIfPresent('taluka', 'taluka');
-    addIfPresent('village', 'village');
-    addIfPresent('permanent_location', 'permanent_location');
-    addIfPresent('permanent_location', 'current_location');
-    addIfPresent('nativePlace', 'native_place');
-    addIfPresent('birthPlace', 'birth_place');
-    addIfPresent('birthTime', 'birth_time');
-    addIfPresent('educationDetails', 'education_details');
-    addIfPresent('jobDetails', 'job_details');
-    addIfPresent('company', 'company');
-    addIfPresent('fatherName', 'father_name');
-    addIfPresent('fatherOccupation', 'father_occupation');
-    addIfPresent('motherName', 'mother_name');
-    addIfPresent('motherOccupation', 'mother_occupation');
-    addIfPresent('siblingsCount', 'siblings_count', transform: (v) => int.tryParse(v.toString()));
-    addIfPresent('sisterCount', 'sister_count', transform: (v) => int.tryParse(v.toString()));
-    addIfPresent('brotherCount', 'brother_count', transform: (v) => int.tryParse(v.toString()));
-    
-    if (_formData.containsKey('siblings')) {
-      data['siblings_data'] = ((_formData['siblings'] ?? []) as List).map((s) {
-        if (s is SiblingModel) return s.toJson();
-        if (s is Map<String, dynamic>) return s;
-        return {};
-      }).toList();
-    }
-
-    addIfPresent('familyType', 'family_type');
-    addIfPresent('familyStatus', 'family_status');
-    
-    if (_formData.containsKey('marriageReadiness')) {
-      final isMarriageReady = _formData['marriageReadiness'] == true;
-      data['marriage_readiness'] = isMarriageReady ? 'Ready for marriage' : 'Not ready yet';
-    }
-
-    addIfPresent('aboutSelf', 'about_self');
-    addIfPresent('partnerExpectations', 'partner_expectations');
-    addIfPresent('expectation', 'expectation');
-
-    data['updated_at'] = DateTime.now().toIso8601String();
-
-    return data;
+    return CreationFormDataMapper.buildSparseProfileData(
+      formData: _formData,
+      isAdminEdit: _isAdminEdit,
+      existingProfileUserId: _existingProfile?.userId,
+    );
   }
 
   void _populateFormFromMap(Map<String, dynamic> data) {
-    debugPrint('BiodataCreationScreen: Populating form from map data');
-
     try {
-      final List<String> photoUrls = [];
-
-      // Extract photo URLs
-      if (data.containsKey('photos') && data['photos'] is List) {
-        final List<dynamic> photoData = data['photos'] as List<dynamic>;
-        for (final p in photoData) {
-          if (p is Map<String, dynamic>) {
-            if (p['url'] != null && p['url'] is String) {
-              photoUrls.add(p['url'] as String);
-            } else if (p['image_url'] != null && p['image_url'] is String) {
-              photoUrls.add(p['image_url'] as String);
-            }
-          } else if (p is String && p.isNotEmpty) {
-            photoUrls.add(p);
-          }
-        }
-      }
-
       setState(() {
-        _isPopulating = true; // Block validation callbacks
-        final Map<String, dynamic> newData = Map<String, dynamic>.from(
-          _formData,
-        );
-
-        newData['name'] =
-            data['name']?.toString() ?? data['fullName']?.toString() ?? '';
-        newData['phone_number'] = data['phone_number']?.toString() ?? '';
-        newData['age'] = data['age']?.toString() ?? '';
-        newData['height'] = data['height']?.toString() ?? '';
-        newData['surname'] = data['surname']?.toString() ?? '';
-        newData['gotra'] = data['gotra']?.toString() ?? '';
-        newData['gender'] = data['gender']?.toString() ?? 'Female';
-        newData['education'] = data['education']?.toString() ?? '';
-        newData['profession'] = data['profession']?.toString() ?? '';
-        newData['location'] =
-            (data['location'] ?? data['current_location'])?.toString() ?? '';
-        newData['aboutSelf'] =
-            (data['aboutSelf'] ??
-                    data['about'] ??
-                    data['about_self'] ??
-                    data['about_yourself'])
-                ?.toString() ??
-            '';
-        newData['marriageReadiness'] =
-            data['marriageReadiness'] == 'Ready for marriage' ||
-            data['marriageReadiness'] == true;
-
-        final dynamic dobData = data['dateOfBirth'] ?? data['dob'];
-        if (dobData != null) {
-          if (dobData is DateTime) {
-            newData['dateOfBirth'] = dobData;
-          } else {
-            newData['dateOfBirth'] = DateTime.tryParse(dobData.toString());
-          }
-        }
-
-        // Add other fields
-        newData['complexion'] = data['complexion']?.toString() ?? '';
-        newData['bloodGroup'] = data['bloodGroup']?.toString() ?? '';
-        newData['maritalStatus'] =
-            data['maritalStatus']?.toString() ?? 'Never Married';
-        newData['annualIncome'] = data['annualIncome']?.toString() ?? '';
-        newData['nativePlace'] =
-            (data['nativePlace'] ?? data['native_place'])?.toString() ?? '';
-        newData['state'] = data['state']?.toString() ?? '';
-        newData['district'] = data['district']?.toString() ?? '';
-        newData['taluka'] = data['taluka']?.toString() ?? '';
-        newData['village'] = data['village']?.toString() ?? '';
-        newData['fatherName'] = data['fatherName']?.toString() ?? '';
-        newData['fatherOccupation'] =
-            data['fatherOccupation']?.toString() ?? '';
-        newData['motherName'] = data['motherName']?.toString() ?? '';
-        newData['motherOccupation'] =
-            data['motherOccupation']?.toString() ?? '';
-        final dynamic sCount = data['siblingsCount'] ?? data['siblings_count'];
-        if (sCount != null) {
-          newData['siblingsCount'] = sCount.toString();
-        } else if (data['siblings'] is List) {
-          newData['siblingsCount'] = (data['siblings'] as List).length.toString();
-        } else {
-          newData['siblingsCount'] = data['siblings']?.toString() ?? '0';
-        }
-        newData['familyType'] = data['familyType']?.toString() ?? '';
-        newData['familyStatus'] = data['familyStatus']?.toString() ?? '';
-        newData['partnerExpectations'] =
-            (data['partnerExpectations'] ?? data['partner_expectations'])
-                ?.toString() ??
-            '';
-        newData['expectation'] = data['expectation']?.toString() ?? '';
-        newData['birthPlace'] =
-            (data['birthPlace'] ?? data['birth_place'])?.toString() ?? '';
-        newData['birthTime'] =
-            (data['birthTime'] ?? data['birth_time'])?.toString() ?? '';
-        newData['educationDetails'] =
-            (data['educationDetails'] ?? data['education_details'])
-                ?.toString() ??
-            '';
-        // Safely extract sibling list, checking various possible keys
-        final dynamic rawData =
-            data['siblingsData'] ?? data['siblings_data'] ?? data['siblings'];
-
-        final List rawSiblings = (rawData is List) ? rawData : [];
-        newData['siblings'] = rawSiblings
-            .map((s) {
-              if (s is SiblingModel) return s;
-              if (s is Map<String, dynamic>) return SiblingModel.fromJson(s);
-              return null;
-            })
-            .whereType<SiblingModel>()
-            .toList();
-        newData['jobDetails'] =
-            (data['jobDetails'] ?? data['job_details'])?.toString() ?? '';
-        newData['company'] = data['company']?.toString() ?? '';
-
-        // Set photos
-        newData['photos'] = photoUrls;
-        newData['tempPhotos'] = <String>[]; // Clear temp photos in edit mode
-
-        // Update the reference
-        _formData = newData;
-        _isPopulating = false; // Unblock
+        _isPopulating = true;
+        _formData = CreationFormDataMapper.populateFromMap(_formData, data);
+        _isPopulating = false;
       });
     } catch (e) {
       _isPopulating = false;
-      debugPrint('Error populating form from map: $e');
+      AppLogger.error('BiodataCreationScreen', 'Error populating form from map: $e');
     }
   }
 
   /// Returns a list of user-friendly names for missing required fields
-  List<String> _getMissingFields({int? step}) {
+  List<String> _getMissingFields({CreationStep? step}) {
     if (_isAdminEdit) return [];
     
     final l10n = AppLocalizations.of(context);
     if (l10n == null) return [];
 
-    // If step is null, check all steps up to the current one
+    // If step is null, check all active steps up to the current one
     final stepsToCheck =
-        step != null ? [step] : List.generate(_currentStep + 1, (i) => i);
+        step != null ? [step] : _activeSteps.sublist(0, _currentStep + 1);
 
     final missingKeys = <String>[];
     for (final s in stepsToCheck) {
       missingKeys.addAll(
-        OnboardingValidator.getMissingFields(step: s, formData: _formData),
+        OnboardingValidator.getMissingFields(
+          step: s,
+          formData: _formData,
+          isLite: _isLite,
+        ),
       );
     }
 
@@ -730,14 +486,14 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
       // Ensure user_id is correct for regular save
       profileData['user_id'] = userId;
 
-      debugPrint('BiodataCreationScreen: Saving profile with data keys: ${profileData.keys}');
+      AppLogger.debug('BiodataCreationScreen', 'BiodataCreationScreen: Saving profile with data keys: ${profileData.keys}');
 
       final aboutSelf = _formData['aboutSelf']?.toString() ?? '';
       if (aboutSelf.isNotEmpty) {
         profileData['about_self'] = aboutSelf;
       }
 
-      debugPrint('BiodataCreationScreen: Saving profile with data: $profileData');
+      AppLogger.debug('BiodataCreationScreen', 'BiodataCreationScreen: Saving profile with data: $profileData');
 
       final BackendResponse<ProfileModel> response;
       if (_isAdminEdit && _existingProfile != null) {
@@ -787,10 +543,10 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
       await response.fold(
         onSuccess: (savedProfile) async {
           saved = savedProfile;
-          debugPrint('Profile saved successfully with ID: ${savedProfile.id}');
+          AppLogger.debug('BiodataCreationScreen', 'Profile saved successfully with ID: ${savedProfile.id}');
 
           // ✅ Photo Upload Logic (Only if on photo step or final save)
-          if (_currentStep == 3 || isFinalSave) {
+          if (_currentCreationStep == CreationStep.photo || isFinalSave) {
             final allPhotos = List<String>.from(_formData['photos'] as List? ?? []);
             final newPhotos = allPhotos
                 .where((p) => !p.startsWith('http') && !p.startsWith('https'))
@@ -817,11 +573,11 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
                   await uploadRes.fold(
                     onSuccess: (photo) async => debugPrint('Photo uploaded: ${photo.publicUrl}'),
                     onFailure: (error) async {
-                      debugPrint('Failed to upload photo $photoPath: $error');
+                      AppLogger.error('BiodataCreationScreen', 'Failed to upload photo $photoPath: $error');
                       if (mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(l10n?.failedToUploadPhoto(i + 1) ?? 'Failed to upload photo ${i + 1}'),
+                            content: Text(l10n?.failedToUploadPhoto((i + 1).toString()) ?? 'Failed to upload photo ${i + 1}'),
                             backgroundColor: Colors.orange,
                           ),
                         );
@@ -829,7 +585,7 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
                     },
                   );
                 } catch (e) {
-                  debugPrint('Error uploading photo $photoPath: $e');
+                  AppLogger.error('BiodataCreationScreen', 'Error uploading photo $photoPath: $e');
                 }
               }
             }
@@ -852,8 +608,8 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
       );
       return saved;
     } catch (e, stackTrace) {
-      debugPrint('Error saving profile: $e');
-      debugPrint('Stack trace: $stackTrace');
+      AppLogger.error('BiodataCreationScreen', 'Error saving profile: $e');
+      AppLogger.debug('BiodataCreationScreen', 'Stack trace: $stackTrace');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -939,44 +695,11 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
           _previousStep();
         } else {
           if (!context.mounted) return;
-          final bool? shouldExit = await showDialog<bool>(
+          await CreationDiscardDialog.show(
             context: context,
-            builder: (context) => AlertDialog(
-              title: Text(AppLocalizations.of(context)?.discardChanges ?? 'Discard Changes?'),
-              content: Text(
-                AppLocalizations.of(context)?.discardChangesBody ?? 'Are you sure you want to go back? Your progress is saved as a draft.',
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context, false),
-                  child: Text(AppLocalizations.of(context)?.stay ?? 'Stay'),
-                ),
-                ElevatedButton(
-                  onPressed: () => Navigator.pop(context, true),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.colorScheme.error,
-                    foregroundColor: Colors.white,
-                  ),
-                  child: Text(AppLocalizations.of(context)?.discard ?? 'Discard'),
-                ),
-              ],
-            ),
+            isEditMode: _isEditMode,
+            isAdminEdit: _isAdminEdit,
           );
-
-          if (shouldExit ?? false) {
-            if (context.mounted) {
-              if (_isAdminEdit) {
-                // Admin Edit: Return to admin dashboard
-                Navigator.of(context).pop();
-              } else if (_isEditMode) {
-                // Normal User Edit: Return to home screen, likely Profile Tab
-                Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
-              } else {
-                // New User / Cancelled creation: Return to auth
-                Navigator.of(context).pushReplacementNamed(AppRoutes.authentication);
-              }
-            }
-          }
         }
       },
       child: Listener(
@@ -986,19 +709,19 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
         child: Scaffold(
           appBar: CustomAppBar(
             title: _isEditMode ? (AppLocalizations.of(context)?.editProfile ?? 'Edit Profile') : (AppLocalizations.of(context)?.createBiodata ?? 'Create Biodata'),
-          subtitle: AppLocalizations.of(context)?.stepNOfTotal(_currentStep + 1, _totalSteps) ?? 'Step ${_currentStep + 1} of $_totalSteps',
+          subtitle: AppLocalizations.of(context)?.stepNOfTotal((_currentStep + 1).toString(), _totalSteps.toString()) ?? 'Step ${_currentStep + 1} of $_totalSteps',
           leading: _currentStep > 0
               ? IconButton(
                   icon: CustomIconWidget(
                     iconName: 'arrow_back',
-                    color: theme.colorScheme.onSurface,
+                    color: theme.appBarTheme.foregroundColor ?? theme.colorScheme.onSurface,
                   ),
                   onPressed: _previousStep,
                 )
               : IconButton(
                   icon: CustomIconWidget(
                     iconName: 'close',
-                    color: theme.colorScheme.onSurface,
+                    color: theme.appBarTheme.foregroundColor ?? theme.colorScheme.onSurface,
                   ),
                   onPressed: () {
                     // Navigate to login screen for new users, home for existing, pop for admin
@@ -1009,7 +732,7 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
                     } else {
                       Navigator.of(
                         context,
-                      ).pushReplacementNamed(AppRoutes.authentication);
+                      ).pushReplacementNamed(AppRoutes.onboardingSelection);
                     }
                   },
                 ),
@@ -1018,14 +741,29 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
           key: _formKey,
           child: Column(
             children: [
-              // Progress indicator
-              _buildProgressIndicator(theme),
+              // Progress indicator — uses dynamic active steps
+              CreationProgressIndicator(
+                currentStep: _currentStep,
+                activeSteps: _activeSteps,
+                formData: _formData,
+                sectionValidation: _sectionValidation,
+                isLite: _isLite,
+              ),
 
               // Form sections - Replaced PageView with indexed renderer for memory performance
               Expanded(child: _buildCurrentSection()),
 
-              // Navigation buttons
-              _buildNavigationButtons(theme),
+              // Navigation buttons — uses dynamic total steps
+              CreationNavigationButtons(
+                currentStep: _currentStep,
+                totalSteps: _totalSteps,
+                isLoading: _isLoading,
+                isEditMode: _isEditMode,
+                isLite: _isLite,
+                onPrevious: _previousStep,
+                onNext: _nextStep,
+                onSave: _validateAndSave,
+              ),
             ],
           ),
         ),
@@ -1034,198 +772,19 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
     );
   }
 
-  Widget _buildProgressIndicator(ThemeData theme) {
-    final percentage = _calculateCompletion();
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        boxShadow: [
-          BoxShadow(
-            color: theme.shadowColor.withValues(alpha: 0.1),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppLocalizations.of(context)?.stepNOfTotal(_currentStep + 1, _totalSteps) ?? 'Step ${_currentStep + 1} of $_totalSteps',
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                AppLocalizations.of(context)?.percentComplete(percentage) ?? '$percentage% Complete',
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 1.h),
-          Row(
-            children: List.generate(_totalSteps, (index) {
-              final isCurrent = index == _currentStep;
-              String sectionKey = '';
-              switch (index) {
-                case 0: sectionKey = 'personal'; break;
-                case 1: sectionKey = 'family'; break;
-                case 2: sectionKey = 'education'; break;
-                case 3: sectionKey = 'photo'; break;
-                case 4: sectionKey = 'location'; break;
-              }
-              final isSectionValid = _sectionValidation[sectionKey] ?? false;
 
-              return Expanded(
-                child: Column(
-                  children: [
-                    Container(
-                      height: 0.6.h,
-                      margin: EdgeInsets.symmetric(horizontal: 0.5.w),
-                      decoration: BoxDecoration(
-                        color: isSectionValid || isCurrent
-                            ? theme.colorScheme.primary
-                            : theme.colorScheme.outline.withValues(alpha: 0.3),
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                    if (isSectionValid && !isCurrent)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 2),
-                        child: Icon(
-                          Icons.check_circle,
-                          size: 10,
-                          color: theme.colorScheme.primary,
-                        ),
-                      ),
-                  ],
-                ),
-              );
-            }),
-          ),
-          SizedBox(height: 1.h),
-          _buildProfileStrengthBadge(theme, percentage),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildProfileStrengthBadge(ThemeData theme, int percentage) {
-    String badgeText;
-    Color badgeColor;
-    IconData badgeIcon;
 
-    if (percentage < 40) {
-      badgeText = AppLocalizations.of(context)?.bronze ?? 'Bronze';
-      badgeColor = Colors.brown;
-      badgeIcon = Icons.stars_outlined;
-    } else if (percentage < 80) {
-      badgeText = AppLocalizations.of(context)?.silver ?? 'Silver';
-      badgeColor = Colors.grey;
-      badgeIcon = Icons.stars;
-    } else {
-      badgeText = AppLocalizations.of(context)?.gold ?? 'Gold';
-      badgeColor = Colors.orange;
-      badgeIcon = Icons.stars;
-    }
-
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.5.h),
-      decoration: BoxDecoration(
-        color: badgeColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: badgeColor.withValues(alpha: 0.5)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(badgeIcon, size: 14, color: badgeColor),
-          SizedBox(width: 1.5.w),
-          Text(
-            AppLocalizations.of(context)?.profileStrengthLabel(badgeText) ?? 'Profile Strength: $badgeText',
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: badgeColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  int _calculateCompletion() {
-    return ProfileModel.calculateScore(_formData);
-  }
-
-  Widget _buildNavigationButtons(ThemeData theme) {
-    return Container(
-      padding: EdgeInsets.all(4.w),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        boxShadow: [
-          BoxShadow(
-            color: theme.shadowColor.withValues(alpha: 0.1),
-            blurRadius: 8,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
-      child: SafeArea(
-        child: Row(
-          children: [
-            if (_currentStep > 0)
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: _previousStep,
-                  child: Text(AppLocalizations.of(context)?.previous ?? 'Previous'),
-                ),
-              ),
-            if (_currentStep > 0) SizedBox(width: 3.w),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: _isLoading
-                    ? null
-                    : (_currentStep < _totalSteps - 1
-                          ? _nextStep
-                          : _validateAndSave),
-                child: _isLoading
-                    ? SizedBox(
-                        height: 2.5.h,
-                        width: 2.5.h,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: theme.colorScheme.onPrimary,
-                        ),
-                      )
-                    : Text(
-                        _currentStep < _totalSteps - 1
-                            ? (AppLocalizations.of(context)?.next ?? 'Next')
-                            : (_isEditMode ? (AppLocalizations.of(context)?.updateProfile ?? 'Update Profile') : (AppLocalizations.of(context)?.saveBiodata ?? 'Save Biodata')),
-                        style: TextStyle(
-                          color: theme.colorScheme.onPrimary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildCurrentSection() {
-    switch (_currentStep) {
-      case 0:
+    final step = _currentCreationStep;
+
+    switch (step) {
+      case CreationStep.personal:
         return PersonalDetailsSection(
           formData: _formData,
           isAdminEdit: _isAdminEdit,
+          isLite: _isLite,
           onUpdate: _updateFormData,
           onBatchUpdate: _batchUpdateFormData,
           scrollController: _scrollController,
@@ -1241,7 +800,7 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
             });
           },
         );
-      case 1:
+      case CreationStep.family:
         return FamilyDetailsSection(
           formData: _formData,
           isAdminEdit: _isAdminEdit,
@@ -1258,10 +817,11 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
             });
           },
         );
-      case 2:
+      case CreationStep.education:
         return EducationProfessionSection(
           formData: _formData,
           isAdminEdit: _isAdminEdit,
+          isLite: _isLite,
           onUpdate: _updateFormData,
           onBatchUpdate: _batchUpdateFormData,
           scrollController: _scrollController,
@@ -1275,7 +835,7 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
             });
           },
         );
-      case 3:
+      case CreationStep.photo:
         return PhotoUploadSection(
           photos: List<String>.from(_formData['photos'] as List? ?? []),
           gender: _formData['gender']?.toString() ?? 'Female',
@@ -1288,10 +848,11 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
             });
           },
         );
-      case 4:
+      case CreationStep.location:
         return LocationPreferencesSection(
           formData: _formData,
           isAdminEdit: _isAdminEdit,
+          isLite: _isLite,
           onUpdate: _updateFormData,
           onBatchUpdate: _batchUpdateFormData,
           onValidationChange: (isValid) {
@@ -1304,8 +865,6 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
             });
           },
         );
-      default:
-        return const SizedBox.shrink();
     }
   }
 }

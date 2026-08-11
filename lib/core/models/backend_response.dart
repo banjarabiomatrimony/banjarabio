@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:banjarabio/core/services/telemetry_service.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// [BackendResponse]
 ///
@@ -60,7 +61,7 @@ class BackendResponse<T> {
       TelemetryService().logError(errorMessage, stackTrace: stackTrace);
     } catch (_) {
       // Prevent telemetry errors from crashing the app logic
-      debugPrint('Warning: TelemetryService failed to log error.');
+      AppLogger.error('BackendResponse', 'Warning: TelemetryService failed to log error.');
     }
 
     return BackendResponse._(

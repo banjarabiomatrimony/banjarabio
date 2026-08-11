@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 class AppGradients {
   AppGradients._(); // Prevent instantiation
 
-  // ── Primary Amethyst ──────────────────────────────────────────
+  // ── Primary Crimson ──────────────────────────────────────────
   static const LinearGradient primary = LinearGradient(
-    colors: [Color(0xFF432C7A), Color(0xFF2C1C52)],
+    colors: [Color(0xFF961B33), Color(0xFF731224)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
   // ── Romance / CTA ────────────────────────────────────────────
   static const LinearGradient romance = LinearGradient(
-    colors: [Color(0xFF880E4F), Color(0xFF432C7A)], // Deep Rose to Amethyst
+    colors: [Color(0xFF880E4F), Color(0xFF961B33)], // Deep Rose to Crimson
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );

@@ -23,6 +23,8 @@ void main() {
       expect(nameField, findsOneWidget);
 
       // 1. Focus the field
+      await tester.ensureVisible(nameField);
+      await tester.pumpAndSettle();
       await tester.tap(nameField);
       await tester.pump();
       

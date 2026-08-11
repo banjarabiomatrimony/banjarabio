@@ -1,7 +1,45 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:file/file.dart' as f;
+import 'package:file/local.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
+
+/// A custom file system that stores files in a subfolder of the application
+/// documents directory (or system temp directory in test environments).
+class PersistentDocumentsFileSystem implements FileSystem {
+  final Future<Directory> _directoryFuture;
+
+  PersistentDocumentsFileSystem(String cacheKey)
+      : _directoryFuture = _resolveDirectory(cacheKey);
+
+  static Future<Directory> _resolveDirectory(String cacheKey) async {
+    // If in test environment, use system temp directory to avoid MissingPluginException
+    if (Platform.environment.containsKey('FLUTTER_TEST')) {
+      final tempDir = Directory.systemTemp;
+      final cacheDir = Directory('${tempDir.path}/$cacheKey');
+      if (!cacheDir.existsSync()) {
+        cacheDir.createSync(recursive: true);
+      }
+      return cacheDir;
+    }
+
+    // Otherwise, use application documents directory (persistent, never cleared by OS)
+    final appDocDir = await getApplicationDocumentsDirectory();
+    final cacheDir = Directory('${appDocDir.path}/$cacheKey');
+    if (!await cacheDir.exists()) {
+      await cacheDir.create(recursive: true);
+    }
+    return cacheDir;
+  }
+
+  @override
+  Future<f.File> createFile(String name) async {
+    final directory = await _directoryFuture;
+    const localFs = LocalFileSystem();
+    return localFs.file('${directory.path}/$name');
+  }
+}
 
 /// [PersistentCacheManager]
 ///
@@ -41,8 +79,14 @@ class PersistentCacheManager {
       // At ~100KB avg per cached thumbnail, this is ~200MB max on disk.
       maxNrOfCacheObjects: 2000,
 
-      // Documents dir — the OS never auto-clears this unlike temp/cache dirs.
-      repo: JsonCacheInfoRepository(databaseName: _cacheKey),
+      // Cache metadata store: use robust transaction-backed SQLite on mobile, and
+      // fallback to NonStoringObjectProvider in VM test environments.
+      repo: Platform.environment.containsKey('FLUTTER_TEST')
+          ? NonStoringObjectProvider()
+          : CacheObjectProvider(databaseName: _cacheKey),
+      
+      // Store downloaded image files in persistent application documents directory
+      fileSystem: PersistentDocumentsFileSystem(_cacheKey),
       fileService: HttpFileService(),
     ),
   );
@@ -93,7 +137,7 @@ class PersistentCacheManager {
       // Fallback: path without query string (still strips params)
       return uri.replace(queryParameters: {}).toString();
     } catch (e) {
-      debugPrint('[PersistentCacheManager] stableKeyFor error: $e');
+      AppLogger.error('PersistentCacheManager', '[PersistentCacheManager] stableKeyFor error: $e');
       return url; // Fail safe
     }
   }
@@ -106,9 +150,9 @@ class PersistentCacheManager {
   static Future<void> clearAll() async {
     try {
       await instance.emptyCache();
-      debugPrint('[PersistentCacheManager] ✅ Local image cache cleared');
+      AppLogger.debug('PersistentCacheManager', '[PersistentCacheManager] ✅ Local image cache cleared');
     } catch (e) {
-      debugPrint('[PersistentCacheManager] clearAll error: $e');
+      AppLogger.error('PersistentCacheManager', '[PersistentCacheManager] clearAll error: $e');
     }
   }
 
@@ -117,9 +161,9 @@ class PersistentCacheManager {
   static Future<void> evictUrl(String url) async {
     try {
       await instance.removeFile(stableKeyFor(url));
-      debugPrint('[PersistentCacheManager] Evicted: ${stableKeyFor(url)}');
+      AppLogger.debug('PersistentCacheManager', '[PersistentCacheManager] Evicted: ${stableKeyFor(url)}');
     } catch (e) {
-      debugPrint('[PersistentCacheManager] evictUrl error: $e');
+      AppLogger.error('PersistentCacheManager', '[PersistentCacheManager] evictUrl error: $e');
     }
   }
 
@@ -130,7 +174,7 @@ class PersistentCacheManager {
     try {
       final dir = await getApplicationDocumentsDirectory();
       final cacheDir = Directory('${dir.path}/$_cacheKey');
-      if (!await cacheDir.exists()) return '0 KB';
+      if (!cacheDir.existsSync()) return '0 KB';
 
       int totalBytes = 0;
       await for (final entity in cacheDir.list(recursive: true)) {

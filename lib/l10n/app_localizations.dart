@@ -420,7 +420,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Add clear photos ({max} max)'**
-  String addClearPhotos(String max);
+  String addClearPhotos(int max);
 
   /// No description provided for @addPhoto.
   ///
@@ -600,7 +600,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'An error occurred: {error}'**
-  String anErrorOccurred(Object error);
+  String anErrorOccurred(String error);
 
   /// No description provided for @and.
   ///
@@ -840,7 +840,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{count} bookmarks'**
-  String bookmarksCount(String count);
+  String bookmarksCount(int count);
 
   /// No description provided for @bronze.
   ///
@@ -1140,7 +1140,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Critical failure: {error}'**
-  String criticalFailure(Object error);
+  String criticalFailure(String error);
 
   /// No description provided for @cropPhoto.
   ///
@@ -1224,19 +1224,19 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{count}d ago'**
-  String daysAgo(String count);
+  String daysAgo(int count);
 
   /// No description provided for @daysLeft.
   ///
   /// In en, this message translates to:
   /// **'{days} days left'**
-  String daysLeft(Object days);
+  String daysLeft(int days);
 
   /// No description provided for @daysRemaining.
   ///
   /// In en, this message translates to:
   /// **'{days} days remaining'**
-  String daysRemaining(Object days);
+  String daysRemaining(int days);
 
   /// No description provided for @delete.
   ///
@@ -1260,7 +1260,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Delete ({count})'**
-  String deleteCount(Object count);
+  String deleteCount(int count);
 
   /// No description provided for @deleteMyAccount.
   ///
@@ -1368,7 +1368,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{percentage}% OFF (Trust Score {score})'**
-  String discountPercentage(Object percentage, Object score);
+  String discountPercentage(int percentage, int score);
 
   /// No description provided for @discoverProfilesFromYourCommunityNsmartM.
   ///
@@ -1758,13 +1758,13 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Failed to block user: {error}'**
-  String failedToBlockUser(Object error);
+  String failedToBlockUser(String error);
 
   /// No description provided for @failedToDeleteAccount.
   ///
   /// In en, this message translates to:
   /// **'Failed to delete account: {error}'**
-  String failedToDeleteAccount(Object error);
+  String failedToDeleteAccount(String error);
 
   /// No description provided for @failedToDeletePhotoError.
   ///
@@ -1782,7 +1782,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Failed to load bookmarks: {error}'**
-  String failedToLoadBookmarks(Object error);
+  String failedToLoadBookmarks(String error);
 
   /// No description provided for @failedToLoadPhotosError.
   ///
@@ -1794,7 +1794,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Failed to load profile: {error}'**
-  String failedToLoadProfileError(Object error);
+  String failedToLoadProfileError(String error);
 
   /// No description provided for @failedToLoadProfileInformation.
   ///
@@ -1878,13 +1878,13 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Failed to submit report: {error}'**
-  String failedToSubmitReport(Object error);
+  String failedToSubmitReport(String error);
 
   /// No description provided for @failedToUpdateBookmark.
   ///
   /// In en, this message translates to:
   /// **'Failed to update bookmark: {error}'**
-  String failedToUpdateBookmark(Object error);
+  String failedToUpdateBookmark(String error);
 
   /// No description provided for @failedToUpdatePremiumStatus.
   ///
@@ -1908,7 +1908,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Failed to upload photo {index}'**
-  String failedToUploadPhoto(int index);
+  String failedToUploadPhoto(String index);
 
   /// No description provided for @failedToVerify.
   ///
@@ -2112,7 +2112,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'for {count} months'**
-  String forMonths(Object count);
+  String forMonths(int count);
 
   /// No description provided for @free.
   ///
@@ -2382,7 +2382,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{count}h ago'**
-  String hoursAgo(String count);
+  String hoursAgo(int count);
 
   /// No description provided for @howItWorks.
   ///
@@ -2784,7 +2784,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Match {current} of {total}'**
-  String matchNOfTotal(int current, int total);
+  String matchNOfTotal(String current, String total);
 
   /// No description provided for @matched.
   ///
@@ -2868,7 +2868,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{count}m ago'**
-  String minutesAgo(String count);
+  String minutesAgo(int count);
 
   /// No description provided for @mobileNumber.
   ///
@@ -3366,7 +3366,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{type} permission is required to upload photos. Please enable it in app settings.'**
-  String permissionRequiredMessage(Object type);
+  String permissionRequiredMessage(String type);
 
   /// No description provided for @personalDetails.
   ///
@@ -3396,7 +3396,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Photo added ({kb} KB)'**
-  String photoAddedWithKb(String kb);
+  String photoAddedWithKb(int kb);
 
   /// No description provided for @photoGuidelines.
   ///
@@ -3456,7 +3456,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{count} photos'**
-  String photosCount(String count);
+  String photosCount(int count);
 
   /// No description provided for @photosDeletedSuccessfully.
   ///
@@ -3612,7 +3612,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'+{points} Points'**
-  String pointsCount(String points);
+  String pointsCount(int points);
 
   /// No description provided for @postGraduate.
   ///
@@ -3672,7 +3672,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'₹{price}/month'**
-  String pricePerMonth(Object price);
+  String pricePerMonth(int price);
 
   /// No description provided for @primary.
   ///
@@ -3894,7 +3894,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{count} profile boost/month'**
-  String profileBoostPerMonth(String count);
+  String profileBoostPerMonth(int count);
 
   /// No description provided for @profileCompleted.
   ///
@@ -3960,7 +3960,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Profile Strength: {strength}'**
-  String profileStrengthLabel(Object strength);
+  String profileStrengthLabel(String strength);
 
   /// No description provided for @profileViewLimitReached.
   ///
@@ -3972,7 +3972,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{count} profile views/day'**
-  String profileViewsPerDay(String count);
+  String profileViewsPerDay(int count);
 
   /// No description provided for @profilesYouSaveWillAppearHere.
   ///
@@ -4098,7 +4098,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Join BanjaraBio, the most trusted matrimonial app for our community! Use my link to get started: {link}'**
-  String referralInviteMessage(Object link);
+  String referralInviteMessage(String link);
 
   /// No description provided for @referralInviteSubject.
   ///
@@ -4662,7 +4662,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{count} shares/month'**
-  String sharesPerMonth(String count);
+  String sharesPerMonth(int count);
 
   /// No description provided for @sharingBiodataPdf.
   ///
@@ -4806,7 +4806,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Step {current} of {total}'**
-  String stepNOfTotal(int current, int total);
+  String stepNOfTotal(String current, String total);
 
   /// No description provided for @student.
   ///
@@ -5094,7 +5094,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'I just verified my profile on BanjaraBio with a Trust Score of {score}! Check out my profile and join our community: {url}'**
-  String trustScoreShareMessage(String score, String url);
+  String trustScoreShareMessage(int score, String url);
 
   /// No description provided for @trustVerification.
   ///
@@ -5862,7 +5862,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{count} Yrs'**
-  String yrs(Object count);
+  String yrs(int count);
 
   /// No description provided for @itSAMatch.
   ///
@@ -5886,19 +5886,19 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'To: {name}'**
-  String toContact(Object name);
+  String toContact(String name);
 
   /// No description provided for @fromContact.
   ///
   /// In en, this message translates to:
   /// **'From: {name}'**
-  String fromContact(Object name);
+  String fromContact(String name);
 
   /// No description provided for @countProfileViews.
   ///
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 profile view} other{{count} profile views}}'**
-  String countProfileViews(num count);
+  String countProfileViews(int count);
 
   /// No description provided for @matchedBadge.
   ///
@@ -5922,7 +5922,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Shared {profileName} via {title}'**
-  String profileSharedVia(Object profileName, Object title);
+  String profileSharedVia(String profileName, String title);
 
   /// No description provided for @failedToSendMessage.
   ///
@@ -6612,25 +6612,25 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'MRP ₹{price}'**
-  String mrpPrice(Object price);
+  String mrpPrice(int price);
 
   /// No description provided for @bulkDiscount.
   ///
   /// In en, this message translates to:
   /// **'{percent}% OFF'**
-  String bulkDiscount(Object percent);
+  String bulkDiscount(int percent);
 
   /// No description provided for @youSave.
   ///
   /// In en, this message translates to:
   /// **'You Save ₹{amount}'**
-  String youSave(Object amount);
+  String youSave(int amount);
 
   /// No description provided for @totalSavings.
   ///
   /// In en, this message translates to:
   /// **'Total Savings: ₹{amount}'**
-  String totalSavings(Object amount);
+  String totalSavings(int amount);
 
   /// No description provided for @trustDiscountApplied.
   ///
@@ -6648,13 +6648,13 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{count} Contact Unlocks/month'**
-  String contactUnlocks(Object count);
+  String contactUnlocks(int count);
 
   /// No description provided for @handpickedMatches.
   ///
   /// In en, this message translates to:
   /// **'{count} Handpicked Matches/week'**
-  String handpickedMatches(Object count);
+  String handpickedMatches(int count);
 
   /// No description provided for @dedicatedManager.
   ///
@@ -7129,6 +7129,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Success! Your request has been submitted for review.'**
   String get successSubmission;
+
+  /// No description provided for @melavas.
+  ///
+  /// In en, this message translates to:
+  /// **'Melavas'**
+  String get melavas;
+
+  /// No description provided for @upcomingMelavas.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming Melavas'**
+  String get upcomingMelavas;
+
+  /// No description provided for @callOrganizer.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Organizer'**
+  String get callOrganizer;
+
+  /// No description provided for @viewVenue.
+  ///
+  /// In en, this message translates to:
+  /// **'View Venue'**
+  String get viewVenue;
+
+  /// No description provided for @organizer.
+  ///
+  /// In en, this message translates to:
+  /// **'Organizer'**
+  String get organizer;
+
+  /// No description provided for @venue.
+  ///
+  /// In en, this message translates to:
+  /// **'Venue'**
+  String get venue;
+
+  /// No description provided for @eventDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Event Details'**
+  String get eventDetails;
+
+  /// No description provided for @browseMatchesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Matches (Browse)'**
+  String get browseMatchesTitle;
+
+  /// No description provided for @browseMatchesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Search suitable matches for son, daughter, relative.'**
+  String get browseMatchesDesc;
+
+  /// No description provided for @browseMatchesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer a few questions and see suitable matches'**
+  String get browseMatchesSubtitle;
+
+  /// No description provided for @forWhomSearching.
+  ///
+  /// In en, this message translates to:
+  /// **'Who are you searching a match for?'**
+  String get forWhomSearching;
+
+  /// No description provided for @lookingForGender.
+  ///
+  /// In en, this message translates to:
+  /// **'Looking for groom or bride?'**
+  String get lookingForGender;
+
+  /// No description provided for @groomBoy.
+  ///
+  /// In en, this message translates to:
+  /// **'👦 Groom (Boy)'**
+  String get groomBoy;
+
+  /// No description provided for @brideGirl.
+  ///
+  /// In en, this message translates to:
+  /// **'👧 Bride (Girl)'**
+  String get brideGirl;
+
+  /// No description provided for @selectDistrict.
+  ///
+  /// In en, this message translates to:
+  /// **'Select District'**
+  String get selectDistrict;
+
+  /// No description provided for @proceedToLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Proceed → Login'**
+  String get proceedToLogin;
+
+  /// No description provided for @sibling.
+  ///
+  /// In en, this message translates to:
+  /// **'Sibling'**
+  String get sibling;
 }
 
 class _AppLocalizationsDelegate

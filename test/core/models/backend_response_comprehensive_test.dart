@@ -1,7 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:banjarabio/core/models/backend_response.dart';
+import 'package:banjarabio/core/services/telemetry_service.dart';
+import '../../helpers/mock_services.dart';
 
 void main() {
+  setUpAll(() {
+    TelemetryService.instance = NoOpTelemetryService();
+  });
+
+  tearDownAll(() {
+    TelemetryService.instance = TelemetryService.internal();
+  });
+
   group('BackendResponse.success', () {
     test('isSuccess and data work', () {
       final r = BackendResponse.success('data');

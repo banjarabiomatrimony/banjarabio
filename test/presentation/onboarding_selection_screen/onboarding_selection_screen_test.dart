@@ -12,12 +12,19 @@ void main() {
     await tester.pumpWidget(createTestableWidget(const OnboardingSelectionScreen()));
     await tester.pump(const Duration(milliseconds: 100));
     expect(find.byType(Scaffold), findsWidgets);
+    // Dispose safely — the staggered animations may still be running
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump();
   });
 
   testWidgets('does not crash on settle', (tester) async {
     setTestScreenSize(tester);
     await tester.pumpWidget(createTestableWidget(const OnboardingSelectionScreen()));
-    await tester.pumpAndSettle(const Duration(seconds: 3));
+    // Pump for 3s to let staggered entrance animations complete
+    await tester.pump(const Duration(seconds: 3));
     expect(find.byType(Scaffold), findsWidgets);
+    // Dispose safely
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump();
   });
 }

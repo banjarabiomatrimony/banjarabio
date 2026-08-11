@@ -9,7 +9,7 @@ import 'package:banjarabio/core/providers/profile_providers.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/features/trust_score/providers/trust_score_providers.dart';
 import 'package:banjarabio/features/trust_score/repository/trust_score_repository.dart';
-import 'package:banjarabio/presentation/trust_score_screen/trust_score_screen_riverpod.dart';
+import 'package:banjarabio/presentation/trust_score_screen/trust_score_screen.dart';
 
 class MockTrustScoreRepository extends Mock implements TrustScoreRepository {}
 
@@ -46,15 +46,15 @@ void main() {
         ],
         child: wrapWithSizer(
           const MaterialApp(
-            home: TrustScoreScreenRiverpod(),
+            home: TrustScoreScreen(),
           ),
         ),
       ),
     );
   }
 
-  test('TrustScoreScreenRiverpod is ConsumerStatefulWidget', () {
-    expect(const TrustScoreScreenRiverpod(), isA<ConsumerStatefulWidget>());
+  test('TrustScoreScreen is ConsumerStatefulWidget', () {
+    expect(const TrustScoreScreen(), isA<ConsumerStatefulWidget>());
   });
 
   testWidgets('shows loading or content', (tester) async {

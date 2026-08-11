@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banjarabio/notification/core/notification_base.dart';
 import 'package:banjarabio/notification/core/notification_payload.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// 🔔 Top-level background message handler.
 ///
@@ -14,7 +15,7 @@ import 'package:banjarabio/notification/core/notification_payload.dart';
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // Background messages with a `notification` payload are auto-displayed by
   // the system tray. Data-only messages can be processed here if needed.
-  debugPrint('🔔 [FCM-BG] Background message: ${message.messageId}');
+  AppLogger.debug('FcmService', '🔔 [FCM-BG] Background message: ${message.messageId}');
 }
 
 /// Implementation of FCM (Firebase Cloud Messaging) Service.
@@ -65,7 +66,7 @@ class FCMService implements NotificationBase {
     if (_initialized) return;
     _initialized = true;
 
-    debugPrint('🔔 [FCMService] Initializing...');
+    AppLogger.debug('FcmService', '🔔 [FCMService] Initializing...');
 
     try {
       // 0. Register background handler (must be done before any other FCM call)
@@ -73,8 +74,15 @@ class FCMService implements NotificationBase {
         FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
       }
 
-    // 1. Initial configuration
+    // 1. Initial configuration & permission request
     await _setupInteractions();
+    await requestPermission();
+
+    // Sync token immediately if user is already logged in
+    final currentUser = _supabase.auth.currentUser;
+    if (currentUser != null) {
+      syncToken(currentUser.id);
+    }
 
     // 2. Auth Context Sync — IMMEDIATE token sync on login
     _authStateSubscription =
@@ -136,7 +144,7 @@ class FCMService implements NotificationBase {
       ));
     }
     } catch (e) {
-      debugPrint('🔔 [FCMService] Bypassed Firebase for tests: $e');
+      AppLogger.debug('FcmService', '🔔 [FCMService] Bypassed Firebase for tests: $e');
     }
   }
 
@@ -156,7 +164,7 @@ class FCMService implements NotificationBase {
         settings?.authorizationStatus == AuthorizationStatus.authorized ||
             settings?.authorizationStatus == AuthorizationStatus.provisional;
 
-    debugPrint('🔔 [FCMService] Permission granted: $granted');
+    AppLogger.debug('FcmService', '🔔 [FCMService] Permission granted: $granted');
     return granted;
   }
 
@@ -174,20 +182,33 @@ class FCMService implements NotificationBase {
       final String? token = await _fcm?.getToken();
       if (token != null) await _updateTokenOnServer(userId, token);
     } catch (e) {
-      debugPrint('🔔 [FCMService] Error getting token (or test bypass): $e');
+      AppLogger.error('FcmService', '🔔 [FCMService] Error getting token (or test bypass): $e');
     }
   }
 
   /// Updates FCM token on the server with a simple retry mechanism.
+  ///
+  /// Writes to TWO locations:
+  /// 1. `user_devices` (via RPC) — works for ALL auth users including Search Users
+  /// 2. `profiles.fcm_token` (direct update) — backward compat for existing Edge Functions
   Future<void> _updateTokenOnServer(String userId, String token) async {
     const maxRetries = 3;
     for (int attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-        await _supabase.from('profiles').update({
+        // PRIMARY: Write to user_devices (works for ALL users — no profile required)
+        await _supabase.rpc('fn_upsert_device_token', params: {
+          'p_fcm_token': token,
+          'p_platform': 'android',
+        });
+
+        // SECONDARY: Also write to profiles if profile exists (backward compat)
+        // This is fire-and-forget — we don't care if it fails for Search Users
+        _supabase.from('profiles').update({
           'fcm_token': token,
           'updated_at': DateTime.now().toIso8601String(),
-        }).eq('user_id', userId);
-        debugPrint('🔔 [FCMService] Token synced for user: $userId');
+        }).eq('user_id', userId).then((_) {}).catchError((_) {});
+
+        AppLogger.debug('FcmService', '🔔 [FCMService] Token synced for user: $userId');
         return; // Success — exit retry loop
       } catch (e) {
         debugPrint(

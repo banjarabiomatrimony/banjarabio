@@ -10,4 +10,8 @@ abstract class StorageConfig {
 
   /// Verification docs (ID proofs, selfies, video) – private, own folder only.
   static const String verificationDocs = 'verification-docs';
+
+  /// Whether to use Supabase Storage Image Transformations (requires paid plan).
+  /// Default is false to prevent 403 FeatureNotEnabled errors on free tier.
+  static bool enableImageTransformations = false;
 }

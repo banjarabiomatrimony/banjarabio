@@ -3,8 +3,12 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/core/repositories/staff_repository.dart';
+import 'package:banjarabio/core/repositories/profile_repository.dart';
 
 import 'package:banjarabio/core/supabase_client.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/presentation/staff_screen/volunteer_tabs_widget.dart';
+import 'package:banjarabio/routes/app_routes.dart';
 
 const _kBgDark = Color(0xFF0F0F1A);
 const _kSurfaceColor = Color(0xFF1E1E2E);
@@ -20,6 +24,10 @@ class StaffDashboardScreen extends StatefulWidget {
 class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
   final StaffRepository _repo = StaffRepository();
 
+  // --- Role detection ---
+  String _userRole = ''; // 'volunteer', 'staff', 'telecaller'
+  bool _roleLoaded = false;
+
   List<ProfileModel> _allLeads = [];
   List<ProfileModel> _filteredLeads = [];
   Map<String, dynamic>? _summary;
@@ -28,9 +36,8 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
   String? _error;
   
   String _searchQuery = '';
-  String _selectedFilter = 'All'; // 'All', 'New', 'Follow Up', 'Converted', 'Issue'
+  String _selectedFilter = 'All';
 
-  // Categories for filter chips
   final List<String> _filters = [
     'All',
     'New',
@@ -42,7 +49,27 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
   @override
   void initState() {
     super.initState();
-    _loadData();
+    _detectRoleAndLoad();
+  }
+
+  Future<void> _detectRoleAndLoad() async {
+    final profileRes = await ProfileRepository().getOwnProfile();
+    if (!mounted) return;
+    String role = 'staff';
+    profileRes.fold(
+      onSuccess: (profile) {
+        if (profile != null) role = profile.role;
+      },
+      onFailure: (_) {},
+    );
+    setState(() {
+      _userRole = role;
+      _roleLoaded = true;
+    });
+    // Only load staff leads if NOT a volunteer
+    if (_userRole != 'volunteer') {
+      _loadData();
+    }
   }
 
   Future<void> _loadData() async {
@@ -113,6 +140,23 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (!_roleLoaded) {
+      return const Scaffold(
+        backgroundColor: _kBgDark,
+        body: Center(child: CircularProgressIndicator(color: _kAccentColor)),
+      );
+    }
+
+    // --- Volunteer role: TabBar-based UI ---
+    if (_userRole == 'volunteer') {
+      return const VolunteerTabsWidget();
+    }
+
+    // --- Staff / Telecaller role: Leads pipeline (existing behavior) ---
+    return _buildStaffScaffold();
+  }
+
+  Widget _buildStaffScaffold() {
     return Scaffold(
       backgroundColor: _kBgDark,
       body: NestedScrollView(
@@ -796,12 +840,12 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
     try {
       await AppSupabaseClient.client.auth.signOut();
       if (mounted) {
-        Navigator.of(context).pushNamedAndRemoveUntil('/authentication-screen', (route) => false);
+        Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(AppRoutes.userTypeSelection, (route) => false);
       }
     } catch (e) {
-      debugPrint('Logout error: $e');
+      AppLogger.error('StaffDashboardScreen', 'Logout error: $e');
       if (mounted) {
-        Navigator.of(context).pushNamedAndRemoveUntil('/authentication-screen', (route) => false);
+        Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(AppRoutes.userTypeSelection, (route) => false);
       }
     }
   }

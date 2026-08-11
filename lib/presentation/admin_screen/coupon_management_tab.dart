@@ -11,6 +11,8 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/core/models/subscription_model.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 class CouponManagementTab extends StatefulWidget {
   final ThemeData theme;
@@ -45,7 +47,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
         },
         onFailure: (error) {
           setState(() => _isLoading = false);
-          debugPrint('Error loading coupons: $error');
+          AppLogger.error('CouponManagementTab', 'Error loading coupons: $error');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(AppLocalizations.of(context)?.errorLoadingAdminCoupons ?? 'Failed to load coupon offers.'))
           );
@@ -370,7 +372,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                                         .from('banners')
                                         .getPublicUrl(fileName);
                                   } catch (e) {
-                                    debugPrint('Upload failed: $e');
+                                    AppLogger.error('CouponManagementTab', 'Upload failed: $e');
                                   }
                                 }
 
@@ -500,7 +502,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                       Text(
                         'COUPON CODE',
                         style: TextStyle(
-                          fontSize: 8.sp,
+                          fontSize: AppTypography.labelSmall,
                           letterSpacing: 2,
                           color: widget.theme.hintColor,
                           fontWeight: FontWeight.w600,
@@ -509,7 +511,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                       Text(
                         code,
                         style: TextStyle(
-                          fontSize: 18.sp,
+                          fontSize: AppTypography.headingMedium,
                           fontWeight: FontWeight.bold,
                           color: widget.theme.colorScheme.primary,
                         ),
@@ -533,7 +535,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
               Text(
                 name.toUpperCase(),
                 style: TextStyle(
-                  fontSize: 10.sp,
+                  fontSize: AppTypography.bodySmall,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -547,14 +549,14 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                       const SizedBox(width: 4),
                       Text(
                         'Ends ${_formatShortDate(date)}',
-                        style: TextStyle(fontSize: 8.sp, color: widget.theme.hintColor),
+                        style: TextStyle(fontSize: AppTypography.labelSmall, color: widget.theme.hintColor),
                       ),
                     ],
                   ),
                    Text(
                     '$discount% OFF',
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: AppTypography.bodyLarge,
                       fontWeight: FontWeight.w900,
                       color: Colors.green,
                     ),
@@ -578,7 +580,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
     response.fold(
       onSuccess: (_) => _loadCoupons(),
       onFailure: (err) {
-        debugPrint('Toggle coupon failed: $err');
+        AppLogger.error('CouponManagementTab', 'Toggle coupon failed: $err');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(AppLocalizations.of(context)?.errorAdminActionFailed ?? 'The requested action could not be completed.')),
         );

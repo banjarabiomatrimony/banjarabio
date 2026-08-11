@@ -1,10 +1,11 @@
+import 'package:banjarabio/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// Global-grade theme for Customize Biodata: spacing, typography, inputs.
 ///
 /// Uses app-bundled font families instead of runtime Google Fonts fetching.
-/// Headings: Lato, Body: OpenSans.
+/// Headings: Outfit, Body: PlusJakartaSans.
 class BiodataTheme {
   BiodataTheme._();
 
@@ -46,16 +47,16 @@ class BiodataTheme {
 
   // ─── Typography ──────────────────────────────────────────────────────────
   static TextStyle get headerStyle => TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 20.sp,
+        fontFamily: AppTheme.bodyFontFamily,
+        fontSize: AppTypography.headingMedium,
         fontWeight: FontWeight.bold,
         color: deepCharcoal,
         letterSpacing: 1.2,
       );
 
   static TextStyle get subHeaderStyle => TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 12.sp,
+        fontFamily: AppTheme.bodyFontFamily,
+        fontSize: AppTypography.bodyMedium,
         fontWeight: FontWeight.w600,
         color: deepCharcoal.withValues(alpha: 0.85),
         letterSpacing: 0.5,
@@ -63,7 +64,7 @@ class BiodataTheme {
 
   static TextStyle get bodyStyle => TextStyle(
         fontFamily: 'OpenSans',
-        fontSize: 14.sp,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.normal,
         color: deepCharcoal,
         height: 1.4,
@@ -71,14 +72,14 @@ class BiodataTheme {
 
   static TextStyle get labelStyle => TextStyle(
         fontFamily: 'OpenSans',
-        fontSize: 11.sp,
+        fontSize: AppTypography.bodySmall,
         fontWeight: FontWeight.w600,
         color: deepCharcoal.withValues(alpha: 0.65),
       );
 
   static TextStyle get captionStyle => TextStyle(
         fontFamily: 'OpenSans',
-        fontSize: 10.sp,
+        fontSize: AppTypography.bodySmall,
         fontWeight: FontWeight.w500,
         color: deepCharcoal.withValues(alpha: 0.55),
       );

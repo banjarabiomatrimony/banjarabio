@@ -77,6 +77,7 @@ class ClassicTemplate extends BiodataTemplateBase {
       ),
     );
 
+    addFullPagePhotoPage(pdf, accentColor: gold);
     return pdf;
   }
 

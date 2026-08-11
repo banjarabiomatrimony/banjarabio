@@ -22,6 +22,8 @@ import 'package:banjarabio/notification/features/notification_bridge.dart';
 import 'package:banjarabio/notification/features/admin_notification_service.dart';
 import 'package:banjarabio/services/ads/ad_service.dart';
 import 'package:banjarabio/services/ads/app_open_ad_manager.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/services/read_replica_client.dart';
 
 /// Registers all phased startup tasks with the [StartupOrchestrator].
 ///
@@ -56,9 +58,10 @@ class StartupTasks {
   static void _registerCriticalTasks() {
     StartupOrchestrator().registerTask(StartupPhase.critical, () async {
       try {
+        await ReadReplicaClient.initialize();
         await AppSupabaseClient.initialize();
       } catch (e) {
-        if (kDebugMode) debugPrint('Failed to initialize Supabase: $e');
+        if (kDebugMode) AppLogger.error('StartupTasks', 'Failed to initialize Supabase: $e');
       }
     }, name: 'Supabase Init');
   }
@@ -104,13 +107,17 @@ class StartupTasks {
           appleProvider: AppleProvider.appAttest,
         );
 
-        // Crashlytics error handlers
-        FlutterError.onError =
-            FirebaseCrashlytics.instance.recordFlutterFatalError;
-        PlatformDispatcher.instance.onError = (error, stack) {
-          FirebaseCrashlytics.instance
-              .recordError(error, stack, fatal: true);
-          return true;
+        // Crashlytics error handlers (chained with Sentry to prevent overwriting)
+        final originalOnError = FlutterError.onError;
+        FlutterError.onError = (FlutterErrorDetails details) {
+          FirebaseCrashlytics.instance.recordFlutterFatalError(details);
+          originalOnError?.call(details);
+        };
+        
+        final originalPlatformOnError = PlatformDispatcher.instance.onError;
+        PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
+          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+          return originalPlatformOnError?.call(error, stack) ?? true;
         };
 
         // 🧊 YIELD: Native Crashlytics / AppCheck can be heavy on MediaTek
@@ -145,7 +152,7 @@ class StartupTasks {
             .setPerformanceCollectionEnabled(!kDebugMode);
 
         // AdMob SDK
-        debugPrint('Ads: [ORCHESTRATOR] Initializing AdMob SDK...');
+        AppLogger.debug('StartupTasks', 'Ads: [ORCHESTRATOR] Initializing AdMob SDK...');
         await AdMobService.initialize();
 
         // Pre-load AppOpen ad
@@ -154,7 +161,7 @@ class StartupTasks {
         }
       } catch (e) {
         if (kDebugMode) {
-          debugPrint('Failed to initialize Firebase/Analytics/Ads: $e');
+          AppLogger.error('StartupTasks', 'Failed to initialize Firebase/Analytics/Ads: $e');
         }
       }
     }, name: 'Firebase & Billing');

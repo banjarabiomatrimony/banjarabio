@@ -81,6 +81,7 @@ class SimpleTemplate extends BiodataTemplateBase {
       ),
     );
 
+    addFullPagePhotoPage(pdf, accentColor: gold);
     return pdf;
   }
 
@@ -183,7 +184,6 @@ class SimpleTemplate extends BiodataTemplateBase {
         pw.Container(
           padding: const pw.EdgeInsets.all(12),
           decoration: pw.BoxDecoration(
-            color: const PdfColor.fromInt(0xFFFAFAFA),
             border: pw.Border.all(color: gold, width: 0.3),
             borderRadius: const pw.BorderRadius.all(pw.Radius.circular(4)),
           ),

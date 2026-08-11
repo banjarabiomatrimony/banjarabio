@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:banjarabio/core/models/referral_stats_model.dart';
 import 'package:banjarabio/core/repositories/referral_repository.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Data returned by [referralInviteProvider].
 /// Keeps stats, code, and derived link in one place.
@@ -66,7 +67,7 @@ class ReferralInviteNotifier extends AsyncNotifier<ReferralInviteData> {
   /// Call to refresh stats and code (e.g. pull-to-refresh).
   Future<void> refresh() async {
     if (kDebugMode) {
-      debugPrint('[REFERRAL] ReferralInviteNotifier > refresh > Invalidating');
+      AppLogger.debug('ReferralInviteNotifier', '[REFERRAL] ReferralInviteNotifier > refresh > Invalidating');
     }
     ref.invalidateSelf();
   }

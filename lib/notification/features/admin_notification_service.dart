@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Admin Notification Service
 ///
@@ -289,17 +290,17 @@ class AdminNotificationService {
       );
 
       if (response.status == 200) {
-        debugPrint('📢 [AdminNotify] $eventType → $targetRole sent successfully');
+        AppLogger.debug('AdminNotificationService', '📢 [AdminNotify] $eventType → $targetRole sent successfully');
       } else if (response.status == 403) {
         // Expected for standard users on startup tasks
-        debugPrint('📢 [AdminNotify] Skip $eventType: Non-admin session');
+        AppLogger.warn('AdminNotificationService', '📢 [AdminNotify] Skip $eventType: Non-admin session');
       } else {
         debugPrint(
             '📢 [AdminNotify] $eventType failed (${response.status}): ${response.data}');
       }
     } catch (e) {
       // Fire-and-forget: admin notifications should never block user flows
-      debugPrint('📢 [AdminNotify] Error sending $eventType: $e');
+      AppLogger.error('AdminNotificationService', '📢 [AdminNotify] Error sending $eventType: $e');
     }
   }
 }

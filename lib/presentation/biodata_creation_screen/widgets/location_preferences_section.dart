@@ -12,11 +12,13 @@ class LocationPreferencesSection extends StatefulWidget {
   final Function(String, dynamic) onUpdate;
   final Function(Map<String, dynamic>) onBatchUpdate;
   final Function(bool) onValidationChange;
+  final bool isLite;
 
   const LocationPreferencesSection({
     super.key,
     required this.formData,
     this.isAdminEdit = false,
+    this.isLite = false,
     required this.onUpdate,
     required this.onBatchUpdate,
     required this.onValidationChange,
@@ -228,6 +230,9 @@ class _LocationPreferencesSectionState
             onChanged: _onStateChanged,
             hintText: AppLocalizations.of(context)?.selectState ?? 'Select State',
           ),
+
+          // --- Everything below is HIDDEN in lite signup mode ---
+          if (!widget.isLite) ...[
           SizedBox(height: 2.h),
 
           // District Dropdown
@@ -343,6 +348,7 @@ class _LocationPreferencesSectionState
             ),
           ),
           SizedBox(height: 4.h),
+          ], // end of !isLite conditional block
 
           // Selected Photos Preview (Phase 2.7)
           if ((widget.formData['photos'] as List?)?.isNotEmpty ?? false) ...[

@@ -1,6 +1,5 @@
 {
   "hi": [
-    "extraViewsUnlocked",
     "sendHeartInterested",
     "notMatchedCannotMessage",
     "oneMessageUnlocked",
@@ -8,15 +7,6 @@
   ],
 
   "kn": [
-    "extraViewsUnlocked",
-    "sendHeartInterested",
-    "notMatchedCannotMessage",
-    "oneMessageUnlocked",
-    "seenAllProfiles"
-  ],
-
-  "mr": [
-    "extraViewsUnlocked",
     "sendHeartInterested",
     "notMatchedCannotMessage",
     "oneMessageUnlocked",
@@ -24,7 +14,6 @@
   ],
 
   "te": [
-    "extraViewsUnlocked",
     "sendHeartInterested",
     "notMatchedCannotMessage",
     "oneMessageUnlocked",

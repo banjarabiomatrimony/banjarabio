@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
@@ -9,13 +12,30 @@ import 'package:banjarabio/core/init/app_initializer.dart';
 import 'package:banjarabio/core/init/app_navigator_key.dart';
 import 'package:banjarabio/core/providers/locale_provider.dart';
 import 'package:banjarabio/core/services/deep_link_service.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/utils/text_scale_config.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/services/ads/app_open_ad_manager.dart';
 
 import 'package:banjarabio/core/config/sentry_config.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  // 🚀 Use SentryWidgetsFlutterBinding to enable FramesTrackingIntegration.
+  // This hooks into Flutter's rendering pipeline from the earliest point,
+  // allowing Sentry to capture frame-level performance metrics (slow/frozen).
+  SentryWidgetsFlutterBinding.ensureInitialized();
+
+  // ── Load environment config for dynamic Sentry DSN ──────────────────
+  // Must happen before SentryFlutter.init so the SDK knows whether to
+  // transmit envelopes or run in disabled (no-op) mode.
+  try {
+    final envString = await rootBundle.loadString('assets/env.json');
+    final envMap = json.decode(envString) as Map<String, dynamic>;
+    SentryConfig.load(envMap);
+  } catch (e) {
+    AppLogger.warn('main', '⚠️ Could not load env.json for Sentry config: $e');
+    // SentryConfig defaults to disabled (empty DSN) — safe to continue.
+  }
 
   // Single call replaces ~180 lines of inline initialization.
   // See lib/core/init/ for details.
@@ -27,10 +47,15 @@ void main() async {
     (options) {
       options.dsn = SentryConfig.dsn;
       options.tracesSampleRate = SentryConfig.tracesSampleRate;
+      options.debug = SentryConfig.debug;
+
+      // Attach environment tag for Sentry dashboard filtering
+      options.environment = 'production';
     },
     appRunner: () => runApp(const MyApp()),
   );
 }
+
 
 // 🚨 CRITICAL: DO NOT use timed markBackground/markIdle here!
 // Previously: Future.delayed(5s, markBackground) → raced with BOOTING (5.2s)
@@ -113,13 +138,22 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 // --- End Localization ---
                 // 🚨 CRITICAL: NEVER REMOVE OR MODIFY
                 builder: (context, child) {
+                  // 🩺 L10n health check — debug only, zero cost in release
+                  assert(() {
+                    if (AppLocalizations.of(context) == null) {
+                      debugPrint('🔴 CRITICAL: AppLocalizations delegate failed to load! '
+                          'UI will fall back to English hardcoded strings.');
+                    }
+                    return true;
+                  }());
+
                   final double screenWidth = MediaQuery.of(context).size.width;
                   final bool isLargeScreen = screenWidth > 600;
 
                   return MediaQuery(
-                    data: MediaQuery.of(
-                      context,
-                    ).copyWith(textScaler: const TextScaler.linear(1.0)),
+                    data: MediaQuery.of(context).copyWith(
+                      textScaler: TextScaleConfig.getClampedTextScaler(context),
+                    ),
                     child: Center(
                       child: ConstrainedBox(
                         constraints: BoxConstraints(

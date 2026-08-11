@@ -6,6 +6,7 @@ import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/repositories/trust_score_repository.dart';
 import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 class VideoIntroScreen extends StatefulWidget {
   const VideoIntroScreen({super.key});
@@ -144,7 +145,7 @@ class _VideoIntroScreenState extends State<VideoIntroScreen> {
               const Icon(Icons.videocam, size: 80, color: Colors.pink),
               SizedBox(height: 2.h),
               Text(AppLocalizations.of(context)?.recordAShortIntro ?? 'Record a Short Intro',
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: AppTypography.headingSmall, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 1.h),
               Text(AppLocalizations.of(context)?.introduceYourselfIn30SecondsTalkAboutYou ?? 'Introduce yourself in 30 seconds. Talk about your family, profession, and expectations.',
@@ -170,12 +171,12 @@ class _VideoIntroScreenState extends State<VideoIntroScreen> {
               const Icon(Icons.check_circle, size: 60, color: Colors.green),
               SizedBox(height: 2.h),
               Text(AppLocalizations.of(context)?.videoRecorded ?? 'Video Recorded!',
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: AppTypography.bodyLarge, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 1.h),
               Text(
                 'File path: ${_videoFile!.path.split('/').last}',
-                style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+                style: TextStyle(fontSize: AppTypography.bodySmall, color: Colors.grey),
               ),
 
               const Spacer(),

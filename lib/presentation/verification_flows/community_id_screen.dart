@@ -6,6 +6,8 @@ import 'package:banjarabio/core/repositories/trust_score_repository.dart';
 import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/services/photo_picker_service.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 class CommunityIdScreen extends StatefulWidget {
   const CommunityIdScreen({super.key});
@@ -40,7 +42,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen> {
         });
       }
     } catch (e) {
-      debugPrint('Error picking image: $e');
+      AppLogger.error('CommunityIdScreen', 'Error picking image: $e');
     }
   }
 
@@ -146,7 +148,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen> {
             const Icon(Icons.diversity_3, size: 60, color: Colors.orange),
             SizedBox(height: 3.h),
             Text(AppLocalizations.of(context)?.verifyYourCommunityStatus ?? 'Verify Your Community Status',
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: AppTypography.headingSmall, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 1.h),
             Text(AppLocalizations.of(context)?.provideDetailsAboutYourGotraAndVillageTo ?? 'Provide details about your Gotra and Village to get the Community Verified badge.',

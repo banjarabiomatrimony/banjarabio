@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/widgets/custom_icon_widget.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/profile_detail_chip_widget.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// Contact preferences card displaying communication and marriage readiness information
 /// Respects family-driven communication protocols
@@ -74,7 +75,7 @@ class ContactPreferencesCardWidget extends StatelessWidget {
                     color: theme.colorScheme.onSurface,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 0.4,
-                    fontSize: 14.5.sp, // Slightly reduced for narrow columns
+                    fontSize: AppTypography.headingSmall, // Slightly reduced for narrow columns
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),

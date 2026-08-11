@@ -4,6 +4,7 @@ import 'package:banjarabio/notification/core/notification_payload.dart';
 import 'package:banjarabio/notification/features/delivery_tracker.dart';
 import 'package:banjarabio/notification/features/whatsapp_notification_service.dart';
 import 'package:banjarabio/notification/features/sms_notification_service.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Omni-channel Notification Orchestrator.
 ///
@@ -46,7 +47,7 @@ class OmniChannelOrchestrator {
     _initialized = true;
 
     _tracker.onEscalationNeeded = _handleEscalation;
-    debugPrint('🌐 [Omni] Orchestrator initialized');
+    AppLogger.debug('OmniChannelOrchestrator', '🌐 [Omni] Orchestrator initialized');
   }
 
   /// Register a push notification for tracking.
@@ -73,7 +74,7 @@ class OmniChannelOrchestrator {
   Future<void> _handleEscalation(NotificationPayload payload) async {
     final userId = _supabase.auth.currentUser?.id;
     if (userId == null) {
-      debugPrint('🌐 [Omni] No user ID — cannot escalate');
+      AppLogger.debug('OmniChannelOrchestrator', '🌐 [Omni] No user ID — cannot escalate');
       return;
     }
 
@@ -88,7 +89,7 @@ class OmniChannelOrchestrator {
         payload: payload,
       );
       if (sent) {
-        debugPrint('🌐 [Omni] ✅ Escalated to WhatsApp');
+        AppLogger.debug('OmniChannelOrchestrator', '🌐 [Omni] ✅ Escalated to WhatsApp');
         await _logEscalation(userId, payload, 'whatsapp', true);
         return;
       }
@@ -102,7 +103,7 @@ class OmniChannelOrchestrator {
         payload: payload,
       );
       if (sent) {
-        debugPrint('🌐 [Omni] ✅ Escalated to SMS');
+        AppLogger.debug('OmniChannelOrchestrator', '🌐 [Omni] ✅ Escalated to SMS');
         await _logEscalation(userId, payload, 'sms', true);
         return;
       }
@@ -131,7 +132,7 @@ class OmniChannelOrchestrator {
       });
     } catch (e) {
       // Non-critical — don't let logging failures affect delivery
-      debugPrint('🌐 [Omni] Failed to log escalation: $e');
+      AppLogger.error('OmniChannelOrchestrator', '🌐 [Omni] Failed to log escalation: $e');
     }
   }
 

@@ -11,6 +11,8 @@ import 'package:banjarabio/notification/features/omni_channel_orchestrator.dart'
 import 'package:banjarabio/notification/core/notification_history.dart';
 import 'package:banjarabio/notification/core/notification_payload.dart';
 import 'package:banjarabio/notification/widgets/in_app_notification_overlay.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/theme/app_gradients.dart';
 
 /// The Bridge orchestrates interaction between FCM (Push) and Local Notification (UI).
 ///
@@ -57,7 +59,7 @@ class NotificationBridge {
     if (_initialized) return;
     _initialized = true;
 
-    debugPrint('🌉 [NotificationBridge] Starting orchestration...');
+    AppLogger.debug('NotificationBridge', '🌉 [NotificationBridge] Starting orchestration...');
 
     // 1. Initialize underlying services
     await _local.initialize();
@@ -71,7 +73,7 @@ class NotificationBridge {
 
     // 3. Map Foreground FCM → Personalizer → Gate → Batcher → Delivery
     _fcmSubscription = _fcm.onMessage.listen((rawPayload) async {
-      debugPrint('🌉 [Bridge] Smart pipeline processing...');
+      AppLogger.debug('NotificationBridge', '🌉 [Bridge] Smart pipeline processing...');
 
       // Step A: Personalize content
       final personalized = _personalizer.personalize(rawPayload);
@@ -159,81 +161,227 @@ class NotificationBridge {
 
     if (!context.mounted) return;
 
-    final shouldAsk = await showDialog<bool>(
+    final shouldAsk = await showModalBottomSheet<bool>(
       context: context,
-      barrierDismissible: false,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        title: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.red.shade50,
-                borderRadius: BorderRadius.circular(12),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        final theme = Theme.of(ctx);
+        return Container(
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.25),
+                blurRadius: 30,
+                spreadRadius: 5,
+                offset: const Offset(0, -5),
               ),
-              child: const Text('💍', style: TextStyle(fontSize: 24)),
-            ),
-            const SizedBox(width: 12),
-            const Expanded(
-              child: Text(
-                'Never Miss a Match!',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-        content: const Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _PermissionBenefit(
-              icon: '❤️',
-              text: 'Instant alerts when someone shows interest',
-            ),
-            SizedBox(height: 12),
-            _PermissionBenefit(
-              icon: '💬',
-              text: 'Never miss a message from your match',
-            ),
-            SizedBox(height: 12),
-            _PermissionBenefit(
-              icon: '⭐',
-              text: 'Get notified about compatible profiles',
-            ),
-            SizedBox(height: 16),
-            Text(
-              'You can change this anytime in Settings.',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Not Now',
-                style: TextStyle(color: Colors.grey)),
+            ],
           ),
-          FilledButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            style: FilledButton.styleFrom(
-              backgroundColor: const Color(0xFFC94B4B),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Grab handle
+                  Container(
+                    width: 44,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Animated Bell Header with Glowing Rings
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        width: 90,
+                        height: 90,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                        ),
+                      ),
+                      Container(
+                        width: 72,
+                        height: 72,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: AppGradients.romance,
+                          boxShadow: [
+                            BoxShadow(
+                              color: theme.colorScheme.primary.withValues(alpha: 0.4),
+                              blurRadius: 16,
+                              offset: const Offset(0, 6),
+                            ),
+                          ],
+                        ),
+                        child: const Icon(
+                          Icons.notifications_active_rounded,
+                          size: 36,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Title & Tagline
+                  Text(
+                    'Stay Connected on BanjaraBio',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Outfit',
+                      fontSize: 22,
+                      fontWeight: FontWeight.w800,
+                      color: theme.colorScheme.onSurface,
+                      letterSpacing: -0.4,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Never miss a verified match, instant message, or profile update.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13.5,
+                      color: theme.colorScheme.onSurfaceVariant,
+                      height: 1.4,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Feature Cards
+                  const _PermissionBenefitTile(
+                    icon: Icons.favorite_rounded,
+                    iconColor: Color(0xFFE91E63),
+                    title: 'Instant Match Alerts',
+                    subtitle: 'Get notified immediately when mutual interest is accepted.',
+                  ),
+                  const SizedBox(height: 12),
+                  const _PermissionBenefitTile(
+                    icon: Icons.chat_bubble_rounded,
+                    iconColor: Color(0xFF009688),
+                    title: 'Direct Messages',
+                    subtitle: 'Stay responsive when your match sends you a message.',
+                  ),
+                  const SizedBox(height: 12),
+                  const _PermissionBenefitTile(
+                    icon: Icons.auto_awesome_rounded,
+                    iconColor: Color(0xFFFF9800),
+                    title: 'Smart Recommendations',
+                    subtitle: 'Receive curated bio recommendations tailored for you.',
+                  ),
+                  const SizedBox(height: 18),
+
+                  // Strict Privacy Box
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
+                      ),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Icon(
+                          Icons.lock_outline_rounded,
+                          size: 18,
+                          color: Colors.green,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            '100% Strict Privacy: Bookmarks & profile views are completely private and never triggered as notifications.',
+                            style: TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w500,
+                              color: theme.colorScheme.onSurfaceVariant,
+                              height: 1.35,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // CTA Buttons
+                  Container(
+                    width: double.infinity,
+                    height: 52,
+                    decoration: BoxDecoration(
+                      gradient: AppGradients.romance,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: theme.colorScheme.primary.withValues(alpha: 0.35),
+                          blurRadius: 12,
+                          offset: const Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.of(ctx).pop(true),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.notifications_active_rounded, color: Colors.white, size: 20),
+                          SizedBox(width: 8),
+                          Text(
+                            'Enable Notifications',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+
+                  TextButton(
+                    onPressed: () => Navigator.of(ctx).pop(false),
+                    style: TextButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 44),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    child: Text(
+                      'Maybe Later',
+                      style: TextStyle(
+                        fontSize: 14.5,
+                        fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            child: const Text('Enable Notifications'),
           ),
-        ],
-      ),
+        );
+      },
     );
 
     // Mark as asked regardless of user choice
@@ -255,26 +403,73 @@ class NotificationBridge {
   }
 }
 
-/// Small widget for the permission explanation dialog.
-class _PermissionBenefit extends StatelessWidget {
-  final String icon;
-  final String text;
+/// Upgraded benefit tile widget for notification permission screen.
+class _PermissionBenefitTile extends StatelessWidget {
+  final IconData icon;
+  final Color iconColor;
+  final String title;
+  final String subtitle;
 
-  const _PermissionBenefit({required this.icon, required this.text});
+  const _PermissionBenefitTile({
+    required this.icon,
+    required this.iconColor,
+    required this.title,
+    required this.subtitle,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(icon, style: const TextStyle(fontSize: 20)),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            text,
-            style: const TextStyle(fontSize: 14, height: 1.3),
-          ),
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.4),
         ),
-      ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: iconColor.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              icon,
+              size: 22,
+              color: iconColor,
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: theme.colorScheme.onSurfaceVariant,
+                    height: 1.3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

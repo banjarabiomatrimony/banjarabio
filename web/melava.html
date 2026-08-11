@@ -15,6 +15,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
 
+  <!-- Theme Init Script (Prevents FOUC) -->
+  <script>
+    (function() {
+      var savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'light' || (!savedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+
   <style>
     :root {
       --bg-dark: #070a14;
@@ -478,6 +490,51 @@
       .assist-info { flex-direction: column; text-align: center; }
       .btn-assist-wa { width: 100%; justify-content: center; }
     }
+
+    /* Day / Light Theme Overrides */
+    [data-theme="light"] {
+      --bg-dark: #f8fafc;
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --gold-primary: #d97706;
+      --gold-light: #b45309;
+      --rose-primary: #e11d48;
+      --rose-light: #be123c;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --border-glass: rgba(15, 23, 42, 0.12);
+    }
+
+    [data-theme="light"] body { background: #f1f5f9; color: #0f172a; }
+    [data-theme="light"] header { background: rgba(255, 255, 255, 0.95); border-color: rgba(15, 23, 42, 0.12); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); }
+    [data-theme="light"] .brand-title { background: linear-gradient(135deg, #0f172a 30%, #b45309 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    [data-theme="light"] h1, [data-theme="light"] h2, [data-theme="light"] h3, [data-theme="light"] h4, [data-theme="light"] label, [data-theme="light"] .feature-card h3 { color: #0f172a; }
+    [data-theme="light"] p, [data-theme="light"] .feature-card p, [data-theme="light"] .hero-sub, [data-theme="light"] .assist-text p { color: #334155; }
+    [data-theme="light"] .nav-links a { color: #475569; }
+    [data-theme="light"] .nav-links a:hover, [data-theme="light"] .nav-links a.active { color: #0f172a; }
+    [data-theme="light"] footer { background: #ffffff; border-top-color: rgba(15, 23, 42, 0.1); }
+    [data-theme="light"] .footer-col ul a { color: #475569; }
+    [data-theme="light"] .footer-col ul a:hover { color: #0f172a; }
+    [data-theme="light"] .footer-bottom { border-top-color: rgba(15, 23, 42, 0.08); color: #475569; }
+    [data-theme="light"] .footer-bottom a { color: #475569; }
+    [data-theme="light"] .footer-bottom a:hover { color: #0f172a; }
+    [data-theme="light"] .mobile-quick-bar { background: rgba(255, 255, 255, 0.95); border-top-color: rgba(217, 119, 6, 0.3); box-shadow: 0 -10px 25px rgba(0,0,0,0.1); }
+    [data-theme="light"] .mobile-quick-item { color: #475569; }
+    [data-theme="light"] .mobile-quick-item.active, [data-theme="light"] .mobile-quick-item:hover { color: #b45309; }
+    [data-theme="light"] .melava-card, [data-theme="light"] .feature-card { background: #ffffff; border-color: rgba(15, 23, 42, 0.12); box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
+    [data-theme="light"] .universal-assist-banner { background: linear-gradient(135deg, rgba(34, 197, 94, 0.12), rgba(245, 158, 11, 0.1), #ffffff); border-color: rgba(34, 197, 94, 0.4); box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
+    [data-theme="light"] .assist-text h3 { color: #0f172a; }
+
+    [data-theme="light"] footer span[style*="color:#fef08a"],
+    [data-theme="light"] footer span[style*="color: #fef08a"] { color: #78350f !important; }
+    [data-theme="light"] footer strong[style*="color:#fbbf24"],
+    [data-theme="light"] footer strong[style*="color: #fbbf24"] { color: #b45309 !important; }
+    [data-theme="light"] footer span[style*="color:#94a3b8"],
+    [data-theme="light"] footer span[style*="color: #94a3b8"] { color: #475569 !important; }
+
+    .theme-toggle-btn { display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-glass); color: var(--text-main); padding: 8px 14px; border-radius: 999px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.25s ease; user-select: none; }
+    .theme-toggle-btn:hover { background: rgba(245, 158, 11, 0.2); border-color: var(--gold-primary); transform: translateY(-1px); }
+    [data-theme="light"] .theme-toggle-btn { background: rgba(15, 23, 42, 0.06); border-color: rgba(15, 23, 42, 0.15); color: #0f172a; }
+    [data-theme="light"] .theme-toggle-btn:hover { background: rgba(217, 119, 6, 0.15); border-color: #d97706; }
   </style>
 </head>
 <body>
@@ -499,6 +556,10 @@
       <a href="/melava" class="active">Melava Hub</a>
       <a href="/success-stories">Success Stories</a>
       <a href="/faq">FAQ</a>
+      <button type="button" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
+        <span class="theme-icon">☀️</span>
+        <span class="theme-text">Day</span>
+      </button>
       <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" class="btn-header-wa">💬 Support</a>
     </nav>
   </header>
@@ -644,11 +705,42 @@
       <span class="mobile-quick-icon">🤝</span>
       <span>मेळावा</span>
     </a>
-    <a href="https://wa.me/918186050406?text=Hi%20BanjaraBio%20Support" target="_blank" class="mobile-quick-item">
-      <span class="mobile-quick-icon">💬</span>
-      <span>मदत (WA)</span>
-    </a>
+    <button type="button" class="mobile-quick-item theme-toggle-btn" onclick="toggleTheme()" style="background:none; border:none; padding:0;">
+      <span class="mobile-quick-icon theme-icon">☀️</span>
+      <span class="theme-text">Day Mode</span>
+    </button>
   </nav>
+
+  <!-- Dynamic Theme Switcher Controller Script -->
+  <script>
+    function toggleTheme() {
+      var currentTheme = document.documentElement.getAttribute('data-theme');
+      var targetTheme = currentTheme === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', targetTheme);
+      localStorage.setItem('theme', targetTheme);
+      updateThemeUI(targetTheme);
+    }
+
+    function updateThemeUI(theme) {
+      var btns = document.querySelectorAll('.theme-toggle-btn');
+      btns.forEach(function(btn) {
+        var icon = btn.querySelector('.theme-icon');
+        var text = btn.querySelector('.theme-text');
+        if (theme === 'light') {
+          if (icon) icon.textContent = '🌙';
+          if (text) text.textContent = text.textContent.includes('Mode') ? 'Night Mode' : 'Night';
+        } else {
+          if (icon) icon.textContent = '☀️';
+          if (text) text.textContent = text.textContent.includes('Mode') ? 'Day Mode' : 'Day';
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      updateThemeUI(currentTheme);
+    });
+  </script>
 
 </body>
 </html>

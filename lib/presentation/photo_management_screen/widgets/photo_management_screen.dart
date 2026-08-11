@@ -25,6 +25,7 @@ import 'package:banjarabio/presentation/photo_management_screen/widgets/widgets/
 import 'package:banjarabio/core/repositories/photo_repository.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/core/models/subscription_model.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 class PhotoManagementScreen extends StatefulWidget {
   const PhotoManagementScreen({super.key});
@@ -132,7 +133,7 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
           });
         },
         onFailure: (error) {
-          debugPrint('Error loading subscription status: $error');
+          AppLogger.error('PhotoManagementScreen', 'Error loading subscription status: $error');
         },
       );
     }
@@ -163,7 +164,7 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
           try {
             await _cameraController!.setFlashMode(FlashMode.auto);
           } catch (e) {
-            debugPrint('Flash mode not supported: $e');
+            AppLogger.debug('PhotoManagementScreen', 'Flash mode not supported: $e');
           }
         }
 
@@ -172,7 +173,7 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
         }
       }
     } catch (e) {
-      debugPrint('Camera initialization error: $e');
+      AppLogger.error('PhotoManagementScreen', 'Camera initialization error: $e');
     }
   }
 
@@ -382,7 +383,7 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
         await _uploadPhoto(croppedFile.path, replacePhotoData: replacePhotoData);
       }
     } catch (e) {
-      debugPrint('ImageCropper error: $e');
+      AppLogger.error('PhotoManagementScreen', 'ImageCropper error: $e');
       if (mounted) _showErrorSnackBar(e.toString());
     } finally {
       if (mounted) {
@@ -431,7 +432,7 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
 
       // Compress image using PhotoPickerService before upload
       if (!kIsWeb) {
-        debugPrint('PhotoManagementScreen: Compressing image before upload...');
+        AppLogger.debug('PhotoManagementScreen', 'PhotoManagementScreen: Compressing image before upload...');
         final compressResult = await _photoPickerService.processImage(
           imagePath,
         );

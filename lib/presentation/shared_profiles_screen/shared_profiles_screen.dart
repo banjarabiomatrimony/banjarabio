@@ -17,6 +17,9 @@ import 'package:banjarabio/widgets/branded_refresh_indicator.dart';
 import 'package:banjarabio/presentation/shared_profiles_screen/widgets/empty_state_widget.dart';
 import 'package:banjarabio/presentation/shared_profiles_screen/widgets/shared_profile_card_widget.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
+import 'package:banjarabio/core/providers/home_tab_provider.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Shared Profiles Screen - Tracks biodata sharing history with comprehensive management
 /// Accessed via bottom tab navigation (tab bar navigation structure)
@@ -31,10 +34,7 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late VoidCallback _tabListener;
-  final TextEditingController _searchController = TextEditingController();
   final ShareRepository _shareRepository = ShareRepository();
-
-  String _searchQuery = '';
   bool _isLoading = true;
   String? _errorMessage;
   final Set<String> _selectedItems = {};
@@ -77,29 +77,6 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
         context,
         stage: TourStage.matchesScreen,
         targets: [
-          TargetFocus(
-            identify: 'matches_search',
-            keyTarget: TourKeys.matchesSearchKey,
-            contents: [
-              TargetContent(
-                builder: (context, controller) => Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)?.tourMatchesSearchTitle ?? 'Search Shared Profiles',
-                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      AppLocalizations.of(context)?.tourMatchesSearchDesc ?? 'Quickly find profiles shared with you or by you.',
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
           TargetFocus(
             identify: 'matches_sent_tab',
             keyTarget: TourKeys.matchesSentTabKey,
@@ -184,7 +161,6 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
   void dispose() {
     _tabController.removeListener(_tabListener);
     _tabController.dispose();
-    _searchController.dispose();
     super.dispose();
   }
 
@@ -228,7 +204,7 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
         });
       }
     } catch (e) {
-      debugPrint('SharedProfilesScreen: Error loading shares: $e');
+      AppLogger.error('SharedProfilesScreen', 'SharedProfilesScreen: Error loading shares: $e');
       if (mounted) {
         setState(() {
           _errorMessage = 'Failed to load shares';
@@ -328,9 +304,9 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
     final theme = Theme.of(context);
     return Column(
       children: [
-        // Custom Header with Gradient
+        // Custom Header with Gradient (Premium, Glassmorphic & Compact)
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+          padding: EdgeInsets.fromLTRB(4.w, 0, 4.w, 0.4.h),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -340,113 +316,79 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(24),
-              bottomRight: Radius.circular(24),
-            ),
+            borderRadius: const BorderRadius.vertical(bottom: Radius.circular(32)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.2),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
+                color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                blurRadius: 15,
+                offset: const Offset(0, 5),
               ),
             ],
           ),
           child: SafeArea(
             bottom: false,
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(1.h),
-                      child: AppLogoImage(
-                        height: 3.5.h,
-                      ),
-                    ),
-                    Text(AppLocalizations.of(context)?.shareHub ?? 'Share Hub',
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                    const Spacer(),
-                    if (_isSelectionMode) ...[
-                      IconButton(
-                        icon: const Icon(
-                          Icons.delete_outline,
-                          color: Colors.white,
-                          size: 28,
-                        ),
-                        onPressed: _handleBulkDelete,
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.close,
-                          color: Colors.white,
-                          size: 28,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _selectedItems.clear();
-                            _isSelectionMode = false;
-                          });
-                        },
-                      ),
-                    ] else ...[
-                      const SizedBox.shrink(),
-                    ],
-                  ],
-                ),
-                SizedBox(height: 2.h),
-                // Search bar (Swiggy-inspired Solid White Pill - Streamlined)
-                TextField(
-                  key: TourKeys.matchesSearchKey,
-                  controller: _searchController,
-                  onChanged: (value) {
-                    setState(() => _searchQuery = value);
-                  },
-                  style: TextStyle(
-                    color: theme.colorScheme.onSurface,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context)?.searchSharedProfiles ?? 'Search shared profiles...',
-                    hintStyle: TextStyle(
-                      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
-                    ),
-                    prefixIcon: Icon(
-                      Icons.search_rounded,
-                      color: theme.colorScheme.primary,
-                      size: 22,
-                    ),
-                    suffixIcon: _searchQuery.isNotEmpty
-                        ? IconButton(
-                            icon: Icon(
-                              Icons.cancel_rounded,
-                              color: theme.colorScheme.onSurfaceVariant,
-                              size: 20,
+            child: SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                   SizedBox(
+                    height: 4.h,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 1.w),
+                            child: AppLogoImage(
+                              height: 3.0.h,
                             ),
-                            onPressed: () {
-                              _searchController.clear();
-                              setState(() => _searchQuery = '');
-                            },
-                          )
-                        : null,
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 4.w,
-                      vertical: 1.5.h,
+                          ),
+                        ),
+                        Text(
+                          AppLocalizations.of(context)?.shareHub ?? 'Share Hub',
+                          style: theme.appBarTheme.titleTextStyle?.copyWith(
+                            color: Colors.white,
+                            fontSize: AppTypography.headingMedium,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        if (_isSelectionMode)
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.delete_outline,
+                                    color: Colors.white,
+                                    size: 26,
+                                  ),
+                                  onPressed: _handleBulkDelete,
+                                ),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.close,
+                                    color: Colors.white,
+                                    size: 26,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _selectedItems.clear();
+                                      _isSelectionMode = false;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
                     ),
                   ),
-                ),
-              ],
+
+                ],
+              ),
             ),
           ),
         ),
@@ -571,25 +513,12 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
       displayProfiles.add(displayMap);
     });
 
-    // Apply search filter
-    final filteredList = _searchQuery.isEmpty
-        ? displayProfiles
-        : displayProfiles.where((profile) {
-            final name = (isSharedByMe ?? true)
-                ? (profile['recipientName'] as String? ?? '').toLowerCase()
-                : (profile['senderName'] as String? ?? '').toLowerCase();
-            final profileName = (profile['sharedProfileName'] as String? ?? '')
-                .toLowerCase();
-            final query = _searchQuery.toLowerCase();
-            return name.contains(query) || profileName.contains(query);
-          }).toList();
-
-    if (filteredList.isEmpty) {
+    if (displayProfiles.isEmpty) {
       return EmptyStateWidget(
         isSharedByMe: isSharedByMe ?? true,
         isMatched: isSharedByMe == null,
         onStartSharing: () {
-          Navigator.of(context, rootNavigator: true).pushNamed(AppRoutes.home);
+          ref.read(homeTabProvider.notifier).state = 0;
         },
       );
     }
@@ -598,10 +527,10 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
       onRefresh: _handleRefresh,
       child: ListView.separated(
         padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-        itemCount: filteredList.length,
+        itemCount: displayProfiles.length,
         separatorBuilder: (context, index) => SizedBox(height: 2.h),
         itemBuilder: (context, index) {
-          final profile = filteredList[index];
+          final profile = displayProfiles[index];
           final shareId = profile['id']?.toString() ?? '';
           final allShareIds =
               (profile['allShareIds'] as List<dynamic>?)
@@ -630,10 +559,10 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
                       final markRes = await _shareRepository.markAsViewed(id);
                       await markRes.fold(
                         onSuccess: (_) async {
-                          debugPrint('Marked share $id as viewed');
+                          AppLogger.debug('SharedProfilesScreen', 'Marked share $id as viewed');
                         },
                         onFailure: (err) async {
-                          debugPrint('Failed to mark share $id: $err');
+                          AppLogger.error('SharedProfilesScreen', 'Failed to mark share $id: $err');
                         },
                       );
                     }
@@ -714,7 +643,7 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
                     await delRes.fold(
                       onSuccess: (_) async {},
                       onFailure: (err) async {
-                        debugPrint('Failed to delete share $id: $err');
+                        AppLogger.error('SharedProfilesScreen', 'Failed to delete share $id: $err');
                       },
                     );
                   }

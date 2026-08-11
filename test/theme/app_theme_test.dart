@@ -4,24 +4,24 @@ import 'package:banjarabio/theme/app_theme.dart';
 
 void main() {
   group('AppTheme - light color constants', () {
-    test('primaryLight is Midnight Amethyst', () {
-      expect(AppTheme.primaryLight, const Color(0xFF432C7A));
+    test('primaryLight is Royal Crimson', () {
+      expect(AppTheme.primaryLight, const Color(0xFF961B33));
     });
 
-    test('primaryVariantLight is deeper amethyst', () {
-      expect(AppTheme.primaryVariantLight, const Color(0xFF33215E));
+    test('primaryVariantLight is deeper crimson', () {
+      expect(AppTheme.primaryVariantLight, const Color(0xFF731224));
     });
 
-    test('secondaryLight is Saffron Gold', () {
-      expect(AppTheme.secondaryLight, const Color(0xFFF4C430));
+    test('secondaryLight is Champagne Gold', () {
+      expect(AppTheme.secondaryLight, const Color(0xFFD4AF37));
     });
 
     test('secondaryVariantLight is darker gold', () {
-      expect(AppTheme.secondaryVariantLight, const Color(0xFFD4A017));
+      expect(AppTheme.secondaryVariantLight, const Color(0xFFB8922A));
     });
 
-    test('backgroundLight is ultra-soft amethyst tint', () {
-      expect(AppTheme.backgroundLight, const Color(0xFFF9F7FD));
+    test('backgroundLight is soft warm ivory', () {
+      expect(AppTheme.backgroundLight, const Color(0xFFFAF8F5));
     });
 
     test('surfaceLight is pure white', () {
@@ -50,24 +50,24 @@ void main() {
   });
 
   group('AppTheme - dark color constants', () {
-    test('primaryDark is light amethyst', () {
-      expect(AppTheme.primaryDark, const Color(0xFFD0BCFF));
+    test('primaryDark is soft pinkish-crimson', () {
+      expect(AppTheme.primaryDark, const Color(0xFFFFB3B4));
     });
 
     test('primaryVariantDark is correct', () {
-      expect(AppTheme.primaryVariantDark, const Color(0xFF4F378B));
+      expect(AppTheme.primaryVariantDark, const Color(0xFF7D1629));
     });
 
-    test('secondaryDark is soft rose/gold blend', () {
-      expect(AppTheme.secondaryDark, const Color(0xFFEFB8C8));
+    test('secondaryDark is soft champagne gold', () {
+      expect(AppTheme.secondaryDark, const Color(0xFFE5C158));
     });
 
-    test('backgroundDark is Material deep dark', () {
-      expect(AppTheme.backgroundDark, const Color(0xFF1C1B1F));
+    test('backgroundDark is deep warm charcoal', () {
+      expect(AppTheme.backgroundDark, const Color(0xFF1A1616));
     });
 
-    test('surfaceDark is elevated dark', () {
-      expect(AppTheme.surfaceDark, const Color(0xFF2B2930));
+    test('surfaceDark is elevated warm dark surface', () {
+      expect(AppTheme.surfaceDark, const Color(0xFF262121));
     });
 
     test('errorDark is correct', () {

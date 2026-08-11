@@ -38,6 +38,10 @@ class BiodataTemplateFactory {
       logo: logo,
       profilePhoto: profilePhoto,
       isLocked: isLocked,
+      marginLeft: templateConfig.marginLeft,
+      marginTop: templateConfig.marginTop,
+      marginRight: templateConfig.marginRight,
+      marginBottom: templateConfig.marginBottom,
     );
   }
 }

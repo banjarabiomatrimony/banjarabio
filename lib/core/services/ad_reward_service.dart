@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:banjarabio/services/ads/ad_service.dart';
 import 'package:banjarabio/core/session_manager.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Reward types for different ad-supported actions
 enum AdRewardType {
@@ -44,13 +45,13 @@ class AdRewardService {
       request: const AdRequest(),
       rewardedAdLoadCallback: RewardedAdLoadCallback(
         onAdLoaded: (ad) {
-          debugPrint('BANJARABIO_AD: Rewarded Ad Loaded: ${ad.adUnitId}');
+          AppLogger.debug('AdRewardService', 'BANJARABIO_AD: Rewarded Ad Loaded: ${ad.adUnitId}');
           _rewardedAd = ad;
           _isAdLoading = false;
           _setupAdCallbacks(ad);
         },
         onAdFailedToLoad: (error) {
-          debugPrint('BANJARABIO_AD: Rewarded Ad Failed to Load: $error');
+          AppLogger.error('AdRewardService', 'BANJARABIO_AD: Rewarded Ad Failed to Load: $error');
           _rewardedAd = null;
           _isAdLoading = false;
         },
@@ -61,14 +62,14 @@ class AdRewardService {
   void _setupAdCallbacks(RewardedAd ad) {
     ad.fullScreenContentCallback = FullScreenContentCallback(
       onAdDismissedFullScreenContent: (ad) {
-        debugPrint('BANJARABIO_AD: Rewarded Ad Dismissed');
+        AppLogger.debug('AdRewardService', 'BANJARABIO_AD: Rewarded Ad Dismissed');
         ad.dispose();
         _rewardedAd = null;
         // Pre-load the next one
         loadRewardedAd();
       },
       onAdFailedToShowFullScreenContent: (ad, error) {
-        debugPrint('BANJARABIO_AD: Rewarded Ad Failed to Show: $error');
+        AppLogger.error('AdRewardService', 'BANJARABIO_AD: Rewarded Ad Failed to Show: $error');
         ad.dispose();
         _rewardedAd = null;
         loadRewardedAd();
@@ -82,14 +83,14 @@ class AdRewardService {
     VoidCallback? onAdDismissed,
   }) async {
     if (_rewardedAd == null) {
-      debugPrint('BANJARABIO_AD: No ad ready. Attempting to load...');
+      AppLogger.debug('AdRewardService', 'BANJARABIO_AD: No ad ready. Attempting to load...');
       loadRewardedAd();
       return;
     }
 
     await _rewardedAd!.show(
       onUserEarnedReward: (ad, reward) {
-        debugPrint('BANJARABIO_AD: Reward Earned: ${reward.amount} ${reward.type}');
+        AppLogger.debug('AdRewardService', 'BANJARABIO_AD: Reward Earned: ${reward.amount} ${reward.type}');
         onRewardEarned(reward);
       },
     );

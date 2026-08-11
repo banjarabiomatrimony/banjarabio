@@ -3,6 +3,7 @@ import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 class InstagramFollowInterstitial extends StatelessWidget {
   const InstagramFollowInterstitial({super.key});
@@ -77,7 +78,7 @@ class InstagramFollowInterstitial extends StatelessWidget {
                         style: theme.textTheme.headlineMedium?.copyWith(
                           color: Colors.black,
                           fontWeight: FontWeight.w800,
-                          fontSize: 22.sp,
+                          fontSize: AppTypography.headingLarge,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -120,7 +121,7 @@ class InstagramFollowInterstitial extends StatelessWidget {
                             style: theme.textTheme.titleMedium?.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
-                              fontSize: 16.sp,
+                              fontSize: AppTypography.headingSmall,
                             ),
                           ),
                         ),

@@ -45,7 +45,7 @@ class BiodataTranslations {
       'Education & Profession': 'Education & Profession',
       'Family Details': 'Family Details',
       'Location & Contact': 'Location & Contact',
-      'Download App Line': 'Download the BanjaraBio app to find your life partner',
+      'Download App Line': '#1 Trusted Banjara Matrimony App • Find your life partner',
     },
     'Hindi': {
       'personal_details': 'व्यक्तिगत विवरण',
@@ -84,7 +84,7 @@ class BiodataTranslations {
       'current_location': 'वर्तमान स्थान',
       'contact_no': 'संपर्क नंबर',
       'biodata': 'बायोडाटा',
-      'Download App Line': 'अपना जीवनसाथी ढूंढने के लिए बंजाराबायो ऐप डाउनलोड करें',
+      'Download App Line': 'बंजारा समाज का #1 विश्वसनीय वैवाहिक ऐप • अपना जीवनसाथी खोजें',
     },
     'Marathi': {
       'personal_details': 'वैयक्तिक माहिती',
@@ -123,7 +123,7 @@ class BiodataTranslations {
       'current_location': 'सध्याचे ठिकाण',
       'contact_no': 'संपर्क क्रमांक',
       'biodata': 'बायोडाटा',
-      'Download App Line': 'तुमचा जीवनसाथी शोधण्यासाठी बंजाराबायो ॲप डाउनलोड करा',
+      'Download App Line': 'बंजारा समाजाचे #1 विश्वासाचे मॅट्रीमोनी ॲप • तुमचा जीवनसाथी शोधा',
     },
     'Telugu': {
       'personal_details': 'వ్యక్తిగత వివరాలు',
@@ -162,7 +162,7 @@ class BiodataTranslations {
       'current_location': 'ప్రస్తుత నివాసం',
       'contact_no': 'సంప్రదించే ఫోన్ నంబర్',
       'biodata': 'బయోడేటా',
-      'Download App Line': 'మీ జీవిత భాగస్వామిని కనుగొనడానికి బంజారాబయో యాప్‌ను డౌన్‌లోడ్ చేయండి',
+      'Download App Line': '#1 విశ్వసనీయ బంజారా మ్యాట్రిమోనీ యాప్ • మీ జీవిత భాగస్వామిని కనుగొనండి',
     },
     'Kannada': {
       'personal_details': 'ವೈಯಕ್ತಿಕ ವಿವರಗಳು',
@@ -201,7 +201,7 @@ class BiodataTranslations {
       'current_location': 'ಪ್ರಸ್ತುತ ಸ್ಥಳ',
       'contact_no': 'ಸಂಪರ್ಕ ಸಂಖ್ಯೆ',
       'biodata': 'ಬಯೋಡೇಟಾ',
-      'Download App Line': 'ನಿಮ್ಮ ಜೀವನ ಸಂಗಾತಿಯನ್ನು ಹುಡುಕಲು ಬಂಜಾರಾಬಯೋ ಅಪ್ಲಿಕೇಶನ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ',
+      'Download App Line': '#1 ನಂಬಿಕಸ್ಥ ಬಂಜಾರಾ ಮ್ಯಾಟ್ರಿಮೋನಿ ಆಪ್ • ನಿಮ್ಮ ಜೀವನ ಸಂಗಾತಿಯನ್ನು ಹುಡುಕಿ',
     },
   };
 

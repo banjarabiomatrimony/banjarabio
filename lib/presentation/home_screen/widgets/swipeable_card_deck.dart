@@ -9,6 +9,7 @@ import 'package:banjarabio/core/theme/app_gradients.dart';
 import 'package:banjarabio/widgets/trust_score_badge.dart';
 
 import 'package:banjarabio/core/models/profile_model.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// Tinder-style swipeable card deck widget.
 class SwipeableCardDeck extends StatefulWidget {
@@ -328,7 +329,7 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
                   child: Text(AppLocalizations.of(context)?.skip ?? 'SKIP',
                     style: TextStyle(
                       color: Colors.redAccent,
-                      fontSize: 22.sp,
+                      fontSize: AppTypography.headingLarge,
                       fontWeight: FontWeight.w900,
                       letterSpacing: 2,
                     ),
@@ -350,7 +351,7 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
                   child: Text(AppLocalizations.of(context)?.interest ?? 'INTEREST',
                     style: TextStyle(
                       color: Colors.greenAccent,
-                      fontSize: 22.sp,
+                      fontSize: AppTypography.headingLarge,
                       fontWeight: FontWeight.w900,
                       letterSpacing: 2,
                     ),
@@ -498,7 +499,7 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
                             '$name${age.isNotEmpty ? ', $age' : ''}',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 20.sp,
+                              fontSize: AppTypography.headingMedium,
                               fontWeight: FontWeight.w800,
                               shadows: const [
                                 Shadow(
@@ -585,7 +586,7 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
             text,
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.9),
-              fontSize: 9.sp,
+              fontSize: AppTypography.labelMedium,
               fontWeight: FontWeight.w500,
             ),
             maxLines: 1,
@@ -692,7 +693,7 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
         Text(
           label,
           style: TextStyle(
-            fontSize: 8.sp,
+            fontSize: AppTypography.labelSmall,
             color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w500,
           ),

@@ -5,6 +5,8 @@ import 'package:banjarabio/widgets/custom_icon_widget.dart';
 import 'package:banjarabio/widgets/custom_image_widget.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:banjarabio/core/config/storage_config.dart';
+import 'package:banjarabio/core/repositories/photo_repository.dart';
 
 Widget wrapWithSizer(Widget child) => Sizer(
   builder: (context, orientation, deviceType) => MaterialApp(
@@ -62,6 +64,7 @@ void main() {
         ),
       ));
       await tester.pump();
+      await tester.pump(const Duration(seconds: 10));
 
       expect(find.byType(CustomImageWidget), findsOneWidget);
     });
@@ -81,6 +84,25 @@ void main() {
       await tester.pump();
 
       expect(find.byType(CustomImageWidget), findsOneWidget);
+    });
+  });
+
+  group('PhotoRepository Resizing & Fallback tests', () {
+    const testUrl = 'https://icvmuktbpxglsmyvebwf.supabase.co/storage/v1/object/public/profile-photos/user/image.jpg';
+
+    test('getResizedUrl returns original URL when enableImageTransformations is false', () {
+      StorageConfig.enableImageTransformations = false;
+      final result = PhotoRepository().getResizedUrl(testUrl, width: 300);
+      expect(result, testUrl);
+    });
+
+    test('getResizedUrl returns transformed URL when enableImageTransformations is true', () {
+      StorageConfig.enableImageTransformations = true;
+      final result = PhotoRepository().getResizedUrl(testUrl, width: 300);
+      expect(result, contains('/render/image/public/'));
+      expect(result, contains('width=300'));
+      // Clean up after test
+      StorageConfig.enableImageTransformations = false;
     });
   });
 }

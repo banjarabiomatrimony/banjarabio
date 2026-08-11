@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -25,6 +26,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
     with TickerProviderStateMixin {
   late List<AnimationController> _controllers;
   late List<Animation<double>> _animations;
+  final List<Timer> _timers = [];
 
   @override
   void initState() {
@@ -45,14 +47,17 @@ class _TypingIndicatorState extends State<TypingIndicator>
 
     // Stagger the dot animations
     for (int i = 0; i < 3; i++) {
-      Future.delayed(Duration(milliseconds: i * 180), () {
+      _timers.add(Timer(Duration(milliseconds: i * 180), () {
         if (mounted) _controllers[i].repeat(reverse: true);
-      });
+      }));
     }
   }
 
   @override
   void dispose() {
+    for (final t in _timers) {
+      t.cancel();
+    }
     for (final c in _controllers) {
       c.dispose();
     }

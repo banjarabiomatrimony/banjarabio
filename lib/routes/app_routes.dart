@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:banjarabio/core/animations/premium_page_route.dart';
 import 'package:banjarabio/presentation/authentication_screen/authentication_screen.dart';
 import 'package:banjarabio/presentation/biodata_creation_screen/biodata_creation_screen.dart';
-import 'package:banjarabio/presentation/biodata_pdf_screen/biodata_pdf_screen_riverpod.dart';
+import 'package:banjarabio/presentation/biodata_pdf_screen/biodata_pdf_screen.dart';
 import 'package:banjarabio/presentation/filter_screen/filter_screen.dart';
 import 'package:banjarabio/presentation/home_screen/home_screen.dart';
 import 'package:banjarabio/presentation/my_profile_screen/my_profile_screen.dart';
@@ -26,7 +26,6 @@ import 'package:banjarabio/presentation/static_pages/privacy_policy_screen.dart'
 import 'package:banjarabio/presentation/static_pages/account_deletion_screen.dart';
 import 'package:banjarabio/presentation/static_pages/faq_screen.dart';
 import 'package:banjarabio/presentation/trust_score_screen/trust_score_screen.dart';
-import 'package:banjarabio/presentation/trust_score_screen/trust_score_screen_riverpod.dart';
 import 'package:banjarabio/presentation/verification_flows/mobile_verification_screen.dart';
 import 'package:banjarabio/presentation/verification_flows/email_verification_screen.dart';
 import 'package:banjarabio/presentation/verification_flows/live_selfie_screen.dart';
@@ -37,15 +36,18 @@ import 'package:banjarabio/presentation/verification_flows/video_intro_screen.da
 import 'package:banjarabio/presentation/admin_screen/admin_dashboard_screen.dart';
 import 'package:banjarabio/presentation/staff_screen/staff_dashboard_screen.dart';
 import 'package:banjarabio/presentation/referral_screen/referral_invite_screen.dart';
-import 'package:banjarabio/presentation/referral_screen/referral_invite_screen_riverpod.dart';
+
 import 'package:banjarabio/presentation/onboarding_screen/onboarding_screen.dart';
+import 'package:banjarabio/presentation/onboarding_screen/relative_intake_screen.dart';
 import 'package:banjarabio/presentation/initial_language_screen/initial_language_screen.dart';
 import 'package:banjarabio/presentation/onboarding_selection_screen/onboarding_selection_screen.dart';
+import 'package:banjarabio/presentation/user_type_selection_screen/user_type_selection_screen.dart';
 import 'package:banjarabio/notification/widgets/activity_hub_screen.dart';
 
 class AppRoutes {
   static const String initial = '/';
   static const String splash = '/';
+  static const String userTypeSelection = '/user-type-selection';
   static const String profileDetail = '/profile-detail-screen';
   static const String sharedProfiles = '/shared-profiles-screen';
   static const String authentication = '/authentication-screen';
@@ -62,8 +64,6 @@ class AppRoutes {
   static const String accountDeletion = '/account-deletion-screen';
   static const String faq = '/faq-screen';
   static const String trustScore = '/trust-score-screen';
-  /// New Riverpod screen – use for migration testing. Swap with trustScore when 100% done.
-  static const String trustScoreRiverpod = '/trust-score-screen-riverpod';
   static const String mobileVerification = '/mobile-verification-screen';
   static const String emailVerification = '/email-verification-screen';
   static const String liveSelfie = '/live-selfie-screen';
@@ -73,12 +73,8 @@ class AppRoutes {
   static const String referenceVerification = '/reference-verification-screen';
   static const String videoIntro = '/video-intro-screen';
   static const String biodataPdf = '/biodata-pdf-screen';
-  /// New Riverpod screen – use for migration testing. Swap with biodataPdf when 100% done.
-  static const String biodataPdfRiverpod = '/biodata-pdf-screen-riverpod';
   static const String adminDashboard = '/admin-dashboard';
   static const String referralInvite = '/referral-invite';
-  /// New Riverpod screen – use for migration testing. Swap with referralInvite when 100% done.
-  static const String referralInviteRiverpod = '/referral-invite-riverpod';
   static const String settings = '/settings-screen';
   static const String conversationList = '/conversation-list';
   static const String chatScreen = '/chat-screen';
@@ -90,6 +86,7 @@ class AppRoutes {
   static const String activityHub = '/activity-hub';
   static const String staffDashboard = '/staff-dashboard';
   static const String premiumGate = '/premium-gate';
+  static const String relativeIntake = '/relative-intake';
 
   static Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashScreen(),
@@ -109,7 +106,6 @@ class AppRoutes {
     accountDeletion: (context) => const AccountDeletionScreen(),
     faq: (context) => const FAQScreen(),
     trustScore: (context) => const TrustScoreScreen(),
-    trustScoreRiverpod: (context) => const TrustScoreScreenRiverpod(),
     mobileVerification: (context) => const MobileVerificationScreen(),
     emailVerification: (context) => const EmailVerificationScreen(),
     liveSelfie: (context) => const LiveSelfieScreen(),
@@ -117,12 +113,9 @@ class AppRoutes {
     communityIdVerification: (context) => const CommunityIdScreen(),
     referenceVerification: (context) => const ReferenceVerificationScreen(),
     videoIntro: (context) => const VideoIntroScreen(),
-    biodataPdf: (context) => const BiodataPdfScreenRiverpod(),
-    biodataPdfRiverpod: (context) => const BiodataPdfScreenRiverpod(),
+    biodataPdf: (context) => const BiodataPdfScreen(),
     adminDashboard: (context) => const AdminDashboardScreen(),
     referralInvite: (context) => const ReferralInviteScreen(),
-    referralInviteRiverpod: (context) =>
-        const ReferralInviteScreenRiverpod(),
     settings: (context) => const SettingsScreen(),
     conversationList: (context) => const ConversationListScreen(),
     chatScreen: (context) {
@@ -145,6 +138,8 @@ class AppRoutes {
         onPremiumPurchased: args?['onPremiumPurchased'] ?? () {},
       );
     },
+    relativeIntake: (context) => const RelativeIntakeScreen(),
+    userTypeSelection: (context) => const UserTypeSelectionScreen(),
   };
 
   /// Generates premium animated routes for named navigation.

@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banjarabio/core/models/backend_response.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/core/repositories/isolate_first_repository.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// [AdminRepository]
 ///
@@ -56,7 +57,7 @@ class AdminRepository extends IsolateFirstRepository {
         },
       );
     } catch (e) {
-      debugPrint('Error in getAdminStats: $e');
+      AppLogger.error('AdminRepository', 'Error in getAdminStats: $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -229,7 +230,7 @@ class AdminRepository extends IsolateFirstRepository {
           .createSignedUrl(path, 3600);
       return BackendResponse.success(signedUrl);
     } catch (e) {
-      debugPrint('Error getting signed URL for $path: $e');
+      AppLogger.error('AdminRepository', 'Error getting signed URL for $path: $e');
 
       // If object not found, return explicit failure rather than falling back
       // to a public URL that will also 404.
@@ -263,7 +264,7 @@ class AdminRepository extends IsolateFirstRepository {
       );
       return BackendResponse.fromRpc(response);
     } catch (e) {
-      debugPrint('Admin Action Failed [$action]: $e');
+      AppLogger.error('AdminRepository', 'Admin Action Failed [$action]: $e');
       return BackendResponse.failure('Admin action failed: $e');
     }
   }
@@ -286,7 +287,7 @@ class AdminRepository extends IsolateFirstRepository {
         },
       );
     } catch (e) {
-      debugPrint('Admin Action Failed [$action]: $e');
+      AppLogger.error('AdminRepository', 'Admin Action Failed [$action]: $e');
       return BackendResponse.failure('Admin action failed: $e');
     }
   }
@@ -434,7 +435,7 @@ class AdminRepository extends IsolateFirstRepository {
         mapper: (json) => Map<String, dynamic>.from(json as Map),
       );
     } catch (e) {
-      debugPrint('Auto-assign failed: $e');
+      AppLogger.error('AdminRepository', 'Auto-assign failed: $e');
       return BackendResponse.failure('Auto-assign failed: $e');
     }
   }
@@ -456,7 +457,7 @@ class AdminRepository extends IsolateFirstRepository {
         mapper: (json) => Map<String, dynamic>.from(json as Map),
       );
     } catch (e) {
-      debugPrint('Staff report failed: $e');
+      AppLogger.error('AdminRepository', 'Staff report failed: $e');
       return BackendResponse.failure('Report failed: $e');
     }
   }
@@ -526,7 +527,7 @@ class AdminRepository extends IsolateFirstRepository {
         return BackendResponse.failure(data?['error']?.toString() ?? 'Hire failed');
       }
     } catch (e) {
-      debugPrint('Hire staff failed: $e');
+      AppLogger.error('AdminRepository', 'Hire staff failed: $e');
       return BackendResponse.failure('Hire failed: $e');
     }
   }
@@ -571,7 +572,7 @@ class AdminRepository extends IsolateFirstRepository {
         mapper: (json) => Map<String, dynamic>.from(json as Map),
       );
     } catch (e) {
-      debugPrint('Incentive calc failed: $e');
+      AppLogger.error('AdminRepository', 'Incentive calc failed: $e');
       return BackendResponse.failure('Incentive calculation failed: $e');
     }
   }
@@ -593,7 +594,7 @@ class AdminRepository extends IsolateFirstRepository {
         mapper: (json) => Map<String, dynamic>.from(json as Map),
       );
     } catch (e) {
-      debugPrint('ROI dashboard failed: $e');
+      AppLogger.error('AdminRepository', 'ROI dashboard failed: $e');
       return BackendResponse.failure('ROI dashboard failed: $e');
     }
   }
@@ -613,7 +614,7 @@ class AdminRepository extends IsolateFirstRepository {
       );
       return BackendResponse.fromRpc(response);
     } catch (e) {
-      debugPrint('Team Admin Action Failed [$action]: $e');
+      AppLogger.error('AdminRepository', 'Team Admin Action Failed [$action]: $e');
       return BackendResponse.failure('Team admin action failed: $e');
     }
   }
@@ -636,7 +637,7 @@ class AdminRepository extends IsolateFirstRepository {
         },
       );
     } catch (e) {
-      debugPrint('Team Admin Action Failed [$action]: $e');
+      AppLogger.error('AdminRepository', 'Team Admin Action Failed [$action]: $e');
       return BackendResponse.failure('Team admin action failed: $e');
     }
   }
@@ -657,7 +658,7 @@ class AdminRepository extends IsolateFirstRepository {
         mapper: (json) => Map<String, dynamic>.from(json as Map),
       );
     } catch (e) {
-      debugPrint('Lead inventory failed: $e');
+      AppLogger.error('AdminRepository', 'Lead inventory failed: $e');
       return BackendResponse.failure('Inventory fetch failed: $e');
     }
   }
@@ -687,7 +688,7 @@ class AdminRepository extends IsolateFirstRepository {
         mapper: (json) => Map<String, dynamic>.from(json as Map),
       );
     } catch (e) {
-      debugPrint('Manual assignment failed: $e');
+      AppLogger.error('AdminRepository', 'Manual assignment failed: $e');
       return BackendResponse.failure('Manual assignment failed: $e');
     }
   }

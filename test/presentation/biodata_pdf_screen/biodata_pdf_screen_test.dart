@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:banjarabio/presentation/biodata_pdf_screen/biodata_pdf_screen_riverpod.dart';
+import 'package:banjarabio/presentation/biodata_pdf_screen/biodata_pdf_screen.dart';
 import '../../helpers/widget_test_helpers.dart';
 
 void main() {
@@ -12,14 +12,14 @@ void main() {
     tearDownWidgetTestMocks();
   });
 
-  group('BiodataPdfScreenRiverpod', () {
+  group('BiodataPdfScreen', () {
     testWidgets('can be instantiated', (WidgetTester tester) async {
       // The screen depends on Riverpod providers and Supabase, so we test
       // that it at least builds without crashing in a test environment.
       final widgetBuilt = await pumpWidgetSafely(
         tester,
         createTestableWidget(
-          const BiodataPdfScreenRiverpod(),
+          const BiodataPdfScreen(),
         ),
       );
       // If the widget builds, verify the screen scaffold exists

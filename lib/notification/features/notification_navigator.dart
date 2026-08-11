@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:banjarabio/core/services/deep_link_service.dart';
 import 'package:banjarabio/notification/core/notification_payload.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Specialized navigator for notifications, leveraging existing DeepLinkService.
 class NotificationNavigator {
@@ -10,7 +10,7 @@ class NotificationNavigator {
 
   /// Pass the notification payload to the deep link service for routing.
   void handleNotificationTap(NotificationPayload payload) {
-    debugPrint('🚀 [NotificationNavigator] Handling tap: ${payload.route}');
+    AppLogger.debug('NotificationNavigator', '🚀 [NotificationNavigator] Handling tap: ${payload.route}');
     
     if (payload.route != null) {
       final Uri? uri = Uri.tryParse(payload.route!);

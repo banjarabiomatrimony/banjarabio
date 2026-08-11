@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 enum StartupPhase {
   preBoot,      // Initial bare-metal state
@@ -41,16 +42,16 @@ class StartupOrchestrator {
   void registerTask(StartupPhase phase, Future<void> Function() task, {String name = 'Unknown Task'}) {
     // Prevent duplicate execution of named tasks
     if (name != 'Unknown Task' && _executedTasks.contains(name)) {
-      debugPrint('🚀 [ORCHESTRATOR] Skipping duplicate task: $name');
+      AppLogger.warn('StartupOrchestrator', '🚀 [ORCHESTRATOR] Skipping duplicate task: $name');
       return;
     }
     
     if (_currentPhase.index >= phase.index) {
-      debugPrint('🚀 [ORCHESTRATOR] Phase $phase already passed. Running $name immediately.');
+      AppLogger.debug('StartupOrchestrator', '🚀 [ORCHESTRATOR] Phase $phase already passed. Running $name immediately.');
       if (name != 'Unknown Task') _executedTasks.add(name);
-      task().catchError((e) => debugPrint('Error in delayed orchestrator task $name: $e'));
+      task().catchError((e) => AppLogger.error('StartupOrchestrator', 'Error in delayed orchestrator task $name: $e'));
     } else {
-      debugPrint('🚀 [ORCHESTRATOR] Registered $name for Phase $phase.');
+      AppLogger.debug('StartupOrchestrator', '🚀 [ORCHESTRATOR] Registered $name for Phase $phase.');
       _tasks[phase]!.add(() async {
         if (name != 'Unknown Task') {
           if (_executedTasks.contains(name)) return;
@@ -69,7 +70,7 @@ class StartupOrchestrator {
     // Just enough (50ms) for the OS scheduler to process events.
     await Future.delayed(const Duration(milliseconds: 50));
 
-    debugPrint('🚀 [ORCHESTRATOR] Advancing to Phase: ${phase.name.toUpperCase()}');
+    AppLogger.debug('StartupOrchestrator', '🚀 [ORCHESTRATOR] Advancing to Phase: ${phase.name.toUpperCase()}');
     _currentPhase = phase;
 
     final tasksToRun = _tasks[phase] ?? [];
@@ -91,9 +92,9 @@ class StartupOrchestrator {
         // preventing the >2.0 second continuous Dart execution that causes Vivo devices to Signal 3.
         await Future.delayed(const Duration(milliseconds: 100));
       }
-      debugPrint('🚀 [ORCHESTRATOR] Phase ${phase.name.toUpperCase()} completed in ${stopwatch.elapsedMilliseconds}ms.');
+      AppLogger.debug('StartupOrchestrator', '🚀 [ORCHESTRATOR] Phase ${phase.name.toUpperCase()} completed in ${stopwatch.elapsedMilliseconds}ms.');
     } catch (e) {
-      debugPrint('🚨 [ORCHESTRATOR] Error during Phase ${phase.name.toUpperCase()}: $e');
+      AppLogger.error('StartupOrchestrator', '🚨 [ORCHESTRATOR] Error during Phase ${phase.name.toUpperCase()}: $e');
       // Decide whether to rethrow or continue based on criticality.
       if (phase == StartupPhase.critical) {
         rethrow;

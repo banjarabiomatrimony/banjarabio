@@ -10,7 +10,7 @@ import 'package:banjarabio/features/referral/providers/referral_invite_notifier.
 import 'package:banjarabio/core/models/backend_response.dart';
 import 'package:banjarabio/core/models/referral_stats_model.dart';
 import 'package:banjarabio/core/repositories/referral_repository.dart';
-import 'package:banjarabio/presentation/referral_screen/referral_invite_screen_riverpod.dart';
+import 'package:banjarabio/presentation/referral_screen/referral_invite_screen.dart';
 
 class MockReferralRepository extends Mock implements ReferralRepository {}
 
@@ -21,7 +21,7 @@ Widget wrapWithSizer(Widget child) {
 }
 
 void main() {
-  group('ReferralInviteScreenRiverpod', () {
+  group('ReferralInviteScreen', () {
     late MockReferralRepository mockRepository;
 
     setUp(() {
@@ -36,7 +36,7 @@ void main() {
           ],
           child: wrapWithSizer(
             const MaterialApp(
-              home: ReferralInviteScreenRiverpod(),
+              home: ReferralInviteScreen(),
             ),
           ),
         ),
@@ -92,7 +92,7 @@ void main() {
     });
 
     test('is ConsumerWidget (Riverpod-based)', () {
-      expect(const ReferralInviteScreenRiverpod(), isA<ConsumerWidget>());
+      expect(const ReferralInviteScreen(), isA<ConsumerWidget>());
     });
   });
 }

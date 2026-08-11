@@ -53,6 +53,9 @@ void main() {
       }
       
       expect(find.byType(PageView), findsOneWidget);
+
+      // Clean up cache manager timers
+      await tester.pump(const Duration(seconds: 10));
     });
 
     testWidgets('shows nothing when no banners found', (tester) async {

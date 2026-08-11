@@ -258,6 +258,13 @@ void main() {
     // Verify icons exist in the dialog
     expect(find.descendant(of: find.byType(BottomSheet), matching: find.byIcon(Icons.call)), findsOneWidget);
     expect(find.descendant(of: find.byType(BottomSheet), matching: find.byIcon(Icons.chat)), findsOneWidget);
+
+    // Close the dialog first (so everything is unmounted/disposed)
+    await tester.tapAt(const Offset(10, 10)); // Tap outside bottom sheet to close it
+    await tester.pumpAndSettle();
+
+    // Allow background cache manager timers to complete
+    await tester.pump(const Duration(seconds: 10));
   });
 
   testWidgets('Payments Search Bar filters correctly', (WidgetTester tester) async {

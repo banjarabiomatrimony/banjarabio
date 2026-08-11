@@ -9,14 +9,19 @@ import 'package:banjarabio/core/repositories/share_repository.dart';
 import 'package:banjarabio/presentation/chat/chat_screen.dart';
 import 'package:banjarabio/widgets/skeleton_loaders.dart';
 
-class ConversationListScreen extends StatefulWidget {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:banjarabio/core/providers/home_tab_provider.dart';
+import 'package:banjarabio/widgets/branded_empty_state.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
+
+class ConversationListScreen extends ConsumerStatefulWidget {
   const ConversationListScreen({super.key});
 
   @override
-  State<ConversationListScreen> createState() => _ConversationListScreenState();
+  ConsumerState<ConversationListScreen> createState() => _ConversationListScreenState();
 }
 
-class _ConversationListScreenState extends State<ConversationListScreen> {
+class _ConversationListScreenState extends ConsumerState<ConversationListScreen> {
   final ChatRepository _chatRepository = ChatRepository();
   final ShareRepository _shareRepository = ShareRepository();
 
@@ -28,7 +33,7 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             letterSpacing: 1.2,
-            fontSize: 16.sp,
+            fontSize: AppTypography.headingSmall,
           ),
         ),
         centerTitle: true,
@@ -48,7 +53,7 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
               padding: EdgeInsets.fromLTRB(5.w, 2.h, 5.w, 1.h),
               child: Text(AppLocalizations.of(context)?.recentConversations ?? 'Recent Conversations',
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize: AppTypography.bodyMedium,
                   fontWeight: FontWeight.bold,
                   color: Colors.grey[700],
                 ),
@@ -127,7 +132,7 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
                 children: [
                   Text(AppLocalizations.of(context)?.newMatches ?? 'New Matches',
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: AppTypography.bodyMedium,
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[700],
                     ),
@@ -135,7 +140,7 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
                   if (matches.isNotEmpty)
                     Text(AppLocalizations.of(context)?.viewAll ?? 'View All',
                       style: TextStyle(
-                        fontSize: 10.sp,
+                        fontSize: AppTypography.bodySmall,
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.w600,
                       ),
@@ -247,7 +252,7 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
             Text(
               match.sharedProfileName?.split(' ').first ?? AppLocalizations.of(context)?.newLabel ?? 'New',
               style: TextStyle(
-                fontSize: 9.sp,
+                fontSize: AppTypography.labelMedium,
                 fontWeight: FontWeight.w600,
                 color: Colors.grey[800],
               ),
@@ -306,14 +311,14 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
                   Text(AppLocalizations.of(context)?.profileInsights ?? 'Profile Insights',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 12.sp,
+                      fontSize: AppTypography.bodyMedium,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(AppLocalizations.of(context)?.checkWhoIsLookingAtYourProfile ?? 'Check who is looking at your profile',
                     style: TextStyle(
                       color: Colors.white.withValues(alpha: 0.7),
-                      fontSize: 10.sp,
+                      fontSize: AppTypography.bodySmall,
                     ),
                   ),
                 ],
@@ -367,7 +372,7 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
         conversation.otherParticipantName ?? AppLocalizations.of(context)?.userLabel ?? 'User',
         style: TextStyle(
           fontWeight: unreadCount > 0 ? FontWeight.bold : FontWeight.w600,
-          fontSize: 13.sp,
+          fontSize: AppTypography.bodyLarge,
         ),
       ),
       subtitle: Text(
@@ -377,7 +382,7 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
         style: TextStyle(
           color: unreadCount > 0 ? Colors.black87 : Colors.grey,
           fontWeight: unreadCount > 0 ? FontWeight.w500 : FontWeight.normal,
-          fontSize: 11.sp,
+          fontSize: AppTypography.bodySmall,
         ),
       ),
       trailing: Column(
@@ -387,7 +392,7 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
           Text(
             _formatTimestamp(conversation.lastMessageAt),
             style: TextStyle(
-              fontSize: 9.sp,
+              fontSize: AppTypography.labelMedium,
               color: unreadCount > 0
                   ? Theme.of(context).primaryColor
                   : Colors.grey,
@@ -405,7 +410,7 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
                 '$unreadCount',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 8.sp,
+                  fontSize: AppTypography.labelSmall,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -417,58 +422,15 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
   }
 
   Widget _buildPremiumEmptyState() {
-    return Container(
-      padding: EdgeInsets.all(8.w),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: EdgeInsets.all(6.w),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor.withValues(alpha: 0.05),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.chat_bubble_outline_rounded,
-              size: 50.sp,
-              color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
-            ),
-          ),
-          SizedBox(height: 3.h),
-          Text(AppLocalizations.of(context)?.startAConversation ?? 'Start a Conversation',
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).primaryColor,
-            ),
-          ),
-          SizedBox(height: 1.h),
-          Text(AppLocalizations.of(context)?.yourMatchesWillAppearHereOnceYouBothExpr ?? 'Your matches will appear here once you both express interest. Keep sharing profiles to find your perfect match!',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 11.sp,
-              color: Colors.grey[600],
-              height: 1.5,
-            ),
-          ),
-          SizedBox(height: 4.h),
-          ElevatedButton(
-            onPressed: () {
-              // Navigate to Home/Discovery
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            },
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 1.5.h),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-            ),
-            child: Text(AppLocalizations.of(context)?.browseProfiles ?? 'Browse Profiles',
-              style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
-      ),
+    return BrandedEmptyState(
+      icon: Icons.chat_bubble_outline_rounded,
+      title: AppLocalizations.of(context)?.startAConversation ?? 'Start a Conversation',
+      description: AppLocalizations.of(context)?.yourMatchesWillAppearHereOnceYouBothExpr ?? 'Your matches will appear here once you both express interest. Keep sharing profiles to find your perfect match!',
+      ctaText: AppLocalizations.of(context)?.browseProfiles ?? 'Browse Profiles',
+      onCtaPressed: () {
+        ref.read(homeTabProvider.notifier).state = 0;
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      },
     );
   }
 

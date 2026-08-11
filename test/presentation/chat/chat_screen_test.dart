@@ -50,5 +50,8 @@ void main() {
     
     // Once settled, it should render an AppBar and potentially an empty state or message input
     expect(find.byType(AppBar), findsOneWidget);
+
+    // Allow background cache manager timers to complete
+    await tester.pump(const Duration(seconds: 10));
   });
 }

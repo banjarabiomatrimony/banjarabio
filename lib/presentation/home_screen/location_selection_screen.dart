@@ -6,6 +6,7 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/data/location_data.dart';
 import 'package:banjarabio/widgets/glassmorphism_container.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 class LocationSelectionScreen extends StatefulWidget {
   const LocationSelectionScreen({super.key});
@@ -467,7 +468,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen> {
                                 }
                               }),
                               icon: const Icon(Icons.arrow_back_rounded, size: 16),
-                              label: Text(AppLocalizations.of(context)?.back ?? 'Back', style: TextStyle(fontSize: 12.sp)),
+                              label: Text(AppLocalizations.of(context)?.back ?? 'Back', style: TextStyle(fontSize: AppTypography.bodyMedium)),
                             ),
                             SizedBox(width: 2.w),
                             TextButton.icon(
@@ -477,7 +478,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen> {
                                 _selectedTaluka = null;
                               }),
                               icon: const Icon(Icons.restart_alt_rounded, size: 16),
-                              label: Text(AppLocalizations.of(context)?.reset ?? 'Reset', style: TextStyle(fontSize: 12.sp)),
+                              label: Text(AppLocalizations.of(context)?.reset ?? 'Reset', style: TextStyle(fontSize: AppTypography.bodyMedium)),
                             ),
                           ],
                         ),

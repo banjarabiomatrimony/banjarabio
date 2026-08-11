@@ -5,6 +5,7 @@ import 'package:banjarabio/presentation/matchmaking/widgets/match_success_dialog
 import 'package:banjarabio/core/init/app_navigator_key.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/core/models/backend_response.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 class MatchmakingService with WidgetsBindingObserver {
   SupabaseClient get _supabase => testClient ?? Supabase.instance.client;
@@ -40,10 +41,10 @@ class MatchmakingService with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused || state == AppLifecycleState.inactive) {
-      debugPrint('MatchmakingService: App backgrounded, dropping realtime channels');
+      AppLogger.debug('MatchmakingService', 'MatchmakingService: App backgrounded, dropping realtime channels');
       dispose();
     } else if (state == AppLifecycleState.resumed) {
-      debugPrint('MatchmakingService: App resumed, reconnecting realtime channels');
+      AppLogger.debug('MatchmakingService', 'MatchmakingService: App resumed, reconnecting realtime channels');
       initializeRealtime();
     }
   }
@@ -57,7 +58,7 @@ class MatchmakingService with WidgetsBindingObserver {
     final isGuest = _cache.isGuestMode();
     final hasNoProfile = _cache.getOwnProfile() == null;
     if (isGuest || hasNoProfile) {
-      debugPrint('MatchmakingService: Skipping initialization (guest=$isGuest, noProfile=$hasNoProfile)');
+      AppLogger.warn('MatchmakingService', 'MatchmakingService: Skipping initialization (guest=$isGuest, noProfile=$hasNoProfile)');
       return;
     }
 

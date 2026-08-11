@@ -7,6 +7,8 @@ import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/core/theme/app_gradients.dart';
 import 'package:banjarabio/core/utils/tour_keys.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// Action buttons widget for profile interactions
 /// Provides sharing, messaging, and bookmarking functionality
@@ -83,7 +85,7 @@ class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
                   child: InkWell(
                     onTap: () {
                       if (kDebugMode) {
-                        debugPrint('[BOOKMARK] ActionButtonsWidget (ProfileDetail) > User tapped ${_isBookmarked ? "SAVED" : "SAVE"} on bottom bar (profile ${widget.profileData['id']}) > delegating to ProfileDetailScreen');
+                        AppLogger.debug('ActionButtonsWidget', '[BOOKMARK] ActionButtonsWidget (ProfileDetail) > User tapped ${_isBookmarked ? "SAVED" : "SAVE"} on bottom bar (profile ${widget.profileData['id']}) > delegating to ProfileDetailScreen');
                       }
                       HapticFeedback.lightImpact();
                       setState(() {
@@ -139,7 +141,7 @@ class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
                                   ? Colors.white
                                   : theme.colorScheme.onSurface,
                               fontWeight: FontWeight.w900,
-                              fontSize: 9.5.sp,
+                              fontSize: AppTypography.labelMedium,
                               letterSpacing: 0.6,
                             ),
                           ),
@@ -194,7 +196,7 @@ class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
                             style: theme.textTheme.labelLarge?.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.w900,
-                              fontSize: 10.0.sp,
+                              fontSize: AppTypography.bodySmall,
                               letterSpacing: 0.4,
                             ),
                           ),
@@ -243,7 +245,7 @@ class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
                             style: theme.textTheme.labelLarge?.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.w900,
-                              fontSize: 9.5.sp,
+                              fontSize: AppTypography.labelMedium,
                               letterSpacing: 0.6,
                             ),
                           ),
@@ -298,7 +300,7 @@ class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
                             style: theme.textTheme.labelLarge?.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.w900,
-                              fontSize: 9.5.sp,
+                              fontSize: AppTypography.labelMedium,
                               letterSpacing: 0.6,
                             ),
                           ),

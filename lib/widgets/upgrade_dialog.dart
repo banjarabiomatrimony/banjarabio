@@ -3,6 +3,7 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/core/app_export.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// Upgrade dialog to show when free users hit feature limits
 class UpgradeDialog extends StatelessWidget {
@@ -210,7 +211,7 @@ class UpgradeDialog extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 2.h),
                 ),
                 child: Text(AppLocalizations.of(context)?.upgradeToPremium ?? 'Upgrade to Premium',
-                  style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: AppTypography.bodyMedium, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -420,7 +421,7 @@ class RemainingLimitsWidget extends StatelessWidget {
         Text(
           remaining >= 999 ? '∞' : '$remaining',
           style: TextStyle(
-            fontSize: 10.sp,
+            fontSize: AppTypography.bodySmall,
             fontWeight: FontWeight.w600,
             color: isLow
                 ? theme.colorScheme.error
@@ -452,7 +453,7 @@ class RemainingLimitsWidget extends StatelessWidget {
         Text(
           remaining >= 999 ? '∞' : '$remaining',
           style: TextStyle(
-            fontSize: 12.sp,
+            fontSize: AppTypography.bodyMedium,
             fontWeight: FontWeight.bold,
             color: isLow
                 ? theme.colorScheme.error

@@ -3,6 +3,8 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/services/ads/ad_service.dart';
 import 'package:banjarabio/core/session_manager.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// A native ad widget that blends into the profile feed.
 class ProfileNativeAdWidget extends StatefulWidget {
@@ -75,7 +77,7 @@ class _ProfileNativeAdWidgetState extends State<ProfileNativeAdWidget> with Auto
         },
         onAdFailedToLoad: (ad, error) {
           ad.dispose();
-          debugPrint('NativeAd failed to load: $error');
+          AppLogger.error('ProfileNativeAdWidget', 'NativeAd failed to load: $error');
           if (mounted) {
             setState(() {
               _isAdFailed = true;
@@ -170,7 +172,7 @@ class _ProfileNativeAdWidgetState extends State<ProfileNativeAdWidget> with Auto
                       'SPONSORED',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 8.sp,
+                        fontSize: AppTypography.labelSmall,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 1.0,
                       ),

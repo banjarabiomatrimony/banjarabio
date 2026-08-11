@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banjarabio/core/services/persistent_cache_manager.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// [CachePurgeService]
 ///
@@ -39,11 +40,11 @@ class CachePurgeService {
   ///
   /// Returns a [PurgeResult] with counts of successes/failures.
   static Future<PurgeResult> purgeAll() async {
-    debugPrint('[CachePurgeService] Starting full cache purge...');
+    AppLogger.debug('CachePurgeService', '[CachePurgeService] Starting full cache purge...');
 
     // Step 1: Purge local device cache
     await PersistentCacheManager.clearAll();
-    debugPrint('[CachePurgeService] ✅ Device cache cleared');
+    AppLogger.debug('CachePurgeService', '[CachePurgeService] ✅ Device cache cleared');
 
     // Step 2: Purge Supabase CDN cache by invalidating all storage objects
     final cdnResult = await _purgeSupabaseCdn();
@@ -80,7 +81,7 @@ class CachePurgeService {
           .from(_bucket)
           .list(searchOptions: const SearchOptions(limit: 1000));
 
-      debugPrint('[CachePurgeService] Found ${objects.length} objects to purge');
+      AppLogger.debug('CachePurgeService', '[CachePurgeService] Found ${objects.length} objects to purge');
 
       if (objects.isEmpty) {
         return const _CdnPurgeResult(purged: 0, failed: 0, errors: []);
@@ -123,7 +124,7 @@ class CachePurgeService {
             } catch (e) {
               failed++;
               errors.add('${obj.name}: $e');
-              debugPrint('[CachePurgeService] Error purging ${obj.name}: $e');
+              AppLogger.error('CachePurgeService', '[CachePurgeService] Error purging ${obj.name}: $e');
             }
           }),
         );
@@ -136,7 +137,7 @@ class CachePurgeService {
     } catch (e) {
       failed++;
       errors.add('List objects failed: $e');
-      debugPrint('[CachePurgeService] CDN purge error: $e');
+      AppLogger.error('CachePurgeService', '[CachePurgeService] CDN purge error: $e');
     }
 
     return _CdnPurgeResult(purged: purged, failed: failed, errors: errors);

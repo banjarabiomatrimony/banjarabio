@@ -1,22 +1,23 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:banjarabio/core/utils/onboarding_validator.dart';
+import 'package:banjarabio/presentation/biodata_creation_screen/models/creation_step_config.dart';
 
 void main() {
   group('OnboardingValidator Tests', () {
-    group('Step 0: Personal Details', () {
+    group('Personal Details (Full Mode)', () {
       test('should return all missing fields when form is empty', () {
         final result = OnboardingValidator.getMissingFields(
-          step: 0,
+          step: CreationStep.personal,
           formData: {},
         );
 
-        expect(result, containsAll(['name', 'age', 'surname', 'gender', 'height']));
+        expect(result, containsAll(['name', 'surname', 'gender', 'height']));
       });
 
       test('should require gotra only for specific surnames', () {
         // Rathod requires gotra
         final rathodResult = OnboardingValidator.getMissingFields(
-          step: 0,
+          step: CreationStep.personal,
           formData: {
             'name': 'Rahul',
             'age': '28',
@@ -30,7 +31,7 @@ void main() {
 
         // Ade requires gotra
         final adeResult = OnboardingValidator.getMissingFields(
-          step: 0,
+          step: CreationStep.personal,
           formData: {
             'name': 'Rahul',
             'surname': 'Ade',
@@ -41,7 +42,7 @@ void main() {
 
         // Other surname does NOT require gotra (e.g. Bangar)
         final otherResult = OnboardingValidator.getMissingFields(
-          step: 0,
+          step: CreationStep.personal,
           formData: {
             'name': 'Rahul',
             'age': '28',
@@ -56,7 +57,7 @@ void main() {
 
       test('should return empty list when all personal details are present', () {
         final result = OnboardingValidator.getMissingFields(
-          step: 0,
+          step: CreationStep.personal,
           formData: {
             'name': 'Rahul',
             'phone_number': '1234567890',
@@ -72,10 +73,10 @@ void main() {
       });
     });
 
-    group('Step 2: Education & Profession', () {
+    group('Education & Profession', () {
       test('should return missing education fields', () {
         final result = OnboardingValidator.getMissingFields(
-          step: 2,
+          step: CreationStep.education,
           formData: {},
         );
 
@@ -84,7 +85,7 @@ void main() {
 
       test('should pass when all education fields are present', () {
         final result = OnboardingValidator.getMissingFields(
-          step: 2,
+          step: CreationStep.education,
           formData: {
             'education': 'BE',
             'profession': 'Engineer',
@@ -96,14 +97,14 @@ void main() {
       });
     });
 
-    group('Step 3: Photos', () {
+    group('Photos', () {
       test('should require at least one photo', () {
         expect(
-          OnboardingValidator.getMissingFields(step: 3, formData: {}),
+          OnboardingValidator.getMissingFields(step: CreationStep.photo, formData: {}),
           contains('photos'),
         );
         expect(
-          OnboardingValidator.getMissingFields(step: 3, formData: {'photos': []}),
+          OnboardingValidator.getMissingFields(step: CreationStep.photo, formData: {'photos': []}),
           contains('photos'),
         );
       });
@@ -111,7 +112,7 @@ void main() {
       test('should pass when photos are present', () {
         expect(
           OnboardingValidator.getMissingFields(
-            step: 3, 
+            step: CreationStep.photo, 
             formData: {'photos': ['url1']},
           ),
           isEmpty,
@@ -119,10 +120,10 @@ void main() {
       });
     });
 
-    group('Step 4: Location', () {
+    group('Location (Full Mode)', () {
       test('should require state and district', () {
         final result = OnboardingValidator.getMissingFields(
-          step: 4,
+          step: CreationStep.location,
           formData: {},
         );
 
@@ -131,13 +132,41 @@ void main() {
 
       test('should pass when location details are present', () {
         final result = OnboardingValidator.getMissingFields(
-          step: 4,
+          step: CreationStep.location,
           formData: {
             'state': 'Maharashtra',
             'district': 'Pune',
           },
         );
 
+        expect(result, isEmpty);
+      });
+    });
+
+    group('Lite Mode Behavior', () {
+      test('lite mode personal step skips height requirement', () {
+        final result = OnboardingValidator.getMissingFields(
+          step: CreationStep.personal,
+          formData: {
+            'name': 'Test',
+            'phone_number': '9876543210',
+            'surname': 'Rathod',
+            'gotra': 'Chauhan',
+            'gender': 'Male',
+          },
+          isLite: true,
+        );
+        expect(result, isNot(contains('height')));
+        expect(result, isEmpty);
+      });
+
+      test('lite mode location step skips district requirement', () {
+        final result = OnboardingValidator.getMissingFields(
+          step: CreationStep.location,
+          formData: {'state': 'Maharashtra'},
+          isLite: true,
+        );
+        expect(result, isNot(contains('district')));
         expect(result, isEmpty);
       });
     });

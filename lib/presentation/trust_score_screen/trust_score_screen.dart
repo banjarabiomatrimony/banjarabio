@@ -1,27 +1,37 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
+import 'package:share_plus/share_plus.dart';
 
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
+import 'package:banjarabio/core/providers/profile_providers.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
-import 'package:banjarabio/core/repositories/trust_score_repository.dart';
+import 'package:banjarabio/features/trust_score/providers/trust_score_providers.dart';
+import 'package:banjarabio/features/trust_score/repository/trust_score_repository.dart';
 import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:banjarabio/widgets/skeleton_loaders.dart';
 import 'package:banjarabio/presentation/trust_score_screen/widgets/trust_score_share_card.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
-class TrustScoreScreen extends StatefulWidget {
+/// Riverpod-based Trust Score screen.
+class TrustScoreScreen extends ConsumerStatefulWidget {
   const TrustScoreScreen({super.key});
 
   @override
-  State<TrustScoreScreen> createState() => _TrustScoreScreenState();
+  ConsumerState<TrustScoreScreen> createState() =>
+      _TrustScoreScreenState();
 }
 
-class _TrustScoreScreenState extends State<TrustScoreScreen> {
-  final TrustScoreRepository _trustScoreRepository = TrustScoreRepository();
-  final ProfileRepository _profileRepository = ProfileRepository();
+class _TrustScoreScreenState
+    extends ConsumerState<TrustScoreScreen> {
+  late final TrustScoreRepository _trustScoreRepository;
+  late final ProfileRepository _profileRepository;
   bool _isLoading = true;
   int _currentScore = 0;
   Map<String, String> _verificationStatus = {};
@@ -30,13 +40,16 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
   @override
   void initState() {
     super.initState();
+    _trustScoreRepository = ref.read(trustScoreRepositoryProvider);
+    _profileRepository = ref.read(profileRepositoryProvider);
     _loadTrustScore();
   }
 
   Future<void> _loadTrustScore() async {
-    setState(() {
-      _isLoading = true;
-    });
+    if (kDebugMode) {
+      AppLogger.debug('TrustScoreScreen', '[TRUST_SCORE] TrustScoreScreen > _loadTrustScore > Loading');
+    }
+    setState(() => _isLoading = true);
 
     try {
       final scoreRes = await _trustScoreRepository.calculateTrustScore();
@@ -51,26 +64,27 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
             _profile = profileRes.data;
             _isLoading = false;
           });
+          if (kDebugMode) {
+            debugPrint(
+              '[TRUST_SCORE] TrustScoreScreen > _loadTrustScore > SUCCESS | score=$_currentScore',
+            );
+          }
         } else {
-          debugPrint('Failed to load some trust score components');
-          if (!scoreRes.isSuccess) {
-            debugPrint('Score error: ${scoreRes.errorMessage}');
-          }
-          if (!statusRes.isSuccess) {
-            debugPrint('Status error: ${statusRes.errorMessage}');
-          }
-          if (!profileRes.isSuccess) {
-            debugPrint('Profile error: ${profileRes.errorMessage}');
+          if (kDebugMode) {
+            debugPrint(
+              '[TRUST_SCORE] TrustScoreScreen > _loadTrustScore > FAILED | '
+              'score=${scoreRes.isSuccess}, status=${statusRes.isSuccess}, profile=${profileRes.isSuccess}',
+            );
           }
           setState(() => _isLoading = false);
         }
       }
     } catch (e) {
-      debugPrint('Error loading trust score: $e');
+      if (kDebugMode) {
+        AppLogger.error('TrustScoreScreen', '[TRUST_SCORE] TrustScoreScreen > _loadTrustScore > Error: $e');
+      }
       if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
+        setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(AppLocalizations.of(context)?.failedToLoadTrustScoreStats ?? 'Failed to load trust score stats')),
         );
@@ -106,16 +120,11 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
     }
 
     if (route.isNotEmpty) {
-      // Navigate and wait for result
-      final result = await Navigator.pushNamed(context, route);
-
-      // If result is true (verification completed/submitted), reload score
-      if (result == true) {
-        _loadTrustScore();
-      } else {
-        // Even if null, reload to check for any status updates
-        _loadTrustScore();
+      if (kDebugMode) {
+        AppLogger.debug('TrustScoreScreen', '[TRUST_SCORE] TrustScoreScreen > _handleVerifyItem > $itemKey');
       }
+      await Navigator.pushNamed(context, route);
+      _loadTrustScore();
     }
   }
 
@@ -134,20 +143,20 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
         ],
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const TrustScoreSkeleton()
           : SingleChildScrollView(
-              padding: EdgeInsets.all(5.w),
+              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   _buildScoreCard(theme),
-                  SizedBox(height: 4.h),
+                  SizedBox(height: 2.h),
                   Text(AppLocalizations.of(context)?.increaseYourTrustScoreToConfirmYourIdent ?? 'Increase your Trust Score to confirm your identity and unlock exclusive discounts.',
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
                   ),
-                  SizedBox(height: 3.h),
+                  SizedBox(height: 2.h),
                   _buildVerificationList(theme),
                 ],
               ),
@@ -156,6 +165,11 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
   }
 
   void _showShareCard() {
+    if (kDebugMode) {
+      debugPrint(
+        '[TRUST_SCORE] TrustScoreScreen > _showShareCard > Opening share sheet',
+      );
+    }
     HapticFeedback.lightImpact();
     showModalBottomSheet(
       context: context,
@@ -190,7 +204,6 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
                 onPressed: () {
                   Navigator.pop(context);
                   Share.share(
-                    AppLocalizations.of(context)?.trustScoreShareMessage(_currentScore.toString(), "https://play.google.com/store/apps/details?id=com.avishio.banjarabio&referrer=profile/${_profile?.id ?? ""}") ??
                     "I just verified my profile on BanjaraBio with a Trust Score of $_currentScore! Check out my profile and join our community: https://play.google.com/store/apps/details?id=com.avishio.banjarabio&referrer=profile/${_profile?.id ?? ""}",
                   );
                 },
@@ -216,7 +229,7 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
     }
 
     return Container(
-      padding: EdgeInsets.all(5.w),
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w),
       decoration: BoxDecoration(
         color: theme.cardColor,
         borderRadius: BorderRadius.circular(16),
@@ -235,16 +248,16 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 2.h),
+          SizedBox(height: 1.2.h),
           Stack(
             alignment: Alignment.center,
             children: [
               SizedBox(
-                width: 30.w,
-                height: 30.w,
+                width: 22.w,
+                height: 22.w,
                 child: CircularProgressIndicator(
                   value: _currentScore / 100,
-                  strokeWidth: 12,
+                  strokeWidth: 10,
                   backgroundColor: theme.colorScheme.surfaceContainerHighest,
                   valueColor: AlwaysStoppedAnimation<Color>(scoreColor),
                 ),
@@ -264,7 +277,7 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
               ),
             ],
           ),
-          SizedBox(height: 2.h),
+          SizedBox(height: 1.h),
           _buildScoreLabel(theme, scoreColor),
         ],
       ),
@@ -275,18 +288,18 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
     String label;
     IconData icon;
     if (_currentScore >= 80) {
-      label = AppLocalizations.of(context)?.verifiedProfile ?? 'Verified Profile';
+      label = 'Verified Profile';
       icon = Icons.verified;
     } else if (_currentScore >= 50) {
-      label = AppLocalizations.of(context)?.trustedProfile ?? 'Trusted Profile';
+      label = 'Trusted Profile';
       icon = Icons.thumb_up;
     } else {
-      label = AppLocalizations.of(context)?.standardProfile ?? 'Standard Profile';
+      label = 'Standard Profile';
       icon = Icons.person_outline;
     }
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.6.h),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
@@ -361,7 +374,7 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
         ),
         _buildVerificationItem(
           theme,
-          title: AppLocalizations.of(context)?.videoBioIntro ?? 'Video Bio / Intro',
+          title: 'Video Bio / Intro',
           points: 10,
           itemKey: 'videoBio',
           iconName: 'videocam',
@@ -390,7 +403,6 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
     final status =
         _verificationStatus[itemKey] ?? TrustScoreRepository.statusNotStarted;
 
-    // Determine status UI
     IconData statusIcon;
     Color statusColor;
     String statusText;
@@ -400,60 +412,57 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
       case TrustScoreRepository.statusVerified:
         statusIcon = Icons.check_circle;
         statusColor = Colors.green;
-        statusText = AppLocalizations.of(context)?.verified ?? 'Verified';
-        onTap = () => _handleVerifyItem(itemKey); // Allow re-verify/edit
+        statusText = 'Verified';
+        onTap = () => _handleVerifyItem(itemKey);
         break;
       case TrustScoreRepository.statusPendingReview:
         statusIcon = Icons.schedule;
         statusColor = Colors.orange;
-        statusText = AppLocalizations.of(context)?.pending ?? 'Pending';
-        onTap = () => _handleVerifyItem(itemKey); // Allow viewing status
+        statusText = 'Pending';
+        onTap = () => _handleVerifyItem(itemKey);
         break;
       case TrustScoreRepository.statusRejected:
         statusIcon = Icons.cancel;
         statusColor = Colors.red;
-        statusText = AppLocalizations.of(context)?.rejected ?? 'Rejected';
-        onTap = () => _handleVerifyItem(itemKey); // Allow retry
+        statusText = 'Rejected';
+        onTap = () => _handleVerifyItem(itemKey);
         break;
-      default: // not_started, in_progress
+      default:
         statusIcon = Icons.arrow_forward_ios;
         statusColor = Colors.grey;
-        statusText = itemKey == 'profileCompletion' 
-            ? (AppLocalizations.of(context)?.update ?? 'Update') 
-            : (AppLocalizations.of(context)?.start ?? 'Start');
+        statusText = itemKey == 'profileCompletion' ? 'Update' : 'Start';
         onTap = itemKey == 'profileCompletion'
             ? () => Navigator.pushNamed(
-                context,
-                AppRoutes.biodataCreation,
-                arguments: {'profile': _profile, 'isEditMode': true},
-              )
+                  context,
+                  AppRoutes.biodataCreation,
+                  arguments: {'profile': _profile, 'isEditMode': true},
+                )
             : () => _handleVerifyItem(itemKey);
         break;
     }
 
-    // Special handling for profileCompletion tap even when verified
     if (itemKey == 'profileCompletion' &&
         status == TrustScoreRepository.statusVerified) {
       onTap = () => Navigator.pushNamed(
-        context,
-        AppRoutes.biodataCreation,
-        arguments: {'profile': _profile, 'isEditMode': true},
-      );
+            context,
+            AppRoutes.biodataCreation,
+            arguments: {'profile': _profile, 'isEditMode': true},
+          );
     }
 
     return Card(
-      margin: EdgeInsets.only(bottom: 1.5.h),
+      margin: EdgeInsets.only(bottom: 0.8.h),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 2,
       child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.5.h),
+        contentPadding: EdgeInsets.symmetric(horizontal: 3.w),
         leading: Container(
-          padding: EdgeInsets.all(2.w),
+          padding: EdgeInsets.all(1.5.w),
           decoration: BoxDecoration(
             color: color.withValues(alpha: 0.1),
             shape: BoxShape.circle,
           ),
-          child: Icon(_getIconData(iconName), color: color, size: 24),
+          child: Icon(_getIconData(iconName), color: color, size: 20),
         ),
         title: Text(
           title,
@@ -462,7 +471,7 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
           ),
         ),
         subtitle: Text(
-          AppLocalizations.of(context)?.pointsCount(points.toString()) ?? '+$points Points',
+          '+$points Points',
           style: theme.textTheme.bodySmall?.copyWith(
             color: Colors.green,
             fontWeight: FontWeight.w600,
@@ -471,7 +480,6 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Exclusive handling for Profile Completion to show dynamic percentage
             if (itemKey == 'profileCompletion' && _profile != null) ...[
               Text(
                 '${_profile!.calculateCompletionPercentage()}%',
@@ -480,7 +488,7 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
                       ? Colors.green
                       : Colors.orange,
                   fontWeight: FontWeight.bold,
-                  fontSize: 10.sp,
+                  fontSize: AppTypography.bodySmall,
                 ),
               ),
               SizedBox(width: 2.w),
@@ -494,7 +502,7 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(AppLocalizations.of(context)?.update ?? 'Update',
-                    style: TextStyle(color: Colors.white, fontSize: 10.sp),
+                    style: TextStyle(color: Colors.white, fontSize: AppTypography.bodySmall),
                   ),
                 ),
             ] else if (status == TrustScoreRepository.statusVerified) ...[
@@ -503,7 +511,7 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
                 style: TextStyle(
                   color: statusColor,
                   fontWeight: FontWeight.bold,
-                  fontSize: 10.sp,
+                  fontSize: AppTypography.bodySmall,
                 ),
               ),
               SizedBox(width: 1.w),
@@ -514,7 +522,7 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
               if (status == TrustScoreRepository.statusPendingReview)
                 Text(
                   statusText,
-                  style: TextStyle(color: statusColor, fontSize: 10.sp),
+                  style: TextStyle(color: statusColor, fontSize: AppTypography.bodySmall),
                 ),
               if (statusText == 'Start' || statusText == 'Rejected')
                 Container(
@@ -524,13 +532,11 @@ class _TrustScoreScreenState extends State<TrustScoreScreen> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
-                  status == TrustScoreRepository.statusRejected
-                      ? (AppLocalizations.of(context)?.retry ?? 'Retry')
-                      : (itemKey == 'profileCompletion' 
-                          ? (AppLocalizations.of(context)?.go ?? 'Go') 
-                          : (AppLocalizations.of(context)?.verify ?? 'Verify')),
-                  style: TextStyle(color: Colors.white, fontSize: 10.sp),
-                ),
+                    statusText == 'Rejected'
+                        ? 'Retry'
+                        : (itemKey == 'profileCompletion' ? 'Go' : 'Verify'),
+                    style: TextStyle(color: Colors.white, fontSize: AppTypography.bodySmall),
+                  ),
                 ),
             ],
           ],

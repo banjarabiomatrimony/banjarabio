@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/core/app_export.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// Individual sharing card widget with swipe actions and selection support
 /// Redesigned for a "premium" and "vibrant" look
@@ -36,13 +37,13 @@ class SharedProfileCardWidget extends StatelessWidget {
 
     if (difference.inHours < 24) {
       if (difference.inHours == 0) {
-        return l10n?.minutesAgo(difference.inMinutes.toString()) ??
+        return l10n?.minutesAgo(difference.inMinutes) ??
             '${difference.inMinutes}m ago';
       }
-      return l10n?.hoursAgo(difference.inHours.toString()) ??
+      return l10n?.hoursAgo(difference.inHours) ??
           '${difference.inHours}h ago';
     } else if (difference.inDays < 7) {
-      return l10n?.daysAgo(difference.inDays.toString()) ??
+      return l10n?.daysAgo(difference.inDays) ??
           '${difference.inDays}d ago';
     } else {
       return DateFormat('dd MMM yyyy').format(timestamp);
@@ -73,36 +74,39 @@ class SharedProfileCardWidget extends StatelessWidget {
     final isMatched = status.toLowerCase() == 'matched';
     final isPremium = profile['isPremium'] as bool? ?? false;
 
-    return GestureDetector(
-      onTap: onTap,
-      onLongPress: onLongPress,
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: isSelected
-                ? theme.colorScheme.primary
-                : isMatched
-                ? const Color(0xFFFF416C).withValues(alpha: 0.2)
-                : theme.colorScheme.outlineVariant.withValues(alpha: 0.3),
-            width: isSelected || isMatched ? 1.5 : 1,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 15,
-              offset: const Offset(0, 8),
+    return Semantics(
+      label: "Shared profile card of $profileName, age $profileAge. ${isSharedByMe ? 'Shared to' : 'Shared from'} $contactName.",
+      hint: 'Double tap to view details.',
+      child: GestureDetector(
+        onTap: onTap,
+        onLongPress: onLongPress,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: isSelected
+                  ? theme.colorScheme.primary
+                  : isMatched
+                  ? const Color(0xFFFF416C).withValues(alpha: 0.2)
+                  : theme.colorScheme.outlineVariant.withValues(alpha: 0.3),
+              width: isSelected || isMatched ? 1.5 : 1,
             ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.08),
+                blurRadius: 15,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
               // Header: Share Metadata (To/From/Timestamp)
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.2.h),
@@ -165,7 +169,7 @@ class SharedProfileCardWidget extends StatelessWidget {
                           Text(
                             contactRelation,
                             style: theme.textTheme.bodySmall?.copyWith(
-                              fontSize: 7.sp,
+                              fontSize: AppTypography.labelSmall,
                             ),
                           ),
                         ],
@@ -174,7 +178,7 @@ class SharedProfileCardWidget extends StatelessWidget {
                     Text(
                       _formatTimestamp(context, timestamp),
                       style:
-                          theme.textTheme.bodySmall?.copyWith(fontSize: 7.sp),
+                          theme.textTheme.bodySmall?.copyWith(fontSize: AppTypography.labelSmall),
                     ),
                   ],
                 ),
@@ -302,7 +306,7 @@ class SharedProfileCardWidget extends StatelessWidget {
                             l10n?.countProfileViews(viewCount) ??
                                 '$viewCount profile views',
                             style: theme.textTheme.bodySmall?.copyWith(
-                              fontSize: 8.sp,
+                              fontSize: AppTypography.labelSmall,
                             ),
                           ),
                         ],
@@ -333,6 +337,7 @@ class SharedProfileCardWidget extends StatelessWidget {
                       icon: Icons.visibility,
                       color: theme.colorScheme.primary,
                       onTap: onTap,
+                      semanticsLabel: 'View details of $profileName',
                     ),
                     const VerticalDivider(width: 1, color: Colors.white24),
                     _buildFullWidthAction(
@@ -340,6 +345,7 @@ class SharedProfileCardWidget extends StatelessWidget {
                       icon: Icons.share,
                       color: const Color(0xFF6B48FF),
                       onTap: onReshare,
+                      semanticsLabel: 'Reshare profile of $profileName',
                     ),
                     const VerticalDivider(width: 1, color: Colors.white24),
                     _buildFullWidthAction(
@@ -347,6 +353,7 @@ class SharedProfileCardWidget extends StatelessWidget {
                       icon: Icons.delete_outline,
                       color: theme.colorScheme.error,
                       onTap: onRemove,
+                      semanticsLabel: 'Remove shared profile of $profileName',
                     ),
                   ],
                 ),
@@ -355,36 +362,42 @@ class SharedProfileCardWidget extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildFullWidthAction({
     required String label,
     required IconData icon,
     required Color color,
     required VoidCallback onTap,
+    String? semanticsLabel,
   }) {
     return Expanded(
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          color: color,
-          alignment: Alignment.center,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: Colors.white, size: 16),
-              SizedBox(width: 1.5.w),
-              Text(
-                label,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 8.sp,
-                  letterSpacing: 0.5,
+      child: Semantics(
+        label: semanticsLabel,
+        button: true,
+        child: InkWell(
+          onTap: onTap,
+          child: Container(
+            color: color,
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, color: Colors.white, size: 16),
+                SizedBox(width: 1.5.w),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                    fontSize: AppTypography.labelSmall,
+                    letterSpacing: 0.5,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -392,29 +405,32 @@ class SharedProfileCardWidget extends StatelessWidget {
   }
 
   Widget _buildBadge(String text, List<Color> colors, IconData icon) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.4.h),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(colors: colors),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(color: colors.last.withValues(alpha: 0.3), blurRadius: 4),
-        ],
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: Colors.white, size: 10),
-          SizedBox(width: 1.w),
-          Text(
-            text,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w900,
-              fontSize: 6.sp,
+    return Semantics(
+      label: '$text badge',
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.4.h),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(colors: colors),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(color: colors.last.withValues(alpha: 0.3), blurRadius: 4),
+          ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: Colors.white, size: 10),
+            SizedBox(width: 1.w),
+            Text(
+              text,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w900,
+                fontSize: AppTypography.labelSmall,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -434,7 +450,7 @@ class SharedProfileCardWidget extends StatelessWidget {
           text,
           style: theme.textTheme.bodySmall?.copyWith(
             fontWeight: FontWeight.w600,
-            fontSize: 8.sp,
+            fontSize: AppTypography.labelSmall,
           ),
         ),
       ],

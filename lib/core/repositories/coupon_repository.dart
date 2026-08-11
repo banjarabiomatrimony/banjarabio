@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banjarabio/core/models/backend_response.dart';
 import 'package:banjarabio/core/models/coupon_model.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 class CouponRepository {
   static final CouponRepository _instance = CouponRepository._internal();
@@ -41,7 +41,7 @@ class CouponRepository {
         return BackendResponse.failure(data['message'] ?? 'Invalid coupon');
       }
     } catch (e) {
-      debugPrint('Error validating coupon: $e');
+      AppLogger.error('CouponRepository', 'Error validating coupon: $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -61,7 +61,7 @@ class CouponRepository {
 
       return BackendResponse.success(coupons);
     } catch (e) {
-      debugPrint('Error fetching targeted coupons: $e');
+      AppLogger.error('CouponRepository', 'Error fetching targeted coupons: $e');
       return BackendResponse.failure(e.toString());
     }
   }

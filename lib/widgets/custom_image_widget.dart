@@ -10,6 +10,8 @@ import 'package:banjarabio/core/repositories/photo_repository.dart';
 import 'package:banjarabio/core/services/network_aware_quality_service.dart';
 import 'package:banjarabio/core/services/persistent_cache_manager.dart';
 import 'package:banjarabio/widgets/shimmer_widget.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 
 extension ImageTypeExtension on String {
@@ -30,7 +32,7 @@ extension ImageTypeExtension on String {
 
 enum ImageType { svg, png, network, file, unknown }
 
-class CustomImageWidget extends StatelessWidget {
+class CustomImageWidget extends StatefulWidget {
   const CustomImageWidget({
     super.key,
     this.imageUrl,
@@ -111,30 +113,53 @@ class CustomImageWidget extends StatelessWidget {
           ), 
           context,
           onError: (exception, stackTrace) {
-            debugPrint('Precache Background Error ($optimizedUrl): $exception');
+            AppLogger.error('CustomImageWidget', 'Precache Background Error ($optimizedUrl): $exception');
           },
         );
       } catch (e) {
-        debugPrint('Precache Sync Error ($optimizedUrl): $e');
+        AppLogger.error('CustomImageWidget', 'Precache Sync Error ($optimizedUrl): $e');
       }
     }
   }
 
   @override
+  State<CustomImageWidget> createState() => _CustomImageWidgetState();
+}
+
+class _CustomImageWidgetState extends State<CustomImageWidget> {
+  String? _currentUrl;
+  bool _hasFailedOptimized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentUrl = widget.imageUrl;
+  }
+
+  @override
+  void didUpdateWidget(CustomImageWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.imageUrl != widget.imageUrl) {
+      _currentUrl = widget.imageUrl;
+      _hasFailedOptimized = false;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return alignment != null
-        ? Align(alignment: alignment!, child: _buildWidget(context))
+    return widget.alignment != null
+        ? Align(alignment: widget.alignment!, child: _buildWidget(context))
         : _buildWidget(context);
   }
 
   Widget _buildWidget(BuildContext context) {
     return Padding(
-      padding: margin ?? EdgeInsets.zero,
+      padding: widget.margin ?? EdgeInsets.zero,
       child: Material(
         type: MaterialType.transparency,
         child: InkWell(
-          onTap: onTap,
-          borderRadius: radius,
+          onTap: widget.onTap,
+          borderRadius: widget.radius,
           child: _buildCircleImage(context),
         ),
       ),
@@ -142,9 +167,9 @@ class CustomImageWidget extends StatelessWidget {
   }
 
   Widget _buildCircleImage(BuildContext context) {
-    if (radius != null) {
+    if (widget.radius != null) {
       return ClipRRect(
-        borderRadius: radius ?? BorderRadius.zero,
+        borderRadius: widget.radius ?? BorderRadius.zero,
         child: _buildImageWithBorder(context),
       );
     } else {
@@ -153,9 +178,9 @@ class CustomImageWidget extends StatelessWidget {
   }
 
   Widget _buildImageWithBorder(BuildContext context) {
-    if (border != null) {
+    if (widget.border != null) {
       return Container(
-        decoration: BoxDecoration(border: border, borderRadius: radius),
+        decoration: BoxDecoration(border: widget.border, borderRadius: widget.radius),
         child: _buildImageView(context),
       );
     } else {
@@ -164,24 +189,24 @@ class CustomImageWidget extends StatelessWidget {
   }
 
   Widget _buildImageView(BuildContext context) {
-    if (imageUrl == null || imageUrl!.isEmpty) {
+    if (_currentUrl == null || _currentUrl!.isEmpty) {
       return _buildPlaceholder(context);
     }
 
-    switch (imageUrl!.imageType) {
+    switch (_currentUrl!.imageType) {
       case ImageType.svg:
         return SizedBox(
-          height: height,
-          width: width,
+          height: widget.height,
+          width: widget.width,
           child: SvgPicture.asset(
-            imageUrl!,
-            height: height,
-            width: width,
-            fit: fit ?? BoxFit.contain,
-            colorFilter: color != null
-                ? ColorFilter.mode(color!, BlendMode.srcIn)
+            _currentUrl!,
+            height: widget.height,
+            width: widget.width,
+            fit: widget.fit ?? BoxFit.contain,
+            colorFilter: widget.color != null
+                ? ColorFilter.mode(widget.color!, BlendMode.srcIn)
                 : null,
-            semanticsLabel: semanticLabel,
+            semanticsLabel: widget.semanticLabel,
           ),
         );
       case ImageType.file:
@@ -220,27 +245,27 @@ class CustomImageWidget extends StatelessWidget {
   Widget _buildFileImage(BuildContext context) {
     if (kIsWeb) {
       return Image.network(
-        imageUrl!,
-        height: height,
-        width: width,
-        alignment: alignment ?? Alignment.center,
-        fit: fit ?? BoxFit.cover,
-        color: color,
-        semanticLabel: semanticLabel,
+        _currentUrl!,
+        height: widget.height,
+        width: widget.width,
+        alignment: widget.alignment ?? Alignment.center,
+        fit: widget.fit ?? BoxFit.cover,
+        color: widget.color,
+        semanticLabel: widget.semanticLabel,
         errorBuilder: (context, error, stackTrace) => _buildPlaceholder(context),
       );
     }
 
     return Image.file(
-      io.File(imageUrl!.replaceFirst('file://', '')),
-      height: height,
-      width: width,
-      alignment: alignment ?? Alignment.center,
-      fit: fit ?? BoxFit.cover,
-      color: color,
-      semanticLabel: semanticLabel,
-      cacheWidth: cacheWidth ?? _calculateOptimalCache(context, width),
-      cacheHeight: cacheHeight ?? _calculateOptimalCache(context, height),
+      io.File(_currentUrl!.replaceFirst('file://', '')),
+      height: widget.height,
+      width: widget.width,
+      alignment: widget.alignment ?? Alignment.center,
+      fit: widget.fit ?? BoxFit.cover,
+      color: widget.color,
+      semanticLabel: widget.semanticLabel,
+      cacheWidth: widget.cacheWidth ?? _calculateOptimalCache(context, widget.width),
+      cacheHeight: widget.cacheHeight ?? _calculateOptimalCache(context, widget.height),
       gaplessPlayback: true,
       errorBuilder: (context, error, stackTrace) => _buildPlaceholder(context),
     );
@@ -250,95 +275,111 @@ class CustomImageWidget extends StatelessWidget {
     // 🧬 PRO SCALE: Append resizing parameters to the URL
     // This significantly reduces memory usage on low-end devices by delivering
     // an image that matches the widget's physical dimensions.
-    String optimizedUrl = imageUrl!;
-    try {
-      final photoRepo = PhotoRepository();
-      final networkService = NetworkAwareQualityService();
-      
-      final dpr = MediaQuery.maybeOf(context)?.devicePixelRatio ?? 1.0;
-      final speed = networkService.cachedSpeed;
-      final params = networkService.getOptimizationParams(
-        isHighQuality: isHighQuality,
-        forcedSpeed: speed,
-      );
-      
-      // Calculate logical dimensions into physical pixels
-      int? targetWidth;
-      int? targetHeight;
-      
-      if (width != null && width! > 0 && width!.isFinite) {
-        targetWidth = (width! * dpr).round();
-      }
-      if (height != null && height! > 0 && height!.isFinite) {
-        targetHeight = (height! * dpr).round();
-      }
+    String optimizedUrl = _currentUrl!;
+    if (!_hasFailedOptimized) {
+      try {
+        final photoRepo = PhotoRepository();
+        final networkService = NetworkAwareQualityService();
+        
+        final dpr = MediaQuery.maybeOf(context)?.devicePixelRatio ?? 1.0;
+        final speed = networkService.cachedSpeed;
+        final params = networkService.getOptimizationParams(
+          isHighQuality: widget.isHighQuality,
+          forcedSpeed: speed,
+        );
+        
+        // Calculate logical dimensions into physical pixels
+        int? targetWidth;
+        int? targetHeight;
+        
+        if (widget.width != null && widget.width! > 0 && widget.width!.isFinite) {
+          targetWidth = (widget.width! * dpr).round();
+        }
+        if (widget.height != null && widget.height! > 0 && widget.height!.isFinite) {
+          targetHeight = (widget.height! * dpr).round();
+        }
 
-      // If dimensions are missing, use network-aware defaults
-      if (targetWidth == null && targetHeight == null) {
-        targetWidth = params['targetWidth']; 
-      }
+        // If dimensions are missing, use network-aware defaults
+        if (targetWidth == null && targetHeight == null) {
+          targetWidth = params['targetWidth']; 
+        }
 
-      optimizedUrl = photoRepo.getResizedUrl(
-        imageUrl!,
-        width: targetWidth,
-        height: targetHeight,
-        quality: params['quality']!,
-      );
-    } catch (e) {
-      debugPrint('Image Optimization Error: $e');
+        optimizedUrl = photoRepo.getResizedUrl(
+          _currentUrl!,
+          width: targetWidth,
+          height: targetHeight,
+          quality: params['quality']!,
+        );
+      } catch (e) {
+        AppLogger.error('CustomImageWidget', 'Image Optimization Error: $e');
+      }
     }
 
     return CachedNetworkImage(
-      height: height,
-      width: width,
-      fit: fit,
-      alignment: alignment ?? Alignment.center,
+      height: widget.height,
+      width: widget.width,
+      fit: widget.fit,
+      alignment: widget.alignment ?? Alignment.center,
       imageUrl: optimizedUrl,
-      color: color,
+      color: widget.color,
       cacheManager: PersistentCacheManager.instance,
       // Stable key: strip ?width=&quality= so ANY transformation of the same
       // photo resolves to the SAME local disk entry. Once downloaded once,
       // this image is NEVER fetched from Supabase again (365-day TTL).
       cacheKey: PersistentCacheManager.stableKeyFor(optimizedUrl),
-      memCacheWidth: cacheWidth ?? _calculateOptimalCache(context, width),
-      memCacheHeight: cacheHeight ?? _calculateOptimalCache(context, height),
+      memCacheWidth: widget.cacheWidth ?? _calculateOptimalCache(context, widget.width),
+      memCacheHeight: widget.cacheHeight ?? _calculateOptimalCache(context, widget.height),
       // 🚨 SIGNAL 3 FIX: Removed LQIP (dual-image) placeholder.
       // Previously each card loaded BOTH a 50px thumbnail AND the full image
       // simultaneously, causing 40+ concurrent gralloc4 allocations with 20 cards.
       // Now uses shimmer-only placeholder to cut concurrent image ops in half.
       placeholder: (context, url) => ShimmerWidget.rectangular(
-        height: height ?? double.infinity,
-        width: width ?? double.infinity,
+        height: widget.height ?? double.infinity,
+        width: widget.width ?? double.infinity,
         shapeBorder: RoundedRectangleBorder(
-          borderRadius: radius ?? BorderRadius.zero,
+          borderRadius: widget.radius ?? BorderRadius.zero,
         ),
       ),
-      errorWidget: (context, url, error) => errorWidget ?? _buildPlaceholder(context),
+      errorWidget: (context, url, error) {
+        // Fall back to original URL if optimization failed
+        if (!_hasFailedOptimized && widget.imageUrl != null && optimizedUrl != widget.imageUrl) {
+          AppLogger.warn('CustomImageWidget', 'Optimized image failed to load ($optimizedUrl). Falling back to original.');
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              setState(() {
+                _currentUrl = widget.imageUrl;
+                _hasFailedOptimized = true;
+              });
+            }
+          });
+        }
+        return widget.errorWidget ?? _buildPlaceholder(context);
+      },
     );
   }
 
   Widget _buildAssetImage(BuildContext context) {
     return Image.asset(
-      imageUrl!,
-      height: height,
-      width: width,
-      alignment: alignment ?? Alignment.center,
-      fit: fit ?? BoxFit.cover,
-      color: color,
-      semanticLabel: semanticLabel,
-      cacheWidth: cacheWidth ?? _calculateOptimalCache(context, width),
-      cacheHeight: cacheHeight ?? _calculateOptimalCache(context, height),
+      _currentUrl!,
+      height: widget.height,
+      width: widget.width,
+      alignment: widget.alignment ?? Alignment.center,
+      fit: widget.fit ?? BoxFit.cover,
+      color: widget.color,
+      semanticLabel: widget.semanticLabel,
+      cacheWidth: widget.cacheWidth ?? _calculateOptimalCache(context, widget.width),
+      cacheHeight: widget.cacheHeight ?? _calculateOptimalCache(context, widget.height),
       errorBuilder: (context, error, stackTrace) => _buildPlaceholder(context),
     );
   }
 
   Widget _buildPlaceholder(BuildContext context) {
     return Container(
-      height: height,
-      width: width,
+      height: widget.height,
+      width: widget.width,
       decoration: BoxDecoration(
         color: Colors.grey.shade100,
-        borderRadius: radius,
+        borderRadius: widget.radius,
       ),
       child: Center(
         child: Column(
@@ -346,12 +387,12 @@ class CustomImageWidget extends StatelessWidget {
           children: [
             Icon(
               Icons.no_photography_outlined,
-              size: (height != null && height!.isFinite) 
-                  ? (height! * 0.2).clamp(20.0, 48.0) 
+              size: (widget.height != null && widget.height!.isFinite) 
+                  ? (widget.height! * 0.2).clamp(20.0, 48.0) 
                   : 32.0,
               color: Colors.grey.shade400,
             ),
-            if (height == null || height! > 60) ...[
+            if (widget.height == null || widget.height! > 60) ...[
               SizedBox(height: 0.5.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 2.w),
@@ -362,7 +403,7 @@ class CustomImageWidget extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: Colors.grey.shade500,
-                    fontSize: 7.sp,
+                    fontSize: AppTypography.labelSmall,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

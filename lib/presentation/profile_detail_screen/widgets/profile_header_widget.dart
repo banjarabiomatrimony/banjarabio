@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/community_trusted_badge.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// Profile header widget displaying user's primary photo and basic information
 /// Implements hero animation for smooth transition from profile cards
@@ -276,7 +277,7 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w900,
-              fontSize: 10.sp,
+              fontSize: AppTypography.bodySmall,
               letterSpacing: 0.5,
             ),
           ),
@@ -412,7 +413,7 @@ class _AnimatedScrollIndicatorState extends State<AnimatedScrollIndicator>
           'Scroll up for more details',
           style: TextStyle(
             color: Colors.white.withValues(alpha: 0.9),
-            fontSize: 9.sp,
+            fontSize: AppTypography.labelMedium,
             fontWeight: FontWeight.w700,
             letterSpacing: 0.2,
             shadows: [

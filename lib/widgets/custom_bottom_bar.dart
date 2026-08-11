@@ -7,6 +7,7 @@ import 'package:sizer/sizer.dart';
 import 'package:banjarabio/widgets/celebration_spark_painter.dart';
 import 'package:banjarabio/widgets/glassmorphism_container.dart';
 import 'package:banjarabio/core/utils/tour_keys.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// 🌟 WORLD'S MOST PREMIUM MATRIMONY BOTTOM NAVIGATION BAR 🌟
 ///
@@ -50,7 +51,25 @@ class _CustomBottomBarState extends State<CustomBottomBar>
     _pulseController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1500),
-    )..forward();
+    );
+    // Run once on init, then stop to save ~60fps of idle repainting
+    _triggerPulse();
+  }
+
+  @override
+  void didUpdateWidget(covariant CustomBottomBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Re-trigger pulse only when the selected tab actually changes
+    if (oldWidget.currentIndex != widget.currentIndex) {
+      _triggerPulse();
+    }
+  }
+
+  /// Runs the pulse animation once (1.5s), then stops the controller.
+  /// This prevents continuous 60fps repainting of LiquidIndicatorPainter
+  /// during idle scroll — saving significant GPU overhead on low-end devices.
+  void _triggerPulse() {
+    _pulseController.forward(from: 0);
   }
 
   @override
@@ -71,154 +90,189 @@ class _CustomBottomBarState extends State<CustomBottomBar>
 
   @override
   Widget build(BuildContext context) {
-    const int itemCount = 4;
+    const int itemCount = 5;
     final screenWidth = MediaQuery.of(context).size.width;
 
+    final double bottomPadding = MediaQuery.of(context).padding.bottom;
+    final double contentHeight = 6.5.h;
+    final double totalHeight = contentHeight + bottomPadding;
+
+    final double barWidth = screenWidth;
+    final double itemWidth = barWidth / itemCount;
+    final double capsuleWidth = 16.w;
+    final double capsuleHeight = 4.5.h;
+    final double leftPosition = widget.currentIndex * itemWidth + (itemWidth - capsuleWidth) / 2;
+    final double topPosition = (contentHeight - 1.5 - capsuleHeight) / 2;
+
     return Container(
-      margin: EdgeInsets.zero,
-      height: 13.h,
+      width: screenWidth,
+      height: totalHeight,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.zero,
+        color: Colors.transparent,
         boxShadow: [
           BoxShadow(
-            color: _getGradientColors(widget.currentIndex)[0].withValues(alpha: 0.2),
-            blurRadius: 8,
-            offset: const Offset(0, 10),
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 12,
+            offset: const Offset(0, -3),
           ),
         ],
       ),
       child: GlassmorphismContainer(
-        borderRadius: BorderRadius.zero,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
         color: Theme.of(context).colorScheme.surface,
-        opacity: 0.6,
+        opacity: 0.85,
         blur: 25,
-        child: Stack(
-          children: [
-            // 🌈 Animated Gradient Background Layer
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 800),
-              curve: Curves.easeInOutCubic,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.zero,
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    _getGradientColors(widget.currentIndex)[0].withValues(alpha: 0.15),
-                    _getGradientColors(widget.currentIndex)[1].withValues(alpha: 0.05),
-                  ],
-                ),
-              ),
-            ),
-
-          // Glassmorphism Layer removed for 100% color match
-          /*
-          ClipRRect(
-            borderRadius: BorderRadius.zero,
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.zero,
-                  color: Colors.white.withValues(alpha: 0.15),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.3),
-                    width: 1.5,
+        border: Border(
+          top: BorderSide(
+            color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.25),
+            width: 1.5,
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(bottom: bottomPadding),
+          child: SizedBox(
+            height: contentHeight - 1.5,
+            child: Stack(
+              children: [
+                // 🌈 Animated Gradient Background Layer (Soft Glow)
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 600),
+                  curve: Curves.easeInOutCubic,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        _getGradientColors(widget.currentIndex)[0].withValues(alpha: 0.1),
+                        _getGradientColors(widget.currentIndex)[1].withValues(alpha: 0.03),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
-          */
 
-          // ✨ Liquid Morphing Indicator
-          AnimatedBuilder(
-            animation: _pulseController,
-            builder: (context, child) {
-              return CustomPaint(
-                painter: LiquidIndicatorPainter(
-                  currentIndex: widget.currentIndex,
-                  itemCount: itemCount,
-                  animationValue: _pulseController.value,
-                  screenWidth: screenWidth,
+                // ✨ World-Class Sliding Active Capsule Background
+                AnimatedPositioned(
+                  duration: const Duration(milliseconds: 350),
+                  curve: Curves.easeOutBack, // springy elastic curve
+                  left: leftPosition,
+                  top: topPosition,
+                  width: capsuleWidth,
+                  height: capsuleHeight,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 350),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          _getGradientColors(widget.currentIndex)[0],
+                          _getGradientColors(widget.currentIndex)[1],
+                        ],
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: _getGradientColors(widget.currentIndex)[0].withValues(alpha: 0.45),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                child: Container(),
-              );
-            },
-          ),
 
-          // 🎯 Navigation Items
-          SafeArea(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildNavItem(
-                  index: 0,
-                  key: TourKeys.homeTabKey,
-                  icon: Icons.favorite_rounded,
-                  activeIcon: Icons.favorite,
-                  label: AppLocalizations.of(context)?.home ?? 'Home',
-                  gradient: const [Color(0xFF880E4F), Color(0xFF432C7A)],
+                // 🎯 Navigation Items
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildNavItem(
+                      index: 0,
+                      key: TourKeys.homeTabKey,
+                      icon: Icons.favorite_rounded,
+                      activeIcon: Icons.favorite,
+                      label: AppLocalizations.of(context)?.home ?? 'Home',
+                      gradient: const [Color(0xFF880E4F), Color(0xFF961B33)],
+                      contentHeight: contentHeight - 1.5,
+                    ),
+                    _buildNavItem(
+                      index: 1,
+                      key: TourKeys.sharedTabKey,
+                      icon: Icons.people_rounded,
+                      activeIcon: Icons.people,
+                      label: AppLocalizations.of(context)?.shared ?? 'Matches',
+                      badgeCount: widget.sharedBadgeCount,
+                      gradient: const [Color(0xFFFFA726), Color(0xFFFF6F00)],
+                      contentHeight: contentHeight - 1.5,
+                    ),
+                    _buildNavItem(
+                      index: 2,
+                      key: TourKeys.melavaTabKey,
+                      icon: Icons.calendar_month_rounded,
+                      activeIcon: Icons.calendar_month,
+                      label: AppLocalizations.of(context)?.melavas ?? 'Melavas',
+                      gradient: const [Color(0xFF8E24AA), Color(0xFF5E35B1)],
+                      contentHeight: contentHeight - 1.5,
+                    ),
+                    _buildNavItem(
+                      index: 3,
+                      key: TourKeys.profileTabKey,
+                      icon: Icons.person_rounded,
+                      activeIcon: Icons.person,
+                      label: AppLocalizations.of(context)?.profile ?? 'Profile',
+                      gradient: const [Color(0xFF9C27B0), Color(0xFF6A1B9A)],
+                      contentHeight: contentHeight - 1.5,
+                    ),
+                    _buildNavItem(
+                      index: 4,
+                      key: TourKeys.settingsTabKey,
+                      icon: Icons.menu_rounded,
+                      activeIcon: Icons.menu,
+                      label: AppLocalizations.of(context)?.menu ?? 'Menu',
+                      gradient: const [Color(0xFF2196F3), Color(0xFF1976D2)],
+                      contentHeight: contentHeight - 1.5,
+                    ),
+                  ],
                 ),
-                _buildNavItem(
-                  index: 1,
-                  key: TourKeys.sharedTabKey,
-                  icon: Icons.people_rounded,
-                  activeIcon: Icons.people,
-                  label: AppLocalizations.of(context)?.shared ?? 'Matches',
-                  badgeCount: widget.sharedBadgeCount,
-                  gradient: const [Color(0xFFFFA726), Color(0xFFFF6F00)],
-                ),
-                _buildNavItem(
-                  index: 2,
-                  key: TourKeys.profileTabKey,
-                  icon: Icons.person_rounded,
-                  activeIcon: Icons.person,
-                  label: AppLocalizations.of(context)?.profile ?? 'Profile',
-                  gradient: const [Color(0xFF9C27B0), Color(0xFF6A1B9A)],
-                ),
-                _buildNavItem(
-                  index: 3,
-                  key: TourKeys.settingsTabKey,
-                  icon: Icons.menu_rounded,
-                  activeIcon: Icons.menu,
-                  label: AppLocalizations.of(context)?.menu ?? 'Menu',
-                  gradient: const [Color(0xFF2196F3), Color(0xFF1976D2)],
-                ),
+
+                // 🎆 Particle Effect on Tap
+                if (_lastTappedIndex != null)
+                  IgnorePointer(
+                    child: AnimatedBuilder(
+                      animation: _particleController,
+                      builder: (context, child) {
+                        if (_particleController.value == 0) return const SizedBox();
+                        const tabSparkColors = <int, List<Color>>{
+                          0: [Color(0xFF880E4F), Color(0xFF961B33), Colors.white, Color(0xFFFFE082)],
+                          1: [Color(0xFFFFA726), Color(0xFFFF6F00), Colors.white, Color(0xFFFFE082)],
+                          2: [Color(0xFF8E24AA), Color(0xFF5E35B1), Colors.white, Color(0xFFFFE082)],
+                          3: [Color(0xFF9C27B0), Color(0xFF6A1B9A), Colors.white, Color(0xFFFFE082)],
+                          4: [Color(0xFF2196F3), Color(0xFF1976D2), Colors.white, Color(0xFFFFE082)],
+                        };
+                        return CustomPaint(
+                          size: Size(barWidth, contentHeight - 1.5),
+                          painter: CelebrationSparkPainter(
+                            tappedIndex: _lastTappedIndex!,
+                            itemCount: itemCount,
+                            progress: _particleController.value,
+                            screenWidth: barWidth,
+                            sparkColors: tabSparkColors[_lastTappedIndex!] ??
+                                tabSparkColors[0]!,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
               ],
             ),
           ),
-
-          // 🎆 Particle Effect on Tap
-          if (_lastTappedIndex != null)
-            IgnorePointer(
-              child: AnimatedBuilder(
-                animation: _particleController,
-                builder: (context, child) {
-                  if (_particleController.value == 0) return const SizedBox();
-                  // Per-tab spark colors matching each nav item's gradient
-                  const tabSparkColors = <int, List<Color>>{
-                    0: [Color(0xFF880E4F), Color(0xFF432C7A), Colors.white, Color(0xFFFFE082)],
-                    1: [Color(0xFFFFA726), Color(0xFFFF6F00), Colors.white, Color(0xFFFFE082)],
-                    2: [Color(0xFF9C27B0), Color(0xFF6A1B9A), Colors.white, Color(0xFFFFE082)],
-                    3: [Color(0xFF2196F3), Color(0xFF1976D2), Colors.white, Color(0xFFFFE082)],
-                  };
-                  return CustomPaint(
-                    size: Size(screenWidth, 13.h),
-                    painter: CelebrationSparkPainter(
-                      tappedIndex: _lastTappedIndex!,
-                      itemCount: itemCount,
-                      progress: _particleController.value,
-                      screenWidth: screenWidth,
-                      sparkColors: tabSparkColors[_lastTappedIndex!] ??
-                          tabSparkColors[0]!,
-                    ),
-                  );
-                },
-              ),
-            ),
-        ],
-      ),
+        ),
       ),
     );
   }
@@ -226,17 +280,20 @@ class _CustomBottomBarState extends State<CustomBottomBar>
   List<Color> _getGradientColors(int index) {
     switch (index) {
       case 0:
-        return [const Color(0xFF432C7A), const Color(0xFF2A1B4D)];
+        return [const Color(0xFF961B33), const Color(0xFF731224)];
       case 1:
-        return [const Color(0xFF432C7A), const Color(0xFF2A1B4D)];
+        return [const Color(0xFF961B33), const Color(0xFF731224)];
       case 2:
-        return [const Color(0xFF432C7A), const Color(0xFF2A1B4D)];
+        return [const Color(0xFF961B33), const Color(0xFF731224)];
       case 3:
-        return [const Color(0xFF25376E), const Color(0xFF2F3F73)];
+        return [const Color(0xFF961B33), const Color(0xFF731224)];
+      case 4:
+        return [const Color(0xFF961B33), const Color(0xFF731224)];
       default:
-        return [const Color(0xFF432C7A), const Color(0xFF2A1B4D)];
+        return [const Color(0xFF961B33), const Color(0xFF731224)];
     }
   }
+
 
   Widget _buildNavItem({
     required int index,
@@ -245,157 +302,108 @@ class _CustomBottomBarState extends State<CustomBottomBar>
     required IconData activeIcon,
     required String label,
     required List<Color> gradient,
+    required double contentHeight,
     int? badgeCount,
   }) {
     final bool isSelected = widget.currentIndex == index;
-    final double scale = isSelected ? 1.0 : 0.85;
+    final double scale = isSelected ? 1.05 : 0.85;
 
     return Expanded(
-      child: GestureDetector(
-        onTap: () => _onItemTapped(index),
-        behavior: HitTestBehavior.opaque,
-        child: Container(
-          height: 13.h,
-          alignment: Alignment.center,
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // 🎨 Icon Container with Morphing Animation
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 400),
-                  curve: Curves.easeOutBack,
-                  transform: Matrix4.identity()
-                    ..scaleByVector3(Vector3.all(scale))
-                    ..translateByVector3(Vector3.zero()),
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    alignment: Alignment.center,
-                    children: [
-                      // Glow effect for selected item
-                      if (isSelected)
-                        Container(
-                          width: 7.h,
-                          height: 7.h,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: RadialGradient(
-                              colors: [
-                                gradient[0].withValues(alpha: 0.4),
-                                gradient[1].withValues(alpha: 0.0),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                      // Icon background
-                      AnimatedContainer(
-                        duration: const Duration(milliseconds: 400),
-                        curve: Curves.easeOut,
-                        width: isSelected ? 50 : 42,
-                        height: isSelected ? 50 : 42,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: isSelected
-                              ? LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: gradient,
-                                )
-                              : null,
-                          color: isSelected ? null : Colors.transparent,
-                          boxShadow: isSelected
-                              ? [
-                                  BoxShadow(
-                                    color: gradient[0].withValues(alpha: 0.5),
-                                    blurRadius: 15,
-                                    offset: const Offset(0, 8),
-                                  ),
-                                ]
-                              : [],
-                        ),
-                        child: Icon(
+      child: Semantics(
+        label: '$label tab',
+        selected: isSelected,
+        button: true,
+        hint: 'Double tap to open $label tab',
+        child: GestureDetector(
+          onTap: () => _onItemTapped(index),
+          behavior: HitTestBehavior.opaque,
+          child: Container(
+            height: contentHeight,
+            alignment: Alignment.center,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // 🎨 Icon Container with Scale Animation
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeOut,
+                    transform: Matrix4.identity()
+                      ..scaleByVector3(Vector3.all(scale)),
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.center,
+                      children: [
+                        Icon(
                           isSelected ? activeIcon : icon,
                           color: isSelected
                               ? Colors.white
-                              : Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
-                          size: isSelected ? 26 : 22,
+                              : Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                          size: 22,
                         ),
-                      ),
-
-                      // Badge
-                      if (badgeCount != null && badgeCount > 0)
-                        Positioned(
-                          top: -4,
-                          right: -4,
-                          child: AnimatedScale(
-                            scale: isSelected ? 1.1 : 1.0,
-                            duration: const Duration(milliseconds: 300),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 6,
-                                vertical: 3,
-                              ),
-                              decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                  colors: [Color(0xFFFFD700), Color(0xFFFFAA00)],
+  
+                        // Badge
+                        if (badgeCount != null && badgeCount > 0)
+                          Positioned(
+                            top: -6,
+                            right: -10,
+                            child: AnimatedScale(
+                              scale: isSelected ? 1.15 : 1.0,
+                              duration: const Duration(milliseconds: 300),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 5,
+                                  vertical: 2,
                                 ),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: Colors.white, width: 2),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: const Color(
-                                      0xFFFFD700,
-                                    ).withValues(alpha: 0.6),
-                                    blurRadius: 8,
-                                    offset: const Offset(0, 2),
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    colors: [Color(0xFFFFD700), Color(0xFFFFAA00)],
                                   ),
-                                ],
-                              ),
-                              constraints: const BoxConstraints(minWidth: 20),
-                              child: Text(
-                                badgeCount > 99 ? '99+' : badgeCount.toString(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 8.sp,
-                                  fontWeight: FontWeight.bold,
-                                  height: 1.2,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: Colors.white, width: 1.5),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFFFFD700).withValues(alpha: 0.5),
+                                      blurRadius: 6,
+                                      offset: const Offset(0, 1.5),
+                                    ),
+                                  ],
+                                ),
+                                constraints: const BoxConstraints(minWidth: 16),
+                                child: Text(
+                                  badgeCount > 99 ? '99+' : badgeCount.toString(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: AppTypography.labelSmall,
+                                    fontWeight: FontWeight.bold,
+                                    height: 1.1,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-
-                SizedBox(height: 0.8.h),
-
-                AnimatedDefaultTextStyle(
-                  duration: const Duration(milliseconds: 300),
-                  style: TextStyle(
-                    color: isSelected ? Colors.white : Theme.of(context).colorScheme.onSurfaceVariant,
-                    fontSize: isSelected ? 15 : 13,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                    letterSpacing: 0.5,
-                    shadows: isSelected
-                        ? [
-                            Shadow(
-                              color: Colors.black.withValues(alpha: 0.3),
-                              blurRadius: 4,
-                            ),
-                          ]
-                        : [],
-                  ),
-                  child: AnimatedOpacity(
-                    opacity: isSelected ? 1.0 : 0.8,
+  
+                  SizedBox(height: 0.3.h),
+  
+                  AnimatedDefaultTextStyle(
                     duration: const Duration(milliseconds: 300),
+                    style: TextStyle(
+                      color: isSelected
+                          ? Colors.white
+                          : Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                      fontSize: isSelected ? AppTypography.bodySmall : AppTypography.bodySmall,
+                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+                      letterSpacing: 0.3,
+                    ),
                     child: Text(label),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

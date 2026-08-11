@@ -19,13 +19,21 @@ import 'package:banjarabio/core/services/guest_guided_tour_service.dart';
 import 'package:banjarabio/core/utils/tour_keys.dart';
 import 'package:banjarabio/notification/features/notification_bridge.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/guest_restricted_dialog.dart';
+import 'package:banjarabio/notification/features/nudge_engine.dart';
+import 'package:banjarabio/core/session_manager.dart';
+import 'package:banjarabio/routes/app_routes.dart';
+import 'package:banjarabio/core/repositories/auth_repository.dart';
+import 'package:banjarabio/core/supabase_client.dart';
+
 
 // 🚨 ANR FIX: Import tab screens directly for IndexedStack (no more Navigator)
 import 'package:banjarabio/presentation/shared_profiles_screen/shared_profiles_screen.dart';
+import 'package:banjarabio/presentation/melava_screen/melava_screen.dart';
 import 'package:banjarabio/presentation/my_profile_screen/my_profile_screen.dart';
 import 'package:banjarabio/presentation/settings_screen/settings_screen.dart';
 
 import 'package:banjarabio/core/providers/home_tab_provider.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -36,7 +44,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class HomeScreenState extends ConsumerState<HomeScreen> {
   bool _isBottomBarVisible = true;
-  double get _bottomBarHeight => 13.h;
+  double get _bottomBarHeight => 6.5.h + MediaQuery.of(context).padding.bottom;
   Timer? _notificationTimer;
   Timer? _guestTourTimer;
 
@@ -56,8 +64,9 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
       switch (index) {
         case 0: return const HomeScreenInitialPage();
         case 1: return const SharedProfilesScreen();
-        case 2: return const MyProfileScreen();
-        case 3: return const SettingsScreen();
+        case 2: return const MelavaScreen();
+        case 3: return const MyProfileScreen();
+        case 4: return const SettingsScreen();
         default: return const SizedBox.shrink();
       }
     });
@@ -90,6 +99,17 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
       // Guest Tour Logic
       _checkAndStartGuestTour();
     }, name: 'Matchmaking & Analytics');
+
+    // Evaluate and schedule daily Mass-Market subscription nudge in background phase
+    StartupOrchestrator().registerTask(StartupPhase.background, () async {
+      if (!mounted) return;
+      if (SessionManager.instance.isLoggedIn && !LocalCacheService().isGuestMode()) {
+        final isPremium = SessionManager.instance.isPremium ||
+            (SessionManager.instance.currentProfile?.isPremium ?? false);
+        await NudgeEngine().scheduleDailyMassMarketNudge(isPremium: isPremium);
+      }
+    }, name: 'Mass-Market Daily Nudge');
+
 
     // 🔔 NOTIFICATION PERMISSION: Ask logged-in users for notification permission
     // after a short delay to avoid overwhelming the user on first load.
@@ -375,13 +395,22 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
 
   // Tab labels for debug logging
   static const List<String> _tabNames = [
-    'Home', 'Shared', 'Profile', 'Settings',
+    'Home', 'Shared', 'Melavas', 'Profile', 'Settings',
   ];
 
   Future<bool> _onWillPop() async {
-    // If in Guest Mode, allow popping immediately to return to OnboardingSelectionScreen
-    if (LocalCacheService().isGuestMode()) {
-      return true;
+    // 🚪 Single-click Back Auto-Logout for Relative Search & Guest users
+    if (LocalCacheService().isGuestMode() || LocalCacheService().isRelativeBrowseMode()) {
+      if (AppSupabaseClient.isAuthenticated) {
+        await AuthRepository().signOut();
+      }
+      await LocalCacheService().clearRelativeBrowseSession();
+      await LocalCacheService().setGuestMode(false);
+      if (mounted) {
+        Navigator.of(context, rootNavigator: true)
+            .pushNamedAndRemoveUntil(AppRoutes.userTypeSelection, (route) => false);
+      }
+      return false;
     }
 
     if (ref.read(homeTabProvider) != 0) {
@@ -447,6 +476,22 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
       child: Scaffold(
         extendBody: true, // Allows body to flow behind the floating nav bar
         resizeToAvoidBottomInset: false,
+        floatingActionButton: (LocalCacheService().isGuestMode() || ref.watch(homeTabProvider) != 3)
+            ? null
+            : AnimatedSlide(
+                offset: _isBottomBarVisible ? Offset.zero : const Offset(0, 2),
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                child: AnimatedOpacity(
+                  opacity: _isBottomBarVisible ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 250),
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 0.2.h),
+                    child: const _BeautifulPdfFloatingActionButton(),
+                  ),
+                ),
+              ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         // 🚨 ANR FIX: IndexedStack keeps all tabs alive. No destruction/creation.
         body: NotificationListener<UserScrollNotification>(
           onNotification: (notification) {
@@ -463,7 +508,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
             return true;
           },
           child: Stack(
-            children: List.generate(4, (i) {
+            children: List.generate(5, (i) {
               final currentTab = ref.watch(homeTabProvider);
               // Only build tabs that have been visited (lazy)
               // Home tab (0) is always built on startup
@@ -491,16 +536,29 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
             child: CustomBottomBar(
               currentIndex: ref.watch(homeTabProvider),
               onTap: (index) {
-                if (index != 0 && LocalCacheService().isGuestMode()) {
-                  GuestRestrictedDialog.show(context);
-                  return;
+                final cache = LocalCacheService();
+                if (index != 0 && (cache.isGuestMode() || cache.isRelativeBrowseMode())) {
+                  // Relative browse & guest: only Home tab (0) allowed
+                  // Allow Melavas tab (2) for relative browse users
+                  if (cache.isRelativeBrowseMode() && index == 2) {
+                    // Melavas allowed for relative browse
+                  } else {
+                    GuestRestrictedDialog.show(context);
+                    return;
+                  }
                 }
                 if (ref.read(homeTabProvider) != index) {
-                  debugPrint('HomeScreen: Switching to ${_tabNames[index]} tab');
+                  AppLogger.debug('HomeScreen', 'HomeScreen: Switching to ${_tabNames[index]} tab');
                   
-                  // 🔥 AGGRESSIVELY CLEAR IMAGE CACHE ON TAB SWITCH TO PREVENT VIVO OOM AND RESOURCE ID CRASHES
-                  PaintingBinding.instance.imageCache.clear();
-                  PaintingBinding.instance.imageCache.clearLiveImages();
+                  // 🧬 PERFORMANCE: Removed unconditional imageCache.clear() here.
+                  // Previously, EVERY tab switch nuked the entire image cache,
+                  // forcing re-decode of all profile photos when returning to
+                  // the Home tab (visible jank + redundant network requests).
+                  //
+                  // Memory pressure is now handled properly by:
+                  // 1. PerformanceService.didHaveMemoryPressure() — OS-level pressure
+                  // 2. GlobalWatchdog — emergency clear on severe frame blocks
+                  // 3. Image cache caps (50 images / 20MB) set in PerformanceService
                   
                   ref.read(homeTabProvider.notifier).state = index;
                   setState(() {
@@ -513,6 +571,186 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// 🚀 PREMIUM ANIMATED FAB: A gorgeous, custom-designed floating action button.
+/// Includes a breathing outer ring pulse animation and a periodic diagonal
+/// shimmer sweep to catch the user's eye without being obtrusive.
+class _BeautifulPdfFloatingActionButton extends StatefulWidget {
+  const _BeautifulPdfFloatingActionButton();
+
+  @override
+  State<_BeautifulPdfFloatingActionButton> createState() =>
+      __BeautifulPdfFloatingActionButtonState();
+}
+
+class __BeautifulPdfFloatingActionButtonState
+    extends State<_BeautifulPdfFloatingActionButton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _pulseAnimation;
+  late Animation<double> _shimmerAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 3000),
+    )..repeat();
+
+    _pulseAnimation = Tween<double>(begin: 1.0, end: 1.25).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
+      ),
+    );
+
+    _shimmerAnimation = Tween<double>(begin: -1.0, end: 2.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.4, 1.0, curve: Curves.easeInOut),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        final double pulseOpacity = _controller.value <= 0.6
+            ? (1.0 - (_controller.value / 0.6)).clamp(0.0, 1.0)
+            : 0.0;
+
+        return Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
+          children: [
+            // Pulsing Background Ring (Breathing effect)
+            Positioned(
+              child: Transform.scale(
+                scale: _pulseAnimation.value,
+                child: Opacity(
+                  opacity: pulseOpacity * 0.4,
+                  child: Container(
+                    width: 46.w,
+                    height: 5.6.h,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFC62828),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // Main Button Container
+            Container(
+              width: 46.w,
+              height: 5.6.h,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [
+                    Color(0xFFC62828), // Deep red
+                    Color(0xFFAD1457), // Rich magenta
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(
+                  color: const Color(0xFFFFD700).withValues(alpha: 0.5), // Premium gold border outline
+                  width: 1.5,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFC62828).withValues(alpha: 0.4),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: Stack(
+                  children: [
+                    // Shimmer Sweep
+                    Positioned.fill(
+                      child: Transform(
+                        transform: Matrix4.translationValues(
+                          _shimmerAnimation.value * 46.w,
+                          0,
+                          0,
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.white.withValues(alpha: 0.0),
+                                Colors.white.withValues(alpha: 0.25),
+                                Colors.white.withValues(alpha: 0.0),
+                              ],
+                              stops: const [0.3, 0.5, 0.7],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Content
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/biodata-editor');
+                        },
+                        borderRadius: BorderRadius.circular(30),
+                        child: Center(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.picture_as_pdf_rounded,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              SizedBox(width: 2.w),
+                              Text(
+                                'Download Biodata',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 11.5.sp,
+                                  letterSpacing: 0.5,
+                                  shadows: const [
+                                    Shadow(
+                                      color: Colors.black38,
+                                      offset: Offset(0, 1),
+                                      blurRadius: 2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

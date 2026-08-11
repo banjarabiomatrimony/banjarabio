@@ -3,6 +3,7 @@ import 'package:banjarabio/core/services/secure_local_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Supabase client singleton for app-wide access
 class AppSupabaseClient {
@@ -13,6 +14,7 @@ class AppSupabaseClient {
 
   static String? _razorpayKeyId;
   static String? _razorpayKeySecret;
+  static String? _googleWebClientId;
 
   /// Get singleton instance
   static AppSupabaseClient get instance {
@@ -42,6 +44,7 @@ class AppSupabaseClient {
 
       _razorpayKeyId = env['RAZORPAY_KEY_ID'];
       _razorpayKeySecret = env['RAZORPAY_KEY_SECRET'];
+      _googleWebClientId = env['GOOGLE_WEB_CLIENT_ID'];
 
       // Validate configuration
       if (supabaseUrl.isEmpty || supabaseAnonKey.isEmpty) {
@@ -61,7 +64,7 @@ class AppSupabaseClient {
 
       _isInitialized = true;
     } catch (e) {
-      debugPrint('Supabase Init Error: $e');
+      AppLogger.error('SupabaseClient', 'Supabase Init Error: $e');
       // Do NOT swallow the error completely in dev, but allow app to survive
       rethrow;
     }
@@ -118,7 +121,7 @@ class AppSupabaseClient {
   /// Get Razorpay Key ID
   static String get razorpayKeyId {
     if (_razorpayKeyId == null || _razorpayKeyId!.isEmpty) {
-      debugPrint('WARNING: RAZORPAY_KEY_ID not found in env.json');
+      AppLogger.warn('SupabaseClient', 'WARNING: RAZORPAY_KEY_ID not found in env.json');
       return '';
     }
     return _razorpayKeyId!;
@@ -127,9 +130,18 @@ class AppSupabaseClient {
   /// Get Razorpay Key Secret
   static String get razorpayKeySecret {
     if (_razorpayKeySecret == null || _razorpayKeySecret!.isEmpty) {
-      debugPrint('WARNING: RAZORPAY_KEY_SECRET not found in env.json');
+      AppLogger.warn('SupabaseClient', 'WARNING: RAZORPAY_KEY_SECRET not found in env.json');
       return '';
     }
     return _razorpayKeySecret!;
+  }
+
+  /// Get Google Web Client ID
+  static String get googleWebClientId {
+    if (_googleWebClientId == null || _googleWebClientId!.isEmpty) {
+      AppLogger.warn('SupabaseClient', 'WARNING: GOOGLE_WEB_CLIENT_ID not found in env.json');
+      return '';
+    }
+    return _googleWebClientId!;
   }
 }

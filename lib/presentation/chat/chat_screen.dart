@@ -11,6 +11,7 @@ import 'package:banjarabio/core/models/subscription_model.dart';
 import 'package:banjarabio/core/repositories/subscription_repository.dart';
 import 'package:banjarabio/core/repositories/usage_repository.dart';
 import 'package:banjarabio/widgets/upgrade_dialog.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 class ChatScreen extends StatefulWidget {
   final ConversationModel conversation;
@@ -195,7 +196,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                 Text(
                   widget.conversation.otherParticipantName ?? 'User',
                   style: TextStyle(
-                    fontSize: 12.sp,
+                    fontSize: AppTypography.bodyMedium,
                     fontWeight: FontWeight.bold,
                     color: theme.colorScheme.onSurface,
                   ),
@@ -213,7 +214,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                     SizedBox(width: 1.w),
                     Text(AppLocalizations.of(context)?.online ?? 'Online',
                       style: TextStyle(
-                        fontSize: 8.sp,
+                        fontSize: AppTypography.labelSmall,
                         color: Colors.green,
                       ),
                     ),
@@ -270,7 +271,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
               style: TextStyle(
                 color:
                     isMe ? Colors.white : theme.colorScheme.onSurface,
-                fontSize: 11.sp,
+                fontSize: AppTypography.bodySmall,
               ),
             ),
             SizedBox(height: 0.5.h),
@@ -283,7 +284,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                     color: isMe
                         ? Colors.white.withValues(alpha: 0.7)
                         : theme.colorScheme.onSurfaceVariant,
-                    fontSize: 7.sp,
+                    fontSize: AppTypography.labelSmall,
                   ),
                 ),
                 // Read receipts for sent messages
@@ -349,7 +350,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                 style: TextStyle(
                   color: theme.colorScheme.primary,
                   fontWeight: FontWeight.bold,
-                  fontSize: 10.sp,
+                  fontSize: AppTypography.bodySmall,
                 ),
                 textAlign: TextAlign.center,
               ),

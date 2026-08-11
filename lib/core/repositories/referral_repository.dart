@@ -5,6 +5,7 @@ import 'package:banjarabio/core/models/backend_response.dart';
 import 'package:banjarabio/core/models/referral_model.dart';
 import 'package:banjarabio/core/models/referral_stats_model.dart';
 import 'package:banjarabio/core/repositories/isolate_first_repository.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// [ReferralRepository]
 ///
@@ -162,7 +163,7 @@ class ReferralRepository extends IsolateFirstRepository {
     Map<String, dynamic> payload,
   ) async {
     try {
-      debugPrint('Referral RPC: fn_process_referral -> $action');
+      AppLogger.debug('ReferralRepository', 'Referral RPC: fn_process_referral -> $action');
       final response = await _supabase.rpc(
         'fn_process_referral',
         params: {'action': action, 'payload': payload},
@@ -175,7 +176,7 @@ class ReferralRepository extends IsolateFirstRepository {
       }
       return BackendResponse.fromRpc(response);
     } catch (e) {
-      debugPrint('Referral Action Failed [$action]: $e');
+      AppLogger.error('ReferralRepository', 'Referral Action Failed [$action]: $e');
       return BackendResponse.failure(e.toString());
     }
   }

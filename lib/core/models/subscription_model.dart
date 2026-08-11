@@ -3,6 +3,11 @@ import 'package:meta/meta.dart';
 /// Subscription plan types
 enum PlanType {
   free,
+  // Mass-Market plans
+  // ignore: constant_identifier_names
+  mass_market,
+  // ignore: constant_identifier_names
+  mass_market_annual,
   // Self-Service plans
   standard,
   silver,
@@ -26,6 +31,10 @@ enum PlanType {
     switch (this) {
       case PlanType.free:
         return 'Free';
+      case PlanType.mass_market:
+        return 'Active Member';
+      case PlanType.mass_market_annual:
+        return 'Active Member (Annual)';
       case PlanType.standard:
         return 'Standard';
       case PlanType.silver:
@@ -64,7 +73,9 @@ enum PlanType {
 
   /// Whether this is a Self-Service paid plan
   bool get isSelfServicePlan {
-    return this == PlanType.standard ||
+    return this == PlanType.mass_market ||
+        this == PlanType.mass_market_annual ||
+        this == PlanType.standard ||
         this == PlanType.silver ||
         this == PlanType.gold ||
         this == PlanType.platinum ||
@@ -76,6 +87,10 @@ enum PlanType {
 
   static PlanType fromString(String value) {
     switch (value.toLowerCase()) {
+      case 'mass_market':
+        return PlanType.mass_market;
+      case 'mass_market_annual':
+        return PlanType.mass_market_annual;
       case 'standard':
         return PlanType.standard;
       case 'silver':

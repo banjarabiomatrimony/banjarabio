@@ -10,6 +10,8 @@ import 'package:banjarabio/features/bookmarks/providers/bookmark_notifier.dart';
 import 'package:banjarabio/widgets/shimmer_widget.dart';
 import 'package:banjarabio/widgets/branded_refresh_indicator.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/profile_card_widget.dart';
+import 'package:banjarabio/widgets/branded_empty_state.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 class SavedProfilesScreen extends ConsumerStatefulWidget {
   const SavedProfilesScreen({super.key});
@@ -129,7 +131,7 @@ class _SavedProfilesScreenState extends ConsumerState<SavedProfilesScreen> {
     bool isCurrentlyBookmarked,
   ) async {
     if (kDebugMode) {
-      debugPrint('[BOOKMARK] SavedProfilesScreen > User tapped ${isCurrentlyBookmarked ? "Saved" : "Save"} on profile $profileId > Calling Riverpod toggle (ref.listen will immediately remove if unsaving)');
+      AppLogger.debug('SavedProfilesScreen', '[BOOKMARK] SavedProfilesScreen > User tapped ${isCurrentlyBookmarked ? "Saved" : "Save"} on profile $profileId > Calling Riverpod toggle (ref.listen will immediately remove if unsaving)');
     }
     try {
       // Riverpod notifier: optimistic update + backend sync.
@@ -138,11 +140,11 @@ class _SavedProfilesScreenState extends ConsumerState<SavedProfilesScreen> {
       // with stale cache/API data and re-adds the unsaved profile.
       await ref.read(bookmarkNotifierProvider.notifier).toggle(profileId);
       if (kDebugMode) {
-        debugPrint('[BOOKMARK] SavedProfilesScreen > toggle($profileId) > SUCCESS');
+        AppLogger.debug('SavedProfilesScreen', '[BOOKMARK] SavedProfilesScreen > toggle($profileId) > SUCCESS');
       }
     } catch (e) {
       if (kDebugMode) {
-        debugPrint('[BOOKMARK] SavedProfilesScreen > toggle($profileId) > FAILED | $e');
+        AppLogger.error('SavedProfilesScreen', '[BOOKMARK] SavedProfilesScreen > toggle($profileId) > FAILED | $e');
       }
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -178,7 +180,7 @@ class _SavedProfilesScreenState extends ConsumerState<SavedProfilesScreen> {
 
   void _handleInterest(ProfileModel profile) {
     if (kDebugMode) {
-      debugPrint('[INTEREST] SavedProfilesScreen > Expressing interest for ${profile.id}');
+      AppLogger.debug('SavedProfilesScreen', '[INTEREST] SavedProfilesScreen > Expressing interest for ${profile.id}');
     }
     // For SavedProfilesScreen, we redirect to Detail where the primary Interest button/logic lives
     _openProfileDetail(profile);
@@ -193,8 +195,6 @@ class _SavedProfilesScreenState extends ConsumerState<SavedProfilesScreen> {
         _syncBookmarkState(next);
       },
     );
-    final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.of(context)?.savedProfiles ?? 'Saved Profiles'), centerTitle: true),
       body: _isLoading
@@ -221,27 +221,11 @@ class _SavedProfilesScreenState extends ConsumerState<SavedProfilesScreen> {
               ),
             )
           : _bookmarkedProfiles.isEmpty
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.bookmark_border,
-                    size: 64,
-                    color: Colors.grey,
-                  ),
-                  SizedBox(height: 2.h),
-                  Text(AppLocalizations.of(context)?.noBookmarkedProfilesYet ?? 'No bookmarked profiles yet',
-                    style: theme.textTheme.titleMedium,
-                  ),
-                  SizedBox(height: 1.h),
-                  Text(AppLocalizations.of(context)?.profilesYouSaveWillAppearHere ?? 'Profiles you save will appear here',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-              ),
+          ? BrandedEmptyState(
+              icon: Icons.bookmark_border_rounded,
+              title: AppLocalizations.of(context)?.noBookmarkedProfilesYet ?? 'No bookmarked profiles yet',
+              description: AppLocalizations.of(context)?.profilesYouSaveWillAppearHere ?? 'Profiles you save will appear here',
+              ctaText: AppLocalizations.of(context)?.browseProfiles ?? 'Browse Profiles',
             )
           : BrandedRefreshIndicator(
               onRefresh: _handleRefresh,

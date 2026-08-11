@@ -22,7 +22,11 @@ import 'package:banjarabio/core/utils/startup_workflow.dart';
 /// - `RepaintBoundary` isolates the loading overlay from the static content
 /// - `const` constructors wherever possible to reuse Element tree
 class AuthenticationScreen extends StatefulWidget {
-  const AuthenticationScreen({super.key});
+  /// When true, renders without Scaffold/SafeArea/background wrappers for
+  /// embedding inside a parent layout (e.g., onboarding stepper PageView).
+  final bool embedded;
+
+  const AuthenticationScreen({super.key, this.embedded = false});
 
   @override
   State<AuthenticationScreen> createState() => _AuthenticationScreenState();
@@ -35,6 +39,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   bool _showEmailLogin = false;
   String? _errorMessage;
   bool _isHandlingAuth = false;
+  /// Guards against stale Supabase session events (tokenRefreshed) that fire
+  /// immediately on subscription. Only set to true when the user actively
+  /// taps a login button on THIS screen instance.
+  bool _userInitiatedLogin = false;
   String _loginType = kDebugMode ? 'Tester' : 'User';
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -43,7 +51,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   @override
   void initState() {
     super.initState();
-    debugPrint('AuthenticationScreen: initState start');
+    debugPrint('AuthenticationScreen: initState start (embedded=${widget.embedded})');
     _setupAuthListener();
     debugPrint('AuthenticationScreen: initState complete');
   }
@@ -51,6 +59,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   void _setupAuthListener() {
     _authSubscription = _authRepository.authStateChanges.listen((status) {
       if (status == AppAuthStatus.authenticated) {
+        // In embedded mode, only react to auth events that the user triggered
+        // on THIS screen. Ignore stale/cached session events (tokenRefreshed).
+        if (widget.embedded && !_userInitiatedLogin) {
+          debugPrint('AuthenticationScreen: Ignoring stale auth event (embedded, no user action)');
+          return;
+        }
         _handleSuccessfulAuth();
       }
     });
@@ -129,6 +143,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   }
 
   Future<void> _signInWithGoogle() async {
+    _userInitiatedLogin = true;
     AnalyticsService.logSignUpStart('google');
     setState(() { _isLoading = true; _errorMessage = null; });
 
@@ -159,6 +174,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   }
 
   Future<void> _signInWithEmail() async {
+    _userInitiatedLogin = true;
     AnalyticsService.logSignUpStart('email');
 
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
@@ -221,22 +237,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
 
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.center,
-            colors: [
-              theme.colorScheme.primary.withValues(alpha: 0.08),
-              theme.scaffoldBackgroundColor,
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: Stack(
+    // Core content stack shared by both standalone and embedded modes
+    final coreStack = Stack(
             children: [
               // ── Main scrollable content ──
               SingleChildScrollView(
@@ -476,8 +478,27 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                   ),
                 ),
             ],
+          );
+
+    // Embedded mode: skip Scaffold/gradient/SafeArea wrappers
+    if (widget.embedded) return coreStack;
+
+    // Standalone mode: full-screen with gradient background
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.center,
+            colors: [
+              theme.colorScheme.primary.withValues(alpha: 0.08),
+              theme.scaffoldBackgroundColor,
+            ],
           ),
         ),
+        child: SafeArea(child: coreStack),
       ),
     );
   }

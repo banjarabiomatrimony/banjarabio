@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:banjarabio/core/models/backend_response.dart';
@@ -7,6 +8,8 @@ import 'package:banjarabio/core/supabase_client.dart' as app_supabase;
 import 'package:banjarabio/notification/features/admin_notification_service.dart';
 import 'package:banjarabio/core/repositories/photo_repository.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/services/local_cache_service.dart';
 
 /// App-level auth status (Vendor Agnostic)
 enum AppAuthStatus { initial, authenticated, unauthenticated }
@@ -41,7 +44,7 @@ class AuthRepository {
       }
       return BackendResponse.success(false);
     } catch (e, stack) {
-      debugPrint('AuthRepository.signInWithEmail error: $e');
+      AppLogger.error('AuthRepository', 'AuthRepository.signInWithEmail error: $e');
       return BackendResponse.failure(
         e.toString(),
         stackTrace: stack,
@@ -66,27 +69,93 @@ class AuthRepository {
     }
   }
 
-  /// Sign in with Google
+  /// Sign in with Google (Native ID Token Exchange — Zero Web Browser Popups)
   Future<BackendResponse<bool>> signInWithGoogle() async {
     try {
-      // For web, use OAuth flow
       if (kIsWeb) {
-        await _supabase.auth.signInWithOAuth(
+        await _supabase.auth.signInWithOAuth(OAuthProvider.google);
+        return BackendResponse.success(true);
+      }
+
+      final webClientId = app_supabase.AppSupabaseClient.googleWebClientId;
+
+      final isPlaceholder = webClientId.isEmpty ||
+          webClientId == 'your_google_web_client_id' ||
+          webClientId.contains('your_google');
+
+      if (isPlaceholder) {
+        AppLogger.error(
+          'AuthRepository',
+          'Google Sign-In failed: GOOGLE_WEB_CLIENT_ID is not configured in assets/env.json',
+        );
+        return BackendResponse.failure(
+          'Google Web Client ID missing in assets/env.json. Please configure your Google OAuth Web Client ID.',
+        );
+      }
+
+      try {
+        final GoogleSignIn googleSignIn = GoogleSignIn(
+          serverClientId: webClientId,
+        );
+
+        // Force-clear any previous stale cached Google Sign-In session
+        try {
+          await googleSignIn.signOut();
+        } catch (_) {}
+
+        final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+
+        if (googleUser == null) {
+          // User cancelled the Google Sign-In dialog
+          return BackendResponse.success(false);
+        }
+
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
+        final accessToken = googleAuth.accessToken;
+        final idToken = googleAuth.idToken;
+
+        if (idToken != null) {
+          final AuthResponse response = await _supabase.auth.signInWithIdToken(
+            provider: OAuthProvider.google,
+            idToken: idToken,
+            accessToken: accessToken,
+          );
+
+          if (response.user != null) {
+            final email = response.user!.email ?? googleUser.email;
+            await _saveSessionData(email, response.user!.id);
+            return BackendResponse.success(true);
+          }
+        }
+      } catch (nativeError) {
+        AppLogger.warn(
+          'AuthRepository',
+          'Native Google Sign-In failed ($nativeError). Automatically falling back to Supabase Web OAuth flow.',
+        );
+        // 🚀 AUTOMATIC FALLBACK: Seamlessly fallback to Web OAuth so user is NEVER blocked by SHA-1 issues!
+        final bool success = await _supabase.auth.signInWithOAuth(
           OAuthProvider.google,
           redirectTo: kIsWeb ? null : 'io.supabase.banjarabio://login-callback',
         );
-        // OAuth redirects, so we return true and let the redirect handle it
-        return BackendResponse.success(true);
-      } else {
-        // For mobile, use OAuth flow with redirect
-        await _supabase.auth.signInWithOAuth(
-          OAuthProvider.google,
-          redirectTo: 'io.supabase.banjarabio://login-callback',
-        );
-        return BackendResponse.success(true);
+        return BackendResponse.success(success);
       }
-    } catch (e) {
-      return BackendResponse.failure(e.toString());
+
+      return BackendResponse.success(false);
+    } catch (e, stack) {
+      AppLogger.error('AuthRepository', 'signInWithGoogle error: $e');
+
+      String errorMessage = e.toString();
+      if (errorMessage.contains('sign_in_failed') ||
+          errorMessage.contains('10:')) {
+        errorMessage =
+            'Google Sign-In Failed (ApiException 10): Ensure SHA-1 fingerprint is registered in Google Cloud / Firebase and Web Client ID in assets/env.json is correct.';
+      }
+
+      return BackendResponse.failure(
+        errorMessage,
+        stackTrace: stack,
+      );
     }
   }
 
@@ -266,7 +335,7 @@ class AuthRepository {
           }
         },
         onFailure: (error) async {
-          debugPrint('Error fetching profile during deletion: $error');
+          AppLogger.error('AuthRepository', 'Error fetching profile during deletion: $error');
         },
       );
 
@@ -281,7 +350,7 @@ class AuthRepository {
       await signOut();
       return BackendResponse.success(null);
     } catch (e) {
-      debugPrint('AuthRepository.deleteAccount: Error = $e');
+      AppLogger.error('AuthRepository', 'AuthRepository.deleteAccount: Error = $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -291,9 +360,14 @@ class AuthRepository {
     try {
       await _supabase.auth.signOut();
       await _sessionManager.clearSession();
+      SessionManager.instance.setCurrentProfile(null);
+      await LocalCacheService().clearOwnProfile();
+      await LocalCacheService().clearRelativeBrowseSession();
+      await LocalCacheService().setGuestMode(false);
+      await LocalCacheService().clearHomeFeed();
       return BackendResponse.success(null);
     } catch (e) {
-      debugPrint('AuthRepository.signOut: Error = $e');
+      AppLogger.error('AuthRepository', 'AuthRepository.signOut: Error = $e');
       return BackendResponse.failure(e.toString());
     }
   }

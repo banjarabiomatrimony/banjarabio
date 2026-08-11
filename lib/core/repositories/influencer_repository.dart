@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banjarabio/core/models/backend_response.dart';
 import 'package:banjarabio/core/models/creator_model.dart';
 import 'package:banjarabio/core/repositories/isolate_first_repository.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// [InfluencerRepository]
 ///
@@ -38,7 +39,7 @@ class InfluencerRepository extends IsolateFirstRepository {
       }
       return BackendResponse.success(null);
     } catch (e) {
-      debugPrint('Register Creator Referral Failed: $e');
+      AppLogger.error('InfluencerRepository', 'Register Creator Referral Failed: $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -65,7 +66,7 @@ class InfluencerRepository extends IsolateFirstRepository {
         },
       );
     } catch (e) {
-      debugPrint('Get All Creators Failed: $e');
+      AppLogger.error('InfluencerRepository', 'Get All Creators Failed: $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -94,7 +95,7 @@ class InfluencerRepository extends IsolateFirstRepository {
       );
       return BackendResponse.fromRpc(response);
     } catch (e) {
-      debugPrint('Add Creator Failed: $e');
+      AppLogger.error('InfluencerRepository', 'Add Creator Failed: $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -125,7 +126,7 @@ class InfluencerRepository extends IsolateFirstRepository {
       );
       return BackendResponse.fromRpc(response);
     } catch (e) {
-      debugPrint('Update Creator Failed: $e');
+      AppLogger.error('InfluencerRepository', 'Update Creator Failed: $e');
       return BackendResponse.failure(e.toString());
     }
   }

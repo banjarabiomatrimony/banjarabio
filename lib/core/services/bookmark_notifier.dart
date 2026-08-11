@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Global notifier for bookmark state changes
 /// Broadcasts bookmark updates across all screens for real-time synchronization
@@ -20,7 +21,7 @@ class BookmarkNotifier extends ChangeNotifier {
     if (_bookmarks[profileId] != isBookmarked) {
       _bookmarks[profileId] = isBookmarked;
       notifyListeners();
-      debugPrint('📌 [BookmarkNotifier] Updated: $profileId -> $isBookmarked');
+      AppLogger.debug('BookmarkNotifier', '📌 [BookmarkNotifier] Updated: $profileId -> $isBookmarked');
     }
   }
 
@@ -29,7 +30,7 @@ class BookmarkNotifier extends ChangeNotifier {
     if (_bookmarks.containsKey(profileId)) {
       _bookmarks.remove(profileId);
       notifyListeners();
-      debugPrint('📌 [BookmarkNotifier] Removed: $profileId');
+      AppLogger.debug('BookmarkNotifier', '📌 [BookmarkNotifier] Removed: $profileId');
     }
   }
 
@@ -47,6 +48,6 @@ class BookmarkNotifier extends ChangeNotifier {
   void clear() {
     _bookmarks.clear();
     notifyListeners();
-    debugPrint('📌 [BookmarkNotifier] Cleared all bookmarks');
+    AppLogger.debug('BookmarkNotifier', '📌 [BookmarkNotifier] Cleared all bookmarks');
   }
 }

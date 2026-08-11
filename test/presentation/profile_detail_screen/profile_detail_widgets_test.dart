@@ -40,6 +40,9 @@ void main() {
       await tester.pump();
 
       expect(find.text('MALE'), findsOneWidget);
+
+      // Allow background cache manager timers to complete
+      await tester.pump(const Duration(seconds: 10));
     });
 
     testWidgets('renders with female gender badge', (tester) async {
@@ -60,6 +63,9 @@ void main() {
       await tester.pump();
 
       expect(find.text('FEMALE'), findsOneWidget);
+
+      // Allow background cache manager timers to complete
+      await tester.pump(const Duration(seconds: 10));
     });
   });
 

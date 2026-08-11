@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sizer/sizer.dart';
+import 'package:printing/printing.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/providers/locale_provider.dart';
@@ -11,7 +12,7 @@ import 'package:banjarabio/core/providers/locale_provider.dart';
 import 'package:banjarabio/core/models/backend_response.dart';
 import 'package:banjarabio/core/providers/profile_providers.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
-import 'package:banjarabio/presentation/biodata_pdf_screen/biodata_pdf_screen_riverpod.dart';
+import 'package:banjarabio/presentation/biodata_pdf_screen/biodata_pdf_screen.dart';
 import '../../../helpers/supabase_test_setup.dart';
 
 class MockProfileRepository extends Mock implements ProfileRepository {}
@@ -51,15 +52,15 @@ void main() {
             ],
             supportedLocales: appSupportedLocales,
             locale: Locale('en'),
-            home: BiodataPdfScreenRiverpod(),
+            home: BiodataPdfScreen(),
           ),
         ),
       ),
     );
   }
 
-  test('BiodataPdfScreenRiverpod is ConsumerStatefulWidget', () {
-    expect(const BiodataPdfScreenRiverpod(), isA<ConsumerStatefulWidget>());
+  test('BiodataPdfScreen is ConsumerStatefulWidget', () {
+    expect(const BiodataPdfScreen(), isA<ConsumerStatefulWidget>());
   });
 
   testWidgets('shows loading or content', (tester) async {
@@ -73,7 +74,7 @@ void main() {
     expect(hasLoading || hasProfileNotFound || hasUnlockTitle || hasAppBar, true);
   });
 
-  testWidgets('shows Pay ₹199 button when locked', (tester) async {
+  testWidgets('bypasses paywall during growth campaign even when profile is locked', (tester) async {
     when(() => mockProfileRepo.getOwnProfile()).thenAnswer(
       (_) async => BackendResponse.success(createLockedTestProfile()),
     );
@@ -85,7 +86,8 @@ void main() {
       await tester.pump(const Duration(milliseconds: 200));
     }
     
-    // Check for the unlock button text
-    expect(find.text('Pay ₹199 to Unlock Full PDF'), findsOneWidget);
+    // During campaign, the unlock button is not shown, and preview is unlocked
+    expect(find.text('Pay ₹199 to Unlock Full PDF'), findsNothing);
+    expect(find.byType(PdfPreview), findsOneWidget);
   });
 }

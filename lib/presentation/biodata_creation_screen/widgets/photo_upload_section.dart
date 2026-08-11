@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/services/photo_picker_service.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Robust photo upload section with crash-resistant processing
 /// Uses isolate-based compression via PhotoPickerService
@@ -134,7 +135,7 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
           SnackBar(
             content: Text(
               result.compressedSizeKB != null
-                  ? AppLocalizations.of(context)?.photoAddedWithKb(result.compressedSizeKB.toString()) ?? 'Photo added (${result.compressedSizeKB}KB)'
+                  ? AppLocalizations.of(context)?.photoAddedWithKb(result.compressedSizeKB!) ?? 'Photo added (${result.compressedSizeKB}KB)'
                   : AppLocalizations.of(context)?.photoAdded ?? 'Photo added successfully',
             ),
             backgroundColor: Theme.of(context).colorScheme.primary,
@@ -143,7 +144,7 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
         );
       }
     } catch (e) {
-      debugPrint('PhotoUploadSection: Error in _pickImage: $e');
+      AppLogger.error('PhotoUploadSection', 'PhotoUploadSection: Error in _pickImage: $e');
       setState(() {
         _processingError = AppLocalizations.of(context)?.failedToProcessImage ?? 'Failed to process image. Please try again.';
       });
@@ -216,11 +217,11 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
             file.deleteSync();
           }
         } catch (e) {
-          debugPrint('Could not delete removed photo file: $e');
+          AppLogger.debug('PhotoUploadSection', 'Could not delete removed photo file: $e');
         }
       }
     } catch (e) {
-      debugPrint('Error removing photo: $e');
+      AppLogger.error('PhotoUploadSection', 'Error removing photo: $e');
     }
   }
 
@@ -311,7 +312,7 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
           ),
           SizedBox(height: 0.5.h),
           Text(
-            AppLocalizations.of(context)?.addClearPhotos(maxPhotos.toString()) ?? 'Add clear photos ($maxPhotos max)',
+            AppLocalizations.of(context)?.addClearPhotos(maxPhotos) ?? 'Add clear photos ($maxPhotos max)',
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),

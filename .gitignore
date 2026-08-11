@@ -64,7 +64,7 @@ migrate_working_dir/
 app.*.symbols
 app.*.map.json
 
-# ─── Android build artifacts ──────────────────────────────────────────────────
-/android/app/debug
-/android/app/profile
-/android/app/release
+# ─── Test Output & Failures ───────────────────────────────────────────────────
+test_result*.json
+test/golden/failures/
+

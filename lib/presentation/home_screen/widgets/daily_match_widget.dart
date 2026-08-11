@@ -11,6 +11,7 @@ import 'package:banjarabio/core/theme/app_gradients.dart';
 import 'package:banjarabio/widgets/trust_score_badge.dart';
 
 import 'package:banjarabio/core/models/profile_model.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// Daily Match widget that shows curated daily profiles
 /// with a premium reveal animation and countdown timer.
@@ -167,7 +168,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
                       'Your Daily Matches',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 12.sp,
+                    fontSize: AppTypography.bodyMedium,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -177,7 +178,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
                       '${widget.dailyProfiles.length} curated profiles just for you',
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: 0.8),
-                    fontSize: 9.sp,
+                    fontSize: AppTypography.labelMedium,
                   ),
                 ),
               ],
@@ -328,17 +329,17 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
                       Text(AppLocalizations.of(context)?.tapToReveal ?? '✨ Tap to Reveal',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 16.sp,
+                          fontSize: AppTypography.headingSmall,
                           fontWeight: FontWeight.w800,
                           letterSpacing: 0.5,
                         ),
                       ),
                       SizedBox(height: 1.h),
                       Text(
-                        AppLocalizations.of(context)?.matchNOfTotal(_currentMatchIndex + 1, widget.dailyProfiles.length) ?? 'Match ${_currentMatchIndex + 1} of ${widget.dailyProfiles.length}',
+                        AppLocalizations.of(context)?.matchNOfTotal((_currentMatchIndex + 1).toString(), widget.dailyProfiles.length.toString()) ?? 'Match ${_currentMatchIndex + 1} of ${widget.dailyProfiles.length}',
                         style: TextStyle(
                           color: Colors.white.withValues(alpha: 0.7),
-                          fontSize: 11.sp,
+                          fontSize: AppTypography.bodySmall,
                         ),
                       ),
                     ],
@@ -467,7 +468,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
                         Text(AppLocalizations.of(context)?.dailyMatch ?? 'Daily Match',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 9.sp,
+                            fontSize: AppTypography.labelMedium,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -494,7 +495,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
                                 '$name${age.isNotEmpty ? ', $age' : ''}',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 20.sp,
+                                  fontSize: AppTypography.headingMedium,
                                   fontWeight: FontWeight.w800,
                                   shadows: const [
                                     Shadow(
@@ -530,7 +531,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
                                 location,
                                 style: TextStyle(
                                   color: Colors.white70,
-                                  fontSize: 12.sp,
+                                  fontSize: AppTypography.bodyMedium,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
@@ -579,7 +580,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
             text,
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.9),
-              fontSize: 9.sp,
+              fontSize: AppTypography.labelMedium,
               fontWeight: FontWeight.w500,
             ),
             maxLines: 1,
@@ -677,7 +678,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
         Text(
           label,
           style: TextStyle(
-            fontSize: 8.sp,
+            fontSize: AppTypography.labelSmall,
             color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w500,
           ),
@@ -802,7 +803,7 @@ class _CountdownTimerRowState extends State<_CountdownTimerRow> {
                   'Next refresh: $timeStr',
               style: TextStyle(
                 color: theme.colorScheme.primary,
-                fontSize: 11.sp,
+                fontSize: AppTypography.bodySmall,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -826,7 +827,7 @@ class _CountdownTimerRowState extends State<_CountdownTimerRow> {
             timeStr,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 10.sp,
+              fontSize: AppTypography.bodySmall,
               fontWeight: FontWeight.w700,
               fontFeatures: const [FontFeature.tabularFigures()],
             ),

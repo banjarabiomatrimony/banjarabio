@@ -9,6 +9,7 @@ import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/core/repositories/subscription_repository.dart';
 import 'package:banjarabio/core/repositories/isolate_first_repository.dart';
 import 'package:banjarabio/core/services/image_compression_service.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// [PhotoRepository]
 ///
@@ -202,7 +203,7 @@ class PhotoRepository extends IsolateFirstRepository {
 
       return BackendResponse.success(PhotoModel.fromJson(response));
     } catch (e) {
-      debugPrint('Upload Error: $e');
+      AppLogger.error('PhotoRepository', 'Upload Error: $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -300,7 +301,7 @@ class PhotoRepository extends IsolateFirstRepository {
 
       return BackendResponse.success(grouped);
     } catch (e) {
-      debugPrint('Error in getPhotosBatch: $e');
+      AppLogger.error('PhotoRepository', 'Error in getPhotosBatch: $e');
       return BackendResponse.success({});
     }
   }
@@ -311,6 +312,11 @@ class PhotoRepository extends IsolateFirstRepository {
   /// The Supabase free plan now supports image transformations. If a 400 error
   /// is seen for a specific URL, it falls back to the original in CustomImageWidget.
   String getResizedUrl(String publicUrl, {int? width, int? height, int quality = 80}) {
+    // Return original if transformations are disabled globally
+    if (!StorageConfig.enableImageTransformations) {
+      return publicUrl;
+    }
+
     // Only transform Supabase Storage URLs (public bucket URLs)
     if (!publicUrl.contains('/storage/v1/object/public/')) {
       return publicUrl;
@@ -329,7 +335,7 @@ class PhotoRepository extends IsolateFirstRepository {
       final transformedPath = uri.path.replaceFirst('/object/public/', '/render/image/public/');
       return uri.replace(path: transformedPath, queryParameters: params).toString();
     } catch (e) {
-      debugPrint('getResizedUrl Error: $e');
+      AppLogger.error('PhotoRepository', 'getResizedUrl Error: $e');
       return publicUrl; // Fail safe: serve original
     }
   }

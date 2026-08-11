@@ -26,7 +26,7 @@ class _AccountDeletionScreenState extends State<AccountDeletionScreen> {
         leading: IconButton(
           icon: CustomIconWidget(
             iconName: 'arrow_back',
-            color: theme.colorScheme.onSurface,
+            color: theme.appBarTheme.foregroundColor ?? theme.colorScheme.onSurface,
           ),
           onPressed: () => Navigator.pop(context),
         ),

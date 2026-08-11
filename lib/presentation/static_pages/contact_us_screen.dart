@@ -19,7 +19,7 @@ class ContactUsScreen extends StatelessWidget {
         leading: IconButton(
           icon: CustomIconWidget(
             iconName: 'arrow_back',
-            color: theme.colorScheme.onSurface,
+            color: theme.appBarTheme.foregroundColor ?? theme.colorScheme.onSurface,
           ),
           onPressed: () => Navigator.pop(context),
         ),

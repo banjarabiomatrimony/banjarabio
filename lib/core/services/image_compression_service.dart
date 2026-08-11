@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path/path.dart' as p;
+import 'package:banjarabio/core/services/app_logger.dart';
 
 class ImageCompressionService {
   // Singleton pattern
@@ -96,13 +97,13 @@ class ImageCompressionService {
 
       if (result == null) {
         // If native compression fails, return original rather than crashing
-        debugPrint('Compression failed, using original');
+        AppLogger.error('ImageCompressionService', 'Compression failed, using original');
         return originalFile;
       }
 
       return File(result.path);
     } catch (e) {
-      debugPrint('Compression Error: $e');
+      AppLogger.error('ImageCompressionService', 'Compression Error: $e');
       return originalFile; // Fail safe
     }
   }
@@ -129,7 +130,7 @@ class ImageCompressionService {
         }
       }
     } catch (e) {
-      debugPrint('Cleanup error: $e');
+      AppLogger.error('ImageCompressionService', 'Cleanup error: $e');
     }
   }
 }

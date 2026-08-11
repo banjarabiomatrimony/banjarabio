@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:banjarabio/services/ads/ad_service.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 class AppOpenAdManager {
   AppOpenAd? _appOpenAd;
@@ -16,22 +16,22 @@ class AppOpenAdManager {
     // 🚨 ANR FIX: Wait for SDK to be ready before requesting ads.
     await AdMobService.ensureInitialized();
 
-    debugPrint('Ads: [APPOPEN] Requesting load for: ${AdMobService.appOpenAdUnitId}');
+    AppLogger.debug('AppOpenAdManager', 'Ads: [APPOPEN] Requesting load for: ${AdMobService.appOpenAdUnitId}');
     AppOpenAd.load(
       adUnitId: AdMobService.appOpenAdUnitId ?? '',
       request: const AdRequest(),
       adLoadCallback: AppOpenAdLoadCallback(
         onAdLoaded: (ad) {
-          debugPrint('Ads: [APPOPEN] Successfully loaded: ${ad.adUnitId}');
+          AppLogger.debug('AppOpenAdManager', 'Ads: [APPOPEN] Successfully loaded: ${ad.adUnitId}');
           _appOpenLoadTime = DateTime.now();
           _appOpenAd = ad;
         },
         onAdFailedToLoad: (error) {
-          debugPrint('Ads: [APPOPEN] FAILED: ${error.code} - ${error.message}');
-          debugPrint('Ads: [APPOPEN] Domain: ${error.domain}');
+          AppLogger.error('AppOpenAdManager', 'Ads: [APPOPEN] FAILED: ${error.code} - ${error.message}');
+          AppLogger.error('AppOpenAdManager', 'Ads: [APPOPEN] Domain: ${error.domain}');
           if (error.message.contains('JavascriptEngine')) {
             _isWebViewBroken = true;
-            debugPrint('Ads: [APPOPEN] CRITICAL: WebView JavascriptEngine unavailable.');
+            AppLogger.debug('AppOpenAdManager', 'Ads: [APPOPEN] CRITICAL: WebView JavascriptEngine unavailable.');
           }
         },
       ),
@@ -75,7 +75,7 @@ class AppOpenAdManager {
     try {
       _appOpenAd!.show();
     } catch (e) {
-      debugPrint('[BANJARABIO_AUDIT:ADS] AppOpenAd.show() failed: $e');
+      AppLogger.error('AppOpenAdManager', '[BANJARABIO_AUDIT:ADS] AppOpenAd.show() failed: $e');
       _isShowingAd = false;
       _appOpenAd?.dispose();
       _appOpenAd = null;

@@ -6,6 +6,7 @@ import 'package:banjarabio/core/models/success_story_model.dart';
 import 'package:banjarabio/core/repositories/success_story_repository.dart';
 import 'package:banjarabio/core/repositories/subscription_repository.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 
 class MarriageRewardFormScreen extends StatefulWidget {
@@ -276,7 +277,7 @@ class _MarriageRewardFormScreenState extends State<MarriageRewardFormScreen> {
               subtitle,
               style: TextStyle(
                 color: isSelected ? Colors.white.withValues(alpha: 0.8) : theme.colorScheme.onSurfaceVariant,
-                fontSize: 10.sp,
+                fontSize: AppTypography.bodySmall,
               ),
             ),
           ],

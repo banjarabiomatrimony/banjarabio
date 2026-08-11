@@ -7,6 +7,8 @@ import 'package:banjarabio/core/models/subscription_model.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/core/repositories/trust_score_repository.dart';
 import 'package:banjarabio/core/repositories/isolate_first_repository.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/session_manager.dart';
 
 /// [SubscriptionRepository]
 ///
@@ -56,6 +58,24 @@ class SubscriptionRepository extends IsolateFirstRepository {
   static const Duration _cacheDuration = Duration(minutes: 5);
 
   // ---------------------------------------------------------------------------
+  // 2b. Free Trial Configuration
+  // ---------------------------------------------------------------------------
+
+  /// Number of days new users get full premium access for free.
+  static const int freeTrialDays = 7;
+
+  /// Returns `true` if the account was created less than [freeTrialDays] ago.
+  static bool isWithinFreeTrial(DateTime createdAt) {
+    return DateTime.now().difference(createdAt).inDays < freeTrialDays;
+  }
+
+  /// Returns the number of trial days remaining (0 if expired).
+  static int trialDaysRemaining(DateTime createdAt) {
+    final elapsed = DateTime.now().difference(createdAt).inDays;
+    return (freeTrialDays - elapsed).clamp(0, freeTrialDays);
+  }
+
+  // ---------------------------------------------------------------------------
   // 3. Core Read Operations
   // ---------------------------------------------------------------------------
 
@@ -91,19 +111,30 @@ class SubscriptionRepository extends IsolateFirstRepository {
 
       return BackendResponse.success(subscription);
     } catch (e, stack) {
-      debugPrint('SubscriptionRepository.getCurrentSubscription: Error = $e');
+      AppLogger.error('SubscriptionRepository', 'SubscriptionRepository.getCurrentSubscription: Error = $e');
       return BackendResponse.failure(e.toString(), stackTrace: stack);
     }
   }
 
   /// Convenience method to check Premium status without boilerplate.
-  /// Returns true for any paid plan (Self-Service or VIP).
+  /// Returns true for any paid plan (Self-Service or VIP) **OR** if the
+  /// user is within the 7-day free trial window.
   Future<BackendResponse<bool>> isPremium() async {
+    // 1. Check paid subscription
     final result = await getCurrentSubscription();
-    return result.fold(
-      onSuccess: (sub) => BackendResponse.success(sub?.isPremium ?? false),
-      onFailure: (err) => BackendResponse.failure(err),
+    final hasPaidPremium = result.fold(
+      onSuccess: (sub) => sub?.isPremium ?? false,
+      onFailure: (_) => false,
     );
+    if (hasPaidPremium) return BackendResponse.success(true);
+
+    // 2. Check free trial via profile createdAt
+    final profile = SessionManager.instance.currentProfile;
+    if (profile != null && isWithinFreeTrial(profile.createdAt)) {
+      return BackendResponse.success(true);
+    }
+
+    return BackendResponse.success(false);
   }
 
   /// Convenience method to get Plan Type.
@@ -132,7 +163,7 @@ class SubscriptionRepository extends IsolateFirstRepository {
     String? razorpaySubscriptionId,
   }) async {
     try {
-      debugPrint('RPC Call: fn_manage_subscription -> subscribe');
+      AppLogger.debug('SubscriptionRepository', 'RPC Call: fn_manage_subscription -> subscribe');
 
       final response = await _supabase.rpc(
         'fn_manage_subscription',

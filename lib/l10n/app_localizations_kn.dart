@@ -177,7 +177,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get adFreeExperience => 'ಜಾಹೀರಾತು ರಹಿತ ಅನುಭವ';
 
   @override
-  String addClearPhotos(String max) {
+  String addClearPhotos(int max) {
     return 'ಸ್ಪಷ್ಟ ಫೋಟೋಗಳನ್ನು ಸೇರಿಸಿ (ಗರಿಷ್ಠ $max)';
   }
 
@@ -279,7 +279,7 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಎಲ್ಲಾ ವಿಭಾಗಗಳನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಪೂರ್ಣಗೊಳಿಸಲು \"ಬಯೋಡೇಟಾ ಉಳಿಸಿ\" ಕ್ಲಿಕ್ ಮಾಡಿ. ನಿಮ್ಮ ಗೌಪ್ಯತೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳ ಆಧಾರದ ಮೇಲೆ ನಿಮ್ಮ ಬಯೋಡೇಟಾ ಇತರ ಸಮುದಾಯದ ಸದಸ್ಯರಿಗೆ ಗೋಚರಿಸುತ್ತದೆ.';
 
   @override
-  String anErrorOccurred(Object error) {
+  String anErrorOccurred(String error) {
     return 'ದೋಷ ಸಂಭವಿಸಿದೆ: $error';
   }
 
@@ -410,7 +410,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get messagingLimitReached => 'ಸಂದೇಶ ಕಳುಹಿಸುವ ಮಿತಿ ಮೀರಿದೆ';
 
   @override
-  String bookmarksCount(String count) {
+  String bookmarksCount(int count) {
     return '$count ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳು';
   }
 
@@ -533,7 +533,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get connectWithCommunity => 'ನಿಮ್ಮ ಬಂಜಾರ ಸಮುದಾಯದೊಂದಿಗೆ ಸಂಪರ್ಕಿಸಿ';
 
   @override
-  String get contact => 'ಸಂಪರ್ಕ';
+  String get contact => 'ಸಂಪರ್ಕಿಸಿ';
 
   @override
   String get contactPreferences => 'ಸಂಪರ್ಕ ಆದ್ಯತೆಗಳು';
@@ -572,7 +572,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get createProfile => 'ಪ್ರೊಫೈಲ್ ರಚಿಸಿ';
 
   @override
-  String criticalFailure(Object error) {
+  String criticalFailure(String error) {
     return 'ನಿರ್ಣಾಯಕ ವಿಫಲತೆ: $error';
   }
 
@@ -618,17 +618,17 @@ class AppLocalizationsKn extends AppLocalizations {
   String get daughter => 'ಮಗಳು';
 
   @override
-  String daysAgo(String count) {
+  String daysAgo(int count) {
     return '$countದಿನಗಳ ಹಿಂದೆ';
   }
 
   @override
-  String daysLeft(Object days) {
+  String daysLeft(int days) {
     return '$days ದಿನಗಳು ಬಾಕಿ';
   }
 
   @override
-  String daysRemaining(Object days) {
+  String daysRemaining(int days) {
     return '$days ದಿನಗಳು ಬಾಕಿ ಇವೆ';
   }
 
@@ -642,7 +642,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get deleteAccountWarning => 'ಈ ಕ್ರಿಯೆ ಶಾಶ್ವತ ಮತ್ತು ರದ್ದು ಮಾಡಲಾಗದು.';
 
   @override
-  String deleteCount(Object count) {
+  String deleteCount(int count) {
     return 'ಅಳಿಸಿ ($count)';
   }
 
@@ -708,7 +708,7 @@ class AppLocalizationsKn extends AppLocalizations {
       'ನೀವು ಹಿಂದೆ ಹೋಗಲು ಖಚಿತವಾಗಿ ಬಯಸುತ್ತೀರಾ? ನಿಮ್ಮ ಪ್ರಗತಿ ಡ್ರಾಫ್ಟ್ ಆಗಿ ಉಳಿಸಲಾಗಿದೆ.';
 
   @override
-  String discountPercentage(Object percentage, Object score) {
+  String discountPercentage(int percentage, int score) {
     return '$percentage% ರಿಯಾಯಿತಿ (ಟ್ರಸ್ಟ್ ಸ್ಕೋರ್ $score)';
   }
 
@@ -933,12 +933,12 @@ class AppLocalizationsKn extends AppLocalizations {
       'Googleನೊಂದಿಗೆ ಸೈನ್ ಇನ್ ವಿಫಲವಾಯಿತು. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.';
 
   @override
-  String failedToBlockUser(Object error) {
+  String failedToBlockUser(String error) {
     return 'ಬಳಕೆದಾರರನ್ನು ನಿರ್ಬಂಧಿಸಲು ವಿಫಲವಾಗಿದೆ: $error';
   }
 
   @override
-  String failedToDeleteAccount(Object error) {
+  String failedToDeleteAccount(String error) {
     return 'ಖಾತೆಯನ್ನು ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ: $error';
   }
 
@@ -951,7 +951,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get failedToGeneratePdfPreview => 'PDF ಪೂರ್ವವೀಕ್ಷಣೆ ರಚಿಸಲು ವಿಫಲವಾಗಿದೆ';
 
   @override
-  String failedToLoadBookmarks(Object error) {
+  String failedToLoadBookmarks(String error) {
     return 'ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ: $error';
   }
 
@@ -961,7 +961,7 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
-  String failedToLoadProfileError(Object error) {
+  String failedToLoadProfileError(String error) {
     return 'ಪ್ರೊಫೈಲ್ ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ: $error';
   }
 
@@ -1019,12 +1019,12 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
-  String failedToSubmitReport(Object error) {
+  String failedToSubmitReport(String error) {
     return 'ವರದಿ ಸಲ್ಲಿಸಲು ವಿಫಲವಾಗಿದೆ: $error';
   }
 
   @override
-  String failedToUpdateBookmark(Object error) {
+  String failedToUpdateBookmark(String error) {
     return 'ಬುಕ್‌ಮಾರ್ಕ್ ನವೀಕರಿಸಲು ವಿಫಲವಾಗಿದೆ: $error';
   }
 
@@ -1042,7 +1042,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get failedToUpdateProfile => 'Failed to update profile';
 
   @override
-  String failedToUploadPhoto(int index) {
+  String failedToUploadPhoto(String index) {
     return 'ಫೋಟೋ $index ಅಪ್‌ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಯಿತು';
   }
 
@@ -1156,7 +1156,7 @@ class AppLocalizationsKn extends AppLocalizations {
       '5% ಬಯೋಡೇಟಾ ಪೂರ್ಣಗೊಳಿಸುವಿಕೆ ಬೋನಸ್ ಪಡೆಯಲು ಮತ್ತು ಇತ್ತೀಚಿನ ಪಂದ್ಯಗಳೊಂದಿಗೆ ನವೀಕೃತವಾಗಿರಲು ಇನ್‌ಸ್ಟಾಗ್ರಾಮ್‌ನಲ್ಲಿ ನಮ್ಮನ್ನು ಅನುಸರಿಸಿ.';
 
   @override
-  String forMonths(Object count) {
+  String forMonths(int count) {
     return '$count ತಿಂಗಳವರೆಗೆ';
   }
 
@@ -1301,7 +1301,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get homemaker => 'ಗೃಹಿಣಿ';
 
   @override
-  String hoursAgo(String count) {
+  String hoursAgo(int count) {
     return '$countಗಂಟೆಗಳ ಹಿಂದೆ';
   }
 
@@ -1522,7 +1522,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get mastersDegree => 'ಸ್ನಾತಕೋತ್ತರ ಪದವಿ';
 
   @override
-  String matchNOfTotal(int current, int total) {
+  String matchNOfTotal(String current, String total) {
     return 'ಪಂದ್ಯ $current / $total';
   }
 
@@ -1566,7 +1566,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get minAge => 'ಕನಿಷ್ಠ ವಯಸ್ಸು';
 
   @override
-  String minutesAgo(String count) {
+  String minutesAgo(int count) {
     return '$countನಿಮಿಷಗಳ ಹಿಂದೆ';
   }
 
@@ -1845,7 +1845,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get permissionRequired => 'ಅನುಮತಿ ಅಗತ್ಯವಿದೆ';
 
   @override
-  String permissionRequiredMessage(Object type) {
+  String permissionRequiredMessage(String type) {
     return 'ಫೋಟೋಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಲು $type ಅನುಮತಿ ಅಗತ್ಯವಿದೆ. ದಯವಿಟ್ಟು ಅಪ್ಲಿಕೇಶನ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಇದನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ.';
   }
 
@@ -1862,7 +1862,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get photoAdded => 'Photo added';
 
   @override
-  String photoAddedWithKb(String kb) {
+  String photoAddedWithKb(int kb) {
     return 'Photo added ($kb KB)';
   }
 
@@ -1895,7 +1895,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get photosCompressedInfo => 'Photos are compressed to save data.';
 
   @override
-  String photosCount(String count) {
+  String photosCount(int count) {
     return '$count ಫೋಟೋಗಳು';
   }
 
@@ -1986,7 +1986,7 @@ class AppLocalizationsKn extends AppLocalizations {
       'ನೀವು ನಿಜವಾದ ವ್ಯಕ್ತಿ ಎಂದು ಪರಿಶೀಲಿಸಲು ದಯವಿಟ್ಟು ಸೆಲ್ಫಿ ತೆಗೆದುಕೊಳ್ಳಿ.';
 
   @override
-  String pointsCount(String points) {
+  String pointsCount(int points) {
     return '+$points ಅಂಕಗಳು';
   }
 
@@ -2019,7 +2019,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get previous => 'ಹಿಂದೆ';
 
   @override
-  String pricePerMonth(Object price) {
+  String pricePerMonth(int price) {
     return '₹$price/ತಿಂಗಳು';
   }
 
@@ -2140,7 +2140,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get profile => 'ಪ್ರೊಫೈಲ್';
 
   @override
-  String profileBoostPerMonth(String count) {
+  String profileBoostPerMonth(int count) {
     return '$count ಪ್ರೊಫೈಲ್ ಬೂಸ್ಟ್/ತಿಂಗಳು';
   }
 
@@ -2179,7 +2179,7 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
-  String profileStrengthLabel(Object strength) {
+  String profileStrengthLabel(String strength) {
     return 'ಪ್ರೊಫೈಲ್ ಸಾಮರ್ಥ್ಯ: $strength';
   }
 
@@ -2187,7 +2187,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get profileViewLimitReached => 'ವೀಕ್ಷಣೆ ಮಿತಿ ಮೀರಿದೆ';
 
   @override
-  String profileViewsPerDay(String count) {
+  String profileViewsPerDay(int count) {
     return '$count ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಣೆಗಳು/ದಿನ';
   }
 
@@ -2257,7 +2257,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get referralInvite => 'ರೆಫರಲ್ ಆಹ್ವಾನ';
 
   @override
-  String referralInviteMessage(Object link) {
+  String referralInviteMessage(String link) {
     return 'ನಮ್ಮ ಸಮುದಾಯದ ಅತ್ಯಂತ ವಿಶ್ವಾಸಾರ್ಹ ವೈವಾಹಿಕ ಅಪ್ಲಿಕೇಶನ್ ಆದ ಬಂಜಾರಾಬಯೋಗೆ ಸೇರಿ! ಪ್ರಾರಂಭಿಸಲು ನನ್ನ ಲಿಂಕ್ ಬಳಸಿ: $link';
   }
 
@@ -2560,7 +2560,7 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
-  String sharesPerMonth(String count) {
+  String sharesPerMonth(int count) {
     return '$count ಶೇರ್‌ಗಳು/ತಿಂಗಳು';
   }
 
@@ -2635,7 +2635,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get stay => 'ಇಲ್ಲಿಯೇ ಇರಿ';
 
   @override
-  String stepNOfTotal(int current, int total) {
+  String stepNOfTotal(String current, String total) {
     return 'ಹಂತ $current / $total';
   }
 
@@ -2791,7 +2791,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get trustScoreDiscounts => 'ಟ್ರಸ್ಟ್ ಸ್ಕೋರ್ ಮತ್ತು ರಿಯಾಯಿತಿ';
 
   @override
-  String trustScoreShareMessage(String score, String url) {
+  String trustScoreShareMessage(int score, String url) {
     return 'ನಾನು ಈಗಷ್ಟೇ ಬಂಜಾರಬಯೋದಲ್ಲಿ $score ಟ್ರಸ್ಟ್ ಸ್ಕೋರ್‌ನೊಂದಿಗೆ ನನ್ನ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿದ್ದೇನೆ! ನನ್ನ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ನಮ್ಮ ಸಮುದಾಯಕ್ಕೆ ಸೇರಿ: $url';
   }
 
@@ -3213,7 +3213,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get yourTrustScore => 'ನಿಮ್ಮ ಟ್ರಸ್ಟ್ ಸ್ಕೋರ್';
 
   @override
-  String yrs(Object count) {
+  String yrs(int count) {
     return '$count ವರ್ಷ';
   }
 
@@ -3229,17 +3229,17 @@ class AppLocalizationsKn extends AppLocalizations {
   String get mutualMatch => 'ಪರಸ್ಪರ ಹೊಂದಾಣಿಕೆ';
 
   @override
-  String toContact(Object name) {
+  String toContact(String name) {
     return 'ಇವರಿಗೆ: $name';
   }
 
   @override
-  String fromContact(Object name) {
+  String fromContact(String name) {
     return 'ಇವರಿಂದ: $name';
   }
 
   @override
-  String countProfileViews(num count) {
+  String countProfileViews(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -3259,7 +3259,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get contactLabel => 'ಸಂಪರ್ಕ';
 
   @override
-  String profileSharedVia(Object profileName, Object title) {
+  String profileSharedVia(String profileName, String title) {
     return '$title ಮೂಲಕ $profileName ಹಂಚಿಕೊಳ್ಳಲಾಗಿದೆ';
   }
 
@@ -3682,22 +3682,22 @@ class AppLocalizationsKn extends AppLocalizations {
   String get lifetime => 'ಜೀವಿತಾವಧಿ';
 
   @override
-  String mrpPrice(Object price) {
+  String mrpPrice(int price) {
     return 'MRP ₹$price';
   }
 
   @override
-  String bulkDiscount(Object percent) {
+  String bulkDiscount(int percent) {
     return '$percent% ರಿಯಾಯಿತಿ';
   }
 
   @override
-  String youSave(Object amount) {
-    return 'ನೀವು ಉಳಿಸುತ್ತೀರಿ ₹$amount';
+  String youSave(int amount) {
+    return 'ನೀವು ₹$amount ಉಳಿಸುತ್ತೀರಿ';
   }
 
   @override
-  String totalSavings(Object amount) {
+  String totalSavings(int amount) {
     return 'ಒಟ್ಟು ಉಳಿತಾಯ: ₹$amount';
   }
 
@@ -3708,12 +3708,12 @@ class AppLocalizationsKn extends AppLocalizations {
   String get couponDiscountApplied => 'ಕೂಪನ್ ರಿಯಾಯಿತಿ ಅನ್ವಯಿಸಲಾಗಿದೆ';
 
   @override
-  String contactUnlocks(Object count) {
+  String contactUnlocks(int count) {
     return '$count ಸಂಪರ್ಕ ಅನ್‌ಲಾಕ್‌ಗಳು/ತಿಂಗಳು';
   }
 
   @override
-  String handpickedMatches(Object count) {
+  String handpickedMatches(int count) {
     return '$count ಆಯ್ದ ಪಂದ್ಯಗಳು/ವಾರ';
   }
 
@@ -3780,7 +3780,7 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String extraViewsUnlocked(int count) {
-    return '$count Extra Views Unlocked!';
+    return '$count ಹೆಚ್ಚುವರಿ ನೋಟಗಳನ್ನು ಅನ್ಲಾಕ್ ಮಾಡಲಾಗಿದೆ!';
   }
 
   @override
@@ -3970,4 +3970,56 @@ class AppLocalizationsKn extends AppLocalizations {
   @override
   String get successSubmission =>
       'ಯಶಸ್ಸು! ನಿಮ್ಮ ವಿನಂತಿಯನ್ನು ಪರಿಶೀಲನೆಗಾಗಿ ಸಲ್ಲಿಸಲಾಗಿದೆ.';
+
+  @override
+  String get melavas => 'ಮೇಳಗಳು';
+
+  @override
+  String get upcomingMelavas => 'ಮುಂಬರುವ ಮೇಳಗಳು';
+
+  @override
+  String get callOrganizer => 'ಆಯೋಜಕರಿಗೆ ಕರೆ ಮಾಡಿ';
+
+  @override
+  String get viewVenue => 'ಸ್ಥಳ ವೀಕ್ಷಿಸಿ';
+
+  @override
+  String get organizer => 'ಆಯೋಜಕರು';
+
+  @override
+  String get venue => 'ಸ್ಥಳ';
+
+  @override
+  String get eventDetails => 'ಕಾರ್ಯಕ್ರಮದ ವಿವರಗಳು';
+
+  @override
+  String get browseMatchesTitle => '🔍 ಸಂಬಂಧ ಹುಡುಕಿ (Browse Matches)';
+
+  @override
+  String get browseMatchesDesc => 'ಮಗ, ಮಗಳು, ಸಂಬಂಧಿಕರಿಗೆ ಸೂಕ್ತ ಸಂಬಂಧ ಹುಡುಕಿ.';
+
+  @override
+  String get browseMatchesSubtitle =>
+      'ಕೆಲವು ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಿ ಮತ್ತು ಸೂಕ್ತ ಸಂಬಂಧಗಳನ್ನು ನೋಡಿ';
+
+  @override
+  String get forWhomSearching => 'ಯಾರಿಗಾಗಿ ಸಂಬಂಧ ಹುಡುಕುತ್ತಿದ್ದೀರಿ?';
+
+  @override
+  String get lookingForGender => 'ವರ ಬೇಕಾ ಅಥವಾ ವಧು?';
+
+  @override
+  String get groomBoy => '👦 ವರ (Groom)';
+
+  @override
+  String get brideGirl => '👧 ವಧು (Bride)';
+
+  @override
+  String get selectDistrict => 'ಜಿಲ್ಲೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ';
+
+  @override
+  String get proceedToLogin => 'ಮುಂದುವರಿಯಿರಿ → ಲಾಗಿನ್ ಮಾಡಿ';
+
+  @override
+  String get sibling => 'ಸಹೋದರ/ಸಹೋದರಿ';
 }

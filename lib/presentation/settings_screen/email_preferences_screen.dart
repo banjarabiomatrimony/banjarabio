@@ -4,6 +4,7 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 
 import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/core/repositories/email_repository.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 class EmailPreferencesScreen extends StatefulWidget {
   const EmailPreferencesScreen({super.key});
@@ -140,7 +141,7 @@ class _EmailPreferencesScreenState extends State<EmailPreferencesScreen> {
           fontWeight: FontWeight.bold,
           color: theme.colorScheme.primary,
           letterSpacing: 1.2,
-          fontSize: 10.sp,
+          fontSize: AppTypography.bodySmall,
         ),
       ),
     );

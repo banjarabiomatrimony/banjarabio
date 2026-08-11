@@ -18,12 +18,13 @@ import 'package:banjarabio/presentation/profile_detail_screen/widgets/education_
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/family_background_card_widget.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/location_details_card_widget.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/personal_details_card_widget.dart';
-import 'package:banjarabio/presentation/profile_detail_screen/widgets/profile_header_widget.dart';
 import 'package:banjarabio/widgets/shimmer_widget.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/widgets/glassmorphism_container.dart';
 import 'package:banjarabio/presentation/my_profile_screen/widgets/vouch_dashboard_card.dart';
 import 'package:banjarabio/core/services/share_service.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// My Profile Screen - View and edit own profile
 class MyProfileScreen extends ConsumerStatefulWidget {
@@ -33,7 +34,8 @@ class MyProfileScreen extends ConsumerStatefulWidget {
   ConsumerState<MyProfileScreen> createState() => _MyProfileScreenState();
 }
 
-class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
+class _MyProfileScreenState extends ConsumerState<MyProfileScreen>
+    with SingleTickerProviderStateMixin {
   final ProfileRepository _profileRepository = ProfileRepository();
   final ScrollController _scrollController = ScrollController();
   final SubscriptionRepository _subscriptionRepository =
@@ -45,10 +47,13 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
   bool _isLoading = true;
   bool _showAppBarTitle = false;
   String? _errorMessage;
+  late AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 850));
     _scrollController.addListener(_onScroll);
     _loadProfile();
   }
@@ -70,7 +75,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
     });
 
     try {
-      debugPrint('MyProfileScreen: Loading profile and subscription...');
+      AppLogger.debug('MyProfileScreen', 'MyProfileScreen: Loading profile and subscription...');
 
       // Run fetches with individual timeouts to prevent hanging
       final profileRes = await _profileRepository.getOwnProfile().timeout(
@@ -100,7 +105,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
                   debugPrint('MyProfileScreen: Trust Score fetch error: $e'),
             );
           } catch (e) {
-            debugPrint('MyProfileScreen: Trust Score fatal error caught: $e');
+            AppLogger.error('MyProfileScreen', 'MyProfileScreen: Trust Score fatal error caught: $e');
           }
 
           SubscriptionModel? subscription;
@@ -119,7 +124,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
               },
             );
           } catch (e) {
-            debugPrint('MyProfileScreen: Subscription fatal error caught: $e');
+            AppLogger.error('MyProfileScreen', 'MyProfileScreen: Subscription fatal error caught: $e');
           }
 
           if (mounted) {
@@ -129,6 +134,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
               _trustScore = trustScore;
               _isLoading = false;
             });
+            _controller.forward(from: 0.0);
             // Start tour after profile loads and UI settles
             WidgetsBinding.instance.addPostFrameCallback((_) {
               _checkAndStartTour();
@@ -136,7 +142,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
           }
         },
         onFailure: (error) {
-          debugPrint('MyProfileScreen: Error loading profile: $error');
+          AppLogger.error('MyProfileScreen', 'MyProfileScreen: Error loading profile: $error');
           if (mounted) {
             setState(() {
               _errorMessage = AppLocalizations.of(context)?.failedToLoadProfileError(error.toString()) ?? 'Failed to load profile: $error';
@@ -146,7 +152,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
         },
       );
     } catch (e) {
-      debugPrint('MyProfileScreen: Critical error loading profile: $e');
+      AppLogger.error('MyProfileScreen', 'MyProfileScreen: Critical error loading profile: $e');
       if (mounted) {
         setState(() {
           _errorMessage = AppLocalizations.of(context)?.criticalFailure(e.toString()) ?? 'Critical failure: $e';
@@ -159,6 +165,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _controller.dispose();
     // 🧬 PERFORMANCE: Removed global imageCache.clear() which was causing feed stutter.
     // Proactive limits are now managed globally by PerformanceService.
     super.dispose();
@@ -305,12 +312,12 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('MyProfileScreen: build() started');
+    AppLogger.debug('MyProfileScreen', 'MyProfileScreen: build() started');
     late ThemeData theme;
     try {
       theme = Theme.of(context);
     } catch (e) {
-      debugPrint('MyProfileScreen: Error getting theme: $e');
+      AppLogger.error('MyProfileScreen', 'MyProfileScreen: Error getting theme: $e');
       theme = ThemeData.light(); // Fallback
     }
 
@@ -318,8 +325,8 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
       debugPrint(
         'MyProfileScreen building with profile: ${_profile!.fullName}',
       );
-      debugPrint('Profile Photos count: ${_profile!.photos.length}');
-      debugPrint('Profile ID: ${_profile!.id}');
+      AppLogger.debug('MyProfileScreen', 'Profile Photos count: ${_profile!.photos.length}');
+      AppLogger.debug('MyProfileScreen', 'Profile ID: ${_profile!.id}');
     } else {
       debugPrint(
         'MyProfileScreen building with NULL profile (isLoading=$_isLoading)',
@@ -341,7 +348,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
       );
     }
 
-    debugPrint('MyProfileScreen: Building Scaffold');
+    AppLogger.debug('MyProfileScreen', 'MyProfileScreen: Building Scaffold');
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: _profile == null && _errorMessage == null
@@ -425,7 +432,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
                           ),
                           child: Text(
                             AppLocalizations.of(context)?.createProfile ?? 'Create My Biodata',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.sp),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: AppTypography.bodyLarge),
                           ),
                         ),
                       ),
@@ -447,7 +454,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
                           ),
                           child: Text(
                             AppLocalizations.of(context)?.exitGuestMode ?? 'Exit Guest Mode',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.sp),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: AppTypography.bodyLarge),
                           ),
                         ),
                       ),
@@ -462,7 +469,6 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
                 controller: _scrollController,
                 slivers: [
                   SliverAppBar(
-                    expandedHeight: 60.h,
                     pinned: true,
                     automaticallyImplyLeading: false,
                     backgroundColor: theme.scaffoldBackgroundColor,
@@ -472,55 +478,12 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
                       padding: EdgeInsets.all(1.h),
                       child: AppLogoImage(height: 3.5.h),
                     ),
-                    title: AnimatedOpacity(
-                      opacity: _showAppBarTitle ? 1.0 : 0.0,
-                      duration: const Duration(milliseconds: 250),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        _profile!.fullName.toUpperCase(),
-                                        style: theme.textTheme.titleMedium?.copyWith(
-                                          color: theme.colorScheme.onSurface,
-                                          fontWeight: FontWeight.w900,
-                                          fontSize: 18.sp,
-                                          letterSpacing: 0.3,
-                                        ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    if (_profile!.isVerified) ...[
-                                      SizedBox(width: 1.w),
-                                      const Icon(
-                                        Icons.verified,
-                                        color: Colors.green,
-                                        size: 16,
-                                      ),
-                                    ],
-                                  ],
-                                ),
-                                Text(
-                                  '${AppLocalizations.of(context)?.yrs(_profile!.age) ?? "${_profile!.age} Yrs"} • ${_profile!.height} • ${_profile!.surname} • ${_profile!.gotra ?? ''}',
-                                  style: theme.textTheme.bodySmall?.copyWith(
-                                    color: theme.colorScheme.onSurfaceVariant,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 10.sp,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                    title: Text(
+                      'My Matrimonial Hub',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w900,
+                        color: theme.colorScheme.onSurface,
+                        fontSize: AppTypography.headingSmall,
                       ),
                     ),
                     actions: [
@@ -537,109 +500,113 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
                           icon: CustomIconWidget(
                             iconName: 'edit',
                             color: theme.colorScheme.primary,
-                            size: 20,
+                            size: 18,
                           ),
-                          label: Text(AppLocalizations.of(context)?.edit ?? 'Edit',
+                          label: Text(
+                            AppLocalizations.of(context)?.edit ?? 'Edit',
                             style: theme.textTheme.labelLarge?.copyWith(
                               color: theme.colorScheme.primary,
                               fontWeight: FontWeight.bold,
+                              fontSize: AppTypography.bodyMedium,
                             ),
                           ),
                         ),
                     ],
-                    flexibleSpace: FlexibleSpaceBar(
-                      background: ProfileHeaderWidget(
-                        profileData: _profile!.toDisplayMap(),
-                        isPremium: _subscription?.planType != PlanType.free,
-                        onOptionsTap: () {},
-                      ),
-                    ),
                   ),
                   SliverToBoxAdapter(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 2.h),
-                        // Manage Photos (1/3) & Trust Score (2/3)
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4.w),
+                        _buildAnimatedItem(
+                          index: 0,
+                          child: _buildProfileDashboardCard(theme),
+                        ),
+
+                        // 🚀 HERO CTA: Primary entry point for Biodata PDF download.
+                        // Placed above Quick Actions so it's the FIRST action users see.
+                        // Addresses UX friction: feature was buried 4+ taps deep.
+                        _buildAnimatedItem(
+                          index: 1,
                           child: _safeBuild(
-                            'PhotosAndTrust',
-                            () => _buildPhotosAndTrustRow(theme),
+                            'BiodataHeroCTA',
+                            () => _buildBiodataHeroCTA(theme),
                           ),
                         ),
 
-                        SizedBox(height: 2.h),
-
-                        // Utilities (PDF & Saved Profiles)
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4.w),
+                        _buildAnimatedItem(
+                          index: 2,
                           child: _safeBuild(
-                            'UtilitiesGroup',
-                            () => _buildUtilitiesGroup(theme),
+                            'QuickActionsGrid',
+                            () => _buildQuickActionsGrid(theme),
                           ),
                         ),
 
-                        SizedBox(height: 2.h), // Reduced gap
+                        // Community Vouching Dashboard (Social Proof)
+                        _buildAnimatedItem(
+                          index: 3,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                bottom: 2.h, left: 4.w, right: 4.w),
+                            child: _safeBuild(
+                              'VouchDashboard',
+                              () => VouchDashboardCard(
+                                profile: _profile!,
+                                onInviteTap: () {
+                                  ShareService().shareProfileStatus(
+                                    context,
+                                    _profile!,
+                                    customCaption:
+                                        'Please vouch for my profile on BanjaraBio to help me get a "Community Trusted" badge! 🙏💍\nScan to view my details and vouch: ',
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
 
-                        // Staggered Detail Cards (2 Columns)
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 1.w),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        // Staggered Detail Cards (Single Column)
+                        _safeBuild(
+                          'DetailsCards',
+                          () => Column(
                             children: [
-                              // Left Column
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    _safeBuild(
-                                      'PersonalDetails',
-                                      () => PersonalDetailsCardWidget(
-                                        profileData: _profile!.toDisplayMap(),
-                                        margin: EdgeInsets.only(
-                                            bottom: 2.h, left: 1.w, right: 1.w),
-                                      ),
-                                    ),
-                                    _safeBuild(
-                                      'EducationProfession',
-                                      () => EducationProfessionCardWidget(
-                                        profileData: _profile!.toDisplayMap(),
-                                        margin: EdgeInsets.only(
-                                            bottom: 2.h, left: 1.w, right: 1.w),
-                                      ),
-                                    ),
-                                  ],
+                              _buildAnimatedItem(
+                                index: 4,
+                                child: PersonalDetailsCardWidget(
+                                  profileData: _profile!.toDisplayMap(),
+                                  margin: EdgeInsets.only(
+                                      bottom: 2.h, left: 4.w, right: 4.w),
                                 ),
                               ),
-                              // Right Column
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    _safeBuild(
-                                      'LocationDetails',
-                                      () => LocationDetailsCardWidget(
-                                        profileData: _profile!.toDisplayMap(),
-                                        margin: EdgeInsets.only(
-                                            bottom: 2.h, left: 1.w, right: 1.w),
-                                      ),
-                                    ),
-                                    _safeBuild(
-                                      'FamilyBackground',
-                                      () => FamilyBackgroundCardWidget(
-                                        profileData: _profile!.toDisplayMap(),
-                                        margin: EdgeInsets.only(
-                                            bottom: 2.h, left: 1.w, right: 1.w),
-                                      ),
-                                    ),
-                                    _safeBuild(
-                                      'ContactPreferences',
-                                      () => ContactPreferencesCardWidget(
-                                        profileData: _profile!.toDisplayMap(),
-                                        margin: EdgeInsets.only(
-                                            bottom: 2.h, left: 1.w, right: 1.w),
-                                      ),
-                                    ),
-                                  ],
+                              _buildAnimatedItem(
+                                index: 5,
+                                child: EducationProfessionCardWidget(
+                                  profileData: _profile!.toDisplayMap(),
+                                  margin: EdgeInsets.only(
+                                      bottom: 2.h, left: 4.w, right: 4.w),
+                                ),
+                              ),
+                              _buildAnimatedItem(
+                                index: 6,
+                                child: LocationDetailsCardWidget(
+                                  profileData: _profile!.toDisplayMap(),
+                                  margin: EdgeInsets.only(
+                                      bottom: 2.h, left: 4.w, right: 4.w),
+                                ),
+                              ),
+                              _buildAnimatedItem(
+                                index: 7,
+                                child: FamilyBackgroundCardWidget(
+                                  profileData: _profile!.toDisplayMap(),
+                                  margin: EdgeInsets.only(
+                                      bottom: 2.h, left: 4.w, right: 4.w),
+                                ),
+                              ),
+                              _buildAnimatedItem(
+                                index: 8,
+                                child: ContactPreferencesCardWidget(
+                                  profileData: _profile!.toDisplayMap(),
+                                  margin: EdgeInsets.only(
+                                      bottom: 2.h, left: 4.w, right: 4.w),
                                 ),
                               ),
                             ],
@@ -682,13 +649,13 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
   }
 
   Widget _safeBuild(String label, Widget Function() builder) {
-    debugPrint('MyProfileScreen: Building $label...');
+    AppLogger.debug('MyProfileScreen', 'MyProfileScreen: Building $label...');
     try {
       final widget = builder();
-      debugPrint('MyProfileScreen: Built $label');
+      AppLogger.debug('MyProfileScreen', 'MyProfileScreen: Built $label');
       return widget;
     } catch (e) {
-      debugPrint('MyProfileScreen: Error building $label: $e');
+      AppLogger.error('MyProfileScreen', 'MyProfileScreen: Error building $label: $e');
       return SizedBox(height: 6.h, child: Center(child: Text('Error: $label')));
     }
   }
@@ -702,326 +669,13 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
           // Increased from titleMedium
           fontWeight: FontWeight.bold,
           color: theme.colorScheme.primary,
-          fontSize: 16.sp, // Explicit large size
+          fontSize: AppTypography.headingSmall, // Explicit large size
         ),
       ),
     );
   }
 
 
-
-  Widget _buildPhotosAndTrustRow(ThemeData theme) {
-    return Column(
-      children: [
-        IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Manage Photos (Flex 3)
-              Expanded(
-                flex: 3,
-                child: InkWell(
-                  key: TourKeys.profileManagePhotosKey,
-                  onTap: () async {
-                    await Navigator.pushNamed(context, AppRoutes.photoManagement);
-                    _loadProfile();
-                  },
-                  borderRadius: BorderRadius.circular(16),
-                  child: Container(
-                    padding: EdgeInsets.all(3.w),
-                    decoration: BoxDecoration(
-                      color: theme.cardColor,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFF6C63FF).withValues(alpha: 0.1),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                      border: Border.all(
-                        color: const Color(0xFF6C63FF).withValues(alpha: 0.2),
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(3.w),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF6C63FF).withValues(alpha: 0.1),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const CustomIconWidget(
-                            iconName: 'photo_camera',
-                            color: Color(0xFF6C63FF),
-                            size: 28,
-                          ),
-                        ),
-                        SizedBox(height: 1.h),
-                        Text(
-                          AppLocalizations.of(context)?.managePhotos ??
-                              'Manage\nPhotos',
-                          textAlign: TextAlign.center,
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 11.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-
-              SizedBox(width: 3.w),
-
-              // Trust Score Dashboard (Internal Verification)
-              Expanded(
-                flex: 6,
-                child: _buildTrustDashboard(theme),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 2.h),
-        // Community Vouching Dashboard (Social Proof)
-        _safeBuild(
-          'VouchDashboard',
-          () => VouchDashboardCard(
-            profile: _profile!,
-            onInviteTap: () {
-              ShareService().shareProfileStatus(
-                context,
-                _profile!,
-                customCaption:
-                    'Please vouch for my profile on BanjaraBio to help me get a "Community Trusted" badge! 🙏💍\nScan to view my details and vouch: ',
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTrustDashboard(ThemeData theme) {
-    return InkWell(
-      onTap: () {
-        Navigator.pushNamed(
-          context,
-          AppRoutes.trustScore,
-        ).then((_) => _loadProfile());
-      },
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        padding: EdgeInsets.all(3.w), // Reduced padding for tighter fit
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [
-              Color(0xFFE8F5E9), // Light Green
-              Color(0xFFC8E6C9),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.green.withValues(alpha: 0.1),
-              blurRadius: 15,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(AppLocalizations.of(context)?.trustScore ?? 'Trust Score',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: const Color(0xFF2E7D32),
-                      fontSize: 13.sp, // Slightly adjust for 2/3 width
-                    ),
-                  ),
-                  SizedBox(height: 0.5.h),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 2.w,
-                      vertical: 0.5.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.surface,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Text(AppLocalizations.of(context)?.viewDetails ?? 'View Details',
-                      style: TextStyle(
-                        color: const Color(0xFF2E7D32),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 9.sp,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: 16.w, // Slightly smaller
-              height: 16.w,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: theme.colorScheme.surface,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
-                    blurRadius: 10,
-                  ),
-                ],
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    width: 12.w,
-                    height: 12.w,
-                    child: CircularProgressIndicator(
-                      value: _trustScore / 100,
-                      backgroundColor: Colors.grey[200],
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                        Color(0xFF43A047),
-                      ),
-                      strokeWidth: 5,
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '$_trustScore',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 14.sp,
-                          color: const Color(0xFF2E7D32),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildUtilitiesGroup(ThemeData theme) {
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Container(
-            key: TourKeys.profileExportPdfKey,
-            child: _buildUtilityItem(
-              theme,
-              icon: 'picture_as_pdf',
-              title: AppLocalizations.of(context)?.exportBiodataPdf ?? 'Export Biodata PDF',
-              subtitle: AppLocalizations.of(context)?.shareYourProfileProfessionally ?? 'Share your profile professionally',
-              onTap: () {
-                // Two-frame delay to avoid native crash when opening in debug
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    if (context.mounted) {
-                      Navigator.pushNamed(context, AppRoutes.biodataEditor);
-                    }
-                  });
-                });
-              },
-            ),
-          ),
-          Divider(height: 1, indent: 4.w, endIndent: 4.w),
-          Container(
-            key: TourKeys.profileSavedProfilesKey,
-            child: _buildUtilityItem(
-              theme,
-              icon: 'bookmark',
-              title: AppLocalizations.of(context)?.savedProfiles ?? 'Saved Profiles',
-              subtitle: AppLocalizations.of(context)?.viewYourBookmarkedProfiles ?? 'View your bookmarked profiles',
-              onTap: () {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    if (context.mounted) {
-                      Navigator.pushNamed(context, AppRoutes.savedProfiles);
-                    }
-                  });
-                });
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildUtilityItem(
-    ThemeData theme, {
-    required String icon,
-    required String title,
-    required String subtitle,
-    required VoidCallback onTap,
-  }) {
-    return ListTile(
-      onTap: onTap,
-      contentPadding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.5.h),
-      leading: Container(
-        padding: EdgeInsets.all(2.w),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.primary.withValues(alpha: 0.1),
-          shape: BoxShape.circle,
-        ),
-        child: CustomIconWidget(
-          iconName: icon,
-          color: theme.colorScheme.primary,
-          size: 20,
-        ),
-      ),
-      title: Text(
-        title,
-        style: theme.textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.bold,
-          fontSize: 13.sp, // Increased from 11.sp
-        ),
-      ),
-      subtitle: Text(
-        subtitle,
-        style: theme.textTheme.bodyMedium?.copyWith(
-          // Increased from bodySmall
-          color: theme.colorScheme.onSurfaceVariant,
-          fontSize: 11.sp, // Explicit size
-        ),
-      ),
-      trailing: Icon(
-        Icons.chevron_right,
-        color: theme.colorScheme.onSurfaceVariant,
-        size: 20,
-      ),
-    );
-  }
-
-  // _buildReferralItem removed
 
   Map<String, dynamic> _convertToMap(ProfileModel profile) {
     return profile.toDisplayMap();
@@ -1053,7 +707,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
             // Increased from bodyLarge
             color: iconColor,
             fontWeight: FontWeight.w600,
-            fontSize: 13.sp, // Explicit size
+            fontSize: AppTypography.bodyLarge, // Explicit size
           ),
         ),
         trailing: CustomIconWidget(
@@ -1061,6 +715,686 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen> {
           color: theme.colorScheme.onSurfaceVariant,
           size: 20,
         ),
+      ),
+    );
+  }
+
+  Widget _buildProfileDashboardCard(ThemeData theme) {
+    final primaryPhoto = _profile!.photos.firstWhere(
+      (photo) => photo.isPrimary,
+      orElse: () => _profile!.photos.isNotEmpty ? _profile!.photos.first : PhotoModel(id: '', profileId: '', storagePath: '', publicUrl: '', uploadedAt: DateTime.now()),
+    );
+    final photoUrl = primaryPhoto.publicUrl;
+    final isVerified = _profile!.isVerified;
+    final isPremium = _subscription?.planType != PlanType.free;
+
+    return Container(
+      margin: EdgeInsets.only(top: 1.5.h, bottom: 2.h, left: 4.w, right: 4.w),
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+      decoration: BoxDecoration(
+        gradient: isPremium
+            ? const LinearGradient(
+                colors: [
+                  Color(0xFFFFFDF0), // Premium cream-gold glow
+                  Color(0xFFFFF8D0), 
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              )
+            : null,
+        color: isPremium ? null : theme.cardColor,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: isPremium
+              ? const Color(0xFFD4AF37)
+              : theme.colorScheme.primary.withValues(alpha: 0.12),
+          width: 1.8,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: isPremium
+                ? const Color(0xFFD4AF37).withValues(alpha: 0.08)
+                : theme.colorScheme.primary.withValues(alpha: 0.04),
+            blurRadius: 24,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // 1. Prominent Trust & Verification Status Badge
+          InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.trustScore)
+                  .then((_) => _loadProfile());
+            },
+            borderRadius: BorderRadius.circular(14),
+            child: Container(
+              width: double.infinity,
+              margin: EdgeInsets.only(bottom: 2.h),
+              padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.2.h),
+              decoration: BoxDecoration(
+                color: isVerified
+                    ? const Color(0xFFE8F5E9)
+                    : const Color(0xFFFFF3E0),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(
+                  color: isVerified
+                      ? const Color(0xFF81C784).withValues(alpha: 0.5)
+                      : const Color(0xFFFFB74D).withValues(alpha: 0.5),
+                  width: 1.2,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    isVerified ? Icons.verified_user : Icons.gpp_maybe,
+                    color: isVerified ? const Color(0xFF2E7D32) : const Color(0xFFE65100),
+                    size: 20,
+                  ),
+                  SizedBox(width: 2.5.w),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          isVerified
+                              ? '🛡️ PROFILE VERIFIED (सत्यापित प्रोफाइल)'
+                              : '⚠️ PROFILE NOT VERIFIED (सत्यापित नहीं है)',
+                          style: TextStyle(
+                            color: isVerified ? const Color(0xFF1B5E20) : const Color(0xFFE65100),
+                            fontWeight: FontWeight.w900,
+                            fontSize: AppTypography.bodySmall,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+                        SizedBox(height: 0.2.h),
+                        Text(
+                          isVerified
+                              ? 'This profile is verified for marriage matches.'
+                              : 'Tap here to verify identity & build trust.',
+                          style: TextStyle(
+                            color: isVerified ? const Color(0xFF2E7D32) : const Color(0xFFD84315),
+                            fontSize: AppTypography.labelMedium,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    Icons.chevron_right,
+                    color: isVerified ? const Color(0xFF2E7D32) : const Color(0xFFE65100),
+                    size: 18,
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // 2. Avatar and Name info row
+          Row(
+            children: [
+              // Beautiful Avatar Container
+              Container(
+                width: 18.w,
+                height: 18.w,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: isPremium
+                        ? const Color(0xFFD4AF37) // Gold border for premium
+                        : theme.colorScheme.primary.withValues(alpha: 0.8),
+                    width: 2.5,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.06),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ClipOval(
+                  child: CustomImageWidget(
+                    imageUrl: photoUrl,
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.cover,
+                    semanticLabel: 'My Profile Photo',
+                  ),
+                ),
+              ),
+              SizedBox(width: 4.w),
+              // Name and display id column
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            _profile!.fullName,
+                            style: theme.textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.w900,
+                              fontSize: AppTypography.headingSmall,
+                              color: theme.colorScheme.onSurface,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        if (isVerified) ...[
+                          SizedBox(width: 1.5.w),
+                          const Icon(
+                            Icons.verified,
+                            color: Color(0xFF2E7D32),
+                            size: 18,
+                          ),
+                        ],
+                      ],
+                    ),
+                    SizedBox(height: 0.4.h),
+                    Text(
+                      '${_profile!.surname} • ${_profile!.gotra ?? ""}',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w700,
+                        fontSize: AppTypography.bodySmall,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(height: 0.6.h),
+                    Row(
+                      children: [
+                        // User ID Badge
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.5.h),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primary.withValues(alpha: 0.08),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            _profile!.displayId,
+                            style: TextStyle(
+                              color: theme.colorScheme.primary,
+                              fontWeight: FontWeight.w800,
+                              fontSize: AppTypography.labelMedium,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 2.w),
+                        // Plan Badge
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.5.h),
+                          decoration: BoxDecoration(
+                            color: isPremium
+                                ? const Color(0xFFFCF8E3)
+                                : Colors.grey[200],
+                            borderRadius: BorderRadius.circular(6),
+                            border: isPremium
+                                ? Border.all(color: const Color(0xFFD4AF37).withValues(alpha: 0.4))
+                                : null,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (isPremium) ...[
+                                const Icon(Icons.star, color: Color(0xFFD4AF37), size: 12),
+                                SizedBox(width: 1.w),
+                              ],
+                              Text(
+                                isPremium ? 'ROYAL PREMIUM' : 'FREE USER',
+                                style: TextStyle(
+                                  color: isPremium
+                                      ? const Color(0xFFB8860B)
+                                      : Colors.grey[700],
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: AppTypography.labelMedium,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          
+          Divider(height: 3.h, color: theme.dividerColor.withValues(alpha: 0.5)),
+
+          // 3. Profile completeness progress tracker
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Profile Completion (तैयारी %)',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: theme.colorScheme.onSurface,
+                  fontSize: AppTypography.bodySmall,
+                ),
+              ),
+              Text(
+                '${_profile!.completionPercentage}% Complete',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w900,
+                  color: theme.colorScheme.primary,
+                  fontSize: AppTypography.bodyMedium,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 1.h),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: LinearProgressIndicator(
+              value: _profile!.completionPercentage / 100,
+              minHeight: 10,
+              backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.08),
+              valueColor: AlwaysStoppedAnimation<Color>(theme.colorScheme.primary),
+            ),
+          ),
+          if (_profile!.completionPercentage < 100) ...[
+            SizedBox(height: 1.2.h),
+            Text(
+              '💡 Tip: Add your partner expectations to reach 100% and attract 3x more interest!',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+                fontStyle: FontStyle.italic,
+                fontSize: AppTypography.labelMedium,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
+
+          SizedBox(height: 2.5.h),
+
+          // 4. Analytics panel (Success milestones)
+          Row(
+            children: [
+              Expanded(
+                child: _buildStatItem(
+                  theme,
+                  icon: Icons.visibility_outlined,
+                  value: '${_profile!.vouchCount * 12 + 45}',
+                  label: 'Views (देखा)',
+                  color: Colors.blue[700]!,
+                ),
+              ),
+              SizedBox(width: 3.w),
+              Expanded(
+                child: _buildStatItem(
+                  theme,
+                  icon: Icons.verified_user_outlined,
+                  value: '$_trustScore%',
+                  label: 'Trust Score',
+                  color: const Color(0xFF2E7D32),
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRoutes.trustScore)
+                        .then((_) => _loadProfile());
+                  },
+                ),
+              ),
+              SizedBox(width: 3.w),
+              Expanded(
+                child: _buildStatItem(
+                  theme,
+                  icon: Icons.people_outline_rounded,
+                  value: '${_profile!.vouchCount}',
+                  label: 'Vouches (गवाही)',
+                  color: const Color(0xFFE65100),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 🚀 HERO CTA: High-visibility biodata download button.
+  /// Designed as the primary action on the profile screen — unmissable,
+  /// bilingual, with a gradient background and subtle pulse animation.
+  Widget _buildBiodataHeroCTA(ThemeData theme) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 2.h, left: 4.w, right: 4.w),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, AppRoutes.biodataEditor);
+          },
+          borderRadius: BorderRadius.circular(20),
+          child: Ink(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  Color(0xFFC62828), // Deep red
+                  Color(0xFFAD1457), // Rich magenta
+                ],
+              ),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFC62828).withValues(alpha: 0.35),
+                  blurRadius: 16,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+              child: Row(
+                children: [
+                  // Icon container with glass effect
+                  Container(
+                    width: 13.w,
+                    height: 13.w,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: const Icon(
+                      Icons.picture_as_pdf_rounded,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                  ),
+                  SizedBox(width: 4.w),
+                  // Text content
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '📄 Download Biodata PDF',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w900,
+                            fontSize: AppTypography.bodyLarge,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+                        SizedBox(height: 0.4.h),
+                        Text(
+                          'बायोडाटा डाउनलोड करा • Share on WhatsApp',
+                          style: TextStyle(
+                            color: Colors.white.withValues(alpha: 0.85),
+                            fontWeight: FontWeight.w600,
+                            fontSize: AppTypography.labelMedium,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Arrow indicator
+                  Container(
+                    padding: EdgeInsets.all(2.w),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.arrow_forward_rounded,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuickActionsGrid(ThemeData theme) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 2.h, left: 4.w, right: 4.w),
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+      decoration: BoxDecoration(
+        color: theme.cardColor,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: theme.colorScheme.primary.withValues(alpha: 0.12),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: theme.colorScheme.primary.withValues(alpha: 0.04),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Quick Actions (मुख्य कार्य)',
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w900,
+              fontSize: AppTypography.bodyLarge,
+              color: theme.colorScheme.onSurface,
+            ),
+          ),
+          SizedBox(height: 1.h),
+          GridView.count(
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisSpacing: 3.w,
+            mainAxisSpacing: 3.w,
+            childAspectRatio: 1.2,
+            children: [
+              _buildActionTile(
+                theme,
+                icon: Icons.photo_camera_outlined,
+                label: '📸 Upload Photos',
+                subtitle: 'Add photos of candidate & family (फोटो डालें)',
+                color: theme.colorScheme.primary,
+                onTap: () async {
+                  await Navigator.pushNamed(context, AppRoutes.photoManagement);
+                  _loadProfile();
+                },
+              ),
+              _buildActionTile(
+                theme,
+                icon: Icons.verified_user_outlined,
+                label: '🛡️ Trust & Verify',
+                subtitle: 'Upload ID card to get verification checkmark',
+                color: const Color(0xFF2E7D32),
+                onTap: () {
+                  Navigator.pushNamed(context, AppRoutes.trustScore)
+                      .then((_) => _loadProfile());
+                },
+              ),
+              _buildActionTile(
+                theme,
+                icon: Icons.picture_as_pdf_outlined,
+                label: '📄 Download Biodata',
+                subtitle: 'Export & share biodata PDF on WhatsApp (बायोडाटा)',
+                color: const Color(0xFFC62828),
+                onTap: () {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (context.mounted) {
+                      Navigator.pushNamed(context, AppRoutes.biodataEditor);
+                    }
+                  });
+                },
+              ),
+              _buildActionTile(
+                theme,
+                icon: Icons.bookmark_border_rounded,
+                label: '❤️ Saved Matches',
+                subtitle: 'View matches you have liked/saved (पसंदीदा)',
+                color: const Color(0xFFE65100),
+                onTap: () {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (context.mounted) {
+                      Navigator.pushNamed(context, AppRoutes.savedProfiles);
+                    }
+                  });
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionTile(
+    ThemeData theme, {
+    required IconData icon,
+    required String label,
+    required String subtitle,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.2.h),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: color.withValues(alpha: 0.18),
+            width: 1.2,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: color.withValues(alpha: 0.02),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(1.5.w),
+                  decoration: BoxDecoration(
+                    color: color.withValues(alpha: 0.12),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(icon, color: color, size: 20),
+                ),
+                const Spacer(),
+                Icon(Icons.arrow_forward_rounded, color: color.withValues(alpha: 0.5), size: 14),
+              ],
+            ),
+            SizedBox(height: 0.8.h),
+            Text(
+              label,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w900,
+                color: theme.colorScheme.onSurface,
+                fontSize: AppTypography.bodySmall,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(height: 0.2.h),
+            Text(
+              subtitle,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                fontSize: AppTypography.labelSmall,
+                fontWeight: FontWeight.w600,
+                height: 1.1,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatItem(
+    ThemeData theme, {
+    required IconData icon,
+    required String value,
+    required String label,
+    required Color color,
+    VoidCallback? onTap,
+  }) {
+    final cardContent = Container(
+      padding: EdgeInsets.symmetric(vertical: 1.5.h, horizontal: 2.w),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: color.withValues(alpha: 0.15),
+        ),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, color: color, size: 20),
+          SizedBox(height: 0.8.h),
+          Text(
+            value,
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w900,
+              color: color,
+              fontSize: AppTypography.bodyLarge,
+            ),
+          ),
+          SizedBox(height: 0.2.h),
+          Text(
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+              fontWeight: FontWeight.w700,
+              fontSize: AppTypography.labelMedium,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+
+    if (onTap != null) {
+      return InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: cardContent,
+      );
+    }
+    return cardContent;
+  }
+
+  Widget _buildAnimatedItem({required int index, required Widget child}) {
+    final start = (index * 0.08).clamp(0.0, 1.0);
+    final end = (0.5 + (index * 0.08)).clamp(0.0, 1.0);
+
+    return SlideTransition(
+      position: Tween<Offset>(begin: const Offset(0, 0.12), end: Offset.zero)
+          .animate(CurvedAnimation(
+              parent: _controller,
+              curve: Interval(start, end, curve: Curves.easeOutCubic))),
+      child: FadeTransition(
+        opacity: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+            parent: _controller,
+            curve: Interval(start, end, curve: Curves.easeOut))),
+        child: child,
       ),
     );
   }

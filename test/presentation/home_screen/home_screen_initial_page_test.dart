@@ -24,6 +24,8 @@ import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:banjarabio/core/session_manager.dart';
 
 class MockProfileRepository extends Mock implements ProfileRepository {}
 class MockShareRepository extends Mock implements ShareRepository {}
@@ -110,7 +112,7 @@ void main() {
     ));
   });
 
-  setUp(() {
+  setUp(() async {
     mockProfileRepository = MockProfileRepository();
     mockShareRepository = MockShareRepository();
     mockBookmarkRepository = MockBookmarkRepository();
@@ -136,6 +138,11 @@ void main() {
     LocalCacheService().testBoxOpener = (name) => mockBox;
     when(() => mockBox.get(any())).thenReturn(null);
     when(() => mockBox.put(any(), any())).thenAnswer((_) async => {});
+
+    // Setup SessionManager
+    SessionManager.instance.reset();
+    SharedPreferences.setMockInitialValues({});
+    await SessionManager.instance.init();
 
     // Reset components if needed
     StartupOrchestrator().reset();
@@ -232,9 +239,14 @@ void main() {
     // Initial pump
     await tester.pumpWidget(createWidgetUnderTest());
     
-    // Advancing through initial phases
-    await StartupOrchestrator().advanceToPhase(StartupPhase.booting);
-    await StartupOrchestrator().advanceToPhase(StartupPhase.critical);
+    // Advancing through initial phases (staged using non-blocking pump durations to avoid FakeAsync deadlocks)
+    final f1 = StartupOrchestrator().advanceToPhase(StartupPhase.booting);
+    await tester.pump(const Duration(milliseconds: 100));
+    await f1;
+
+    final f2 = StartupOrchestrator().advanceToPhase(StartupPhase.critical);
+    await tester.pump(const Duration(milliseconds: 100));
+    await f2;
     
     // Profiles shouldn't be loaded yet as we haven't advanced to interactive phase
     expect(find.text('John Doe'), findsNothing);

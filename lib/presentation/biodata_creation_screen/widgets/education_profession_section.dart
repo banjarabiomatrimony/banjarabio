@@ -10,6 +10,7 @@ import 'package:banjarabio/widgets/custom_icon_widget.dart';
 class EducationProfessionSection extends StatefulWidget {
   final Map<String, dynamic> formData;
   final bool isAdminEdit;
+  final bool isLite;
   final Function(String, dynamic) onUpdate;
   final Function(Map<String, dynamic>) onBatchUpdate;
   final Function(bool) onValidationChange;
@@ -18,6 +19,7 @@ class EducationProfessionSection extends StatefulWidget {
     super.key,
     required this.formData,
     this.isAdminEdit = false,
+    this.isLite = false,
     required this.onUpdate,
     required this.onBatchUpdate,
     required this.onValidationChange,

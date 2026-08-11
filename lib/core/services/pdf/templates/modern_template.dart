@@ -58,6 +58,7 @@ class ModernTemplate extends BiodataTemplateBase {
       ),
     );
 
+    addFullPagePhotoPage(pdf, accentColor: emeraldGreen);
     return pdf;
   }
 
@@ -219,7 +220,6 @@ class ModernTemplate extends BiodataTemplateBase {
           padding: const pw.EdgeInsets.all(12),
           decoration: pw.BoxDecoration(
             border: pw.Border.all(color: primaryColor, width: 0.5),
-            color: const PdfColor.fromInt(0xFFFAFAFA),
           ),
           child: pw.Text(
             content.partnerExpectations,

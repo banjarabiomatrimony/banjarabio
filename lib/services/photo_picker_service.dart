@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as p;
 import 'package:banjarabio/core/services/image_compression_service.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// [PhotoPickResult]
 /// A simple data class to return the result of the operation.
@@ -87,9 +88,9 @@ class PhotoPickerService {
           }
         }
       }
-      debugPrint('🧹 Cleaned up old compressed files');
+      AppLogger.debug('PhotoPickerService', '🧹 Cleaned up old compressed files');
     } catch (e) {
-      debugPrint('Error cleaning up: $e');
+      AppLogger.error('PhotoPickerService', 'Error cleaning up: $e');
     }
   }
 
@@ -129,8 +130,8 @@ class PhotoPickerService {
       // 3. Process (Compress)
       return await processImage(pickedFile.path);
     } catch (e, stack) {
-      debugPrint('PhotoPicker Error: $e');
-      debugPrintStack(stackTrace: stack);
+      AppLogger.error('PhotoPickerService', 'PhotoPicker Error: $e');
+      AppLogger.error('PhotoPickerService', 'Stack trace', null, stack);
       return PhotoPickResult(error: 'Failed to pick image: $e');
     }
   }
@@ -171,7 +172,7 @@ class PhotoPickerService {
         compressedSizeKB: compressedSizeKB,
       );
     } catch (e) {
-      debugPrint('PhotoPicker Compression Error: $e');
+      AppLogger.error('PhotoPickerService', 'PhotoPicker Compression Error: $e');
       // Always return SOMETHING so the user flow doesn't break
       return PhotoPickResult(filePath: imagePath, error: e.toString());
     }
@@ -184,17 +185,18 @@ class PhotoPickerService {
   Future<bool> _requestPermission(ImageSource source) async {
     if (kIsWeb) return true;
 
-    // Permission handling differs by OS version, but permission_handler
-    // simplifies this significantly.
-    final permission = source == ImageSource.camera
-        ? Permission.camera
-        : Permission.photos;
+    // Camera requires camera permission
+    if (source == ImageSource.camera) {
+      final status = await Permission.camera.request();
+      return status.isGranted;
+    }
 
-    final status = await permission.request();
+    // Android 13+ System Photo Picker needs zero permissions
+    if (io.Platform.isAndroid) return true;
 
-    // Handle "Limited" access on iOS 14+ correctly
+    // iOS Photo Permission
+    final status = await Permission.photos.request();
     if (status.isLimited) return true;
-
     return status.isGranted;
   }
 
@@ -207,7 +209,7 @@ class PhotoPickerService {
         final file = io.File(path);
         if (file.existsSync()) {
           file.deleteSync();
-          debugPrint('🧹 Cleaned up temp source file');
+          AppLogger.debug('PhotoPickerService', '🧹 Cleaned up temp source file');
         }
       }
     } catch (_) {

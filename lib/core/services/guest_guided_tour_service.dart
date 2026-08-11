@@ -4,6 +4,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:banjarabio/core/providers/locale_provider.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Enum to track the current stage of the multi-screen tour
 enum TourStage {
@@ -96,7 +97,7 @@ class GuestGuidedTourService extends ChangeNotifier {
   }) {
     // 🚀 NEW REQUIREMENT: Tour only available in Guest Mode
     if (!LocalCacheService().isGuestMode()) {
-      debugPrint('GuestGuidedTourService: Skipping tour - not in Guest Mode');
+      AppLogger.warn('GuestGuidedTourService', 'GuestGuidedTourService: Skipping tour - not in Guest Mode');
       return;
     }
 

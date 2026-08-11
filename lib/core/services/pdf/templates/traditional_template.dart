@@ -76,7 +76,6 @@ class TraditionalTemplate extends BiodataTemplateBase {
                   width: double.infinity,
                   padding: const pw.EdgeInsets.all(15),
                   decoration: pw.BoxDecoration(
-                    color: const PdfColor.fromInt(0x0D000000), // Very light shadow
                     border: pw.Border.all(color: color, width: 0.5),
                   ),
                   child: pw.Text(
@@ -90,6 +89,7 @@ class TraditionalTemplate extends BiodataTemplateBase {
         ],
       ),
     );
+    addFullPagePhotoPage(pdf, accentColor: color);
     return pdf;
   }
 

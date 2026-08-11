@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:banjarabio/notification/core/notification_base.dart';
 import 'package:banjarabio/notification/core/notification_payload.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Service to handle local notifications for foreground alerts and scheduled messages.
 ///
@@ -297,9 +298,48 @@ class LocalNotificationService implements NotificationBase {
         FilePathAndroidBitmap(filePath),
       );
     } catch (e) {
-      debugPrint('🔔 [Local] Failed to download notification image: $e');
+      AppLogger.error('LocalNotificationService', '🔔 [Local] Failed to download notification image: $e');
       return null;
     }
+  }
+
+  /// Schedules a daily repeating notification.
+  Future<void> scheduleDaily({
+    required int id,
+    required String title,
+    required String body,
+    required NotificationPayload payload,
+  }) async {
+    final channel = _getChannelForCategory(payload.category);
+
+    final AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+      channel.id,
+      channel.name,
+      channelDescription: channel.description,
+      importance: channel.importance,
+      priority: Priority.high,
+      ticker: title,
+      category: AndroidNotificationCategory.reminder,
+    );
+
+    final NotificationDetails details = NotificationDetails(
+      android: androidDetails,
+      iOS: const DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      ),
+    );
+
+    await _localPlugin.periodicallyShow(
+      id,
+      title,
+      body,
+      RepeatInterval.daily,
+      details,
+      payload: payload.toJsonString(),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+    );
   }
 
   @override

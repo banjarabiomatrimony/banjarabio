@@ -6,6 +6,7 @@ import 'package:banjarabio/core/repositories/trust_score_repository.dart';
 import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/services/photo_picker_service.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 class LiveSelfieScreen extends StatefulWidget {
   const LiveSelfieScreen({super.key});
@@ -161,7 +162,7 @@ class _LiveSelfieScreenState extends State<LiveSelfieScreen> {
               ),
               SizedBox(height: 3.h),
               Text(AppLocalizations.of(context)?.livenessCheck ?? 'Liveness Check',
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: AppTypography.headingMedium, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 2.h),
               Text(AppLocalizations.of(context)?.pleaseTakeASelfieToVerifyThatYouAreAReal ?? 'Please take a selfie to verify that you are a real person. Ensure you are in a well-lit area.',

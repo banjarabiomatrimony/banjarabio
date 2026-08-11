@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,6 +6,7 @@ import 'package:sizer/sizer.dart';
 import 'package:banjarabio/services/ads/ad_service.dart';
 import 'package:banjarabio/core/session_manager.dart';
 import 'package:banjarabio/core/providers/home_tab_provider.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 class BannerAdWidget extends ConsumerStatefulWidget {
   const BannerAdWidget({super.key});
@@ -15,6 +17,7 @@ class BannerAdWidget extends ConsumerStatefulWidget {
 
 class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticKeepAliveClientMixin {
   BannerAd? _bannerAd;
+  Timer? _delayTimer;
   bool _isAdLoaded = false;
   bool _isAdFailed = false;
   bool _isAdLoading = false;
@@ -35,9 +38,9 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
     // causes Signal 3 ANR on Vivo devices when competing with image decoding.
     // Note: Since AdMobService init is now in IDLE phase (20s), this widget
     // will actually wait until 20s to load.
-    Future.delayed(const Duration(seconds: 15), () {
+    _delayTimer = Timer(const Duration(seconds: 15), () {
       if (!mounted) return;
-      debugPrint('Ads: [WIDGET] 15s delay passed. Ready to load.');
+      AppLogger.debug('BannerAdWidget', 'Ads: [WIDGET] 15s delay passed. Ready to load.');
       setState(() => _startupDelayPassed = true);
       if (!_isAdLoaded && !_isAdFailed && !_isAdLoading && !SessionManager.instance.isPremium) {
         _loadBannerAd();
@@ -60,8 +63,8 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
       return;
     }
 
-    debugPrint('Ads: [WIDGET] Using Unit ID: ${AdMobService.bannerAdUnitId}');
-    debugPrint('Ads: [WIDGET] Requesting Banner with size: $adSize');
+    AppLogger.debug('BannerAdWidget', 'Ads: [WIDGET] Using Unit ID: ${AdMobService.bannerAdUnitId}');
+    AppLogger.debug('BannerAdWidget', 'Ads: [WIDGET] Requesting Banner with size: $adSize');
 
     _bannerAd = BannerAd(
       adUnitId: AdMobService.bannerAdUnitId ?? '',
@@ -69,7 +72,7 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
       request: const AdRequest(),
       listener: BannerAdListener(
         onAdLoaded: (ad) {
-          debugPrint('Ads: [WIDGET] SUCCESS: ${ad.adUnitId}');
+          AppLogger.debug('BannerAdWidget', 'Ads: [WIDGET] SUCCESS: ${ad.adUnitId}');
           if (mounted) {
             setState(() {
               _isAdLoaded = true;
@@ -78,7 +81,7 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
           }
         },
         onAdFailedToLoad: (ad, error) {
-          debugPrint('Ads: [WIDGET] FAILED: ${error.code} - ${error.message}');
+          AppLogger.error('BannerAdWidget', 'Ads: [WIDGET] FAILED: ${error.code} - ${error.message}');
           ad.dispose();
           if (mounted) {
             setState(() {
@@ -95,6 +98,7 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
 
   @override
   void dispose() {
+    _delayTimer?.cancel();
     _bannerAd?.dispose();
     super.dispose();
   }

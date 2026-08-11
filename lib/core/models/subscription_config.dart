@@ -30,6 +30,7 @@ class PlanFeatures {
   final bool prioritySupport;
   final bool matchmakerSupport;
   final bool allowFirstMessage;
+  final int newChatsPerWeek; // 0 = no initiation, 999 = unlimited
 
   // ── VIP-Exclusive Features ────────────────────────────────────────────────
   final bool isVip;
@@ -58,6 +59,7 @@ class PlanFeatures {
     this.prioritySupport = false,
     this.matchmakerSupport = false,
     this.allowFirstMessage = false,
+    this.newChatsPerWeek = 0,
     this.isVip = false,
     this.contactUnlocksPerMonth = 0,
     this.handpickedMatchesPerWeek = 0,
@@ -123,6 +125,33 @@ class PlanFeatures {
 @immutable
 class SubscriptionConfig {
   // ─────────────────────────────────────────────────────────────────────────
+  // PLAN VISIBILITY TOGGLE
+  // Add or remove PlanType entries to show/hide them in the app UI.
+  // All plan definitions remain intact for existing subscribers.
+  // ─────────────────────────────────────────────────────────────────────────
+  static const Set<PlanType> enabledPlans = {
+    PlanType.free,
+    PlanType.mass_market,
+    PlanType.mass_market_annual,
+    // Re-enable these when user base grows:
+    // PlanType.standard,
+    // PlanType.silver,
+    // PlanType.gold,
+    // PlanType.platinum,
+    // PlanType.eternal,
+    // PlanType.elite,
+    // PlanType.royal,
+    // PlanType.eternal_elite,
+  };
+
+  /// Check if a plan is currently enabled for display
+  static bool isPlanEnabled(PlanType planType) =>
+      enabledPlans.contains(planType);
+
+  /// Check if any VIP plans are currently enabled
+  static bool get hasEnabledVipPlans => enabledPlans.any((p) => p.isVipPlan);
+
+  // ─────────────────────────────────────────────────────────────────────────
   // FREE PLAN
   // ─────────────────────────────────────────────────────────────────────────
   static const free = PlanFeatures(
@@ -137,6 +166,39 @@ class SubscriptionConfig {
   );
 
   // ─────────────────────────────────────────────────────────────────────────
+  // MASS-MARKET PLANS (₹50/month or ₹200/year)
+  // Ultra-low-barrier communication upgrade for mass adoption.
+  // Active until 100,000 downloads milestone.
+  // ─────────────────────────────────────────────────────────────────────────
+
+  /// Mass-Market Monthly – ₹50 for 1 month
+  static const massMarketMonthly = PlanFeatures(
+    mrp: 50,
+    price: 50,
+    duration: 1,
+    profileViewsPerDay: 10,
+    photosLimit: 2,
+    sharesPerMonth: 5,
+    bookmarksLimit: 10,
+    messaging: true,
+    newChatsPerWeek: 2,
+  );
+
+  /// Mass-Market Annual – ₹200 for 12 months (67% savings vs monthly)
+  static const massMarketAnnual = PlanFeatures(
+    mrp: 600,
+    price: 200,
+    duration: 12,
+    bulkDiscountPercent: 67,
+    profileViewsPerDay: 10,
+    photosLimit: 2,
+    sharesPerMonth: 5,
+    bookmarksLimit: 10,
+    messaging: true,
+    newChatsPerWeek: 2,
+  );
+
+  // ─────────────────────────────────────────────────────────────────────────
   // SELF-SERVICE PLANS (Tab 1)
   // MRP base: ₹1,500/month → bulk discounts for longer durations
   // ─────────────────────────────────────────────────────────────────────────
@@ -146,11 +208,16 @@ class SubscriptionConfig {
     mrp: 1500,
     price: 1500,
     duration: 1,
-    profileViewsPerDay: 50,
-    photosLimit: 3,
+    profileViewsPerDay: 100,
+    photosLimit: 5,
     sharesPerMonth: 999, // unlimited
     bookmarksLimit: 999, // unlimited
     messaging: true,
+    newChatsPerWeek: 999, // unlimited
+    advancedFilters: true,
+    profileBoostPerMonth: 1,
+    adFree: true,
+    contactUnlocksPerMonth: 5,
   );
 
   /// Silver plan – MRP ₹4,500, Offer ₹3,600 (20% OFF) for 3 months
@@ -159,13 +226,17 @@ class SubscriptionConfig {
     price: 3600,
     duration: 3,
     bulkDiscountPercent: 20,
-    profileViewsPerDay: 50,
-    photosLimit: 5,
+    profileViewsPerDay: 150,
+    photosLimit: 7,
     sharesPerMonth: 999,
     bookmarksLimit: 999,
     messaging: true,
+    newChatsPerWeek: 999,
     advancedFilters: true,
-    profileBoostPerMonth: 1,
+    profileBoostPerMonth: 2,
+    verificationBadge: true,
+    adFree: true,
+    contactUnlocksPerMonth: 10,
   );
 
   /// Gold plan – MRP ₹9,000, Offer ₹6,300 (30% OFF) for 6 months (MOST POPULAR)
@@ -179,11 +250,13 @@ class SubscriptionConfig {
     sharesPerMonth: 999,
     bookmarksLimit: 999,
     messaging: true,
+    newChatsPerWeek: 999,
     advancedFilters: true,
-    profileBoostPerMonth: 2,
+    profileBoostPerMonth: 3,
     verificationBadge: true,
     adFree: true,
     prioritySupport: true,
+    contactUnlocksPerMonth: 25,
   );
 
   /// Platinum plan – MRP ₹18,000, Offer ₹10,800 (40% OFF) for 1 year (BEST VALUE)
@@ -197,12 +270,14 @@ class SubscriptionConfig {
     sharesPerMonth: 999,
     bookmarksLimit: 999,
     messaging: true,
+    newChatsPerWeek: 999,
     advancedFilters: true,
     profileBoostPerMonth: 5,
     verificationBadge: true,
     adFree: true,
     prioritySupport: true,
     matchmakerSupport: true,
+    contactUnlocksPerMonth: 50,
   );
 
   /// Eternal plan – MRP ₹30,000, Offer ₹15,000 (50% OFF) – Till U Marry
@@ -216,6 +291,7 @@ class SubscriptionConfig {
     sharesPerMonth: 999,
     bookmarksLimit: 999,
     messaging: true,
+    newChatsPerWeek: 999,
     advancedFilters: true,
     profileBoostPerMonth: 5,
     verificationBadge: true,
@@ -223,6 +299,7 @@ class SubscriptionConfig {
     prioritySupport: true,
     matchmakerSupport: true,
     hasBiodataPremium: true,
+    contactUnlocksPerMonth: 75,
   );
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -242,13 +319,14 @@ class SubscriptionConfig {
     sharesPerMonth: 999,
     bookmarksLimit: 999,
     messaging: true,
+    newChatsPerWeek: 999,
     advancedFilters: true,
     profileBoostPerMonth: 10,
     verificationBadge: true,
     adFree: true,
     prioritySupport: true,
     matchmakerSupport: true,
-    contactUnlocksPerMonth: 30,
+    contactUnlocksPerMonth: 100,
     handpickedMatchesPerWeek: 1,
     hasProfileMakeover: true,
     hasFeaturedBadge: true,
@@ -268,13 +346,14 @@ class SubscriptionConfig {
     sharesPerMonth: 999,
     bookmarksLimit: 999,
     messaging: true,
+    newChatsPerWeek: 999,
     advancedFilters: true,
     profileBoostPerMonth: 10,
     verificationBadge: true,
     adFree: true,
     prioritySupport: true,
     matchmakerSupport: true,
-    contactUnlocksPerMonth: 100,
+    contactUnlocksPerMonth: 250,
     handpickedMatchesPerWeek: 3,
     hasPersonalManager: true,
     hasProfileMakeover: true,
@@ -291,10 +370,11 @@ class SubscriptionConfig {
     bulkDiscountPercent: 50,
     isVip: true,
     profileViewsPerDay: 999,
-    photosLimit: 15,
+    photosLimit: 999, // unlimited
     sharesPerMonth: 999,
     bookmarksLimit: 999,
     messaging: true,
+    newChatsPerWeek: 999,
     advancedFilters: true,
     profileBoostPerMonth: 999, // unlimited
     verificationBadge: true,
@@ -331,6 +411,10 @@ class SubscriptionConfig {
   /// Get features for a specific plan type
   static PlanFeatures getFeatures(PlanType planType) {
     switch (planType) {
+      case PlanType.mass_market:
+        return massMarketMonthly;
+      case PlanType.mass_market_annual:
+        return massMarketAnnual;
       case PlanType.standard:
         return standard;
       case PlanType.silver:
@@ -359,23 +443,27 @@ class SubscriptionConfig {
   }
 
   /// Get Self-Service paid plans for Tab 1
+  /// Filtered by [enabledPlans] toggle.
   static List<MapEntry<PlanType, PlanFeatures>> getSelfServicePlans() {
-    return [
-      const MapEntry(PlanType.standard, standard),
-      const MapEntry(PlanType.silver, silver),
-      const MapEntry(PlanType.gold, gold),
-      const MapEntry(PlanType.platinum, platinum),
-      const MapEntry(PlanType.eternal, eternal),
-    ];
+    return const [
+      MapEntry(PlanType.mass_market, massMarketMonthly),
+      MapEntry(PlanType.mass_market_annual, massMarketAnnual),
+      MapEntry(PlanType.standard, standard),
+      MapEntry(PlanType.silver, silver),
+      MapEntry(PlanType.gold, gold),
+      MapEntry(PlanType.platinum, platinum),
+      MapEntry(PlanType.eternal, eternal),
+    ].where((entry) => enabledPlans.contains(entry.key)).toList();
   }
 
   /// Get VIP Matchmaker plans for Tab 2
+  /// Filtered by [enabledPlans] toggle.
   static List<MapEntry<PlanType, PlanFeatures>> getVipPlans() {
-    return [
-      const MapEntry(PlanType.elite, elite),
-      const MapEntry(PlanType.royal, royal),
-      const MapEntry(PlanType.eternal_elite, eternalElite),
-    ];
+    return const [
+      MapEntry(PlanType.elite, elite),
+      MapEntry(PlanType.royal, royal),
+      MapEntry(PlanType.eternal_elite, eternalElite),
+    ].where((entry) => enabledPlans.contains(entry.key)).toList();
   }
 
   /// Backward-compatible: returns Self-Service plans (was getAllPaidPlans)
@@ -402,6 +490,10 @@ class SubscriptionConfig {
     final oneTimeLabel = l10n?.oneTime ?? 'One Time';
 
     switch (planType) {
+      case PlanType.mass_market:
+        return 'Active Member - 1 Month';
+      case PlanType.mass_market_annual:
+        return 'Active Member - 1 $yearLabel';
       case PlanType.standard:
         final name = l10n?.standardPlanName ?? 'Standard';
         return '$name - 1 Month';
@@ -439,6 +531,10 @@ class SubscriptionConfig {
   /// Get plan description
   static String getDescription(PlanType planType, [AppLocalizations? l10n]) {
     switch (planType) {
+      case PlanType.mass_market:
+        return 'Start conversations with matches';
+      case PlanType.mass_market_annual:
+        return 'Save more with annual plan';
       case PlanType.standard:
         return l10n?.standardPlanDesc ?? 'Try premium features for a month';
       case PlanType.silver:
@@ -490,18 +586,20 @@ class SubscriptionConfig {
     if (current == target) return true;
     if (target == PlanType.free) return true;
 
-    // Tier order: Eternal Elite > Royal > Elite > Eternal > Platinum > Gold > Silver > Standard > Free
+    // Tier order: Eternal Elite > Royal > Elite > Eternal > Platinum > Gold > Silver > Standard > Mass Market Annual > Mass Market > Free
     const tierOrder = {
-      PlanType.eternal_elite: 8,
-      PlanType.royal: 7,
-      PlanType.elite: 6,
-      PlanType.eternal: 5,
-      PlanType.platinum: 4,
-      PlanType.gold: 3,
-      PlanType.silver: 2,
-      PlanType.standard: 1,
-      PlanType.vip: 8,
-      PlanType.premium: 4,
+      PlanType.eternal_elite: 10,
+      PlanType.royal: 9,
+      PlanType.elite: 8,
+      PlanType.eternal: 7,
+      PlanType.platinum: 6,
+      PlanType.gold: 5,
+      PlanType.silver: 4,
+      PlanType.standard: 3,
+      PlanType.mass_market_annual: 2,
+      PlanType.mass_market: 1,
+      PlanType.vip: 10,
+      PlanType.premium: 6,
       PlanType.basic: 1,
       PlanType.free: 0,
       PlanType.unknown: 0,

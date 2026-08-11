@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:banjarabio/notification/core/notification_payload.dart';
+import 'package:banjarabio/notification/features/local_notification_service.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Behavioral Nudge Engine.
 ///
@@ -214,5 +216,61 @@ class NudgeEngine {
       shown.add(nudgeId);
       await prefs.setStringList(_prefKeyNudgesShown, shown);
     }
+  }
+
+  /// Schedules or cancels the daily Mass-Market subscription nudge.
+  Future<void> scheduleDailyMassMarketNudge({required bool isPremium}) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    if (isPremium) {
+      // User is premium, cancel any scheduled nudge
+      await LocalNotificationService().cancel(202020);
+      AppLogger.debug('NudgeEngine', 'Daily Mass-Market nudge cancelled because user is premium');
+      return;
+    }
+
+    // List of high-conversion nudge messages targeting free/non-paying users
+    final messages = [
+      (
+        'Unlock Unlimited Replies! 🔓',
+        'Get unlimited replies and 10 daily profile views for just ₹20/month. Upgrade to Mass-Market now!'
+      ),
+      (
+        'Connect for just ₹20/month! 💖',
+        'Start chatting with your compatible matches immediately. Upgrade to Mass-Market today!'
+      ),
+      (
+        'Find Your Life Partner for ₹20 💍',
+        'Unlock daily profile views & unlimited messaging. Upgrade to Mass-Market now!'
+      ),
+    ];
+
+    // Pick a message randomly or based on a counter to rotate them
+    final index = prefs.getInt('mass_market_nudge_index') ?? 0;
+    final nextIndex = (index + 1) % messages.length;
+    await prefs.setInt('mass_market_nudge_index', nextIndex);
+
+    final selected = messages[index];
+    final payload = NotificationPayload(
+      id: 'nudge_mass_market_daily',
+      title: selected.$1,
+      body: selected.$2,
+      route: '/subscription',
+      category: NotificationCategory.nudge,
+      data: {'nudge_type': 'mass_market_daily'},
+    );
+
+    // Schedule daily notification via LocalNotificationService
+    await LocalNotificationService().scheduleDaily(
+      id: 202020,
+      title: selected.$1,
+      body: selected.$2,
+      payload: payload,
+    );
+
+    AppLogger.debug(
+      'NudgeEngine',
+      'Scheduled daily Mass-Market nudge: "${selected.$1}" (Index: $index)',
+    );
   }
 }

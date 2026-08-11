@@ -1,5 +1,3 @@
-
-import 'package:flutter/foundation.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,20 +17,22 @@ import 'package:banjarabio/core/providers/profile_providers.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/core/models/coupon_model.dart';
 import 'package:banjarabio/core/repositories/coupon_repository.dart';
+import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/core/models/subscription_config.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Biodata PDF screen – uses shared [RazorpayRepository] for unlock payment.
-class BiodataPdfScreenRiverpod extends ConsumerStatefulWidget {
-  const BiodataPdfScreenRiverpod({super.key});
+class BiodataPdfScreen extends ConsumerStatefulWidget {
+  const BiodataPdfScreen({super.key});
 
   @override
-  ConsumerState<BiodataPdfScreenRiverpod> createState() =>
-      _BiodataPdfScreenRiverpodState();
+  ConsumerState<BiodataPdfScreen> createState() =>
+      _BiodataPdfScreenState();
 }
 
-class _BiodataPdfScreenRiverpodState
-    extends ConsumerState<BiodataPdfScreenRiverpod> {
+class _BiodataPdfScreenState
+    extends ConsumerState<BiodataPdfScreen> {
   late final ProfileRepository _profileRepository;
   final RazorpayRepository _razorpayRepository = RazorpayRepository();
 
@@ -65,7 +65,8 @@ class _BiodataPdfScreenRiverpodState
         onSuccess: (profile) async {
           if (profile != null) {
             _profile = profile;
-            _isPaid = profile.isPdfUnlocked;
+            // PDF is FREE for all registered profile owners (Paid only for guests / non-profile users)
+            _isPaid = true;
             await _generatePdf();
           }
         },
@@ -93,7 +94,7 @@ class _BiodataPdfScreenRiverpodState
       final byteData = await rootBundle.load(template.assetPath);
       templateImageBytes = byteData.buffer.asUint8List();
     } catch (e) {
-      debugPrint('Error loading template image: $e');
+      AppLogger.error('BiodataPdfScreen', 'Error loading template image: $e');
     }
 
     _pdfData = await PdfService.generateBiodataPdfIsolate(
@@ -104,6 +105,10 @@ class _BiodataPdfScreenRiverpodState
       templateImageBytes: templateImageBytes,
       accentColor: template.accentColor,
       language: BiodataTranslations.fromLocale(languageCode),
+      marginLeft: template.marginLeft,
+      marginTop: template.marginTop,
+      marginRight: template.marginRight,
+      marginBottom: template.marginBottom,
     );
   }
 
@@ -119,7 +124,7 @@ class _BiodataPdfScreenRiverpodState
 
   Future<void> _startPayment() async {
     if (_isPaymentInProgress || _profile == null) return;
-    debugPrint('[RAZORPAY] BiodataPdfScreenRiverpod > User tapped Pay to unlock');
+    AppLogger.debug('BiodataPdfScreen', '[RAZORPAY] BiodataPdfScreen > User tapped Pay to unlock');
     setState(() => _isPaymentInProgress = true);
 
     final tempLocalizations = AppLocalizations.of(context);
@@ -139,7 +144,7 @@ class _BiodataPdfScreenRiverpodState
     if (mounted) {
       setState(() => _isPaymentInProgress = false);
       if (response.isSuccess) {
-        debugPrint('[RAZORPAY] BiodataPdfScreenRiverpod > Payment SUCCESS | using cached profile (razorpay_repository already applied optimistic unlock)');
+        AppLogger.debug('BiodataPdfScreen', '[RAZORPAY] BiodataPdfScreen > Payment SUCCESS | using cached profile (razorpay_repository already applied optimistic unlock)');
         await _loadData();
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
@@ -149,7 +154,7 @@ class _BiodataPdfScreenRiverpodState
           ),
         );
       } else if (!response.errorMessage.toLowerCase().contains('cancelled')) {
-        debugPrint('[RAZORPAY] BiodataPdfScreenRiverpod > Payment FAILED | ${response.errorMessage}');
+        AppLogger.error('BiodataPdfScreen', '[RAZORPAY] BiodataPdfScreen > Payment FAILED | ${response.errorMessage}');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Payment Failed: ${response.errorMessage}'),
@@ -211,7 +216,7 @@ class _BiodataPdfScreenRiverpodState
                   children: [
                     // Template Selector
                     Container(
-                      height: 11.h,
+                      height: 13.5.h,
                       decoration: BoxDecoration(
                         color: theme.colorScheme.surface,
                         boxShadow: [
@@ -226,13 +231,34 @@ class _BiodataPdfScreenRiverpodState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 0.5.h),
-                            child: Text(AppLocalizations.of(context)?.chooseTemplate ?? 'Choose Template',
-                              style: theme.textTheme.labelMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: theme.colorScheme.onSurfaceVariant,
-                                letterSpacing: 0.5,
-                              ),
+                            padding: EdgeInsets.fromLTRB(4.w, 0.8.h, 4.w, 0.3.h),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)?.chooseTemplate ?? 'Choose Template',
+                                  style: theme.textTheme.labelMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: theme.colorScheme.onSurface,
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFFD700).withValues(alpha: 0.15),
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(color: const Color(0xFFFFD700), width: 0.8),
+                                  ),
+                                  child: Text(
+                                    kBiodataTemplates[_selectedTemplateIndex].name,
+                                    style: theme.textTheme.labelSmall?.copyWith(
+                                      color: const Color(0xFF800000),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           Expanded(
@@ -243,58 +269,92 @@ class _BiodataPdfScreenRiverpodState
                               itemBuilder: (context, index) {
                                 final template = kBiodataTemplates[index];
                                 final isSelected = index == _selectedTemplateIndex;
+
+                                // Determine badge tag
+                                String? badgeText;
+                                if (index == 0) {
+                                  badgeText = '👑 VIP';
+                                } else if (index == 1) badgeText = '🚩 Gor';
+                                else if (index == 2) badgeText = '🔥 Popular';
+
                                 return GestureDetector(
                                   onTap: () => _onTemplateSelected(index),
-                                  child: Container(
-                                    width: 14.w,
-                                    margin: EdgeInsets.symmetric(horizontal: 1.5.w),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                        color: isSelected
-                                            ? template.accentColor
-                                            : theme.colorScheme.outlineVariant
-                                                .withValues(alpha: 0.3),
-                                        width: isSelected ? 2.5 : 1,
+                                  child: AnimatedScale(
+                                    scale: isSelected ? 1.04 : 0.94,
+                                    duration: const Duration(milliseconds: 200),
+                                    curve: Curves.easeOutCubic,
+                                    child: Container(
+                                      width: 17.w,
+                                      margin: EdgeInsets.symmetric(horizontal: 1.w),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: isSelected
+                                              ? template.accentColor
+                                              : theme.colorScheme.outlineVariant
+                                                  .withValues(alpha: 0.3),
+                                          width: isSelected ? 2.5 : 1,
+                                        ),
+                                        boxShadow: isSelected
+                                            ? [
+                                                BoxShadow(
+                                                  color: template.accentColor
+                                                      .withValues(alpha: 0.35),
+                                                  blurRadius: 10,
+                                                  spreadRadius: 1,
+                                                  offset: const Offset(0, 2),
+                                                ),
+                                              ]
+                                            : null,
                                       ),
-                                      boxShadow: isSelected
-                                          ? [
-                                              BoxShadow(
-                                                color: template.accentColor
-                                                    .withValues(alpha: 0.3),
-                                                blurRadius: 8,
-                                                offset: const Offset(0, 2),
-                                              ),
-                                            ]
-                                          : null,
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: Stack(
-                                        fit: StackFit.expand,
-                                        children: [
-                                          Image.asset(
-                                            template.assetPath,
-                                            fit: BoxFit.cover,
-                                          ),
-                                          if (isSelected)
-                                            Positioned(
-                                              top: 2,
-                                              right: 2,
-                                              child: Container(
-                                                padding: const EdgeInsets.all(2),
-                                                decoration: BoxDecoration(
-                                                  color: template.accentColor,
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                child: const Icon(
-                                                  Icons.check,
-                                                  color: Colors.white,
-                                                  size: 10,
-                                                ),
-                                              ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Stack(
+                                          fit: StackFit.expand,
+                                          children: [
+                                            Image.asset(
+                                              template.assetPath,
+                                              fit: BoxFit.cover,
                                             ),
-                                        ],
+                                            if (badgeText != null)
+                                              Positioned(
+                                                top: 3,
+                                                left: 3,
+                                                child: Container(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.black.withValues(alpha: 0.75),
+                                                    borderRadius: BorderRadius.circular(4),
+                                                  ),
+                                                  child: Text(
+                                                    badgeText,
+                                                    style: const TextStyle(
+                                                      color: Color(0xFFFFD700),
+                                                      fontSize: 8,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            if (isSelected)
+                                              Positioned(
+                                                top: 3,
+                                                right: 3,
+                                                child: Container(
+                                                  padding: const EdgeInsets.all(2.5),
+                                                  decoration: BoxDecoration(
+                                                    color: template.accentColor,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: const Icon(
+                                                    Icons.check,
+                                                    color: Colors.white,
+                                                    size: 10,
+                                                  ),
+                                                ),
+                                              ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -318,9 +378,48 @@ class _BiodataPdfScreenRiverpodState
                               canChangePageFormat: false,
                               canChangeOrientation: false,
                               canDebug: false,
+                              pdfFileName: '${_profile?.fullName ?? "Candidate"}_BanjaraBio_Biodata.pdf',
+                              actions: [
+                                PdfPreviewAction(
+                                  icon: const Icon(Icons.share),
+                                  onPressed: (context, build, pageFormat) async {
+                                    final pdfBytes = await build(pageFormat);
+                                    await Printing.sharePdf(
+                                      bytes: pdfBytes,
+                                      filename: '${_profile?.fullName ?? "Candidate"}_BanjaraBio_Biodata.pdf',
+                                      subject: '🚩 बंजाराबायो (BanjaraBio) मॅट्रीमोनी बायोडाटा',
+                                    );
+                                  },
+                                ),
+                              ],
                             )
                           else
                             Center(child: Text(AppLocalizations.of(context)?.failedToGeneratePdfPreview ?? 'Failed to generate PDF preview')),
+                          // Live Page Indicator Badge
+                          if (_pdfData != null)
+                            Positioned(
+                              top: 12,
+                              right: 12,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withValues(alpha: 0.65),
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(color: Colors.white24, width: 0.8),
+                                ),
+                                child: const Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.layers_outlined, color: Color(0xFFFFD700), size: 12),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      '2-Page Biodata + Photo',
+                                      style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           if (!_isPaid)
                             Positioned.fill(
                               child: IgnorePointer(
@@ -356,18 +455,63 @@ class _BiodataPdfScreenRiverpodState
                                         textAlign: TextAlign.center,
                                       ),
                                       SizedBox(height: 1.h),
-                                      Text(AppLocalizations.of(context)?.getAProfessionalWellformattedPdfWithoutW ?? 'Get a professional, well-formatted PDF without watermarks and with all details visible.',
+                                      Text(
+                                        AppLocalizations.of(context)?.getAProfessionalWellformattedPdfWithoutW ?? 'Get a professional, well-formatted PDF without watermarks and with all details visible.',
                                         textAlign: TextAlign.center,
                                         style: Theme.of(context).textTheme.bodyMedium,
                                       ),
-                                      SizedBox(height: 3.h),
+                                      SizedBox(height: 2.h),
+                                      // Pro Tip for Free Profile Download
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFFFFD700).withValues(alpha: 0.15),
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(color: const Color(0xFFFFD700), width: 0.8),
+                                        ),
+                                        child: const Row(
+                                          children: [
+                                            Icon(Icons.stars, color: Color(0xFF800000), size: 18),
+                                            SizedBox(width: 8),
+                                            Expanded(
+                                              child: Text(
+                                                '💡 Profile owners download all PDF templates 100% FREE!',
+                                                style: TextStyle(
+                                                  color: Color(0xFF800000),
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(height: 2.5.h),
                                       ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(context, AppRoutes.biodataCreation);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: const Color(0xFF800000),
+                                          foregroundColor: Colors.white,
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 6.w,
+                                            vertical: 1.2.h,
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(30),
+                                          ),
+                                        ),
+                                        child: const Text('✨ Create Free Profile & Download Free'),
+                                      ),
+                                      SizedBox(height: 1.h),
+                                      OutlinedButton(
                                         onPressed:
                                             _isPaymentInProgress ? null : _startPayment,
-                                        style: ElevatedButton.styleFrom(
+                                        style: OutlinedButton.styleFrom(
                                           padding: EdgeInsets.symmetric(
-                                            horizontal: 10.w,
-                                            vertical: 1.5.h,
+                                            horizontal: 6.w,
+                                            vertical: 1.2.h,
                                           ),
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(30),
@@ -382,8 +526,8 @@ class _BiodataPdfScreenRiverpodState
                                                 ),
                                               )
                                             : Text(_appliedCoupon != null 
-                                                ? 'Pay ₹${(SubscriptionConfig.biodataUnlock.price * (1 - _appliedCoupon!.discountPercentage / 100)).toStringAsFixed(0)} to Unlock Full PDF'
-                                                : AppLocalizations.of(context)?.pay199ToUnlockFullPdf ?? 'Pay ₹199 to Unlock Full PDF'),
+                                                ? 'Pay ₹${(SubscriptionConfig.biodataUnlock.price * (1 - _appliedCoupon!.discountPercentage / 100)).toStringAsFixed(0)} Instant Unlock'
+                                                : 'Pay ₹199 Instant Guest Download'),
                                       ),
                                       if (!_isPaymentInProgress) ...[
                                         SizedBox(height: 2.h),

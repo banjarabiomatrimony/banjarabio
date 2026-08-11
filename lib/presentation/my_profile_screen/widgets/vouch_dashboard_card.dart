@@ -5,6 +5,7 @@ import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/theme/app_theme.dart';
 import 'package:banjarabio/widgets/glassmorphism_container.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/community_trusted_badge.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 class VouchDashboardCard extends StatelessWidget {
   final ProfileModel profile;
@@ -62,7 +63,7 @@ class VouchDashboardCard extends StatelessWidget {
                   child: Text(
                     'Pending Trust',
                     style: TextStyle(
-                      fontSize: 9.sp,
+                      fontSize: AppTypography.labelMedium,
                       fontWeight: FontWeight.w600,
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
@@ -110,7 +111,7 @@ class VouchDashboardCard extends StatelessWidget {
             Text(
               'Get 5 vouches from verified members to earn the "Community Trusted" badge.',
               style: TextStyle(
-                fontSize: 9.sp,
+                fontSize: AppTypography.labelMedium,
                 color: theme.colorScheme.onSurfaceVariant,
                 fontStyle: FontStyle.italic,
               ),

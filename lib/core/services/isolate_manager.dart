@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:isolate';
 import 'package:flutter/foundation.dart' as foundation;
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Global utility to offload heavy computation.
 class IsolateManager {
@@ -60,7 +61,7 @@ class IsolateManager {
     _isInitialized = true;
     initCompleter.complete();
     receivePort.close(); // Close temp port
-    foundation.debugPrint('Global Isolate Manager Initialized 🚀');
+    AppLogger.debug('IsolateManager', 'Global Isolate Manager Initialized 🚀');
   }
 
   void _handleResponse(dynamic message) {

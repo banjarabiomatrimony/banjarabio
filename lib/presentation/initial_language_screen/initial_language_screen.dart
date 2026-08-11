@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/core/providers/locale_provider.dart';
 import 'package:banjarabio/core/utils/startup_workflow.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 
 class InitialLanguageScreen extends ConsumerStatefulWidget {
@@ -194,7 +195,7 @@ class _InitialLanguageScreenState extends ConsumerState<InitialLanguageScreen>
                       child: Text(
                         _getContinueText(activeCode),
                         style: TextStyle(
-                          fontSize: 16.sp,
+                          fontSize: AppTypography.headingSmall,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 1,
                         ),
@@ -259,7 +260,7 @@ class _InitialLanguageScreenState extends ConsumerState<InitialLanguageScreen>
                 '${lang['native']} (${lang['label']})',
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
-                  fontSize: 14.sp,
+                  fontSize: AppTypography.bodyLarge,
                   color: isSelected ? theme.colorScheme.onPrimary : theme.colorScheme.onSurface,
                 ),
               ),

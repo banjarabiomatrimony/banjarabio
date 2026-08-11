@@ -38,7 +38,7 @@ class ProfileShareCard extends StatelessWidget {
                 width: 1080,
                 height: 1920,
                 cacheManager: PersistentCacheManager.instance,
-                errorWidget: (context, url, error) => Container(color: const Color(0xFF432C7A)),
+                errorWidget: (context, url, error) => Container(color: const Color(0xFF961B33)),
               ),
               
             // 2. Dark Gradient Overlay (Premium feel)
@@ -58,24 +58,34 @@ class ProfileShareCard extends StatelessWidget {
               ),
             ),
   
-            // 3. Branding Header
+            // 3. Branding Header with Cultural Mantra
             Positioned(
-              top: 80,
+              top: 70,
               left: 0,
               right: 0,
               child: Column(
                 children: [
+                  const Text(
+                    '॥ जय सेवालाल ॥',
+                    style: TextStyle(
+                      color: Color(0xFFFFD700), // Gold
+                      fontSize: 32,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 2,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                   Image.asset(
                     'assets/logo/BanjaraBio.png',
-                    height: 100,
+                    height: 90,
                     errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 8),
                   const Text(
                     'BANJARABIO',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 40,
+                      fontSize: 38,
                       fontWeight: FontWeight.w900,
                       letterSpacing: 8,
                     ),

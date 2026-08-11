@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 class AnalyticsService {
   static final AnalyticsService _instance = AnalyticsService._internal();
@@ -26,7 +27,7 @@ class AnalyticsService {
   @visibleForTesting
   Future<void> instanceLogAppOpen() async {
     await _analyticsInstance?.logAppOpen();
-    debugPrint('📊 Analytics: App Open');
+    AppLogger.debug('AnalyticsService', '📊 Analytics: App Open');
   }
 
   /// Log Signup Start
@@ -35,7 +36,7 @@ class AnalyticsService {
   @visibleForTesting
   Future<void> instanceLogSignUpStart(String method) async {
     await _analyticsInstance?.logSignUp(signUpMethod: method);
-    debugPrint('📊 Analytics: Signup Start ($method)');
+    AppLogger.debug('AnalyticsService', '📊 Analytics: Signup Start ($method)');
   }
 
   /// Log Signup Success
@@ -48,7 +49,7 @@ class AnalyticsService {
       parameters: {'user_id': userId},
     );
     await instanceSetUserId(userId);
-    debugPrint('📊 Analytics: Signup Complete ($userId)');
+    AppLogger.debug('AnalyticsService', '📊 Analytics: Signup Complete ($userId)');
   }
 
   /// Log Login Success
@@ -58,7 +59,7 @@ class AnalyticsService {
   Future<void> instanceLogLogin(String userId) async {
     await _analyticsInstance?.logLogin(loginMethod: 'phone');
     await instanceSetUserId(userId);
-    debugPrint('📊 Analytics: Login ($userId)');
+    AppLogger.debug('AnalyticsService', '📊 Analytics: Login ($userId)');
   }
 
   /// Log Event
@@ -71,7 +72,7 @@ class AnalyticsService {
       name: name,
       parameters: parameters?.cast<String, Object>(),
     );
-    debugPrint('📊 Analytics: Event ($name)');
+    AppLogger.debug('AnalyticsService', '📊 Analytics: Event ($name)');
   }
 
   /// Log Search
@@ -100,7 +101,7 @@ class AnalyticsService {
   @visibleForTesting
   Future<void> instanceLogScreenView(String screenName) async {
     await _analyticsInstance?.logScreenView(screenName: screenName);
-    debugPrint('📊 Analytics: Screen View ($screenName)');
+    AppLogger.debug('AnalyticsService', '📊 Analytics: Screen View ($screenName)');
   }
 
   /// Set User ID
@@ -109,7 +110,7 @@ class AnalyticsService {
   @visibleForTesting
   Future<void> instanceSetUserId(String userId) async {
     await _analyticsInstance?.setUserId(id: userId);
-    debugPrint('📊 Analytics: Set User ID ($userId)');
+    AppLogger.debug('AnalyticsService', '📊 Analytics: Set User ID ($userId)');
   }
 
   /// Set User Properties
@@ -121,7 +122,7 @@ class AnalyticsService {
     for (final entry in properties.entries) {
       await _analyticsInstance?.setUserProperty(name: entry.key, value: entry.value);
     }
-    debugPrint('📊 Analytics: Set User Properties');
+    AppLogger.debug('AnalyticsService', '📊 Analytics: Set User Properties');
   }
 
   @visibleForTesting

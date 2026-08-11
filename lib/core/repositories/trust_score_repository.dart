@@ -8,6 +8,7 @@ import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/core/models/trust_score_config.dart';
 import 'package:banjarabio/notification/features/admin_notification_service.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 class TrustScoreRepository {
   // ---------------------------------------------------------------------------
@@ -80,7 +81,7 @@ class TrustScoreRepository {
         onFailure: (error) => BackendResponse.failure(error),
       );
     } catch (e, stack) {
-      debugPrint('Error calculating trust score: $e');
+      AppLogger.error('TrustScoreRepository', 'Error calculating trust score: $e');
       return BackendResponse.failure(
         e.toString(),
         stackTrace: stack,
@@ -160,7 +161,7 @@ class TrustScoreRepository {
         onFailure: (error) => BackendResponse.failure(error),
       );
     } catch (e, stack) {
-      debugPrint('Error getting verification status: $e');
+      AppLogger.error('TrustScoreRepository', 'Error getting verification status: $e');
       return BackendResponse.failure(
         e.toString(),
         stackTrace: stack,
@@ -341,7 +342,7 @@ class TrustScoreRepository {
       }
       return BackendResponse.success(path);
     } catch (e) {
-      debugPrint('Error uploading verification doc: $e');
+      AppLogger.error('TrustScoreRepository', 'Error uploading verification doc: $e');
       return BackendResponse.failure(e.toString());
     }
   }

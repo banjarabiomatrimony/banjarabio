@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/models/trust_score_config.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// A premium trust-score ring badge that shows a radial progress arc,
 /// color-coded tier label, and optional sparkle overlay on Gold+ profiles.
@@ -122,33 +123,36 @@ class _TrustScoreBadgeState extends State<TrustScoreBadge>
       ),
     );
 
-    if (widget.showLabel && levelName != null) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          badge,
-          SizedBox(height: 0.3.h),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 1.5.w, vertical: 0.15.h),
-            decoration: BoxDecoration(
-              color: levelColor.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Text(
-              levelName,
-              style: TextStyle(
-                color: levelColor,
-                fontSize: 7.sp,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.5,
+    final Widget result = (widget.showLabel && levelName != null)
+        ? Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              badge,
+              SizedBox(height: 0.3.h),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 1.5.w, vertical: 0.15.h),
+                decoration: BoxDecoration(
+                  color: levelColor.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  levelName,
+                  style: TextStyle(
+                    color: levelColor,
+                    fontSize: AppTypography.labelSmall,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.5,
+                  ),
+                ),
               ),
-            ),
-          ),
-        ],
-      );
-    }
+            ],
+          )
+        : badge;
 
-    return badge;
+    return Semantics(
+      label: 'Trust Score: ${widget.score} percent',
+      child: result,
+    );
   }
 }
 

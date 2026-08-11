@@ -22,6 +22,7 @@ import 'package:banjarabio/presentation/saved_profiles_screen/saved_profiles_scr
 import 'package:banjarabio/presentation/shared_profiles_screen/shared_profiles_screen.dart';
 import 'package:banjarabio/presentation/home_screen/home_screen.dart';
 import 'package:banjarabio/presentation/filter_screen/filter_screen.dart';
+import 'package:banjarabio/presentation/user_type_selection_screen/user_type_selection_screen.dart';
 
 class MockGoTrueClient extends Mock implements GoTrueClient {}
 class MockUser extends Mock implements User {}
@@ -120,6 +121,11 @@ void main() {
 
     test('FilterScreen can be constructed', () {
       const screen = FilterScreen();
+      expect(screen, isA<StatefulWidget>());
+    });
+
+    test('UserTypeSelectionScreen can be constructed', () {
+      const screen = UserTypeSelectionScreen();
       expect(screen, isA<StatefulWidget>());
     });
   });

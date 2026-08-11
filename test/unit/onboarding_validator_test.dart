@@ -1,19 +1,20 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:banjarabio/core/utils/onboarding_validator.dart';
+import 'package:banjarabio/presentation/biodata_creation_screen/models/creation_step_config.dart';
 
 void main() {
-  group('OnboardingValidator Step 0 — Personal Details', () {
+  group('OnboardingValidator — Personal Details (Full Mode)', () {
     test('empty form returns all required fields', () {
       final missing = OnboardingValidator.getMissingFields(
-        step: 0,
+        step: CreationStep.personal,
         formData: {},
       );
-      expect(missing, containsAll(['name', 'phone_number', 'age', 'surname', 'gender', 'height']));
+      expect(missing, containsAll(['name', 'phone_number', 'surname', 'gender', 'height']));
     });
 
     test('complete form returns no missing fields', () {
       final missing = OnboardingValidator.getMissingFields(
-        step: 0,
+        step: CreationStep.personal,
         formData: {
           'name': 'Rahul',
           'phone_number': '9876543210',
@@ -29,7 +30,7 @@ void main() {
 
     test('Rathod surname requires gotra', () {
       final missing = OnboardingValidator.getMissingFields(
-        step: 0,
+        step: CreationStep.personal,
         formData: {
           'name': 'Rahul',
           'phone_number': '9876543210',
@@ -45,7 +46,7 @@ void main() {
 
     test('Pawar surname requires gotra', () {
       final missing = OnboardingValidator.getMissingFields(
-        step: 0,
+        step: CreationStep.personal,
         formData: {
           'name': 'Test',
           'phone_number': '9876543210',
@@ -60,7 +61,7 @@ void main() {
 
     test('non-Banjara surname does NOT require gotra', () {
       final missing = OnboardingValidator.getMissingFields(
-        step: 0,
+        step: CreationStep.personal,
         formData: {
           'name': 'Test',
           'phone_number': '9876543210',
@@ -74,20 +75,39 @@ void main() {
     });
   });
 
-  group('OnboardingValidator Step 1 — Family Details', () {
+  group('OnboardingValidator — Personal Details (Lite Mode)', () {
+    test('lite mode does NOT require height', () {
+      final missing = OnboardingValidator.getMissingFields(
+        step: CreationStep.personal,
+        formData: {
+          'name': 'Test',
+          'phone_number': '9876543210',
+          'surname': 'Rathod',
+          'gotra': 'Chauhan',
+          'gender': 'Male',
+          // No height, no age
+        },
+        isLite: true,
+      );
+      expect(missing, isNot(contains('height')));
+      expect(missing, isEmpty);
+    });
+  });
+
+  group('OnboardingValidator — Family Details', () {
     test('no fields required (optional step)', () {
       final missing = OnboardingValidator.getMissingFields(
-        step: 1,
+        step: CreationStep.family,
         formData: {},
       );
       expect(missing, isEmpty);
     });
   });
 
-  group('OnboardingValidator Step 2 — Education & Profession', () {
+  group('OnboardingValidator — Education & Profession', () {
     test('empty form returns required fields', () {
       final missing = OnboardingValidator.getMissingFields(
-        step: 2,
+        step: CreationStep.education,
         formData: {},
       );
       expect(missing, containsAll(['education', 'profession', 'annualIncome']));
@@ -95,7 +115,7 @@ void main() {
 
     test('complete form has no missing fields', () {
       final missing = OnboardingValidator.getMissingFields(
-        step: 2,
+        step: CreationStep.education,
         formData: {
           'education': 'B.Tech',
           'profession': 'Engineer',
@@ -106,10 +126,10 @@ void main() {
     });
   });
 
-  group('OnboardingValidator Step 3 — Photos', () {
+  group('OnboardingValidator — Photos', () {
     test('no photos = missing', () {
       final missing = OnboardingValidator.getMissingFields(
-        step: 3,
+        step: CreationStep.photo,
         formData: {'photos': []},
       );
       expect(missing, contains('photos'));
@@ -117,7 +137,7 @@ void main() {
 
     test('null photos = missing', () {
       final missing = OnboardingValidator.getMissingFields(
-        step: 3,
+        step: CreationStep.photo,
         formData: {},
       );
       expect(missing, contains('photos'));
@@ -125,7 +145,7 @@ void main() {
 
     test('has photos = not missing', () {
       final missing = OnboardingValidator.getMissingFields(
-        step: 3,
+        step: CreationStep.photo,
         formData: {
           'photos': ['photo1.jpg'],
         },
@@ -134,10 +154,10 @@ void main() {
     });
   });
 
-  group('OnboardingValidator Step 4 — Location', () {
+  group('OnboardingValidator — Location (Full Mode)', () {
     test('missing state and district', () {
       final missing = OnboardingValidator.getMissingFields(
-        step: 4,
+        step: CreationStep.location,
         formData: {},
       );
       expect(missing, containsAll(['state', 'district']));
@@ -145,7 +165,7 @@ void main() {
 
     test('complete location has no missing', () {
       final missing = OnboardingValidator.getMissingFields(
-        step: 4,
+        step: CreationStep.location,
         formData: {
           'state': 'Maharashtra',
           'district': 'Nagpur',
@@ -155,13 +175,69 @@ void main() {
     });
   });
 
-  group('OnboardingValidator Step 5 — Verification', () {
-    test('no fields required (optional step)', () {
+  group('OnboardingValidator — Location (Lite Mode)', () {
+    test('lite mode does NOT require district', () {
       final missing = OnboardingValidator.getMissingFields(
-        step: 5,
-        formData: {},
+        step: CreationStep.location,
+        formData: {
+          'state': 'Maharashtra',
+          // No district
+        },
+        isLite: true,
       );
+      expect(missing, isNot(contains('district')));
       expect(missing, isEmpty);
+    });
+
+    test('lite mode still requires state', () {
+      final missing = OnboardingValidator.getMissingFields(
+        step: CreationStep.location,
+        formData: {},
+        isLite: true,
+      );
+      expect(missing, contains('state'));
+    });
+  });
+
+  group('CreationStepConfig', () {
+    test('signup mode has 3 steps', () {
+      final steps = CreationStepConfig.getSteps(CreationMode.signup);
+      expect(steps.length, 3);
+      expect(steps, [CreationStep.personal, CreationStep.photo, CreationStep.location]);
+    });
+
+    test('editProfile mode has 5 steps', () {
+      final steps = CreationStepConfig.getSteps(CreationMode.editProfile);
+      expect(steps.length, 5);
+    });
+
+    test('adminEdit mode has 5 steps', () {
+      final steps = CreationStepConfig.getSteps(CreationMode.adminEdit);
+      expect(steps.length, 5);
+    });
+
+    test('modeFromFlags returns signup for new users', () {
+      final mode = CreationStepConfig.modeFromFlags(
+        isEditMode: false,
+        isAdminEdit: false,
+      );
+      expect(mode, CreationMode.signup);
+    });
+
+    test('modeFromFlags returns editProfile for edit mode', () {
+      final mode = CreationStepConfig.modeFromFlags(
+        isEditMode: true,
+        isAdminEdit: false,
+      );
+      expect(mode, CreationMode.editProfile);
+    });
+
+    test('modeFromFlags returns adminEdit for admin mode', () {
+      final mode = CreationStepConfig.modeFromFlags(
+        isEditMode: false,
+        isAdminEdit: true,
+      );
+      expect(mode, CreationMode.adminEdit);
     });
   });
 }

@@ -58,6 +58,13 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+    // Auto-sync real service_role_key to private.notification_settings for pg_cron
+    try {
+      await supabase.rpc("fn_sync_notification_service_key", { p_key: supabaseServiceKey });
+    } catch (_err) {
+      // Non-critical if RPC isn't deployed yet
+    }
+
     // Determine FCM category for the notification
     const fcmCategory = target_role === "staff"
       ? "staffTask"
@@ -107,13 +114,26 @@ serve(async (req) => {
       query = query.eq("role", "admin");
     }
 
-    const { data: targets, error: queryError } = await query;
+    let { data: targets, error: queryError } = await query;
 
     if (queryError) {
       return new Response(
         JSON.stringify({ error: "Failed to query targets", details: queryError }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
+    }
+
+    // Fallback: If targeting a specific user with no profile, check user_devices
+    if (target_user_id && (!targets || targets.length === 0)) {
+      const { data: deviceTargets } = await supabase
+        .from("user_devices")
+        .select("user_id, fcm_token")
+        .eq("user_id", target_user_id)
+        .not("fcm_token", "is", null);
+      
+      if (deviceTargets && deviceTargets.length > 0) {
+        targets = deviceTargets.map(d => ({ ...d, full_name: null }));
+      }
     }
 
     if (!targets || targets.length === 0) {
@@ -197,6 +217,50 @@ async function sendFcm(
     stringData[k] = String(v ?? "");
   }
 
+  const imageUrl = stringData.image_url || stringData.avatar_url || stringData.image;
+
+  const messagePayload: Record<string, unknown> = {
+    token,
+    notification: {
+      title,
+      body,
+      ...(imageUrl ? { image: imageUrl } : {}),
+    },
+    data: stringData,
+    android: {
+      notification: {
+        channel_id: data.category === "staffTask" ? "staff_channel"
+          : data.category === "adminAlert" ? "admin_channel"
+          : "matches_channel",
+        priority: "high",
+        default_vibrate_timings: false,
+        vibrate_timings: ["0s", "0.5s", "0.2s", "0.5s"],
+        default_light_settings: false,
+        light_settings: {
+          color: { red: 0.788, green: 0.294, blue: 0.294, alpha: 1 },
+          light_on_duration: "1s",
+          light_off_duration: "0.5s",
+        },
+        ...(imageUrl ? { image: imageUrl } : {}),
+      },
+      priority: "high",
+    },
+    apns: {
+      payload: {
+        aps: {
+          alert: { title, body },
+          sound: "default",
+          badge: 1,
+          "content-available": 1,
+        },
+      },
+      fcm_options: {
+        ...(imageUrl ? { image: imageUrl } : {}),
+      },
+      headers: { "apns-priority": "10" },
+    },
+  };
+
   return fetch(
     `https://fcm.googleapis.com/v1/projects/${projectId}/messages:send`,
     {
@@ -205,41 +269,7 @@ async function sendFcm(
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({
-        message: {
-          token,
-          notification: { title, body },
-          data: stringData,
-          android: {
-            notification: {
-              channel_id: data.category === "staffTask" ? "staff_channel"
-                : data.category === "adminAlert" ? "admin_channel"
-                : "matches_channel",
-              priority: "high",
-              default_vibrate_timings: false,
-              vibrate_timings: ["0s", "0.5s", "0.2s", "0.5s"],
-              default_light_settings: false,
-              light_settings: {
-                color: { red: 0.788, green: 0.294, blue: 0.294, alpha: 1 },
-                light_on_duration: "1s",
-                light_off_duration: "0.5s",
-              },
-            },
-            priority: "high",
-          },
-          apns: {
-            payload: {
-              aps: {
-                alert: { title, body },
-                sound: "default",
-                badge: 1,
-                "content-available": 1,
-              },
-            },
-            headers: { "apns-priority": "10" },
-          },
-        },
-      }),
+      body: JSON.stringify({ message: messagePayload }),
     },
   );
 }

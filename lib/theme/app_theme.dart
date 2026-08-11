@@ -1,42 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:sizer/sizer.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// A class that contains all theme configurations for the Banjara matrimonial application.
 /// Implements Cultural Minimalism design style with Warm Trust Palette colors.
 class AppTheme {
   AppTheme._();
 
-  // Primary color palette - Midnight Amethyst & Saffron Gold
-  static const Color primaryLight = Color(0xFF432C7A); // Midnight Amethyst (Premium/Trust)
-  static const Color primaryVariantLight = Color(0xFF33215E); // Deeper Amethyst
-  static const Color secondaryLight = Color(0xFFF4C430); // Saffron Gold (Tradition/Warmth)
-  static const Color secondaryVariantLight = Color(0xFFD4A017); // Darker Gold
-  static const Color backgroundLight = Color(0xFFF9F7FD); // Ultra-soft Amethyst tint
+  // Typography definitions
+  static const String headingFontFamily = 'Outfit';
+  static const String bodyFontFamily = 'PlusJakartaSans';
+
+  // Primary color palette - Royal Crimson & Champagne Gold
+  static const Color primaryLight = Color(0xFF961B33); // Royal Crimson (Sacred/Love)
+  static const Color primaryVariantLight = Color(0xFF731224); // Deeper Maroon/Crimson
+  static const Color secondaryLight = Color(0xFFD4AF37); // Champagne Gold (Tradition/Warmth)
+  static const Color secondaryVariantLight = Color(0xFFB8922A); // Darker Gold
+  static const Color backgroundLight = Color(0xFFFAF8F5); // Soft Warm Ivory
   static const Color surfaceLight = Color(0xFFFFFFFF); // Pure white
   static const Color errorLight = Color(0xFFBA1A1A); // Refined Material error
   static const Color successLight = Color(0xFF2E7D32); // Standard success green
+  static const Color successVariantLight = Color(0xFF1B5E20); // Deeper success green
   static const Color warningLight = Color(0xFFF57C00); // Warm orange
-  static const Color onPrimaryLight = Color(0xFFFFFFFF); // White on Amethyst
+  static const Color onPrimaryLight = Color(0xFFFFFFFF); // White on Crimson
   static const Color onSecondaryLight = Color(0xFF1D1B20); // Dark on Gold
-  static const Color onBackgroundLight = Color(0xFF1D1B20);
-  static const Color onSurfaceLight = Color(0xFF1D1B20);
+  static const Color onBackgroundLight = Color(0xFF2C2523); // Warm dark-gray for reading
+  static const Color onSurfaceLight = Color(0xFF2C2523);
   static const Color onErrorLight = Color(0xFFFFFFFF);
 
   // Dark theme colors
-  static const Color primaryDark = Color(0xFFD0BCFF); // Light Amethyst for Dark Mode
-  static const Color primaryVariantDark = Color(0xFF4F378B);
-  static const Color secondaryDark = Color(0xFFEFB8C8); // Soft Rose/Gold blend
-  static const Color secondaryVariantDark = Color(0xFF7D5260);
-  static const Color backgroundDark = Color(0xFF1C1B1F); // Material Deep Dark
-  static const Color surfaceDark = Color(0xFF2B2930); // Elevated dark surface
+  static const Color primaryDark = Color(0xFFFFB3B4); // Soft pinkish-crimson for Dark Mode contrast
+  static const Color primaryVariantDark = Color(0xFF7D1629); // Deeper Crimson
+  static const Color secondaryDark = Color(0xFFE5C158); // Soft Champagne Gold
+  static const Color secondaryVariantDark = Color(0xFF9E7A1C); // Deeper Gold
+  static const Color backgroundDark = Color(0xFF1A1616); // Deep Warm Charcoal/Dark Mahogany
+  static const Color surfaceDark = Color(0xFF262121); // Elevated warm dark surface
   static const Color errorDark = Color(0xFFF2B8B5);
   static const Color successDark = Color(0xFF81C784);
   static const Color warningDark = Color(0xFFFFB74D);
-  static const Color onPrimaryDark = Color(0xFF381E72);
-  static const Color onSecondaryDark = Color(0xFF492532);
-  static const Color onBackgroundDark = Color(0xFFE6E1E5);
-  static const Color onSurfaceDark = Color(0xFFE6E1E5);
+  static const Color onPrimaryDark = Color(0xFF5F0018);
+  static const Color onSecondaryDark = Color(0xFF3E2D00);
+  static const Color onBackgroundDark = Color(0xFFF0EAE8);
+  static const Color onSurfaceDark = Color(0xFFF0EAE8);
   static const Color onErrorDark = Color(0xFF601410);
 
   // Card and dialog colors
@@ -105,8 +109,8 @@ class AppTheme {
       foregroundColor: onPrimaryLight,
       elevation: 0,
       centerTitle: true,
-      titleTextStyle: TextStyle(fontFamily: 'Poppins',
-        fontSize: 18.sp,
+      titleTextStyle: TextStyle(fontFamily: headingFontFamily,
+        fontSize: AppTypography.headingMedium,
         fontWeight: FontWeight.w700,
         color: onPrimaryLight,
         letterSpacing: 0.5,
@@ -130,19 +134,19 @@ class AppTheme {
     ),
 
     // Bottom navigation with thumb-reach optimization
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: surfaceLight,
       selectedItemColor: primaryLight,
       unselectedItemColor: textSecondaryLight,
       selectedLabelStyle: TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 12,
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyMedium,
         fontWeight: FontWeight.w600,
         letterSpacing: 0.4,
       ),
       unselectedLabelStyle: TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 12,
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyMedium,
         fontWeight: FontWeight.w500,
         letterSpacing: 0.4,
       ),
@@ -168,8 +172,8 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0), // Consistent radius
         ),
-        textStyle: GoogleFonts.lato(
-          fontSize: 14.sp,
+        textStyle: TextStyle(fontFamily: bodyFontFamily,
+          fontSize: AppTypography.bodyLarge,
           fontWeight: FontWeight.w600,
           letterSpacing: 0.5,
         ),
@@ -185,8 +189,8 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
         ),
-        textStyle: GoogleFonts.lato(
-          fontSize: 14.sp,
+        textStyle: TextStyle(fontFamily: bodyFontFamily,
+          fontSize: AppTypography.bodyLarge,
           fontWeight: FontWeight.w600,
           letterSpacing: 0.5,
         ),
@@ -201,8 +205,8 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
         ),
-        textStyle: GoogleFonts.lato(
-          fontSize: 14.sp,
+        textStyle: TextStyle(fontFamily: bodyFontFamily,
+          fontSize: AppTypography.bodyLarge,
           fontWeight: FontWeight.w600,
           letterSpacing: 0.5,
         ),
@@ -210,7 +214,7 @@ class AppTheme {
       ),
     ),
 
-    // Text theme with Poppins for headings and Lato for body
+    // Text theme with Outfit for headings and PlusJakartaSans for body
     textTheme: _buildTextTheme(isLight: true),
 
     // Input decoration with cultural sensitivity - Modernized
@@ -238,21 +242,21 @@ class AppTheme {
         borderRadius: BorderRadius.circular(16.0),
         borderSide: const BorderSide(color: errorLight, width: 2.0),
       ),
-      labelStyle: const TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 15,
+      labelStyle: TextStyle(
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w500,
         color: textSecondaryLight,
       ),
-      hintStyle: const TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 15,
+      hintStyle: TextStyle(
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w400,
         color: textDisabledLight,
       ),
-      errorStyle: const TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 12,
+      errorStyle: TextStyle(
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyMedium,
         fontWeight: FontWeight.w500,
         color: errorLight,
         letterSpacing: 0.4,
@@ -311,29 +315,29 @@ class AppTheme {
       overlayColor: primaryLight.withValues(alpha: 0.2),
       inactiveTrackColor: dividerLight,
       valueIndicatorColor: primaryLight,
-      valueIndicatorTextStyle: const TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 12,
+      valueIndicatorTextStyle: TextStyle(
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyMedium,
         fontWeight: FontWeight.w500,
         color: onPrimaryLight,
       ),
     ),
 
     // Tab bar theme
-    tabBarTheme: const TabBarThemeData(
+    tabBarTheme: TabBarThemeData(
       labelColor: primaryLight,
       unselectedLabelColor: textSecondaryLight,
       indicatorColor: primaryLight,
       indicatorSize: TabBarIndicatorSize.label,
       labelStyle: TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 14,
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w500,
         letterSpacing: 1.25,
       ),
       unselectedLabelStyle: TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 14,
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w400,
         letterSpacing: 1.25,
       ),
@@ -345,9 +349,9 @@ class AppTheme {
         color: textPrimaryLight.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(4),
       ),
-      textStyle: const TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 12,
+      textStyle: TextStyle(
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyMedium,
         fontWeight: FontWeight.w400,
         color: surfaceLight,
         letterSpacing: 0.4,
@@ -358,9 +362,9 @@ class AppTheme {
     // SnackBar theme
     snackBarTheme: SnackBarThemeData(
       backgroundColor: textPrimaryLight,
-      contentTextStyle: const TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 14,
+      contentTextStyle: TextStyle(
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w400,
         color: surfaceLight,
         letterSpacing: 0.25,
@@ -385,15 +389,15 @@ class AppTheme {
       backgroundColor: dialogLight,
       elevation: 4.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-      titleTextStyle: const TextStyle(fontFamily: 'Poppins',
-        fontSize: 20,
+      titleTextStyle: TextStyle(fontFamily: headingFontFamily,
+        fontSize: AppTypography.headingMedium,
         fontWeight: FontWeight.w600,
         color: textPrimaryLight,
         letterSpacing: 0.15,
       ),
-      contentTextStyle: const TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 16,
+      contentTextStyle: TextStyle(
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w400,
         color: textPrimaryLight,
         letterSpacing: 0.5,
@@ -405,16 +409,16 @@ class AppTheme {
       backgroundColor: surfaceLight,
       selectedColor: primaryLight.withValues(alpha: 0.2),
       disabledColor: dividerLight,
-      labelStyle: const TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 14,
+      labelStyle: TextStyle(
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w400,
         color: textPrimaryLight,
         letterSpacing: 0.25,
       ),
-      secondaryLabelStyle: const TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 14,
+      secondaryLabelStyle: TextStyle(
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w400,
         color: textSecondaryLight,
         letterSpacing: 0.25,
@@ -469,8 +473,8 @@ class AppTheme {
       foregroundColor: textPrimaryDark,
       elevation: 0,
       centerTitle: true,
-      titleTextStyle: TextStyle(fontFamily: 'Poppins',
-        fontSize: 18.sp,
+      titleTextStyle: TextStyle(fontFamily: headingFontFamily,
+        fontSize: AppTypography.headingMedium,
         fontWeight: FontWeight.w700,
         color: textPrimaryDark,
         letterSpacing: 0.5,
@@ -489,19 +493,19 @@ class AppTheme {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     ),
 
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: surfaceDark,
       selectedItemColor: primaryDark,
       unselectedItemColor: textSecondaryDark,
       selectedLabelStyle: TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 12,
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyMedium,
         fontWeight: FontWeight.w500,
         letterSpacing: 0.4,
       ),
       unselectedLabelStyle: TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 12,
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyMedium,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.4,
       ),
@@ -526,8 +530,8 @@ class AppTheme {
           borderRadius: BorderRadius.circular(10.0),
         ),
         textStyle: TextStyle(
-          fontFamily: 'Lato',
-          fontSize: 14.sp,
+          fontFamily: bodyFontFamily,
+          fontSize: AppTypography.bodyLarge,
           fontWeight: FontWeight.bold,
           letterSpacing: 0.5,
         ),
@@ -544,8 +548,8 @@ class AppTheme {
           borderRadius: BorderRadius.circular(10.0),
         ),
         textStyle: TextStyle(
-          fontFamily: 'Lato',
-          fontSize: 14.sp,
+          fontFamily: bodyFontFamily,
+          fontSize: AppTypography.bodyLarge,
           fontWeight: FontWeight.bold,
           letterSpacing: 0.5,
         ),
@@ -561,8 +565,8 @@ class AppTheme {
           borderRadius: BorderRadius.circular(10.0),
         ),
         textStyle: TextStyle(
-          fontFamily: 'Lato',
-          fontSize: 14.sp,
+          fontFamily: bodyFontFamily,
+          fontSize: AppTypography.bodyLarge,
           fontWeight: FontWeight.bold,
           letterSpacing: 0.5,
         ),
@@ -596,23 +600,23 @@ class AppTheme {
         borderRadius: BorderRadius.circular(16.0),
         borderSide: const BorderSide(color: errorDark, width: 2.0),
       ),
-      labelStyle: const TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 16,
+      labelStyle: TextStyle(
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w400,
         color: textSecondaryDark,
         letterSpacing: 0.15,
       ),
-      hintStyle: const TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 16,
+      hintStyle: TextStyle(
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w400,
         color: textDisabledDark,
         letterSpacing: 0.15,
       ),
-      errorStyle: const TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 12,
+      errorStyle: TextStyle(
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyMedium,
         fontWeight: FontWeight.w500,
         color: errorDark,
         letterSpacing: 0.4,
@@ -666,28 +670,28 @@ class AppTheme {
       overlayColor: primaryDark.withValues(alpha: 0.2),
       inactiveTrackColor: dividerDark,
       valueIndicatorColor: primaryDark,
-      valueIndicatorTextStyle: const TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 12,
+      valueIndicatorTextStyle: TextStyle(
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyMedium,
         fontWeight: FontWeight.w500,
         color: onPrimaryDark,
       ),
     ),
 
-    tabBarTheme: const TabBarThemeData(
+    tabBarTheme: TabBarThemeData(
       labelColor: primaryDark,
       unselectedLabelColor: textSecondaryDark,
       indicatorColor: primaryDark,
       indicatorSize: TabBarIndicatorSize.label,
       labelStyle: TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 14,
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w500,
         letterSpacing: 1.25,
       ),
       unselectedLabelStyle: TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 14,
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w400,
         letterSpacing: 1.25,
       ),
@@ -698,9 +702,9 @@ class AppTheme {
         color: textPrimaryDark.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(4),
       ),
-      textStyle: const TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 12,
+      textStyle: TextStyle(
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyMedium,
         fontWeight: FontWeight.w400,
         color: surfaceDark,
         letterSpacing: 0.4,
@@ -710,9 +714,9 @@ class AppTheme {
 
     snackBarTheme: SnackBarThemeData(
       backgroundColor: textPrimaryDark,
-      contentTextStyle: const TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 14,
+      contentTextStyle: TextStyle(
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w400,
         color: surfaceDark,
         letterSpacing: 0.25,
@@ -735,15 +739,15 @@ class AppTheme {
       backgroundColor: dialogDark,
       elevation: 4.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-      titleTextStyle: const TextStyle(fontFamily: 'Poppins',
-        fontSize: 20,
+      titleTextStyle: TextStyle(fontFamily: headingFontFamily,
+        fontSize: AppTypography.headingMedium,
         fontWeight: FontWeight.w600,
         color: textPrimaryDark,
         letterSpacing: 0.15,
       ),
-      contentTextStyle: const TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 16,
+      contentTextStyle: TextStyle(
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w400,
         color: textPrimaryDark,
         letterSpacing: 0.5,
@@ -754,16 +758,16 @@ class AppTheme {
       backgroundColor: surfaceDark,
       selectedColor: primaryDark.withValues(alpha: 0.2),
       disabledColor: dividerDark,
-      labelStyle: const TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 14,
+      labelStyle: TextStyle(
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w400,
         color: textPrimaryDark,
         letterSpacing: 0.25,
       ),
-      secondaryLabelStyle: const TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 14,
+      secondaryLabelStyle: TextStyle(
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w400,
         color: textSecondaryDark,
         letterSpacing: 0.25,
@@ -777,52 +781,52 @@ class AppTheme {
   );
 
   /// Helper method to build text theme based on brightness
-  /// Uses Poppins for headings and Lato for body text
+  /// Uses Outfit for headings and PlusJakartaSans for body text
   static TextTheme _buildTextTheme({required bool isLight}) {
     final Color textPrimary = isLight ? textPrimaryLight : textPrimaryDark;
 
     return TextTheme(
       // Display styles - Poppins for headings
       displayLarge: TextStyle(
-        fontFamily: 'Poppins',
-        fontSize: 57,
+        fontFamily: headingFontFamily,
+        fontSize: AppTypography.displayLarge,
         fontWeight: FontWeight.w400,
         color: textPrimary,
         letterSpacing: -0.25,
       ),
       displayMedium: TextStyle(
-        fontFamily: 'Poppins',
-        fontSize: 45,
+        fontFamily: headingFontFamily,
+        fontSize: AppTypography.displayLarge,
         fontWeight: FontWeight.w400,
         color: textPrimary,
       ),
       displaySmall: TextStyle(
-        fontFamily: 'Poppins',
-        fontSize: 36,
+        fontFamily: headingFontFamily,
+        fontSize: AppTypography.displayLarge,
         fontWeight: FontWeight.w400,
         color: textPrimary,
       ),
 
       // Headline styles - Poppins for headings
       headlineLarge: TextStyle(
-        fontFamily: 'Poppins',
-        fontSize: 32,
+        fontFamily: headingFontFamily,
+        fontSize: AppTypography.headingLarge,
         fontWeight: FontWeight.w700,
         color: textPrimary,
         letterSpacing: -0.5,
         height: 1.2,
       ),
       headlineMedium: TextStyle(
-        fontFamily: 'Poppins',
-        fontSize: 28,
+        fontFamily: headingFontFamily,
+        fontSize: AppTypography.headingLarge,
         fontWeight: FontWeight.w700,
         color: textPrimary,
         letterSpacing: -0.5,
         height: 1.2,
       ),
       headlineSmall: TextStyle(
-        fontFamily: 'Poppins',
-        fontSize: 24,
+        fontFamily: headingFontFamily,
+        fontSize: AppTypography.headingLarge,
         fontWeight: FontWeight.w600,
         color: textPrimary,
         letterSpacing: -0.25,
@@ -831,22 +835,22 @@ class AppTheme {
 
       // Title styles - Lato for body titles
       titleLarge: TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 22,
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.headingLarge,
         fontWeight: FontWeight.w500,
         color: textPrimary,
         letterSpacing: 0,
       ),
       titleMedium: TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 16,
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.headingSmall,
         fontWeight: FontWeight.w600,
         color: textPrimary,
         letterSpacing: 0.15,
       ),
       titleSmall: TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 14,
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w600,
         color: textPrimary,
         letterSpacing: 0.1,
@@ -854,22 +858,22 @@ class AppTheme {
 
       // Body styles - Lato for content
       bodyLarge: TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 16,
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w400,
         color: textPrimary,
         letterSpacing: 0.5,
       ),
       bodyMedium: TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 14,
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyMedium,
         fontWeight: FontWeight.w400,
         color: textPrimary,
         letterSpacing: 0.25,
       ),
       bodySmall: TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 12,
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodySmall,
         fontWeight: FontWeight.w400,
         color: textPrimary,
         letterSpacing: 0.4,
@@ -877,22 +881,22 @@ class AppTheme {
 
       // Label styles - Lato for UI labels
       labelLarge: TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 14,
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w600,
         color: textPrimary,
         letterSpacing: 0.1,
       ),
       labelMedium: TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 12,
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodyMedium,
         fontWeight: FontWeight.w500,
         color: textPrimary,
         letterSpacing: 0.5,
       ),
       labelSmall: TextStyle(
-        fontFamily: 'Lato',
-        fontSize: 11,
+        fontFamily: bodyFontFamily,
+        fontSize: AppTypography.bodySmall,
         fontWeight: FontWeight.w500,
         color: textPrimary,
         letterSpacing: 0.5,

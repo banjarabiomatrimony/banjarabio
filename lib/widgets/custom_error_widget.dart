@@ -3,6 +3,7 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/routes/app_routes.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 // custom_error_widget.dart
 
@@ -32,7 +33,7 @@ class CustomErrorWidget extends StatelessWidget {
                 SizedBox(height: 1.h),
                 Text(AppLocalizations.of(context)?.somethingWentWrong ?? 'Something went wrong',
                   style: TextStyle(
-                    fontSize: 18.sp,
+                    fontSize: AppTypography.headingMedium,
                     fontWeight: FontWeight.w500,
                     color: const Color(0xFF262626),
                   ),
@@ -42,7 +43,7 @@ class CustomErrorWidget extends StatelessWidget {
                   child: Text(AppLocalizations.of(context)?.weEncounteredAnUnexpectedErrorWhileProce ?? 'We encountered an unexpected error while processing your request.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: AppTypography.bodyMedium,
                       color: const Color(0xFF525252), // neutral-600
                     ),
                   ),

@@ -3,7 +3,7 @@
   "@addClearPhotos": {
     "placeholders": {
       "max": {
-        "type": "String"
+        "type": "int"
       }
     }
   },
@@ -43,7 +43,7 @@
   "@bookmarksCount": {
     "placeholders": {
       "count": {
-        "type": "String"
+        "type": "int"
       }
     }
   },
@@ -64,7 +64,7 @@
   "@daysAgo": {
     "placeholders": {
       "count": {
-        "type": "String"
+        "type": "int"
       }
     }
   },
@@ -254,7 +254,7 @@
   "@failedToUploadPhoto": {
     "placeholders": {
       "index": {
-        "type": "int"
+        "type": "String"
       }
     }
   },
@@ -275,7 +275,7 @@
   "@hoursAgo": {
     "placeholders": {
       "count": {
-        "type": "String"
+        "type": "int"
       }
     }
   },
@@ -303,17 +303,17 @@
   "@matchNOfTotal": {
     "placeholders": {
       "current": {
-        "type": "int"
+        "type": "String"
       },
       "total": {
-        "type": "int"
+        "type": "String"
       }
     }
   },
   "@minutesAgo": {
     "placeholders": {
       "count": {
-        "type": "String"
+        "type": "int"
       }
     }
   },
@@ -369,14 +369,14 @@
   "@photoAddedWithKb": {
     "placeholders": {
       "kb": {
-        "type": "String"
+        "type": "int"
       }
     }
   },
   "@photosCount": {
     "placeholders": {
       "count": {
-        "type": "String"
+        "type": "int"
       }
     }
   },
@@ -404,14 +404,14 @@
   "@pointsCount": {
     "placeholders": {
       "points": {
-        "type": "String"
+        "type": "int"
       }
     }
   },
   "@profileBoostPerMonth": {
     "placeholders": {
       "count": {
-        "type": "String"
+        "type": "int"
       }
     }
   },
@@ -463,7 +463,7 @@
   "@profileViewsPerDay": {
     "placeholders": {
       "count": {
-        "type": "String"
+        "type": "int"
       }
     }
   },
@@ -510,17 +510,17 @@
   "@sharesPerMonth": {
     "placeholders": {
       "count": {
-        "type": "String"
+        "type": "int"
       }
     }
   },
   "@stepNOfTotal": {
     "placeholders": {
       "current": {
-        "type": "int"
+        "type": "String"
       },
       "total": {
-        "type": "int"
+        "type": "String"
       }
     }
   },
@@ -537,7 +537,7 @@
   "@trustScoreShareMessage": {
     "placeholders": {
       "score": {
-        "type": "String"
+        "type": "int"
       },
       "url": {
         "type": "String"
@@ -619,6 +619,13 @@
   "almostDone": "Almost Done!",
   "almostDoneReview": "Review all sections and click \"Save Biodata\" to complete your profile. Your biodata will be visible to other community members based on your privacy settings.",
   "anErrorOccurred": "An error occurred: {error}",
+  "@anErrorOccurred": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "and": " and ",
   "annualIncome": "Individual Annual Income",
   "annualIncomeHint": "Total yearly earnings from salary or business. (NOT family savings)",
@@ -715,6 +722,13 @@
   "createBiodata": "Create Biodata",
   "createProfile": "Create Profile",
   "criticalFailure": "Critical failure: {error}",
+  "@criticalFailure": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "cropPhoto": "Crop Photo",
   "cropRotate": "Crop & Rotate",
   "curatedProfilesJustForYou": "{count} curated profiles just for you",
@@ -730,11 +744,32 @@
   "daughter": "Daughter",
   "daysAgo": "{count}d ago",
   "daysLeft": "{days} days left",
+  "@daysLeft": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "daysRemaining": "{days} days remaining",
+  "@daysRemaining": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "delete": "Delete",
   "deleteAccount": "Delete Account",
   "deleteAccountWarning": "This action is permanent and cannot be undone.",
   "deleteCount": "Delete ({count})",
+  "@deleteCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "deleteMyAccount": "Delete My Account",
   "deletePhoto": "Delete Photo",
   "deletePhotos": "Delete Photos",
@@ -753,6 +788,16 @@
   "discardChanges": "Discard Changes?",
   "discardChangesBody": "Are you sure you want to go back? Your progress is saved as a draft.",
   "discountPercentage": "{percentage}% OFF (Trust Score {score})",
+  "@discountPercentage": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      },
+      "score": {
+        "type": "int"
+      }
+    }
+  },
   "discoverProfilesFromYourCommunityNsmartM": "Discover profiles from your community.\\nSmart matchmaking powered by compatibility scores.",
   "district": "District",
   "districtInState": "District in {state}",
@@ -818,12 +863,40 @@
   "failedSignInGoogle": "Failed to sign in with Google: {error}",
   "failedSignInGoogleRetry": "Failed to sign in with Google. Please try again.",
   "failedToBlockUser": "Failed to block user: {error}",
+  "@failedToBlockUser": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "failedToDeleteAccount": "Failed to delete account: {error}",
+  "@failedToDeleteAccount": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "failedToDeletePhotoError": "Failed to delete photo: {error}",
   "failedToGeneratePdfPreview": "Failed to generate PDF preview",
   "failedToLoadBookmarks": "Failed to load bookmarks: {error}",
+  "@failedToLoadBookmarks": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "failedToLoadPhotosError": "Failed to load photos: {error}",
   "failedToLoadProfileError": "Failed to load profile: {error}",
+  "@failedToLoadProfileError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "failedToLoadProfileInformation": "Failed to load profile information",
   "failedToLoadProfiles": "Failed to load profiles",
   "failedToLoadReferralData": "Failed to load referral data",
@@ -838,7 +911,21 @@
   "failedToSharePdf": "Failed to share PDF",
   "failedToStartChat": "Failed to start chat: {error}",
   "failedToSubmitReport": "Failed to submit report: {error}",
+  "@failedToSubmitReport": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "failedToUpdateBookmark": "Failed to update bookmark: {error}",
+  "@failedToUpdateBookmark": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "failedToUpdatePremiumStatus": "Failed to update premium status: {error}",
   "failedToUpdatePrimaryPhotoError": "Failed to update primary photo: {error}",
   "failedToUpdateProfile": "Failed to update profile",
@@ -877,6 +964,13 @@
   "followAndGetFivePercent": "Follow & Get +5%",
   "followUsOnInstagramBonus": "Follow us on Instagram to get a 5% biodata completion bonus and stay updated with the latest matches.",
   "forMonths": "for {count} months",
+  "@forMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "free": "Free",
   "free1PhotonpremiumUpTo6Photos": "Free: 1 photo\\nPremium: Up to 6 photos",
   "freePlanDesc": "Try basic features",
@@ -1100,6 +1194,13 @@
   "permissionDeniedSettings": "Permission denied. Please enable in settings.",
   "permissionRequired": "Permission Required",
   "permissionRequiredMessage": "{type} permission is required to upload photos. Please enable it in app settings.",
+  "@permissionRequiredMessage": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
   "personalDetails": "Personal Details",
   "phoneLabel": "Phone",
   "phoneSupport": "Phone Support",
@@ -1151,6 +1252,13 @@
   "previewGenerationFailed": "Preview generation failed. Please try again.",
   "previous": "Previous",
   "pricePerMonth": "₹{price}/month",
+  "@pricePerMonth": {
+    "placeholders": {
+      "price": {
+        "type": "int"
+      }
+    }
+  },
   "primary": "Primary",
   "primaryPhoto": "Primary Photo",
   "primaryPhotoUpdated": "Primary photo updated",
@@ -1199,6 +1307,13 @@
   "profileSaved": "Profile saved!",
   "profileSharedWith": "Profile shared with {name}",
   "profileStrengthLabel": "Profile Strength: {strength}",
+  "@profileStrengthLabel": {
+    "placeholders": {
+      "strength": {
+        "type": "String"
+      }
+    }
+  },
   "profileViewLimitReached": "Profile View Limit Reached",
   "profileViewsPerDay": "{count} profile views/day",
   "profilesYouSaveWillAppearHere": "Profiles you save will appear here",
@@ -1222,6 +1337,13 @@
   "references": "References",
   "referralInvite": "Referral Invite",
   "referralInviteMessage": "Join BanjaraBio, the most trusted matrimonial app for our community! Use my link to get started: {link}",
+  "@referralInviteMessage": {
+    "placeholders": {
+      "link": {
+        "type": "String"
+      }
+    }
+  },
   "referralInviteSubject": "Invitation to Join BanjaraBio",
   "referralLinkCopiedToClipboard": "Referral link copied to clipboard!",
   "referralShareMessage": "Join BanjaraBio, the most trusted matrimonial app for our community! Use my link to get started: {link}",
@@ -1516,6 +1638,13 @@
   "yourSelfieHasBeenSubmittedOurTeamWillVer": "Your selfie has been submitted. Our team will verify it against your profile photo.",
   "yourTrustScore": "Your Trust Score",
   "yrs": "{count} Yrs",
+  "@yrs": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "itSAMatch": "IT'S A MATCH!",
   "sharedProfilesWithEachOther": "You and {name} have shared profiles with each other.",
   "@sharedProfilesWithEachOther": {
@@ -1529,12 +1658,43 @@
   },
   "mutualMatch": "Mutual Match",
   "toContact": "To: {name}",
+  "@toContact": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "fromContact": "From: {name}",
+  "@fromContact": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "countProfileViews": "{count, plural, =1{1 profile view} other{{count} profile views}}",
+  "@countProfileViews": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "matchedBadge": "MATCHED",
   "premiumBadge": "PREMIUM",
   "contactLabel": "Contact",
   "profileSharedVia": "Shared {profileName} via {title}",
+  "@profileSharedVia": {
+    "placeholders": {
+      "profileName": {
+        "type": "String"
+      },
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "failedToSendMessage": "Failed to send message: {error}",
   "uploadFailed": "Upload failed: {error}",
   "updateFailed": "Update failed: {error}",
@@ -1687,13 +1847,55 @@
   "tillUMarry": "Till U Marry",
   "lifetime": "Lifetime",
   "mrpPrice": "MRP ₹{price}",
+  "@mrpPrice": {
+    "placeholders": {
+      "price": {
+        "type": "int"
+      }
+    }
+  },
   "bulkDiscount": "{percent}% OFF",
+  "@bulkDiscount": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "youSave": "You Save ₹{amount}",
+  "@youSave": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
   "totalSavings": "Total Savings: ₹{amount}",
+  "@totalSavings": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
   "trustDiscountApplied": "Trust Score Discount Applied",
   "couponDiscountApplied": "Coupon Discount Applied",
   "contactUnlocks": "{count} Contact Unlocks/month",
+  "@contactUnlocks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "handpickedMatches": "{count} Handpicked Matches/week",
+  "@handpickedMatches": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "dedicatedManager": "Dedicated Relationship Manager",
   "profileMakeover": "Professional Profile Makeover",
   "featuredBadge": "Elite Verified Badge",
@@ -1786,5 +1988,22 @@
   "refund25": "25% Refund",
   "teamVisit": "Team Visit",
   "refund35": "35% Refund",
-  "successSubmission": "Success! Your request has been submitted for review."
+  "successSubmission": "Success! Your request has been submitted for review.",
+  "melavas": "Melavas",
+  "upcomingMelavas": "Upcoming Melavas",
+  "callOrganizer": "Call Organizer",
+  "viewVenue": "View Venue",
+  "organizer": "Organizer",
+  "venue": "Venue",
+  "eventDetails": "Event Details",
+  "browseMatchesTitle": "Search Matches (Browse)",
+  "browseMatchesDesc": "Search suitable matches for son, daughter, relative.",
+  "browseMatchesSubtitle": "Answer a few questions and see suitable matches",
+  "forWhomSearching": "Who are you searching a match for?",
+  "lookingForGender": "Looking for groom or bride?",
+  "groomBoy": "👦 Groom (Boy)",
+  "brideGirl": "👧 Bride (Girl)",
+  "selectDistrict": "Select District",
+  "proceedToLogin": "Proceed → Login",
+  "sibling": "Sibling"
 }

@@ -42,14 +42,11 @@ void main() {
       expect(SubscriptionConfig.getFeatures(PlanType.biodata_unlock), SubscriptionConfig.biodataUnlock);
     });
 
-    test('getAllPaidPlans returns 5 plans (standard, silver, gold, platinum, eternal)', () {
+    test('getAllPaidPlans returns 2 plans (mass_market, mass_market_annual) during growth campaign', () {
       final plans = SubscriptionConfig.getAllPaidPlans();
-      expect(plans.length, 5);
-      expect(plans[0].key, PlanType.standard);
-      expect(plans[1].key, PlanType.silver);
-      expect(plans[2].key, PlanType.gold);
-      expect(plans[3].key, PlanType.platinum);
-      expect(plans[4].key, PlanType.eternal);
+      expect(plans.length, 2);
+      expect(plans[0].key, PlanType.mass_market);
+      expect(plans[1].key, PlanType.mass_market_annual);
     });
 
     test('calculateSavings returns positive value for paid plans', () {
@@ -96,7 +93,7 @@ void main() {
 
       expect(SubscriptionConfig.silver.messaging, true);
       expect(SubscriptionConfig.silver.advancedFilters, true);
-      expect(SubscriptionConfig.silver.photosLimit, 5);
+      expect(SubscriptionConfig.silver.photosLimit, 7);
 
       expect(SubscriptionConfig.gold.verificationBadge, true);
       expect(SubscriptionConfig.gold.adFree, true);

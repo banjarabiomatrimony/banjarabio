@@ -1,8 +1,10 @@
+import 'package:banjarabio/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 import 'package:banjarabio/routes/app_routes.dart';
 
@@ -86,7 +88,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool(OnboardingScreen._onboardingKey, true);
       if (mounted) {
-        Navigator.of(context).pushReplacementNamed(AppRoutes.authentication);
+        Navigator.of(context).pushReplacementNamed(AppRoutes.onboardingSelection);
       }
     });
   }
@@ -98,25 +100,22 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     final l10n = AppLocalizations.of(context);
     final List<_OnboardingPage> pages = [
       _OnboardingPage(
-        icon: Icons.favorite_rounded,
-        iconColors: const [Color(0xFF880E4F), Color(0xFF432C7A)],
+        imagePath: 'assets/images/onboarding/matchmaking.png',
         title: l10n?.findYourPerfectMatch ?? 'Find Your Perfect Match',
         subtitle: l10n?.discoverProfilesFromYourCommunityNsmartM ?? 'Discover profiles from your community.\nSmart matchmaking powered by compatibility scores.',
-        bgGradient: const [Color(0xFF432C7A), Color(0xFF2A1B4D)],
+        bgGradient: const [AppTheme.primaryLight, AppTheme.primaryVariantLight],
       ),
       _OnboardingPage(
-        icon: Icons.verified_user_rounded,
-        iconColors: const [Color(0xFF4CAF50), Color(0xFF2E7D32)],
+        imagePath: 'assets/images/onboarding/verified.png',
         title: l10n?.verifiedTrusted ?? 'Verified & Trusted',
         subtitle: l10n?.everyProfileIsVerifiedWithIdSelfieRefere ?? 'Every profile is verified with ID, selfie & references.\nTrust Score ensures genuine connections.',
-        bgGradient: const [Color(0xFF2E7D32), Color(0xFF1B5E20)],
+        bgGradient: const [AppTheme.successLight, AppTheme.successVariantLight],
       ),
       _OnboardingPage(
-        icon: Icons.family_restroom_rounded,
-        iconColors: const [Color(0xFFD4AF37), Color(0xFFB8941F)],
+        imagePath: 'assets/images/onboarding/family.png',
         title: l10n?.familyFirstValues ?? 'Family-First Values',
         subtitle: l10n?.shareProfilesWithYourFamilyInstantlyNbui ?? 'Share profiles with your family instantly.\nBuilt for the way Indian families make decisions.',
-        bgGradient: const [Color(0xFFB8941F), Color(0xFF8B6914)],
+        bgGradient: [AppTheme.secondaryVariantLight, AppTheme.secondaryVariantLight.withValues(alpha: 0.85)],
       ),
     ];
 
@@ -146,9 +145,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     onPressed: _completeOnboarding,
                     child: Text(AppLocalizations.of(context)?.skip ?? 'Skip',
                       style: TextStyle(
-                        fontFamily: 'Poppins',
+                        fontFamily: AppTheme.headingFontFamily,
                         color: Colors.white.withValues(alpha: 0.8),
-                        fontSize: 12.sp,
+                        fontSize: AppTypography.bodyMedium,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -214,8 +213,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                   ? (AppLocalizations.of(context)?.getStartedLabel ?? 'Get Started')
                                   : (AppLocalizations.of(context)?.nextLabel ?? 'Next'),
                               style: TextStyle(
-                                fontFamily: 'Poppins',
-                                fontSize: 14.sp,
+                                fontFamily: AppTheme.headingFontFamily,
+                                fontSize: AppTypography.bodyLarge,
                                 fontWeight: FontWeight.w700,
                                 letterSpacing: 0.5,
                               ),
@@ -249,41 +248,28 @@ class _OnboardingScreenState extends State<OnboardingScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Animated icon container
+            // 🎨 Custom illustration with bounce animation
             ScaleTransition(
               scale: _bounceAnimation,
               child: Container(
-                width: 35.w,
-                height: 35.w,
+                width: 60.w,
+                height: 60.w,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.white.withValues(alpha: 0.25),
-                      Colors.white.withValues(alpha: 0.1),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
                   boxShadow: [
                     BoxShadow(
-                      color: page.iconColors.last.withValues(alpha: 0.3),
+                      color: Colors.black.withValues(alpha: 0.2),
                       blurRadius: 8,
                       offset: const Offset(0, 10),
                     ),
                   ],
                 ),
-                child: Center(
-                  child: ShaderMask(
-                    shaderCallback: (Rect bounds) {
-                      return LinearGradient(
-                        colors: page.iconColors,
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ).createShader(bounds);
-                    },
-                    child: Icon(
-                      page.icon,
+                child: ClipOval(
+                  child: Image.asset(
+                    page.imagePath,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Icon(
+                      Icons.favorite_rounded,
                       size: 15.w,
                       color: Colors.white,
                     ),
@@ -299,8 +285,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               page.title,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontFamily: 'Poppins',
-                fontSize: 22.sp,
+                fontFamily: AppTheme.headingFontFamily,
+                fontSize: AppTypography.headingLarge,
                 fontWeight: FontWeight.w800,
                 color: Colors.white,
                 letterSpacing: 0.5,
@@ -315,8 +301,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               page.subtitle,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontFamily: 'Poppins',
-                fontSize: 12.sp,
+                fontFamily: AppTheme.headingFontFamily,
+                fontSize: AppTypography.bodyMedium,
                 fontWeight: FontWeight.w400,
                 color: Colors.white.withValues(alpha: 0.85),
                 height: 1.6,
@@ -357,15 +343,13 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
 /// Data model for each onboarding step.
 class _OnboardingPage {
-  final IconData icon;
-  final List<Color> iconColors;
+  final String imagePath;
   final String title;
   final String subtitle;
   final List<Color> bgGradient;
 
   const _OnboardingPage({
-    required this.icon,
-    required this.iconColors,
+    required this.imagePath,
     required this.title,
     required this.subtitle,
     required this.bgGradient,

@@ -59,13 +59,11 @@ void setupWidgetTestMocks({
   when(() => user.email).thenReturn('test@example.com');
   when(() => auth.onAuthStateChange).thenAnswer((_) => const Stream.empty());
 
-  // Also set testClient so AppSupabaseClient.storage works
-  final mockClient = MockSupabaseClient();
-  AppSupabaseClient.testClient = mockClient;
-  when(() => mockClient.auth).thenReturn(auth);
-
   // Inject FakeSupabaseClient globally into Singleton Repositories
   final fakeClient = FakeSupabaseClient();
+  
+  // Also set testClient so AppSupabaseClient.storage works
+  AppSupabaseClient.testClient = fakeClient;
   ProfileRepository().testClient = fakeClient;
   AdminRepository().testClient = fakeClient;
   InfluencerRepository().testClient = fakeClient;

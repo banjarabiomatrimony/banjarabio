@@ -7,6 +7,8 @@ import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/widgets/custom_image_widget.dart';
 import 'package:banjarabio/core/models/chat_model.dart';
 import 'package:banjarabio/presentation/chat/chat_screen.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 class MatchSuccessDialog extends StatefulWidget {
   final String shareId;
@@ -85,7 +87,7 @@ class _MatchSuccessDialogState extends State<MatchSuccessDialog>
         _controller.forward();
       }
     } catch (e) {
-      debugPrint('Error fetching match details: $e');
+      AppLogger.error('MatchSuccessDialog', 'Error fetching match details: $e');
       if (mounted) {
         Navigator.pop(context); // Close on error
       }
@@ -149,7 +151,7 @@ class _MatchSuccessDialogState extends State<MatchSuccessDialog>
                 style: TextStyle(
                   fontFamily: 'Orbitron', // Assuming we have this or similar
                   color: const Color(0xFF64FFDA),
-                  fontSize: 24.sp,
+                  fontSize: AppTypography.headingLarge,
                   fontWeight: FontWeight.w900,
                   letterSpacing: 2,
                   shadows: [
@@ -206,7 +208,7 @@ class _MatchSuccessDialogState extends State<MatchSuccessDialog>
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white.withValues(alpha: 0.9),
-                  fontSize: 12.sp,
+                  fontSize: AppTypography.bodyMedium,
                 ),
               ),
 
@@ -259,7 +261,7 @@ class _MatchSuccessDialogState extends State<MatchSuccessDialog>
                   child: Text(AppLocalizations.of(context)?.sendMessage ?? 'SEND MESSAGE',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 12.sp,
+                      fontSize: AppTypography.bodyMedium,
                     ),
                   ),
                 ),
@@ -272,7 +274,7 @@ class _MatchSuccessDialogState extends State<MatchSuccessDialog>
                 child: Text(AppLocalizations.of(context)?.keepBrowsing ?? 'Keep Browsing',
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: 0.6),
-                    fontSize: 11.sp,
+                    fontSize: AppTypography.bodySmall,
                   ),
                 ),
               ),

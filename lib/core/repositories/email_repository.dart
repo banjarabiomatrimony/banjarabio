@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 class EmailRepository {
   final SupabaseClient _supabase = Supabase.instance.client;
@@ -17,7 +17,7 @@ class EmailRepository {
       
       return response;
     } catch (e) {
-      debugPrint('Error fetching email preferences: $e');
+      AppLogger.error('EmailRepository', 'Error fetching email preferences: $e');
       return {};
     }
   }
@@ -32,7 +32,7 @@ class EmailRepository {
           .update({column: value})
           .eq('user_id', userId);
     } catch (e) {
-      debugPrint('Error updating email preference ($column): $e');
+      AppLogger.error('EmailRepository', 'Error updating email preference ($column): $e');
     }
   }
 }

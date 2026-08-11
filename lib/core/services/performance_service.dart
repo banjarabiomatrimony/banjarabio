@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Service to handle global performance and memory optimizations.
 /// mimicking high-scale apps (Instagram/Facebook) by proactively
@@ -21,7 +22,7 @@ class PerformanceService with WidgetsBindingObserver {
     PaintingBinding.instance.imageCache.maximumSizeBytes = 20 * 1024 * 1024; // 20MB
     
     _isInitialized = true;
-    debugPrint('🚀 PerformanceService: Global Memory Observer & Caps Active');
+    AppLogger.debug('PerformanceService', '🚀 PerformanceService: Global Memory Observer & Caps Active');
   }
 
   @override

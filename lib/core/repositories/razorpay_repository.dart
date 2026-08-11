@@ -14,6 +14,7 @@ import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/core/repositories/subscription_repository.dart';
 import 'package:banjarabio/shared/billing/razorpay_billing_constants.dart';
 import 'package:banjarabio/shared/billing/razorpay_billing_registry.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// [RazorpayRepository]
 ///
@@ -87,7 +88,7 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
         ? DateTime.now().difference(_pendingStartTime!)
         : Duration.zero;
     if (elapsed > const Duration(seconds: 10)) {
-      debugPrint('[RAZORPAY] App resumed during payment, refreshing subscription');
+      AppLogger.debug('RazorpayRepository', '[RAZORPAY] App resumed during payment, refreshing subscription');
       _subscriptionRepository.refreshSubscription();
     }
   }
@@ -99,7 +100,7 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
     _razorpay!.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay!.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay!.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
-    debugPrint('[RAZORPAY] RazorpayRepository > Fresh instance created, listeners registered');
+    AppLogger.debug('RazorpayRepository', '[RAZORPAY] RazorpayRepository > Fresh instance created, listeners registered');
   }
 
   /// Disposes listeners to prevent memory leaks.
@@ -145,11 +146,11 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
 
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) {
-        debugPrint('[RAZORPAY] startPayment > User not logged in');
+        AppLogger.debug('RazorpayRepository', '[RAZORPAY] startPayment > User not logged in');
         return BackendResponse.failure('User not logged in');
       }
 
-      debugPrint('[RAZORPAY] startPayment > planType=${planType.name}');
+      AppLogger.debug('RazorpayRepository', '[RAZORPAY] startPayment > planType=${planType.name}');
 
       // 1. Reset State
       if (_paymentCompleter != null && !_paymentCompleter!.isCompleted) {
@@ -161,14 +162,14 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
 
       // 2. Get Plan Config (from shared billing master via app config)
       final config = RazorpayBillingRegistry.config;
-      debugPrint('[RAZORPAY] startPayment > amount=$amountPaise paise (${amountPaise / 100} INR)');
+      AppLogger.debug('RazorpayRepository', '[RAZORPAY] startPayment > amount=$amountPaise paise (${amountPaise / 100} INR)');
 
       // 3. Server: Create Order (or get amount-only flow approval)
       // Backend may return order_id or 'amount_only' when Razorpay creates order on pay.
       final orderRes = await _createOrderRpc(amountPaise, planType.name);
 
       if (!orderRes.isSuccess) {
-        debugPrint('[RAZORPAY] startPayment > createOrder FAILED | ${orderRes.errorMessage}');
+        AppLogger.error('RazorpayRepository', '[RAZORPAY] startPayment > createOrder FAILED | ${orderRes.errorMessage}');
         WidgetsBinding.instance.removeObserver(this);
         _pendingStartTime = null;
         _paymentCompleter?.complete(
@@ -198,7 +199,7 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
           final profileRes = await _profileRepository.getOwnProfile().timeout(const Duration(seconds: 2));
           profile = profileRes.data;
         } catch (e) {
-          debugPrint('[RAZORPAY] startPayment > Profile fetch failed for metadata | $e');
+          AppLogger.error('RazorpayRepository', '[RAZORPAY] startPayment > Profile fetch failed for metadata | $e');
         }
         
         _pendingMetadata = RazorpayBillingConstants.buildGroupedMetadata(
@@ -222,10 +223,10 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
           referrer: referrerId,
         );
       } catch (e) {
-        debugPrint('[RAZORPAY] startPayment > Metadata collection error (non-fatal) | $e');
+        AppLogger.error('RazorpayRepository', '[RAZORPAY] startPayment > Metadata collection error (non-fatal) | $e');
       }
 
-      debugPrint('[RAZORPAY] startPayment > orderId=${orderData['id']} | useAmountOnly=$useAmountOnly');
+      AppLogger.debug('RazorpayRepository', '[RAZORPAY] startPayment > orderId=${orderData['id']} | useAmountOnly=$useAmountOnly');
 
       // 4. Client: Open Checkout UI (uses shared config for branding/notes)
       _openCheckout(
@@ -312,10 +313,10 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
     }
 
     try {
-      debugPrint('[RAZORPAY] _openCheckout > Opening Razorpay SDK | amount=$amount orderId=$orderId');
+      AppLogger.debug('RazorpayRepository', '[RAZORPAY] _openCheckout > Opening Razorpay SDK | amount=$amount orderId=$orderId');
       _razorpay!.open(options);
     } catch (e) {
-      debugPrint('[RAZORPAY] _openCheckout > FAILED to open | $e');
+      AppLogger.error('RazorpayRepository', '[RAZORPAY] _openCheckout > FAILED to open | $e');
       _completePaymentWithFailure('Failed to open checkout: $e');
     }
   }
@@ -329,9 +330,9 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
     // Edge Functions validate JWT strictly; RPC uses auth.uid() and may succeed with stale token.
     try {
       await _supabase.auth.refreshSession();
-      debugPrint('[RAZORPAY] _createOrderRpc > Session refreshed before Edge Function');
+      AppLogger.debug('RazorpayRepository', '[RAZORPAY] _createOrderRpc > Session refreshed before Edge Function');
     } catch (e) {
-      debugPrint('[RAZORPAY] _createOrderRpc > Session refresh skipped/failed | $e');
+      AppLogger.error('RazorpayRepository', '[RAZORPAY] _createOrderRpc > Session refresh skipped/failed | $e');
       // Continue anyway; Edge Function may still work; RPC fallback will handle failure
     }
 
@@ -358,7 +359,7 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
       if (res.status == 200 && res.data != null) {
         final data = res.data as Map<String, dynamic>;
         if (data['id'] != null && data['id'].toString().startsWith('order_')) {
-          debugPrint('[RAZORPAY] _createOrderRpc > Edge Function SUCCESS | orderId=${data['id']}');
+          AppLogger.debug('RazorpayRepository', '[RAZORPAY] _createOrderRpc > Edge Function SUCCESS | orderId=${data['id']}');
           return BackendResponse.success(data);
         }
         debugPrint(
@@ -373,7 +374,7 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
       );
       // On 401 (Invalid JWT): retry once after refresh before falling back to RPC
       if (res.status == 401) {
-        debugPrint('[RAZORPAY] _createOrderRpc > 401 Invalid JWT, retrying after refresh');
+        AppLogger.warn('RazorpayRepository', '[RAZORPAY] _createOrderRpc > 401 Invalid JWT, retrying after refresh');
         try {
           await _supabase.auth.refreshSession();
           final retryRes = await _supabase.functions.invoke(
@@ -389,12 +390,12 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
           if (retryRes.status == 200 && retryRes.data != null) {
             final data = retryRes.data as Map<String, dynamic>;
             if (data['id'] != null && data['id'].toString().startsWith('order_')) {
-              debugPrint('[RAZORPAY] _createOrderRpc > Retry SUCCESS | orderId=${data['id']}');
+              AppLogger.warn('RazorpayRepository', '[RAZORPAY] _createOrderRpc > Retry SUCCESS | orderId=${data['id']}');
               return BackendResponse.success(data);
             }
           }
         } catch (_) {
-          debugPrint('[RAZORPAY] _createOrderRpc > Retry failed, falling through to RPC');
+          AppLogger.error('RazorpayRepository', '[RAZORPAY] _createOrderRpc > Retry failed, falling through to RPC');
         }
       }
       // Fall through to RPC only for 404 (not deployed), 401 (after retry), or 5xx (server error)
@@ -409,7 +410,7 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
       // Supabase functions.invoke() THROWS on 401 instead of returning response.
       // Retry once after refresh when we get FunctionException with status 401.
       if (e is FunctionException && e.status == 401) {
-        debugPrint('[RAZORPAY] _createOrderRpc > 401 Invalid JWT (thrown), retrying after refresh');
+        AppLogger.warn('RazorpayRepository', '[RAZORPAY] _createOrderRpc > 401 Invalid JWT (thrown), retrying after refresh');
         try {
           await _supabase.auth.refreshSession();
           // Short delay so client picks up new token before next invoke
@@ -428,12 +429,12 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
           if (retryRes.status == 200 && retryRes.data != null) {
             final data = retryRes.data as Map<String, dynamic>;
             if (data['id'] != null && data['id'].toString().startsWith('order_')) {
-              debugPrint('[RAZORPAY] _createOrderRpc > Retry SUCCESS | orderId=${data['id']}');
+              AppLogger.warn('RazorpayRepository', '[RAZORPAY] _createOrderRpc > Retry SUCCESS | orderId=${data['id']}');
               return BackendResponse.success(data);
             }
           }
         } catch (_) {
-          debugPrint('[RAZORPAY] _createOrderRpc > Retry failed, falling through to RPC');
+          AppLogger.error('RazorpayRepository', '[RAZORPAY] _createOrderRpc > Retry failed, falling through to RPC');
         }
       }
       // Fall through to RPC on network/parsing errors or other exceptions
@@ -460,10 +461,10 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
             },
           },
         );
-      debugPrint('[RAZORPAY] _createOrderRpc > RPC fallback SUCCESS | amount_only');
+      AppLogger.warn('RazorpayRepository', '[RAZORPAY] _createOrderRpc > RPC fallback SUCCESS | amount_only');
       return BackendResponse.fromRpc(response);
     } catch (e) {
-      debugPrint('[RAZORPAY] _createOrderRpc > RPC fallback FAILED | $e');
+      AppLogger.error('RazorpayRepository', '[RAZORPAY] _createOrderRpc > RPC fallback FAILED | $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -508,7 +509,7 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
   // ---------------------------------------------------------------------------
 
   Future<void> _handlePaymentSuccess(PaymentSuccessResponse response) async {
-    debugPrint('[RAZORPAY] _handlePaymentSuccess > orderId=${response.orderId} paymentId=${response.paymentId}');
+    AppLogger.debug('RazorpayRepository', '[RAZORPAY] _handlePaymentSuccess > orderId=${response.orderId} paymentId=${response.paymentId}');
 
     // Null safety: Razorpay SDK can return null in edge cases
     final orderId = response.orderId;
@@ -517,7 +518,7 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
     if (orderId == null || orderId.isEmpty ||
         paymentId == null || paymentId.isEmpty ||
         signature == null || signature.isEmpty) {
-      debugPrint('[RAZORPAY] _handlePaymentSuccess > Missing orderId/paymentId/signature');
+      AppLogger.warn('RazorpayRepository', '[RAZORPAY] _handlePaymentSuccess > Missing orderId/paymentId/signature');
       _completePaymentWithFailure('Invalid payment response: missing verification data');
       return;
     }
@@ -531,7 +532,7 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
       );
 
       if (verificationRes.isSuccess) {
-        debugPrint('[RAZORPAY] _handlePaymentSuccess > verify_payment SUCCESS | refreshing profile & subscription');
+        AppLogger.debug('RazorpayRepository', '[RAZORPAY] _handlePaymentSuccess > verify_payment SUCCESS | refreshing profile & subscription');
         // 2. Brief delay so DB commit/replication is visible before profile fetch (avoids stale read)
         await Future<void>.delayed(const Duration(milliseconds: 500));
         // 3. Refresh profile with retries (webhook/DB may lag; retry until unlocked or max attempts)
@@ -541,13 +542,13 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
         for (var attempt = 0; attempt < maxRetries; attempt++) {
           try {
             final profileRes = await _profileRepository.getOwnProfile(forceRefresh: true);
-            debugPrint('[RAZORPAY] _handlePaymentSuccess > profile refreshed (attempt ${attempt + 1}) | isPdfUnlocked=${profileRes.data?.isPdfUnlocked}');
+            AppLogger.debug('RazorpayRepository', '[RAZORPAY] _handlePaymentSuccess > profile refreshed (attempt ${attempt + 1}) | isPdfUnlocked=${profileRes.data?.isPdfUnlocked}');
             if (profileRes.data?.isPdfUnlocked == true) {
               isUnlocked = true;
               break;
             }
           } catch (e) {
-            debugPrint('[RAZORPAY] _handlePaymentSuccess > profile refresh failed (attempt ${attempt + 1}) | $e');
+            AppLogger.error('RazorpayRepository', '[RAZORPAY] _handlePaymentSuccess > profile refresh failed (attempt ${attempt + 1}) | $e');
           }
           if (attempt < maxRetries - 1) {
             await Future<void>.delayed(const Duration(milliseconds: retryDelayMs));
@@ -555,7 +556,7 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
         }
         // 4. Fallback: if still locked, call sync_pdf_unlock and retry (handles replication lag / edge cases)
         if (!isUnlocked) {
-          debugPrint('[RAZORPAY] _handlePaymentSuccess > profile still locked after retries, calling sync_pdf_unlock');
+          AppLogger.debug('RazorpayRepository', '[RAZORPAY] _handlePaymentSuccess > profile still locked after retries, calling sync_pdf_unlock');
           try {
             final syncRes = await _supabase.rpc(
               'fn_process_payment',
@@ -565,21 +566,21 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
               },
             );
             final status = syncRes is Map ? syncRes['status']?.toString() : null;
-            debugPrint('[RAZORPAY] _handlePaymentSuccess > sync_pdf_unlock | status=$status');
+            AppLogger.debug('RazorpayRepository', '[RAZORPAY] _handlePaymentSuccess > sync_pdf_unlock | status=$status');
             if (status == 'sync_applied') {
               await Future<void>.delayed(const Duration(milliseconds: 400));
               final profileRes = await _profileRepository.getOwnProfile(forceRefresh: true);
               isUnlocked = profileRes.data?.isPdfUnlocked == true;
-              debugPrint('[RAZORPAY] _handlePaymentSuccess > after sync retry | isPdfUnlocked=$isUnlocked');
+              AppLogger.warn('RazorpayRepository', '[RAZORPAY] _handlePaymentSuccess > after sync retry | isPdfUnlocked=$isUnlocked');
             }
           } catch (e) {
-            debugPrint('[RAZORPAY] _handlePaymentSuccess > sync_pdf_unlock failed | $e');
+            AppLogger.error('RazorpayRepository', '[RAZORPAY] _handlePaymentSuccess > sync_pdf_unlock failed | $e');
           }
         }
         try {
           await _subscriptionRepository.refreshSubscription();
         } catch (e) {
-          debugPrint('[RAZORPAY] _handlePaymentSuccess > refreshSubscription failed (non-fatal) | $e');
+          AppLogger.error('RazorpayRepository', '[RAZORPAY] _handlePaymentSuccess > refreshSubscription failed (non-fatal) | $e');
         }
         // Optimistic unlock for biodata_unlock only (handles replication lag)
         if (_pendingPlanType == 'biodata_unlock') {
@@ -587,13 +588,13 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
         }
         _completePaymentWithSuccess();
       } else {
-        debugPrint('[RAZORPAY] _handlePaymentSuccess > verify_payment FAILED | ${verificationRes.errorMessage}');
+        AppLogger.error('RazorpayRepository', '[RAZORPAY] _handlePaymentSuccess > verify_payment FAILED | ${verificationRes.errorMessage}');
         _completePaymentWithFailure(
           'Signature Verification Failed: ${verificationRes.errorMessage}',
         );
       }
     } catch (e, stack) {
-      debugPrint('[RAZORPAY] _handlePaymentSuccess > Exception | $e');
+      AppLogger.error('RazorpayRepository', '[RAZORPAY] _handlePaymentSuccess > Exception | $e');
       _completePaymentWithFailure(
         'Payment verification failed: ${e.toString()}',
         stackTrace: stack,
@@ -626,7 +627,7 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    debugPrint('[RAZORPAY] _handlePaymentError > code=${response.code} | message=${response.message}');
+    AppLogger.error('RazorpayRepository', '[RAZORPAY] _handlePaymentError > code=${response.code} | message=${response.message}');
 
     // Convert Razorpay error codes to user-friendly messages
     String msg = 'Payment Failed';
@@ -640,7 +641,7 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
-    debugPrint('[RAZORPAY] _handleExternalWallet > wallet=${response.walletName}');
+    AppLogger.debug('RazorpayRepository', '[RAZORPAY] _handleExternalWallet > wallet=${response.walletName}');
   }
 
   // ---------------------------------------------------------------------------

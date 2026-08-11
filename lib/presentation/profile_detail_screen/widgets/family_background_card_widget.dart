@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/widgets/custom_icon_widget.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/profile_detail_chip_widget.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// Family background card displaying detailed family information
 /// Critical for arranged marriage evaluation in Banjara community
@@ -74,7 +75,7 @@ class FamilyBackgroundCardWidget extends StatelessWidget {
                     color: theme.colorScheme.onSurface,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 0.4,
-                    fontSize: 14.5.sp,
+                    fontSize: AppTypography.headingSmall,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),

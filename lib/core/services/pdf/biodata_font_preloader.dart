@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Preloads biodata PDF fonts in the main isolate (where Flutter binding exists).
 /// Avoids AssetManifest / rootBundle access in the PDF isolate, which causes
@@ -51,10 +52,10 @@ class BiodataFontPreloader {
           _cache[key] = res.bodyBytes;
           results[key] = res.bodyBytes;
         } else {
-          debugPrint('[BiodataFontPreloader] Failed $key: ${res.statusCode}');
+          AppLogger.error('BiodataFontPreloader', '[BiodataFontPreloader] Failed $key: ${res.statusCode}');
         }
       } catch (e) {
-        debugPrint('[BiodataFontPreloader] Error $key: $e');
+        AppLogger.error('BiodataFontPreloader', '[BiodataFontPreloader] Error $key: $e');
       }
     }
 

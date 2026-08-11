@@ -3,6 +3,7 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/repositories/trust_score_repository.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 class ReferenceVerificationScreen extends StatefulWidget {
   const ReferenceVerificationScreen({super.key});
@@ -110,7 +111,7 @@ class _ReferenceVerificationScreenState
             Icon(Icons.group_add, size: 48.sp, color: Colors.purple),
             SizedBox(height: 2.h),
             Text(AppLocalizations.of(context)?.addTwoReferences ?? 'Add Two References',
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: AppTypography.headingSmall, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 1.h),
             Text(AppLocalizations.of(context)?.weWillSendAVerificationRequestToTheirMob ?? 'We will send a verification request to their mobile number. Once they approve, you get +10 Points.',
@@ -142,7 +143,7 @@ class _ReferenceVerificationScreenState
               Icon(Icons.check_circle, size: 60.sp, color: Colors.green),
               SizedBox(height: 2.h),
               Text(AppLocalizations.of(context)?.requestsSent ?? 'Requests Sent!',
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: AppTypography.headingMedium, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 1.h),
               Text(AppLocalizations.of(context)?.statusWaitingForApproval ?? 'Status: Waiting for approval',

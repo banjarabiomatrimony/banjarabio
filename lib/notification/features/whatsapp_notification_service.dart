@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banjarabio/notification/core/notification_payload.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// WhatsApp Message Service for notification fallback.
 ///
@@ -54,7 +55,7 @@ class WhatsAppNotificationService {
         return false;
       }
     } catch (e) {
-      debugPrint('📱 [WhatsApp] Error sending fallback: $e');
+      AppLogger.error('WhatsappNotificationService', '📱 [WhatsApp] Error sending fallback: $e');
       return false;
     }
   }
@@ -77,7 +78,7 @@ class WhatsAppNotificationService {
 
       return hasPhone && optedIn;
     } catch (e) {
-      debugPrint('📱 [WhatsApp] Error checking availability: $e');
+      AppLogger.error('WhatsappNotificationService', '📱 [WhatsApp] Error checking availability: $e');
       return false;
     }
   }

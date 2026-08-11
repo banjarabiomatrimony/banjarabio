@@ -4,12 +4,15 @@ import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/providers/locale_provider.dart';
+import 'package:banjarabio/core/providers/profile_providers.dart';
 import 'package:banjarabio/core/repositories/auth_repository.dart';
+import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/presentation/settings_screen/marriage_reward_form_screen.dart';
 import 'package:banjarabio/presentation/settings_screen/email_preferences_screen.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -41,6 +44,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
+    final ownProfileAsync = ref.watch(ownProfileProvider);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -54,13 +58,70 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
         padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
         child: Column(
           children: [
+            // 1. Profile / Account Header
             _buildAnimatedItem(
-                index: 0, child: _buildReferralBanner(context, theme)),
-            SizedBox(height: 2.h),
-            _buildMarriageRewardBanner(context, theme),
-            SizedBox(height: 3.h),
+              index: 0,
+              child: ownProfileAsync.when(
+                data: (profile) {
+                  if (profile == null) {
+                    return _buildGuestHeader(theme);
+                  }
+                  return _buildProfileHeader(context, theme, profile);
+                },
+                loading: () => _buildHeaderShimmer(theme),
+                error: (err, stack) => _buildGuestHeader(theme),
+              ),
+            ),
+            SizedBox(height: 2.5.h),
+
+            // 2. Promotional Banners
             _buildAnimatedItem(
               index: 1,
+              child: Column(
+                children: [
+                  _buildReferralBanner(context, theme),
+                  SizedBox(height: 2.h),
+                  _buildMarriageRewardBanner(context, theme),
+                ],
+              ),
+            ),
+            SizedBox(height: 3.h),
+
+            // 3. Premium Hub & Activity
+            _buildAnimatedItem(
+              index: 2,
+              child: _buildSectionGroup(
+                theme,
+                title: 'Premium Hub & Activity',
+                items: [
+                  _SettingsItem(
+                    icon: 'bookmark',
+                    title: 'Saved Profiles',
+                    onTap: () => Navigator.pushNamed(context, AppRoutes.savedProfiles),
+                  ),
+                  _SettingsItem(
+                    icon: 'star',
+                    title: 'Premium Subscription',
+                    onTap: () => Navigator.pushNamed(context, AppRoutes.subscription),
+                  ),
+                  _SettingsItem(
+                    icon: 'visibility',
+                    title: 'Who Viewed Me',
+                    onTap: () => Navigator.pushNamed(context, AppRoutes.whoViewedMe),
+                  ),
+                  _SettingsItem(
+                    icon: 'verified_user',
+                    title: 'Trust Score',
+                    onTap: () => Navigator.pushNamed(context, AppRoutes.trustScore),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 3.h),
+
+            // 4. Support & Help
+            _buildAnimatedItem(
+              index: 3,
               child: _buildSectionGroup(
                 theme,
                 title: l10n?.supportAndHelp ?? 'Support & Help',
@@ -78,8 +139,33 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
               ),
             ),
             SizedBox(height: 3.h),
+
+            // 5. Notifications Preferences
             _buildAnimatedItem(
-              index: 2,
+              index: 4,
+              child: _buildSectionGroup(
+                theme,
+                title: 'Preferences',
+                items: [
+                  _SettingsItem(
+                    icon: 'notifications_none',
+                    title: 'Email Notifications',
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const EmailPreferencesScreen()),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 3.h),
+            _buildAnimatedItem(index: 5, child: _buildLanguageSection(theme)),
+            SizedBox(height: 3.h),
+
+            // 6. Legal & Information
+            _buildAnimatedItem(
+              index: 6,
               child: _buildSectionGroup(
                 theme,
                 title: l10n?.legalAndInformation ?? 'Legal & Information',
@@ -98,29 +184,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
               ),
             ),
             SizedBox(height: 3.h),
+
+            // 7. Account Safety
             _buildAnimatedItem(
-              index: 2,
-              child: _buildSectionGroup(
-                theme,
-                title: 'Notifications',
-                items: [
-                  _SettingsItem(
-                    icon: 'notifications_none',
-                    title: 'Email Notifications',
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const EmailPreferencesScreen()),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 3.h),
-            _buildAnimatedItem(index: 3, child: _buildLanguageSection(theme)),
-            SizedBox(height: 3.h),
-            _buildAnimatedItem(
-              index: 4,
+              index: 7,
               child: _buildSectionGroup(
                 theme,
                 title: l10n?.account ?? 'Account',
@@ -133,8 +200,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                 ],
               ),
             ),
-            SizedBox(height: 3.h),
-            _buildAnimatedItem(index: 5, child: _buildLogoutButton(context, theme)),
+            SizedBox(height: 4.h),
+
+            // 8. Logout Outlined Button
+            _buildAnimatedItem(index: 8, child: _buildLogoutButton(context, theme)),
             SizedBox(height: 10.h),
           ],
         ),
@@ -167,7 +236,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
             style: theme.textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.bold,
               color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-              fontSize: 13.sp,
+              fontSize: AppTypography.bodyLarge,
             ),
           ),
         ),
@@ -297,7 +366,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
               style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-                  fontSize: 13.sp)),
+                  fontSize: AppTypography.bodyLarge)),
         ),
         Container(
           decoration: BoxDecoration(
@@ -357,7 +426,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                       style: theme.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w500,
                           color: theme.colorScheme.onSurface,
-                          fontSize: 13.sp))),
+                          fontSize: AppTypography.bodyLarge))),
               CustomIconWidget(
                   iconName: 'chevron_right',
                   color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
@@ -375,12 +444,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         gradient: const LinearGradient(
-            colors: [Color(0xFF6A11CB), Color(0xFF2575FC)],
+            colors: [Color(0xFF961B33), Color(0xFFC2185B)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight),
         boxShadow: [
           BoxShadow(
-              color: const Color(0xFF2575FC).withValues(alpha: 0.3),
+              color: const Color(0xFF961B33).withValues(alpha: 0.3),
               blurRadius: 15,
               offset: const Offset(0, 8))
         ],
@@ -413,14 +482,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                           style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
-                              fontSize: 15.sp)),
+                              fontSize: AppTypography.headingSmall)),
                       SizedBox(height: 0.3.h),
                       Text(
                           AppLocalizations.of(context)?.inviteFriendsRewards ??
                               'Invite friends and unlock premium rewards!',
                           style: theme.textTheme.bodySmall?.copyWith(
                               color: Colors.white.withValues(alpha: 0.9),
-                              fontSize: 10.sp)),
+                              fontSize: AppTypography.bodySmall)),
                     ],
                   ),
                 ),
@@ -440,12 +509,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         gradient: const LinearGradient(
-            colors: [Color(0xFFFF4081), Color(0xFFFF80AB)],
+            colors: [Color(0xFFD4AF37), Color(0xFFE5C158)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight),
         boxShadow: [
           BoxShadow(
-              color: const Color(0xFFFF4081).withValues(alpha: 0.3),
+              color: const Color(0xFFD4AF37).withValues(alpha: 0.3),
               blurRadius: 15,
               offset: const Offset(0, 8))
         ],
@@ -465,10 +534,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                 Container(
                   padding: EdgeInsets.all(2.5.w),
                   decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
+                      color: const Color(0xFF3E2D00).withValues(alpha: 0.1),
                       shape: BoxShape.circle),
                   child:
-                      const Icon(Icons.favorite, color: Colors.white, size: 26),
+                      const Icon(Icons.favorite, color: Color(0xFF3E2D00), size: 26),
                 ),
                 SizedBox(width: 3.5.w),
                 Expanded(
@@ -478,18 +547,18 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                       Text('Found your Partner?',
                           style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 15.sp)),
+                              color: const Color(0xFF3E2D00),
+                              fontSize: AppTypography.headingSmall)),
                       SizedBox(height: 0.3.h),
                       Text('Share marriage proof & get up to 35% Refund!',
                           style: theme.textTheme.bodySmall?.copyWith(
-                              color: Colors.white.withValues(alpha: 0.9),
-                              fontSize: 10.sp)),
+                              color: const Color(0xFF3E2D00).withValues(alpha: 0.9),
+                              fontSize: AppTypography.bodySmall)),
                     ],
                   ),
                 ),
                 const Icon(Icons.arrow_forward_ios_rounded,
-                    color: Colors.white, size: 16),
+                    color: Color(0xFF3E2D00), size: 16),
               ],
             ),
           ),
@@ -499,41 +568,21 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
   }
 
   Widget _buildLogoutButton(BuildContext context, ThemeData theme) {
-    return Container(
-      width: double.infinity,
-      height: 6.0.h,
-      decoration: BoxDecoration(
-        color: theme.colorScheme.primary,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-              color: theme.colorScheme.primary.withValues(alpha: 0.3),
-              blurRadius: 12,
-              offset: const Offset(0, 4))
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => _handleLogout(context),
-          borderRadius: BorderRadius.circular(16),
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.logout, color: Colors.white, size: 22),
-                SizedBox(width: 2.w),
-                Text(
-                  AppLocalizations.of(context)?.logout ?? 'Logout',
-                  style: theme.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 14.sp),
-                ),
-              ],
-            ),
-          ),
+    return OutlinedButton.icon(
+      onPressed: () => _handleLogout(context),
+      icon: Icon(Icons.logout_rounded, color: theme.colorScheme.primary, size: 20),
+      label: Text(
+        AppLocalizations.of(context)?.logout ?? 'Logout',
+        style: TextStyle(
+          color: theme.colorScheme.primary,
+          fontWeight: FontWeight.bold,
+          fontSize: AppTypography.bodyMedium,
         ),
+      ),
+      style: OutlinedButton.styleFrom(
+        side: BorderSide(color: theme.colorScheme.primary.withValues(alpha: 0.4), width: 1.5),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        minimumSize: Size(double.infinity, 6.0.h),
       ),
     );
   }
@@ -562,7 +611,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
         onSuccess: (_) {
           if (context.mounted) {
             Navigator.of(context, rootNavigator: true)
-                .pushReplacementNamed(AppRoutes.authentication);
+                .pushNamedAndRemoveUntil(AppRoutes.userTypeSelection, (route) => false);
           }
         },
         onFailure: (error) {
@@ -574,6 +623,307 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
         },
       );
     }
+  }
+
+  Widget _buildProfileHeader(BuildContext context, ThemeData theme, ProfileModel profile) {
+    final primaryPhoto = profile.photos.isNotEmpty ? profile.photos.first.publicUrl : null;
+
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: theme.cardColor,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: theme.colorScheme.primary.withValues(alpha: 0.08),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: theme.colorScheme.primary.withValues(alpha: 0.04),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => Navigator.pushNamed(context, AppRoutes.myProfile),
+          borderRadius: BorderRadius.circular(24),
+          child: Padding(
+            padding: EdgeInsets.all(4.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    // Avatar
+                    Container(
+                      width: 16.w,
+                      height: 16.w,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                          width: 2.5,
+                        ),
+                      ),
+                      child: ClipOval(
+                        child: CustomImageWidget(
+                          imageUrl: primaryPhoto,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 4.w),
+                    // Name & Details
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  '${profile.fullName} ${profile.surname}',
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: AppTypography.bodyLarge,
+                                    color: theme.colorScheme.onSurface,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              if (profile.isVerified) ...[
+                                SizedBox(width: 1.5.w),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFE8F5E9),
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(color: const Color(0xFF81C784), width: 0.5),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.verified_rounded, color: const Color(0xFF2E7D32), size: 12.sp),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                          SizedBox(height: 0.5.h),
+                          Text(
+                            profile.displayId,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: theme.colorScheme.primary,
+                              fontSize: AppTypography.bodySmall,
+                            ),
+                          ),
+                          SizedBox(height: 0.3.h),
+                          Text(
+                            '${profile.age} yrs • ${profile.locationExcludingVillage}',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                              fontSize: AppTypography.bodySmall,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(
+                      Icons.chevron_right_rounded,
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+                      size: 24,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 2.h),
+                // Progress Bar
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Profile Completed: ${profile.completionPercentage}%',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                            fontSize: AppTypography.bodySmall,
+                          ),
+                        ),
+                        if (profile.completionPercentage < 100)
+                          Text(
+                            'Complete Bio',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: theme.colorScheme.primary,
+                              fontSize: AppTypography.labelMedium,
+                            ),
+                          ),
+                      ],
+                    ),
+                    SizedBox(height: 1.h),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: LinearProgressIndicator(
+                        value: profile.completionPercentage / 100.0,
+                        minHeight: 8,
+                        backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.08),
+                        valueColor: AlwaysStoppedAnimation<Color>(theme.colorScheme.primary),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGuestHeader(ThemeData theme) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: theme.cardColor,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: theme.colorScheme.primary.withValues(alpha: 0.08),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: theme.colorScheme.primary.withValues(alpha: 0.04),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(4.w),
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.all(3.w),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primary.withValues(alpha: 0.08),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.person_outline_rounded,
+                color: theme.colorScheme.primary,
+                size: 28.sp,
+              ),
+            ),
+            SizedBox(height: 1.5.h),
+            Text(
+              'Join BanjaraBio Matrimony',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: AppTypography.bodyLarge,
+                color: theme.colorScheme.onSurface,
+              ),
+            ),
+            SizedBox(height: 0.5.h),
+            Text(
+              'Create your profile to find verified matches',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                fontSize: AppTypography.bodySmall,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 2.h),
+            ElevatedButton(
+              onPressed: () => Navigator.pushNamed(context, AppRoutes.authentication),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 48),
+                backgroundColor: theme.colorScheme.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              child: Text(
+                'Login or Register',
+                style: TextStyle(
+                  fontSize: AppTypography.bodyMedium,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderShimmer(ThemeData theme) {
+    return Container(
+      width: double.infinity,
+      height: 18.h,
+      decoration: BoxDecoration(
+        color: theme.cardColor,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: theme.colorScheme.primary.withValues(alpha: 0.04),
+          width: 1.5,
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(4.w),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 14.w,
+                  height: 14.w,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.05),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                SizedBox(width: 4.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 40.w,
+                        height: 2.h,
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.05),
+                      ),
+                      SizedBox(height: 1.h),
+                      Container(
+                        width: 25.w,
+                        height: 1.5.h,
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.05),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(),
+            Container(
+              width: double.infinity,
+              height: 1.h,
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.05),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

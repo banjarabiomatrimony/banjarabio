@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:banjarabio/core/models/backend_response.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// [StaffRepository]
 ///
@@ -56,7 +57,7 @@ class StaffRepository {
         },
       );
     } catch (e) {
-      debugPrint('Error in getMyLeads: $e');
+      AppLogger.error('StaffRepository', 'Error in getMyLeads: $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -137,7 +138,7 @@ class StaffRepository {
         },
       );
     } catch (e) {
-      debugPrint('Error in getWhatsAppTemplates: $e');
+      AppLogger.error('StaffRepository', 'Error in getWhatsAppTemplates: $e');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -162,13 +163,13 @@ class StaffRepository {
         'fn_staff_actions',
         params: {'action': action, 'p_payload': payload},
       );
-      debugPrint('🧪 StaffRepository._callStaffRpc: action=$action, response type=${response.runtimeType}');
+      AppLogger.debug('StaffRepository', '🧪 StaffRepository._callStaffRpc: action=$action, response type=${response.runtimeType}');
       return BackendResponse.fromRpc<Map<String, dynamic>>(
         response,
         mapper: (json) => Map<String, dynamic>.from(json as Map),
       );
     } catch (e) {
-      debugPrint('Staff Action Failed [$action]: $e');
+      AppLogger.error('StaffRepository', 'Staff Action Failed [$action]: $e');
       return BackendResponse.failure('Staff action failed: $e');
     }
   }
@@ -184,7 +185,7 @@ class StaffRepository {
       );
       return BackendResponse.fromRpc(response);
     } catch (e) {
-      debugPrint('Staff Action Failed [$action]: $e');
+      AppLogger.error('StaffRepository', 'Staff Action Failed [$action]: $e');
       return BackendResponse.failure('Staff action failed: $e');
     }
   }

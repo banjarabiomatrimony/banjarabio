@@ -1,5 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/foundation.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 enum NetworkSpeed { slow, medium, fast }
 
@@ -49,7 +49,7 @@ class NetworkAwareQualityService {
       
       return NetworkSpeed.medium;
     } catch (e) {
-      debugPrint('Network Detection Error: $e');
+      AppLogger.error('NetworkAwareQualityService', 'Network Detection Error: $e');
       return NetworkSpeed.medium;
     }
   }

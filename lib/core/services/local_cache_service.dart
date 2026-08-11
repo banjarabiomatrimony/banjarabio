@@ -199,6 +199,60 @@ class LocalCacheService {
     await box.delete('history');
   }
 
+  /// -------- Relative Browse Intent --------
+  /// Stores the 1-page intake preferences (relation, gender, location)
+  /// collected BEFORE login so StartupWorkflow can apply them post-auth.
+
+  Future<void> saveRelativeIntent({
+    required String relation,
+    required String targetGender,
+    String? state,
+    String? district,
+  }) async {
+    final box = _getBox(boxAppMetadata);
+    await box.put('relative_intent', {
+      'relation': relation,
+      'target_gender': targetGender,
+      'state': state,
+      'district': district,
+    });
+  }
+
+  Map<String, String?>? getRelativeIntent() {
+    final box = _getBox(boxAppMetadata);
+    final data = box.get('relative_intent');
+    if (data == null) return null;
+    final map = Map<String, dynamic>.from(data as Map);
+    return {
+      'relation': map['relation']?.toString(),
+      'target_gender': map['target_gender']?.toString(),
+      'state': map['state']?.toString(),
+      'district': map['district']?.toString(),
+    };
+  }
+
+  Future<void> clearRelativeIntent() async {
+    final box = _getBox(boxAppMetadata);
+    await box.delete('relative_intent');
+  }
+
+  /// Returns true if the current user logged in via Pathway A (relative browse)
+  /// and has NOT created their own candidate biodata yet.
+  bool isRelativeBrowseMode() {
+    return getRelativeIntent() != null || _getBox(boxAppMetadata).get('is_relative_browse', defaultValue: false) as bool;
+  }
+
+  Future<void> setRelativeBrowseMode(bool value) async {
+    final box = _getBox(boxAppMetadata);
+    await box.put('is_relative_browse', value);
+  }
+
+  /// Clears relative browse intent data and disables relative browse mode.
+  Future<void> clearRelativeBrowseSession() async {
+    await clearRelativeIntent();
+    await setRelativeBrowseMode(false);
+  }
+
   /// -------- Guest Mode & Tour --------
 
   Future<void> setGuestMode(bool isGuest) async {

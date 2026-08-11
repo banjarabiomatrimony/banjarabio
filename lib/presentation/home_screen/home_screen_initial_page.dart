@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 import 'package:sizer/sizer.dart';
 import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/data/location_data.dart';
-import 'package:banjarabio/core/utils/tour_keys.dart';
 import 'package:banjarabio/core/models/filter_criteria.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
@@ -22,26 +21,29 @@ import 'package:banjarabio/core/repositories/usage_repository.dart';
 import 'package:banjarabio/core/services/scroll_velocity_service.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/core/services/startup_orchestrator.dart';
-import 'package:banjarabio/core/services/share_service.dart';
+import 'package:banjarabio/core/utils/startup_workflow.dart';
+
 import 'package:banjarabio/core/services/deep_link_service.dart';
 import 'package:banjarabio/features/bookmarks/providers/bookmark_notifier.dart';
 import 'package:banjarabio/widgets/upgrade_dialog.dart';
-import 'package:banjarabio/widgets/shimmer_widget.dart';
-import 'package:banjarabio/presentation/home_screen/widgets/empty_state_widget.dart';
-import 'package:banjarabio/presentation/home_screen/widgets/profile_card_widget.dart';
-import 'package:banjarabio/presentation/home_screen/widgets/swipeable_card_deck.dart';
-import 'package:banjarabio/presentation/home_screen/widgets/daily_match_widget.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/instagram_follow_interstitial.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/guest_restricted_dialog.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/offer_banner_widget.dart';
+import 'package:banjarabio/presentation/home_screen/widgets/home_feed_header.dart';
+import 'package:banjarabio/presentation/home_screen/widgets/home_filter_chips.dart';
+import 'package:banjarabio/presentation/home_screen/widgets/home_tab_selector.dart';
+import 'package:banjarabio/presentation/home_screen/widgets/home_sharing_sheet.dart';
+import 'package:banjarabio/presentation/home_screen/widgets/home_recommended_content.dart';
+import 'package:banjarabio/presentation/home_screen/widgets/home_daily_content.dart';
+import 'package:banjarabio/presentation/home_screen/widgets/home_interest_handler.dart';
 import 'package:banjarabio/widgets/ads/banner_ad_widget.dart';
 import 'package:banjarabio/presentation/filter_screen/filter_screen.dart';
 import 'package:banjarabio/presentation/home_screen/location_selection_screen.dart';
 import 'package:banjarabio/widgets/branded_refresh_indicator.dart';
-import 'package:banjarabio/notification/features/notification_bridge.dart';
 import 'package:banjarabio/core/models/daily_reward_model.dart';
 import 'package:banjarabio/core/repositories/daily_reward_repository.dart';
 import 'package:banjarabio/widgets/daily_reward_dialog.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 
 class HomeScreenInitialPage extends ConsumerStatefulWidget {
@@ -103,10 +105,16 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
   ProfileModel? _ownProfile;
   DailyRewardModel? _dailyRewardStatus;
 
+  // District Fallback tracking
+  bool _isDistrictFallback = false;
+  String? _fallbackDistrict;
+  String? _fallbackState;
+
   final Set<String> _enrichingIds = {};
   Timer? _batchTimer;
   final List<ProfileModel> _batchEnrichedProfiles = [];
   Timer? _shimmerFallback;
+  StreamSubscription<List<ProfileModel>>? _feedSubscription;
 
   // Search and Location state
   final TextEditingController _searchController = TextEditingController();
@@ -115,7 +123,34 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
   // Filter state
   FilterCriteria _currentFilters = const FilterCriteria();
 
+  // Relative browse intent (applied once from route arguments)
+  bool _hasAppliedRelativeFilters = false;
+
   // Filter options
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Apply relative browse filters from route arguments (Pathway A).
+    // This runs once — when HomeScreen is pushed with arguments from StartupWorkflow.
+    if (!_hasAppliedRelativeFilters) {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args is Map<String, String?>) {
+        _hasAppliedRelativeFilters = true;
+        final gender = args['target_gender'];
+        final state = args['state'];
+        final district = args['district'];
+        if (gender != null || state != null || district != null) {
+          _currentFilters = FilterCriteria(
+            gender: gender,
+            state: state,
+            district: district,
+          );
+          _isLocationOverridden = true;
+        }
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -126,6 +161,18 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
 
     _scrollController.addListener(_onScroll);
     WidgetsBinding.instance.addObserver(this);
+
+    // 📡 Stream listener: Live update feed whenever background API fetch arrives
+    _feedSubscription = _profileRepository.onFeedUpdated.listen((freshProfiles) {
+      if (mounted) {
+        final profiles =
+            freshProfiles.where((p) => p.id != _ownProfile?.id).toList();
+        setState(() {
+          _profiles = profiles;
+          _isLoading = false;
+        });
+      }
+    });
 
     DeepLinkService().onRewardsTriggered = () {
       if (mounted) _handleRewardsDeepLink();
@@ -149,7 +196,7 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
           _checkPostStartupRewards();
         }
       });
-    });
+    }, name: 'HomeScreenDataLoad');
 
     DeepLinkService().onRewardsTriggered = () {
       if (mounted) _handleRewardsDeepLink();
@@ -158,7 +205,7 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
     // 🧬 SAFETY FALLBACK (10M DAU): Prevent infinite shimmer if orchestrator tasks hang
     _shimmerFallback = Timer(const Duration(seconds: 10), () {
       if (mounted && _isLoading && _profiles.isEmpty) {
-        debugPrint('⚠️ HomeScreen: Shimmer safety fallback triggered');
+        AppLogger.warn('HomeScreenInitialPage', '⚠️ HomeScreen: Shimmer safety fallback triggered');
         setState(() => _isLoading = false);
       }
     });
@@ -168,6 +215,9 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       _checkPostStartupRewards();
+      // 🚀 ALWAYS REFRESH PROFILES WHEN USER OPENS / RETURNS TO THE APP
+      AppLogger.debug('HomeScreenInitialPage', '📱 App resumed: Triggering fresh API call for profiles');
+      _loadData(clearCache: true);
     }
   }
 
@@ -232,6 +282,7 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
 
   @override
   void dispose() {
+    _feedSubscription?.cancel();
     _scrollController.dispose();
     _searchController.dispose();
     _debounce?.cancel();
@@ -410,10 +461,11 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
         lastCreatedAt: isLoadMore ? _lastCreatedAt : null,
         filters: applyFilters,
         searchQuery: _searchController.text,
+        forceRefresh: clearCache,
       ).timeout(
         Duration(seconds: isGuest ? 10 : 30),
         onTimeout: () {
-          debugPrint('⚠️ _loadData: Timed out${isGuest ? " (guest mode)" : ""}');
+          AppLogger.debug('HomeScreenInitialPage', '⚠️ _loadData: Timed out${isGuest ? " (guest mode)" : ""}');
           return BackendResponse.success(<ProfileModel>[]);
         },
       );
@@ -461,6 +513,9 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
               }
               // 🧬 FIX: Always clear isLoading if we have data to display
               _isLoading = false;
+              _isDistrictFallback = _profileRepository.isDistrictFallback;
+              _fallbackDistrict = _profileRepository.lastRequestedDistrict;
+              _fallbackState = _profileRepository.lastSelectedState;
               _hasMore = allProfiles.length >= (isLoadMore ? _pageSize : _initialPageSize);
               if (allProfiles.isNotEmpty) {
                 _lastCreatedAt = allProfiles.last.createdAt.toIso8601String();
@@ -546,7 +601,7 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
     String profileId,
     bool isCurrentlyBookmarked,
   ) async {
-    if (LocalCacheService().isGuestMode()) {
+    if (LocalCacheService().isGuestMode() || LocalCacheService().isRelativeBrowseMode()) {
       GuestRestrictedDialog.show(context);
       return;
     }
@@ -559,7 +614,7 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
         await ref.read(bookmarkNotifierProvider.notifier).toggle(profileId);
       } catch (e) {
         if (kDebugMode) {
-          debugPrint('[BOOKMARK] HomeScreenInitialPage > toggle($profileId) > FAILED | $e');
+          AppLogger.error('HomeScreenInitialPage', '[BOOKMARK] HomeScreenInitialPage > toggle($profileId) > FAILED | $e');
         }
         if (mounted) {
           Fluttertoast.showToast(
@@ -711,6 +766,8 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
       GuestRestrictedDialog.show(context);
       return;
     }
+    // 🔍 PATHWAY A: Relative browse users CAN view profile details (read-only).
+    // This is the core use case — they're searching on behalf of someone.
 
     // Check view limits
     final usageRepo = _usageRepository;
@@ -766,295 +823,55 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
   }
 
   void _showSharingOptions(ProfileModel profile) {
-    if (LocalCacheService().isGuestMode()) {
-      GuestRestrictedDialog.show(context);
-      return;
-    }
-
-    HapticFeedback.selectionClick();
-    // 🧬 PERFORMANCE: Use microtask to show sheet after haptic feedback haptic
-    Future.microtask(() {
-      if (!mounted) return;
-      final theme = Theme.of(context);
-
-      showModalBottomSheet(
-        context: context,
-        useRootNavigator: true,
-        backgroundColor: Colors.transparent,
-        builder: (ctx) => Container(
-        padding: EdgeInsets.all(4.w),
-        decoration: BoxDecoration(
-          color: theme.bottomSheetTheme.backgroundColor ?? theme.cardColor,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40,
-              height: 4,
-              margin: EdgeInsets.only(bottom: 2.h),
-              decoration: BoxDecoration(
-                color: theme.dividerColor,
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            Text(AppLocalizations.of(context)?.shareProfile ?? 'Share Profile',
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 2.h),
-            _buildShareOption(
-              ctx,
-              'WhatsApp Status Card (Premium)',
-              'share',
-              profile,
-              'whatsapp_status_card',
-            ),
-            _buildShareOption(
-              ctx,
-              AppLocalizations.of(context)?.whatsApp ?? 'WhatsApp',
-              'share',
-              profile,
-              'whatsapp',
-            ),
-            _buildShareOption(
-              ctx,
-              AppLocalizations.of(context)?.copyLink ?? 'Copy Link',
-              'link',
-              profile,
-              'link',
-            ),
-            SizedBox(height: 2.h),
-          ],
-        ),
-      ),
-      );
-    });
-  }
-  Widget _buildShareOption(
-    BuildContext ctx,
-    String title,
-    String icon,
-    ProfileModel profile,
-    String method,
-  ) {
-    final profileId = profile.id;
-    final profileName = profile.fullName;
-    final theme = Theme.of(ctx);
-    return ListTile(
-      leading: Container(
-        padding: EdgeInsets.all(1.2.h),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.primary.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: CustomIconWidget(
-          iconName: icon,
-          color: theme.colorScheme.primary,
-        ),
-      ),
-      title: Text(title, style: theme.textTheme.bodyLarge),
-      trailing: CustomIconWidget(
-        iconName: 'chevron_right',
-        color: theme.colorScheme.onSurfaceVariant,
-        size: 20,
-      ),
-      onTap: () async {
-        Navigator.pop(ctx);
-        try {
-          // Check share limits first
-          final usageRepo = _usageRepository;
-          final canShareRes = await usageRepo.canShareProfile();
-
-          canShareRes.fold(
-            onSuccess: (canShare) async {
-              if (!canShare) {
-                final remainingRes = await usageRepo.getRemainingShares();
-                remainingRes.fold(
-                  onSuccess: (remaining) {
-                    if (mounted) {
-                      UpgradeDialog.showShareLimit(context, remaining);
-                    }
-                  },
-                  onFailure: (error) =>
-                      debugPrint('Error fetching remaining shares: $error'),
-                );
-                return;
-              }
-
-              if (method == 'whatsapp_status_card') {
-                if (mounted) {
-                  await ShareService().shareProfileStatus(context, profile);
-                }
-                return;
-              }
-
-              final shareResponse = await _shareRepository.shareProfile(
-                sharedProfileId: profileId,
-                sharingMethod: method,
-                recipientName: '$title Contact',
-                recipientRelation: 'Contact',
-                profileName: profileName,
-              );
-
-              shareResponse.fold(
-                onSuccess: (_) {
-                  if (mounted) {
-                    final l10n = AppLocalizations.of(context);
-                    String successMsg = l10n?.profileSharedVia(profileName, title) ?? 'Shared $profileName via $title';
-                    if (method == 'link') {
-                      successMsg = l10n?.profileLinkCopied ?? 'Profile link copied to clipboard!';
-                    }
-                    if (method == 'in_app') {
-                      successMsg = l10n?.profileSharedWith(profileName) ?? 'Profile shared with $profileName';
-                    }
-
-                    Fluttertoast.showToast(
-                      msg: successMsg,
-                      backgroundColor: Colors.green,
-                      textColor: Colors.white,
-                    );
-                  }
-                },
-                onFailure: (error) {
-                  if (mounted) {
-                    Fluttertoast.showToast(
-                      msg: AppLocalizations.of(context)?.shareFailed(error.toString()) ?? 'Share failed: $error',
-                      backgroundColor: Theme.of(context).colorScheme.error,
-                      textColor: Colors.white,
-                    );
-                  }
-                },
-              );
-            },
-            onFailure: (error) {
-              if (mounted) {
-                Fluttertoast.showToast(
-                  msg: AppLocalizations.of(context)?.errorCheckingShareLimits(error.toString()) ?? 'Error checking share limits: $error',
-                  backgroundColor: Theme.of(context).colorScheme.error,
-                  textColor: Colors.white,
-                );
-              }
-            },
-          );
-        } catch (e) {
-          debugPrint('Share error: $e');
-          if (mounted) {
-            Fluttertoast.showToast(
-              msg: e.toString().replaceAll('Exception: ', ''),
-              backgroundColor: Theme.of(context).colorScheme.error,
-              textColor: Colors.white,
-            );
-          }
-        }
-      },
+    HomeSharingSheet.show(
+      context,
+      profile: profile,
+      shareRepository: _shareRepository,
+      usageRepository: _usageRepository,
     );
   }
 
   void _handleInterest(ProfileModel profile) {
-    if (LocalCacheService().isGuestMode()) {
+    if (LocalCacheService().isRelativeBrowseMode()) {
       GuestRestrictedDialog.show(context);
       return;
     }
-
-    HapticFeedback.mediumImpact();
-    showDialog(
+    HomeInterestHandler.show(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(AppLocalizations.of(context)?.interestConfirmationTitle ?? 'Express Interest?'),
-        content: Text(AppLocalizations.of(context)?.interestConfirmationMessage(profile.fullName) ?? 'This will share your profile with ${profile.fullName} and allow them to connect with you. Are you sure?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-              _executeInterest(profile);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              foregroundColor: Theme.of(context).colorScheme.onPrimary,
-            ),
-            child: Text(AppLocalizations.of(context)?.confirm ?? 'Confirm'),
-          ),
-        ],
-      ),
+      profile: profile,
+      shareRepository: _shareRepository,
+      usageRepository: _usageRepository,
     );
   }
 
-  Future<void> _executeInterest(ProfileModel profile) async {
-    try {
-      final usageRepo = _usageRepository;
-      final canShareRes = await usageRepo.canShareProfile();
+  String _getRelativeChipLabel() {
+    final intent = LocalCacheService().getRelativeIntent();
+    final relation = intent?['relation'] ?? '';
+    final gender = intent?['target_gender'] ?? intent?['targetGender'] ?? '';
 
-      await canShareRes.fold(
-        onSuccess: (canShare) async {
-          if (!canShare) {
-            final remainingRes = await usageRepo.getRemainingShares();
-            remainingRes.fold(
-              onSuccess: (remaining) {
-                if (mounted) {
-                  UpgradeDialog.showShareLimit(context, remaining);
-                }
-              },
-              onFailure: (error) => debugPrint('Error fetching remaining shares: $error'),
-            );
-            return;
-          }
-
-          final shareResponse = await _shareRepository.shareProfile(
-            sharedProfileId: profile.id,
-            sharingMethod: 'in_app',
-            recipientName: profile.fullName,
-            recipientRelation: 'Interest',
-            profileName: profile.fullName,
-          );
-
-          shareResponse.fold(
-            onSuccess: (_) {
-              if (mounted) {
-                Fluttertoast.showToast(
-                  msg: AppLocalizations.of(context)?.interestShared(profile.fullName) ?? 'Interest shared with ${profile.fullName}!',
-                  backgroundColor: Colors.green,
-                  textColor: Colors.white,
-                );
-              }
-            },
-            onFailure: (error) {
-              if (mounted) {
-                Fluttertoast.showToast(
-                  msg: AppLocalizations.of(context)?.shareFailed(error.toString()) ?? 'Share failed: $error',
-                  backgroundColor: Theme.of(context).colorScheme.error,
-                  textColor: Colors.white,
-                );
-              }
-            },
-          );
-        },
-        onFailure: (error) {
-          if (mounted) {
-            Fluttertoast.showToast(
-              msg: AppLocalizations.of(context)?.errorCheckingShareLimits(error.toString()) ?? 'Error checking share limits: $error',
-              backgroundColor: Theme.of(context).colorScheme.error,
-              textColor: Colors.white,
-            );
-          }
-        },
-      );
-    } catch (e) {
-      if (mounted) {
-        Fluttertoast.showToast(msg: 'Error: $e');
-      }
+    String relText = 'नातेवाईक';
+    if (relation.contains('Son')) {
+      relText = '👦 मुलासाठी';
+    } else if (relation.contains('Daughter')) {
+      relText = '👧 मुलीसाठी';
+    } else if (relation.contains('Sibling')) {
+      relText = '👫 भावा/बहिणीसाठी';
+    } else if (relation.contains('Relative')) {
+      relText = '🚩 नातेवाईकांसाठी';
     }
+
+    String genderText = '';
+    if (gender == 'Bride') {
+      genderText = ' (मुली)';
+    } else if (gender == 'Groom') {
+      genderText = ' (मुले)';
+    }
+
+    return '$relText$genderText';
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     // Bookmark UI updates via ref.watch(isBookmarkedProvider) per card - no ref.listen needed
     return BrandedRefreshIndicator(
       onRefresh: _handleRefresh,
@@ -1062,649 +879,191 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
         controller: _scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
-          // Header with Search, Location and Filter - Hides on scroll
-          SliverAppBar(
-            floating: true,
-            snap: true,
-            automaticallyImplyLeading: false,
-            backgroundColor: theme.appBarTheme.backgroundColor,
-            expandedHeight:
-                15.h, // Dynamic: 15% of screen height for adaptive layout
-            elevation: 0,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      theme.colorScheme.primary,
-                      theme.colorScheme.primary.withValues(alpha: 0.8),
-                    ],
-                  ),
-                  borderRadius: const BorderRadius.vertical(bottom: Radius.circular(32)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.2),
-                      blurRadius: 15,
-                      offset: const Offset(0, 5),
-                    ),
-                  ],
-                ),
-                padding: EdgeInsets.fromLTRB(4.w, 0, 4.w, 2.h),
-                child: SafeArea(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Location Selector Row with Branding
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 0.1.h),
-                        child: Row(
-                          children: [
-                            // Location Clickable Area
-                            Expanded(
-                              child: InkWell(
-                                key: TourKeys.locationKey,
-                                onTap: _openLocationSelection,
-                                borderRadius: BorderRadius.circular(12),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(1.h),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white.withValues(
-                                          alpha: 0.15,
-                                        ),
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: const Icon(
-                                        Icons.location_on_rounded,
-                                        color: Colors.white,
-                                        size: 20,
-                                      ),
-                                    ),
-                                    SizedBox(width: 3.w),
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          Flexible(
-                                            child: Text(
-                                              _getUserLocationLabel(),
-                                              style: theme
-                                                  .textTheme
-                                                  .titleMedium
-                                                  ?.copyWith(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.w700,
-                                                    fontSize: 13.sp,
-                                                  ),
-                                              maxLines: 1,
-                                              overflow:
-                                                  TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                          SizedBox(width: 1.w),
-                                          const Icon(
-                                            Icons
-                                                .keyboard_arrow_down_rounded,
-                                            color: Colors.white70,
-                                            size: 18,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            // Brand & Support Icons - Remove Flexible to prevent competing for space with Location text
-                            // Changed to MainAxisSize.min to take only necessary space
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                // Category 1: Brand & Support Icons
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      // Daily Rewards
-                                      if (_dailyRewardStatus != null)
-                                        InkWell(
-                                          onTap: () async {
-                                            final updatedStatus = await DailyRewardDialog.show(context, _dailyRewardStatus!);
-                                            if (updatedStatus != null && mounted) {
-                                              setState(() {
-                                                _dailyRewardStatus = updatedStatus;
-                                              });
-                                            }
-                                          },
-                                          borderRadius: BorderRadius.circular(50),
-                                          child: Container(
-                                            margin: EdgeInsets.only(right: 2.w),
-                                            padding: EdgeInsets.all(0.8.h),
-                                            child: Stack(
-                                              clipBehavior: Clip.none,
-                                              children: [
-                                                Icon(
-                                                  Icons.redeem_rounded,
-                                                  color: _dailyRewardStatus!.isClaimedToday ? Colors.white70 : Colors.amber,
-                                                  size: 26,
-                                                ),
-                                                if (!_dailyRewardStatus!.isClaimedToday)
-                                                  Positioned(
-                                                    right: -2,
-                                                    top: -2,
-                                                    child: Container(
-                                                      width: 10,
-                                                      height: 10,
-                                                      decoration: const BoxDecoration(
-                                                        color: Colors.red,
-                                                        shape: BoxShape.circle,
-                                                      ),
-                                                    ),
-                                                  ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        
-                                      // Notification Bell
-                                      ListenableBuilder(
-                                        listenable: NotificationBridge().historyStore,
-                                        builder: (context, _) {
-                                          final unreadCount = NotificationBridge().historyStore.unreadCount;
-                                          return InkWell(
-                                            onTap: () => Navigator.pushNamed(context, AppRoutes.activityHub),
-                                            borderRadius: BorderRadius.circular(50),
-                                            child: Container(
-                                              padding: EdgeInsets.all(0.8.h),
-                                              child: Stack(
-                                                clipBehavior: Clip.none,
-                                                children: [
-                                                  const Icon(
-                                                    Icons.notifications_none_rounded,
-                                                    color: Colors.white,
-                                                    size: 24,
-                                                  ),
-                                                  if (unreadCount > 0)
-                                                    Positioned(
-                                                      right: -2,
-                                                      top: -2,
-                                                      child: Container(
-                                                        padding: const EdgeInsets.all(4),
-                                                        decoration: const BoxDecoration(
-                                                          color: Colors.white,
-                                                          shape: BoxShape.circle,
-                                                        ),
-                                                        constraints: const BoxConstraints(
-                                                          minWidth: 16,
-                                                          minHeight: 16,
-                                                        ),
-                                                        child: Text(
-                                                          unreadCount > 9 ? '9+' : unreadCount.toString(),
-                                                          style: TextStyle(
-                                                            color: theme.colorScheme.primary,
-                                                            fontSize: 8,
-                                                            fontWeight: FontWeight.bold,
-                                                          ),
-                                                          textAlign: TextAlign.center,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                      SizedBox(width: 2.w),
-                                      // WhatsApp
-                                      InkWell(
-                                        key: TourKeys.whatsappKey,
-                                        onTap: () async {
-                                          final Uri url = Uri.parse('https://wa.me/8186050406');
-                                          if (await canLaunchUrl(url)) {
-                                            await launchUrl(url, mode: LaunchMode.externalApplication);
-                                          }
-                                        },
-                                        borderRadius: BorderRadius.circular(50),
-                                        child: Container(
-                                          padding: EdgeInsets.all(0.8.h),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            shape: BoxShape.circle,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black.withValues(alpha: 0.1),
-                                                blurRadius: 4,
-                                                offset: const Offset(0, 2),
-                                              ),
-                                            ],
-                                          ),
-                                          child: Image.asset(
-                                            'assets/icons/whatsapp_icon.png',
-                                            width: 20,
-                                            height: 20,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: 1.5.w),
-                                      // Instagram
-                                      InkWell(
-                                        key: TourKeys.instagramKey,
-                                        onTap: () async {
-                                          final Uri url = Uri.parse('https://www.instagram.com/banjarabio.matrimony/');
-                                          if (await canLaunchUrl(url)) {
-                                            await launchUrl(url, mode: LaunchMode.externalApplication);
-                                          }
-                                        },
-                                        borderRadius: BorderRadius.circular(50),
-                                        child: Container(
-                                          padding: EdgeInsets.all(0.8.h),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            shape: BoxShape.circle,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black.withValues(alpha: 0.1),
-                                                blurRadius: 4,
-                                                offset: const Offset(0, 2),
-                                              ),
-                                            ],
-                                          ),
-                                          child: Image.asset(
-                                            'assets/icons/instagram_icon.png',
-                                            width: 20,
-                                            height: 20,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  
-                                  // Subtle Visual Divider
-                                  Container(
-                                    height: 22,
-                                    width: 1.5,
-                                    margin: EdgeInsets.symmetric(horizontal: 2.w),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white.withValues(alpha: 0.3),
-                                      borderRadius: BorderRadius.circular(1),
-                                    ),
-                                  ),
-
-                                  // Category 2: Personal Interaction (Chat)
-                                  InkWell(
-                                    key: TourKeys.chatKey,
-                                    onTap: () {
-                                      Navigator.of(
-                                        context,
-                                        rootNavigator: true,
-                                      ).pushNamed(AppRoutes.conversationList);
-                                    },
-                                    borderRadius: BorderRadius.circular(50),
-                                    child: Container(
-                                      padding: EdgeInsets.all(0.8.h),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        shape: BoxShape.circle,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black.withValues(alpha: 0.1),
-                                            blurRadius: 4,
-                                            offset: const Offset(0, 2),
-                                          ),
-                                        ],
-                                      ),
-                                      child: Image.asset(
-                                        'assets/icons/chatting_icon.png',
-                                        width: 22,
-                                        height: 22,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      SizedBox(height: 0.5.h),
-                      // Search Bar & Filter Row
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              key: TourKeys.searchKey,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(30),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.1),
-                                    blurRadius: 10,
-                                    offset: const Offset(0, 4),
-                                  ),
-                                ],
-                              ),
-                              child: TextField(
-                                controller: _searchController,
-                                onChanged: _onSearchChanged,
-                                style: theme.textTheme.bodyLarge?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                decoration: InputDecoration(
-                                  hintText: AppLocalizations.of(context)?.searchProfiles ?? 'Search profiles...',
-                                  hintStyle: theme
-                                      .inputDecorationTheme
-                                      .hintStyle
-                                      ?.copyWith(fontSize: 11.sp),
-                                  prefixIcon: Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 12,
-                                      right: 8,
-                                    ),
-                                    child: Icon(
-                                      Icons.search_rounded,
-                                      color: theme
-                                          .colorScheme
-                                          .primary, // Brand color icon
-                                      size: 24,
-                                    ),
-                                  ),
-                                  border: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                  filled: false, // Container handles fill
-                                  isDense: true,
-                                  contentPadding: EdgeInsets.symmetric(
-                                    vertical: 1.5.h,
-                                  ),
-                                  suffixIcon: _searchController.text.isNotEmpty
-                                      ? IconButton(
-                                          icon: const Icon(
-                                            Icons.close_rounded,
-                                            size: 20,
-                                          ),
-                                          onPressed: () {
-                                            _searchController.clear();
-                                            _loadData();
-                                          },
-                                        )
-                                      : null,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 3.w),
-                          // Filter Button
-                          InkWell(
-                            key: TourKeys.filterKey,
-                            onTap: _openFilterSheet,
-                            borderRadius: BorderRadius.circular(12),
-                            child: Container(
-                              height: 6.h,
-                              width: 6.h,
-                              decoration: BoxDecoration(
-                                color: _activeFilterCount > 0
-                                    ? theme.colorScheme.secondary
-                                    : theme.colorScheme.surface,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Center(
-                                child: CustomIconWidget(
-                                  iconName: 'tune',
-                                  color: _activeFilterCount > 0
-                                      ? theme.colorScheme.onSecondary
-                                      : theme.colorScheme.primary,
-                                  size: 20,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+          HomeFeedHeader(
+            locationLabel: _getUserLocationLabel(),
+            onLocationTap: _openLocationSelection,
+            onFilterTap: _openFilterSheet,
+            searchController: _searchController,
+            onSearchChanged: _onSearchChanged,
+            onSearchClear: () {
+              _searchController.clear();
+              _loadData();
+            },
+            activeFilterCount: _activeFilterCount,
+            dailyRewardStatus: _dailyRewardStatus,
+            onRewardUpdated: (updated) {
+              if (updated != null && mounted) {
+                setState(() => _dailyRewardStatus = updated);
+              }
+            },
           ),
 
-          // Applied filters chips (as a separate sliver to stay visible or hide with bar)
-          if (_activeFiltersMap.isNotEmpty)
+          if (LocalCacheService().isRelativeBrowseMode())
             SliverToBoxAdapter(
               child: Container(
-                padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 0.5.h),
-                height: 6.h,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    // Adjust Filters button
-                    GestureDetector(
-                      onTap: _openFilterSheet,
-                      child: Container(
-                        margin: EdgeInsets.only(right: 2.w),
-                        padding: EdgeInsets.symmetric(horizontal: 3.w),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.primary,
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        child: Row(
-                          children: [
-                            CustomIconWidget(
-                              iconName: 'edit',
-                              color: theme.colorScheme.onPrimary,
-                              size: 16,
-                            ),
-                            SizedBox(width: 1.w),
-                            Text(AppLocalizations.of(context)?.adjust ?? 'Adjust',
-                              style: theme.textTheme.labelMedium?.copyWith(
-                                color: theme.colorScheme.onPrimary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF800020), Color(0xFFB30000)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF800020).withValues(alpha: 0.3),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
                     ),
-                    // Filter chips
-                    ..._activeFiltersMap.entries.map((entry) {
-                      return Container(
-                        margin: EdgeInsets.only(right: 2.w),
-                        child: Chip(
-                          label: Text(
-                            '${entry.key}: ${entry.value}',
-                            style: theme.textTheme.labelSmall?.copyWith(
-                              color: theme.colorScheme.onSecondaryContainer,
-                            ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.4.h),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          backgroundColor: theme.colorScheme.secondaryContainer,
-                          deleteIcon: CustomIconWidget(
-                            iconName: 'close',
-                            size: 16,
-                            color: theme.colorScheme.onSecondaryContainer,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.explore_rounded, size: 13, color: Colors.white),
+                              SizedBox(width: 1.w),
+                              Text(
+                                _getRelativeChipLabel(),
+                                style: TextStyle(
+                                  fontSize: 8.5.sp,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
-                          onDeleted: () {
-                            setState(() {
-                              if (entry.key == 'Age') {
-                                _currentFilters = _currentFilters.copyWith(
-                                  
-                                );
-                              }
-                              if (entry.key == 'Education') {
-                                _currentFilters = _currentFilters.copyWith(
-                                  education: [],
-                                );
-                              }
-                              if (entry.key == 'Profession') {
-                                _currentFilters = _currentFilters.copyWith(
-                                  profession: [],
-                                );
-                              }
-                              if (entry.key == 'Marital') {
-                                _currentFilters = _currentFilters.copyWith(
-                                  
-                                );
-                              }
-                            });
-                            _loadData();
+                        ),
+                        const Spacer(),
+                        InkWell(
+                          onTap: () async {
+                            await LocalCacheService().clearRelativeBrowseSession();
+                            if (!mounted) return;
+                            // ignore: use_build_context_synchronously
+                            Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
+                              AppRoutes.onboardingSelection,
+                              (route) => false,
+                            );
                           },
-                          visualDensity: VisualDensity.compact,
-                          padding: EdgeInsets.zero,
-                          materialTapTargetSize:
-                              MaterialTapTargetSize.shrinkWrap,
-                        ),
-                      );
-                    }),
-                    // Clear all button
-                    GestureDetector(
-                      onTap: _clearFilters,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 3.w),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: theme.colorScheme.error.withValues(
-                              alpha: 0.5,
-                            ),
-                          ),
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        child: Row(
-                          children: [
-                            CustomIconWidget(
-                              iconName: 'clear_all',
-                              color: theme.colorScheme.error,
-                              size: 16,
-                            ),
-                            SizedBox(width: 1.w),
-                            Text(AppLocalizations.of(context)?.clear ?? 'Clear',
-                              style: theme.textTheme.labelMedium?.copyWith(
-                                color: theme.colorScheme.error,
-                                fontWeight: FontWeight.w600,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 0.5.h),
+                            child: Text(
+                              'शोध बदल करा ✏️',
+                              style: TextStyle(
+                                fontSize: 8.5.sp,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white.withValues(alpha: 0.9),
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
+                    ),
+                    SizedBox(height: 1.2.h),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'उमेदवाराचा स्वतःचा बायोडेटा उपलब्ध आहे का?',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10.5.sp,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              SizedBox(height: 0.3.h),
+                              Text(
+                                'इतर बंजारा परिवारांना स्थळ दाखवण्यासाठी बायोडेटा बनवा.',
+                                style: TextStyle(
+                                  color: Colors.white.withValues(alpha: 0.85),
+                                  fontSize: 8.5.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: 2.w),
+                        ElevatedButton(
+                          onPressed: () async {
+                            await LocalCacheService().clearRelativeBrowseSession();
+                            await LocalCacheService().setGuestMode(false);
+                            if (!mounted) return;
+                            // ignore: use_build_context_synchronously
+                            await StartupWorkflow.navigateBasedOnStatus(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFFFD700),
+                            foregroundColor: const Color(0xFF330000),
+                            elevation: 3,
+                            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: Text(
+                            'बायोडेटा बनवा ✨',
+                            style: TextStyle(
+                              fontSize: 9.5.sp,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
             ),
 
-          // Tab selector + View toggle
-          if (!_isLoading && _errorMessage == null)
-            SliverToBoxAdapter(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 1.h),
-                child: IntrinsicHeight(
-                  child: Row(
-                    children: [
-                      // -- Group 1: Recommended / Daily --
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                            borderRadius: BorderRadius.circular(24),
-                            border: Border.all(
-                              color: theme.colorScheme.primary.withValues(alpha: 0.5),
-                              width: 1.5,
-                            ),
-                          ),
-                          padding: EdgeInsets.zero,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Expanded(
-                                child: _buildTabPill(
-                                  label: AppLocalizations.of(context)?.recommended ?? 'Rec',
-                                  isActive: _selectedTab == 0,
-                                  onTap: () {
-                                    if (_selectedTab == 0) return;
-                                    HapticFeedback.selectionClick();
-                                    Future.microtask(() => setState(() => _selectedTab = 0));
-                                  },
-                                  theme: theme,
-                                ),
-                              ),
-                              Expanded(
-                                child: _buildTabPill(
-                                  label: AppLocalizations.of(context)?.daily ?? 'Daily',
-                                  isActive: _selectedTab == 1,
-                                  onTap: () {
-                                    if (_selectedTab == 1) return;
-                                    HapticFeedback.selectionClick();
-                                    Future.microtask(() => setState(() => _selectedTab = 1));
-                                  },
-                                  theme: theme,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      
-                      // Dark Bold Vertical Divider
-                      Container(
-                        width: 2.5,
-                        height: 28,
-                        margin: EdgeInsets.symmetric(horizontal: 1.5.w), // Slightly reduced margin
-                        decoration: BoxDecoration(
-                          color: Colors.black, 
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
 
-                      // -- Group 2: Grid / Swipe --
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                            borderRadius: BorderRadius.circular(24),
-                            border: Border.all(
-                              color: theme.colorScheme.primary.withValues(alpha: 0.5),
-                              width: 1.5,
-                            ),
-                          ),
-                          padding: EdgeInsets.zero,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Expanded(
-                                child: _buildTabPill(
-                                  label: AppLocalizations.of(context)?.grid ?? 'Grid',
-                                  isActive: !_isSwipeMode,
-                                  onTap: () {
-                                    if (!_isSwipeMode) return;
-                                    HapticFeedback.selectionClick();
-                                    setState(() => _isSwipeMode = false);
-                                  },
-                                  theme: theme,
-                                ),
-                              ),
-                              Expanded(
-                                child: _buildTabPill(
-                                  label: AppLocalizations.of(context)?.swipe ?? 'Swipe',
-                                  isActive: _isSwipeMode,
-                                  onTap: () {
-                                    if (_isSwipeMode) return;
-                                    HapticFeedback.selectionClick();
-                                    setState(() => _isSwipeMode = true);
-                                  },
-                                  theme: theme,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+          // Extracted: Applied filter chips
+          HomeFilterChips(
+            activeFiltersMap: _activeFiltersMap,
+            onAdjustFilters: _openFilterSheet,
+            onClearFilters: _clearFilters,
+            onRemoveFilter: (key) {
+              setState(() {
+                if (key == 'Age') {
+                  _currentFilters = _currentFilters.copyWith();
+                }
+                if (key == 'Education') {
+                  _currentFilters = _currentFilters.copyWith(education: []);
+                }
+                if (key == 'Profession') {
+                  _currentFilters = _currentFilters.copyWith(profession: []);
+                }
+                if (key == 'Marital') {
+                  _currentFilters = _currentFilters.copyWith();
+                }
+              });
+              _loadData();
+            },
+          ),
+
+          // Extracted: Tab selector + View toggle
+          if (!_isLoading && _errorMessage == null)
+            HomeTabSelector(
+              selectedTab: _selectedTab,
+              isSwipeMode: _isSwipeMode,
+              onTabChanged: (tab) => Future.microtask(() => setState(() => _selectedTab = tab)),
+              onViewModeChanged: (swipe) => setState(() => _isSwipeMode = swipe),
             ),
+
 
           // 🎁 Dynamic Offer Banners
           if (!_isLoading && _errorMessage == null && _selectedTab == 0)
@@ -1727,265 +1086,44 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
           // ══════════════════════════════════════════════════════
           // RECOMMENDED TAB content
           // ══════════════════════════════════════════════════════
-          if (_selectedTab == 0) ...[
-            // Main Content (Skeletons, Error, Empty, or Grid)
-            if (_isLoading)
-              SliverPadding(
-                padding: const EdgeInsets.all(8.0),
-                sliver: SliverGrid(
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 500,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                    mainAxisExtent: 64.h,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) => const ProfileCardSkeleton(),
-                    childCount: 4,
-                  ),
-                ),
-              )
-            else if (_errorMessage != null)
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CustomIconWidget(
-                        iconName: 'error_outline',
-                        color: theme.colorScheme.error,
-                        size: 48,
-                      ),
-                      SizedBox(height: 2.h),
-                      Text(_errorMessage!, textAlign: TextAlign.center),
-                      SizedBox(height: 2.h),
-                      ElevatedButton.icon(
-                        onPressed: _loadData,
-                        icon: const CustomIconWidget(
-                          iconName: 'refresh',
-                          size: 18,
-                          color: Colors.white,
-                        ),
-                        label: Text(AppLocalizations.of(context)?.retry ?? 'Retry'),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            else if (_profiles.isEmpty)
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: _activeFilterCount > 0
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomIconWidget(
-                              iconName: 'filter_list_off',
-                              color: theme.colorScheme.onSurfaceVariant,
-                              size: 64,
-                            ),
-                            SizedBox(height: 2.h),
-                            Text(AppLocalizations.of(context)?.noProfilesMatchYourFilters ?? 'No profiles match your filters',
-                              style: theme.textTheme.titleMedium,
-                            ),
-                            SizedBox(height: 1.h),
-                            Text(AppLocalizations.of(context)?.tryAdjustingYourFilterCriteria ?? 'Try adjusting your filter criteria',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                            SizedBox(height: 3.h),
-                            OutlinedButton.icon(
-                              onPressed: _clearFilters,
-                              icon: const CustomIconWidget(
-                                iconName: 'clear_all',
-                                size: 18,
-                                color: Colors.red,
-                              ),
-                              label: Text(AppLocalizations.of(context)?.clearAllFilters ?? 'Clear All Filters'),
-                            ),
-                          ],
-                        ),
-                      )
-                    : EmptyStateWidget(
-                        onAdjustFilters: () {
-                          _openFilterSheet();
-                        },
-                      ),
-              )
-            else if (_isSwipeMode)
-              // ── Swipe Mode ──
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: 80.h),
-                  child: SwipeableCardDeck(
-                    profiles: _profiles, // Pass raw models
-                    onTap: _openProfileDetail,
-                    onInterest: (profile) {
-                      _showSharingOptions(profile);
-                    },
-                    onSkip: (profile) {
-                      // Trigger enrichment for the next card (3 ahead)
-                      final nextIdx = _profiles.indexWhere((p) => p.id == profile.id) + 3;
-                      if (nextIdx < _profiles.length) {
-                        _enrichProfileLazy(_profiles[nextIdx]);
-                      }
-                    },
-                    onSuperLike: (profile) {
-                      _showSharingOptions(profile);
-                    },
-                    onShare: (profile) => _showSharingOptions(profile),
-                    onBookmark: (profile) {
-                      _toggleBookmark(profile.id, profile.isBookmarked);
-                    },
-                    onLoadMore: _loadMoreProfiles,
-                  ),
-                ),
-              )
-            else
-              // ── Grid Mode ──
-              SliverPadding(
-                padding: const EdgeInsets.all(8.0),
-                sliver: SliverGrid(
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 600,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                    mainAxisExtent: 68.h,
-                  ),
-                  delegate: SliverChildBuilderDelegate((context, index) {
-                    // Logic to inject ads every 6 profiles
-                    final isPremium = SessionManager.instance.isPremium;
-                    final adInterval = 6;
-                    
-                    if (!isPremium && index != 0 && index % adInterval == 0) {
-                      return BannerAdWidget(key: ValueKey('ad_widget_$index'));
-                    }
-
-                    // Adjust index for profiles list because of injected ads
-                    final profileIndex = isPremium ? index : index - (index ~/ adInterval);
-                    if (profileIndex >= _profiles.length) return null;
-
-                    final profile = _profiles[profileIndex];
-
-                    // Trigger enrichment if visible and not enriched
-                    if (!profile.isEnriched) {
-                      _enrichProfileLazy(profile);
-                    }
-
-                    return RepaintBoundary(
-                      key: ValueKey('profile_${profile.id}'),
-                      child: ProfileCardWidget(
-                        profile: profile,
-                        onTap: () => _openProfileDetail(profile),
-                        onBookmark: () => _toggleBookmark(profile.id, profile.isBookmarked),
-                        onShare: (profile) => _showSharingOptions(profile),
-                        onInterest: (profile) => _handleInterest(profile),
-                      ),
-                    );
-                  }, childCount: SessionManager.instance.isPremium 
-                      ? _profiles.length 
-                      : _profiles.length + (_profiles.length ~/ 5)), // Approximate count with ads
-                ),
-              ),
-            if (_isFetchingMore)
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 2.h),
-                  child: Center(
-                    child: Text(
-                      '. . .',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-          ],
+          if (_selectedTab == 0) ...HomeRecommendedContent.buildSlivers(
+            context: context,
+            isLoading: _isLoading,
+            errorMessage: _errorMessage,
+            profiles: _profiles,
+            isSwipeMode: _isSwipeMode,
+            activeFilterCount: _activeFilterCount,
+            isFetchingMore: _isFetchingMore,
+            isDistrictFallback: _isDistrictFallback,
+            requestedDistrict: _fallbackDistrict ?? _currentFilters.district,
+            selectedState: _fallbackState ?? _currentFilters.state,
+            onLoadData: _loadData,
+            onClearFilters: _clearFilters,
+            onOpenFilterSheet: _openFilterSheet,
+            onOpenProfileDetail: _openProfileDetail,
+            onShowSharingOptions: _showSharingOptions,
+            onHandleInterest: _handleInterest,
+            onToggleBookmark: _toggleBookmark,
+            onEnrichProfileLazy: _enrichProfileLazy,
+            onLoadMoreProfiles: _loadMoreProfiles,
+          ),
 
           // ══════════════════════════════════════════════════════
           // DAILY TAB content
           // ══════════════════════════════════════════════════════
-          if (_selectedTab == 1) ...[
-            if (_isLoading)
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Center(
-                  child: Text(
-                    '. . .',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
-                    ),
-                  ),
-                ),
-              )
-            else if (_errorMessage != null)
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Center(child: Text(_errorMessage!)),
-              )
-            else
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: 85.h),
-                    child: DailyMatchWidget(
-                      dailyProfiles: pickDailyMatches(_profiles),
-                      onTap: _openProfileDetail,
-                      onInterest: _handleInterest,
-                      onBookmark: (profile) {
-                        _toggleBookmark(profile.id, profile.isBookmarked);
-                      },
-                      onShare: (profile) => _showSharingOptions(profile),
-                    ),
-                  ),
-                ),
-              ),
-          ],
+          if (_selectedTab == 1) ...HomeDailyContent.buildSlivers(
+            context: context,
+            isLoading: _isLoading,
+            errorMessage: _errorMessage,
+            profiles: _profiles,
+            onTap: _openProfileDetail,
+            onInterest: _handleInterest,
+            onToggleBookmark: _toggleBookmark,
+            onShare: _showSharingOptions,
+          ),
         ],
       ),
     );
   }
-
-  Widget _buildTabPill({
-    required String label,
-    required bool isActive,
-    required VoidCallback onTap,
-    required ThemeData theme,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
-        padding: EdgeInsets.symmetric(vertical: 1.h), // Consistent vertical padding
-        decoration: BoxDecoration(
-          color: isActive ? theme.colorScheme.primary : Colors.transparent,
-          borderRadius: BorderRadius.circular(24),
-        ),
-        child: Center(
-          child: Text(
-            label,
-            style: theme.textTheme.labelLarge?.copyWith(
-              color: isActive
-                  ? theme.colorScheme.onPrimary
-                  : theme.colorScheme.onSurfaceVariant,
-              fontWeight: isActive ? FontWeight.w800 : FontWeight.w600,
-              fontSize: 12.sp,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
-    );
-  }
 }
+

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:banjarabio/features/bookmarks/repository/bookmark_repository.dart';
 import 'package:banjarabio/features/bookmarks/repository/bookmark_repository_impl.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Riverpod Notifier for managing bookmark state.
 /// Maintains a Map of String to bool where key is profileId and value is isBookmarked.
@@ -32,7 +33,7 @@ class BookmarkNotifier extends Notifier<Map<String, bool>> {
     final currentStatus = isBookmarked(profileId);
     final newStatus = !currentStatus;
     if (kDebugMode) {
-      debugPrint('[BOOKMARK] BookmarkNotifier > toggle($profileId) > was: $currentStatus -> now: $newStatus > Optimistic update');
+      AppLogger.debug('BookmarkNotifier', '[BOOKMARK] BookmarkNotifier > toggle($profileId) > was: $currentStatus -> now: $newStatus > Optimistic update');
     }
 
     // Optimistic update
@@ -45,14 +46,14 @@ class BookmarkNotifier extends Notifier<Map<String, bool>> {
       await result.fold(
         onSuccess: (_) {
           if (kDebugMode) {
-            debugPrint('[BOOKMARK] BookmarkNotifier > toggle($profileId) > Backend sync SUCCESS');
+            AppLogger.debug('BookmarkNotifier', '[BOOKMARK] BookmarkNotifier > toggle($profileId) > Backend sync SUCCESS');
           }
         },
         onFailure: (error) {
           // Rollback on error
           state = {...state, profileId: currentStatus};
           if (kDebugMode) {
-            debugPrint('[BOOKMARK] BookmarkNotifier > toggle($profileId) > Backend FAILED > Rollback to $currentStatus | error: $error');
+            AppLogger.error('BookmarkNotifier', '[BOOKMARK] BookmarkNotifier > toggle($profileId) > Backend FAILED > Rollback to $currentStatus | error: $error');
           }
           throw Exception(error);
         },
@@ -61,7 +62,7 @@ class BookmarkNotifier extends Notifier<Map<String, bool>> {
       // Rollback on exception
       state = {...state, profileId: currentStatus};
       if (kDebugMode) {
-        debugPrint('[BOOKMARK] BookmarkNotifier > toggle($profileId) > Exception > Rollback to $currentStatus | $e');
+        AppLogger.error('BookmarkNotifier', '[BOOKMARK] BookmarkNotifier > toggle($profileId) > Exception > Rollback to $currentStatus | $e');
       }
       rethrow;
     }

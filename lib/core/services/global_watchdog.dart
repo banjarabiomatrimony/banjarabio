@@ -1,13 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Global Watchdog: Ultra-Stable Anti-ANR Architecture
 /// 
 /// Continuously monitors the main thread for Frame drops and blocks.
 /// If a severe block is detected (>200ms), it initiates emergency
 /// memory management to prevent the OS from killing the app (Signal 3).
-class GlobalWatchdog {
+class GlobalWatchdog with WidgetsBindingObserver {
   static final GlobalWatchdog _instance = GlobalWatchdog._internal();
   factory GlobalWatchdog() => _instance;
   GlobalWatchdog._internal();
@@ -39,13 +40,33 @@ class GlobalWatchdog {
     // Listen to every frame drawn by Flutter
     SchedulerBinding.instance.addPostFrameCallback(_monitorFrame);
     
-    debugPrint('🛡️ [WATCHDOG] Global Frame Monitor Active (Threshold: ${_anrRiskThresholdMs}ms).');
+    // Register lifecycle observer to reset tracking when transitioning from background/inactive states
+    WidgetsBinding.instance.addObserver(this);
+    
+    AppLogger.debug('GlobalWatchdog', '🛡️ [WATCHDOG] Global Frame Monitor Active (Threshold: ${_anrRiskThresholdMs}ms).');
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state != AppLifecycleState.resumed) {
+      // Reset tracking when app goes to background or ceases to be active
+      // This prevents false positive ANR block triggers on app resume.
+      _lastPulseTime = null;
+    }
   }
 
   void _monitorFrame(Duration timeStamp) {
     if (!_isMonitoring) return;
 
     final now = DateTime.now();
+
+    // Guard: If the app is not currently resumed, skip tracking and reschedule
+    if (WidgetsBinding.instance.lifecycleState != AppLifecycleState.resumed) {
+      _lastPulseTime = null;
+      _lastFrameTimestamp = timeStamp.inMilliseconds;
+      SchedulerBinding.instance.addPostFrameCallback(_monitorFrame);
+      return;
+    }
     
     // 🧬 PRO SCALE: Check for actual wall-clock blocking since the last frame.
     // addPostFrameCallback only fires AFTER a frame is drawn.
@@ -76,11 +97,11 @@ class GlobalWatchdog {
     
     // Rate limit emergency clears to avoid making things worse
     if (_lastClearTime != null && now.difference(_lastClearTime!) < _clearCooldown) {
-      debugPrint('🚨 [WATCHDOG] Blocked for ${blockedDurationMs}ms, but skipping clear (Cooldown active).');
+      AppLogger.warn('GlobalWatchdog', '🚨 [WATCHDOG] Blocked for ${blockedDurationMs}ms, but skipping clear (Cooldown active).');
       return;
     }
 
-    debugPrint('🚨 [WATCHDOG] SEVERE MAIN THREAD BLOCK DETECTED: ${blockedDurationMs}ms!');
+    AppLogger.debug('GlobalWatchdog', '🚨 [WATCHDOG] SEVERE MAIN THREAD BLOCK DETECTED: ${blockedDurationMs}ms!');
     
     _lastClearTime = now;
 
@@ -92,14 +113,17 @@ class GlobalWatchdog {
       imageCache.clear();
       imageCache.clearLiveImages();
       
-      debugPrint('🚨 [WATCHDOG] Emergency Image Cache Cleared. Freed: ${(currentSizeBytes / (1024 * 1024)).toStringAsFixed(2)} MB');
+      AppLogger.debug('GlobalWatchdog', '🚨 [WATCHDOG] Emergency Image Cache Cleared. Freed: ${(currentSizeBytes / (1024 * 1024)).toStringAsFixed(2)} MB');
     } catch (e) {
-      debugPrint('🚨 [WATCHDOG] Failed to clear image cache: $e');
+      AppLogger.error('GlobalWatchdog', '🚨 [WATCHDOG] Failed to clear image cache: $e');
     }
   }
 
   void dispose() {
-    _isMonitoring = false;
+    if (_isMonitoring) {
+      WidgetsBinding.instance.removeObserver(this);
+      _isMonitoring = false;
+    }
   }
 
   @visibleForTesting

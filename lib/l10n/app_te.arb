@@ -1,500 +1,6 @@
 {
   "@@locale": "te",
-  "@addClearPhotos": {
-    "placeholders": {
-      "max": {
-        "type": "String"
-      }
-    }
-  },
-  "@allInDistrict": {
-    "placeholders": {
-      "district": {
-        "type": "String"
-      }
-    }
-  },
-  "@allInState": {
-    "placeholders": {
-      "state": {
-        "type": "String"
-      }
-    }
-  },
   "genderSelectHeading": "మీ లింగం",
-  "@allPhotosCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      },
-      "max": {
-        "type": "int"
-      }
-    }
-  },
-  "@areYouSureDeleteSelectedPhotos": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "@bookmarksCount": {
-    "placeholders": {
-      "count": {
-        "type": "String"
-      }
-    }
-  },
-  "@copyLinkSubtitle": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "@curatedProfilesJustForYou": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "@daysAgo": {
-    "placeholders": {
-      "count": {
-        "type": "String"
-      }
-    }
-  },
-  "@districtInState": {
-    "placeholders": {
-      "state": {
-        "type": "String"
-      }
-    }
-  },
-  "@errorCheckingShareLimits": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@errorCheckingStatus": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@errorCheckingViewLimits": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@errorLoadingAdminData": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@errorLoadingRequests": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@errorOccurred": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@errorPrefix": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@failedLoadProfile": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@failedSignInGoogle": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@failedToDeletePhotoError": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@failedToLoadPhotosError": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@failedToLoadSubscription": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@failedToLogout": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@failedToSave": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@failedToSavePdf": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@failedToSaveProfile": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@failedToStartChat": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@failedToUpdatePremiumStatus": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@failedToUpdatePrimaryPhotoError": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@failedToUploadPhoto": {
-    "placeholders": {
-      "index": {
-        "type": "int"
-      }
-    }
-  },
-  "@failedToVerify": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@fieldRequired": {
-    "placeholders": {
-      "field": {
-        "type": "String"
-      }
-    }
-  },
-  "@hoursAgo": {
-    "placeholders": {
-      "count": {
-        "type": "String"
-      }
-    }
-  },
-  "@idLabel": {
-    "placeholders": {
-      "id": {
-        "type": "String"
-      }
-    }
-  },
-  "@languageChanged": {
-    "placeholders": {
-      "language": {
-        "type": "String"
-      }
-    }
-  },
-  "@loginFailed": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@matchNOfTotal": {
-    "placeholders": {
-      "current": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
-  "@minutesAgo": {
-    "placeholders": {
-      "count": {
-        "type": "String"
-      }
-    }
-  },
-  "@nextRefreshTime": {
-    "placeholders": {
-      "time": {
-        "type": "String"
-      }
-    }
-  },
-  "@noLocationsFoundForQuery": {
-    "placeholders": {
-      "query": {
-        "type": "String"
-      }
-    }
-  },
-  "@paymentFailed": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@paymentFailedError": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@paymentSuccessfulWelcome": {
-    "placeholders": {
-      "plan": {
-        "type": "String"
-      }
-    }
-  },
-  "@pdfSavedToDownloads": {
-    "placeholders": {
-      "path": {
-        "type": "String"
-      }
-    }
-  },
-  "@percentComplete": {
-    "placeholders": {
-      "percentage": {
-        "type": "int"
-      }
-    }
-  },
-  "@photoAddedWithKb": {
-    "placeholders": {
-      "kb": {
-        "type": "String"
-      }
-    }
-  },
-  "@photosCount": {
-    "placeholders": {
-      "count": {
-        "type": "String"
-      }
-    }
-  },
-  "@photosSelectedCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "@pleaseComplete": {
-    "placeholders": {
-      "fields": {
-        "type": "String"
-      }
-    }
-  },
-  "@pleaseCompleteRequiredFields": {
-    "placeholders": {
-      "section": {
-        "type": "String"
-      }
-    }
-  },
-  "@pointsCount": {
-    "placeholders": {
-      "points": {
-        "type": "String"
-      }
-    }
-  },
-  "@profileBoostPerMonth": {
-    "placeholders": {
-      "count": {
-        "type": "String"
-      }
-    }
-  },
-  "@profileSharedWith": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "@profileViewsPerDay": {
-    "placeholders": {
-      "count": {
-        "type": "String"
-      }
-    }
-  },
-  "@referralShareMessage": {
-    "placeholders": {
-      "link": {
-        "type": "String"
-      }
-    }
-  },
-  "@requestProcessedSuccessfullyMsg": {
-    "placeholders": {
-      "status": {
-        "type": "String"
-      }
-    }
-  },
-  "@shareFailed": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@shareMyProfileWith": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "@sharedVia": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      },
-      "method": {
-        "type": "String"
-      }
-    }
-  },
-  "@sharesPerMonth": {
-    "placeholders": {
-      "count": {
-        "type": "String"
-      }
-    }
-  },
-  "@stepNOfTotal": {
-    "placeholders": {
-      "current": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
-  "@talukaInDistrictState": {
-    "placeholders": {
-      "district": {
-        "type": "String"
-      },
-      "state": {
-        "type": "String"
-      }
-    }
-  },
-  "@trustScoreShareMessage": {
-    "placeholders": {
-      "score": {
-        "type": "String"
-      },
-      "url": {
-        "type": "String"
-      }
-    }
-  },
-  "@unexpectedError": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@unexpectedErrorOccurred": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@verifyLabel": {
-    "placeholders": {
-      "label": {
-        "type": "String"
-      }
-    }
-  },
-  "@whatsappShareSubtitle": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "@yearsOld": {
-    "placeholders": {
-      "age": {
-        "type": "String"
-      }
-    }
-  },
   "aboutSelf": "స్వీయ గురించి",
   "aboutYourself": "మీ గురించి",
   "abusiveBehavior": "అసభ్యకర ప్రవర్తన",
@@ -610,7 +116,7 @@
   "confirm": "నిర్ధారించు",
   "connectInApp": "యాప్‌లో కనెక్ట్ అవ్వండి",
   "connectWithCommunity": "మీ బంజారా సమాజంతో అనుసంధానించండి",
-  "contact": "పరిచయం",
+  "contact": "సంప్రదించండి",
   "contactPreferences": "సంప్రదింపు ప్రాధాన్యతలు",
   "contactUs": "మమ్మల్ని సంప్రదించండి",
   "contactUsTitle": "మమ్మల్ని సంప్రదించండి",
@@ -1416,31 +922,10 @@
   "sharingProfile": "ప్రొఫైల్ భాగస్వామ్యం చేయబడుతోంది...",
   "expressInterest": "ఆసక్తిని తెలియజేయాలా?",
   "interestConfirmationDesc": "మీ ఆసక్తిని తెలియజేయడానికి మీ ప్రొఫైల్‌ను {name}తో పంచుకోవాలనుకుంటున్నారా?",
-  "@interestConfirmationDesc": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "yesInterest": "అవును, ఆసక్తి ఉంది",
   "interestConfirmationTitle": "ఆసక్తిని తెలియజేయాలా?",
   "interestConfirmationMessage": "దీని ద్వారా మీ ప్రొఫైల్ {name}తో పంచుకోబడుతుంది మరియు వారు మిమ్మల్ని సంప్రదించగలరు. మీకు ఖచ్చితంగా ఉందా?",
-  "@interestConfirmationMessage": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "interestShared": "{name}తో ఆసక్తిని పంచుకున్నారు!",
-  "@interestShared": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "upgradeToShareMore": "మరింత భాగస్వామ్యం చేయడానికి అప్‌గ్రేడ్ చేయండి",
   "itSAMatch": "మ్యాచ్ కుదిరింది!",
   "sharedProfilesWithEachOther": "మీరు మరియు {name} ఒకరితో ఒకరు ప్రొఫైల్‌లను పంచుకున్నారు.",
@@ -1477,41 +962,6 @@
   "brothersCount": "{count, plural, =1{1 సోదరుడు} other{{count} సోదరులు}}",
   "sistersCount": "{count, plural, =1{1 సోదరి} other{{count} సోదరీమణులు}}",
   "siblingsCount": "{count, plural, =1{1 తోబుట్టువు} other{{count} తోబుట్టువులు}}",
-  "@referenceWithNumber": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
-  "@yearsLabel": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "@brothersCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "@sistersCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "@siblingsCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
   "siblingsLabel": "తోబుట్టువులు",
   "company": "కంపెనీ",
   "job": "ఉద్యోగం / పని",
@@ -1546,9 +996,7 @@
   "tourShareDesc": "Easily share profiles via WhatsApp with your parents or relatives for their opinion.",
   "chooseHowToStart": "మీరు ఎలా ప్రారంభించాలనుకుంటున్నారో ఎంచుకోండి",
   "exploreAsGuest": "అతిథిగా అన్వేషించండి",
-  "@exploreAsGuest": {},
   "exitGuestMode": "గెస్ట్ మోడ్ నుండి నిష్క్రమించు",
-  "@exitGuestMode": {},
   "guestModeDesc": "మీ ప్రొఫైల్‌ను సృష్టించడానికి ముందు యాప్ యొక్క గైడెడ్ టూర్ చేయండి.",
   "createMyBiodata": "నా బయోడేటాను సృష్టించండి",
   "createBiodataDesc": "మీ ప్రొఫైల్ నింపి తక్షణమే కనెక్ట్ అవ్వడం ప్రారంభించండి.",
@@ -1663,14 +1111,8 @@
   "vipPlanName": "VIP",
   "weeklyCheckIn": "వారపు చెక్-ఇన్",
   "women": "మహిళలు",
-  "youSave": "మీరు ₹{amount} ఆదా చేస్తారు",
-  "@extraViewsUnlocked": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "youSave": "మీరు ₹{amount} పొదుపు చేస్తారు",
+  "extraViewsUnlocked": "{count} అదనపు వీక్షణలు అన్‌లాక్ చేయబడ్డాయి!",
   "signInRequired": "సైన్ ఇన్ అవసరం",
   "signInRequiredContent": "ఈ ఫీచర్‌ని ఉపయోగించడానికి దయచేసి సైన్ ఇన్ చేయండి లేదా ఖాతాను సృష్టించండి.",
   "watchAdToUnlock": "అన్‌లాక్ చేయడానికి ప్రకటన చూడండి",
@@ -1689,13 +1131,6 @@
   "unverified": "ధృవీకరించబడలేదు",
   "signIn": "సైన్ ఇన్ చేయండి",
   "unlockMoreVisitors": "మరో {count} మంది సందర్శకులను అన్‌లాక్ చేయండి!",
-  "@unlockMoreVisitors": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
   "dailyLimitReached": "రోజువారీ పరిమితి ముగిసింది",
   "dailyLimitViewsReached": "మీరు మీ రోజువారీ ప్రొఫైల్ వీక్షణలన్నింటినీ ఉపయోగించారు.",
   "unlockMoreViewsAd": "ఈ రోజు కోసం మరో 5 వీక్షణలను అన్లాక్ చేయడానికి ఒక చిన్న ప్రకటనను చూడండి!",
@@ -1731,5 +1166,22 @@
   "refund25": "25% రీఫండ్",
   "teamVisit": "టీమ్ విజిట్",
   "refund35": "35% రీఫండ్",
-  "successSubmission": "విజయం! మీ అభ్యర్థన సమీక్ష కోసం సమర్పించబడింది."
+  "successSubmission": "విజయం! మీ అభ్యర్థన సమీక్ష కోసం సమర్పించబడింది.",
+  "melavas": "మేళావాలు",
+  "upcomingMelavas": "రాబోయే మేళావాలు",
+  "callOrganizer": "నిర్వాహకుడికి కాల్ చేయండి",
+  "viewVenue": "వేదికను చూడండి",
+  "organizer": "నిర్వాహకుడు",
+  "venue": "వేదిక",
+  "eventDetails": "కార్యక్రమ వివరాలు",
+  "browseMatchesTitle": "🔍 సంబంధం వెతకండి (Browse Matches)",
+  "browseMatchesDesc": "కొడుకు, కూతురు, బంధువుల కోసం తగిన సంబంధం వెతకండి.",
+  "browseMatchesSubtitle": "కొన్ని ప్రశ్నలకు సమాధానం ఇవ్వండి మరియు తగిన సంబంధాలు చూడండి",
+  "forWhomSearching": "ఎవరి కోసం సంబంధం వెతుకుతున్నారు?",
+  "lookingForGender": "వరుడు కావాలా లేదా వధువు?",
+  "groomBoy": "👦 వరుడు (Groom)",
+  "brideGirl": "👧 వధువు (Bride)",
+  "selectDistrict": "జిల్లాను ఎంచుకోండి",
+  "proceedToLogin": "ముందుకు → లాగిన్ చేయండి",
+  "sibling": "తోబుట్టువు"
 }

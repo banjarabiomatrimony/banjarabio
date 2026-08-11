@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banjarabio/notification/core/notification_payload.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// SMS Fallback Service for notification delivery.
 ///
@@ -42,7 +43,7 @@ class SmsNotificationService {
       );
 
       if (response.status == 200) {
-        debugPrint('📨 [SMS] Fallback SMS sent for: ${payload.id}');
+        AppLogger.warn('SmsNotificationService', '📨 [SMS] Fallback SMS sent for: ${payload.id}');
         return true;
       } else {
         debugPrint(
@@ -50,7 +51,7 @@ class SmsNotificationService {
         return false;
       }
     } catch (e) {
-      debugPrint('📨 [SMS] Error sending fallback: $e');
+      AppLogger.error('SmsNotificationService', '📨 [SMS] Error sending fallback: $e');
       return false;
     }
   }
@@ -90,7 +91,7 @@ class SmsNotificationService {
       // Only send SMS to verified numbers to avoid spam
       return hasPhone && isVerified;
     } catch (e) {
-      debugPrint('📨 [SMS] Error checking availability: $e');
+      AppLogger.error('SmsNotificationService', '📨 [SMS] Error checking availability: $e');
       return false;
     }
   }

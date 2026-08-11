@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/widgets/custom_icon_widget.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// A highly visual, icon-driven mini-card for displaying profile details.
 /// Designed for extreme accessibility, prioritizing the value and an intuitive icon.
@@ -61,7 +62,7 @@ class ProfileDetailChipWidget extends StatelessWidget {
                   style: theme.textTheme.titleSmall?.copyWith(
                     color: theme.colorScheme.onSurface,
                     fontWeight: FontWeight.bold,
-                    fontSize: 13.sp,
+                    fontSize: AppTypography.bodyLarge,
                     height: 1.1,
                   ),
                   maxLines: fullWidth ? 5 : 1,
@@ -74,7 +75,7 @@ class ProfileDetailChipWidget extends StatelessWidget {
                     color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
                     fontWeight: FontWeight.w700,
                     letterSpacing: 0.2,
-                    fontSize: 10.sp,
+                    fontSize: AppTypography.bodySmall,
                   ),
                 ),
               ],

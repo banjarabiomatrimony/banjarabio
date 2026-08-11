@@ -435,11 +435,11 @@ abstract class BiodataTemplateBase {
     return mainWidget;
   }
 
-  // Universal Ganesh Mantra
+  // Universal Ganesh & Gor Banjara Mantra
   pw.Widget buildGaneshMantra(PdfColor color) {
     return pw.Center(
       child: pw.Text(
-        '॥ श्री गणेशाय नमः ॥',
+        '॥ जय सेवालाल ॥   ॥ श्री गणेशाय नमः ॥',
         style: pw.TextStyle(
           font: mantraFont,
           fontSize: 14,
@@ -642,28 +642,21 @@ abstract class BiodataTemplateBase {
           pw.Divider(color: PdfColors.grey300),
           pw.SizedBox(height: 10),
           pw.Text(
-            'Created via Banjara Bio App',
+            'BanjaraBio Matrimony • #1 Trusted Banjara Community Platform',
+            style: pw.TextStyle(
+              font: boldFont,
+              fontSize: 9,
+              color: PdfColors.grey700,
+            ),
+          ),
+          pw.SizedBox(height: 3),
+          pw.Text(
+            'Download app & find your life partner:\nhttps://play.google.com/store/apps/details?id=com.avishio.banjarabio',
+            textAlign: pw.TextAlign.center,
             style: pw.TextStyle(
               font: font,
-              fontSize: 10,
+              fontSize: 7.5,
               color: PdfColors.grey600,
-            ),
-          ),
-          pw.Text(
-            'Download the app to find your life partner',
-            style: pw.TextStyle(
-              font: font,
-              fontSize: 8,
-              color: PdfColors.grey500,
-            ),
-          ),
-          pw.Text(
-            'https://banjarabio.com',
-            style: pw.TextStyle(
-              font: font,
-              fontSize: 8,
-              color: const PdfColor.fromInt(0xFF432C7A),
-              decoration: pw.TextDecoration.underline,
             ),
           ),
         ],
@@ -677,6 +670,105 @@ abstract class BiodataTemplateBase {
       child: pw.Text(
         'Page ${context.pageNumber} of ${context.pagesCount}',
         style: pw.TextStyle(font: font, fontSize: 8, color: PdfColors.grey),
+      ),
+    );
+  }
+
+  /// Adds a dedicated full-page photo page at the end of the biodata PDF.
+  void addFullPagePhotoPage(pw.Document pdf, {PdfColor? accentColor}) {
+    if (profilePhoto == null) return;
+
+    final primaryColor = accentColor ?? royalMaroon;
+    final fullName = content.personalDetails['Full Name'] ?? '';
+    final surname = content.personalDetails['Surname'] ?? '';
+    final nameTitle = '$fullName $surname'.trim();
+
+    pdf.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        margin: const pw.EdgeInsets.all(30),
+        build: (pw.Context context) {
+          return pw.Stack(
+            children: [
+              // Outer border frame
+              buildOrnateBorder(primaryColor, luxury: true),
+
+              if (isLocked) buildWatermark(),
+
+              pw.Padding(
+                padding: const pw.EdgeInsets.all(24),
+                child: pw.Column(
+                  children: [
+                    // Cultural Header
+                    buildGaneshMantra(primaryColor),
+                    pw.SizedBox(height: 12),
+
+                    if (nameTitle.isNotEmpty) ...[
+                      pw.Text(
+                        nameTitle.toUpperCase(),
+                        style: pw.TextStyle(
+                          font: boldFont,
+                          fontSize: 18,
+                          color: primaryColor,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                      pw.SizedBox(height: 6),
+                    ],
+
+                    pw.Text(
+                      'CANDIDATE PROFILE PHOTO',
+                      style: pw.TextStyle(
+                        font: boldFont,
+                        fontSize: 10,
+                        color: PdfColors.grey700,
+                        letterSpacing: 3,
+                      ),
+                    ),
+                    pw.SizedBox(height: 16),
+
+                    // Main Full Page Photo Container
+                    pw.Expanded(
+                      child: pw.Container(
+                        width: double.infinity,
+                        decoration: pw.BoxDecoration(
+                          border: pw.Border.all(color: primaryColor, width: 2),
+                          borderRadius: const pw.BorderRadius.all(pw.Radius.circular(8)),
+                        ),
+                        child: pw.ClipRRect(
+                          horizontalRadius: 6,
+                          verticalRadius: 6,
+                          child: pw.Image(
+                            profilePhoto!,
+                          ),
+                        ),
+                      ),
+                    ),
+                    pw.SizedBox(height: 16),
+
+                    // Verification Footer Stamp
+                    pw.Container(
+                      padding: const pw.EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      decoration: pw.BoxDecoration(
+                        color: primaryColor,
+                        borderRadius: const pw.BorderRadius.all(pw.Radius.circular(4)),
+                      ),
+                      child: pw.Text(
+                        'VERIFIED CANDIDATE • BANJARABIO MATRIMONY',
+                        style: pw.TextStyle(
+                          font: boldFont,
+                          fontSize: 9,
+                          color: PdfColors.white,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

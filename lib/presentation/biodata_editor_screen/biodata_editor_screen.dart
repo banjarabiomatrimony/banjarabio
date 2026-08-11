@@ -4,6 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:banjarabio/core/constants/biodata_templates.dart';
+import 'package:banjarabio/presentation/biodata_editor_screen/widgets/editor_loading_state.dart';
+import 'package:banjarabio/presentation/biodata_editor_screen/widgets/editor_bottom_action_bar.dart';
+import 'package:banjarabio/presentation/biodata_editor_screen/widgets/editor_locked_overlay_widget.dart';
+import 'package:banjarabio/presentation/biodata_editor_screen/widgets/editor_template_picker_widget.dart';
+import 'package:banjarabio/presentation/biodata_editor_screen/widgets/editor_language_picker_widget.dart';
+import 'package:banjarabio/presentation/biodata_editor_screen/widgets/editor_details_widget.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:printing/printing.dart';
@@ -18,10 +24,14 @@ import 'package:banjarabio/core/models/biodata_template_type.dart';
 import 'package:banjarabio/core/models/subscription_model.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/core/repositories/razorpay_repository.dart';
+import 'package:banjarabio/core/repositories/usage_repository.dart';
 import 'package:banjarabio/core/services/pdf/pdf_generator_service.dart';
 import 'package:banjarabio/presentation/biodata_editor_screen/widgets/biodata_ui_helpers.dart';
 import 'package:banjarabio/core/services/pdf/biodata_translations.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/core/services/analytics_service.dart';
 
 /// World-class Biodata Editor Screen with production-ready architecture
 /// 
@@ -50,12 +60,13 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
     with SingleTickerProviderStateMixin {
   final ProfileRepository _profileRepository = ProfileRepository();
   final RazorpayRepository _razorpayRepository = RazorpayRepository();
+  final UsageRepository _usageRepository = UsageRepository();
   final PdfIsolateManager _pdfManager = PdfIsolateManager();
 
   // State
   ProfileModel? _profile;
   BiodataContent? _content;
-  BiodataTemplateType _selectedTemplate = BiodataTemplateType.simple;
+  BiodataTemplateType _selectedTemplate = BiodataTemplateType.royalGold;
   String _selectedLanguage = 'English';
   Uint8List? _pdfData;
   Uint8List? _logoBytes;
@@ -170,7 +181,7 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
                 _content = BiodataContent.fromProfile(profile);
               });
               _generatePdf();
-              debugPrint('[RAZORPAY] BiodataEditorScreen > Profile refreshed from cache | isPdfUnlocked=${profile.isPdfUnlocked}');
+              AppLogger.debug('BiodataEditorScreen', '[RAZORPAY] BiodataEditorScreen > Profile refreshed from cache | isPdfUnlocked=${profile.isPdfUnlocked}');
             } else if (mounted) {
               _loadData(forceRefreshProfile: true);
             }
@@ -180,7 +191,7 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
           },
         );
       } catch (e) {
-        debugPrint('[RAZORPAY] BiodataEditorScreen > Cache refresh failed | $e');
+        AppLogger.error('BiodataEditorScreen', '[RAZORPAY] BiodataEditorScreen > Cache refresh failed | $e');
         if (mounted) _loadData(forceRefreshProfile: true);
       }
     });
@@ -252,8 +263,8 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
         },
       );
     } catch (e, stackTrace) {
-      debugPrint('Error in _loadData: $e');
-      debugPrint('Stack trace: $stackTrace');
+      AppLogger.error('BiodataEditorScreen', 'Error in _loadData: $e');
+      AppLogger.debug('BiodataEditorScreen', 'Stack trace: $stackTrace');
       if (mounted) {
         setState(() {
           _loadingState = _LoadingState.error;
@@ -317,7 +328,7 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
           final ByteData data = await rootBundle.load(templateConfig.assetPath);
           templateImageBytes = data.buffer.asUint8List();
         } catch (e) {
-          debugPrint('Error loading template image: $e');
+          AppLogger.error('BiodataEditorScreen', 'Error loading template image: $e');
         }
 
         final params = PdfGenerationParams(
@@ -343,8 +354,8 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
           });
         }
       } catch (e, stackTrace) {
-        debugPrint('Error generating PDF: $e');
-        debugPrint('Stack trace: $stackTrace');
+        AppLogger.error('BiodataEditorScreen', 'Error generating PDF: $e');
+        AppLogger.debug('BiodataEditorScreen', 'Stack trace: $stackTrace');
         if (mounted) {
           setState(() => _isGeneratingPdf = false);
           Fluttertoast.showToast(
@@ -370,8 +381,8 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: 6.w),
                 child: _loadingState == _LoadingState.error
-                    ? _buildErrorState()
-                    : _buildLoadingState(),
+                    ? EditorErrorStateWidget(errorMessage: _errorMessage, onRetry: _loadData)
+                    : EditorLoadingStateWidget(message: _getLoadingMessage()),
               ),
             ),
           ),
@@ -379,8 +390,9 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
       );
     }
 
-    final bool isLocked =
-        _selectedTemplate.isPremium && !(_profile?.isPdfUnlocked ?? false);
+    // Temp bypass for growth campaign: premium features are free, keep original check dormant.
+    // In future, change to: _selectedTemplate.isPremium && !(_profile?.isPdfUnlocked ?? false)
+    final bool isLocked = false;
 
     return Scaffold(
       body: Container(
@@ -419,7 +431,7 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onPrimary,
                           fontWeight: FontWeight.w600,
-                          fontSize: 14.sp,
+                          fontSize: AppTypography.bodyLarge,
                         ),
                       ),
                       centerTitle: false,
@@ -458,11 +470,11 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
                             unselectedLabelColor: BiodataTheme.deepCharcoal.withValues(alpha: 0.6),
                             labelStyle: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize: 11.sp,
+                              fontSize: AppTypography.bodySmall,
                             ),
                             unselectedLabelStyle: TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontSize: 11.sp,
+                              fontSize: AppTypography.bodySmall,
                             ),
                             tabs: [
                               Tab(text: AppLocalizations.of(context)?.template ?? 'Template'),
@@ -560,7 +572,7 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
                                             Text(
                                               AppLocalizations.of(context)?.generatingPreview ?? 'Generating preview...',
                                               style: BiodataTheme.bodyStyle.copyWith(
-                                                fontSize: 13.sp,
+                                                fontSize: AppTypography.bodyLarge,
                                                 color: BiodataTheme.deepCharcoal
                                                     .withValues(alpha: 0.7),
                                               ),
@@ -569,7 +581,11 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
                                         ),
                                       ),
                               ),
-                              if (isLocked) _buildLockedOverlay(),
+                              // ignore: dead_code
+                              if (isLocked) EditorLockedOverlayWidget(
+                                isProcessingPayment: _isProcessingPayment,
+                                onUpgrade: _handleUpgrade,
+                              ),
                               if (_isGeneratingPdf)
                                 Positioned.fill(
                                   child: Container(
@@ -593,97 +609,13 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
                 ),
               ),
             ),
-            if (!isLocked) _buildBottomActionBar(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// Fixed action bar (Print, Download, Share) at bottom - always visible without scroll.
-  Widget _buildBottomActionBar() {
-    final theme = Theme.of(context);
-    final canAct = _pdfData != null;
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.2.h),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
-            blurRadius: 8,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
-      child: SafeArea(
-        top: false,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _buildActionButton(
-              icon: Icons.print_rounded,
-              label: AppLocalizations.of(context)?.printBtn ?? 'Print',
-              onTap: canAct ? _handlePrint : null,
-            ),
-            _buildActionButton(
-              icon: Icons.download_rounded,
-              label: AppLocalizations.of(context)?.downloadBtn ?? 'Download',
-              onTap: canAct ? _handleDownload : null,
-            ),
-            _buildActionButton(
-              icon: Icons.share_rounded,
-              label: AppLocalizations.of(context)?.shareBtn ?? 'Share',
-              onTap: canAct ? _handleShare : null,
+            if (!isLocked) EditorBottomActionBar(
+              canAct: _pdfData != null,
+              onPrint: _handlePrint,
+              onDownload: _handleDownload,
+              onShare: _handleShare,
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActionButton({
-    required IconData icon,
-    required String label,
-    VoidCallback? onTap,
-  }) {
-    final theme = Theme.of(context);
-    final disabled = onTap == null;
-    return Semantics(
-      button: true,
-      enabled: !disabled,
-      label: label,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(12),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
-            child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                icon,
-                color: disabled
-                    ? theme.colorScheme.onSurface.withValues(alpha: 0.4)
-                    : theme.colorScheme.primary,
-                size: 24,
-              ),
-              SizedBox(height: 0.4.h),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 11.sp,
-                  fontWeight: FontWeight.w600,
-                  color: disabled
-                      ? theme.colorScheme.onSurface.withValues(alpha: 0.4)
-                      : theme.colorScheme.onSurface,
-                ),
-              ),
-            ],
-            ),
-          ),
         ),
       ),
     );
@@ -704,86 +636,34 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
     }
   }
 
-  Widget _buildErrorState() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 5.h),
-      decoration: BiodataTheme.sectionCardDecoration(),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.error_outline_rounded,
-            color: Colors.red.shade400,
-            size: 56.sp,
-          ),
-          SizedBox(height: 2.h),
-          Text(
-            AppLocalizations.of(context)?.somethingWentWrong ?? 'Something went wrong',
-            style: BiodataTheme.subHeaderStyle.copyWith(
-              fontSize: 16.sp,
-              color: BiodataTheme.deepCharcoal,
-            ),
-          ),
-          SizedBox(height: 0.8.h),
-          Text(
-            _errorMessage ?? (AppLocalizations.of(context)?.couldNotLoadProfile ?? 'We couldn\'t load your profile. Please try again.'),
-            style: BiodataTheme.bodyStyle.copyWith(
-              fontSize: 13.sp,
-              color: BiodataTheme.deepCharcoal.withValues(alpha: 0.75),
-            ),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 2.5.h),
-          SizedBox(
-            height: 6.h,
-            child: FilledButton.icon(
-              onPressed: _loadData,
-              icon: const Icon(Icons.refresh_rounded, size: 20),
-              label: Text(AppLocalizations.of(context)?.tryAgain ?? 'Try again'),
-              style: FilledButton.styleFrom(
-                backgroundColor: BiodataTheme.royalGold,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 5.w),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLoadingState() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SizedBox(
-          width: 6.h,
-          height: 6.h,
-          child: const CircularProgressIndicator(
-            color: BiodataTheme.royalGold,
-            strokeWidth: 2.5,
-          ),
-        ),
-        SizedBox(height: 2.h),
-        Text(
-          _getLoadingMessage(),
-          style: BiodataTheme.bodyStyle.copyWith(
-            fontSize: 14.sp,
-            color: BiodataTheme.deepCharcoal.withValues(alpha: 0.8),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _getTabContent(int index) {
     switch (index) {
       case 0:
-        return _buildTemplatePicker();
+        return EditorTemplatePickerWidget(
+          selectedTemplate: _selectedTemplate,
+          isPremiumUnlocked: _profile?.isPdfUnlocked ?? false,
+          onTemplateSelected: (type) {
+            setState(() => _selectedTemplate = type);
+            _generatePdf();
+          },
+        );
       case 1:
-        return _buildLanguagePicker();
+        return EditorLanguagePickerWidget(
+          selectedLanguage: _selectedLanguage,
+          onLanguageSelected: (lang) {
+            setState(() => _selectedLanguage = lang);
+            _generatePdf();
+          },
+        );
       case 2:
-        return RepaintBoundary(child: _buildDetailsEditor());
+        return RepaintBoundary(
+          child: EditorDetailsWidget(
+            content: _content!,
+            controllers: _controllers,
+            onContentChanged: _generatePdf,
+            onContentUpdated: (updated) => _content = updated,
+          ),
+        );
       default:
         return const SizedBox();
     }
@@ -800,9 +680,15 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
       final file = File('${directory.path}/$fileName');
       await file.writeAsBytes(_pdfData!);
 
+      unawaited(_usageRepository.incrementPdfDownloadCount());
+      unawaited(AnalyticsService.logEvent('pdf_download', parameters: {
+        'template_type': _selectedTemplate.name,
+        'action': 'share',
+      }));
+
       await Share.shareXFiles([XFile(file.path)], text: tempLocalizations?.sharingBiodataPdf ?? 'Sharing Biodata PDF');
     } catch (e) {
-      debugPrint('Error sharing PDF: $e');
+      AppLogger.error('BiodataEditorScreen', 'Error sharing PDF: $e');
       if (mounted) {
         Fluttertoast.showToast(
           msg: tempLocalizations?.failedToSharePdf ?? 'Failed to share PDF',
@@ -816,12 +702,18 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
   Future<void> _handlePrint() async {
     if (_pdfData == null) return;
     try {
+      unawaited(_usageRepository.incrementPdfDownloadCount());
+      unawaited(AnalyticsService.logEvent('pdf_download', parameters: {
+        'template_type': _selectedTemplate.name,
+        'action': 'print',
+      }));
+
       await Printing.layoutPdf(
         onLayout: (format) => _pdfData!,
         name: _content?.personalDetails['Full Name'] ?? 'Biodata',
       );
     } catch (e) {
-      debugPrint('Error printing PDF: $e');
+      AppLogger.error('BiodataEditorScreen', 'Error printing PDF: $e');
       if (mounted) {
         Fluttertoast.showToast(
           msg: AppLocalizations.of(context)?.failedToPrintPdf ?? 'Failed to print PDF',
@@ -853,6 +745,12 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
 
       await file.writeAsBytes(_pdfData!);
 
+      unawaited(_usageRepository.incrementPdfDownloadCount());
+      unawaited(AnalyticsService.logEvent('pdf_download', parameters: {
+        'template_type': _selectedTemplate.name,
+        'action': 'download',
+      }));
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -862,7 +760,7 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
         );
       }
     } catch (e) {
-      debugPrint('Error downloading PDF: $e');
+      AppLogger.error('BiodataEditorScreen', 'Error downloading PDF: $e');
       if (mounted) {
         Fluttertoast.showToast(
           msg: AppLocalizations.of(context)?.failedToSavePdf(e.toString()) ?? 'Failed to save PDF: $e',
@@ -873,101 +771,12 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
     }
   }
 
-  IconData _getSectionIcon(String title) {
-    title = title.toLowerCase();
-    if (title.contains('personal')) return Icons.person_outline_rounded;
-    if (title.contains('family')) return Icons.favorite_outline_rounded;
-    if (title.contains('education') || title.contains('career')) {
-      return Icons.work_outline_rounded;
-    }
-    if (title.contains('horoscope')) return Icons.auto_awesome_rounded;
-    if (title.contains('marriage')) return Icons.church_rounded;
-    if (title.contains('contact')) return Icons.contact_phone_outlined;
-    return Icons.edit_note_rounded;
-  }
 
-  Widget _buildLockedOverlay() {
-    return Positioned.fill(
-      child: Container(
-        decoration: BoxDecoration(
-          color: BiodataTheme.deepCharcoal.withValues(alpha: 0.4),
-        ),
-        child: Center(
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 8.w),
-            padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
-            decoration: BoxDecoration(
-              color: BiodataTheme.surfaceWhite,
-              borderRadius: BorderRadius.circular(BiodataTheme.radiusLg),
-              boxShadow: [
-                const BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.15), // Replaced BiodataTheme.deepCharcoal.withValues(alpha: 0.15) for const if possible, but actually BiodataTheme properties might not be const.
-                  blurRadius: 24,
-                  offset: Offset(0, 8),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.lock_rounded,
-                  color: BiodataTheme.royalGold,
-                  size: 80, // Approximate sp
-                ),
-                SizedBox(height: 1.5.h),
-                Text(
-                  AppLocalizations.of(context)?.premiumTemplate ?? 'Premium Template',
-                  style: BiodataTheme.subHeaderStyle.copyWith(
-                    fontSize: 16.sp,
-                    color: BiodataTheme.deepCharcoal,
-                  ),
-                ),
-                SizedBox(height: 0.6.h),
-                Text(
-                  AppLocalizations.of(context)?.unlockToDownload ?? 'Unlock to download and share this template in 5+ languages.',
-                  textAlign: TextAlign.center,
-                  style: BiodataTheme.bodyStyle.copyWith(
-                    fontSize: 13.sp,
-                    color: BiodataTheme.deepCharcoal.withValues(alpha: 0.65),
-                  ),
-                ),
-                SizedBox(height: 2.h),
-                SizedBox(
-                  height: 6.h,
-                  child: FilledButton(
-                    onPressed: _isProcessingPayment
-                        ? null
-                        : () => _handleUpgrade(PlanType.biodata_unlock),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: BiodataTheme.royalGold,
-                      foregroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(horizontal: 6.w),
-                    ),
-                    child: _isProcessingPayment
-                        ? SizedBox(
-                            height: 2.5.h,
-                            width: 2.5.h,
-                              child: const CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Colors.white,
-                              ),
-                          )
-                        : Text(AppLocalizations.of(context)?.unlockNow ?? 'Unlock now'),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
   Future<void> _handleUpgrade(PlanType planType) async {
     if (_isProcessingPayment) return;
 
-    debugPrint('[RAZORPAY] BiodataEditorScreen > User tapped Unlock now | planType=${planType.name}');
+    AppLogger.debug('BiodataEditorScreen', '[RAZORPAY] BiodataEditorScreen > User tapped Unlock now | planType=${planType.name}');
     setState(() => _isProcessingPayment = true);
 
     try {
@@ -979,7 +788,7 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
         setState(() => _isProcessingPayment = false);
 
         if (response.isSuccess) {
-          debugPrint('[RAZORPAY] BiodataEditorScreen > Payment SUCCESS | refreshing profile from cache');
+          AppLogger.debug('BiodataEditorScreen', '[RAZORPAY] BiodataEditorScreen > Payment SUCCESS | refreshing profile from cache');
           Fluttertoast.showToast(
             msg: AppLocalizations.of(context)?.paymentSuccessful ?? 'Payment successful! Templates unlocked.',
             backgroundColor: Colors.green,
@@ -990,7 +799,7 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
           // and show "Something went wrong" despite successful payment.
           _refreshProfileFromCacheAfterPayment();
         } else {
-          debugPrint('[RAZORPAY] BiodataEditorScreen > Payment FAILED | ${response.errorMessage}');
+          AppLogger.error('BiodataEditorScreen', '[RAZORPAY] BiodataEditorScreen > Payment FAILED | ${response.errorMessage}');
           Fluttertoast.showToast(
             msg: AppLocalizations.of(context)?.paymentFailed(response.errorMessage) ?? 'Payment failed: ${response.errorMessage}',
             backgroundColor: Colors.red,
@@ -1014,328 +823,14 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
     }
   }
 
-  Widget _buildTemplatePicker() {
-    final bool isPremiumUnlocked = _profile?.isPdfUnlocked ?? false;
-
-    return SizedBox(
-      // Slightly more compact cards, but still readable.
-      height: 18.h,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: kBiodataTemplates.length,
-        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-        itemBuilder: (context, index) {
-          final template = kBiodataTemplates[index];
-          final type = template.type;
-          final isSelected = _selectedTemplate == type;
-          final isLockedTemplate = type.isPremium && !isPremiumUnlocked;
-
-          return Padding(
-            padding: EdgeInsets.only(right: 2.4.w),
-            child: Semantics(
-              label:
-                  '${type.displayName} template${type.isPremium ? ', Premium' : ''}${isLockedTemplate ? ', locked' : ''}',
-              selected: isSelected,
-              button: true,
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(BiodataTheme.radiusLg),
-                  onTap: () {
-                    setState(() => _selectedTemplate = type);
-                    _generatePdf();
-                  },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 220),
-                    curve: Curves.easeOutCubic,
-                    width: 30.w,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 2.2.w,
-                      vertical: 1.0.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: BiodataTheme.surfaceWhite,
-                      borderRadius:
-                          BorderRadius.circular(BiodataTheme.radiusLg),
-                      border: Border.all(
-                        color: isSelected
-                            ? BiodataTheme.royalGold
-                            : BiodataTheme.deepCharcoal.withValues(alpha: 0.08),
-                        width: isSelected ? 2 : 1,
-                      ),
-                      boxShadow: isSelected
-                            ? const [
-                                BoxShadow(
-                                  color: Color.fromRGBO(212, 175, 55, 0.25),
-                                  blurRadius: 14,
-                                  offset: Offset(0, 6),
-                                ),
-                              ]
-                          : const [
-                              BoxShadow(
-                                color: Color.fromRGBO(30, 30, 30, 0.04),
-                                blurRadius: 8,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                    ),
-                    child: AspectRatio(
-                      aspectRatio: 3 / 4,
-                      child: Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(BiodataTheme.radiusSm),
-                            child: Image.asset(
-                              template.assetPath,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity,
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(BiodataTheme.radiusSm),
-                              color: Colors.black.withValues(alpha: 0.1),
-                            ),
-                          ),
-                          // Template name stacked on the preview
-                          Positioned(
-                            left: 8,
-                            right: 8,
-                            bottom: 8,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: 0.45),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                type.displayName,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: BiodataTheme.captionStyle.copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildLanguagePicker() {
-    final languages = ['English', 'Hindi', 'Marathi', 'Telugu', 'Kannada'];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(4.w, 2.h, 4.w, 1.h),
-          child: Text(AppLocalizations.of(context)?.selectLanguage ?? 'Select Language',
-            style: BiodataTheme.subHeaderStyle.copyWith(
-              color: const Color.fromRGBO(26, 26, 26, 0.85),
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 6.h,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.symmetric(horizontal: 4.w),
-            itemCount: languages.length,
-            itemBuilder: (context, index) {
-              final lang = languages[index];
-              final isSelected = _selectedLanguage == lang;
-              return Padding(
-                padding: EdgeInsets.only(right: 3.w),
-                child: Semantics(
-                  label: 'Language: $lang',
-                  selected: isSelected,
-                  button: true,
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
-                        if (!isSelected) {
-                          setState(() => _selectedLanguage = lang);
-                          _generatePdf();
-                        }
-                      },
-                      borderRadius: BorderRadius.circular(BiodataTheme.radiusPill),
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 250),
-                        padding: EdgeInsets.symmetric(horizontal: 6.w),
-                        constraints: const BoxConstraints(minWidth: 48),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          gradient: isSelected ? BiodataTheme.goldGradient : null,
-                          color: isSelected ? null : BiodataTheme.surfaceWhite,
-                          borderRadius: BorderRadius.circular(BiodataTheme.radiusPill),
-                          border: Border.all(
-                            color: isSelected
-                                ? Colors.transparent
-                                : const Color.fromRGBO(212, 175, 55, 0.25),
-                          ),
-                          boxShadow: isSelected
-                              ? [
-                                  BoxShadow(
-                                    color: BiodataTheme.royalGold.withValues(alpha: 0.25),
-                                    blurRadius: 8,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ]
-                              : [
-                                  BoxShadow(
-                                    color: BiodataTheme.deepCharcoal.withValues(alpha: 0.04),
-                                    blurRadius: 4,
-                                    offset: const Offset(0, 1),
-                                  ),
-                                ],
-                        ),
-                        child: Text(
-                          lang,
-                          style: BiodataTheme.subHeaderStyle.copyWith(
-                            color: isSelected
-                                ? Colors.white
-                                : BiodataTheme.deepCharcoal,
-                            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                            fontSize: 12.sp,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        SizedBox(height: 1.h),
-      ],
-    );
-  }
-
-  Widget _buildDetailsEditor() {
-    if (_content == null) return const SizedBox();
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _buildEditSection('Personal Details', _content!.personalDetails),
-        _buildEditSection(
-          'Education & Profession',
-          _content!.educationProfession,
-        ),
-        _buildEditSection('Family Details', _content!.familyDetails),
-        _buildEditSection('Location & Contact', _content!.locationContact),
-        _buildMultilineEdit('Partner Expectations', 'partnerExpectations'),
-        _buildMultilineEdit('About Me', 'aboutMe'),
-        SizedBox(height: 2.h),
-      ],
-    );
-  }
-
-  Widget _buildEditSection(String title, Map<String, String> data) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
-      child: Container(
-        decoration: BiodataTheme.sectionCardDecoration(),
-        child: Theme(
-          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-          child: ExpansionTile(
-            leading: Icon(
-              _getSectionIcon(title),
-              color: BiodataTheme.royalGold,
-              size: 22.sp,
-            ),
-            title: Text(
-              title,
-              style: BiodataTheme.subHeaderStyle.copyWith(
-                fontSize: 14.sp,
-                color: BiodataTheme.deepCharcoal,
-              ),
-            ),
-            iconColor: BiodataTheme.royalGold,
-            collapsedIconColor: BiodataTheme.deepCharcoal.withValues(alpha: 0.5),
-            childrenPadding: EdgeInsets.fromLTRB(4.w, 0, 4.w, 2.h),
-            children: data.keys.map((key) {
-              return Padding(
-                padding: EdgeInsets.only(bottom: 1.2.h),
-                child: TextField(
-                  controller: _controllers[key],
-                  decoration: BiodataTheme.inputDecoration(labelText: key),
-                  onChanged: (value) {
-                    data[key] = value;
-                    _generatePdf();
-                  },
-                ),
-              );
-            }).toList(),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMultilineEdit(String title, String key) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
-      child: Container(
-        padding: EdgeInsets.all(4.w),
-        decoration: BiodataTheme.sectionCardDecoration(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  _getSectionIcon(title),
-                  color: BiodataTheme.royalGold,
-                  size: 22.sp,
-                ),
-                SizedBox(width: 3.w),
-                Text(
-                  title,
-                  style: BiodataTheme.subHeaderStyle.copyWith(
-                    fontSize: 14.sp,
-                    color: BiodataTheme.deepCharcoal,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.5.h),
-            TextField(
-              controller: _controllers[key],
-              maxLines: 4,
-              decoration: BiodataTheme.inputDecoration(labelText: title).copyWith(
-                alignLabelWithHint: true,
-                contentPadding: const EdgeInsets.all(16),
-              ),
-              onChanged: (value) {
-                if (key == 'partnerExpectations') {
-                  _content = _content!.copyWith(partnerExpectations: value);
-                } else if (key == 'aboutMe') {
-                  _content = _content!.copyWith(aboutMe: value);
-                }
-                _generatePdf();
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  // Template picker, language picker, details editor, and section helpers
+  // have been extracted to:
+  //   - editor_template_picker_widget.dart
+  //   - editor_language_picker_widget.dart
+  //   - editor_details_widget.dart
+  // Locked overlay extracted to editor_locked_overlay_widget.dart
+  // Loading/error states extracted to editor_loading_state.dart
+  // Bottom action bar extracted to editor_bottom_action_bar.dart
 }
+
+

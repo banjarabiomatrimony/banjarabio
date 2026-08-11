@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:banjarabio/core/services/isolate_manager.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// [SessionManager]
 ///
@@ -75,10 +76,10 @@ class SessionManager {
 
     try {
       _prefs = await SharedPreferences.getInstance();
-      debugPrint('✅ SessionManager Initialized');
+      AppLogger.debug('SessionManager', '✅ SessionManager Initialized');
     } catch (e) {
       // Critical failure: App cannot store data.
-      debugPrint('❌ SessionManager Init Error: $e');
+      AppLogger.error('SessionManager', '❌ SessionManager Init Error: $e');
       // In a real app, you might want to report this to Crashlytics
     }
   }
@@ -205,7 +206,7 @@ class SessionManager {
       // 2. Save the string quickly on the main thread
       await _safePrefs.setString(_biodataDraftKey, jsonString);
     } catch (e) {
-      debugPrint('Error saving biodata draft: $e');
+      AppLogger.error('SessionManager', 'Error saving biodata draft: $e');
     }
   }
 
@@ -223,7 +224,7 @@ class SessionManager {
 
       return decoded as Map<String, dynamic>;
     } catch (e) {
-      debugPrint('Error getting biodata draft: $e');
+      AppLogger.error('SessionManager', 'Error getting biodata draft: $e');
       return null;
     }
   }

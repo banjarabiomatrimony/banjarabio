@@ -158,12 +158,12 @@ void main() {
   });
 
   group('SubscriptionConfig plan lists', () {
-    test('getSelfServicePlans returns 5 plans', () {
-      expect(SubscriptionConfig.getSelfServicePlans(), hasLength(5));
+    test('getSelfServicePlans returns active plans', () {
+      expect(SubscriptionConfig.getSelfServicePlans(), hasLength(2));
     });
 
-    test('getVipPlans returns 3 plans', () {
-      expect(SubscriptionConfig.getVipPlans(), hasLength(3));
+    test('getVipPlans returns active VIP plans', () {
+      expect(SubscriptionConfig.getVipPlans(), hasLength(0));
     });
   });
 }

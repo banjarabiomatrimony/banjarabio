@@ -177,7 +177,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get adFreeExperience => 'ప్రకటనలు లేని అనుభవం';
 
   @override
-  String addClearPhotos(String max) {
+  String addClearPhotos(int max) {
     return 'స్పష్టమైన ఫోటోలను జోడించండి (గరిష్టంగా $max)';
   }
 
@@ -280,7 +280,7 @@ class AppLocalizationsTe extends AppLocalizations {
       'అన్ని విభాగాలను సమీక్షించండి మరియు మీ ప్రొఫైల్‌ను పూర్తి చేయడానికి \"బయోడేటాను సేవ్ చేయి\" క్లిక్ చేయండి. మీ గోప్యతా సెట్టింగ్‌ల ఆధారంగా మీ బయోడేటా ఇతర సామాజిక సభ్యులకు కనిపిస్తుంది.';
 
   @override
-  String anErrorOccurred(Object error) {
+  String anErrorOccurred(String error) {
     return 'ఒక లోపం సంభవించింది: $error';
   }
 
@@ -413,7 +413,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get messagingLimitReached => 'మెసేజింగ్ పరిమితి ముగిసింది';
 
   @override
-  String bookmarksCount(String count) {
+  String bookmarksCount(int count) {
     return '$count బుక్‌మార్క్‌లు';
   }
 
@@ -536,7 +536,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get connectWithCommunity => 'మీ బంజారా సమాజంతో అనుసంధానించండి';
 
   @override
-  String get contact => 'పరిచయం';
+  String get contact => 'సంప్రదించండి';
 
   @override
   String get contactPreferences => 'సంప్రదింపు ప్రాధాన్యతలు';
@@ -575,7 +575,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get createProfile => 'ప్రొఫైల్ సృష్టించండి';
 
   @override
-  String criticalFailure(Object error) {
+  String criticalFailure(String error) {
     return 'క్లిష్టమైన వైఫల్యం: $error';
   }
 
@@ -621,17 +621,17 @@ class AppLocalizationsTe extends AppLocalizations {
   String get daughter => 'కూతురు';
 
   @override
-  String daysAgo(String count) {
+  String daysAgo(int count) {
     return '$countరోజుల క్రితం';
   }
 
   @override
-  String daysLeft(Object days) {
+  String daysLeft(int days) {
     return '$days రోజులు మిగిలి ఉన్నాయి';
   }
 
   @override
-  String daysRemaining(Object days) {
+  String daysRemaining(int days) {
     return '$days రోజులు మిగిలి ఉన్నాయి';
   }
 
@@ -645,7 +645,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get deleteAccountWarning => 'ఈ చర్య శాశ్వతమైనది మరియు రద్దు చేయలేము.';
 
   @override
-  String deleteCount(Object count) {
+  String deleteCount(int count) {
     return 'తొలగించు ($count)';
   }
 
@@ -713,7 +713,7 @@ class AppLocalizationsTe extends AppLocalizations {
       'మీరు వెనుకకు వెళ్ళాలని నిశ్చయంగా ఉన్నారా? మీ పురోగతి డ్రాఫ్ట్‌గా సేవ్ చేయబడింది.';
 
   @override
-  String discountPercentage(Object percentage, Object score) {
+  String discountPercentage(int percentage, int score) {
     return '$percentage% తగ్గింపు (ట్రస్ట్ స్కోర్ $score)';
   }
 
@@ -938,12 +938,12 @@ class AppLocalizationsTe extends AppLocalizations {
       'Googleతో సైన్ ఇన్ విఫలమైంది. మళ్ళీ ప్రయత్నించండి.';
 
   @override
-  String failedToBlockUser(Object error) {
+  String failedToBlockUser(String error) {
     return 'వినియోగదారుని బ్లాక్ చేయడంలో విఫలమైంది: $error';
   }
 
   @override
-  String failedToDeleteAccount(Object error) {
+  String failedToDeleteAccount(String error) {
     return 'ఖాతాను తొలగించడంలో విఫలమైంది: $error';
   }
 
@@ -957,7 +957,7 @@ class AppLocalizationsTe extends AppLocalizations {
       'PDF ప్రివ్యూని రూపొందించడంలో విఫలమైంది';
 
   @override
-  String failedToLoadBookmarks(Object error) {
+  String failedToLoadBookmarks(String error) {
     return 'బుక్‌మార్క్‌లను లోడ్ చేయడంలో విఫలమైంది: $error';
   }
 
@@ -967,7 +967,7 @@ class AppLocalizationsTe extends AppLocalizations {
   }
 
   @override
-  String failedToLoadProfileError(Object error) {
+  String failedToLoadProfileError(String error) {
     return 'ప్రొఫైల్‌ను లోడ్ చేయడంలో విఫలమైంది: $error';
   }
 
@@ -1025,12 +1025,12 @@ class AppLocalizationsTe extends AppLocalizations {
   }
 
   @override
-  String failedToSubmitReport(Object error) {
+  String failedToSubmitReport(String error) {
     return 'నివేదికను సమర్పించడంలో విఫలమైంది: $error';
   }
 
   @override
-  String failedToUpdateBookmark(Object error) {
+  String failedToUpdateBookmark(String error) {
     return 'బుక్‌మార్క్‌ను అప్‌డేట్ చేయడంలో విఫలమైంది: $error';
   }
 
@@ -1048,7 +1048,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get failedToUpdateProfile => 'Failed to update profile';
 
   @override
-  String failedToUploadPhoto(int index) {
+  String failedToUploadPhoto(String index) {
     return 'ఫోటో $index అప్‌లోడ్ చేయడం విఫలమైంది';
   }
 
@@ -1162,7 +1162,7 @@ class AppLocalizationsTe extends AppLocalizations {
       '5% బయోడేటా పూర్తి బోనస్ పొందడానికి మరియు తాజా మ్యాచ్‌లతో అప్‌డేట్ కావడానికి మమ్మల్ని ఇన్‌స్టాగ్రామ్‌లో ఫాలో అవ్వండి.';
 
   @override
-  String forMonths(Object count) {
+  String forMonths(int count) {
     return '$count నెలల పాటు';
   }
 
@@ -1307,7 +1307,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get homemaker => 'గృహిణి';
 
   @override
-  String hoursAgo(String count) {
+  String hoursAgo(int count) {
     return '$countగంటల క్రಿತం';
   }
 
@@ -1528,7 +1528,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get mastersDegree => 'మాస్టర్ డిగ్రీ';
 
   @override
-  String matchNOfTotal(int current, int total) {
+  String matchNOfTotal(String current, String total) {
     return 'మ్యాచ్ $current / $total';
   }
 
@@ -1572,7 +1572,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get minAge => 'కనిష్ఠ వయసు';
 
   @override
-  String minutesAgo(String count) {
+  String minutesAgo(int count) {
     return '$countనిమిషాల క్రితం';
   }
 
@@ -1852,7 +1852,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get permissionRequired => 'అనుమతి అవసరం';
 
   @override
-  String permissionRequiredMessage(Object type) {
+  String permissionRequiredMessage(String type) {
     return 'ఫోటోలను అప్‌లోడ్ చేయడానికి $type అనుమతి అవసరం. దయచేసి యాప్ సెట్టింగ్‌లలో దీన్ని ప్రారంభించండి.';
   }
 
@@ -1869,7 +1869,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get photoAdded => 'Photo added';
 
   @override
-  String photoAddedWithKb(String kb) {
+  String photoAddedWithKb(int kb) {
     return 'Photo added ($kb KB)';
   }
 
@@ -1902,7 +1902,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get photosCompressedInfo => 'Photos are compressed to save data.';
 
   @override
-  String photosCount(String count) {
+  String photosCount(int count) {
     return '$count ఫోటోలు';
   }
 
@@ -1995,7 +1995,7 @@ class AppLocalizationsTe extends AppLocalizations {
       'మీరు నిజమైన వ్యక్తి అని ధృవీకరించడానికి దయచేసి సెల్ఫీ తీసుకోండి. మీరు బాగా వెలుతురు ఉన్న ప్రదేశంలో ఉన్నారని నిర్ధారించుకోండి.';
 
   @override
-  String pointsCount(String points) {
+  String pointsCount(int points) {
     return '+$points పాయింట్లు';
   }
 
@@ -2028,7 +2028,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get previous => 'వెనుకకు';
 
   @override
-  String pricePerMonth(Object price) {
+  String pricePerMonth(int price) {
     return '₹$price/నెల';
   }
 
@@ -2149,7 +2149,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get profile => 'ప్రొఫైల్';
 
   @override
-  String profileBoostPerMonth(String count) {
+  String profileBoostPerMonth(int count) {
     return '$count ప్రొఫైల్ బూస్ట్/నెల';
   }
 
@@ -2188,7 +2188,7 @@ class AppLocalizationsTe extends AppLocalizations {
   }
 
   @override
-  String profileStrengthLabel(Object strength) {
+  String profileStrengthLabel(String strength) {
     return 'ప్రొఫైల్ సామర్థ్యం: $strength';
   }
 
@@ -2197,7 +2197,7 @@ class AppLocalizationsTe extends AppLocalizations {
       'ప్రొఫైల్ వీక్షణ పరిమితిని చేరుకున్నారు';
 
   @override
-  String profileViewsPerDay(String count) {
+  String profileViewsPerDay(int count) {
     return '$count ప్రొఫైల్ వీక్షణలు/రోజు';
   }
 
@@ -2266,7 +2266,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get referralInvite => 'రెఫరల్ ఆహ్వానం';
 
   @override
-  String referralInviteMessage(Object link) {
+  String referralInviteMessage(String link) {
     return 'మా సంఘం కోసం అత్యంత విశ్వసనీయమైన వైవాహిక యాప్ అయిన బంజారాబయోలో చేరండి! ప్రారంభించడానికి నా లింక్‌ని ఉపయోగించండి: $link';
   }
 
@@ -2571,7 +2571,7 @@ class AppLocalizationsTe extends AppLocalizations {
   }
 
   @override
-  String sharesPerMonth(String count) {
+  String sharesPerMonth(int count) {
     return '$count షేర్లు/నెల';
   }
 
@@ -2646,7 +2646,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get stay => 'ఉండండి';
 
   @override
-  String stepNOfTotal(int current, int total) {
+  String stepNOfTotal(String current, String total) {
     return 'దశ $current / $total';
   }
 
@@ -2803,7 +2803,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get trustScoreDiscounts => 'ట్రస్ట్ స్కోర్ & డిస్కౌంట్లు';
 
   @override
-  String trustScoreShareMessage(String score, String url) {
+  String trustScoreShareMessage(int score, String url) {
     return 'నేను ఇప్పుడే బంజారాబయోలో $score ట్రస్ట్ స్కోర్‌తో నా ప్రొఫైల్‌ను ధృవీకరించాను! నా ప్రొఫైల్‌ని తనిఖీ చేయండి మరియు మా కమ్యూనిటీలో చేరండి: $url';
   }
 
@@ -3228,7 +3228,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get yourTrustScore => 'మీ ట్రస్ట్ స్కోర్';
 
   @override
-  String yrs(Object count) {
+  String yrs(int count) {
     return '$count సంవత్సరాలు';
   }
 
@@ -3244,17 +3244,17 @@ class AppLocalizationsTe extends AppLocalizations {
   String get mutualMatch => 'పరస్పర సరిపోలిక';
 
   @override
-  String toContact(Object name) {
+  String toContact(String name) {
     return 'వీరికి: $name';
   }
 
   @override
-  String fromContact(Object name) {
+  String fromContact(String name) {
     return 'వీరి నుండి: $name';
   }
 
   @override
-  String countProfileViews(num count) {
+  String countProfileViews(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -3274,7 +3274,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get contactLabel => 'సంప్రదించండి';
 
   @override
-  String profileSharedVia(Object profileName, Object title) {
+  String profileSharedVia(String profileName, String title) {
     return '$title ద్వారా $profileName షేర్ చేయబడింది';
   }
 
@@ -3694,22 +3694,22 @@ class AppLocalizationsTe extends AppLocalizations {
   String get lifetime => 'జీవితకాలం';
 
   @override
-  String mrpPrice(Object price) {
+  String mrpPrice(int price) {
     return 'MRP ₹$price';
   }
 
   @override
-  String bulkDiscount(Object percent) {
+  String bulkDiscount(int percent) {
     return '$percent% తగ్గింపు';
   }
 
   @override
-  String youSave(Object amount) {
-    return 'మీరు ₹$amount ఆదా చేస్తారు';
+  String youSave(int amount) {
+    return 'మీరు ₹$amount పొదుపు చేస్తారు';
   }
 
   @override
-  String totalSavings(Object amount) {
+  String totalSavings(int amount) {
     return 'మొత్తం ఆదా: ₹$amount';
   }
 
@@ -3720,12 +3720,12 @@ class AppLocalizationsTe extends AppLocalizations {
   String get couponDiscountApplied => 'కూపన్ డిస్కౌంట్ వర్తించబడింది';
 
   @override
-  String contactUnlocks(Object count) {
+  String contactUnlocks(int count) {
     return 'నెలకు $count కాంటాక్ట్ అన్లాక్లు';
   }
 
   @override
-  String handpickedMatches(Object count) {
+  String handpickedMatches(int count) {
     return 'వారానికి $count ఎంపిక చేసిన ప్రొఫైల్స్';
   }
 
@@ -3792,7 +3792,7 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String extraViewsUnlocked(int count) {
-    return '$count Extra Views Unlocked!';
+    return '$count అదనపు వీక్షణలు అన్‌లాక్ చేయబడ్డాయి!';
   }
 
   @override
@@ -3982,4 +3982,57 @@ class AppLocalizationsTe extends AppLocalizations {
   @override
   String get successSubmission =>
       'విజయం! మీ అభ్యర్థన సమీక్ష కోసం సమర్పించబడింది.';
+
+  @override
+  String get melavas => 'మేళావాలు';
+
+  @override
+  String get upcomingMelavas => 'రాబోయే మేళావాలు';
+
+  @override
+  String get callOrganizer => 'నిర్వాహకుడికి కాల్ చేయండి';
+
+  @override
+  String get viewVenue => 'వేదికను చూడండి';
+
+  @override
+  String get organizer => 'నిర్వాహకుడు';
+
+  @override
+  String get venue => 'వేదిక';
+
+  @override
+  String get eventDetails => 'కార్యక్రమ వివరాలు';
+
+  @override
+  String get browseMatchesTitle => '🔍 సంబంధం వెతకండి (Browse Matches)';
+
+  @override
+  String get browseMatchesDesc =>
+      'కొడుకు, కూతురు, బంధువుల కోసం తగిన సంబంధం వెతకండి.';
+
+  @override
+  String get browseMatchesSubtitle =>
+      'కొన్ని ప్రశ్నలకు సమాధానం ఇవ్వండి మరియు తగిన సంబంధాలు చూడండి';
+
+  @override
+  String get forWhomSearching => 'ఎవరి కోసం సంబంధం వెతుకుతున్నారు?';
+
+  @override
+  String get lookingForGender => 'వరుడు కావాలా లేదా వధువు?';
+
+  @override
+  String get groomBoy => '👦 వరుడు (Groom)';
+
+  @override
+  String get brideGirl => '👧 వధువు (Bride)';
+
+  @override
+  String get selectDistrict => 'జిల్లాను ఎంచుకోండి';
+
+  @override
+  String get proceedToLogin => 'ముందుకు → లాగిన్ చేయండి';
+
+  @override
+  String get sibling => 'తోబుట్టువు';
 }

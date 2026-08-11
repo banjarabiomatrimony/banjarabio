@@ -141,59 +141,74 @@ class _InAppNotificationBannerState
             },
             child: Container(
               margin: EdgeInsets.only(
-                top: topPadding + 8,
-                left: 12,
-                right: 12,
+                top: topPadding + 10,
+                left: 14,
+                right: 14,
               ),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: const Color(0xFFE91E63).withValues(alpha: 0.2),
+                  width: 1.5,
+                ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.15),
-                    blurRadius: 20,
-                    offset: const Offset(0, 4),
+                    color: const Color(0xFFE91E63).withValues(alpha: 0.12),
+                    blurRadius: 24,
+                    spreadRadius: 2,
+                    offset: const Offset(0, 8),
+                  ),
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
                   ),
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(20),
                 child: Material(
                   color: Colors.transparent,
                   child: Padding(
-                    padding: const EdgeInsets.all(14),
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                     child: Row(
                       children: [
-                        // Category icon or profile image
+                        // Category icon or profile image with active indicator border
                         _buildLeading(),
                         const SizedBox(width: 12),
 
-                        // Text content
+                        // Text content with Category Tag
                         Expanded(
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: [
+                              // Category Tag Banner
+                              _buildCategoryBadge(widget.payload.category),
+                              const SizedBox(height: 4),
+
                               if (widget.payload.title != null)
                                 Text(
                                   widget.payload.title!,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
-                                    fontWeight: FontWeight.w700,
+                                    fontWeight: FontWeight.w800,
                                     fontSize: 14,
-                                    color: Color(0xFF1A1A1A),
+                                    fontFamily: 'Outfit',
+                                    color: Color(0xFF1F2937),
+                                    letterSpacing: -0.2,
                                   ),
                                 ),
                               if (widget.payload.body != null) ...[
-                                const SizedBox(height: 3),
+                                const SizedBox(height: 2),
                                 Text(
                                   widget.payload.body!,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: 12.5,
-                                    color: Colors.grey.shade600,
+                                    color: Colors.grey.shade700,
                                     height: 1.3,
                                   ),
                                 ),
@@ -202,13 +217,34 @@ class _InAppNotificationBannerState
                           ),
                         ),
 
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 10),
 
-                        // Dismiss hint
-                        Icon(
-                          Icons.keyboard_arrow_up_rounded,
-                          color: Colors.grey.shade400,
-                          size: 20,
+                        // Action Chip
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFE91E63).withValues(alpha: 0.08),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'View',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFFE91E63),
+                                ),
+                              ),
+                              SizedBox(width: 2),
+                              Icon(
+                                Icons.chevron_right_rounded,
+                                color: Color(0xFFE91E63),
+                                size: 16,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -222,19 +258,75 @@ class _InAppNotificationBannerState
     );
   }
 
+  Widget _buildCategoryBadge(NotificationCategory category) {
+    final label = _getCategoryLabel(category);
+    final color = _getCategoryVisuals(category).$2;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        label.toUpperCase(),
+        style: TextStyle(
+          fontSize: 9.5,
+          fontWeight: FontWeight.w800,
+          color: color,
+          letterSpacing: 0.5,
+        ),
+      ),
+    );
+  }
+
+  String _getCategoryLabel(NotificationCategory category) {
+    switch (category) {
+      case NotificationCategory.interestReceived:
+        return 'Interest Alert';
+      case NotificationCategory.matchFound:
+        return 'Mutual Match 💕';
+      case NotificationCategory.chatMessage:
+        return 'New Message 💬';
+      case NotificationCategory.profileView:
+        return 'Profile Update';
+      case NotificationCategory.nudge:
+        return 'Match Nudge ⭐';
+      case NotificationCategory.system:
+        return 'System Alert';
+      case NotificationCategory.general:
+        return 'BanjaraBio';
+      case NotificationCategory.staffTask:
+        return 'Staff Task';
+      case NotificationCategory.adminAlert:
+        return 'Important Alert';
+      case NotificationCategory.verificationReview:
+        return 'Verified';
+    }
+  }
+
   Widget _buildLeading() {
     if (widget.payload.hasImage) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: CachedNetworkImage(
-          imageUrl: widget.payload.imageUrl!,
-          width: 48,
-          height: 48,
-          fit: BoxFit.cover,
-          cacheManager: PersistentCacheManager.instance,
-          cacheKey: PersistentCacheManager.stableKeyFor(widget.payload.imageUrl!),
-          placeholder: (context2, url) => _buildCategoryIcon(),
-          errorWidget: (context2, url, error) => _buildCategoryIcon(),
+      return Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: const Color(0xFFE91E63).withValues(alpha: 0.5),
+            width: 2,
+          ),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: CachedNetworkImage(
+            imageUrl: widget.payload.imageUrl!,
+            width: 44,
+            height: 44,
+            fit: BoxFit.cover,
+            cacheManager: PersistentCacheManager.instance,
+            cacheKey: PersistentCacheManager.stableKeyFor(widget.payload.imageUrl!),
+            placeholder: (context2, url) => _buildCategoryIcon(),
+            errorWidget: (context2, url, error) => _buildCategoryIcon(),
+          ),
         ),
       );
     }
@@ -244,14 +336,18 @@ class _InAppNotificationBannerState
   Widget _buildCategoryIcon() {
     final (icon, color) = _getCategoryVisuals(widget.payload.category);
     return Container(
-      width: 48,
-      height: 48,
+      width: 44,
+      height: 44,
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(12),
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: color.withValues(alpha: 0.3),
+          width: 1.5,
+        ),
       ),
       child: Center(
-        child: Text(icon, style: const TextStyle(fontSize: 22)),
+        child: Text(icon, style: const TextStyle(fontSize: 20)),
       ),
     );
   }
@@ -259,17 +355,17 @@ class _InAppNotificationBannerState
   (String, Color) _getCategoryVisuals(NotificationCategory category) {
     switch (category) {
       case NotificationCategory.interestReceived:
-        return ('❤️', const Color(0xFFC94B4B));
+        return ('❤️', const Color(0xFFE91E63));
       case NotificationCategory.matchFound:
         return ('💍', const Color(0xFF4CAF50));
       case NotificationCategory.chatMessage:
-        return ('💬', const Color(0xFF2196F3));
+        return ('💬', const Color(0xFF009688));
       case NotificationCategory.profileView:
         return ('👀', const Color(0xFFFF9800));
       case NotificationCategory.nudge:
         return ('⭐', const Color(0xFFFFC107));
       case NotificationCategory.system:
-        return ('🔔', const Color(0xFF9E9E9E));
+        return ('🔔', const Color(0xFF673AB7));
       case NotificationCategory.general:
         return ('📢', const Color(0xFF607D8B));
       case NotificationCategory.staffTask:

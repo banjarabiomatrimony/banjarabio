@@ -7,6 +7,7 @@ import 'package:banjarabio/core/models/chat_model.dart';
 import 'package:banjarabio/core/models/backend_response.dart';
 import 'package:banjarabio/core/repositories/isolate_first_repository.dart';
 import 'package:banjarabio/core/session_manager.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 
 /// [ChatRepository]
 ///
@@ -48,7 +49,7 @@ class ChatRepository extends IsolateFirstRepository {
           );
         })
         .handleError((error) {
-          debugPrint('ChatRepository: Conversation Stream Error: $error');
+          AppLogger.error('ChatRepository', 'ChatRepository: Conversation Stream Error: $error');
           // Return empty list on error to keep UI alive, or rethrow based on needs
           return <ConversationModel>[];
         });
@@ -120,7 +121,7 @@ class ChatRepository extends IsolateFirstRepository {
       );
     } catch (e) {
       // Fail silently for read receipts
-      debugPrint('Error marking as read: $e');
+      AppLogger.error('ChatRepository', 'Error marking as read: $e');
     }
   }
 
