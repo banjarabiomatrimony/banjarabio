@@ -63,11 +63,27 @@ class AppSupabaseClient {
       );
 
       _isInitialized = true;
+      prewarmConnection();
     } catch (e) {
       AppLogger.error('SupabaseClient', 'Supabase Init Error: $e');
       // Do NOT swallow the error completely in dev, but allow app to survive
       rethrow;
     }
+  }
+
+  /// ⚡ PRE-WARM CONNECTION
+  /// Warm up the TLS/HTTP connection pool during splash phase.
+  /// Fires a lightweight async ping so subsequent REST/RPC calls execute without socket handshake overhead.
+  static void prewarmConnection() {
+    if (!_isInitialized || testClient != null) return;
+    Future.microtask(() async {
+      try {
+        await client.from('profiles').select('id').limit(1).maybeSingle();
+        AppLogger.debug('SupabaseClient', '⚡ Connection pre-warmed successfully.');
+      } catch (e) {
+        AppLogger.warn('SupabaseClient', 'Connection pre-warm ping non-fatal error: $e');
+      }
+    });
   }
 
   /// 🧪 TEST-ONLY: Inject a mock client.

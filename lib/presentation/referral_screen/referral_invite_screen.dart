@@ -9,6 +9,7 @@ import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/models/referral_stats_model.dart';
 import 'package:banjarabio/features/referral/providers/referral_invite_notifier.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/presentation/referral_screen/widgets/referral_tier_card.dart';
 
 class ReferralInviteScreen extends ConsumerWidget {
   const ReferralInviteScreen({super.key});
@@ -90,7 +91,9 @@ class ReferralInviteScreen extends ConsumerWidget {
             _buildHeader(context, theme),
             SizedBox(height: 30.sp),
             _buildStatsCard(context, theme, data.stats),
-            SizedBox(height: 30.sp),
+            SizedBox(height: 24.sp),
+            ReferralTierCard(currentReferrals: data.stats?.referralCount ?? 0),
+            SizedBox(height: 24.sp),
             _buildInviteCard(context, theme, data),
             SizedBox(height: 40.sp),
             _buildHowItWorks(context, theme),

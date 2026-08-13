@@ -220,13 +220,38 @@ class _TrustScoreScreenState
 
   Widget _buildScoreCard(ThemeData theme) {
     Color scoreColor;
-    if (_currentScore >= 80) {
-      scoreColor = Colors.green;
-    } else if (_currentScore >= 50) {
-      scoreColor = Colors.orange;
+    String tierName;
+    String tierEmoji;
+    int nextMilestoneScore;
+    String nextTierName;
+
+    if (_currentScore >= 90) {
+      scoreColor = const Color(0xFF6A1B9A); // Deep purple
+      tierName = 'Platinum Verified';
+      tierEmoji = '🛡️';
+      nextMilestoneScore = 100;
+      nextTierName = 'Max Trust';
+    } else if (_currentScore >= 70) {
+      scoreColor = const Color(0xFF2E7D32); // Green
+      tierName = 'Gold Trusted';
+      tierEmoji = '🥇';
+      nextMilestoneScore = 90;
+      nextTierName = 'Platinum';
+    } else if (_currentScore >= 40) {
+      scoreColor = const Color(0xFFE65100); // Orange
+      tierName = 'Silver Profile';
+      tierEmoji = '🥈';
+      nextMilestoneScore = 70;
+      nextTierName = 'Gold';
     } else {
-      scoreColor = Colors.red;
+      scoreColor = const Color(0xFFC62828); // Red
+      tierName = 'Bronze Profile';
+      tierEmoji = '🥉';
+      nextMilestoneScore = 40;
+      nextTierName = 'Silver';
     }
+
+    final pointsNeeded = nextMilestoneScore - _currentScore;
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w),
@@ -243,79 +268,103 @@ class _TrustScoreScreenState
       ),
       child: Column(
         children: [
-          Text(AppLocalizations.of(context)?.yourTrustScore ?? 'Your Trust Score',
+          Text(
+            AppLocalizations.of(context)?.yourTrustScore ?? 'Your Trust Score',
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 1.2.h),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              SizedBox(
-                width: 22.w,
-                height: 22.w,
-                child: CircularProgressIndicator(
-                  value: _currentScore / 100,
-                  strokeWidth: 10,
-                  backgroundColor: theme.colorScheme.surfaceContainerHighest,
-                  valueColor: AlwaysStoppedAnimation<Color>(scoreColor),
-                ),
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
+          SizedBox(height: 1.5.h),
+          TweenAnimationBuilder<double>(
+            tween: Tween<double>(begin: 0, end: _currentScore / 100),
+            duration: const Duration(milliseconds: 1200),
+            curve: Curves.easeOutCubic,
+            builder: (context, value, child) {
+              final animatedScore = (value * 100).round();
+              return Stack(
+                alignment: Alignment.center,
                 children: [
-                  Text(
-                    '$_currentScore',
-                    style: theme.textTheme.displayMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: scoreColor,
+                  SizedBox(
+                    width: 26.w,
+                    height: 26.w,
+                    child: CircularProgressIndicator(
+                      value: value,
+                      strokeWidth: 10,
+                      backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                      valueColor: AlwaysStoppedAnimation<Color>(scoreColor),
                     ),
                   ),
-                  Text(AppLocalizations.of(context)?.num100 ?? '/ 100', style: theme.textTheme.bodySmall),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        '$animatedScore',
+                        style: theme.textTheme.displayMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: scoreColor,
+                        ),
+                      ),
+                      Text(
+                        AppLocalizations.of(context)?.num100 ?? '/ 100',
+                        style: theme.textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
                 ],
-              ),
-            ],
+              );
+            },
           ),
-          SizedBox(height: 1.h),
-          _buildScoreLabel(theme, scoreColor),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildScoreLabel(ThemeData theme, Color color) {
-    String label;
-    IconData icon;
-    if (_currentScore >= 80) {
-      label = 'Verified Profile';
-      icon = Icons.verified;
-    } else if (_currentScore >= 50) {
-      label = 'Trusted Profile';
-      icon = Icons.thumb_up;
-    } else {
-      label = 'Standard Profile';
-      icon = Icons.person_outline;
-    }
-
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.6.h),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: color, size: 20),
-          SizedBox(width: 2.w),
-          Text(
-            label,
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: color,
+          SizedBox(height: 1.5.h),
+          // Tier badge
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.8.h),
+            decoration: BoxDecoration(
+              color: scoreColor.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: scoreColor.withValues(alpha: 0.3)),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(tierEmoji, style: const TextStyle(fontSize: 16)),
+                SizedBox(width: 2.w),
+                Text(
+                  tierName,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: scoreColor,
+                  ),
+                ),
+              ],
             ),
           ),
+          // Nudge bar to next milestone
+          if (pointsNeeded > 0 && _currentScore < 100) ...[
+            SizedBox(height: 1.5.h),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primary.withValues(alpha: 0.05),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  const Text('💡', style: TextStyle(fontSize: 14)),
+                  SizedBox(width: 2.w),
+                  Expanded(
+                    child: Text(
+                      'Complete $pointsNeeded more points of verification to reach $nextTierName Tier!',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.primary,
+                        fontWeight: FontWeight.w700,
+                        fontSize: AppTypography.labelMedium,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ],
       ),
     );

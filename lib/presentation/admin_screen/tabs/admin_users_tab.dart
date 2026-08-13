@@ -10,6 +10,7 @@ import 'package:banjarabio/presentation/admin_screen/admin_helpers.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/core/services/csv_export_service.dart';
 
 /// User management tab with search, gender / premium / tester sub-tabs,
 /// verification chips, and edit navigation.
@@ -107,17 +108,36 @@ class _AdminUsersTabState extends State<AdminUsersTab> {
 
     return SliverMainAxisGroup(
       slivers: [
-        // Search Bar
+        // Search Bar & Export Button
         SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.fromLTRB(4.w, 0, 4.w, 2.h),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context)?.searchUserName ?? 'Search user...',
-                prefixIcon: const Icon(Icons.search), filled: true, fillColor: theme.cardColor,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
-              ),
-              onChanged: _loadUsers,
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)?.searchUserName ?? 'Search user...',
+                      prefixIcon: const Icon(Icons.search),
+                      filled: true,
+                      fillColor: theme.cardColor,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    onChanged: _loadUsers,
+                  ),
+                ),
+                SizedBox(width: 2.w),
+                IconButton.filledTonal(
+                  onPressed: () {
+                    CsvExportService.exportUsersToCsv(context, _users);
+                  },
+                  icon: const Icon(Icons.download_rounded),
+                  tooltip: 'Export CSV',
+                ),
+              ],
             ),
           ),
         ),

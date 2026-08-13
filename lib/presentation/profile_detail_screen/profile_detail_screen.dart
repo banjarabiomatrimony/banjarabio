@@ -29,6 +29,7 @@ import 'package:banjarabio/presentation/profile_detail_screen/widgets/profile_lo
 import 'package:banjarabio/presentation/home_screen/widgets/guest_restricted_dialog.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/presentation/profile_detail_screen/widgets/similar_profiles_carousel.dart';
 // import '../../core/services/ad_reward_service.dart';
 // import '../widgets/rewarded_ad_dialog.dart';
 
@@ -330,6 +331,10 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                           ),
                         ],
                       ),
+                    ),
+                    SizedBox(height: 2.h),
+                    SimilarProfilesCarousel(
+                      currentProfileData: displayProfileData,
                     ),
                     SizedBox(height: 8.h),
                   ],

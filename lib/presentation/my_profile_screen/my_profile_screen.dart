@@ -25,6 +25,7 @@ import 'package:banjarabio/presentation/my_profile_screen/widgets/vouch_dashboar
 import 'package:banjarabio/core/services/share_service.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/presentation/my_profile_screen/widgets/completion_badge_widget.dart';
 
 /// My Profile Screen - View and edit own profile
 class MyProfileScreen extends ConsumerStatefulWidget {
@@ -1000,6 +1001,17 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen>
               backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.08),
               valueColor: AlwaysStoppedAnimation<Color>(theme.colorScheme.primary),
             ),
+          ),
+          SizedBox(height: 1.5.h),
+          CompletionBadgeWidget(
+            completionPercentage: _profile!.completionPercentage,
+            onEditTap: () {
+              Navigator.pushNamed(
+                context,
+                AppRoutes.biodataCreation,
+                arguments: {'profile': _profile, 'isEditMode': true},
+              ).then((_) => _loadProfile());
+            },
           ),
           if (_profile!.completionPercentage < 100) ...[
             SizedBox(height: 1.2.h),

@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banjarabio/core/repositories/admin_repository.dart';
+import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/widgets/glassmorphism_container.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
@@ -19,6 +22,9 @@ class AdminOverviewTab extends StatefulWidget {
 
 class _AdminOverviewTabState extends State<AdminOverviewTab> {
   bool _isLoading = true;
+  RealtimeChannel? _realtimeChannel;
+  Timer? _debounceTimer;
+
   Map<String, dynamic> _stats = {
     'total_users': 0,
     'pending_verifications': 0,
@@ -34,10 +40,51 @@ class _AdminOverviewTabState extends State<AdminOverviewTab> {
   void initState() {
     super.initState();
     _loadStats();
+    _setupRealtimeSubscription();
   }
 
-  Future<void> _loadStats() async {
-    setState(() => _isLoading = true);
+  @override
+  void dispose() {
+    _debounceTimer?.cancel();
+    if (_realtimeChannel != null && AppSupabaseClient.isInitialized) {
+      AppSupabaseClient.client.removeChannel(_realtimeChannel!);
+    }
+    super.dispose();
+  }
+
+  void _setupRealtimeSubscription() {
+    try {
+      if (!AppSupabaseClient.isInitialized) return;
+      _realtimeChannel = AppSupabaseClient.client
+          .channel('public:admin_stats')
+          .onPostgresChanges(
+            event: PostgresChangeEvent.all,
+            schema: 'public',
+            table: 'profiles',
+            callback: (_) => _refreshStatsDebounced(),
+          )
+          .onPostgresChanges(
+            event: PostgresChangeEvent.all,
+            schema: 'public',
+            table: 'payments',
+            callback: (_) => _refreshStatsDebounced(),
+          )
+          .subscribe();
+      AppLogger.debug('AdminOverviewTab', '📡 Supabase Realtime subscribed for admin stats');
+    } catch (e) {
+      AppLogger.warn('AdminOverviewTab', 'Failed to subscribe to Realtime: $e');
+    }
+  }
+
+  void _refreshStatsDebounced() {
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(seconds: 1), () {
+      if (mounted) _loadStats(showLoading: false);
+    });
+  }
+
+  Future<void> _loadStats({bool showLoading = true}) async {
+    if (showLoading) setState(() => _isLoading = true);
     final statsRes = await widget.adminRepository.getAdminStats();
     statsRes.fold(
       onSuccess: (data) {
@@ -47,7 +94,7 @@ class _AdminOverviewTabState extends State<AdminOverviewTab> {
         AppLogger.error('AdminOverviewTab', 'Stats failed: $e');
       },
     );
-    if (mounted) setState(() => _isLoading = false);
+    if (mounted && showLoading) setState(() => _isLoading = false);
   }
 
   @override

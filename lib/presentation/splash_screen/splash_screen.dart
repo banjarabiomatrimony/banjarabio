@@ -9,6 +9,7 @@ import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/utils/startup_workflow.dart';
 import 'package:banjarabio/core/services/startup_orchestrator.dart';
+import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 
@@ -55,6 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
       //   - Xiaomi MIUI battery optimization
       //   - Oppo ColorOS / Realme UI power manager
       await StartupOrchestrator().advanceToPhase(StartupPhase.booting);
+      AppSupabaseClient.prewarmConnection();
       await StartupOrchestrator().advanceToPhase(StartupPhase.critical);
     } catch (e) {
       AppLogger.error('SplashScreen', 'Initialization error: $e');

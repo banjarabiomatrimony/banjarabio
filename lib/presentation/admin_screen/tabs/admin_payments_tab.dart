@@ -6,6 +6,7 @@ import 'package:banjarabio/widgets/staggered_list_animation.dart';
 import 'package:banjarabio/presentation/admin_screen/admin_helpers.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/core/services/csv_export_service.dart';
 
 /// Payments management tab with search, sub-tab filtering
 /// (Subscription / PDF / Tester), and detailed transaction cards.
@@ -49,18 +50,36 @@ class _AdminPaymentsTabState extends State<AdminPaymentsTab> {
     final theme = Theme.of(context);
     return SliverMainAxisGroup(
       slivers: [
-        // Search Bar
+        // Search Bar & Export Button
         SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.fromLTRB(4.w, 0, 4.w, 2.h),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search payments (name, email, promo)...',
-                prefixIcon: const Icon(Icons.search),
-                filled: true, fillColor: theme.cardColor,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
-              ),
-              onChanged: (v) => setState(() => _searchQuery = v),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search payments (name, email, promo)...',
+                      prefixIcon: const Icon(Icons.search),
+                      filled: true,
+                      fillColor: theme.cardColor,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    onChanged: (v) => setState(() => _searchQuery = v),
+                  ),
+                ),
+                SizedBox(width: 2.w),
+                IconButton.filledTonal(
+                  onPressed: () {
+                    CsvExportService.exportPaymentsToCsv(context, _payments);
+                  },
+                  icon: const Icon(Icons.download_rounded),
+                  tooltip: 'Export CSV',
+                ),
+              ],
             ),
           ),
         ),
