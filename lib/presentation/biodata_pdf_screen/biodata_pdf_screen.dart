@@ -274,8 +274,11 @@ class _BiodataPdfScreenState
                                 String? badgeText;
                                 if (index == 0) {
                                   badgeText = '👑 VIP';
-                                } else if (index == 1) badgeText = '🚩 Gor';
-                                else if (index == 2) badgeText = '🔥 Popular';
+                                } else if (index == 1) {
+                                  badgeText = '🚩 Gor';
+                                } else if (index == 2) {
+                                  badgeText = '🔥 Popular';
+                                }
 
                                 return GestureDetector(
                                   onTap: () => _onTemplateSelected(index),

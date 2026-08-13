@@ -310,7 +310,7 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
     if (_isImageProcessing) return;
     
     if (!await _requestCameraPermission()) {
-      _showPermissionDeniedDialog('Camera');
+      if (mounted) _showPermissionDeniedDialog('Camera');
       return;
     }
 
@@ -318,12 +318,13 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
       await _initializeCamera();
     }
 
-    if (_cameraController != null && _cameraController!.value.isInitialized) {
+    if (mounted && _cameraController != null && _cameraController!.value.isInitialized) {
       try {
         final XFile photo = await _cameraController!.takePicture();
+        if (!mounted) return;
         await _processCapturedImage(photo.path, replacePhotoData: replacePhotoData);
       } catch (e) {
-        _showErrorSnackBar(e.toString());
+        if (mounted) _showErrorSnackBar(e.toString());
       }
     }
   }
@@ -332,7 +333,7 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
     if (_isImageProcessing) return;
 
     if (!await _requestStoragePermission()) {
-      _showPermissionDeniedDialog('Storage');
+      if (mounted) _showPermissionDeniedDialog('Storage');
       return;
     }
 
@@ -346,11 +347,11 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
         requestFullMetadata: false, // Don't load EXIF - saves memory
       );
 
-      if (image != null) {
+      if (image != null && mounted) {
         await _processCapturedImage(image.path, replacePhotoData: replacePhotoData);
       }
     } catch (e) {
-      _showErrorSnackBar(e.toString());
+      if (mounted) _showErrorSnackBar(e.toString());
     }
   }
 

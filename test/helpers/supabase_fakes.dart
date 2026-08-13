@@ -110,11 +110,47 @@ class FakeGoTrueClient extends Fake implements GoTrueClient {
   Session? mockSession;
   AuthException? error;
 
+  /// Stream controller for auth state changes — allows tests to simulate
+  /// signedIn, signedOut, tokenRefreshed events.
+  final StreamController<AuthState> _authStateController =
+      StreamController<AuthState>.broadcast();
+
+  @override
+  Stream<AuthState> get onAuthStateChange => _authStateController.stream;
+
+  /// Emit a fake auth state event (for widget tests).
+  void emitAuthState(AuthChangeEvent event) {
+    _authStateController.add(AuthState(event, mockSession));
+  }
+
   @override
   User? get currentUser => mockUser;
 
   @override
   Session? get currentSession => mockSession;
+
+  @override
+  Future<AuthResponse> signInWithIdToken({
+    required OAuthProvider provider,
+    required String idToken,
+    String? accessToken,
+    String? nonce,
+    String? captchaToken,
+  }) async {
+    if (error != null) throw error!;
+    return AuthResponse(session: mockSession, user: mockUser);
+  }
+
+  Future<bool> signInWithOAuth(
+    OAuthProvider provider, {
+    String? redirectTo,
+    String? scopes,
+    Map<String, String>? queryParams,
+    LaunchMode authScreenLaunchMode = LaunchMode.platformDefault,
+  }) async {
+    if (error != null) throw error!;
+    return true;
+  }
 
   @override
   Future<AuthResponse> signInWithPassword({

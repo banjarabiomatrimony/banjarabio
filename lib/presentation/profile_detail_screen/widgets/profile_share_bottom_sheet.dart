@@ -79,6 +79,7 @@ class ProfileShareBottomSheet {
                   }
                 } catch (_) {
                   // Fallback to text link if model parsing fails
+                  if (!context.mounted) return;
                   final res = await shareRepository.shareProfile(
                     sharedProfileId: profileId,
                     sharingMethod: 'whatsapp',
