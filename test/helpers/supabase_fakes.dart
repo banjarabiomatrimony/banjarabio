@@ -246,6 +246,21 @@ class FakeSupabaseQueryBuilder extends Fake implements SupabaseQueryBuilder {
 
   @override
   FakePostgrestFilterBuilder<List<Map<String, dynamic>>> update(Map values) {
+    if (builder.responseData is List) {
+      final list = (builder.responseData as List).map((e) {
+        if (e is Map) {
+          final updatedMap = Map<String, dynamic>.from(e);
+          values.forEach((k, v) => updatedMap[k.toString()] = v);
+          return updatedMap;
+        }
+        return e;
+      }).toList();
+      builder.responseData = list;
+    } else if (builder.responseData is Map) {
+      final updatedMap = Map<String, dynamic>.from(builder.responseData as Map);
+      values.forEach((k, v) => updatedMap[k.toString()] = v);
+      builder.responseData = updatedMap;
+    }
     return builder;
   }
 

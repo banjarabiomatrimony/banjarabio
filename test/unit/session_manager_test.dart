@@ -151,7 +151,7 @@ void main() {
     });
 
     test('stores and retrieves DateTime correctly', () async {
-      final now = DateTime(2026, 8, 13, 12, 0, 0);
+      final now = DateTime(2026, 8, 13, 12);
       await SessionManager.instance.setLastLoginTime(now);
       expect(
         SessionManager.instance.lastLoginTime?.millisecondsSinceEpoch,

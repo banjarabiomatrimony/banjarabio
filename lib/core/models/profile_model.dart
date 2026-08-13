@@ -795,8 +795,8 @@ class PhotoModel {
       storagePath: json['storage_path']?.toString() ?? '',
       publicUrl: json['public_url']?.toString() ?? '',
       semanticLabel: json['semantic_label']?.toString(),
-      isPrimary: json['is_primary'] as bool? ?? true,
-      isApproved: json['is_approved'] as bool? ?? true,
+      isPrimary: json['is_primary'] == true || json['is_primary'] == null,
+      isApproved: json['is_approved'] != false,
       uploadedAt: json['uploaded_at'] != null
           ? DateTime.parse(json['uploaded_at'].toString())
           : DateTime.now(),

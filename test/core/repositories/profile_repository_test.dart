@@ -11,12 +11,17 @@ import 'package:banjarabio/core/repositories/influencer_repository.dart';
 import 'package:banjarabio/notification/features/admin_notification_service.dart';
 import '../../helpers/supabase_fakes.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:banjarabio/core/session_manager.dart';
+
 class MockPhotoRepository extends Mock implements PhotoRepository {}
 class MockLocalCacheService extends Mock implements LocalCacheService {}
 class MockReferralRepository extends Mock implements ReferralRepository {}
 class MockInfluencerRepository extends Mock implements InfluencerRepository {}
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   late FakeSupabaseClient fakeSupabase;
   late FakeSupabaseClient fakeReadSupabase;
   late MockPhotoRepository mockPhotoRepository;
@@ -25,7 +30,10 @@ void main() {
   late MockInfluencerRepository mockInfluencerRepository;
   late ProfileRepository profileRepository;
 
-  setUp(() {
+  setUp(() async {
+    SharedPreferences.setMockInitialValues({});
+    await SessionManager.instance.init();
+
     fakeSupabase = FakeSupabaseClient();
     fakeReadSupabase = FakeSupabaseClient(queries: fakeSupabase.queries);
     mockPhotoRepository = MockPhotoRepository();
@@ -52,6 +60,7 @@ void main() {
     when(() => mockCacheService.clearOwnProfile()).thenAnswer((_) async {});
     when(() => mockCacheService.getHomeFeed()).thenReturn([]);
     when(() => mockCacheService.isGuestMode()).thenReturn(false);
+    when(() => mockCacheService.isRelativeBrowseMode()).thenReturn(false);
     when(() => mockCacheService.saveHomeFeed(any())).thenAnswer((_) async {});
     when(() => mockCacheService.saveBookmarks(any())).thenAnswer((_) async {});
     
@@ -251,8 +260,7 @@ void main() {
         'has_followed_instagram': true,
         'created_at': DateTime.now().toIso8601String(),
       };
-      
-      profileTable.builder.responseData = [mockData]; // select().single() mock requires List
+      profileTable.builder.responseData = [mockData];
 
       final result = await profileRepository.followInstagram();
 

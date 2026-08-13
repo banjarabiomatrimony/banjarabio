@@ -209,7 +209,7 @@ class SubscriptionModel {
           ? DateTime.tryParse(json['expires_at'].toString())
           : null,
       razorpaySubscriptionId: json['razorpay_subscription_id']?.toString(),
-      autoRenew: json['auto_renew'] as bool? ?? false,
+      autoRenew: json['auto_renew'] == true,
       amountPaid: (json['amount_paid'] as num?)?.toDouble(),
       createdAt: parseOrNow(json['createdAt']),
       updatedAt: parseOrNow(json['updatedAt']),

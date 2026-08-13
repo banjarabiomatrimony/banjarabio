@@ -87,7 +87,7 @@ void main() {
     });
 
     test('returns failure on AuthException', () async {
-      fakeAuth.error = AuthException('Invalid login credentials');
+      fakeAuth.error = const AuthException('Invalid login credentials');
 
       final result = await authRepo.signInWithEmail('test@example.com', 'bad');
 
@@ -96,7 +96,7 @@ void main() {
     });
 
     test('provides retry callback on failure', () async {
-      fakeAuth.error = AuthException('Network error');
+      fakeAuth.error = const AuthException('Network error');
 
       final result = await authRepo.signInWithEmail('test@example.com', 'pass');
 
@@ -138,7 +138,7 @@ void main() {
     });
 
     test('returns failure on exception', () async {
-      fakeAuth.error = AuthException('User already registered');
+      fakeAuth.error = const AuthException('User already registered');
 
       final result = await authRepo.signUpWithEmail('dup@test.com', 'pass');
 
@@ -158,7 +158,7 @@ void main() {
     });
 
     test('returns failure on exception', () async {
-      fakeAuth.error = AuthException('Phone not valid');
+      fakeAuth.error = const AuthException('Phone not valid');
 
       final result = await authRepo.signInWithPhone('+91invalid');
 
@@ -167,7 +167,7 @@ void main() {
     });
 
     test('provides retry on failure', () async {
-      fakeAuth.error = AuthException('Rate limit');
+      fakeAuth.error = const AuthException('Rate limit');
 
       final result = await authRepo.signInWithPhone('+911234567890');
 
@@ -207,7 +207,7 @@ void main() {
     });
 
     test('returns failure on exception', () async {
-      fakeAuth.error = AuthException('Token expired');
+      fakeAuth.error = const AuthException('Token expired');
 
       final result = await authRepo.verifyPhoneOtp('+911234567890', '123456');
 
@@ -227,7 +227,7 @@ void main() {
     });
 
     test('returns failure on exception', () async {
-      fakeAuth.error = AuthException('Email not found');
+      fakeAuth.error = const AuthException('Email not found');
 
       final result = await authRepo.sendEmailOtp('missing@test.com');
 
@@ -299,7 +299,7 @@ void main() {
     });
 
     test('returns failure on sign out error', () async {
-      fakeAuth.error = AuthException('Sign out failed');
+      fakeAuth.error = const AuthException('Sign out failed');
 
       final result = await authRepo.signOut();
 
@@ -325,7 +325,7 @@ void main() {
       await authRepo.signInWithEmail('refresh@test.com', 'pass');
 
       // Now fail refresh
-      fakeAuth.error = AuthException('Session expired');
+      fakeAuth.error = const AuthException('Session expired');
 
       final result = await authRepo.refreshSession();
 

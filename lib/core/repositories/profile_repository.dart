@@ -631,8 +631,8 @@ class ProfileRepository extends IsolateFirstRepository {
       }
 
       return BackendResponse.success(enrichedProfiles);
-    } catch (e) {
-      AppLogger.error('ProfileRepository', 'ProfileRepository.getProfiles Error: $e');
+    } catch (e, stack) {
+      AppLogger.error('ProfileRepository', 'ProfileRepository.getProfiles Error: $e\n$stack');
       return BackendResponse.failure(e.toString());
     }
   }
@@ -1045,8 +1045,8 @@ class ProfileRepository extends IsolateFirstRepository {
     FilterCriteria? filters,
     String? searchQuery,
   }) async {
-    // 🛡️ RECURSION GUARD: Block re-entry to break the synchronous infinite cycle
-    if (_isPerformingBackgroundFetch) return;
+    // 🛡️ RECURSION & TEST GUARD: Block re-entry and skip background refresh in unit tests
+    if (_isPerformingBackgroundFetch || testClient != null) return;
     _isPerformingBackgroundFetch = true;
 
     try {

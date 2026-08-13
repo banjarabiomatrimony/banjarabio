@@ -17,7 +17,7 @@ class SiblingModel {
     return SiblingModel(
       position: (json['position'] as num?)?.toInt() ?? 1,
       relation: json['relation']?.toString() ?? 'Self',
-      isMarried: json['is_married'] as bool? ?? false,
+      isMarried: json['is_married'] == true,
     );
   }
 

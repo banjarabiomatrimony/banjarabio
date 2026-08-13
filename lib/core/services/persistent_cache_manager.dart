@@ -24,11 +24,10 @@ class PersistentDocumentsFileSystem implements FileSystem {
       return cacheDir;
     }
 
-    // Otherwise, use application documents directory (persistent, never cleared by OS)
     final appDocDir = await getApplicationDocumentsDirectory();
     final cacheDir = Directory('${appDocDir.path}/$cacheKey');
-    if (!await cacheDir.exists()) {
-      await cacheDir.create(recursive: true);
+    if (!cacheDir.existsSync()) {
+      cacheDir.createSync(recursive: true);
     }
     return cacheDir;
   }
