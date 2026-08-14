@@ -25,13 +25,13 @@ class OnboardingValidator {
           missing.add('surname');
         } else {
           final surname = formData['surname'].toString();
-          // Specific logic for Banjara gotras mapping
+          // Specific logic for Banjara gotras mapping (both English and Marathi)
           final hasGotras = [
-            'Rathod',
-            'Pawar',
-            'Chauhan',
-            'Jadhav',
-            'Ade',
+            'Rathod', 'राठोड',
+            'Pawar', 'पवार',
+            'Chauhan', 'चव्हाण',
+            'Jadhav', 'जाधव',
+            'Ade', 'आडे',
           ].contains(surname);
           if (hasGotras && _isEmpty(formData['gotra'])) {
             missing.add('gotra');
@@ -39,9 +39,11 @@ class OnboardingValidator {
         }
         if (_isEmpty(formData['gender'])) missing.add('gender');
 
-        // Full mode requires height; lite mode skips it
+        // Full mode requires age, height, and profileCreatedBy; lite mode skips it
         if (!isLite) {
+          if (_isEmpty(formData['age'])) missing.add('age');
           if (_isEmpty(formData['height'])) missing.add('height');
+          if (_isEmpty(formData['profileCreatedBy'])) missing.add('profileCreatedBy');
         }
         break;
 

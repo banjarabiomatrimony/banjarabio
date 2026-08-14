@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/app_export.dart';
+import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/presentation/authentication_screen/authentication_screen.dart';
@@ -31,6 +32,10 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
   int _currentStep = 0;
   String _selectedPath = ''; // '', 'existing', or 'new'
   String _selectedPurpose = ''; // '', 'biodata', 'relative'
+
+  bool _hasDraft = false;
+  bool _isDraftDismissed = false;
+  Map<String, dynamic>? _draftData;
 
   /// Computes the total page count for the current navigation state.
   int get _pageCount {
@@ -62,6 +67,27 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
     _pulseController.repeat(reverse: true);
+
+    _checkSavedDraft();
+  }
+
+  Future<void> _checkSavedDraft() async {
+    try {
+      final draft = await SessionManager.instance.getBiodataDraft();
+      if (draft != null && draft.isNotEmpty) {
+        final name = draft['name']?.toString() ?? '';
+        final surname = draft['surname']?.toString() ?? '';
+        final phone = draft['phone_number']?.toString() ?? '';
+        if (name.isNotEmpty || surname.isNotEmpty || phone.isNotEmpty) {
+          if (mounted) {
+            setState(() {
+              _hasDraft = true;
+              _draftData = draft;
+            });
+          }
+        }
+      }
+    } catch (_) {}
   }
 
   @override
@@ -734,6 +760,167 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
     );
   }
 
+  Widget _buildDraftResumeCard(ThemeData theme, bool isDark, Color primary) {
+    final lang = Localizations.localeOf(context).languageCode;
+    final isMarathi = lang == 'mr';
+    final candidateName = _draftData?['name']?.toString().trim();
+    final nameDisplay = candidateName != null && candidateName.isNotEmpty ? candidateName : null;
+
+    final title = isMarathi
+        ? '📝 अपूर्ण बायोडेटा सेव्ह आहे!'
+        : '📝 Unsaved Biodata Draft Found!';
+    final body = nameDisplay != null
+        ? (isMarathi
+            ? '$nameDisplay चा बायोडेटा मसुदा सुरक्षित आहे. तिथून पुढे सुरू करा.'
+            : '$nameDisplay\'s biodata draft is saved. Resume from where you left.')
+        : (isMarathi
+            ? 'तुम्ही भरलेली माहिती सुरक्षित आहे. तिथून पुढे सुरू करा.'
+            : 'Your entered information is saved safely. Tap to resume.');
+    final btnText = isMarathi ? 'ड्राफ्ट पूर्ण करा (पुढे सुरू ठेवा) 👉' : 'Resume Draft Now 👉';
+
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: isDark
+              ? [const Color(0xFF381E05), const Color(0xFF231002)]
+              : [const Color(0xFFFFFBEB), const Color(0xFFFEF3C7)],
+        ),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: const Color(0xFFF59E0B),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.30 : 0.15),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Top row with badge title and close button
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(1.5.w),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF59E0B).withValues(alpha: 0.20),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.edit_note_rounded,
+                        size: 15.sp,
+                        color: const Color(0xFFD97706),
+                      ),
+                    ),
+                    SizedBox(width: 2.w),
+                    Flexible(
+                      child: Text(
+                        title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w800,
+                          color: isDark ? const Color(0xFFFDE68A) : const Color(0xFF92400E),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  setState(() => _isDraftDismissed = true);
+                },
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  padding: EdgeInsets.all(1.5.w),
+                  decoration: BoxDecoration(
+                    color: (isDark ? Colors.white : Colors.black).withValues(alpha: 0.08),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.close_rounded,
+                    size: 13.5.sp,
+                    color: isDark ? Colors.white70 : Colors.black54,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 0.8.h),
+          Text(
+            body,
+            style: TextStyle(
+              fontSize: 10.5.sp,
+              height: 1.25,
+              color: isDark ? Colors.white.withValues(alpha: 0.85) : const Color(0xFF78350F),
+            ),
+          ),
+          SizedBox(height: 1.2.h),
+
+          // CTA Button
+          _TactileWrapper(
+            onTap: () {
+              HapticFeedback.mediumImpact();
+              if (AppSupabaseClient.isAuthenticated) {
+                Navigator.of(context).pushNamed(AppRoutes.biodataCreation);
+              } else {
+                setState(() {
+                  _selectedPath = 'new';
+                  _selectedPurpose = 'biodata';
+                });
+                _jumpToStep(2);
+              }
+            },
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: 1.0.h),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFF59E0B), Color(0xFFD97706)],
+                ),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFD97706).withValues(alpha: 0.35),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Center(
+                child: Text(
+                  btnText,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 11.5.sp,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 0.2,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   // ══════════════════════════════════════════════
   // STEP 1: PATH SELECTION (Existing vs New User)
   // ══════════════════════════════════════════════
@@ -778,6 +965,12 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
             ),
           ),
           SizedBox(height: 3.h),
+
+          // ── Dismissible Smart Resume Draft Card ──
+          if (_hasDraft && !_isDraftDismissed) ...[
+            _buildDraftResumeCard(theme, isDark, primary),
+            SizedBox(height: 1.h),
+          ],
 
           // Option 1: Existing User
           _TactileWrapper(
@@ -926,6 +1119,12 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
       child: Column(
         children: [
           SizedBox(height: 0.5.h),
+
+          // ── Dismissible Smart Resume Draft Card (in Purpose Selection) ──
+          if (_hasDraft && !_isDraftDismissed) ...[
+            _buildDraftResumeCard(theme, isDark, primary),
+            SizedBox(height: 0.5.h),
+          ],
 
           // ── Card 1: Search Matches (Instant Discovery) ──
           _buildSearchMatchesCard(theme, isDark, l10n, primary, isMarathi),

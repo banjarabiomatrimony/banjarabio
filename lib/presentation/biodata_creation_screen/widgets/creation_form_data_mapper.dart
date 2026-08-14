@@ -15,6 +15,7 @@ class CreationFormDataMapper {
       'phone_number': '',
       'surname': '',
       'gotra': '',
+      'profileCreatedBy': '',
       'age': '',
       'dateOfBirth': null as DateTime?,
       'gender': '',
@@ -34,6 +35,7 @@ class CreationFormDataMapper {
       'fatherName': '',
       'fatherOccupation': '',
       'motherName': '',
+      'motherOccupation': '',
       'jobDetails': '',
       'company': '',
       'siblingsCount': '0',
@@ -46,8 +48,10 @@ class CreationFormDataMapper {
       'familyType': '',
       'familyStatus': '',
       'marriageReadiness': true,
+      'isDisabled': false,
       'aboutSelf': '',
       'partnerExpectations': '',
+      'expectation': '',
       'photos': <String>[],
       'tempPhotos': <String>[],
     };
@@ -81,20 +85,22 @@ class CreationFormDataMapper {
 
     final Map<String, dynamic> newData = Map<String, dynamic>.from(existingFormData);
 
-    newData['name'] = data['name']?.toString() ?? data['fullName']?.toString() ?? '';
-    newData['phone_number'] = data['phone_number']?.toString() ?? '';
+    newData['name'] = data['name']?.toString() ?? data['fullName']?.toString() ?? data['full_name']?.toString() ?? '';
+    newData['phone_number'] = data['phone_number']?.toString() ?? data['phoneNumber']?.toString() ?? '';
     newData['age'] = data['age']?.toString() ?? '';
     newData['height'] = data['height']?.toString() ?? '';
     newData['surname'] = data['surname']?.toString() ?? '';
     newData['gotra'] = data['gotra']?.toString() ?? '';
+    newData['profileCreatedBy'] = (data['profileCreatedBy'] ?? data['profile_created_by'])?.toString() ?? '';
     newData['gender'] = data['gender']?.toString() ?? '';
     newData['education'] = data['education']?.toString() ?? '';
     newData['profession'] = data['profession']?.toString() ?? '';
-    newData['location'] = (data['location'] ?? data['current_location'])?.toString() ?? '';
+    newData['location'] = (data['location'] ?? data['current_location'] ?? data['permanent_location'])?.toString() ?? '';
     newData['aboutSelf'] = (data['aboutSelf'] ?? data['about'] ?? data['about_self'] ?? data['about_yourself'])?.toString() ?? '';
     newData['marriageReadiness'] = data['marriageReadiness'] == 'Ready for marriage' || data['marriageReadiness'] == true;
+    newData['isDisabled'] = data['isDisabled'] == true || data['is_disabled'] == true;
 
-    final dynamic dobData = data['dateOfBirth'] ?? data['dob'];
+    final dynamic dobData = data['dateOfBirth'] ?? data['dob'] ?? data['date_of_birth'];
     if (dobData != null) {
       if (dobData is DateTime) {
         newData['dateOfBirth'] = dobData;
@@ -104,18 +110,18 @@ class CreationFormDataMapper {
     }
 
     newData['complexion'] = data['complexion']?.toString() ?? '';
-    newData['bloodGroup'] = data['bloodGroup']?.toString() ?? '';
-    newData['maritalStatus'] = data['maritalStatus']?.toString() ?? 'Never Married';
-    newData['annualIncome'] = data['annualIncome']?.toString() ?? '';
+    newData['bloodGroup'] = (data['bloodGroup'] ?? data['blood_group'])?.toString() ?? '';
+    newData['maritalStatus'] = (data['maritalStatus'] ?? data['marital_status'])?.toString() ?? 'Never Married';
+    newData['annualIncome'] = (data['annualIncome'] ?? data['annual_income'])?.toString() ?? '';
     newData['nativePlace'] = (data['nativePlace'] ?? data['native_place'])?.toString() ?? '';
     newData['state'] = data['state']?.toString() ?? '';
     newData['district'] = data['district']?.toString() ?? '';
     newData['taluka'] = data['taluka']?.toString() ?? '';
     newData['village'] = data['village']?.toString() ?? '';
-    newData['fatherName'] = data['fatherName']?.toString() ?? '';
-    newData['fatherOccupation'] = data['fatherOccupation']?.toString() ?? '';
-    newData['motherName'] = data['motherName']?.toString() ?? '';
-    newData['motherOccupation'] = data['motherOccupation']?.toString() ?? '';
+    newData['fatherName'] = (data['fatherName'] ?? data['father_name'])?.toString() ?? '';
+    newData['fatherOccupation'] = (data['fatherOccupation'] ?? data['father_occupation'])?.toString() ?? '';
+    newData['motherName'] = (data['motherName'] ?? data['mother_name'])?.toString() ?? '';
+    newData['motherOccupation'] = (data['motherOccupation'] ?? data['mother_occupation'])?.toString() ?? '';
 
     final dynamic sCount = data['siblingsCount'] ?? data['siblings_count'];
     if (sCount != null) {
@@ -126,8 +132,11 @@ class CreationFormDataMapper {
       newData['siblingsCount'] = data['siblings']?.toString() ?? '0';
     }
 
-    newData['familyType'] = data['familyType']?.toString() ?? '';
-    newData['familyStatus'] = data['familyStatus']?.toString() ?? '';
+    newData['sisterCount'] = (data['sisterCount'] ?? data['sister_count'])?.toString() ?? '0';
+    newData['brotherCount'] = (data['brotherCount'] ?? data['brother_count'])?.toString() ?? '0';
+
+    newData['familyType'] = (data['familyType'] ?? data['family_type'])?.toString() ?? '';
+    newData['familyStatus'] = (data['familyStatus'] ?? data['family_status'])?.toString() ?? '';
     newData['partnerExpectations'] = (data['partnerExpectations'] ?? data['partner_expectations'])?.toString() ?? '';
     newData['expectation'] = data['expectation']?.toString() ?? '';
     newData['birthPlace'] = (data['birthPlace'] ?? data['birth_place'])?.toString() ?? '';
@@ -140,6 +149,7 @@ class CreationFormDataMapper {
         .map((s) {
           if (s is SiblingModel) return s;
           if (s is Map<String, dynamic>) return SiblingModel.fromJson(s);
+          if (s is Map) return SiblingModel.fromJson(Map<String, dynamic>.from(s));
           return null;
         })
         .whereType<SiblingModel>()
@@ -218,6 +228,7 @@ class CreationFormDataMapper {
       data['siblings_data'] = ((formData['siblings'] ?? []) as List).map((s) {
         if (s is SiblingModel) return s.toJson();
         if (s is Map<String, dynamic>) return s;
+        if (s is Map) return Map<String, dynamic>.from(s);
         return {};
       }).toList();
     }
@@ -228,6 +239,10 @@ class CreationFormDataMapper {
     if (formData.containsKey('marriageReadiness')) {
       final isMarriageReady = formData['marriageReadiness'] == true;
       data['marriage_readiness'] = isMarriageReady ? 'Ready for marriage' : 'Not ready yet';
+    }
+
+    if (formData.containsKey('isDisabled')) {
+      data['is_disabled'] = formData['isDisabled'] == true;
     }
 
     addIfPresent('aboutSelf', 'about_self');

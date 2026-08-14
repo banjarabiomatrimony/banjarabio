@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/app_export.dart';
@@ -42,12 +43,23 @@ class CreationDiscardDialog {
 
     if (shouldExit ?? false) {
       if (context.mounted) {
+        final l10n = AppLocalizations.of(context);
+        final biodataDraftSavedMsg = l10n?.discardChangesBody ?? 'Your progress is saved as a draft.';
+        Fluttertoast.cancel();
+        Fluttertoast.showToast(
+          msg: '💾 $biodataDraftSavedMsg',
+          toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 2,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: const Color(0xFF10B981),
+          textColor: Colors.white,
+        );
         if (isAdminEdit) {
           Navigator.of(context).pop();
         } else if (isEditMode) {
           Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
         } else {
-          Navigator.of(context).pushReplacementNamed(AppRoutes.onboardingSelection);
+          Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.userTypeSelection, (route) => false);
         }
       }
       return true;

@@ -308,13 +308,18 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
     }
 
     final gotra = widget.formData['gotra']?.toString();
-    if (gotra != null && gotra.isNotEmpty && _gotraOptions.contains(gotra)) {
-      _selectedGotra = gotra;
+    if (gotra != null && gotra.isNotEmpty) {
+      if (_gotraOptions.contains(gotra)) {
+        _selectedGotra = gotra;
+      } else {
+        _gotraOptions = [..._gotraOptions, gotra];
+        _selectedGotra = gotra;
+      }
     } else {
       _selectedGotra = null;
     }
 
-    final createdBy = widget.formData['profileCreatedBy']?.toString();
+    final createdBy = (widget.formData['profileCreatedBy'] ?? widget.formData['profile_created_by'])?.toString();
     _selectedProfileBy = (createdBy != null && createdBy.isNotEmpty) ? createdBy : null;
 
     final gender = widget.formData['gender']?.toString();
@@ -343,14 +348,21 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
       _birthTimeController.text = birthTime;
     }
 
-    _isDisabled = widget.formData['isDisabled'] as bool? ?? false;
+    _isDisabled = widget.formData['isDisabled'] as bool? ?? widget.formData['is_disabled'] as bool? ?? false;
   }
 
   @override
   void didUpdateWidget(covariant PersonalDetailsSection oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.formData != oldWidget.formData) {
-      _initializeData();
+    if (widget.formData != oldWidget.formData ||
+        widget.isLite != oldWidget.isLite ||
+        widget.isAdminEdit != oldWidget.isAdminEdit) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _initializeData();
+          _validateForm();
+        }
+      });
     }
   }
 
@@ -376,14 +388,16 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
     }
     final isGotraRequired = _gotraOptions.isNotEmpty;
 
+    final hasValidSurname = _selectedSurname != null &&
+        (_selectedSurname != 'Other' || _customSurnameController.text.trim().isNotEmpty);
+
     // Core identity fields required in both lite and full modes
     final coreValid =
-        _nameController.text.isNotEmpty &&
-        _phoneController.text.length >= 10 &&
-        _selectedSurname != null &&
-        (_selectedSurname != 'Other' || _customSurnameController.text.isNotEmpty) &&
+        _nameController.text.trim().isNotEmpty &&
+        _phoneController.text.trim().length >= 10 &&
+        hasValidSurname &&
         _selectedGender != null &&
-        (!isGotraRequired || _selectedGotra != null);
+        (!isGotraRequired || (_selectedGotra != null && _selectedGotra!.isNotEmpty));
 
     if (widget.isLite) {
       // Lite signup: skip age, height, profileCreatedBy validation
@@ -393,7 +407,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
 
     // Full mode: also require age and profileCreatedBy
     final isValid = coreValid &&
-        _ageController.text.isNotEmpty &&
+        _ageController.text.trim().isNotEmpty &&
         _selectedProfileBy != null;
     widget.onValidationChange(isValid);
   }

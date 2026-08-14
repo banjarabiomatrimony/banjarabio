@@ -211,8 +211,14 @@ class _EducationProfessionSectionState
   @override
   void didUpdateWidget(covariant EducationProfessionSection oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.formData != oldWidget.formData) {
-      _initializeData();
+    if (widget.formData != oldWidget.formData ||
+        widget.isAdminEdit != oldWidget.isAdminEdit) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _initializeData();
+          _validateForm();
+        }
+      });
     }
   }
 

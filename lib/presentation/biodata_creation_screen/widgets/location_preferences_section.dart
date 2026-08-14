@@ -60,7 +60,7 @@ class _LocationPreferencesSectionState
     _villageController.addListener(_validateForm);
     _nativePlaceController.addListener(_validateForm);
     _partnerExpectationController.addListener(_validateForm);
-    _validateForm();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _validateForm());
   }
 
   void _initializeData() {
@@ -104,8 +104,15 @@ class _LocationPreferencesSectionState
   @override
   void didUpdateWidget(covariant LocationPreferencesSection oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.formData != oldWidget.formData) {
-      _initializeData();
+    if (widget.formData != oldWidget.formData ||
+        widget.isAdminEdit != oldWidget.isAdminEdit ||
+        widget.isLite != oldWidget.isLite) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _initializeData();
+          _validateForm();
+        }
+      });
     }
   }
 

@@ -3,6 +3,7 @@ import 'dart:io' as io;
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 import 'package:banjarabio/core/app_export.dart';
@@ -149,17 +150,20 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
 
   Future<void> _loadDraft() async {
     final draft = await SessionManager.instance.getBiodataDraft();
-    if (draft != null) {
+    if (draft != null && draft.isNotEmpty) {
+      final draftId = draft['id']?.toString().trim();
+      final hasDraftId = draftId != null && draftId.isNotEmpty;
+
       // If we are in edit mode, ensure draft matches this profile
       if (_isEditMode && _existingProfile != null) {
-        if (draft['id'] != _existingProfile!.id) {
+        if (draftId != _existingProfile!.id) {
           AppLogger.debug('BiodataCreationScreen', 'Draft ID mismatch, not loading');
           return;
         }
-      } else if (_isEditMode && !draft.containsKey('id')) {
+      } else if (_isEditMode && !hasDraftId) {
         // Edit mode but draft has no ID... might be risky
         return;
-      } else if (!_isEditMode && draft.containsKey('id')) {
+      } else if (!_isEditMode && hasDraftId) {
         // Create mode but draft has an ID (it was an edit draft)
         return;
       }
@@ -168,29 +172,18 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
       _populateFormFromMap(draft);
       if (mounted) {
         final l10n = AppLocalizations.of(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              l10n?.biodataDraftRestored ?? 'Biodata draft restored!',
-            ),
-            behavior: SnackBarBehavior.floating,
-            action: SnackBarAction(
-              label: l10n?.undo ?? 'Undo',
-              onPressed: () {
-                if (!mounted) return;
-                setState(() {
-                  _initializeForm();
-                });
-              },
-            ),
-          ),
+        final biodataDraftRestoredMsg = l10n?.biodataDraftRestored ?? 'Biodata draft restored!';
+        Fluttertoast.cancel();
+        Fluttertoast.showToast(
+          msg: '📝 $biodataDraftRestoredMsg',
+          toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 2,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: const Color(0xFFD97706),
+          textColor: Colors.white,
         );
       }
     }
-  }
-
-  void _initializeForm() {
-    _formData = CreationFormDataMapper.createEmptyFormData();
   }
 
   /// Check and wait for authentication to be ready
@@ -440,6 +433,7 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
         case 'age': return l10n.age;
         case 'surname': return l10n.surname;
         case 'gotra': return l10n.gotra;
+        case 'profileCreatedBy': return l10n.profileCreatedByTitle;
         case 'gender': return l10n.gender;
         case 'height': return l10n.height;
         case 'education': return l10n.education;
@@ -724,15 +718,24 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
                     color: theme.appBarTheme.foregroundColor ?? theme.colorScheme.onSurface,
                   ),
                   onPressed: () {
-                    // Navigate to login screen for new users, home for existing, pop for admin
+                    final l10n = AppLocalizations.of(context);
+                    final biodataDraftSavedMsg = l10n?.discardChangesBody ?? 'Your progress is saved as a draft.';
+                    Fluttertoast.cancel();
+                    Fluttertoast.showToast(
+                      msg: '💾 $biodataDraftSavedMsg',
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 2,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: const Color(0xFF10B981),
+                      textColor: Colors.white,
+                    );
+                    // Navigate to user type selection for new users, home for existing, pop for admin
                     if (_isAdminEdit) {
                       Navigator.of(context).pop();
                     } else if (_isEditMode) {
                       Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
                     } else {
-                      Navigator.of(
-                        context,
-                      ).pushReplacementNamed(AppRoutes.onboardingSelection);
+                      Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.userTypeSelection, (route) => false);
                     }
                   },
                 ),

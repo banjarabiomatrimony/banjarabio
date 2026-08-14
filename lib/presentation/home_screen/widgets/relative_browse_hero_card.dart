@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/core/services/local_cache_service.dart';
+import 'package:banjarabio/core/session_manager.dart';
 import 'package:banjarabio/routes/app_routes.dart';
 
 /// Premium Global-Standard Hero Banner for Relative Browse Mode.
@@ -28,6 +29,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
     with SingleTickerProviderStateMixin {
   late final AnimationController _pulseController;
   late final Animation<double> _scaleAnimation;
+  bool _hasDraft = false;
 
   @override
   void initState() {
@@ -43,6 +45,24 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
         curve: Curves.easeInOutSine,
       ),
     );
+
+    _checkSavedDraft();
+  }
+
+  Future<void> _checkSavedDraft() async {
+    try {
+      final draft = await SessionManager.instance.getBiodataDraft();
+      if (draft != null && draft.isNotEmpty) {
+        final name = draft['name']?.toString() ?? '';
+        final surname = draft['surname']?.toString() ?? '';
+        final phone = draft['phone_number']?.toString() ?? '';
+        if (name.isNotEmpty || surname.isNotEmpty || phone.isNotEmpty) {
+          if (mounted) {
+            setState(() => _hasDraft = true);
+          }
+        }
+      }
+    } catch (_) {}
   }
 
   @override
@@ -131,11 +151,11 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                 ),
               ),
               Positioned(
-                bottom: -40,
+                bottom: -20,
                 left: -20,
                 child: Container(
-                  width: 110,
-                  height: 110,
+                  width: 100,
+                  height: 100,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
@@ -148,26 +168,26 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                 ),
               ),
 
-              // ── Main Content Body ──
+              // ── Card Foreground Content ──
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.6.h),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ── Header Row: Frosted Filter Chip + Edit Button ──
+                    // ── Active Filter Chip + Edit Action Row ──
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // Frosted Glass Filter Pill
+                        // Glassmorphic Active Filter Badge
                         Flexible(
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.55.h),
+                            padding: EdgeInsets.symmetric(horizontal: 2.8.w, vertical: 0.6.h),
                             decoration: BoxDecoration(
                               color: Colors.white.withValues(alpha: 0.14),
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(24),
                               border: Border.all(
-                                color: Colors.white.withValues(alpha: 0.28),
-                                width: 0.8,
+                                color: Colors.white.withValues(alpha: 0.25),
                               ),
                             ),
                             child: Row(
@@ -175,42 +195,43 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                               children: [
                                 const Icon(
                                   Icons.explore_rounded,
-                                  size: 14,
+                                  size: 13,
                                   color: Color(0xFFFFD700),
                                 ),
                                 SizedBox(width: 1.5.w),
                                 Flexible(
                                   child: Text(
                                     chipLabel,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      fontSize: 8.8.sp,
-                                      fontWeight: FontWeight.w700,
                                       color: Colors.white,
+                                      fontSize: 8.5.sp,
+                                      fontWeight: FontWeight.w700,
                                       letterSpacing: 0.1,
                                     ),
-                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ],
                             ),
                           ),
                         ),
+
                         SizedBox(width: 2.w),
 
-                        // Edit Criteria Action Button
+                        // Change Filter Button ("बदला")
                         Material(
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: _handleEditSearch,
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(16),
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.5.h),
+                              padding: EdgeInsets.symmetric(horizontal: 2.6.w, vertical: 0.5.h),
                               decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: 0.15),
-                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.black.withValues(alpha: 0.25),
+                                borderRadius: BorderRadius.circular(16),
                                 border: Border.all(
-                                  color: Colors.white.withValues(alpha: 0.20),
-                                  width: 0.8,
+                                  color: Colors.white.withValues(alpha: 0.22),
                                 ),
                               ),
                               child: Row(
@@ -218,16 +239,16 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                                 children: [
                                   Icon(
                                     Icons.edit_note_rounded,
-                                    size: 14,
+                                    size: 13.5,
                                     color: Colors.white.withValues(alpha: 0.95),
                                   ),
                                   SizedBox(width: 1.w),
                                   Text(
                                     'बदला',
                                     style: TextStyle(
+                                      color: Colors.white,
                                       fontSize: 8.5.sp,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white.withValues(alpha: 0.95),
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ],
@@ -248,7 +269,9 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'उमेदवाराचा बायोडेटा उपलब्ध आहे का?',
+                                _hasDraft
+                                    ? 'अपूर्ण बायोडेटा पूर्ण करा'
+                                    : 'उमेदवाराचा बायोडेटा उपलब्ध आहे का?',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 10.8.sp,
@@ -259,7 +282,9 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                               ),
                               SizedBox(height: 0.4.h),
                               Text(
-                                'इतर बंजारा परिवारांना स्थळ दाखवण्यासाठी बायोडेटा बनवा.',
+                                _hasDraft
+                                    ? 'तुम्ही भरलेली माहिती सुरक्षित आहे. फक्त काही माहिती बाकी आहे.'
+                                    : 'इतर बंजारा परिवारांना स्थळ दाखवण्यासाठी बायोडेटा बनवा.',
                                 style: TextStyle(
                                   color: Colors.white.withValues(alpha: 0.85),
                                   fontSize: 8.5.sp,
@@ -320,7 +345,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                                     ),
                                     SizedBox(width: 1.2.w),
                                     Text(
-                                      'बायोडेटा बनवा',
+                                      _hasDraft ? 'बायोडेटा पूर्ण करा' : 'बायोडेटा बनवा',
                                       style: TextStyle(
                                         color: const Color(0xFF3E1700),
                                         fontSize: 9.5.sp,
@@ -335,6 +360,42 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                           ),
                         ),
                       ],
+                    ),
+
+                    SizedBox(height: 1.2.h),
+
+                    // ── Bottom Completion Status Line ──
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.7.h),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.22),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.12),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            _hasDraft ? Icons.edit_note_rounded : Icons.verified_user_rounded,
+                            size: 13.5,
+                            color: const Color(0xFFFFD700),
+                          ),
+                          SizedBox(width: 1.8.w),
+                          Expanded(
+                            child: Text(
+                              _hasDraft
+                                  ? '📝 तुमचा ड्राफ्ट सेव्ह आहे • २ मिनिटांत पूर्ण करा'
+                                  : '🔒 बायोडेटा बनवल्याने इतर परिवार थेट तुमच्याशी संपर्क करू शकतील',
+                              style: TextStyle(
+                                color: Colors.white.withValues(alpha: 0.92),
+                                fontSize: 8.0.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

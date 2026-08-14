@@ -175,8 +175,14 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
     super.didUpdateWidget(oldWidget);
     // Only re-initialize if the map instance changed (e.g. from population)
     // or if specific critical fields changed externally
-    if (widget.formData != oldWidget.formData) {
-      _initializeData();
+    if (widget.formData != oldWidget.formData ||
+        widget.isAdminEdit != oldWidget.isAdminEdit) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _initializeData();
+          _validateForm();
+        }
+      });
     }
   }
 

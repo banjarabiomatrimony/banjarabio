@@ -68,9 +68,7 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
     super.didUpdateWidget(oldWidget);
     // Sync local photos if parent list changes (e.g. from population)
     if (!listEquals(widget.photos, oldWidget.photos)) {
-      setState(() {
-        _localPhotos = List<String>.from(widget.photos);
-      });
+      _localPhotos = List<String>.from(widget.photos);
     }
   }
 

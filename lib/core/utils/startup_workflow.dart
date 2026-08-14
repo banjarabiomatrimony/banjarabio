@@ -116,10 +116,10 @@ class StartupWorkflow {
                   .pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
             }
           } else {
-            // No profile → Route directly to BiodataCreationScreen so authenticated user can create their biodata!
-            AppLogger.debug('StartupWorkflow', 'User authenticated but has no profile. Routing to BiodataCreationScreen.');
+            // No profile → Route to UserTypeSelection gateway so user has full control to resume draft or choose pathways
+            AppLogger.debug('StartupWorkflow', 'User authenticated but has no profile. Routing to UserTypeSelection.');
             Navigator.of(context, rootNavigator: true)
-                .pushNamedAndRemoveUntil(AppRoutes.biodataCreation, (route) => false);
+                .pushNamedAndRemoveUntil(AppRoutes.userTypeSelection, (route) => false);
           }
         },
         onFailure: (error) async {

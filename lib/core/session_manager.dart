@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:banjarabio/core/services/isolate_manager.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
+import 'package:banjarabio/core/models/sibling_model.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 
 /// [SessionManager]
@@ -246,21 +247,39 @@ class SessionManager {
 // 8. Helper Functions (Must be top-level for Isolate communication)
 // -----------------------------------------------------------------------------
 
+/// Deep recursive JSON sanitizer that ensures all models, DateTime objects,
+/// Enums, Lists, and Sets are converted to primitive JSON encodable structures.
+dynamic _sanitizeForJson(dynamic value) {
+  if (value == null) return null;
+  if (value is num || value is bool || value is String) return value;
+  if (value is DateTime) return value.toIso8601String();
+  if (value is SiblingModel) return value.toJson();
+  if (value is Enum) return value.name;
+  if (value is List) {
+    return value.map(_sanitizeForJson).toList();
+  }
+  if (value is Set) {
+    return value.map(_sanitizeForJson).toList();
+  }
+  if (value is Map) {
+    final map = <String, dynamic>{};
+    value.forEach((k, v) {
+      map[k.toString()] = _sanitizeForJson(v);
+    });
+    return map;
+  }
+  try {
+    return (value as dynamic).toJson();
+  } catch (_) {
+    return value.toString();
+  }
+}
+
 /// Safe JSON Encoder.
 ///
-/// Handles `DateTime` objects which `jsonEncode` usually crashes on.
+/// Handles `DateTime`, `SiblingModel`, and custom objects which standard `jsonEncode` crashes on.
 /// This runs inside the Isolate/Background Worker.
 String _encodeJsonSafe(Map<String, dynamic> data) {
-  final processedData = <String, dynamic>{};
-
-  data.forEach((key, value) {
-    if (value is DateTime) {
-      // Standardize dates to ISO8601 string
-      processedData[key] = value.toIso8601String();
-    } else {
-      processedData[key] = value;
-    }
-  });
-
-  return jsonEncode(processedData);
+  final sanitized = _sanitizeForJson(data) as Map<String, dynamic>;
+  return jsonEncode(sanitized);
 }
