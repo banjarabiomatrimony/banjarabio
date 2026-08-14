@@ -1,3 +1,21 @@
+# Release Notes - v1.2.9+37
+
+## 🚩 What's New — Banjara Virasat Sangh (BVS) VIP Integration
+- **BVS VIP Gateway & In-App Portal**:
+    - Dedicated In-App Web Portal with SSL indicator, custom progress bar, and instant card upload dock.
+    - Full-screen animated BVS Gateway with motion effects, dual emblems, and 1-tap WhatsApp automation.
+    - Shining circular running-colors hero card with light sheen animation.
+- **₹200/Year Subsidized Matrimony Plans**:
+    - Subsidized ₹200/annual and ₹20/monthly VIP subscription pricing for verified BVS community members.
+- **BVS Card Trust Score Verification**:
+    - Community ID verification flow with auto-prefilled Gotra, Village, and Taluka/District.
+- **Full Multi-Language Support**:
+    - Complete localization in 5 languages: Marathi (मराठी), Hindi (हिंदी), Telugu (తెలుగు), Kannada (ಕನ್ನಡ), and English.
+- **UI/UX Polish**:
+    - Symmetrical icon-only social pill on the home AppBar.
+
+---
+
 # Release Notes - v1.2.11+39
 
 ## What's New & Stability Enhancements
