@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
@@ -42,122 +41,6 @@ class HomeRecommendedContent {
     final theme = Theme.of(context);
 
     return [
-      if (LocalCacheService().isRelativeBrowseMode())
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-            child: Container(
-              padding: EdgeInsets.all(3.5.w),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    theme.colorScheme.primaryContainer.withValues(alpha: 0.9),
-                    theme.colorScheme.surface,
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.35),
-                  width: 1.2,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 8,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(2.w),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.primary,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(Icons.travel_explore_rounded, color: Colors.white, size: 20),
-                      ),
-                      SizedBox(width: 3.w),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'नातेवाईकांसाठी स्थळ शोधत आहात? 🚩',
-                              style: theme.textTheme.titleSmall?.copyWith(
-                                fontWeight: FontWeight.w800,
-                                fontSize: 11.sp,
-                              ),
-                            ),
-                            SizedBox(height: 0.3.h),
-                            Text(
-                              'शोध निकष बदलावा किंवा स्वतःचा बायोडेटा तयार करा.',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                                fontSize: 9.5.sp,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 1.2.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      OutlinedButton.icon(
-                        onPressed: () async {
-                          await LocalCacheService().clearRelativeBrowseSession();
-                          if (context.mounted) {
-                            Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
-                              AppRoutes.onboardingSelection,
-                              (route) => false,
-                            );
-                          }
-                        },
-                        icon: const Icon(Icons.refresh_rounded, size: 16),
-                        label: Text(
-                          'पर्याय बदला',
-                          style: TextStyle(fontSize: 9.5.sp, fontWeight: FontWeight.w700),
-                        ),
-                        style: OutlinedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.8.h),
-                          side: BorderSide(color: theme.colorScheme.primary.withValues(alpha: 0.5)),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                        ),
-                      ),
-                      SizedBox(width: 2.5.w),
-                      ElevatedButton.icon(
-                        onPressed: () async {
-                          await LocalCacheService().clearRelativeBrowseSession();
-                          if (context.mounted) {
-                            Navigator.of(context, rootNavigator: true).pushNamed(AppRoutes.biodataCreation);
-                          }
-                        },
-                        icon: const Icon(Icons.add_circle_outline_rounded, size: 16),
-                        label: Text(
-                          'बायोडेटा बनवा',
-                          style: TextStyle(fontSize: 9.5.sp, fontWeight: FontWeight.w700),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.8.h),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
       if (!isLoading && errorMessage == null && isDistrictFallback && requestedDistrict != null && requestedDistrict.isNotEmpty)
         SliverToBoxAdapter(
           child: Padding(

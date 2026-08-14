@@ -21,7 +21,6 @@ import 'package:banjarabio/core/repositories/usage_repository.dart';
 import 'package:banjarabio/core/services/scroll_velocity_service.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/core/services/startup_orchestrator.dart';
-import 'package:banjarabio/core/utils/startup_workflow.dart';
 
 import 'package:banjarabio/core/services/deep_link_service.dart';
 import 'package:banjarabio/features/bookmarks/providers/bookmark_notifier.dart';
@@ -29,6 +28,7 @@ import 'package:banjarabio/widgets/upgrade_dialog.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/instagram_follow_interstitial.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/guest_restricted_dialog.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/offer_banner_widget.dart';
+import 'package:banjarabio/presentation/home_screen/widgets/relative_browse_hero_card.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/home_feed_header.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/home_filter_chips.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/home_tab_selector.dart';
@@ -132,21 +132,28 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Apply relative browse filters from route arguments (Pathway A).
-    // This runs once — when HomeScreen is pushed with arguments from StartupWorkflow.
+    // This runs when HomeScreen is pushed with arguments from StartupWorkflow.
     if (!_hasAppliedRelativeFilters) {
       final args = ModalRoute.of(context)?.settings.arguments;
-      if (args is Map<String, String?>) {
-        _hasAppliedRelativeFilters = true;
-        final gender = args['target_gender'];
-        final state = args['state'];
-        final district = args['district'];
+      if (args is Map) {
+        final map = Map<String, dynamic>.from(args);
+        final gender = map['target_gender']?.toString() ?? map['targetGender']?.toString();
+        final state = map['state']?.toString();
+        final district = map['district']?.toString();
         if (gender != null || state != null || district != null) {
-          _currentFilters = FilterCriteria(
+          _hasAppliedRelativeFilters = true;
+          final newFilters = FilterCriteria(
             gender: gender,
             state: state,
             district: district,
           );
-          _isLocationOverridden = true;
+          if (_currentFilters != newFilters) {
+            _currentFilters = newFilters;
+            _isLocationOverridden = true;
+            if (_hasLoaded) {
+              _loadData(clearCache: true);
+            }
+          }
         }
       }
     }
@@ -158,6 +165,26 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
     _profileRepository = widget.profileRepository ?? ProfileRepository();
     _shareRepository = widget.shareRepository ?? ShareRepository();
     _usageRepository = widget.usageRepository ?? UsageRepository();
+
+    // 🎯 CRITICAL FIX: Synchronously initialize filters for Relative Browse Mode
+    if (LocalCacheService().isRelativeBrowseMode()) {
+      final intent = LocalCacheService().getRelativeIntent();
+      if (intent != null) {
+        final gender = intent['target_gender'] ?? intent['targetGender'];
+        final state = intent['state'];
+        final district = intent['district'];
+        if (gender != null || state != null || district != null) {
+          _currentFilters = FilterCriteria(
+            gender: gender,
+            state: state,
+            district: district,
+          );
+          _isLocationOverridden = true;
+          _hasAppliedRelativeFilters = true;
+          AppLogger.debug('HomeScreenInitialPage', '🎯 Relative Browse Filters pre-loaded in initState: $_currentFilters');
+        }
+      }
+    }
 
     _scrollController.addListener(_onScroll);
     WidgetsBinding.instance.addObserver(this);
@@ -439,9 +466,21 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
       // ProfileRepository.getProfiles now fetches it in parallel internally.
 
       // Get profiles with location fallback to user's own details if none selected AND not overridden
-      // 🚀 GUEST FIX: Skip location fallback for guests (they have no profile)
+      // 🚀 GUEST & RELATIVE FIX: For relative browse mode, always ensure relative filters are applied
       FilterCriteria applyFilters = _currentFilters;
-      if (!isGuest &&
+      if (LocalCacheService().isRelativeBrowseMode()) {
+        final intent = LocalCacheService().getRelativeIntent();
+        if (intent != null) {
+          final targetGender = intent['target_gender'] ?? intent['targetGender'];
+          final state = intent['state'];
+          final district = intent['district'];
+          applyFilters = applyFilters.copyWith(
+            gender: applyFilters.gender ?? targetGender,
+            state: applyFilters.state ?? state,
+            district: applyFilters.district ?? district,
+          );
+        }
+      } else if (!isGuest &&
           !_isLocationOverridden &&
           _currentFilters.state == null &&
           _currentFilters.district == null &&
@@ -846,28 +885,34 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
 
   String _getRelativeChipLabel() {
     final intent = LocalCacheService().getRelativeIntent();
-    final relation = intent?['relation'] ?? '';
-    final gender = intent?['target_gender'] ?? intent?['targetGender'] ?? '';
+    final relation = (intent?['relation'] ?? '').toString().toLowerCase();
+    final gender = (intent?['target_gender'] ?? intent?['targetGender'] ?? '').toString().toLowerCase();
+    final district = intent?['district'] ?? _currentFilters.district;
+    final state = intent?['state'] ?? _currentFilters.state;
 
     String relText = 'नातेवाईक';
-    if (relation.contains('Son')) {
-      relText = '👦 मुलासाठी';
-    } else if (relation.contains('Daughter')) {
-      relText = '👧 मुलीसाठी';
-    } else if (relation.contains('Sibling')) {
+    if (relation.contains('son')) {
+      relText = '👦 मुलासाठी (वधू शोध)';
+    } else if (relation.contains('daughter')) {
+      relText = '👧 मुलीसाठी (वर शोध)';
+    } else if (relation.contains('sibling')) {
       relText = '👫 भावा/बहिणीसाठी';
-    } else if (relation.contains('Relative')) {
+    } else if (relation.contains('relative') || relation.isNotEmpty) {
       relText = '🚩 नातेवाईकांसाठी';
+    } else if (gender == 'female' || gender == 'bride') {
+      relText = '👧 वधू (मुली)';
+    } else if (gender == 'male' || gender == 'groom') {
+      relText = '👦 वर (मुले)';
     }
 
-    String genderText = '';
-    if (gender == 'Bride') {
-      genderText = ' (मुली)';
-    } else if (gender == 'Groom') {
-      genderText = ' (मुले)';
+    String locText = '';
+    if (district != null && district.isNotEmpty) {
+      locText = ' • $district';
+    } else if (state != null && state.isNotEmpty) {
+      locText = ' • $state';
     }
 
-    return '$relText$genderText';
+    return '$relText$locText';
   }
 
   @override
@@ -900,133 +945,8 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
 
           if (LocalCacheService().isRelativeBrowseMode())
             SliverToBoxAdapter(
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
-                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF800020), Color(0xFFB30000)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF800020).withValues(alpha: 0.3),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.4.h),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(Icons.explore_rounded, size: 13, color: Colors.white),
-                              SizedBox(width: 1.w),
-                              Text(
-                                _getRelativeChipLabel(),
-                                style: TextStyle(
-                                  fontSize: 8.5.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Spacer(),
-                        InkWell(
-                          onTap: () async {
-                            await LocalCacheService().clearRelativeBrowseSession();
-                            if (!mounted) return;
-                            // ignore: use_build_context_synchronously
-                            Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
-                              AppRoutes.onboardingSelection,
-                              (route) => false,
-                            );
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 0.5.h),
-                            child: Text(
-                              'शोध बदल करा ✏️',
-                              style: TextStyle(
-                                fontSize: 8.5.sp,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white.withValues(alpha: 0.9),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 1.2.h),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'उमेदवाराचा स्वतःचा बायोडेटा उपलब्ध आहे का?',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10.5.sp,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                              SizedBox(height: 0.3.h),
-                              Text(
-                                'इतर बंजारा परिवारांना स्थळ दाखवण्यासाठी बायोडेटा बनवा.',
-                                style: TextStyle(
-                                  color: Colors.white.withValues(alpha: 0.85),
-                                  fontSize: 8.5.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(width: 2.w),
-                        ElevatedButton(
-                          onPressed: () async {
-                            await LocalCacheService().clearRelativeBrowseSession();
-                            await LocalCacheService().setGuestMode(false);
-                            if (!mounted) return;
-                            // ignore: use_build_context_synchronously
-                            await StartupWorkflow.navigateBasedOnStatus(context);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFFD700),
-                            foregroundColor: const Color(0xFF330000),
-                            elevation: 3,
-                            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: Text(
-                            'बायोडेटा बनवा ✨',
-                            style: TextStyle(
-                              fontSize: 9.5.sp,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+              child: RelativeBrowseHeroCard(
+                activeChipLabel: _getRelativeChipLabel(),
               ),
             ),
 
