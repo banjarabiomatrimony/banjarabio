@@ -7,6 +7,7 @@ import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/repositories/auth_repository.dart';
+import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/core/services/analytics_service.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
@@ -143,8 +144,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         onFailure: (error) => debugPrint('Auth callback warning: $error'),
       );
 
-      // 🚀 Logged in successfully -> Ensure guest mode is OFF
+      // 🚀 Logged in successfully -> Ensure guest mode is OFF and clear stale feed/profile cache
       await LocalCacheService().setGuestMode(false);
+      ProfileRepository().clearCache();
 
       final userId = AppSupabaseClient.currentUserId;
       if (userId != null) AnalyticsService.logLogin(userId);

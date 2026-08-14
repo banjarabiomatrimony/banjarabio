@@ -20,7 +20,6 @@ import 'package:banjarabio/core/repositories/share_repository.dart';
 import 'package:banjarabio/core/repositories/usage_repository.dart';
 import 'package:banjarabio/core/services/scroll_velocity_service.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
-import 'package:banjarabio/core/services/startup_orchestrator.dart';
 
 import 'package:banjarabio/core/services/deep_link_service.dart';
 import 'package:banjarabio/features/bookmarks/providers/bookmark_notifier.dart';
@@ -95,7 +94,6 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
   static const int _pageSize = 20;
   static const int _initialPageSize = 8; // 🚨 SIGNAL 3 FIX: Fewer cards on first paint
   String? _lastCreatedAt;
-  bool _hasLoaded = false;
 
   bool _isLocationOverridden = true;
   bool _isSwipeMode = false; // Default to Grid mode (user request)
@@ -150,9 +148,7 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
           if (_currentFilters != newFilters) {
             _currentFilters = newFilters;
             _isLocationOverridden = true;
-            if (_hasLoaded) {
-              _loadData(clearCache: true);
-            }
+            _loadData(clearCache: true);
           }
         }
       }
@@ -205,31 +201,16 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
       if (mounted) _handleRewardsDeepLink();
     };
 
-    // 🚀 Register Data Load with Orchestrator — FIRE AND FORGET
-    // Do NOT await _loadData(). Awaiting kept the orchestrator blocked for
-    // 1.7+ seconds, contributing to cumulative main-thread time that triggers
-    // Signal 3 on OEM Android skins. Data loads asynchronously and calls
-    // setState() when ready — the shimmer placeholder handles the UX.
-    StartupOrchestrator().registerTask(StartupPhase.interactive, () async {
-      if (!mounted || _hasLoaded) return;
-      _hasLoaded = true;
-      // Fire and forget — don't await
-      Future.wait([
-        _loadData(),
-        _loadDailyRewardStatus(),
-      ]).then((_) {
-        if (mounted) {
-          _checkInstagramPrompt();
-          _checkPostStartupRewards();
-        }
-      });
-    }, name: 'HomeScreenDataLoad');
+    // 🚀 ALWAYS DIRECTLY LOAD PROFILES ON SCREEN INITIALIZATION
+    _loadData();
+    _loadDailyRewardStatus().then((_) {
+      if (mounted) {
+        _checkInstagramPrompt();
+        _checkPostStartupRewards();
+      }
+    });
 
-    DeepLinkService().onRewardsTriggered = () {
-      if (mounted) _handleRewardsDeepLink();
-    };
-
-    // 🧬 SAFETY FALLBACK (10M DAU): Prevent infinite shimmer if orchestrator tasks hang
+    // 🧬 SAFETY FALLBACK (10M DAU): Prevent infinite shimmer if network is stalled
     _shimmerFallback = Timer(const Duration(seconds: 10), () {
       if (mounted && _isLoading && _profiles.isEmpty) {
         AppLogger.warn('HomeScreenInitialPage', '⚠️ HomeScreen: Shimmer safety fallback triggered');
