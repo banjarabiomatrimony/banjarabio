@@ -52,6 +52,7 @@ class ShareService {
     BuildContext context,
     ProfileModel profile, {
     String? customCaption,
+    String? referrerCode,
   }) async {
     try {
       // 1. Show a loading indicator (Premium feel)
@@ -70,7 +71,7 @@ class ShareService {
       // 2. Render the off-screen widget
       // We use a high pixel ratio for "super premium" quality
       final image = await _screenshotController.captureFromWidget(
-        ProfileShareCard(profile: profile),
+        ProfileShareCard(profile: profile, referrerCode: referrerCode),
         delay: const Duration(milliseconds: 200),
         pixelRatio: 3.0, // High density for WhatsApp
         context: context,
@@ -89,8 +90,13 @@ class ShareService {
 
       // 5. Share with WhatsApp specific intent (if possible) or generic share
       // Providing a clear caption for better click-through
+      final String refSuffix = (referrerCode != null && referrerCode.isNotEmpty) ? '_ref_$referrerCode' : '';
+      final String deepLinkUrl = 'https://play.google.com/store/apps/details?id=com.avishio.banjarabio&referrer=profile_${profile.id}$refSuffix';
+
       final String caption = customCaption ??
-          'Check out this bio on BanjaraBio Matrimony! 💍\nScan the QR code to view more details.';
+          '💍 Check out this bio on BanjaraBio Matrimony!\n'
+          '📲 View Profile & Install: $deepLinkUrl\n'
+          'Scan the QR code in the image to view more details.';
       
       await Share.shareXFiles(
         [XFile(file.path)],
@@ -111,6 +117,7 @@ class ShareService {
     BuildContext context,
     ProfileModel profile, {
     String? relationLabel,
+    String? referrerCode,
     bool directLaunchOnly = true,
   }) async {
     final String relationText = (relationLabel != null && relationLabel.isNotEmpty)
@@ -121,6 +128,9 @@ class ShareService {
         ? ' • गोत्र: ${profile.gotra}'
         : '';
 
+    final String refSuffix = (referrerCode != null && referrerCode.isNotEmpty) ? '_ref_$referrerCode' : '';
+    final String deepLinkUrl = 'https://play.google.com/store/apps/details?id=com.avishio.banjarabio&referrer=profile_${profile.id}$refSuffix';
+
     final String customCaption =
         'जय सेवालाल! 🚩 बंजाराबायो (BanjaraBio) वर $relationText साठी एक उत्तम बायो-डाटा स्थळ सापडले आहे:\n\n'
         '👤 नाव: ${profile.fullName}\n'
@@ -128,8 +138,9 @@ class ShareService {
         '🎓 शिक्षण: ${profile.education.isNotEmpty ? profile.education : "माहिती उपलब्ध"}\n'
         '💼 व्यवसाय: ${profile.profession.isNotEmpty ? profile.profession : "माहिती उपलब्ध"}\n'
         '📍 ठिकाण: ${profile.district ?? profile.state ?? ""}\n\n'
-        '📲 *प्रोफाईल व ॲप लिंक (View Profile):*\n'
-        'https://banjarabio.com/profile/${profile.id}';
+        '📲 *बायो-डाटा पाहण्यासाठी व ॲप डाऊनलोड करण्यासाठी लिंक:*\n'
+        '$deepLinkUrl\n\n'
+        '✨ (BanjaraBio Matrimony ॲपवर मोफत नोंदणी करा)';
 
     if (directLaunchOnly) {
       await launchWhatsAppDirectly(text: customCaption);
@@ -138,6 +149,7 @@ class ShareService {
         context,
         profile,
         customCaption: customCaption,
+        referrerCode: referrerCode,
       );
     }
   }

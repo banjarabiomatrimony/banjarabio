@@ -9,11 +9,18 @@ import 'package:banjarabio/core/theme/app_gradients.dart';
 /// for WhatsApp Status sharing.
 class ProfileShareCard extends StatelessWidget {
   final ProfileModel profile;
+  final String? referrerCode;
   
   const ProfileShareCard({
     super.key,
     required this.profile,
+    this.referrerCode,
   });
+
+  String get _qrData {
+    final refParam = (referrerCode != null && referrerCode!.isNotEmpty) ? '_ref_$referrerCode' : '';
+    return 'https://play.google.com/store/apps/details?id=com.avishio.banjarabio&referrer=profile_${profile.id}$refParam';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +203,7 @@ class ProfileShareCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: QrImageView(
-                      data: 'banjarabio://profile?id=${profile.id}',
+                      data: _qrData,
                       size: 220,
                       gapless: false,
                       embeddedImage: const AssetImage('assets/logo/BanjaraBio.png'),

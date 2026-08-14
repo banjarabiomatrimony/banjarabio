@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:banjarabio/core/services/telemetry_service.dart';
 
 /// Centralized logging service for BanjaraBio.
 ///
@@ -43,6 +44,7 @@ class AppLogger {
   }
 
   /// Error — includes optional error object and stack trace.
+  /// Automatically forwarded to TelemetryService (Sentry/Crashlytics).
   static void error(String tag, String message, [Object? error, StackTrace? stack]) {
     if (!kDebugMode && minLevel > _levelError) return;
     final buf = StringBuffer('🚨 [$tag] $message');
@@ -51,7 +53,19 @@ class AppLogger {
     if (stack != null && kDebugMode) {
       debugPrint(stack.toString());
     }
-    // TODO(P5-future): Send to Crashlytics/Sentry in release mode.
+
+    // Forward to TelemetryService for production observability (prevent recursion)
+    if (tag != 'TelemetryService') {
+      try {
+        TelemetryService.instance.logError(
+          error ?? message,
+          stackTrace: stack,
+          reason: '[$tag] $message',
+        );
+      } catch (_) {
+        // Ignore if telemetry is unavailable during early bootstrap
+      }
+    }
   }
 
   // ─── Internal ────────────────────────────────────────────────

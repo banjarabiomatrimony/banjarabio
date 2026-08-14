@@ -360,11 +360,15 @@ class AuthRepository {
     try {
       await _supabase.auth.signOut();
       await _sessionManager.clearSession();
-      SessionManager.instance.setCurrentProfile(null);
-      await LocalCacheService().clearOwnProfile();
-      await LocalCacheService().clearRelativeBrowseSession();
-      await LocalCacheService().setGuestMode(false);
-      await LocalCacheService().clearHomeFeed();
+      try {
+        SessionManager.instance.setCurrentProfile(null);
+        await LocalCacheService().clearOwnProfile();
+        await LocalCacheService().clearRelativeBrowseSession();
+        await LocalCacheService().setGuestMode(false);
+        await LocalCacheService().clearHomeFeed();
+      } catch (cacheErr) {
+        AppLogger.warn('AuthRepository', 'LocalCache clear during signOut bypassed: $cacheErr');
+      }
       return BackendResponse.success(null);
     } catch (e) {
       AppLogger.error('AuthRepository', 'AuthRepository.signOut: Error = $e');

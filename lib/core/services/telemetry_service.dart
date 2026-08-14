@@ -1,12 +1,12 @@
 import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 
 /// A singleton service to handle centralized logging and error reporting.
 /// This can be easily connected to Sentry, Firebase Crashlytics, or other telemetry tools.
 class TelemetryService {
-  static TelemetryService _instance = _initInstance();
+  static TelemetryService instance = _initInstance();
 
   static TelemetryService _initInstance() {
     try {
@@ -20,11 +20,7 @@ class TelemetryService {
   }
 
   factory TelemetryService() {
-    return _instance;
-  }
-  
-  static set instance(TelemetryService service) {
-    _instance = service;
+    return instance;
   }
 
   TelemetryService.internal();
@@ -33,11 +29,13 @@ class TelemetryService {
   /// Log a non-fatal error to telemetry.
   void logError(dynamic error, {StackTrace? stackTrace, String? reason}) {
     // Local debug logging
-    AppLogger.error('TelemetryService', '🚨 [TELEMETRY ERROR]: $error');
-    AppLogger.error('TelemetryService', '🔍 [ERROR TYPE]: ${error.runtimeType}');
-    AppLogger.error('TelemetryService', '🔍 [ERROR DETAILS]: ${error.toString()}');
-    if (reason != null) AppLogger.debug('TelemetryService', 'Context: $reason');
-    if (stackTrace != null) AppLogger.debug('TelemetryService', stackTrace.toString());
+    if (kDebugMode) {
+      debugPrint('🚨 [TelemetryService] [TELEMETRY ERROR]: $error');
+      debugPrint('🔍 [TelemetryService] [ERROR TYPE]: ${error.runtimeType}');
+      debugPrint('🔍 [TelemetryService] [ERROR DETAILS]: ${error.toString()}');
+      if (reason != null) debugPrint('🔍 [TelemetryService] Context: $reason');
+      if (stackTrace != null) debugPrint(stackTrace.toString());
+    }
 
     // 🚀 Route to Sentry SDK for production observability
     try {

@@ -99,6 +99,26 @@ class DeepLinkService {
           await _navigateToProfile(pid);
           return;
         }
+      } else if (qPromo.startsWith('profile_')) {
+        // e.g. profile_UUID or profile_UUID_ref_REFERRALCODE
+        final content = qPromo.replaceFirst('profile_', '');
+        if (content.contains('_ref_')) {
+          final parts = content.split('_ref_');
+          final pid = parts.first;
+          final refCode = parts.last;
+          if (refCode.isNotEmpty) {
+            await _handleInvite(refCode);
+          }
+          if (pid.isNotEmpty) {
+            await _navigateToProfile(pid);
+            return;
+          }
+        } else {
+          if (content.isNotEmpty) {
+            await _navigateToProfile(content);
+            return;
+          }
+        }
       } else if (qPromo.startsWith('invite/')) {
         await _handleInvite(qPromo.split('invite/').last);
         return;
@@ -120,6 +140,11 @@ class DeepLinkService {
     // 1. Profile Routing
     // e.g. banjarabio://profile/123, banjarabio://profile?id=123, https://banjarabio.com/profile/123, https://banjarabio.com/profile?id=123
     if ((isCustomScheme && uri.host == 'profile') || (isWebDomain && path.startsWith('/profile')) || path.startsWith('/profile')) {
+      final refCode = queryParams['ref'] ?? queryParams['referrer_code'];
+      if (refCode != null && refCode.isNotEmpty) {
+        await _handleInvite(refCode);
+      }
+
       String? profileId = queryParams['id'];
       if (profileId == null || profileId.isEmpty) {
         final segments = uri.pathSegments;

@@ -81,6 +81,7 @@ class ShareRepository extends IsolateFirstRepository {
     String? recipientName, // For metadata
     String? recipientRelation, // For metadata
     String? profileName, // For share message
+    String? referrerCode, // For viral install & referrer attribution
   }) async {
     try {
       // 1. Validation
@@ -113,15 +114,16 @@ class ShareRepository extends IsolateFirstRepository {
       );
 
       // 3. Platform Action (WhatsApp / System Dialog)
-      // Custom domain deep link with fallback redirect to Play Store for direct profile access.
-      final profileLink = 'https://banjarabio.com/profile/$sharedProfileId';
+      // Custom domain deep link with fallback redirect to Play Store for direct profile access & referral tracking.
+      final refSuffix = (referrerCode != null && referrerCode.isNotEmpty) ? '_ref_$referrerCode' : '';
+      final profileLink = 'https://play.google.com/store/apps/details?id=com.avishio.banjarabio&referrer=profile_$sharedProfileId$refSuffix';
       final userName = profileName != null && profileName.isNotEmpty ? profileName : 'BanjaraBio User';
 
       final shareMessage = '''
 🚩 *BanjaraBio Matrimony Profile* 🚩
 बंजारा समाजातील स्थळ पहा: *$userName*
 
-📲 *प्रोफाईल व ॲप लिंक (View Profile):*
+📲 *बायो-डाटा पाहण्यासाठी व ॲप डाऊनलोड करण्यासाठी लिंक:*
 $profileLink
 '''.trim();
 
