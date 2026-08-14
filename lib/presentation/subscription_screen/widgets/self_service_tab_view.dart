@@ -1,3 +1,5 @@
+import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
@@ -18,6 +20,7 @@ class SelfServiceTabView extends StatelessWidget {
   final bool isProcessingPayment;
   final Animation<double> shimmerAnimation;
   final Function(PlanType) onUpgrade;
+  final bool isBvsVerified;
 
   const SelfServiceTabView({
     super.key,
@@ -27,14 +30,15 @@ class SelfServiceTabView extends StatelessWidget {
     required this.isProcessingPayment,
     required this.shimmerAnimation,
     required this.onUpgrade,
+    this.isBvsVerified = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     
-    // Get defined self-service plans from config
-    final plans = SubscriptionConfig.getSelfServicePlans();
+    // Get defined self-service plans from config based on BVS verification
+    final plans = SubscriptionConfig.getSelfServicePlans(isBvsVerified: isBvsVerified);
 
     // Trial status
     final profile = SessionManager.instance.currentProfile;
@@ -55,6 +59,14 @@ class SelfServiceTabView extends StatelessWidget {
               !isInTrial &&
               !(currentSubscription?.isPremium ?? false))
             _buildTrialExpiredBanner(theme),
+
+          // ── BVS Verification Callout / Badge ──
+          if (isBvsVerified)
+            _buildBvsVerifiedBadge(context, theme)
+          else
+            _buildBvsDiscountCallout(context, theme),
+
+          SizedBox(height: 2.h),
 
           // Offer Banner
           const OfferBannerWidget(),
@@ -270,6 +282,200 @@ class SelfServiceTabView extends StatelessWidget {
                 fontSize: AppTypography.bodySmall,
                 fontWeight: FontWeight.w500,
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // BVS Banners
+  // ─────────────────────────────────────────────────────────────────────────
+
+  Widget _buildBvsDiscountCallout(BuildContext context, ThemeData theme) {
+    final l10n = AppLocalizations.of(context);
+    return Container(
+      margin: EdgeInsets.only(bottom: 2.h),
+      padding: EdgeInsets.all(4.w),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        gradient: const LinearGradient(
+          colors: [
+            Color(0xFF8B1A2E), // BVS Crimson
+            Color(0xFFB71C1C),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF8B1A2E).withValues(alpha: 0.35),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+        border: Border.all(
+          color: const Color(0xFFFFD700).withValues(alpha: 0.6),
+          width: 1.5,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(3),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.amberAccent,
+                    width: 1.5,
+                  ),
+                ),
+                child: ClipOval(
+                  child: Image.asset(
+                    'assets/images/bvs_logo_gold.png',
+                    width: 28,
+                    height: 28,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              SizedBox(width: 3.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          l10n?.bvsTitle ?? 'बणजारा विरासत संघ',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: 2.w),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: Colors.amber,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: const Text(
+                            'VIP',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      l10n?.bvsSubsidyCardSubtitle ?? 'विशेष सवलत: वार्षिक प्लॅन फक्त ₹२०० मध्ये!',
+                      style: TextStyle(
+                        color: Colors.amber.shade200,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 1.5.h),
+          Text(
+            l10n?.bvsSpecialDiscountBanner ??
+                'बणजारा विरासत संघ सदस्य आहात का? BVS कार्ड पडताळणी करा आणि मिळवा वार्षिक प्लॅन फक्त ₹२०० मध्ये!',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 12.5,
+              height: 1.35,
+            ),
+          ),
+          SizedBox(height: 1.5.h),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () {
+                Navigator.pushNamed(context, AppRoutes.communityIdVerification);
+              },
+              icon: const Icon(Icons.badge_outlined, size: 18),
+              label: Text(
+                l10n?.bvsUploadCardButton ?? '🪪 BVS कार्ड अपलोड करा (Upload BVS Card)',
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12.5),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFFFD700),
+                foregroundColor: const Color(0xFF5A000F),
+                elevation: 2,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBvsVerifiedBadge(BuildContext context, ThemeData theme) {
+    final l10n = AppLocalizations.of(context);
+    return Container(
+      margin: EdgeInsets.only(bottom: 2.h),
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        gradient: LinearGradient(
+          colors: [
+            const Color(0xFF1B5E20),
+            Colors.green.shade700,
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.green.withValues(alpha: 0.3),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.verified_user_rounded, color: Colors.amberAccent, size: 28),
+          SizedBox(width: 3.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n?.bvsVerifiedActiveBadge ?? '👑 BVS प्रमाणित सदस्य सवलत सक्रिय!',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13.5,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  l10n?.bvsVerifiedActiveDesc ??
+                      'आपल्यासाठी मासिक प्लॅन ₹२० आणि वार्षिक सबस्क्रिप्शन फक्त ₹२०० मध्ये उपलब्ध आहे.',
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 11.5,
+                  ),
+                ),
+              ],
             ),
           ),
         ],

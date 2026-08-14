@@ -492,6 +492,135 @@ class AppLocalizationsTe extends AppLocalizations {
       'కొత్త క్యూరేటెడ్ మ్యాచ్‌ల కోసం\\nరేపు తిరిగి రండి!';
 
   @override
+  String get bvsMembershipCard => 'బంజారా విరాసత్ సంఘ్ గుర్తింపు కార్డు';
+
+  @override
+  String get bvsMemberId => 'BVS సభ్యత్వ సంఖ్య (ఉదా: 405812)';
+
+  @override
+  String get uploadBvsCardPrompt =>
+      'మీ బంజారా విరాసత్ సంఘ్ (BVS) గుర్తింపు కార్డును అప్‌లోడ్ చేయండి';
+
+  @override
+  String get bvsSpecialDiscountBanner =>
+      'మీరు బంజారా విరాసత్ సంఘ్ సభ్యులా? BVS కార్డును ధృవీకరించి వార్షిక ప్లాన్‌ను కేవలం ₹200 కే పొందండి!';
+
+  @override
+  String get joinBvsNow => 'BVS లో చేరండి (ఇక్కడ నమోదు చేసుకోండి)';
+
+  @override
+  String get bvsVerifiedSpecialPlan => 'BVS సభ్యుల ప్రత్యేక ప్లాన్';
+
+  @override
+  String get bvsTitle => 'బంజారా విరాసత్ సంఘ్';
+
+  @override
+  String get bvsConceptSubtitle =>
+      'సంకల్పం: గౌరవనీయులు శ్రీ సంజయ్‌భావూ రాథోడ్\nమంత్రి, మహారాష్ట్ర ప్రభుత్వం';
+
+  @override
+  String get bvsMovementDesc =>
+      'బంజారా సమాజం యొక్క ఐక్యత మరియు భవిష్యత్తును బలోపేతం చేసే చారిత్రాత్మక ఉద్యమం.';
+
+  @override
+  String get bvsOfficialEmblems => 'అధికారిక BVS చిహ్నాలు';
+
+  @override
+  String get bvsUnityEmblemTitle => 'ఐక్యతా చిహ్నం';
+
+  @override
+  String get bvsUnityEmblemDesc => 'చేతుల ఐక్యతా శృంఖల & సంప్రదాయ ఎంబ్రాయిడరీ';
+
+  @override
+  String get bvsHeritageEmblemTitle => 'వారసత్వ ముద్ర';
+
+  @override
+  String get bvsHeritageEmblemDesc => 'పోహ్రాదేవి & 12+ కోట్ల సమాజ ఆత్మగౌరవం';
+
+  @override
+  String get bvsSubsidyCardTitle => 'BVS సభ్యులకు ప్రత్యేక తగ్గింపు!';
+
+  @override
+  String get bvsSubsidyCardSubtitle =>
+      'BanjaraBio లో మ్యాట్రిమోనీ సబ్‌స్క్రిప్షన్‌లో భారీ ఆదా!';
+
+  @override
+  String get bvsAnnualPlanLabel => 'వార్షిక ప్లాన్';
+
+  @override
+  String get bvsMonthlyPlanLabel => 'నెలవారీ ప్లాన్';
+
+  @override
+  String get bvsAnnualPrice => '₹200 / సంవత్సరం';
+
+  @override
+  String get bvsMonthlyPrice => '₹20 / నెల';
+
+  @override
+  String get bvsVerifiedActiveBadge =>
+      '👑 BVS ధృవీకరించబడిన సభ్యుల తగ్గింపు ప్రారంభమైంది!';
+
+  @override
+  String get bvsVerifiedActiveDesc =>
+      'మీ కోసం నెలవారీ ప్లాన్ ₹20 మరియు వార్షిక ప్లాన్ ₹200 అందుబాటులో ఉంది.';
+
+  @override
+  String get bvsHowToJoinTitle =>
+      'BVS సభ్యులు ఎలా కావాలి & తగ్గింపు ఎలా పొందాలి?';
+
+  @override
+  String get bvsStep1Title => 'ఆన్‌లైన్ రిజిస్ట్రేషన్ చేసుకోండి';
+
+  @override
+  String get bvsStep1Desc =>
+      'అధికారిక BVS పోర్టల్‌లో మీ వివరాలను నమోదు చేయండి.';
+
+  @override
+  String get bvsStep2Title => 'సభ్యత్వ కార్డు పొందండి';
+
+  @override
+  String get bvsStep2Desc =>
+      'మీ అధికారిక డిజిటల్ ID మరియు సభ్యత్వ సంఖ్యను పొందండి.';
+
+  @override
+  String get bvsStep3Title => 'BanjaraBio లో కార్డు అప్‌లోడ్ చేయండి';
+
+  @override
+  String get bvsStep3Desc =>
+      'BVS కార్డును జోడించి ₹200/సంవత్సరం తగ్గింపు ప్లాన్‌ను సక్రియం చేయండి.';
+
+  @override
+  String get bvsWhatsAppInviteTitle => 'WhatsApp ఆటోమేషన్ ఆహ్వానం';
+
+  @override
+  String get bvsShareOnWhatsApp => 'WhatsApp లో షేర్ చేయండి';
+
+  @override
+  String get bvsCopyMessageToast => '🚩 BVS ఆహ్వాన సందేశం కాపీ చేయబడింది!';
+
+  @override
+  String get bvsJoinNowButton => 'ఈరోజే BVS లో చేరండి (Join Now)';
+
+  @override
+  String get bvsJoinCardSubtitle =>
+      '⚡ BVS పోర్టల్‌లో నమోదు చేసుకోండి ₹200/సంవత్సరం తగ్గింపు పొందండి';
+
+  @override
+  String get bvsUploadCardButton =>
+      'BVS కార్డు అప్‌లోడ్ చేయండి (తగ్గింపు పొందండి)';
+
+  @override
+  String get bvsUploadCardPromptSubtitle =>
+      'BVS సభ్యత్వ కార్డు ఫోటో అప్‌లోడ్ చేయండి';
+
+  @override
+  String get bvsCardSelected => 'కార్డు ఎంపిక చేయబడింది';
+
+  @override
+  String get bvsNotRegisteredYet =>
+      'ఇంకా BVS సభ్యులు కాలేదా? ఇక్కడ నమోదు చేసుకోండి »';
+
+  @override
   String get communityId => 'Community ID';
 
   @override

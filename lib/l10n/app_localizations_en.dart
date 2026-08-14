@@ -488,6 +488,132 @@ class AppLocalizationsEn extends AppLocalizations {
       'Come back tomorrow for\\nnew curated matches!';
 
   @override
+  String get bvsMembershipCard => 'BVS Membership Card';
+
+  @override
+  String get bvsMemberId => 'BVS Member ID No (e.g. 405812)';
+
+  @override
+  String get uploadBvsCardPrompt =>
+      'Upload your Banjara Virasat Sangh (BVS) Membership Card';
+
+  @override
+  String get bvsSpecialDiscountBanner =>
+      'Are you a Banjara Virasat Sangh member? Upload your BVS card to unlock the Annual Plan at just ₹200!';
+
+  @override
+  String get joinBvsNow => 'Join BVS (Register Here)';
+
+  @override
+  String get bvsVerifiedSpecialPlan => 'BVS Member Special Plan';
+
+  @override
+  String get bvsTitle => 'Banjara Virasat Sangh';
+
+  @override
+  String get bvsConceptSubtitle =>
+      'Initiative: Hon. Shri Sanjaybhau Rathod\nMinister, Govt. of Maharashtra';
+
+  @override
+  String get bvsMovementDesc =>
+      'A historic movement to strengthen the unity and future of the Banjara community.';
+
+  @override
+  String get bvsOfficialEmblems => 'Official BVS Emblems';
+
+  @override
+  String get bvsUnityEmblemTitle => 'Unity Emblem';
+
+  @override
+  String get bvsUnityEmblemDesc =>
+      'Hands linked in unity & traditional embroidery';
+
+  @override
+  String get bvsHeritageEmblemTitle => 'Heritage Seal';
+
+  @override
+  String get bvsHeritageEmblemDesc => 'Pohradevi & 12+ Crore community pride';
+
+  @override
+  String get bvsSubsidyCardTitle => 'Special Discount for BVS Members!';
+
+  @override
+  String get bvsSubsidyCardSubtitle =>
+      'Huge savings on BanjaraBio Matrimony Subscriptions!';
+
+  @override
+  String get bvsAnnualPlanLabel => 'Annual Plan';
+
+  @override
+  String get bvsMonthlyPlanLabel => 'Monthly Plan';
+
+  @override
+  String get bvsAnnualPrice => '₹200 / Year';
+
+  @override
+  String get bvsMonthlyPrice => '₹20 / Month';
+
+  @override
+  String get bvsVerifiedActiveBadge =>
+      '👑 BVS Verified Member Discount Active!';
+
+  @override
+  String get bvsVerifiedActiveDesc =>
+      'Monthly plan at ₹20 and Annual plan at ₹200 are active for you.';
+
+  @override
+  String get bvsHowToJoinTitle => 'How to Join BVS & Unlock Discounts?';
+
+  @override
+  String get bvsStep1Title => 'Register Online';
+
+  @override
+  String get bvsStep1Desc => 'Enter your details on the official BVS portal.';
+
+  @override
+  String get bvsStep2Title => 'Get Membership Card';
+
+  @override
+  String get bvsStep2Desc =>
+      'Receive your official digital ID card and Member ID.';
+
+  @override
+  String get bvsStep3Title => 'Upload Card on BanjaraBio';
+
+  @override
+  String get bvsStep3Desc =>
+      'Upload BVS card to activate ₹200/yr subsidized plan.';
+
+  @override
+  String get bvsWhatsAppInviteTitle => 'WhatsApp Automation Invite';
+
+  @override
+  String get bvsShareOnWhatsApp => 'Share on WhatsApp';
+
+  @override
+  String get bvsCopyMessageToast => '🚩 BVS invite message copied!';
+
+  @override
+  String get bvsJoinNowButton => 'Join BVS Today (Join Now)';
+
+  @override
+  String get bvsJoinCardSubtitle =>
+      '⚡ Register on BVS portal to get ₹200/year discount';
+
+  @override
+  String get bvsUploadCardButton => 'Upload BVS Card (Get Discount)';
+
+  @override
+  String get bvsUploadCardPromptSubtitle =>
+      'Upload photo of BVS Membership Card';
+
+  @override
+  String get bvsCardSelected => 'Card Selected';
+
+  @override
+  String get bvsNotRegisteredYet => 'Not a BVS member yet? Register here »';
+
+  @override
   String get communityId => 'Community ID';
 
   @override

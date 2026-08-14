@@ -254,7 +254,7 @@ class HomeFeedHeader extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 2.w),
-              // Pill 2: Social / Support (WhatsApp, Instagram)
+              // Pill 2: BVS Initiative & Social / Support (WhatsApp, Instagram)
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.12),
@@ -265,6 +265,35 @@ class HomeFeedHeader extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    // BVS Gateway Icon (Icon-only matching WhatsApp & Instagram)
+                    InkWell(
+                      onTap: () => Navigator.pushNamed(context, AppRoutes.bvsGateway),
+                      borderRadius: BorderRadius.circular(20),
+                      child: Padding(
+                        padding: EdgeInsets.all(0.6.h),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.amberAccent, width: 1.2),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.25),
+                                blurRadius: 4,
+                              ),
+                            ],
+                          ),
+                          child: ClipOval(
+                            child: Image.asset(
+                              'assets/images/bvs_logo_gold.png',
+                              width: 18,
+                              height: 18,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 1.w),
                     // WhatsApp Support
                     InkWell(
                       key: TourKeys.whatsappKey,

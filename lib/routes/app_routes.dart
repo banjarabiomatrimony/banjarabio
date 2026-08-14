@@ -43,11 +43,15 @@ import 'package:banjarabio/presentation/initial_language_screen/initial_language
 import 'package:banjarabio/presentation/onboarding_selection_screen/onboarding_selection_screen.dart';
 import 'package:banjarabio/presentation/user_type_selection_screen/user_type_selection_screen.dart';
 import 'package:banjarabio/notification/widgets/activity_hub_screen.dart';
+import 'package:banjarabio/presentation/bvs_gateway_screen/bvs_gateway_screen.dart';
+import 'package:banjarabio/presentation/bvs_gateway_screen/bvs_web_view_screen.dart';
 
 class AppRoutes {
   static const String initial = '/';
   static const String splash = '/';
   static const String userTypeSelection = '/user-type-selection';
+  static const String bvsGateway = '/bvs-gateway';
+  static const String bvsWebView = '/bvs-web-view';
   static const String profileDetail = '/profile-detail-screen';
   static const String sharedProfiles = '/shared-profiles-screen';
   static const String authentication = '/authentication-screen';
@@ -140,6 +144,11 @@ class AppRoutes {
     },
     relativeIntake: (context) => const RelativeIntakeScreen(),
     userTypeSelection: (context) => const UserTypeSelectionScreen(),
+    bvsGateway: (context) => const BvsGatewayScreen(),
+    bvsWebView: (context) {
+      final url = ModalRoute.of(context)?.settings.arguments as String?;
+      return BvsWebViewScreen(initialUrl: url);
+    },
   };
 
   /// Generates premium animated routes for named navigation.

@@ -407,11 +407,11 @@ class _TrustScoreScreenState
         ),
         _buildVerificationItem(
           theme,
-          title: AppLocalizations.of(context)?.communityVerification ?? 'Community Verification',
+          title: AppLocalizations.of(context)?.bvsMembershipCard ?? 'BVS Membership Card',
           points: 15,
           itemKey: 'communityId',
-          iconName: 'diversity_3',
-          color: Colors.teal,
+          iconName: 'badge',
+          color: const Color(0xFF8B1A2E),
         ),
         _buildVerificationItem(
           theme,

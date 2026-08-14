@@ -980,6 +980,234 @@ abstract class AppLocalizations {
   /// **'Come back tomorrow for\\nnew curated matches!'**
   String get comeBackTomorrowFornnewCuratedMatches;
 
+  /// No description provided for @bvsMembershipCard.
+  ///
+  /// In en, this message translates to:
+  /// **'BVS Membership Card'**
+  String get bvsMembershipCard;
+
+  /// No description provided for @bvsMemberId.
+  ///
+  /// In en, this message translates to:
+  /// **'BVS Member ID No (e.g. 405812)'**
+  String get bvsMemberId;
+
+  /// No description provided for @uploadBvsCardPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload your Banjara Virasat Sangh (BVS) Membership Card'**
+  String get uploadBvsCardPrompt;
+
+  /// No description provided for @bvsSpecialDiscountBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you a Banjara Virasat Sangh member? Upload your BVS card to unlock the Annual Plan at just ₹200!'**
+  String get bvsSpecialDiscountBanner;
+
+  /// No description provided for @joinBvsNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Join BVS (Register Here)'**
+  String get joinBvsNow;
+
+  /// No description provided for @bvsVerifiedSpecialPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'BVS Member Special Plan'**
+  String get bvsVerifiedSpecialPlan;
+
+  /// No description provided for @bvsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Banjara Virasat Sangh'**
+  String get bvsTitle;
+
+  /// No description provided for @bvsConceptSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Initiative: Hon. Shri Sanjaybhau Rathod\nMinister, Govt. of Maharashtra'**
+  String get bvsConceptSubtitle;
+
+  /// No description provided for @bvsMovementDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'A historic movement to strengthen the unity and future of the Banjara community.'**
+  String get bvsMovementDesc;
+
+  /// No description provided for @bvsOfficialEmblems.
+  ///
+  /// In en, this message translates to:
+  /// **'Official BVS Emblems'**
+  String get bvsOfficialEmblems;
+
+  /// No description provided for @bvsUnityEmblemTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unity Emblem'**
+  String get bvsUnityEmblemTitle;
+
+  /// No description provided for @bvsUnityEmblemDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Hands linked in unity & traditional embroidery'**
+  String get bvsUnityEmblemDesc;
+
+  /// No description provided for @bvsHeritageEmblemTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Heritage Seal'**
+  String get bvsHeritageEmblemTitle;
+
+  /// No description provided for @bvsHeritageEmblemDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Pohradevi & 12+ Crore community pride'**
+  String get bvsHeritageEmblemDesc;
+
+  /// No description provided for @bvsSubsidyCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Special Discount for BVS Members!'**
+  String get bvsSubsidyCardTitle;
+
+  /// No description provided for @bvsSubsidyCardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Huge savings on BanjaraBio Matrimony Subscriptions!'**
+  String get bvsSubsidyCardSubtitle;
+
+  /// No description provided for @bvsAnnualPlanLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual Plan'**
+  String get bvsAnnualPlanLabel;
+
+  /// No description provided for @bvsMonthlyPlanLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Plan'**
+  String get bvsMonthlyPlanLabel;
+
+  /// No description provided for @bvsAnnualPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'₹200 / Year'**
+  String get bvsAnnualPrice;
+
+  /// No description provided for @bvsMonthlyPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'₹20 / Month'**
+  String get bvsMonthlyPrice;
+
+  /// No description provided for @bvsVerifiedActiveBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'👑 BVS Verified Member Discount Active!'**
+  String get bvsVerifiedActiveBadge;
+
+  /// No description provided for @bvsVerifiedActiveDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly plan at ₹20 and Annual plan at ₹200 are active for you.'**
+  String get bvsVerifiedActiveDesc;
+
+  /// No description provided for @bvsHowToJoinTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How to Join BVS & Unlock Discounts?'**
+  String get bvsHowToJoinTitle;
+
+  /// No description provided for @bvsStep1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Register Online'**
+  String get bvsStep1Title;
+
+  /// No description provided for @bvsStep1Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your details on the official BVS portal.'**
+  String get bvsStep1Desc;
+
+  /// No description provided for @bvsStep2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Membership Card'**
+  String get bvsStep2Title;
+
+  /// No description provided for @bvsStep2Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive your official digital ID card and Member ID.'**
+  String get bvsStep2Desc;
+
+  /// No description provided for @bvsStep3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Card on BanjaraBio'**
+  String get bvsStep3Title;
+
+  /// No description provided for @bvsStep3Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload BVS card to activate ₹200/yr subsidized plan.'**
+  String get bvsStep3Desc;
+
+  /// No description provided for @bvsWhatsAppInviteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp Automation Invite'**
+  String get bvsWhatsAppInviteTitle;
+
+  /// No description provided for @bvsShareOnWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Share on WhatsApp'**
+  String get bvsShareOnWhatsApp;
+
+  /// No description provided for @bvsCopyMessageToast.
+  ///
+  /// In en, this message translates to:
+  /// **'🚩 BVS invite message copied!'**
+  String get bvsCopyMessageToast;
+
+  /// No description provided for @bvsJoinNowButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Join BVS Today (Join Now)'**
+  String get bvsJoinNowButton;
+
+  /// No description provided for @bvsJoinCardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'⚡ Register on BVS portal to get ₹200/year discount'**
+  String get bvsJoinCardSubtitle;
+
+  /// No description provided for @bvsUploadCardButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload BVS Card (Get Discount)'**
+  String get bvsUploadCardButton;
+
+  /// No description provided for @bvsUploadCardPromptSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload photo of BVS Membership Card'**
+  String get bvsUploadCardPromptSubtitle;
+
+  /// No description provided for @bvsCardSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Card Selected'**
+  String get bvsCardSelected;
+
+  /// No description provided for @bvsNotRegisteredYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a BVS member yet? Register here »'**
+  String get bvsNotRegisteredYet;
+
   /// No description provided for @communityId.
   ///
   /// In en, this message translates to:

@@ -489,6 +489,131 @@ class AppLocalizationsHi extends AppLocalizations {
       'नए क्यूरेटेड मैचों के लिए कल वापस आएँ!';
 
   @override
+  String get bvsMembershipCard => 'बणजारा विरासत संघ पहचान पत्र';
+
+  @override
+  String get bvsMemberId => 'BVS सदस्य संख्या (उदा. 405812)';
+
+  @override
+  String get uploadBvsCardPrompt =>
+      'अपना बणजारा विरासत संघ (BVS) सदस्यता कार्ड अपलोड करें';
+
+  @override
+  String get bvsSpecialDiscountBanner =>
+      'क्या आप बणजारा विरासत संघ के सदस्य हैं? BVS कार्ड अपलोड करें और पाएं वार्षिक प्लान केवल ₹200 में!';
+
+  @override
+  String get joinBvsNow => 'BVS सदस्य बनें (यहां रजिस्टर करें)';
+
+  @override
+  String get bvsVerifiedSpecialPlan => 'BVS सदस्य विशेष प्लान';
+
+  @override
+  String get bvsTitle => 'बणजारा विरासत संघ';
+
+  @override
+  String get bvsConceptSubtitle =>
+      'संकल्पना: माननीय श्री संजयभाऊ राठौड़\nमंत्री, महाराष्ट्र सरकार';
+
+  @override
+  String get bvsMovementDesc =>
+      'बंजारा समाज की एकता और भविष्य को मजबूत करने का एक ऐतिहासिक आंदोलन।';
+
+  @override
+  String get bvsOfficialEmblems => 'आधिकारिक BVS प्रतीक';
+
+  @override
+  String get bvsUnityEmblemTitle => 'एकता मुद्रा';
+
+  @override
+  String get bvsUnityEmblemDesc => 'हाथों की श्रृंखला और बंजारा कढ़ाई';
+
+  @override
+  String get bvsHeritageEmblemTitle => 'विरासत मुद्रा';
+
+  @override
+  String get bvsHeritageEmblemDesc => 'पोहरादेवी और १२+ करोड़ समाज की अस्मिता';
+
+  @override
+  String get bvsSubsidyCardTitle => 'BVS सदस्यों के लिए विशेष छूट!';
+
+  @override
+  String get bvsSubsidyCardSubtitle =>
+      'BanjaraBio पर मैट्रिमोनी सब्सक्रिप्शन में भारी बचत!';
+
+  @override
+  String get bvsAnnualPlanLabel => 'वार्षिक प्लान';
+
+  @override
+  String get bvsMonthlyPlanLabel => 'मासिक प्लान';
+
+  @override
+  String get bvsAnnualPrice => '₹२०० / वर्ष';
+
+  @override
+  String get bvsMonthlyPrice => '₹२० / महीना';
+
+  @override
+  String get bvsVerifiedActiveBadge => '👑 BVS प्रमाणित सदस्य छूट सक्रिय!';
+
+  @override
+  String get bvsVerifiedActiveDesc =>
+      'आपके लिए मासिक प्लान ₹२० और वार्षिक सब्सक्रिप्शन सिर्फ ₹२०० में उपलब्ध है।';
+
+  @override
+  String get bvsHowToJoinTitle => 'BVS सदस्य कैसे बनें और छूट कैसे पाएं?';
+
+  @override
+  String get bvsStep1Title => 'ऑनलाइन पंजीकरण करें';
+
+  @override
+  String get bvsStep1Desc => 'BVS पोर्टल पर अपना विवरण दर्ज करें।';
+
+  @override
+  String get bvsStep2Title => 'मेंबरशिप कार्ड प्राप्त करें';
+
+  @override
+  String get bvsStep2Desc =>
+      'अपना आधिकारिक BVS मेंबर आईडी और डिजिटल पहचान पत्र प्राप्त करें।';
+
+  @override
+  String get bvsStep3Title => 'BanjaraBio पर कार्ड अपलोड करें';
+
+  @override
+  String get bvsStep3Desc =>
+      'BVS कार्ड जोड़कर ₹२००/वर्ष छूट प्लान सक्रिय करें।';
+
+  @override
+  String get bvsWhatsAppInviteTitle => 'WhatsApp ऑटोमेशन आमंत्रण';
+
+  @override
+  String get bvsShareOnWhatsApp => 'WhatsApp पर शेयर करें';
+
+  @override
+  String get bvsCopyMessageToast => '🚩 BVS आमंत्रण संदेश कॉपी किया गया!';
+
+  @override
+  String get bvsJoinNowButton => 'आज ही BVS के सदस्य बनें (Join Now)';
+
+  @override
+  String get bvsJoinCardSubtitle =>
+      '⚡ BVS पोर्टल पर रजिस्टर करें और ₹२००/वर्ष छूट पाएं';
+
+  @override
+  String get bvsUploadCardButton => 'BVS कार्ड अपलोड करें (छूट पाएं)';
+
+  @override
+  String get bvsUploadCardPromptSubtitle =>
+      'BVS मेंबरशिप कार्ड फोटो अपलोड करें';
+
+  @override
+  String get bvsCardSelected => 'कार्ड चुना गया';
+
+  @override
+  String get bvsNotRegisteredYet =>
+      'अभी तक BVS सदस्य नहीं हैं? यहाँ पंजीकरण करें »';
+
+  @override
   String get communityId => 'Community ID';
 
   @override

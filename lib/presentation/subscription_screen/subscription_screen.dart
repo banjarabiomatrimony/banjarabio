@@ -13,13 +13,14 @@ import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/widgets/shimmer_widget.dart';
 import 'package:banjarabio/core/models/coupon_model.dart';
 import 'package:banjarabio/core/repositories/coupon_repository.dart';
+import 'package:banjarabio/core/repositories/trust_score_repository.dart';
 import 'package:banjarabio/widgets/glassmorphism_container.dart';
 import 'package:banjarabio/presentation/subscription_screen/widgets/self_service_tab_view.dart';
 import 'package:banjarabio/presentation/subscription_screen/widgets/vip_tab_view.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Subscription Screen with Tabbed UI:
-/// Tab 1: Self-Service Plans (Standard, Silver, Gold, Platinum, Eternal)
+/// Tab 1: Self-Service Plans (Standard, Silver, Gold, Platinum, Eternal / BVS Subsidized Plans)
 /// Tab 2: VIP Matchmaker Plans (Elite, Royal, Eternal Elite)
 class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({super.key});
@@ -33,6 +34,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
   final SubscriptionRepository _subscriptionRepository =
       SubscriptionRepository();
   final RazorpayRepository _razorpayRepository = RazorpayRepository();
+  final TrustScoreRepository _trustScoreRepository = TrustScoreRepository();
 
   late AnimationController _shimmerController;
   late TabController _tabController;
@@ -41,6 +43,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
   int _trustScore = 0;
   bool _isLoading = true;
   bool _isProcessingPayment = false;
+  bool _isBvsVerified = false;
 
   final TextEditingController _couponController = TextEditingController();
   CouponModel? _appliedCoupon;
@@ -75,12 +78,20 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
         forceRefresh: forceRefresh,
       );
       final scoreRes = await _subscriptionRepository.getTrustScore();
+      final statusRes = await _trustScoreRepository.getVerificationStatus();
 
       if (mounted) {
         if (subRes.isSuccess && scoreRes.isSuccess) {
+          bool isBvsVerified = false;
+          if (statusRes.isSuccess) {
+            isBvsVerified = statusRes.data['communityId'] ==
+                TrustScoreRepository.statusVerified;
+          }
+
           setState(() {
             _currentSubscription = subRes.data;
             _trustScore = scoreRes.data;
+            _isBvsVerified = isBvsVerified;
             _isLoading = false;
           });
         } else {
@@ -123,37 +134,30 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
       final response = await _razorpayRepository.startPayment(
         planType: planType,
         customAmountPaise: customAmountPaise,
+        couponCode: _appliedCoupon?.code,
+        entryPoint: 'subscription_screen',
       );
 
-      if (!mounted) return;
-
-      if (response.isSuccess) {
-        debugPrint(
-            '[RAZORPAY] SubscriptionScreen > Payment SUCCESS | ${planType.displayName}');
-        Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)?.paymentSuccessfulWelcome(
-                  SubscriptionConfig.getDisplayName(
-                      planType, AppLocalizations.of(context))) ??
-              'Payment successful! Welcome',
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-        );
-
-        await _loadCurrentSubscription(forceRefresh: true);
-
-        if (mounted) {
-          Navigator.pop(context);
+      if (mounted) {
+        if (response.isSuccess) {
+          Fluttertoast.showToast(
+            msg: AppLocalizations.of(context)?.paymentSuccessfulWelcome(
+                    SubscriptionConfig.getDisplayName(
+                        planType, AppLocalizations.of(context))) ??
+                'Payment successful! Welcome',
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+          );
+          _loadCurrentSubscription(forceRefresh: true);
+        } else {
+          Fluttertoast.showToast(
+            msg: AppLocalizations.of(context)
+                    ?.paymentFailedError(response.errorMessage) ??
+                'Payment failed: ${response.errorMessage}',
+            backgroundColor: Theme.of(context).colorScheme.error,
+            textColor: Colors.white,
+          );
         }
-      } else {
-        debugPrint(
-            '[RAZORPAY] SubscriptionScreen > Payment FAILED | ${response.errorMessage}');
-        Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)
-                  ?.paymentFailedError(response.errorMessage) ??
-              'Payment failed: ${response.errorMessage}',
-          backgroundColor: Theme.of(context).colorScheme.error,
-          textColor: Colors.white,
-        );
       }
     } catch (e) {
       if (mounted) {
@@ -221,16 +225,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
           borderRadius: BorderRadius.circular(20),
           gradient: LinearGradient(
             colors: isDark
-                ? [const Color(0xFF616161), const Color(0xFF9E9E9E), const Color(0xFFE0E0E0)]
-                : [const Color(0xFFCFD8DC), const Color(0xFFECEFF1), const Color(0xFFB0BEC5)],
+                ? [const Color(0xFF2C3E50), const Color(0xFF4CA1AF)]
+                : [const Color(0xFF8e9eab), const Color(0xFFeef2f3)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withValues(alpha: 0.25),
-              blurRadius: 15,
-              offset: const Offset(0, 5),
+              color: const Color(0xFF4CA1AF).withValues(alpha: 0.3),
+              blurRadius: 20,
+              offset: const Offset(0, 6),
             ),
           ],
         );
@@ -304,9 +308,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
           ),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF4A00E0).withValues(alpha: 0.4),
-              blurRadius: 22,
-              offset: const Offset(0, 8),
+              color: const Color(0xFF8E2DE2).withValues(alpha: 0.35),
+              blurRadius: 20,
+              offset: const Offset(0, 6),
             ),
           ],
         );
@@ -396,12 +400,12 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                         labelColor: Colors.white,
                         unselectedLabelColor: theme.colorScheme.onSurfaceVariant,
                         labelStyle: TextStyle(
-                          fontSize: AppTypography.bodySmall,
+                          fontSize: AppTypography.labelMedium,
                           fontWeight: FontWeight.bold,
                         ),
                         unselectedLabelStyle: TextStyle(
-                          fontSize: AppTypography.bodySmall,
-                          fontWeight: FontWeight.normal,
+                          fontSize: AppTypography.labelMedium,
+                          fontWeight: FontWeight.w500,
                         ),
                         tabs: [
                           Tab(
@@ -458,6 +462,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                               isProcessingPayment: _isProcessingPayment,
                               shimmerAnimation: _shimmerController,
                               onUpgrade: _handleUpgrade,
+                              isBvsVerified: _isBvsVerified,
                             ),
                             VipTabView(
                               currentSubscription: _currentSubscription,
@@ -476,6 +481,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                           isProcessingPayment: _isProcessingPayment,
                           shimmerAnimation: _shimmerController,
                           onUpgrade: _handleUpgrade,
+                          isBvsVerified: _isBvsVerified,
                         ),
                 ),
               ],

@@ -133,15 +133,14 @@ class SubscriptionConfig {
     PlanType.free,
     PlanType.mass_market,
     PlanType.mass_market_annual,
-    // Re-enable these when user base grows:
-    // PlanType.standard,
-    // PlanType.silver,
-    // PlanType.gold,
-    // PlanType.platinum,
-    // PlanType.eternal,
-    // PlanType.elite,
-    // PlanType.royal,
-    // PlanType.eternal_elite,
+    PlanType.standard,
+    PlanType.silver,
+    PlanType.gold,
+    PlanType.platinum,
+    PlanType.eternal,
+    PlanType.elite,
+    PlanType.royal,
+    PlanType.eternal_elite,
   };
 
   /// Check if a plan is currently enabled for display
@@ -171,11 +170,12 @@ class SubscriptionConfig {
   // Active until 100,000 downloads milestone.
   // ─────────────────────────────────────────────────────────────────────────
 
-  /// Mass-Market Monthly – ₹50 for 1 month
+  /// Mass-Market Monthly – ₹20 for 1 month
   static const massMarketMonthly = PlanFeatures(
     mrp: 50,
-    price: 50,
+    price: 20,
     duration: 1,
+    bulkDiscountPercent: 60,
     profileViewsPerDay: 10,
     photosLimit: 2,
     sharesPerMonth: 5,
@@ -184,12 +184,12 @@ class SubscriptionConfig {
     newChatsPerWeek: 2,
   );
 
-  /// Mass-Market Annual – ₹200 for 12 months (67% savings vs monthly)
+  /// Mass-Market Annual – ₹200 for 12 months
   static const massMarketAnnual = PlanFeatures(
-    mrp: 600,
+    mrp: 240,
     price: 200,
     duration: 12,
-    bulkDiscountPercent: 67,
+    bulkDiscountPercent: 17,
     profileViewsPerDay: 10,
     photosLimit: 2,
     sharesPerMonth: 5,
@@ -443,11 +443,16 @@ class SubscriptionConfig {
   }
 
   /// Get Self-Service paid plans for Tab 1
-  /// Filtered by [enabledPlans] toggle.
-  static List<MapEntry<PlanType, PlanFeatures>> getSelfServicePlans() {
+  /// - If isBvsVerified is true: returns exclusive ₹200/yr and ₹50/mo subsidized plans.
+  /// - If isBvsVerified is false: returns full standard tiers (Standard, Silver, Gold, Platinum, Eternal).
+  static List<MapEntry<PlanType, PlanFeatures>> getSelfServicePlans({bool isBvsVerified = false}) {
+    if (isBvsVerified) {
+      return const [
+        MapEntry(PlanType.mass_market_annual, massMarketAnnual),
+        MapEntry(PlanType.mass_market, massMarketMonthly),
+      ];
+    }
     return const [
-      MapEntry(PlanType.mass_market, massMarketMonthly),
-      MapEntry(PlanType.mass_market_annual, massMarketAnnual),
       MapEntry(PlanType.standard, standard),
       MapEntry(PlanType.silver, silver),
       MapEntry(PlanType.gold, gold),
@@ -467,8 +472,8 @@ class SubscriptionConfig {
   }
 
   /// Backward-compatible: returns Self-Service plans (was getAllPaidPlans)
-  static List<MapEntry<PlanType, PlanFeatures>> getAllPaidPlans() {
-    return getSelfServicePlans();
+  static List<MapEntry<PlanType, PlanFeatures>> getAllPaidPlans({bool isBvsVerified = false}) {
+    return getSelfServicePlans(isBvsVerified: isBvsVerified);
   }
 
   /// Calculate savings vs monthly pricing
@@ -491,12 +496,14 @@ class SubscriptionConfig {
 
     switch (planType) {
       case PlanType.mass_market:
-        return 'Active Member - 1 Month';
+        return 'BVS Member - 1 $monthsLabel (₹20)';
       case PlanType.mass_market_annual:
-        return 'Active Member - 1 $yearLabel';
+        return l10n?.bvsVerifiedSpecialPlan != null
+            ? '${l10n!.bvsVerifiedSpecialPlan} - 1 $yearLabel (₹200)'
+            : 'BVS Member Special - 1 $yearLabel (₹200)';
       case PlanType.standard:
         final name = l10n?.standardPlanName ?? 'Standard';
-        return '$name - 1 Month';
+        return '$name - 1 $monthsLabel';
       case PlanType.silver:
         final name = l10n?.silverPlanName ?? 'Silver';
         return '$name - ${features.duration} $monthsLabel';
