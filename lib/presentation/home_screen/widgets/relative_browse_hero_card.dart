@@ -80,7 +80,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
     await LocalCacheService().clearRelativeBrowseSession();
     if (!mounted) return;
     Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
-      AppRoutes.onboardingSelection,
+      AppRoutes.userTypeSelection,
       (route) => false,
     );
   }

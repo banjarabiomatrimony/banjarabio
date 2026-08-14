@@ -22,8 +22,6 @@ import 'package:banjarabio/presentation/home_screen/widgets/guest_restricted_dia
 import 'package:banjarabio/notification/features/nudge_engine.dart';
 import 'package:banjarabio/core/session_manager.dart';
 import 'package:banjarabio/routes/app_routes.dart';
-import 'package:banjarabio/core/repositories/auth_repository.dart';
-import 'package:banjarabio/core/supabase_client.dart';
 
 
 // 🚨 ANR FIX: Import tab screens directly for IndexedStack (no more Navigator)
@@ -399,20 +397,6 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   ];
 
   Future<bool> _onWillPop() async {
-    // 🚪 Single-click Back Auto-Logout for Relative Search & Guest users
-    if (LocalCacheService().isGuestMode() || LocalCacheService().isRelativeBrowseMode()) {
-      if (AppSupabaseClient.isAuthenticated) {
-        await AuthRepository().signOut();
-      }
-      await LocalCacheService().clearRelativeBrowseSession();
-      await LocalCacheService().setGuestMode(false);
-      if (mounted) {
-        Navigator.of(context, rootNavigator: true)
-            .pushNamedAndRemoveUntil(AppRoutes.userTypeSelection, (route) => false);
-      }
-      return false;
-    }
-
     if (ref.read(homeTabProvider) != 0) {
       ref.read(homeTabProvider.notifier).state = 0;
       setState(() {
@@ -421,16 +405,73 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
       return false;
     }
 
-    // Show exit confirmation
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+
+    // 🚪 Relative Browse users: offer option to change search criteria or exit app without signing out
+    if (LocalCacheService().isRelativeBrowseMode()) {
+      final bool? shouldExit = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Text(l10n?.exitApp ?? 'Exit App'),
+          content: const Text('तुम्हाला शोध पर्याय बदलायचे आहेत की ॲपमधून बाहेर पडायचे आहे?'),
+          actionsOverflowDirection: VerticalDirection.up,
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(l10n?.cancel ?? 'रद्द करा'),
+            ),
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(color: theme.colorScheme.primary),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              onPressed: () async {
+                await LocalCacheService().clearRelativeBrowseSession();
+                if (context.mounted) {
+                  Navigator.of(context).pop(false);
+                  Navigator.of(context, rootNavigator: true)
+                      .pushNamedAndRemoveUntil(AppRoutes.userTypeSelection, (route) => false);
+                }
+              },
+              child: const Text('पर्याय बदला ✏️'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context, true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: theme.colorScheme.primary,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: Text(l10n?.exit ?? 'बाहेर पडा 🚪'),
+            ),
+          ],
+        ),
+      );
+      return shouldExit ?? false;
+    }
+
+    // 🚪 Unauthenticated Guest: return to user type selection
+    if (LocalCacheService().isGuestMode()) {
+      await LocalCacheService().setGuestMode(false);
+      if (mounted) {
+        Navigator.of(context, rootNavigator: true)
+            .pushNamedAndRemoveUntil(AppRoutes.userTypeSelection, (route) => false);
+      }
+      return false;
+    }
+
+    // Show standard exit confirmation for normal profile users
     final bool? shouldExit = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(AppLocalizations.of(context)?.exitApp ?? 'Exit App'),
-        content: Text(AppLocalizations.of(context)?.areYouSureExit ?? 'Are you sure you want to exit the app?'),
+        title: Text(l10n?.exitApp ?? 'Exit App'),
+        content: Text(l10n?.areYouSureExit ?? 'Are you sure you want to exit the app?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
+            child: Text(l10n?.cancel ?? 'Cancel'),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
@@ -438,7 +479,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
               backgroundColor: Theme.of(context).colorScheme.primary,
               foregroundColor: Colors.white,
             ),
-            child: Text(AppLocalizations.of(context)?.exit ?? 'Exit'),
+            child: Text(l10n?.exit ?? 'Exit'),
           ),
         ],
       ),
