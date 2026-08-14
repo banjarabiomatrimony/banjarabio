@@ -78,11 +78,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     }
   }
 
-  void _startLoadingTimeout() {
+  void _startLoadingTimeout({Duration timeout = const Duration(seconds: 45)}) {
     _loadingTimeoutTimer?.cancel();
-    _loadingTimeoutTimer = Timer(const Duration(seconds: 15), () {
+    _loadingTimeoutTimer = Timer(timeout, () {
       if (mounted && _isLoading && !_isHandlingAuth) {
-        debugPrint('AuthenticationScreen: Loading watchdog timeout (15s). Checking auth status...');
+        debugPrint('AuthenticationScreen: Loading watchdog timeout (${timeout.inSeconds}s). Checking auth status...');
         if (_authRepository.isAuthenticated) {
           _handleSuccessfulAuth();
         } else {
@@ -131,6 +131,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     _cancelLoadingTimeout();
 
     try {
+      if (mounted) {
+        setState(() {
+          _errorMessage = null;
+        });
+      }
+
       final callbackRes = await _authRepository.handleAuthCallback();
       callbackRes.fold(
         onSuccess: (_) {},
@@ -173,14 +179,28 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     _userInitiatedLogin = true;
     AnalyticsService.logSignUpStart('google');
     setState(() { _isLoading = true; _errorMessage = null; });
-    _startLoadingTimeout();
+    // 🛡️ 60s timeout for native Google dialog so users are never rushed or shown false errors
+    _startLoadingTimeout(timeout: const Duration(seconds: 60));
 
     try {
       final response = await _authRepository.signInWithGoogle();
+      _cancelLoadingTimeout();
+
       await response.fold(
-        onSuccess: (_) {/* OAuth redirect — auth listener handles it */},
+        onSuccess: (isSuccess) async {
+          if (isSuccess) {
+            await _handleSuccessfulAuth();
+          } else {
+            // User cancelled or closed the Google Sign-In sheet
+            if (mounted) {
+              setState(() {
+                _isLoading = false;
+                _errorMessage = null; // Clean state: no error banner on user cancel
+              });
+            }
+          }
+        },
         onFailure: (error) {
-          _cancelLoadingTimeout();
           if (mounted) {
             setState(() {
               _isLoading = false;
@@ -217,19 +237,20 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     }
 
     setState(() { _isLoading = true; _errorMessage = null; });
-    _startLoadingTimeout();
+    _startLoadingTimeout(timeout: const Duration(seconds: 30));
 
     try {
       final response = await _authRepository.signInWithEmail(
         _emailController.text.trim(),
         _passwordController.text.trim(),
       );
+      _cancelLoadingTimeout();
+
       await response.fold(
         onSuccess: (success) async {
           if (success) {
             await _handleSuccessfulAuth();
           } else {
-            _cancelLoadingTimeout();
             if (mounted) {
               setState(() {
                 _isLoading = false;
@@ -240,7 +261,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
           }
         },
         onFailure: (error) {
-          _cancelLoadingTimeout();
           if (mounted) {
             setState(() {
               _isLoading = false;
@@ -271,13 +291,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
 
-    // Core content stack shared by both standalone and embedded modes
-    final coreStack = Stack(
-            children: [
-              // ── Main scrollable content ──
-              SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 5.w),
+    // Core content shared by both standalone and embedded modes
+    final coreContent = SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: 5.w),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
                     minHeight: MediaQuery.of(context).size.height -
@@ -342,10 +359,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
                             // Toggle login method
                             TextButton(
-                              onPressed: () => setState(() {
-                                _showEmailLogin = !_showEmailLogin;
-                                _errorMessage = null;
-                              }),
+                              onPressed: _isLoading
+                                  ? null
+                                  : () => setState(() {
+                                        _showEmailLogin = !_showEmailLogin;
+                                        _errorMessage = null;
+                                      }),
                               style: TextButton.styleFrom(
                                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.5.h),
                                 minimumSize: Size.zero,
@@ -499,23 +518,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                     ],
                   ),
                 ),
-              ),
-
-              // ── Loading Overlay (isolated via RepaintBoundary) ──
-              if (_isLoading)
-                RepaintBoundary(
-                  child: Container(
-                    color: Colors.black.withValues(alpha: 0.5),
-                    child: const Center(
-                      child: CircularProgressIndicator(color: Colors.white),
-                    ),
-                  ),
-                ),
-            ],
-          );
+              );
 
     // Embedded mode: skip Scaffold/gradient/SafeArea wrappers
-    if (widget.embedded) return coreStack;
+    if (widget.embedded) return coreContent;
 
     // Standalone mode: full-screen with gradient background
     return Scaffold(
@@ -532,7 +538,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
             ],
           ),
         ),
-        child: SafeArea(child: coreStack),
+        child: SafeArea(child: coreContent),
       ),
     );
   }
@@ -544,9 +550,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       width: double.infinity,
       height: 7.h,
       child: Material(
-        color: Colors.white,
+        color: _isLoading ? Colors.grey.shade50 : Colors.white,
         borderRadius: BorderRadius.circular(14),
-        elevation: 1,
+        elevation: _isLoading ? 0 : 1,
         child: InkWell(
           onTap: _isLoading ? null : _signInWithGoogle,
           borderRadius: BorderRadius.circular(14),
@@ -554,17 +560,34 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
             padding: EdgeInsets.symmetric(horizontal: 5.w),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: theme.dividerColor.withValues(alpha: 0.3)),
+              border: Border.all(
+                color: theme.dividerColor.withValues(alpha: _isLoading ? 0.15 : 0.3),
+              ),
             ),
             child: _isLoading
-                ? Center(
-                    child: SizedBox(
-                      width: 2.5.h, height: 2.5.h,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2.5,
-                        valueColor: AlwaysStoppedAnimation<Color>(theme.colorScheme.primary),
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.2,
+                          valueColor: AlwaysStoppedAnimation<Color>(theme.colorScheme.primary),
+                        ),
                       ),
-                    ),
+                      SizedBox(width: 3.w),
+                      Flexible(
+                        child: Text(
+                          l10n?.loading ?? 'Connecting...',
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
                   )
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -595,6 +618,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         // Email field
         TextField(
           controller: _emailController,
+          enabled: !_isLoading,
           decoration: InputDecoration(
             labelText: l10n?.email ?? 'Email',
             hintText: l10n?.enterYourEmail ?? 'Enter your email',
@@ -619,6 +643,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         // Password field
         TextField(
           controller: _passwordController,
+          enabled: !_isLoading,
           decoration: InputDecoration(
             labelText: l10n?.password ?? 'Password',
             hintText: l10n?.enterYourPassword ?? 'Enter your password',
@@ -653,9 +678,23 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
               elevation: 1,
             ),
             child: _isLoading
-                ? SizedBox(
-                    width: 2.5.h, height: 2.5.h,
-                    child: const CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white),
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2.2, color: Colors.white),
+                      ),
+                      SizedBox(width: 3.w),
+                      Text(
+                        l10n?.loading ?? 'Logging in...',
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
                   )
                 : Text(
                     l10n?.login ?? 'Login',
