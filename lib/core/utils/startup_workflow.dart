@@ -14,7 +14,10 @@ class StartupWorkflow {
 
   /// Centralized logic to determine where a user should go based on their
   /// authentication and profile status.
-  static Future<void> navigateBasedOnStatus(BuildContext context) async {
+  static Future<void> navigateBasedOnStatus(
+    BuildContext context, {
+    String? targetRouteOnNoProfile,
+  }) async {
     // ─── PHASE ADVANCEMENT ──────────────────────────────────────────────
     // Trigger lifecycle phase transitions for ALL users (authenticated AND
     // guests). This guarantees Firebase, Crashlytics, Sentry, AdMob, and
@@ -116,10 +119,13 @@ class StartupWorkflow {
                   .pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
             }
           } else {
-            // No profile → Route to UserTypeSelection gateway so user has full control to resume draft or choose pathways
-            AppLogger.debug('StartupWorkflow', 'User authenticated but has no profile. Routing to UserTypeSelection.');
+            // No profile:
+            // - For cold launch / app reopen: default is AppRoutes.userTypeSelection (UserTypeSelectionScreen shows draft resume banner)
+            // - For in-app signup/creation flow: targetRouteOnNoProfile is AppRoutes.biodataCreation
+            final nextRoute = targetRouteOnNoProfile ?? AppRoutes.userTypeSelection;
+            AppLogger.debug('StartupWorkflow', 'User authenticated but has no profile. Routing to $nextRoute.');
             Navigator.of(context, rootNavigator: true)
-                .pushNamedAndRemoveUntil(AppRoutes.userTypeSelection, (route) => false);
+                .pushNamedAndRemoveUntil(nextRoute, (route) => false);
           }
         },
         onFailure: (error) async {

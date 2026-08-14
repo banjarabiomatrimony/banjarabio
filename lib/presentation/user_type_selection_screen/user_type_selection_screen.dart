@@ -326,6 +326,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
           return const AuthenticationScreen(
             key: ValueKey('biodata_user_auth'),
             embedded: true,
+            targetRouteOnNewProfile: AppRoutes.biodataCreation,
           );
         }
       }
@@ -1308,6 +1309,10 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
 
     return _TactileWrapper(
       onTap: () {
+        if (AppSupabaseClient.isAuthenticated) {
+          Navigator.of(context).pushNamed(AppRoutes.biodataCreation);
+          return;
+        }
         setState(() {
           _selectedPurpose = 'biodata';
         });

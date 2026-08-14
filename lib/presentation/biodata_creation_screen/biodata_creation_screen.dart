@@ -183,6 +183,17 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
           textColor: Colors.white,
         );
       }
+    } else if (!_isEditMode) {
+      // If no draft exists, pre-fill name from Google Account metadata if available
+      final userMeta = AppSupabaseClient.currentUser?.userMetadata;
+      final googleName = userMeta?['full_name']?.toString() ?? userMeta?['name']?.toString();
+      if (googleName != null && googleName.trim().isNotEmpty && (_formData['name'] == null || _formData['name'].toString().isEmpty)) {
+        if (mounted) {
+          setState(() {
+            _formData['name'] = googleName.trim();
+          });
+        }
+      }
     }
   }
 

@@ -125,6 +125,9 @@ class DeepLinkService {
       } else if (qPromo.startsWith('promo/')) {
         await _handlePromo(qPromo.split('promo/').last);
         return;
+      } else if (qPromo.startsWith('bvs') || qPromo == 'bvs') {
+        await _navigateToBvs();
+        return;
       } else {
         await _handlePromo(qPromo);
       }
@@ -216,6 +219,39 @@ class DeepLinkService {
     if ((isCustomScheme && uri.host == 'subscription') || (isWebDomain && path.startsWith('/subscription')) || path == '/subscription') {
       await _navigateDirectlyTo(AppRoutes.subscription);
       return;
+    }
+
+    // 8. BVS Gateway Routing (Public / Accessible to all users & guests)
+    // e.g. banjarabio://bvs, banjarabio://bvs-gateway, https://banjarabio.com/bvs, or query source=bvs / referrer=bvs...
+    if ((isCustomScheme && (uri.host == 'bvs' || uri.host == 'bvs-gateway')) ||
+        (isWebDomain && (path.startsWith('/bvs') || path.startsWith('/bvs-gateway'))) ||
+        path == '/bvs' ||
+        path == '/bvs-gateway' ||
+        queryParams['source'] == 'bvs' ||
+        queryParams['referrer']?.startsWith('bvs') == true) {
+      await _navigateToBvs();
+      return;
+    }
+  }
+
+  /// Navigate to BVS Gateway screen (accessible publicly to all users & guests)
+  Future<void> _navigateToBvs() async {
+    AppLogger.debug('DeepLinkService', 'DeepLinkService: Navigating to BVS Gateway');
+
+    void navigate() {
+      if (_navigatorState != null) {
+        _navigatorState!.pushNamed(AppRoutes.bvsGateway);
+      }
+    }
+
+    if (testNavigatorState != null) {
+      navigate();
+    } else {
+      try {
+        WidgetsBinding.instance.addPostFrameCallback((_) => navigate());
+      } catch (_) {
+        navigate();
+      }
     }
   }
 

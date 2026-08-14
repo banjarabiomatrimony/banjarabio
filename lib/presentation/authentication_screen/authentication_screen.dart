@@ -27,7 +27,15 @@ class AuthenticationScreen extends StatefulWidget {
   /// embedding inside a parent layout (e.g., onboarding stepper PageView).
   final bool embedded;
 
-  const AuthenticationScreen({super.key, this.embedded = false});
+  /// Optional route to navigate when an authenticated user has no completed profile.
+  /// Defaults to [AppRoutes.biodataCreation] when embedded is true.
+  final String? targetRouteOnNewProfile;
+
+  const AuthenticationScreen({
+    super.key,
+    this.embedded = false,
+    this.targetRouteOnNewProfile,
+  });
 
   @override
   State<AuthenticationScreen> createState() => _AuthenticationScreenState();
@@ -164,7 +172,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
       // 🚀 Use centralized navigation
       if (mounted) {
-        await StartupWorkflow.navigateBasedOnStatus(context);
+        await StartupWorkflow.navigateBasedOnStatus(
+          context,
+          targetRouteOnNoProfile: widget.targetRouteOnNewProfile ??
+              (widget.embedded ? AppRoutes.biodataCreation : null),
+        );
       }
     } catch (e) {
       debugPrint('Auth error: $e');

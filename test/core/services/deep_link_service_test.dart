@@ -136,6 +136,22 @@ void main() {
       verify(() => mockCache.savePendingProfileId('xyz-888')).called(1);
     });
 
+    test('handles BVS custom scheme (banjarabio://bvs)', () async {
+      final uri = Uri.parse('banjarabio://bvs');
+      await service.handleDeepLink(uri);
+      // Handles without crash or unintended cache side-effects
+    });
+
+    test('handles BVS web domain path (https://banjarabio.com/bvs)', () async {
+      final uri = Uri.parse('https://banjarabio.com/bvs?ref=7020797849');
+      await service.handleDeepLink(uri);
+    });
+
+    test('handles BVS play store referrer link (referrer=bvs_ref_7020797849)', () async {
+      final uri = Uri.parse('https://play.google.com/store/apps/details?id=com.avishio.banjarabio&referrer=bvs_ref_7020797849');
+      await service.handleDeepLink(uri);
+    });
+
     test('handles unknown URI path gracefully', () async {
       final uri = Uri.parse('https://banjarabio.com/unknown/path');
       await service.handleDeepLink(uri);

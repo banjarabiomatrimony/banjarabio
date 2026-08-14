@@ -152,35 +152,98 @@ class _BvsGatewayScreenState extends State<BvsGatewayScreen>
 
   String _getLocalizedWhatsAppMessage(BuildContext context) {
     final langCode = Localizations.localeOf(context).languageCode;
+    const playStoreUrl =
+        'https://play.google.com/store/apps/details?id=com.avishio.banjarabio&referrer=bvs_ref_7020797849';
+
     switch (langCode) {
       case 'hi':
         return '''🚩 जय सेवालाल..! 🚩
-महाराष्ट्र सरकार के मंत्री माननीय श्री संजयभाऊ राठौड़ की संकल्पना से शुरू हुए "बणजारा विरासत संघ" के इस ऐतिहासिक अभियान से जुड़कर बंजारा समाज की एकता और भविष्य को मजबूत करने के लिए नीचे दिए गए लिंक पर क्लिक करके सदस्य बनें:
-🔗 आज ही जुड़ें: https://banjaravirasat.org.in/join_by_ref.php?ref_by=7020797849&lang=hi
+
+महाराष्ट्र सरकार के मंत्री माननीय श्री संजयभाऊ राठौड़ की संकल्पना से शुरू हुए "बणजारा विरासत संघ" (BVS) के इस ऐतिहासिक अभियान से जुड़कर बंजारा समाज की एकता और भविष्य को मजबूत करें!
+
+🏛️ 'बंजारा बायो' (BanjaraBio) - बंजारा समाज का आधिकारिक ऑल-इन-वन डिजिटल मंच:
+इस एक ही ऐप में समाज के प्रत्येक बंधु के लिए निम्नलिखित सभी सुविधाएं उपलब्ध हैं:
+
+🔹 BVS आधिकारिक डिजिटल सदस्यता पंजीकरण (BVS Membership)
+🔹 1-क्लिक में निःशुल्क आकर्षक PDF बायोडाटा निर्माण और WhatsApp शेयरिंग
+🔹 देश-विदेश के हजारों उच्चशिक्षित बंजारा युवक-युवतियों के वैवाहिक प्रोफाइल्स
+🔹 बेटियों के लिए 100% सुरक्षित और प्राइवेट: बिना मोबाइल नंबर या ईमेल साझा किए सुरक्षित चैट और संपर्क
+🔹 बंजारा समाज के विवाह मेलों और आयोजनों की संपूर्ण जानकारी
+🔹 5 भाषाओं में उपलब्ध (हिंदी, मराठी, తెలుగు, ಕನ್ನಡ, English)
+
+📲 BVS डिजिटल पंजीकरण और ऐप डाउनलोड लिंक:
+$playStoreUrl
+
+अपने तांडे और परिवार के प्रत्येक सदस्य तक यह संदेश अवश्य पहुंचाएं!
 
 धन्यवाद...!
 🙏।। विनीत ।। 🙏
 Banti Shankar Rathod (7020797849)''';
       case 'te':
         return '''🚩 జై సేవాలాల్..! 🚩
-మహారాష్ట్ర ప్రభుత్వ మంత్రి శ్రీ సంజయ్‌భావూ రాథోడ్ గారి సంకల్పంతో ప్రారంభమైన "బంజారా విరాసత్ సంఘ్" ఉద్యమంలో చేరి బంజారా సమాజం యొక్క ఐక్యత మరియు భవిష్యత్తును బలోపేతం చేయడానికి క్రింది లింక్‌పై క్లిక్ చేసి సభ్యులుగా చేరండి:
-🔗 ఇప్పుడే చేరండి: https://banjaravirasat.org.in/join_by_ref.php?ref_by=7020797849&lang=te
+
+మహారాష్ట్ర ప్రభుత్వ మంత్రి శ్రీ సంజయ్‌భావూ రాథోడ్ గారి సంకల్పంతో ప్రారంభమైన "బంజారా విరాసత్ సంఘ్" (BVS) ఉద్యమంలో చేరి బంజారా సమాజం యొక్క ఐక్యత మరియు భవిష్యత్తును బలోపేతం చేయండి!
+
+🏛️ 'బంజారా బయో' (BanjaraBio) - బంజారా సమాజ అధికారిక ఆల్-ఇన్-వన్ డిజిటల్ వేదిక:
+ఈ ఒక్క యాప్‌లోనే సమాజంలోని ప్రతి ఒక్కరికీ క్రింది అద్భుతమైన సేవలు ఉచితంగా లభిస్తాయి:
+
+🔹 BVS అధికారిక డిజిటల్ సభ్యత్వ నమోదు (BVS Membership)
+🔹 1-క్లిక్‌తో ఉచిత ఆకర్షణీయమైన PDF బయోడేటా తయారీ & WhatsApp షేరింగ్
+🔹 దేశ-విదేశాలలోని వేలాది మంది ఉన్నత విద్యావంతులైన బంజారా వధూవరుల ప్రొఫైల్స్
+🔹 యువతులకు 100% సురక్షితం: మొబైల్ నంబర్ లేదా ఈమెయిల్ ఇవ్వకుండానే యాప్‌లో నేరుగా సురక్షిత చాట్
+🔹 బంజారా సమాజ వివాహ మేళావా సమాచారం
+🔹 5 భాషలలో అందుబాటులో ఉంది (తెలుగు, मराठी, ಕನ್ನಡ, हिंदी, English)
+
+📲 BVS డిజిటల్ రిజిస్ట్రేషన్ & యాప్ డౌన్‌లోడ్ లిಂಕ್:
+$playStoreUrl
+
+మీ తాండా మరియు కుటుంబ సభ్యులందరికీ ఈ సందేశాన్ని తప్పక చేరవేయండి!
 
 ధన్యవాదాలు...!
 🙏।। వినీతులు ।। 🙏
 Banti Shankar Rathod (7020797849)''';
       case 'kn':
         return '''🚩 ಜೈ ಸೇವಾಲಾಲ್..! 🚩
-ಮಹಾರಾಷ್ಟ್ರ ಸರ್ಕಾರದ ಸಚಿವರಾದ ಶ್ರೀ ಸಂಜಯಭಾವು ರಾಠೋಡ್ ಅವರ ಪರಿಕಲ್ಪನೆಯಲ್ಲಿ ಪ್ರಾರಂಭವಾದ "ಬಂಜಾರಾ ವಿರಾಸತ್ ಸಂಘ" ಚಳವಳಿಗೆ ಸೇರಿ ಬಂಜಾರಾ ಸಮಾಜದ ಐಕ್ಯತೆ ಮತ್ತು ಭವಿಷ್ಯವನ್ನು ಬಲಪಡಿಸಲು ಕೆಳಗಿನ ಲಿಂಕ್ ಕ್ಲಿಕ್ ಮಾಡಿ ಸದಸ್ಯರಾಗಿ:
-🔗 ಈಗಲೇ ಸೇರಿ: https://banjaravirasat.org.in/join_by_ref.php?ref_by=7020797849&lang=kn
+
+ಮಹಾರಾಷ್ಟ್ರ ಸರ್ಕಾರದ ಸಚಿವರಾದ ಶ್ರೀ ಸಂಜಯಭಾವು ರಾಠೋಡ್ ಅವರ ಪರಿಕಲ್ಪನೆಯಲ್ಲಿ ಪ್ರಾರಂಭವಾದ "ಬಂಜಾರಾ ವಿರಾಸತ್ ಸಂಘ" (BVS) ಚಳವಳಿಗೆ ಸೇರಿ ಬಂಜಾರಾ ಸಮಾಜದ ಐಕ್ಯತೆ ಮತ್ತು ಭವಿಷ್ಯವನ್ನು ಬಲಪಡಿಸಿ!
+
+🏛️ 'ಬಂಜಾರಾ ಬಯೋ' (BanjaraBio) - ಬಂಜಾರಾ ಸಮಾಜದ ಅಧಿಕೃತ ಆಲ್-ಇನ್-ಒನ್ ಡಿಜಿಟಲ್ ವೇದಿಕೆ:
+ಈ ಒಂದೇ ಆಪ್‌ನಲ್ಲಿ ಸಮಾಜದ ಪ್ರತಿಯೊಬ್ಬರಿಗೂ ಈ ಕೆಳಗಿನ ಎಲ್ಲಾ ಸೇವೆಗಳು ಉಚಿತವಾಗಿ ಲಭ್ಯವಿದೆ:
+
+🔹 BVS ಅಧಿಕೃತ ಡಿಜಿಟಲ್ ಸದಸ್ಯತ್ವ ನೋಂದಣಿ (BVS Membership)
+🔹 1-ಕ್ಲಿಕ್‌ನಲ್ಲಿ ಉಚಿತ ಆಕರ್ಷಕ PDF ಬಯೋಡೇಟಾ ರಚನೆ ಮತ್ತು WhatsApp ಹಂಚಿಕೆ
+🔹 ದೇಶ-ವಿದೇಶಗಳಲ್ಲಿರುವ ಸಾವಿರಾರು ಉನ್ನತ ಶಿಕ್ಷಣ ಪಡೆದ ಬಂಜಾರಾ ವಧು-ವರರ ಪ್ರೊಫೈಲ್‌ಗಳು
+🔹 ಹೆಣ್ಣುಮಕ್ಕಳಿಗೆ 100% ಸುರಕ್ಷಿತ ಮತ್ತು ಖಾಸಗಿ: ಮೊಬೈಲ್ ನಂಬರ್ ಅಥವಾ ಇಮೇಲ್ ನೀಡದೆ ಆಪ್‌ನಲ್ಲಿ ಸುರಕ್ಷಿತ ಚಾಟ್
+🔹 ಬಂಜಾರಾ ಸಮಾಜದ ವಿವಾಹ ಮೇಳಾವಗಳ ಸಂಪೂರ್ಣ ಮಾಹಿತಿ
+🔹 5 ಪ್ರಾದೇಶಿಕ ಭಾಷೆಗಳಲ್ಲಿ ಲಭ್ಯ (ಕನ್ನಡ, मराठी, తెలుగు, हिंदी, English)
+
+📲 BVS ಡಿಜಿಟಲ್ ನೋಂದಣಿ ಮತ್ತು ಆಪ್ ಡೌನ್‌ಲೋಡ್ ಲಿಂಕ್:
+$playStoreUrl
+
+ನಿಮ್ಮ ತಾಂಡಾ ಮತ್ತು ಕುಟುಂಬದ ಎಲ್ಲ ಸದಸ್ಯರಿಗೂ ಈ ಸಂದೇಶವನ್ನು ತಪ್ಪದೇ ತಲುಪಿಸಿ!
 
 ಧನ್ಯವಾದಗಳು...!
 🙏।। ವಿನೀತ ।। 🙏
 Banti Shankar Rathod (7020797849)''';
       case 'en':
         return '''🚩 Jai Sevalal..! 🚩
-Join "Banjara Virasat Sangh" (BVS), a historic movement envisioned by Maharashtra Cabinet Minister Hon. Shri Sanjaybhau Rathod, to strengthen the unity and heritage of the Banjara community. Click below to become a member:
-🔗 Join Today: https://banjaravirasat.org.in/join_by_ref.php?ref_by=7020797849&lang=en
+
+Join "Banjara Virasat Sangh" (BVS), a historic movement envisioned by Maharashtra Cabinet Minister Hon. Shri Sanjaybhau Rathod, to strengthen the unity and heritage of the Banjara community.
+
+🏛️ 'BanjaraBio' - The Official All-in-One Digital Community Platform for Gor Banjara:
+Access all community services in one powerful app:
+
+🔹 Official BVS Digital Membership Registration
+🔹 1-Click Free Professional PDF Bio-Data Generator & WhatsApp Sharing
+🔹 Thousands of Verified Matrimonial Profiles of Banjara Brides & Grooms from across India and worldwide
+🔹 100% Privacy Shield for Girls: Connect and chat securely in-app without sharing personal phone numbers or email addresses
+🔹 Banjara Vadhu-Var Melava Directory & Community Events
+🔹 Available in 5 Regional Languages (Marathi, Telugu, Kannada, Hindi, English)
+
+📲 1-Click BVS Digital Registration & App Download Link:
+$playStoreUrl
+
+Please share this message across all your Tanda and family circles!
 
 Thank you...!
 🙏 With Regards 🙏
@@ -188,11 +251,26 @@ Banti Shankar Rathod (7020797849)''';
       case 'mr':
       default:
         return '''🚩 जय सेवालाल..! 🚩
-महाराष्ट्र राज्याचे मंत्री श्री.संजयभाऊ राठोड यांच्या संकल्पनेतून सुरू झालेल्या "बणजारा विरासत संघ" या नाविन्यपूर्ण उपक्रमात सहभागी होऊन बंजारा समाजाची एकता आणि भवितव्य अधिक मजबूत करण्यासाठी खालील लिंकवर क्लिक करून सदस्य व्हा:
-🔗 आजच सामील व्हा: https://banjaravirasat.org.in/join_by_ref.php?ref_by=7020797849&lang=mr
+
+महाराष्ट्र राज्याचे मंत्री ना. श्री. संजयभाऊ राठोड यांच्या संकल्पनेतून सुरू झालेल्या "बणजारा विरासत संघ" (BVS) या ऐतिहासिक चळवळीत सहभागी होऊन बंजारा समाजाची एकता आणि भवितव्य अधिक मजबूत करा!
+
+🏛️ 'बंजारा बायो' (BanjaraBio) - बंजारा समाजाचे अधिकृत ऑल-इन-वन डिजिटल व्यासपीठ:
+या एकाच ॲपमध्ये समाजातील प्रत्येक बांधवासाठी खालील सर्व सुविधा मोफत उपलब्ध आहेत:
+
+🔹 BVS अधिकृत डिजिटल सदस्य नोंदणी (BVS Membership)
+🔹 १-क्लिक मोफत सुंदर व आकर्षक PDF बायोडाटा निर्मिती व WhatsApp शेअरिंग
+🔹 देश-विदेशातील बंजारा समाजातील हजारो उच्चशिक्षित व अनुरूप वधू-वर प्रोफाइल्स
+🔹 मुलींसाठी १००% सुरक्षित व प्रायव्हेट: स्वतःचा मोबाईल नंबर किंवा ईमेल न देता थेट ॲपमध्ये सुरक्षित चॅट व संपर्क
+🔹 बंजारा समाज अधिकृत विवाह मेळावे व इव्हेंट्सची संपूर्ण माहिती
+🔹 ५ प्रादेशिक भाषांमध्ये उपलब्ध (मराठी, తెలుగు, ಕನ್ನಡ, हिंदी, English)
+
+📲 BVS डिजिटल नोंदणी व ॲप डाउनलोड लिंक:
+$playStoreUrl
+
+आपल्या तांड्यातील आणि परिवारातील प्रत्येक बांधवापर्यंत हा संदेश अवश्य पोहोचवा!
 
 धन्यवाद...!
-🙏।। विनित।। 🙏
+🙏।। विनित ।। 🙏
 Banti Shankar Rathod (7020797849)''';
     }
   }

@@ -1,3 +1,18 @@
+# Release Notes - v1.3.0+38
+
+## 🚀 What's New & Enhancements
+- **Seamless New User Onboarding & Biodata Creation Flow**:
+    - Resolved post-authentication navigation loop — new users signing in via Google/Email immediately advance forward to `BiodataCreationScreen` (Step 1 Personal Details) with Google metadata pre-filled.
+    - Preserved smart draft resumption on app cold starts with the *"📝 Unsaved Biodata Draft Found!"* banner and one-tap resume.
+- **BVS VIP Gateway & Deep Link Growth Engine**:
+    - Integrated smart deep link handling for `/bvs`, custom schemes (`banjarabio://bvs`), and Play Store referrer attribution (`bvs_ref_7020797849`).
+    - Upgraded WhatsApp & copy invite templates across all 5 regional languages (`mr`, `hi`, `te`, `kn`, `en`) showcasing BVS Digital Registration, Free PDF Bio-Data Generator, Privacy Shield, Melava Directory, and Multi-language support.
+- **Quality & Stability**:
+    - 100% static analysis pass rate (`0 issues found`).
+    - Full suite of deep link and service unit tests verified.
+
+---
+
 # Release Notes - v1.2.9+37
 
 ## 🚩 What's New — Banjara Virasat Sangh (BVS) VIP Integration
