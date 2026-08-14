@@ -1,3 +1,21 @@
+# Release Notes - v1.2.11+39
+
+## What's New & Stability Enhancements
+- **Core Stability & SWR Caching Optimization**:
+    - Implemented test-aware recursion guards in `ProfileRepository` background fetch triggers, eliminating race conditions and redundant network egress.
+    - Hardened in-memory cache validation to deliver instant, smooth feed browsing on re-entry.
+- **Backend Schema & Database Hardening**:
+    - Optimized Row-Level Security (RLS) policies across `user_browse_intents`, `user_devices`, `bookmarks`, `photos`, and `messages` to use query-level InitPlan caching (`(select auth.uid())`).
+    - Added covering indexes on `search_match_notifications` and `whatsapp_notification_logs` for high-throughput messaging.
+    - Secured `SECURITY DEFINER` routines with explicit `search_path = public, pg_temp;` and revoked unauthenticated execution on internal database procedures.
+- **Defensive Type-Safety & Crash Prevention**:
+    - Hardened `PhotoModel`, `SiblingModel`, and `SubscriptionModel` JSON parsers with strict boolean equality checks, eliminating null-casting runtime errors on partial payloads.
+- **Quality Assurance & Verification**:
+    - 100% test pass rate across all repository unit, widget, onboarding integration, golden visual regression, and accessibility compliance suites.
+    - Zero lint warnings in static analysis.
+
+---
+
 # Release Notes - v1.2.1+29
 
 ## What's New
