@@ -1,3 +1,15 @@
+# Release Notes - v1.3.1+39
+
+## 🌐 What's New & Enhancements
+- **Android App Links & Deep Linking Domain Architecture**:
+    - Decoupled verified production domains (`banjarabio.vercel.app`, `www.banjarabio.com`, `banjarabio.com`) into isolated `android:autoVerify="true"` intent filters for strict Google Play Domain Verification compliance on Android 12+.
+    - Separated unhosted fallback domains to eliminate Google Play AssetLinks validation failures.
+- **Database Partitioning & High-Resilience Notification Fix**:
+    - Deployed permanent monthly and catch-all `DEFAULT` partitions on `notification_queue`, `messages`, `profile_views`, and `usage_tracking` (resolving error `23514`).
+    - Added resilient sub-transaction guards to all notification triggers.
+
+---
+
 # Release Notes - v1.3.0+38
 
 ## 🚀 What's New & Enhancements

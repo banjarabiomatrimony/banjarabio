@@ -74,14 +74,35 @@
                 <data android:scheme="banjarabio" />
             </intent-filter>
 
-            <!-- HTTPS Web App Links Deep Linking -->
+            <!-- HTTPS Verified App Links (Vercel Production Domain) -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https" android:host="banjarabio.vercel.app" />
-                <data android:scheme="https" android:host="banjarabio.com" />
+            </intent-filter>
+
+            <!-- HTTPS Verified App Links (Primary Production Domain www) -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https" android:host="www.banjarabio.com" />
+            </intent-filter>
+
+            <!-- HTTPS Verified App Links (Apex Domain) -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="banjarabio.com" />
+            </intent-filter>
+
+            <!-- Secondary Web Fallback Links -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https" android:host="banjarabio.in" />
                 <data android:scheme="https" android:host="www.banjarabio.in" />
             </intent-filter>
