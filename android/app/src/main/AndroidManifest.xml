@@ -98,14 +98,6 @@
                 <data android:scheme="https" android:host="banjarabio.com" />
             </intent-filter>
 
-            <!-- Secondary Web Fallback Links -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="banjarabio.in" />
-                <data android:scheme="https" android:host="www.banjarabio.in" />
-            </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
