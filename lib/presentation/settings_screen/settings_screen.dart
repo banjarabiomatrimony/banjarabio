@@ -11,7 +11,7 @@ import 'package:banjarabio/core/providers/locale_provider.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
-import 'package:banjarabio/presentation/account_screen/email_preferences_screen.dart';
+import 'package:banjarabio/presentation/account_screen/email_alerts_screen.dart';
 import 'package:banjarabio/theme/app_colors.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
@@ -243,12 +243,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                 items: [
                   _PreferenceItem(
                     icon: Icons.mark_email_unread_outlined,
-                    title: 'Email Notifications',
-                    subtitle: 'Manage email updates, match digests & alerts',
+                    title: 'Email Alerts',
+                    subtitle: 'Manage match digests, member connections & updates',
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const EmailPreferencesScreen(),
+                        builder: (_) => const EmailAlertsScreen(),
                       ),
                     ),
                   ),
@@ -283,13 +283,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
             ),
             SizedBox(height: 2.2.h),
 
-            // 📄 4. Legal & Information
+            // 📄 4. Legal & Compliance
             _buildAnimatedItem(
               index: 3,
               child: _buildSectionGroup(
                 theme,
-                title: l10n?.legalAndInformation ?? 'Legal & Compliance',
-                subtitle: 'Terms of service, community privacy & policies',
+                title: l10n?.legalAndInformation ?? 'Legal & Privacy',
+                subtitle: 'Terms of service, privacy policy & data safety',
                 items: [
                   _PreferenceItem(
                     icon: Icons.gavel_rounded,
@@ -301,38 +301,36 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                   _PreferenceItem(
                     icon: Icons.shield_outlined,
                     title: l10n?.privacyPolicy ?? 'Privacy Policy',
-                    subtitle: 'Data protection, DPDP Act & security safeguards',
+                    subtitle: 'Data protection, DPDP Act & account controls',
                     onTap: () =>
                         Navigator.pushNamed(context, AppRoutes.privacyPolicy),
+                  ),
+                  _PreferenceItem(
+                    icon: Icons.security_rounded,
+                    title: l10n?.accountDeletion ?? 'Account Deletion & Data Rights',
+                    subtitle: 'Permanently purge matrimony profile & data',
+                    onTap: () =>
+                        Navigator.pushNamed(context, AppRoutes.accountDeletion),
                   ),
                 ],
               ),
             ),
             SizedBox(height: 2.2.h),
 
-            // 🚪 5. Account & Security (Logout & Deletion)
+            // 🚪 5. Session Control (Prominent Isolated Logout Button)
             _buildAnimatedItem(
               index: 4,
               child: _buildSectionGroup(
                 theme,
-                title: 'Account & Security',
-                subtitle: 'Session access & permanent account controls',
+                title: 'Account Session',
+                subtitle: 'Sign out of your active session on this device',
                 items: [
                   _PreferenceItem(
                     icon: Icons.logout_rounded,
                     title: l10n?.logout ?? 'Logout',
-                    subtitle: 'Sign out of your account on this device',
+                    subtitle: 'Securely sign out of your account on this device',
                     iconColor: theme.colorScheme.primary,
                     onTap: () => _handleLogout(context),
-                  ),
-                  _PreferenceItem(
-                    icon: Icons.delete_forever_rounded,
-                    title: l10n?.deleteAccount ?? 'Delete My Account',
-                    subtitle: 'Permanently purge your matrimony profile and data',
-                    iconColor: theme.colorScheme.error,
-                    textColor: theme.colorScheme.error,
-                    onTap: () =>
-                        Navigator.pushNamed(context, AppRoutes.accountDeletion),
                   ),
                 ],
               ),
@@ -696,7 +694,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                                   item.title,
                                   style: TextStyle(
                                     fontFamily: AppTypography.headingFontFamily,
-                                    color: item.textColor ?? theme.colorScheme.onSurface,
+                                    color: theme.colorScheme.onSurface,
                                     fontWeight: AppTypography.semiBold,
                                     fontSize: AppTypography.bodyMedium,
                                   ),
@@ -756,7 +754,6 @@ class _PreferenceItem {
   final String? subtitle;
   final VoidCallback onTap;
   final Color? iconColor;
-  final Color? textColor;
 
   const _PreferenceItem({
     required this.icon,
@@ -764,7 +761,6 @@ class _PreferenceItem {
     this.subtitle,
     required this.onTap,
     this.iconColor,
-    this.textColor,
   });
 }
 
