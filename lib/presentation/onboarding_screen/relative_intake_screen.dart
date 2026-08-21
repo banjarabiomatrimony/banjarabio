@@ -162,19 +162,20 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
   }
 
   String _getRelationLabel(String key) {
+    final l10n = AppLocalizations.of(context);
     switch (key) {
       case 'son':
-        return '👦 माझ्या मुलासाठी (Son)';
+        return l10n?.forMySon ?? '👦 For My Son';
       case 'daughter':
-        return '👧 माझ्या मुलीसाठी (Daughter)';
+        return l10n?.forMyDaughter ?? '👧 For My Daughter';
       case 'sibling':
-        return '👫 भाऊ / बहिणीसाठी (Sibling)';
+        return l10n?.forMySibling ?? '👫 For My Sibling';
       case 'relative':
-        return '👨‍👩‍👧 नातेवाइकासाठी (Relative)';
+        return l10n?.forMyRelative ?? '👨‍👩‍👧 For My Relative';
       case 'self':
-        return '👤 स्वतःसाठी (Self)';
+        return l10n?.forMyself ?? '👤 For Myself';
       case 'other':
-        return '✨ इतर कोणासाठी (Other)';
+        return l10n?.forOther ?? '✨ For Someone Else';
       default:
         return key;
     }
@@ -214,15 +215,15 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                   theme: theme,
                   isDark: isDark,
                   stepNumber: '1',
-                  title: 'कोणता बायोडेटा शोधत आहात?',
-                  subtitle: 'पाहिजे ते लिंग निवडा (Select Girl / Boy)',
+                  title: l10n?.targetBiodataQuestion ?? 'Which biodata are you looking for?',
+                  subtitle: l10n?.targetGenderSubtitle ?? 'Select Gender (Bride / Groom)',
                   icon: Icons.wc_rounded,
                   child: Row(
                     children: [
                       Expanded(
                         child: _GenderCard(
-                          label: '👧 मुलगी पाहिजे',
-                          subtitle: 'वधू (Bride) स्थळ',
+                          label: l10n?.brideOption ?? '👧 Bride (Girl)',
+                          subtitle: l10n?.bride ?? 'Bride',
                           emoji: '👧',
                           icon: Icons.girl_rounded,
                           value: 'Female',
@@ -235,8 +236,8 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                       SizedBox(width: 2.5.w),
                       Expanded(
                         child: _GenderCard(
-                          label: '👦 मुलगा पाहिजे',
-                          subtitle: 'वर (Groom) स्थळ',
+                          label: l10n?.groomOption ?? '👦 Groom (Boy)',
+                          subtitle: l10n?.groom ?? 'Groom',
                           emoji: '👦',
                           icon: Icons.boy_rounded,
                           value: 'Male',
@@ -257,8 +258,8 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                   theme: theme,
                   isDark: isDark,
                   stepNumber: '2',
-                  title: 'हे स्थळ कोणासाठी शोधत आहात?',
-                  subtitle: 'नाते निवडा (Select Relationship)',
+                  title: l10n?.whoIsThisForQuestion ?? 'Who are you searching for?',
+                  subtitle: l10n?.relationSubtitle ?? 'Select Relationship',
                   icon: Icons.family_restroom_rounded,
                   child: Wrap(
                     spacing: 2.w,
@@ -488,7 +489,7 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                         Text(
                           'प्रगती (Progress)',
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w800,
+                            fontWeight: AppTypography.extraBold,
                             color: theme.colorScheme.onSurface,
                             fontSize: AppTypography.bodyMedium,
                           ),
@@ -519,7 +520,7 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                         '$_completedSteps / 3 पूर्ण',
                         style: TextStyle(
                           fontSize: AppTypography.bodySmall,
-                          fontWeight: FontWeight.w900,
+                          fontWeight: AppTypography.black,
                           color: currentStepColor,
                         ),
                       ),
@@ -590,8 +591,8 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
           l10n?.browseMatchesTitle ?? 'स्थळ शोधा',
           textAlign: TextAlign.center,
           style: theme.textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.w900,
-            fontSize: 20.sp,
+            fontWeight: AppTypography.black,
+            fontSize: AppTypography.headingLarge,
             color: theme.colorScheme.onSurface,
             letterSpacing: -0.5,
           ),
@@ -605,7 +606,7 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
           style: theme.textTheme.bodyMedium?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
             fontSize: AppTypography.bodyLarge,
-            fontWeight: FontWeight.w700,
+            fontWeight: AppTypography.bold,
             height: 1.3,
           ),
         ),
@@ -636,7 +637,7 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                 '⚡ 1-Min Quick Filter',
                 style: TextStyle(
                   fontSize: AppTypography.bodySmall,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: AppTypography.extraBold,
                   color: theme.colorScheme.onSurface,
                 ),
               ),
@@ -647,7 +648,7 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                 '🔒 No Login Required',
                 style: TextStyle(
                   fontSize: AppTypography.bodySmall,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: AppTypography.extraBold,
                   color: primary,
                 ),
               ),
@@ -713,7 +714,7 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                     stepNumber,
                     style: TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: AppTypography.black,
                       fontSize: AppTypography.bodySmall,
                     ),
                   ),
@@ -729,7 +730,7 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                     Text(
                       title,
                       style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
+                        fontWeight: AppTypography.extraBold,
                         fontSize: AppTypography.bodyLarge,
                         color: theme.colorScheme.onSurface,
                       ),
@@ -803,7 +804,7 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                           child: Text(
                             LocationData.getLocalizedName(item, context),
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTypography.semiBold,
                               fontSize: AppTypography.bodyMedium,
                             ),
                           ),
@@ -859,7 +860,7 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                     Text(
                       l10n?.proceedToLogin ?? 'पुढे जा → स्थळे पहा',
                       style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w900,
+                        fontWeight: AppTypography.black,
                         color: Colors.white,
                         fontSize: AppTypography.bodyLarge,
                         letterSpacing: 0.2,
@@ -954,7 +955,7 @@ class _TactileChip extends StatelessWidget {
               Text(
                 label,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+                  fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
                   color: isSelected ? primaryColor : theme.colorScheme.onSurface,
                   fontSize: AppTypography.bodySmall,
                 ),
@@ -1042,7 +1043,7 @@ class _GenderCard extends StatelessWidget {
               Text(
                 label,
                 style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w900,
+                  fontWeight: AppTypography.black,
                   color: isSelected ? accentColor : theme.colorScheme.onSurface,
                   fontSize: AppTypography.bodyMedium,
                 ),
@@ -1162,7 +1163,7 @@ class __AnimatedExplanationSummaryCardState
                       child: Text(
                         widget.text,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w900,
+                              fontWeight: AppTypography.black,
                               fontSize: AppTypography.headingSmall,
                               color: widget.isDark
                                   ? const Color(0xFFFDE047)

@@ -345,7 +345,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                       Text(
                         l10n?.welcomeToBanjaraBio ?? 'Welcome to BanjaraBio',
                         style: theme.textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.w700,
+                          fontWeight: AppTypography.bold,
                           letterSpacing: -0.3,
                         ),
                         textAlign: TextAlign.center,
@@ -400,7 +400,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           : (l10n?.useEmailPassword ?? 'Use Email / Password'),
                                       style: theme.textTheme.labelSmall?.copyWith(
                                         color: theme.colorScheme.primary,
-                                        fontWeight: FontWeight.w500,
+                                        fontWeight: AppTypography.medium,
                                       ),
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -454,7 +454,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                               l10n?.whyBanjaraBio ?? 'Why BanjaraBio?',
                               style: theme.textTheme.labelSmall?.copyWith(
                                 color: theme.colorScheme.primary,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: AppTypography.semiBold,
                               ),
                             ),
                           ),
@@ -510,7 +510,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                 text: l10n?.terms ?? 'Terms',
                                 style: TextStyle(
                                   color: theme.colorScheme.primary,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: AppTypography.semiBold,
                                   decoration: TextDecoration.underline,
                                 ),
                               ),
@@ -519,7 +519,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                 text: l10n?.privacyPolicy ?? 'Privacy Policy',
                                 style: TextStyle(
                                   color: theme.colorScheme.primary,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: AppTypography.semiBold,
                                   decoration: TextDecoration.underline,
                                 ),
                               ),
@@ -595,7 +595,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         child: Text(
                           l10n?.loading ?? 'Connecting...',
                           style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTypography.semiBold,
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -612,7 +612,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         child: Text(
                           l10n?.continueWithGoogle ?? 'Continue with Google',
                           style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTypography.semiBold,
                             color: Colors.black87,
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -704,7 +704,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                       Text(
                         l10n?.loading ?? 'Logging in...',
                         style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTypography.semiBold,
                           color: Colors.white,
                         ),
                       ),
@@ -713,7 +713,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                 : Text(
                     l10n?.login ?? 'Login',
                     style: theme.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTypography.semiBold,
                       color: Colors.white,
                     ),
                   ),
@@ -754,7 +754,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                           size: 20,
                         ),
                         SizedBox(width: 1.5.h),
-                        Text(type, style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500)),
+                        Text(type, style: theme.textTheme.bodyMedium?.copyWith(fontWeight: AppTypography.medium)),
                         if (type == 'Tester') ...[
                           const Expanded(child: SizedBox()),
                           Container(
@@ -767,7 +767,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                               l10n?.demo ?? 'Demo',
                               style: theme.textTheme.labelSmall?.copyWith(
                                 color: Colors.blue,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: AppTypography.semiBold,
                               ),
                             ),
                           ),
@@ -813,7 +813,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                       l10n?.adminLoginRequiresAuthorizedCredentials ?? 'Admin login requires authorized credentials',
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: Colors.orange.shade700,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTypography.medium,
                       ),
                     ),
                   ),
@@ -848,8 +848,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
           Text(
             label,
             style: theme.textTheme.labelSmall?.copyWith(
-              fontSize: 8.sp,
-              fontWeight: FontWeight.w600,
+              fontSize: AppTypography.labelMedium,
+              fontWeight: AppTypography.semiBold,
             ),
           ),
         ],

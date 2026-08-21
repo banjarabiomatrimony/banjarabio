@@ -72,7 +72,10 @@ class StartupTasks {
     StartupOrchestrator().registerTask(StartupPhase.background, () async {
       AppLogoService.instance.warmUp();
       PerformanceService().initialize();
-    }, name: 'Background Warm-up');
+      // Initialize AdMob SDK early in background so it's ready when user arrives at feed
+      AppLogger.debug('StartupTasks', 'Ads: [ORCHESTRATOR] Initializing AdMob SDK in background phase...');
+      await AdMobService.initialize();
+    }, name: 'Background Warm-up & Ads');
   }
 
   // ─── IDLE (Heavy): Isolate + Image cleanup (20s after interactive) ─────

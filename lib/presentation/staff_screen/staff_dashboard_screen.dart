@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/core/repositories/staff_repository.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
@@ -167,7 +168,7 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
               pinned: true,
               backgroundColor: _kBgDark,
               foregroundColor: Colors.white,
-              title: const Text('Workspace', style: TextStyle(fontWeight: FontWeight.w600)),
+              title: const Text('Workspace', style: TextStyle(fontWeight: AppTypography.semiBold)),
               actions: [
                 IconButton(
                   icon: const Icon(Icons.refresh),
@@ -187,7 +188,7 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                         child: TextField(
-                          style: const TextStyle(color: Colors.white, fontSize: 14),
+                          style: TextStyle(color: Colors.white, fontSize: AppTypography.bodyLarge),
                           decoration: InputDecoration(
                             hintText: 'Search leads...',
                             hintStyle: const TextStyle(color: Colors.white38),
@@ -258,8 +259,8 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
                           selectedColor: _kAccentColor.withValues(alpha: 0.2),
                           labelStyle: TextStyle(
                             color: isSelected ? _kAccentColor : Colors.white70,
-                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                            fontSize: 13,
+                            fontWeight: isSelected ? AppTypography.bold : FontWeight.normal,
+                            fontSize: AppTypography.bodyLarge,
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
@@ -342,8 +343,8 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
                 value,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  fontSize: AppTypography.headingLarge,
+                  fontWeight: AppTypography.bold,
                   shadows: [Shadow(color: color.withValues(alpha: 0.4), blurRadius: 4)],
                 ),
               ),
@@ -352,7 +353,7 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
           const SizedBox(height: 8),
           Text(
             label,
-            style: const TextStyle(color: Colors.white54, fontSize: 11, fontWeight: FontWeight.w500),
+            style: TextStyle(color: Colors.white54, fontSize: AppTypography.bodySmall, fontWeight: AppTypography.medium),
           ),
         ],
       ),
@@ -374,14 +375,14 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
             child: const Icon(Icons.sentiment_satisfied_alt, size: 64, color: Colors.white24),
           ),
           const SizedBox(height: 24),
-          const Text(
+          Text(
             'All Caught Up!',
-            style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.white, fontSize: AppTypography.headingLarge, fontWeight: AppTypography.bold),
           ),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'No leads found matching the current filters.',
-            style: TextStyle(color: Colors.white54, fontSize: 14),
+            style: TextStyle(color: Colors.white54, fontSize: AppTypography.bodyLarge),
           ),
         ],
       ),
@@ -437,7 +438,7 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
                   backgroundColor: _kAccentColor.withValues(alpha: 0.2),
                   child: Text(
                     initial,
-                    style: const TextStyle(color: _kAccentColor, fontWeight: FontWeight.bold, fontSize: 20),
+                    style: TextStyle(color: _kAccentColor, fontWeight: AppTypography.bold, fontSize: AppTypography.headingLarge),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -447,10 +448,10 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
                     children: [
                       Text(
                         '${profile.fullName} ${profile.surname}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          fontSize: AppTypography.headingSmall,
+                          fontWeight: AppTypography.semiBold,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -458,17 +459,17 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
                       const SizedBox(height: 2),
                       Text(
                         'ID: ${profile.displayId}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: _kAccentColor,
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
+                          fontSize: AppTypography.bodySmall,
+                          fontWeight: AppTypography.bold,
                           letterSpacing: 0.5,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         '${profile.age} yrs • ${profile.gender} • ${profile.village ?? 'N/A'}',
-                        style: const TextStyle(color: Colors.white54, fontSize: 13),
+                        style: TextStyle(color: Colors.white54, fontSize: AppTypography.bodyLarge),
                       ),
                       const SizedBox(height: 8),
                       // Progress Bar
@@ -488,7 +489,7 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
                           const SizedBox(width: 8),
                           Text(
                             '${profile.completionPercentage}%',
-                            style: const TextStyle(color: Colors.white54, fontSize: 11),
+                            style: TextStyle(color: Colors.white54, fontSize: AppTypography.bodySmall),
                           ),
                         ],
                       ),
@@ -505,7 +506,7 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
                   ),
                   child: Text(
                     statusText,
-                    style: TextStyle(color: statusColor, fontSize: 11, fontWeight: FontWeight.bold),
+                    style: TextStyle(color: statusColor, fontSize: AppTypography.bodySmall, fontWeight: AppTypography.bold),
                   ),
                 ),
               ],
@@ -569,7 +570,7 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
           children: [
             Icon(icon, color: color, size: 20),
             const SizedBox(height: 2),
-            Text(label, style: TextStyle(color: color.withValues(alpha: 0.8), fontSize: 10, fontWeight: FontWeight.w500)),
+            Text(label, style: TextStyle(color: color.withValues(alpha: 0.8), fontSize: AppTypography.bodySmall, fontWeight: AppTypography.medium)),
           ],
         ),
       ),
@@ -658,9 +659,9 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  const Text('📱 Start WhatsApp Chat', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text('📱 Start WhatsApp Chat', style: TextStyle(color: Colors.white, fontSize: AppTypography.headingMedium, fontWeight: AppTypography.bold)),
                   const SizedBox(height: 8),
-                  const Text('Select a template to engage with this lead.', style: TextStyle(color: Colors.white54, fontSize: 13)),
+                  Text('Select a template to engage with this lead.', style: TextStyle(color: Colors.white54, fontSize: AppTypography.bodyLarge)),
                   const SizedBox(height: 16),
                   Expanded(
                     child: ListView.separated(
@@ -697,9 +698,9 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
                         };
 
                         return ListTile(
-                          leading: Text(icon, style: const TextStyle(fontSize: 22)),
-                          title: Text(t['name'] ?? 'Template', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
-                          subtitle: Text(msg, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white54, fontSize: 12)),
+                          leading: Text(icon, style: TextStyle(fontSize: AppTypography.headingLarge)),
+                          title: Text(t['name'] ?? 'Template', style: const TextStyle(color: Colors.white, fontWeight: AppTypography.medium)),
+                          subtitle: Text(msg, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white54, fontSize: AppTypography.bodyMedium)),
                           onTap: () {
                             Navigator.pop(ctx);
                             _openWhatsAppWithMessage(profile, msg);
@@ -739,9 +740,9 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('Log Call Outcome', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+              Text('Log Call Outcome', style: TextStyle(color: Colors.white, fontSize: AppTypography.headingMedium, fontWeight: AppTypography.bold)),
               const SizedBox(height: 8),
-              Text('Lead: ${profile.fullName}', style: const TextStyle(color: Colors.white54, fontSize: 14)),
+              Text('Lead: ${profile.fullName}', style: TextStyle(color: Colors.white54, fontSize: AppTypography.bodyLarge)),
               const SizedBox(height: 24),
               Wrap(
                 spacing: 12,
@@ -782,7 +783,7 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
         ),
         child: Text(
           label,
-          style: TextStyle(color: isProminent ? color : Colors.white, fontWeight: isProminent ? FontWeight.bold : FontWeight.normal),
+          style: TextStyle(color: isProminent ? color : Colors.white, fontWeight: isProminent ? AppTypography.bold : FontWeight.normal),
         ),
       ),
     );

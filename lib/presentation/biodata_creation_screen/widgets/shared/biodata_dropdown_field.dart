@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -28,7 +29,7 @@ class BiodataDropdownField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+        Text(label, style: theme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.bold)),
         SizedBox(height: 1.h),
         DropdownButtonFormField<String>(
           initialValue: value != null && items.any((i) => i.value == value) ? value : null,

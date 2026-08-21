@@ -34,7 +34,7 @@ class CustomErrorWidget extends StatelessWidget {
                 Text(AppLocalizations.of(context)?.somethingWentWrong ?? 'Something went wrong',
                   style: TextStyle(
                     fontSize: AppTypography.headingMedium,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTypography.medium,
                     color: const Color(0xFF262626),
                   ),
                 ),

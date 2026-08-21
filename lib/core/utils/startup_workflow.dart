@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/config/admin_config.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
@@ -99,8 +100,9 @@ class StartupWorkflow {
           final hasProfile = profile != null;
           if (hasProfile) {
             // Identity Intelligence Toast feedback for existing profile detection
+            final l10n = AppLocalizations.of(context);
             Fluttertoast.showToast(
-              msg: 'वेलकम बॅक! तुमचे खाते सापडले आहे.',
+              msg: l10n?.welcomeBackAccountFound ?? 'Welcome back! Your account has been found.',
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               backgroundColor: const Color(0xFFD97706),
@@ -171,13 +173,13 @@ class StartupWorkflow {
     // INTERACTIVE: first meaningful frame is on-screen
     StartupOrchestrator().markInteractive();
 
-    // BACKGROUND: analytics, notifications, background syncs (8s later)
-    Future.delayed(const Duration(seconds: 8), () {
+    // BACKGROUND: analytics, notifications, background syncs (2.5s later)
+    Future.delayed(const Duration(milliseconds: 2500), () {
       StartupOrchestrator().markBackground();
     });
 
-    // IDLE: heavy deferred init — Firebase, AdMob, isolates (20s later)
-    Future.delayed(const Duration(seconds: 20), () {
+    // IDLE: heavy deferred init — Firebase, AdMob, isolates (5s later)
+    Future.delayed(const Duration(milliseconds: 5000), () {
       StartupOrchestrator().markIdle();
     });
   }

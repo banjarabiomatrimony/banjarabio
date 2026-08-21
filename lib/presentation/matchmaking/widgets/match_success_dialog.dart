@@ -4,11 +4,9 @@ import 'package:sizer/sizer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/core/app_export.dart';
-import 'package:banjarabio/widgets/custom_image_widget.dart';
 import 'package:banjarabio/core/models/chat_model.dart';
 import 'package:banjarabio/presentation/chat/chat_screen.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
-import 'package:banjarabio/core/constants/app_typography.dart';
 
 class MatchSuccessDialog extends StatefulWidget {
   final String shareId;

@@ -17,6 +17,7 @@ import 'package:banjarabio/core/utils/text_scale_config.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/services/ads/app_open_ad_manager.dart';
 
+import 'package:banjarabio/core/init/system_chrome_config.dart';
 import 'package:banjarabio/core/config/sentry_config.dart';
 
 void main() async {
@@ -149,6 +150,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
                   final double screenWidth = MediaQuery.of(context).size.width;
                   final bool isLargeScreen = screenWidth > 600;
+                  SystemChromeConfig.adaptOrientationForScreen(context);
 
                   return MediaQuery(
                     data: MediaQuery.of(context).copyWith(

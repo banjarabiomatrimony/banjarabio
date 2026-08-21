@@ -1,133 +1,195 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
 
-import 'package:banjarabio/core/app_export.dart';
-import 'package:banjarabio/widgets/custom_icon_widget.dart';
-import 'package:banjarabio/presentation/profile_detail_screen/widgets/profile_detail_chip_widget.dart';
-import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/core/models/profile_model.dart';
+import 'package:banjarabio/theme/app_category_theme.dart';
+import 'package:banjarabio/widgets/tactile/tactile_category_card.dart';
+import 'package:banjarabio/widgets/tactile/tactile_detail_chip.dart';
+import 'package:banjarabio/presentation/profile_detail_screen/widgets/staggered_fade_slide_widget.dart';
 
-/// Education and profession card displaying academic and career information
-/// Emphasizes professional background for family evaluation
+/// 💼 Education and Profession Card displaying academic and career information.
+/// Consumes centralized AppCategoryTheme and shared Tactile components.
 class EducationProfessionCardWidget extends StatelessWidget {
   final Map<String, dynamic> profileData;
   final EdgeInsets? margin;
+  final VoidCallback? onEdit;
 
   const EducationProfessionCardWidget({
     super.key,
     required this.profileData,
     this.margin,
+    this.onEdit,
   });
 
   /// Returns AppLocalizations.of(context).notEntered for null or empty values, otherwise the value string.
   String _displayValue(BuildContext context, dynamic value) {
-    if (value == null) return AppLocalizations.of(context)?.notEntered ?? 'Not Entered';
+    if (value == null) {
+      return AppLocalizations.of(context)?.notEntered ?? 'Not Entered';
+    }
     final str = value.toString().trim();
-    return str.isEmpty ? AppLocalizations.of(context)?.notEntered ?? 'Not Entered' : str;
+    return str.isEmpty
+        ? AppLocalizations.of(context)?.notEntered ?? 'Not Entered'
+        : str;
+  }
+
+  /// Formats annual income to pure numeric rupee representation.
+  String _displayIncome(BuildContext context, dynamic value) {
+    if (value == null) {
+      return AppLocalizations.of(context)?.notEntered ?? 'Not Entered';
+    }
+    final formatted = ProfileModel.formatAnnualIncome(value);
+    return formatted == 'Not Entered'
+        ? (AppLocalizations.of(context)?.notEntered ?? 'Not Entered')
+        : formatted;
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final primary = theme.colorScheme.primary;
-    final secondary = theme.colorScheme.secondary;
-    final tertiary = theme.colorScheme.tertiary;
+    final catTheme = AppCategoryTheme.of(context).career;
+    final incomeColor = FieldColorResolver.resolveIncome(context);
+    final incomeText = _displayIncome(context, profileData['income']);
+    final hasIncome =
+        incomeText != (AppLocalizations.of(context)?.notEntered ?? 'Not Entered');
 
-    return Container(
-      margin: margin ?? EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.2.h),
-      padding: EdgeInsets.symmetric(horizontal: 3.2.w, vertical: 1.5.h),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: tertiary.withValues(alpha: 0.05),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-        border: Border.all(
-          color: tertiary.withValues(alpha: 0.45),
-          width: 1.2,
-        ),
-      ),
+    return TactileCategoryCard(
+      categoryType: CategoryType.career,
+      title: AppLocalizations.of(context)?.educationProfession ??
+          'Education & Profession',
+      icon: Icons.work_rounded,
+      onEdit: onEdit,
+      margin: margin,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(0.8.h),
-                decoration: BoxDecoration(
-                  color: tertiary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: CustomIconWidget(
-                  iconName: 'work',
-                  color: tertiary,
-                  size: 22,
-                ),
-              ),
-              SizedBox(width: 2.w),
-              Expanded(
-                child: Text(AppLocalizations.of(context)?.educationProfession ?? 'Education & Profession',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: theme.colorScheme.onSurface,
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: 0.4,
-                    fontSize: AppTypography.headingSmall,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
+          // Row 0: Highest Education (Full Width)
+          StaggeredFadeSlideWidget(
+            index: 0,
+            child: TactileDetailChip(
+              iconName: 'school',
+              label: AppLocalizations.of(context)?.education ?? 'Education',
+              value: _displayValue(context, profileData['education']),
+              tintColor: catTheme.primary,
+              fullWidth: true,
+            ),
           ),
-          SizedBox(height: 1.5.h),
-          Wrap(
-            spacing: 2.w,
-            runSpacing: 2.w,
-            children: [
-              ProfileDetailChipWidget(
-                iconName: 'school',
-                label: AppLocalizations.of(context)?.educationLabel ?? 'Education',
-                value: _displayValue(context, profileData['education']),
-                tintColor: primary,
-                fullWidth: true,
-              ),
-              ProfileDetailChipWidget(
-                iconName: 'work',
-                label: AppLocalizations.of(context)?.occupationLabel ?? 'Occupation',
-                value: _displayValue(context, profileData['job'] ?? profileData['occupation']),
-                tintColor: secondary,
-                fullWidth: true,
-              ),
-              ProfileDetailChipWidget(
-                iconName: 'menu_book',
-                label: AppLocalizations.of(context)?.educationDetails ?? 'Education Details',
-                value: _displayValue(context, profileData['educationDetails']),
-                tintColor: tertiary,
-                fullWidth: true,
-              ),
-              ProfileDetailChipWidget(
-                iconName: 'business_center',
-                label: AppLocalizations.of(context)?.jobDetails ?? 'Job Details',
-                value: _displayValue(context, profileData['jobDetails']),
-                tintColor: primary,
-                fullWidth: true,
-              ),
-              ProfileDetailChipWidget(
-                iconName: 'location_city',
-                label: AppLocalizations.of(context)?.company ?? 'Company',
-                value: _displayValue(context, profileData['company']),
-                tintColor: secondary,
-              ),
-              ProfileDetailChipWidget(
-                iconName: 'attach_money',
-                label: AppLocalizations.of(context)?.annualIncomeLabel ?? 'Annual Income',
-                value: _displayValue(context, profileData['annualIncome']),
-                tintColor: tertiary,
-              ),
-            ],
+          SizedBox(height: 0.9.h),
+
+          // Row 1: College / University & Degree Detail
+          StaggeredFadeSlideWidget(
+            index: 1,
+            child: Row(
+              children: [
+                Expanded(
+                  child: TactileDetailChip(
+                    iconName: 'menu_book',
+                    label: 'Degree / Field',
+                    value: _displayValue(
+                        context,
+                        profileData['degree'] ??
+                            profileData['educationDetail']),
+                    tintColor: catTheme.secondary,
+                  ),
+                ),
+                SizedBox(width: 2.2.w),
+                Expanded(
+                  child: TactileDetailChip(
+                    iconName: 'account_balance',
+                    label: 'College / Institute',
+                    value: _displayValue(
+                        context,
+                        profileData['college'] ??
+                            profileData['collegeName']),
+                    tintColor: catTheme.tertiary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 0.9.h),
+
+          // Row 2: Profession / Occupation (Full Width)
+          StaggeredFadeSlideWidget(
+            index: 2,
+            child: TactileDetailChip(
+              iconName: 'business_center',
+              label: AppLocalizations.of(context)?.occupationLabel ??
+                  'Profession / Occupation',
+              value: _displayValue(context,
+                  profileData['profession'] ?? profileData['occupation']),
+              tintColor: catTheme.primary,
+              fullWidth: true,
+            ),
+          ),
+          SizedBox(height: 0.9.h),
+
+          // Row 3: Organization & Employed In
+          StaggeredFadeSlideWidget(
+            index: 3,
+            child: Row(
+              children: [
+                Expanded(
+                  child: TactileDetailChip(
+                    iconName: 'corporate_fare',
+                    label: 'Company / Org',
+                    value: _displayValue(
+                        context,
+                        profileData['company'] ??
+                            profileData['organization']),
+                    tintColor: catTheme.secondary,
+                  ),
+                ),
+                SizedBox(width: 2.2.w),
+                Expanded(
+                  child: TactileDetailChip(
+                    iconName: 'domain',
+                    label: 'Employed In',
+                    value: _displayValue(
+                        context,
+                        profileData['employedIn'] ??
+                            profileData['employmentType']),
+                    tintColor: catTheme.tertiary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 0.9.h),
+
+          // Row 4: Annual Income (Dynamic Gold Hero Chip)
+          StaggeredFadeSlideWidget(
+            index: 4,
+            child: TactileDetailChip(
+              iconName: 'payments',
+              label: AppLocalizations.of(context)?.annualIncome ??
+                  'Annual Income',
+              value: incomeText,
+              tintColor: incomeColor,
+              fullWidth: true,
+              trailingBadge: hasIncome
+                  ? Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 2.w, vertical: 0.2.h),
+                      decoration: BoxDecoration(
+                        color: incomeColor.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                          color: incomeColor.withValues(alpha: 0.3),
+                          width: 0.8,
+                        ),
+                      ),
+                      child: Text(
+                        'VERIFIED PACKAGE',
+                        style: TextStyle(
+                          color: incomeColor,
+                          fontSize: AppTypography.labelTiny,
+                          fontWeight: AppTypography.extraBold,
+                        ),
+                      ),
+                    )
+                  : null,
+            ),
           ),
         ],
       ),

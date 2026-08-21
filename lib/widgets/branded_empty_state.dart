@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
-import 'package:banjarabio/theme/app_theme.dart';
 import 'package:banjarabio/core/providers/home_tab_provider.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 
@@ -89,10 +88,9 @@ class BrandedEmptyState extends ConsumerWidget {
             // ── Premium Typography Title ──
             Text(
               title,
-              style: TextStyle(
-                fontFamily: AppTheme.headingFontFamily,
+              style: AppTypography.headingStyle(
                 fontSize: AppTypography.headingMedium,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTypography.bold,
                 color: theme.colorScheme.onSurface,
                 letterSpacing: 0.5,
               ),
@@ -106,8 +104,7 @@ class BrandedEmptyState extends ConsumerWidget {
               padding: EdgeInsets.symmetric(horizontal: 2.w),
               child: Text(
                 description,
-                style: TextStyle(
-                  fontFamily: AppTheme.bodyFontFamily,
+                style: AppTypography.bodyStyle(
                   fontSize: AppTypography.bodySmall,
                   color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.9),
                   height: 1.5,
@@ -153,10 +150,8 @@ class BrandedEmptyState extends ConsumerWidget {
                   ),
                   label: Text(
                     ctaText,
-                    style: TextStyle(
-                      fontFamily: AppTheme.headingFontFamily,
-                      fontSize: AppTypography.bodyMedium,
-                      fontWeight: FontWeight.bold,
+                    style: AppTypography.labelStyle(
+                      fontSize: AppTypography.labelLarge,
                       letterSpacing: 0.5,
                     ),
                   ),

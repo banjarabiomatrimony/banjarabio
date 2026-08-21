@@ -24,7 +24,7 @@ class PdfAssetsService {
   PdfAssetsService._();
   static final PdfAssetsService instance = PdfAssetsService._();
 
-  static const Duration _photoTimeout = Duration(seconds: 12);
+  static const Duration _photoTimeout = Duration(milliseconds: 3500);
   static const int _maxPhotoCacheEntries = 2;
 
   final Map<String, Uint8List> _photoCache = {};

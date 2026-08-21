@@ -442,22 +442,23 @@ class SubscriptionConfig {
     }
   }
 
-  /// Get Self-Service paid plans for Tab 1
-  /// - If isBvsVerified is true: returns exclusive ₹200/yr and ₹50/mo subsidized plans.
-  /// - If isBvsVerified is false: returns full standard tiers (Standard, Silver, Gold, Platinum, Eternal).
-  static List<MapEntry<PlanType, PlanFeatures>> getSelfServicePlans({bool isBvsVerified = false}) {
-    if (isBvsVerified) {
-      return const [
-        MapEntry(PlanType.mass_market_annual, massMarketAnnual),
-        MapEntry(PlanType.mass_market, massMarketMonthly),
-      ];
-    }
+  /// Get Standard Self-Service paid plans for Tab 1 (Standard, Silver, Gold, Platinum, Eternal)
+  /// Filtered by [enabledPlans] toggle.
+  static List<MapEntry<PlanType, PlanFeatures>> getSelfServicePlans() {
     return const [
       MapEntry(PlanType.standard, standard),
       MapEntry(PlanType.silver, silver),
       MapEntry(PlanType.gold, gold),
       MapEntry(PlanType.platinum, platinum),
       MapEntry(PlanType.eternal, eternal),
+    ].where((entry) => enabledPlans.contains(entry.key)).toList();
+  }
+
+  /// Get BVS Subsidized Plans (₹200/year and ₹20/month) for BVS Gateway Screen
+  static List<MapEntry<PlanType, PlanFeatures>> getBvsSubsidizedPlans() {
+    return const [
+      MapEntry(PlanType.mass_market_annual, massMarketAnnual),
+      MapEntry(PlanType.mass_market, massMarketMonthly),
     ].where((entry) => enabledPlans.contains(entry.key)).toList();
   }
 
@@ -471,9 +472,9 @@ class SubscriptionConfig {
     ].where((entry) => enabledPlans.contains(entry.key)).toList();
   }
 
-  /// Backward-compatible: returns Self-Service plans (was getAllPaidPlans)
-  static List<MapEntry<PlanType, PlanFeatures>> getAllPaidPlans({bool isBvsVerified = false}) {
-    return getSelfServicePlans(isBvsVerified: isBvsVerified);
+  /// Backward-compatible: returns Standard Self-Service plans
+  static List<MapEntry<PlanType, PlanFeatures>> getAllPaidPlans() {
+    return getSelfServicePlans();
   }
 
   /// Calculate savings vs monthly pricing

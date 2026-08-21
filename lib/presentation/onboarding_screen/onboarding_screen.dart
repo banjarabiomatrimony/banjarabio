@@ -144,11 +144,10 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   child: TextButton(
                     onPressed: _completeOnboarding,
                     child: Text(AppLocalizations.of(context)?.skip ?? 'Skip',
-                      style: TextStyle(
-                        fontFamily: AppTheme.headingFontFamily,
+                      style: AppTypography.headingStyle(
                         color: Colors.white.withValues(alpha: 0.8),
                         fontSize: AppTypography.bodyMedium,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTypography.medium,
                       ),
                     ),
                   ),
@@ -212,10 +211,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                               isLastPage 
                                   ? (AppLocalizations.of(context)?.getStartedLabel ?? 'Get Started')
                                   : (AppLocalizations.of(context)?.nextLabel ?? 'Next'),
-                              style: TextStyle(
-                                fontFamily: AppTheme.headingFontFamily,
+                              style: AppTypography.headingStyle(
                                 fontSize: AppTypography.bodyLarge,
-                                fontWeight: FontWeight.w700,
+                                fontWeight: AppTypography.bold,
                                 letterSpacing: 0.5,
                               ),
                             ),
@@ -284,10 +282,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             Text(
               page.title,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: AppTheme.headingFontFamily,
-                fontSize: AppTypography.headingLarge,
-                fontWeight: FontWeight.w800,
+              style: AppTypography.headingStyle(
                 color: Colors.white,
                 letterSpacing: 0.5,
                 height: 1.2,
@@ -300,10 +295,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             Text(
               page.subtitle,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: AppTheme.headingFontFamily,
+              style: AppTypography.headingStyle(
                 fontSize: AppTypography.bodyMedium,
-                fontWeight: FontWeight.w400,
+                fontWeight: AppTypography.regular,
                 color: Colors.white.withValues(alpha: 0.85),
                 height: 1.6,
               ),

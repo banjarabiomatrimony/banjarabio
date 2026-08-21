@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/widgets/celebration_spark_painter.dart';
 import 'package:banjarabio/widgets/glassmorphism_container.dart';
-import 'package:banjarabio/core/utils/tour_keys.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// 🌟 WORLD'S MOST PREMIUM MATRIMONY BOTTOM NAVIGATION BAR 🌟
@@ -23,12 +22,14 @@ class CustomBottomBar extends StatefulWidget {
   final int currentIndex;
   final Function(int) onTap;
   final int? sharedBadgeCount;
+  final int? chatBadgeCount;
 
   const CustomBottomBar({
     super.key,
     required this.currentIndex,
     required this.onTap,
     this.sharedBadgeCount,
+    this.chatBadgeCount,
   });
 
   @override
@@ -99,10 +100,12 @@ class _CustomBottomBarState extends State<CustomBottomBar>
 
     final double barWidth = screenWidth;
     final double itemWidth = barWidth / itemCount;
-    final double capsuleWidth = 16.w;
+    final double capsuleWidth = itemWidth - 4;
     final double capsuleHeight = 4.5.h;
     final double leftPosition = widget.currentIndex * itemWidth + (itemWidth - capsuleWidth) / 2;
     final double topPosition = (contentHeight - 1.5 - capsuleHeight) / 2;
+
+    final int totalConnectBadge = (widget.sharedBadgeCount ?? 0) + (widget.chatBadgeCount ?? 0);
 
     return Container(
       width: screenWidth,
@@ -188,52 +191,56 @@ class _CustomBottomBarState extends State<CustomBottomBar>
                   ),
                 ),
 
-                // 🎯 Navigation Items
+                // 🎯 Navigation Items (5 Tabs: Home, Connect, Biodata, Services, Menu)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
+                    // 0: Home (Discover)
                     _buildNavItem(
                       index: 0,
-                      key: TourKeys.homeTabKey,
                       icon: Icons.favorite_rounded,
                       activeIcon: Icons.favorite,
                       label: AppLocalizations.of(context)?.home ?? 'Home',
                       gradient: const [Color(0xFF880E4F), Color(0xFF961B33)],
                       contentHeight: contentHeight - 1.5,
                     ),
+
+                    // 1: Connect (Matches + Chat)
                     _buildNavItem(
                       index: 1,
-                      key: TourKeys.sharedTabKey,
-                      icon: Icons.people_rounded,
-                      activeIcon: Icons.people,
-                      label: AppLocalizations.of(context)?.shared ?? 'Matches',
-                      badgeCount: widget.sharedBadgeCount,
-                      gradient: const [Color(0xFFFFA726), Color(0xFFFF6F00)],
+                      icon: Icons.forum_outlined,
+                      activeIcon: Icons.forum_rounded,
+                      label: AppLocalizations.of(context)?.chat ?? 'Connect',
+                      badgeCount: totalConnectBadge > 0 ? totalConnectBadge : null,
+                      gradient: const [Color(0xFF00897B), Color(0xFF004D40)],
                       contentHeight: contentHeight - 1.5,
                     ),
+
+                    // 2: Biodata (PDF Studio)
                     _buildNavItem(
                       index: 2,
-                      key: TourKeys.melavaTabKey,
-                      icon: Icons.calendar_month_rounded,
-                      activeIcon: Icons.calendar_month,
-                      label: AppLocalizations.of(context)?.melavas ?? 'Melavas',
+                      icon: Icons.description_outlined,
+                      activeIcon: Icons.description_rounded,
+                      label: AppLocalizations.of(context)?.biodataPdf.replaceAll(' PDF', '') ?? 'Biodata',
+                      gradient: const [Color(0xFFE65100), Color(0xFFBF360C)],
+                      contentHeight: contentHeight - 1.5,
+                    ),
+
+                    // 3: Services (Melavas & Wedding Marketplace Hub)
+                    _buildNavItem(
+                      index: 3,
+                      icon: Icons.hub_outlined,
+                      activeIcon: Icons.hub_rounded,
+                      label: 'Services',
                       gradient: const [Color(0xFF8E24AA), Color(0xFF5E35B1)],
                       contentHeight: contentHeight - 1.5,
                     ),
-                    _buildNavItem(
-                      index: 3,
-                      key: TourKeys.profileTabKey,
-                      icon: Icons.person_rounded,
-                      activeIcon: Icons.person,
-                      label: AppLocalizations.of(context)?.profile ?? 'Profile',
-                      gradient: const [Color(0xFF9C27B0), Color(0xFF6A1B9A)],
-                      contentHeight: contentHeight - 1.5,
-                    ),
+
+                    // 4: Menu / Profile
                     _buildNavItem(
                       index: 4,
-                      key: TourKeys.settingsTabKey,
-                      icon: Icons.menu_rounded,
-                      activeIcon: Icons.menu,
+                      icon: Icons.person_outline_rounded,
+                      activeIcon: Icons.person_rounded,
                       label: AppLocalizations.of(context)?.menu ?? 'Menu',
                       gradient: const [Color(0xFF2196F3), Color(0xFF1976D2)],
                       contentHeight: contentHeight - 1.5,
@@ -250,9 +257,9 @@ class _CustomBottomBarState extends State<CustomBottomBar>
                         if (_particleController.value == 0) return const SizedBox();
                         const tabSparkColors = <int, List<Color>>{
                           0: [Color(0xFF880E4F), Color(0xFF961B33), Colors.white, Color(0xFFFFE082)],
-                          1: [Color(0xFFFFA726), Color(0xFFFF6F00), Colors.white, Color(0xFFFFE082)],
-                          2: [Color(0xFF8E24AA), Color(0xFF5E35B1), Colors.white, Color(0xFFFFE082)],
-                          3: [Color(0xFF9C27B0), Color(0xFF6A1B9A), Colors.white, Color(0xFFFFE082)],
+                          1: [Color(0xFF00897B), Color(0xFF004D40), Colors.white, Color(0xFFFFE082)],
+                          2: [Color(0xFFE65100), Color(0xFFBF360C), Colors.white, Color(0xFFFFE082)],
+                          3: [Color(0xFF8E24AA), Color(0xFF5E35B1), Colors.white, Color(0xFFFFE082)],
                           4: [Color(0xFF2196F3), Color(0xFF1976D2), Colors.white, Color(0xFFFFE082)],
                         };
                         return CustomPaint(
@@ -289,6 +296,8 @@ class _CustomBottomBarState extends State<CustomBottomBar>
         return [const Color(0xFF961B33), const Color(0xFF731224)];
       case 4:
         return [const Color(0xFF961B33), const Color(0xFF731224)];
+      case 5:
+        return [const Color(0xFF961B33), const Color(0xFF731224)];
       default:
         return [const Color(0xFF961B33), const Color(0xFF731224)];
     }
@@ -297,7 +306,6 @@ class _CustomBottomBarState extends State<CustomBottomBar>
 
   Widget _buildNavItem({
     required int index,
-    required Key key,
     required IconData icon,
     required IconData activeIcon,
     required String label,
@@ -306,7 +314,7 @@ class _CustomBottomBarState extends State<CustomBottomBar>
     int? badgeCount,
   }) {
     final bool isSelected = widget.currentIndex == index;
-    final double scale = isSelected ? 1.05 : 0.85;
+    final double scale = isSelected ? 1.08 : 0.92;
 
     return Expanded(
       child: Semantics(
@@ -340,7 +348,7 @@ class _CustomBottomBarState extends State<CustomBottomBar>
                           color: isSelected
                               ? Colors.white
                               : Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
-                          size: 22,
+                          size: 24,
                         ),
   
                         // Badge
@@ -377,7 +385,7 @@ class _CustomBottomBarState extends State<CustomBottomBar>
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: AppTypography.labelSmall,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: AppTypography.bold,
                                     height: 1.1,
                                   ),
                                 ),
@@ -388,7 +396,7 @@ class _CustomBottomBarState extends State<CustomBottomBar>
                     ),
                   ),
   
-                  SizedBox(height: 0.3.h),
+                  SizedBox(height: 0.15.h),
   
                   AnimatedDefaultTextStyle(
                     duration: const Duration(milliseconds: 300),
@@ -396,9 +404,9 @@ class _CustomBottomBarState extends State<CustomBottomBar>
                       color: isSelected
                           ? Colors.white
                           : Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
-                      fontSize: isSelected ? AppTypography.bodySmall : AppTypography.bodySmall,
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                      letterSpacing: 0.3,
+                      fontSize: isSelected ? AppTypography.labelMedium : AppTypography.labelSmall,
+                      fontWeight: isSelected ? AppTypography.bold : AppTypography.semiBold,
+                      letterSpacing: 0.1,
                     ),
                     child: Text(label),
                   ),

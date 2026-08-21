@@ -23,6 +23,7 @@ void main() {
           'gotra': 'Chauhan', // Required for Rathod
           'gender': 'Male',
           'height': "5'10\"",
+          'profileCreatedBy': 'Self',
         },
       );
       expect(missing, isEmpty);

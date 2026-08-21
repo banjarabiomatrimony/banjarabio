@@ -113,10 +113,12 @@ flutter:
   assets:
     - assets/
     - assets/logo/
+    - assets/logo/brand_kit/
     - assets/icons/
     - assets/images/
     - assets/images/biodata_templates/
     - assets/images/onboarding/
+    - assets/images/social/
   fonts:
     - family: Lato
       fonts:

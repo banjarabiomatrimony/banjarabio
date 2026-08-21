@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -64,10 +65,10 @@ class SurnameGotraSelectorWidget extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text(AppLocalizations.of(context)?.surname ?? 'Surname', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+            Text(AppLocalizations.of(context)?.surname ?? 'Surname', style: theme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.bold)),
             if (!isAdminEdit) ...[
               SizedBox(width: 1.w),
-              Text('*', style: theme.textTheme.titleSmall?.copyWith(color: theme.colorScheme.error, fontWeight: FontWeight.bold)),
+              Text('*', style: theme.textTheme.titleSmall?.copyWith(color: theme.colorScheme.error, fontWeight: AppTypography.bold)),
             ],
           ],
         ),
@@ -155,10 +156,10 @@ class SurnameGotraSelectorWidget extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text(AppLocalizations.of(context)?.gotra ?? 'Gotra', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+            Text(AppLocalizations.of(context)?.gotra ?? 'Gotra', style: theme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.bold)),
             if (!isAdminEdit) ...[
               SizedBox(width: 1.w),
-              Text('*', style: theme.textTheme.titleSmall?.copyWith(color: theme.colorScheme.error, fontWeight: FontWeight.bold)),
+              Text('*', style: theme.textTheme.titleSmall?.copyWith(color: theme.colorScheme.error, fontWeight: AppTypography.bold)),
             ],
           ],
         ),

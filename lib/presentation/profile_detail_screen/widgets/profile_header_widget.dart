@@ -4,7 +4,6 @@ import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/community_trusted_badge.dart';
-import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// Profile header widget displaying user's primary photo and basic information
 /// Implements hero animation for smooth transition from profile cards
@@ -170,64 +169,58 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
               child: const AnimatedScrollIndicator(),
             ),
 
-            // Badges
-            if (isMatched)
-              Positioned(
-                bottom: 4.h,
-                left: 6.w,
-                child: _buildGradientBadge('MATCHED', [
-                  const Color(0xFFFF4B2B),
-                  const Color(0xFFFF416C),
-                ], Icons.favorite),
-              ),
-
-            if (widget.isPremium)
-              Positioned(
-                bottom: 4.h,
-                right: 6.w,
-                child: _buildGradientBadge('PREMIUM', [
-                  const Color(0xFFFFD700),
-                  const Color(0xFFFFA500),
-                ], Icons.star),
-              ),
-
-            if (isDisabled)
-              Positioned(
-                top: 4.h,
-                left: 6.w,
-                child: _buildGradientBadge(
-                  AppLocalizations.of(context)?.disabledTagLabel ??
-                      'DISABLED',
-                  [Colors.indigo, Colors.deepPurpleAccent],
-                  Icons.accessible_forward,
-                ),
-              ),
-
-            // 🏷️ Gender Badge: Prominently displayed for clarity
+            // 🏷️ Bottom Badges Row & Tags (Positioned away from top AppBar toolbar)
             Positioned(
-              top: 4.h,
-              right: 6.w,
-              child: _buildGenderBadge(
-                context,
-                widget.profileData['gender']?.toString() ?? 'Female',
-              ),
-            ),
+              bottom: 4.h,
+              left: 4.w,
+              right: 4.w,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  // Left-aligned Badges (Gender, ID, Matched)
+                  Wrap(
+                    spacing: 1.5.w,
+                    runSpacing: 0.8.h,
+                    children: [
+                      _buildGenderBadge(
+                        context,
+                        widget.profileData['gender']?.toString() ?? 'Female',
+                      ),
+                      _buildGradientBadge(
+                        widget.profileData['displayId']?.toString() ?? 'BB-UNKNOWN',
+                        [const Color(0xFF607D8B), const Color(0xFF455A64)],
+                        Icons.fingerprint,
+                      ),
+                      if (isMatched)
+                        _buildGradientBadge('MATCHED', [
+                          const Color(0xFFFF4B2B),
+                          const Color(0xFFFF416C),
+                        ], Icons.favorite),
+                      if (isDisabled)
+                        _buildGradientBadge(
+                          AppLocalizations.of(context)?.disabledTagLabel ??
+                              'DISABLED',
+                          [Colors.indigo, Colors.deepPurpleAccent],
+                          Icons.accessible_forward,
+                        ),
+                    ],
+                  ),
 
-            // 🆔 User ID Badge: Top left for quick identification
-            Positioned(
-              top: 4.h,
-              left: 6.w,
-              child: _buildGradientBadge(
-                widget.profileData['displayId']?.toString() ?? 'BB-UNKNOWN',
-                [const Color(0xFF607D8B), const Color(0xFF455A64)],
-                Icons.fingerprint,
+                  // Right-aligned Badges (Premium)
+                  if (widget.isPremium)
+                    _buildGradientBadge('PREMIUM', [
+                      const Color(0xFFFFD700),
+                      const Color(0xFFFFA500),
+                    ], Icons.star),
+                ],
               ),
             ),
 
             if (widget.profileData['isCommunityTrusted'] as bool? ?? false)
               Positioned(
-                top: 10.h,
-                left: 6.w,
+                top: 8.5.h,
+                left: 4.w,
                 child: const CommunityTrustedBadge(isLarge: true),
               ),
           ],
@@ -276,7 +269,7 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
             text,
             style: TextStyle(
               color: Colors.white,
-              fontWeight: FontWeight.w900,
+              fontWeight: AppTypography.black,
               fontSize: AppTypography.bodySmall,
               letterSpacing: 0.5,
             ),
@@ -414,7 +407,7 @@ class _AnimatedScrollIndicatorState extends State<AnimatedScrollIndicator>
           style: TextStyle(
             color: Colors.white.withValues(alpha: 0.9),
             fontSize: AppTypography.labelMedium,
-            fontWeight: FontWeight.w700,
+            fontWeight: AppTypography.bold,
             letterSpacing: 0.2,
             shadows: [
               Shadow(

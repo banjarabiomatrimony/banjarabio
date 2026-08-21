@@ -460,7 +460,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
     final sections = <Widget>[
       // 📇 Card 1: Basic Identity & Gender
       PremiumCardWrapper(
-        title: 'Basic Information',
+        title: AppLocalizations.of(context)?.basicInformation ?? 'Basic Information',
         icon: Icons.person_outline_rounded,
         children: [
           // ProfileCreatedBy is optional in lite mode, shown but not required
@@ -506,7 +506,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
 
       // 👤 Card 2: Personal Identity
       PremiumCardWrapper(
-        title: 'Identity Details',
+        title: AppLocalizations.of(context)?.identityDetails ?? 'Identity Details',
         icon: Icons.badge_outlined,
         children: [
           BiodataTextField(

@@ -16,22 +16,26 @@ import 'package:banjarabio/widgets/upgrade_dialog.dart';
 import 'package:banjarabio/features/bookmarks/providers/bookmark_notifier.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/action_buttons_widget.dart';
 import 'package:banjarabio/core/repositories/chat_repository.dart';
-import 'package:banjarabio/presentation/profile_detail_screen/widgets/contact_preferences_card_widget.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/education_profession_card_widget.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/family_background_card_widget.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/location_details_card_widget.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/personal_details_card_widget.dart';
+import 'package:banjarabio/presentation/profile_detail_screen/widgets/staggered_fade_slide_widget.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/profile_header_widget.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/profile_share_bottom_sheet.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/profile_options_menu.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/profile_guided_tour.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/profile_loading_states.dart';
+import 'package:banjarabio/presentation/match_profile_screen/widgets/direct_note_bottom_sheet.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/guest_restricted_dialog.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
-import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/similar_profiles_carousel.dart';
 // import '../../core/services/ad_reward_service.dart';
 // import '../widgets/rewarded_ad_dialog.dart';
+
+import 'package:banjarabio/presentation/profile_detail_screen/widgets/profile_tab_selector_widget.dart';
+import 'package:banjarabio/widgets/tactile/tactile_back_button.dart';
+import 'package:banjarabio/widgets/tactile/tactile_action_button.dart';
 
 /// Profile Detail Screen displaying complete biodata information
 /// Accessed via stack navigation from Home screen
@@ -44,12 +48,16 @@ class ProfileDetailScreen extends ConsumerStatefulWidget {
       _ProfileDetailScreenState();
 }
 
+/// Backwards compatibility alias
+typedef MatchProfileScreen = ProfileDetailScreen;
+
 class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
   final ScrollController _scrollController = ScrollController();
   final ShareRepository _shareRepository = ShareRepository();
   bool _isLoading = false;
   Map<String, dynamic>? _profileData;
   bool _showAppBarTitle = false;
+  int _selectedTabIndex = 0;
 
   @override
   void initState() {
@@ -93,7 +101,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
           }
           */
           if (mounted) {
-            Fluttertoast.showToast(msg: 'Daily view limit reached.');
+            Fluttertoast.showToast(msg: AppLocalizations.of(context)?.dailyViewLimitReached ?? 'Daily view limit reached.');
           }
         }
       },
@@ -205,14 +213,9 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                 backgroundColor: theme.scaffoldBackgroundColor,
                 surfaceTintColor: Colors.transparent,
                 elevation: 0,
-                leadingWidth: 14.w,
-                leading: IconButton(
-                  icon: CustomIconWidget(
-                    iconName: 'arrow_back',
-                    color: theme.colorScheme.onSurface,
-                  ),
-                  onPressed: () => Navigator.of(context).pop(),
-                  tooltip: AppLocalizations.of(context)?.goBack ?? 'Back',
+                leadingWidth: 54,
+                leading: const TactileBackButton(
+                  margin: EdgeInsets.only(left: 12, top: 7, bottom: 7),
                 ),
                 title: AnimatedOpacity(
                   opacity: _showAppBarTitle ? 1.0 : 0.0,
@@ -228,7 +231,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                               _profileData!['name']?.toString() ?? (AppLocalizations.of(context)?.banjaraMember ?? 'Banjara Member'),
                               style: theme.textTheme.titleMedium?.copyWith(
                                 color: theme.colorScheme.onSurface,
-                                fontWeight: FontWeight.w900,
+                                fontWeight: AppTypography.black,
                                 fontSize: AppTypography.headingMedium,
                                 letterSpacing: 0.3,
                               ),
@@ -250,7 +253,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                         'ID: ${_profileData!['displayId'] ?? ''} • ${_profileData!['age'] != null ? AppLocalizations.of(context)?.yrs(int.tryParse(_profileData!['age'].toString()) ?? 0) ?? "${_profileData!['age']} Yrs" : ""} • ${_profileData!['height'] ?? ''} • ${_profileData!['surname'] ?? ''}',
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: AppTypography.bold,
                           fontSize: AppTypography.bodySmall,
                         ),
                         maxLines: 1,
@@ -260,15 +263,12 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                   ),
                 ),
                 actions: [
-                  IconButton(
-                    icon: CustomIconWidget(
-                      iconName: 'more_vert',
-                      color: theme.colorScheme.onSurface,
-                    ),
+                  TactileActionButton(
+                    iconData: Icons.more_vert_rounded,
+                    margin: const EdgeInsets.only(right: 12, top: 7, bottom: 7),
                     onPressed: () => _showOptionsMenu(),
                     tooltip: AppLocalizations.of(context)?.moreOptions ?? 'More options',
                   ),
-                  SizedBox(width: 2.w),
                 ],
                 flexibleSpace: FlexibleSpaceBar(
                   background: ProfileHeaderWidget(
@@ -279,65 +279,39 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                 ),
               ),
 
-              // Profile content sections
+              // 🌟 Animated Sticky Profile Category Tab Selector
               SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    SizedBox(height: 1.h),
-                    // Staggered Detail Cards (2 Columns)
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 1.w),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Left Column
-                          Expanded(
-                            child: Column(
-                              children: [
-                                PersonalDetailsCardWidget(
-                                  profileData: displayProfileData,
-                                  margin: EdgeInsets.only(
-                                      bottom: 2.h, left: 1.w, right: 1.w),
-                                ),
-                                EducationProfessionCardWidget(
-                                  profileData: displayProfileData,
-                                  margin: EdgeInsets.only(
-                                      bottom: 2.h, left: 1.w, right: 1.w),
-                                ),
-                              ],
-                            ),
-                          ),
-                          // Right Column
-                          Expanded(
-                            child: Column(
-                              children: [
-                                LocationDetailsCardWidget(
-                                  profileData: displayProfileData,
-                                  margin: EdgeInsets.only(
-                                      bottom: 2.h, left: 1.w, right: 1.w),
-                                ),
-                                FamilyBackgroundCardWidget(
-                                  profileData: displayProfileData,
-                                  margin: EdgeInsets.only(
-                                      bottom: 2.h, left: 1.w, right: 1.w),
-                                ),
-                                ContactPreferencesCardWidget(
-                                  profileData: displayProfileData,
-                                  margin: EdgeInsets.only(
-                                      bottom: 2.h, left: 1.w, right: 1.w),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                child: ProfileTabSelectorWidget(
+                  selectedIndex: _selectedTabIndex,
+                  onTabSelected: (index) {
+                    setState(() => _selectedTabIndex = index);
+                  },
+                  margin: EdgeInsets.only(top: 0.6.h, bottom: 0.5.h),
+                ),
+              ),
+
+              // Profile content sections with AnimatedSwitcher
+              SliverToBoxAdapter(
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  switchInCurve: Curves.easeOutCubic,
+                  switchOutCurve: Curves.easeInCubic,
+                  transitionBuilder: (child, animation) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: SlideTransition(
+                        position: Tween<Offset>(
+                          begin: const Offset(0, 0.04),
+                          end: Offset.zero,
+                        ).animate(animation),
+                        child: child,
                       ),
-                    ),
-                    SizedBox(height: 2.h),
-                    SimilarProfilesCarousel(
-                      currentProfileData: displayProfileData,
-                    ),
-                    SizedBox(height: 8.h),
-                  ],
+                    );
+                  },
+                  child: KeyedSubtree(
+                    key: ValueKey<int>(_selectedTabIndex),
+                    child: _buildTabContent(displayProfileData),
+                  ),
                 ),
               ),
             ],
@@ -358,6 +332,98 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildTabContent(Map<String, dynamic> displayProfileData) {
+    switch (_selectedTabIndex) {
+      case 1:
+        return Column(
+          children: [
+            PersonalDetailsCardWidget(
+              profileData: displayProfileData,
+              margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+            ),
+            _buildSimilarProfiles(displayProfileData),
+          ],
+        );
+      case 2:
+        return Column(
+          children: [
+            EducationProfessionCardWidget(
+              profileData: displayProfileData,
+              margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+            ),
+            _buildSimilarProfiles(displayProfileData),
+          ],
+        );
+      case 3:
+        return Column(
+          children: [
+            LocationDetailsCardWidget(
+              profileData: displayProfileData,
+              margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+            ),
+            _buildSimilarProfiles(displayProfileData),
+          ],
+        );
+      case 4:
+        return Column(
+          children: [
+            FamilyBackgroundCardWidget(
+              profileData: displayProfileData,
+              margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+            ),
+            _buildSimilarProfiles(displayProfileData),
+          ],
+        );
+      case 0:
+      default:
+        return Column(
+          children: [
+            StaggeredFadeSlideWidget(
+              index: 0,
+              child: PersonalDetailsCardWidget(
+                profileData: displayProfileData,
+                margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+              ),
+            ),
+            StaggeredFadeSlideWidget(
+              index: 1,
+              child: EducationProfessionCardWidget(
+                profileData: displayProfileData,
+                margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+              ),
+            ),
+            StaggeredFadeSlideWidget(
+              index: 2,
+              child: LocationDetailsCardWidget(
+                profileData: displayProfileData,
+                margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+              ),
+            ),
+            StaggeredFadeSlideWidget(
+              index: 3,
+              child: FamilyBackgroundCardWidget(
+                profileData: displayProfileData,
+                margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+              ),
+            ),
+            _buildSimilarProfiles(displayProfileData),
+          ],
+        );
+    }
+  }
+
+  Widget _buildSimilarProfiles(Map<String, dynamic> displayProfileData) {
+    return Column(
+      children: [
+        SizedBox(height: 2.h),
+        SimilarProfilesCarousel(
+          currentProfileData: displayProfileData,
+        ),
+        SizedBox(height: 10.h),
+      ],
     );
   }
 
@@ -423,12 +489,20 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
     // Check if matched
     final isMatched = profile['isMatched'] as bool? ?? false;
     if (!isMatched) {
-      if (mounted) {
-        Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)?.notMatchedCannotMessage ?? "You are not matched with this profile, so you can't direct message them.",
-          toastLength: Toast.LENGTH_LONG,
-        );
-      }
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (ctx) => DirectNoteBottomSheet(
+          profile: profile,
+          onSuccess: () {
+            setState(() {
+              _profileData?['interestSent'] = true;
+              _profileData?['status'] = 'pending_sent';
+            });
+          },
+        ),
+      );
       return;
     }
 
@@ -460,14 +534,14 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
               onRewardGranted: () async {
                 await UsageRepository().grantAdReward(AdRewardType.directMessage);
                 if (mounted) {
-                  Fluttertoast.showToast(msg: "1 Message Unlocked!");
+                  Fluttertoast.showToast(msg: AppLocalizations.of(context)?.oneMessageUnlocked ?? "1 Message Unlocked!");
                 }
               },
             ),
           );
           */
           if (mounted) {
-             Fluttertoast.showToast(msg: 'Daily message limit reached.');
+             Fluttertoast.showToast(msg: AppLocalizations.of(context)?.dailyMessageLimitReached ?? 'Daily message limit reached.');
           }
         } else if (mounted) {
           Fluttertoast.showToast(

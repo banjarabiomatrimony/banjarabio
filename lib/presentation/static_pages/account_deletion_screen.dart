@@ -47,7 +47,7 @@ class _AccountDeletionScreenState extends State<AccountDeletionScreen> {
             Center(
               child: Text(AppLocalizations.of(context)?.areYouSureYouWantToDeleteYourAccount ?? 'Are you sure you want to delete your account?',
                 style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTypography.bold,
                 ),
                 textAlign: TextAlign.center,
               ),

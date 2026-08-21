@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/core/services/guest_guided_tour_service.dart';
 import 'package:banjarabio/core/utils/tour_keys.dart';
@@ -40,10 +41,10 @@ class ProfileGuidedTour {
                   Text(
                     AppLocalizations.of(context)?.tourBookmarkTitle ??
                         'Save for later',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold,
+                    style: TextStyle(
+                        fontWeight: AppTypography.bold,
                         color: Colors.white,
-                        fontSize: 20),
+                        fontSize: AppTypography.headingLarge),
                   ),
                   const SizedBox(height: 10),
                   Text(
@@ -69,10 +70,10 @@ class ProfileGuidedTour {
                   Text(
                     AppLocalizations.of(context)?.tourInterestTitle ??
                         'Express Interest',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold,
+                    style: TextStyle(
+                        fontWeight: AppTypography.bold,
                         color: Colors.white,
-                        fontSize: 20),
+                        fontSize: AppTypography.headingLarge),
                   ),
                   const SizedBox(height: 10),
                   Text(
@@ -98,10 +99,10 @@ class ProfileGuidedTour {
                   Text(
                     AppLocalizations.of(context)?.tourShareTitle ??
                         'Share with family',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold,
+                    style: TextStyle(
+                        fontWeight: AppTypography.bold,
                         color: Colors.white,
-                        fontSize: 20),
+                        fontSize: AppTypography.headingLarge),
                   ),
                   const SizedBox(height: 10),
                   Text(

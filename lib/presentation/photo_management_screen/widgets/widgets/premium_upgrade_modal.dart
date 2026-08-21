@@ -95,7 +95,7 @@ class PremiumUpgradeModal extends StatelessWidget {
                         Text(AppLocalizations.of(context)?.num499 ?? '499',
                           style: theme.textTheme.displaySmall?.copyWith(
                             color: theme.colorScheme.primary,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTypography.bold,
                           ),
                         ),
                         Text(AppLocalizations.of(context)?.month ?? '/month',

@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -118,7 +119,7 @@ class EditorTemplatePickerWidget extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                                 style: BiodataTheme.captionStyle.copyWith(
                                   color: Colors.white,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: AppTypography.semiBold,
                                 ),
                               ),
                             ),

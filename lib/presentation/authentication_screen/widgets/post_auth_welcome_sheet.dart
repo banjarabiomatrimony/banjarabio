@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// A stylish modal bottom sheet displayed after successful authentication
 /// showcasing the 6 core trust pillars of BanjaraBio.
@@ -76,9 +77,9 @@ class PostAuthWelcomeSheet extends StatelessWidget {
                         color: theme.colorScheme.primary.withValues(alpha: 0.15),
                         shape: BoxShape.circle,
                       ),
-                      child: const Text(
+                      child: Text(
                         '🌸',
-                        style: TextStyle(fontSize: 28),
+                        style: TextStyle(fontSize: AppTypography.displayLarge),
                       ),
                     ),
                     SizedBox(height: 1.h),
@@ -86,9 +87,9 @@ class PostAuthWelcomeSheet extends StatelessWidget {
                       'Welcome to BanjaraBio!',
                       textAlign: TextAlign.center,
                       style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w800,
+                        fontWeight: AppTypography.extraBold,
                         color: theme.colorScheme.primary,
-                        fontSize: 20,
+                        fontSize: AppTypography.headingLarge,
                       ),
                     ),
                     SizedBox(height: 0.5.h),
@@ -97,7 +98,7 @@ class PostAuthWelcomeSheet extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
-                        fontSize: 12.5,
+                        fontSize: AppTypography.bodyMedium,
                         height: 1.3,
                       ),
                     ),
@@ -110,10 +111,10 @@ class PostAuthWelcomeSheet extends StatelessWidget {
               Text(
                 'WHY OUR COMMUNITY TRUSTS US',
                 style: theme.textTheme.labelSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
+                  fontWeight: AppTypography.bold,
                   color: theme.colorScheme.primary.withValues(alpha: 0.8),
                   letterSpacing: 1.1,
-                  fontSize: 11,
+                  fontSize: AppTypography.bodySmall,
                 ),
               ),
               SizedBox(height: 1.5.h),
@@ -211,11 +212,11 @@ class PostAuthWelcomeSheet extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         'Explore Matches Now 🎉',
                         style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
+                          fontSize: AppTypography.headingSmall,
+                          fontWeight: AppTypography.bold,
                         ),
                       ),
                       SizedBox(width: 2.w),
@@ -265,16 +266,16 @@ class PostAuthWelcomeSheet extends StatelessWidget {
                 Text(
                   title,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 12,
+                    fontWeight: AppTypography.bold,
+                    fontSize: AppTypography.bodyMedium,
                     color: theme.colorScheme.onSurface,
                   ),
                 ),
                 Text(
                   subtitle,
                   style: theme.textTheme.labelSmall?.copyWith(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
+                    fontSize: AppTypography.bodySmall,
+                    fontWeight: AppTypography.medium,
                     color: color.withValues(alpha: 0.9),
                   ),
                 ),

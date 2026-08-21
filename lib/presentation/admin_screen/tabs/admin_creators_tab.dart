@@ -7,7 +7,6 @@ import 'package:banjarabio/widgets/staggered_list_animation.dart';
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/presentation/admin_screen/admin_helpers.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
-import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// Creators / Influencer management tab with list, metrics, and add/edit form.
 class AdminCreatorsTab extends StatefulWidget {
@@ -104,11 +103,11 @@ class AdminCreatorsTabState extends State<AdminCreatorsTab> {
                       SizedBox(width: 4.w),
                       Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                          Text(creator.name, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                          Text(creator.name, style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold)),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(color: theme.colorScheme.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)),
-                            child: Text(creator.promoCode, style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.bold)),
+                            child: Text(creator.promoCode, style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.primary, fontWeight: AppTypography.bold)),
                           ),
                         ]),
                         if (creator.instagramHandle != null)
@@ -148,7 +147,7 @@ class AdminCreatorsTabState extends State<AdminCreatorsTab> {
 
   Widget _buildMetric(String label, String value) {
     return Column(children: [
-      Text(value, style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+      Text(value, style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: AppTypography.bold)),
       Text(label, style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: AppTypography.labelSmall, color: Theme.of(context).hintColor)),
     ]);
   }
@@ -235,7 +234,7 @@ class _CreatorFormState extends State<_CreatorForm> {
             Center(child: Container(width: 12.w, height: 5, decoration: BoxDecoration(color: theme.dividerColor, borderRadius: BorderRadius.circular(10)))),
             SizedBox(height: 3.h),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text(isEdit ? 'Edit Influencer' : 'Add New Influencer', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: theme.colorScheme.primary)),
+              Text(isEdit ? 'Edit Influencer' : 'Add New Influencer', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: AppTypography.bold, color: theme.colorScheme.primary)),
               IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close), style: IconButton.styleFrom(backgroundColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5))),
             ]),
             Text(isEdit ? 'Update details for ${widget.creator!.name}' : 'Register a new creator for influencer marketing', style: theme.textTheme.bodyMedium?.copyWith(color: theme.hintColor)),
@@ -262,7 +261,7 @@ class _CreatorFormState extends State<_CreatorForm> {
               child: ElevatedButton(
                 onPressed: _isSubmitting ? null : _submit,
                 style: ElevatedButton.styleFrom(backgroundColor: theme.colorScheme.primary, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)), elevation: 10, shadowColor: theme.colorScheme.primary.withValues(alpha: 0.3)),
-                child: _isSubmitting ? const SizedBox(height: 24, width: 24, child: CircularProgressIndicator(strokeWidth: 3, color: Colors.white)) : Text(isEdit ? 'Update Creator' : 'Register Creator', style: TextStyle(fontSize: AppTypography.bodyMedium, fontWeight: FontWeight.bold)),
+                child: _isSubmitting ? const SizedBox(height: 24, width: 24, child: CircularProgressIndicator(strokeWidth: 3, color: Colors.white)) : Text(isEdit ? 'Update Creator' : 'Register Creator', style: TextStyle(fontSize: AppTypography.bodyMedium, fontWeight: AppTypography.bold)),
               ),
             ),
           ]),
@@ -274,7 +273,7 @@ class _CreatorFormState extends State<_CreatorForm> {
   Widget _buildField({required String label, required TextEditingController controller, required IconData icon, bool enabled = true, String? hintText, TextInputType? keyboardType, TextCapitalization textCapitalization = TextCapitalization.none, String? Function(String?)? validator}) {
     final theme = Theme.of(context);
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(label, style: theme.textTheme.labelMedium?.copyWith(fontWeight: FontWeight.bold, color: theme.colorScheme.primary.withValues(alpha: 0.8))),
+      Text(label, style: theme.textTheme.labelMedium?.copyWith(fontWeight: AppTypography.bold, color: theme.colorScheme.primary.withValues(alpha: 0.8))),
       const SizedBox(height: 8),
       TextFormField(
         controller: controller, enabled: enabled, keyboardType: keyboardType, textCapitalization: textCapitalization, validator: validator, style: TextStyle(fontSize: AppTypography.bodySmall),

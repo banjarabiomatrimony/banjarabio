@@ -25,7 +25,7 @@ void main() {
       expect(score, equals(34));
     });
 
-    test('Full profile reaches high percentage (93-98%)', () {
+    test('Full profile reaches 100% completion', () {
       final data = {
         'name': 'Rahul Rathod',
         'surname': 'Rathod',
@@ -50,13 +50,13 @@ void main() {
       };
       
       final score = ProfileModel.calculateScore(data);
-      // Identity: 4+4+3+3+3+1 = 18
+      // Identity: 4+4+3+3+3+3 = 20
       // Family: 5(father)+5(mother)+5(sibs data) = 15
       // Career: 10+10+5 = 25
       // Visual: 15+5 = 20
       // Preferences: 5(state)+5(dist)+2(native)+4(about)+4(expect) = 20
-      // Total = 18 + 15 + 25 + 20 + 20 = 98
-      expect(score, equals(98));
+      // Total = 20 + 15 + 25 + 20 + 20 = 100
+      expect(score, equals(100));
     });
 
     test('Mission-critical fields (Native Place, Village) correctly add weight', () {

@@ -1,18 +1,25 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
-import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/utils/tour_keys.dart';
 import 'package:banjarabio/core/models/daily_reward_model.dart';
-import 'package:banjarabio/notification/features/notification_bridge.dart';
 import 'package:banjarabio/widgets/daily_reward_dialog.dart';
+import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/core/services/local_cache_service.dart';
+import 'package:banjarabio/core/services/guest_guided_tour_service.dart';
+import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 
-/// The gradient AppBar header containing location selector,
-/// notification bell, social icons, search bar, and filter button.
-class HomeFeedHeader extends StatelessWidget {
+/// The gradient AppBar header containing:
+/// 1. Top row: Logo, Location, Daily Reward, Notification.
+/// 2. Collapsible Search Bar (expands smoothly when Search is tapped).
+/// 3. Animated Line 2 Horizontal Category & Discovery Hub:
+///    [ 0: ⚡ Filter (N) ] -> [ 1: ✨ All Matches ] -> [ 2: 🌟 Daily Picks (10) ] -> [ 3: 📍 Near Me ] -> [ 4: 👑 VIP Verified ] -> [ 5: 🔍 Search ]
+///    (With dynamic light sheen, micro-animations, breathing aura glows, and tactile physics).
+class HomeFeedHeader extends StatefulWidget {
   final String locationLabel;
   final VoidCallback onLocationTap;
   final VoidCallback onFilterTap;
@@ -22,6 +29,10 @@ class HomeFeedHeader extends StatelessWidget {
   final int activeFilterCount;
   final DailyRewardModel? dailyRewardStatus;
   final ValueChanged<DailyRewardModel?> onRewardUpdated;
+  final int selectedTab;
+  final bool isSwipeMode; // Preserved for backwards compatibility
+  final ValueChanged<int> onTabChanged;
+  final ValueChanged<bool>? onViewModeChanged; // Preserved for backwards compatibility
 
   const HomeFeedHeader({
     super.key,
@@ -34,18 +45,115 @@ class HomeFeedHeader extends StatelessWidget {
     required this.activeFilterCount,
     this.dailyRewardStatus,
     required this.onRewardUpdated,
+    required this.selectedTab,
+    this.isSwipeMode = false,
+    required this.onTabChanged,
+    this.onViewModeChanged,
   });
 
   @override
+  State<HomeFeedHeader> createState() => _HomeFeedHeaderState();
+}
+
+class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStateMixin {
+  bool _isSearchExpanded = false;
+  final FocusNode _searchFocusNode = FocusNode();
+  final ScrollController _stripScrollController = ScrollController();
+
+  // ─── Continuous Micro-Animations ───
+  AnimationController? _sheenController;
+  AnimationController? _pulseController;
+  AnimationController? _iconFloatController;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.searchController.text.isNotEmpty) {
+      _isSearchExpanded = true;
+    }
+    _initAnimations();
+  }
+
+  void _initAnimations() {
+    _sheenController ??= AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2600),
+    )..repeat();
+
+    _pulseController ??= AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1400),
+    )..repeat(reverse: true);
+
+    _iconFloatController ??= AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1800),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void didUpdateWidget(HomeFeedHeader oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _initAnimations();
+  }
+
+  @override
+  void dispose() {
+    _searchFocusNode.dispose();
+    _stripScrollController.dispose();
+    _sheenController?.dispose();
+    _pulseController?.dispose();
+    _iconFloatController?.dispose();
+    super.dispose();
+  }
+
+  void _toggleSearch() {
+    HapticFeedback.selectionClick();
+    setState(() {
+      _isSearchExpanded = !_isSearchExpanded;
+      if (_isSearchExpanded) {
+        _searchFocusNode.requestFocus();
+      } else {
+        _searchFocusNode.unfocus();
+        if (widget.searchController.text.isNotEmpty) {
+          widget.onSearchClear();
+        }
+      }
+    });
+  }
+
+  void _scrollToChip(int index) {
+    if (!_stripScrollController.hasClients) return;
+    const double approxItemWidth = 110.0;
+    final double targetOffset = math.max(0.0, (index * approxItemWidth) - 60.0);
+    _stripScrollController.animateTo(
+      targetOffset,
+      duration: const Duration(milliseconds: 320),
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  bool get _isHomeTourActive {
+    final cache = LocalCacheService();
+    return cache.isGuestMode() && !cache.isTourStageCompleted(TourStage.homeScreen.name);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _initAnimations();
     final theme = Theme.of(context);
+    final topPadding = MediaQuery.of(context).padding.top;
+    final double headerHeight = _isSearchExpanded
+        ? (11.0.h + topPadding)
+        : (6.1.h + topPadding);
 
     return SliverAppBar(
       floating: true,
-      snap: true,
+      pinned: true,
       automaticallyImplyLeading: false,
       backgroundColor: theme.appBarTheme.backgroundColor,
-      expandedHeight: 8.h + MediaQuery.of(context).padding.top,
+      expandedHeight: headerHeight,
+      toolbarHeight: headerHeight,
       elevation: 0,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
@@ -55,31 +163,39 @@ class HomeFeedHeader extends StatelessWidget {
               end: Alignment.bottomRight,
               colors: [
                 theme.colorScheme.primary,
-                theme.colorScheme.primary.withValues(alpha: 0.8),
+                theme.colorScheme.primary.withValues(alpha: 0.85),
               ],
             ),
-            borderRadius: const BorderRadius.vertical(bottom: Radius.circular(32)),
+            borderRadius: const BorderRadius.vertical(bottom: Radius.circular(22)),
             boxShadow: [
               BoxShadow(
-                color: theme.colorScheme.primary.withValues(alpha: 0.2),
-                blurRadius: 15,
-                offset: const Offset(0, 5),
+                color: theme.colorScheme.primary.withValues(alpha: 0.25),
+                blurRadius: 14,
+                offset: const Offset(0, 3),
               ),
             ],
           ),
-          padding: EdgeInsets.fromLTRB(4.w, 0, 4.w, 0.2.h),
-          child: SafeArea(
-            child: SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  _buildLocationRow(context, theme),
-                  SizedBox(height: 0.5.h),
-                  _buildSearchRow(context, theme),
-                ],
-              ),
-            ),
+          padding: EdgeInsets.fromLTRB(3.5.w, topPadding + 0.15.h, 3.5.w, 0.15.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // ─── ROW 1: BRANDING, LOCATION PILL & REWARD STREAK (OPTION B) ───
+              _buildLocationRow(context, theme),
+
+              // ─── ROW 1.5: ON-DEMAND EXPANDABLE SEARCH BAR ───
+              if (_isSearchExpanded) ...[
+                SizedBox(height: 0.5.h),
+                _buildSearchRow(context, theme),
+              ],
+
+              SizedBox(height: 0.75.h),
+
+              // ─── ROW 2: ANIMATED HORIZONTAL DISCOVERY STRIP ───
+              // [ 0: ⚡ Filter ] -> [ 1: ✨ All Matches ] -> [ 2: 🌟 Daily (10) ] -> [ 3: 📍 Near Me ] -> [ 4: 👑 VIP Verified ] -> [ 5: 🔍 Search ]
+              _buildUnifiedControlRow(context, theme),
+            ],
           ),
         ),
       ),
@@ -87,364 +203,703 @@ class HomeFeedHeader extends StatelessWidget {
   }
 
   Widget _buildLocationRow(BuildContext context, ThemeData theme) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 0.1.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Branding + Location Stack
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // ─── 1. Left: Brand Identity (Logo + Wordmark) ───
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipOval(
+              child: Container(
+                width: 26,
+                height: 26,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                child: const AppLogoImage(
+                  width: 26,
+                  height: 26,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            const SizedBox(width: 5),
+            Image.asset(
+              'assets/logo/brand_kit/wordmark.png',
+              height: 22,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) => Text(
                 'BanjaraBio',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: AppTypography.headingSmall,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 0.8,
+                  fontWeight: AppTypography.black,
+                  letterSpacing: 0.6,
                   shadows: [
                     Shadow(
-                      color: Colors.black.withValues(alpha: 0.2),
+                      color: Colors.black.withValues(alpha: 0.25),
                       blurRadius: 6,
                       offset: const Offset(0, 2),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 0.4.h),
-              InkWell(
-                key: TourKeys.locationKey,
-                onTap: onLocationTap,
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.4.h),
+            ),
+          ],
+        ),
+
+        // ─── 2. Center: Compact Frosted Location Pill ───
+        TactilePressable(
+          key: _isHomeTourActive ? TourKeys.locationKey : null,
+          onTap: widget.onLocationTap,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.45.h),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: Colors.white.withValues(alpha: 0.20),
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.location_on_rounded, color: Color(0xFFFBBF24), size: 12),
+                SizedBox(width: 1.w),
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 26.w),
+                  child: Text(
+                    widget.locationLabel,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: AppTypography.bold,
+                      fontSize: AppTypography.labelSmall,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                SizedBox(width: 0.5.w),
+                const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.white70, size: 13),
+              ],
+            ),
+          ),
+        ),
+
+        // ─── 3. Right: Daily Reward Gamification Streak Badge ───
+        if (widget.dailyRewardStatus != null)
+          TactilePressable(
+            onTap: () async {
+              final updatedStatus = await DailyRewardDialog.show(context, widget.dailyRewardStatus!);
+              widget.onRewardUpdated(updatedStatus);
+            },
+            child: AnimatedBuilder(
+              animation: _pulseController ?? const AlwaysStoppedAnimation(0.0),
+              builder: (context, child) {
+                final isClaimed = widget.dailyRewardStatus!.isClaimedToday;
+                final streak = widget.dailyRewardStatus!.streakCount;
+                final pulse = _pulseController?.value ?? 0.0;
+
+                if (isClaimed) {
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 2.2.w, vertical: 0.4.h),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.14),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.18),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.card_giftcard_rounded, color: Color(0xFFFDE68A), size: 13),
+                        SizedBox(width: 1.w),
+                        Text(
+                          streak > 0 ? 'Day $streak' : 'Claimed',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: AppTypography.labelSmall,
+                            fontWeight: AppTypography.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                return Container(
+                  padding: EdgeInsets.symmetric(horizontal: 2.4.w, vertical: 0.4.h),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.15),
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFF59E0B), Color(0xFFD97706)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFFF59E0B).withValues(alpha: 0.35 + (pulse * 0.25)),
+                        blurRadius: 8 + (pulse * 4),
+                        spreadRadius: pulse * 1.2,
+                      ),
+                    ],
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.location_on_rounded, color: Colors.amberAccent, size: 12),
+                      const Icon(Icons.card_giftcard_rounded, color: Colors.white, size: 13),
                       SizedBox(width: 1.w),
                       Text(
-                        locationLabel,
-                        style: theme.textTheme.bodySmall?.copyWith(
+                        'Claim',
+                        style: TextStyle(
                           color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: AppTypography.labelMedium,
+                          fontSize: AppTypography.labelSmall,
+                          fontWeight: AppTypography.extraBold,
+                          letterSpacing: 0.2,
                         ),
                       ),
-                      SizedBox(width: 0.5.w),
-                      const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.white, size: 12),
                     ],
                   ),
-                ),
-              ),
-            ],
+                );
+              },
+            ),
+          )
+        else
+          const SizedBox.shrink(),
+      ],
+    );
+  }
+
+  Widget _buildSearchRow(BuildContext context, ThemeData theme) {
+    return Container(
+      height: 3.8.h,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.22),
+        borderRadius: BorderRadius.circular(30),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.25),
+        ),
+      ),
+      child: TextField(
+        controller: widget.searchController,
+        focusNode: _searchFocusNode,
+        onChanged: widget.onSearchChanged,
+        textAlignVertical: TextAlignVertical.center,
+        style: theme.textTheme.bodyLarge?.copyWith(
+          fontWeight: AppTypography.semiBold,
+          color: Colors.white,
+          fontSize: AppTypography.bodySmall,
+        ),
+        cursorColor: Colors.amberAccent,
+        decoration: InputDecoration(
+          hintText: AppLocalizations.of(context)?.searchProfiles ?? 'Search by Name, Gotra or ID...',
+          hintStyle: TextStyle(
+            color: Colors.white.withValues(alpha: 0.65),
+            fontSize: AppTypography.labelMedium,
+            fontWeight: AppTypography.medium,
           ),
-          // Actions + Social Glass Capsules Row
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Pill 1: Core App Utilities (Reward, Notifications, Chat)
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 1.5.w, vertical: 0.2.h),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Daily Reward
-                    if (dailyRewardStatus != null) ...[
-                      InkWell(
-                        onTap: () async {
-                          final updatedStatus = await DailyRewardDialog.show(context, dailyRewardStatus!);
-                          onRewardUpdated(updatedStatus);
-                        },
-                        borderRadius: BorderRadius.circular(20),
-                        child: Padding(
-                          padding: EdgeInsets.all(0.6.h),
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Icon(
-                                Icons.card_giftcard_rounded,
-                                color: dailyRewardStatus!.isClaimedToday ? Colors.white54 : Colors.amberAccent,
-                                size: 20,
-                              ),
-                              if (!dailyRewardStatus!.isClaimedToday)
-                                Positioned(
-                                  right: -1,
-                                  top: -1,
-                                  child: Container(
-                                    width: 6,
-                                    height: 6,
-                                    decoration: const BoxDecoration(color: Colors.redAccent, shape: BoxShape.circle),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 1.w),
-                    ],
-                    // Notification Bell
-                    ListenableBuilder(
-                      listenable: NotificationBridge().historyStore,
-                      builder: (context, _) {
-                        final unreadCount = NotificationBridge().historyStore.unreadCount;
-                        return InkWell(
-                          onTap: () => Navigator.pushNamed(context, AppRoutes.activityHub),
-                          borderRadius: BorderRadius.circular(20),
-                          child: Padding(
-                            padding: EdgeInsets.all(0.6.h),
-                            child: Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                const Icon(Icons.notifications_outlined, color: Colors.white, size: 20),
-                                if (unreadCount > 0)
-                                  Positioned(
-                                    right: -2,
-                                    top: -2,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(3),
-                                      decoration: const BoxDecoration(color: Colors.redAccent, shape: BoxShape.circle),
-                                      constraints: const BoxConstraints(minWidth: 12, minHeight: 12),
-                                      child: Text(
-                                        unreadCount > 9 ? '9+' : unreadCount.toString(),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 7,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    SizedBox(width: 1.w),
-                    // Chat Icon
-                    InkWell(
-                      key: TourKeys.chatKey,
-                      onTap: () => Navigator.of(context, rootNavigator: true).pushNamed(AppRoutes.conversationList),
-                      borderRadius: BorderRadius.circular(20),
-                      child: Padding(
-                        padding: EdgeInsets.all(0.6.h),
-                        child: Image.asset(
-                          'assets/icons/chatting_icon.png',
-                          width: 20,
-                          height: 20,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(width: 2.w),
-              // Pill 2: BVS Initiative & Social / Support (WhatsApp, Instagram)
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 1.5.w, vertical: 0.2.h),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // BVS Gateway Icon (Icon-only matching WhatsApp & Instagram)
-                    InkWell(
-                      onTap: () => Navigator.pushNamed(context, AppRoutes.bvsGateway),
-                      borderRadius: BorderRadius.circular(20),
-                      child: Padding(
-                        padding: EdgeInsets.all(0.6.h),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.amberAccent, width: 1.2),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.25),
-                                blurRadius: 4,
-                              ),
-                            ],
-                          ),
-                          child: ClipOval(
-                            child: Image.asset(
-                              'assets/images/bvs_logo_gold.png',
-                              width: 18,
-                              height: 18,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 1.w),
-                    // WhatsApp Support
-                    InkWell(
-                      key: TourKeys.whatsappKey,
-                      onTap: () async {
-                        final Uri uri = Uri.parse('https://wa.me/8186050406');
-                        if (await canLaunchUrl(uri)) {
-                          await launchUrl(uri, mode: LaunchMode.externalApplication);
-                        }
-                      },
-                      borderRadius: BorderRadius.circular(20),
-                      child: Padding(
-                        padding: EdgeInsets.all(0.6.h),
-                        child: Image.asset(
-                          'assets/icons/whatsapp_icon.png',
-                          width: 18,
-                          height: 18,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 1.w),
-                    // Instagram
-                    InkWell(
-                      key: TourKeys.instagramKey,
-                      onTap: () async {
-                        final Uri uri = Uri.parse('https://www.instagram.com/banjarabio.matrimony/');
-                        if (await canLaunchUrl(uri)) {
-                          await launchUrl(uri, mode: LaunchMode.externalApplication);
-                        }
-                      },
-                      borderRadius: BorderRadius.circular(20),
-                      child: Padding(
-                        padding: EdgeInsets.all(0.6.h),
-                        child: Image.asset(
-                          'assets/icons/instagram_icon.png',
-                          width: 18,
-                          height: 18,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          prefixIcon: Container(
+            margin: const EdgeInsets.only(left: 10, right: 6),
+            child: Icon(Icons.search_rounded, color: Colors.white.withValues(alpha: 0.85), size: 18),
+          ),
+          prefixIconConstraints: const BoxConstraints(
+            minWidth: 32,
+            minHeight: 20,
+          ),
+          suffixIconConstraints: const BoxConstraints(
+            minWidth: 32,
+            minHeight: 20,
+          ),
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          filled: false,
+          isDense: true,
+          contentPadding: EdgeInsets.zero,
+          suffixIcon: widget.searchController.text.isNotEmpty
+              ? IconButton(
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  icon: Icon(Icons.close_rounded, color: Colors.white.withValues(alpha: 0.85), size: 16),
+                  onPressed: widget.onSearchClear,
+                )
+              : null,
+        ),
+      ),
+    );
+  }
+
+  /// ─── ROW 2: ANIMATED HORIZONTAL DISCOVERY & CATEGORY STRIP ───
+  /// [ 0: ⚡ Filter (N) ] -> [ 1: ✨ All Matches ] -> [ 2: 🌟 Daily Picks (10) ] -> [ 3: 📍 Near Me ] -> [ 4: 👑 VIP Verified ] -> [ 5: 🔍 Search ]
+  Widget _buildUnifiedControlRow(BuildContext context, ThemeData theme) {
+    return SingleChildScrollView(
+      controller: _stripScrollController,
+      scrollDirection: Axis.horizontal,
+      physics: const BouncingScrollPhysics(),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // ─── 0. ⚡ Filter (N) (Radar Ripple Indicator & Amber Glow) ───
+          _buildAnimatedFilterChip(
+            label: 'Filter',
+            count: widget.activeFilterCount,
+            onTap: () {
+              _scrollToChip(0);
+              widget.onFilterTap();
+            },
+          ),
+          const SizedBox(width: 6),
+
+          // ─── 1. ✨ All Matches (Pure White Gloss, Shimmer Light Sheen & Royal Purple) ───
+          _buildAnimatedCategoryChip(
+            index: 1,
+            icon: Icons.auto_awesome_rounded,
+            label: 'All Matches',
+            isActive: widget.selectedTab == 0,
+            activeGradient: const LinearGradient(
+              colors: [Color(0xFFFFFFFF), Color(0xFFF3E8FF)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            activeTextColor: const Color(0xFF4A154B),
+            activeGlowColor: Colors.white.withValues(alpha: 0.40),
+            iconAnimationType: _IconAnimType.twinkle,
+            onTap: () {
+              _scrollToChip(1);
+              if (widget.selectedTab == 0) return;
+              HapticFeedback.selectionClick();
+              widget.onTabChanged(0);
+            },
+          ),
+          const SizedBox(width: 6),
+
+          // ─── 2. 🌟 Daily Picks (10) (Solar Gold Glow & Floating Star) ───
+          _buildAnimatedCategoryChip(
+            index: 2,
+            icon: Icons.star_rounded,
+            label: 'Daily Picks',
+            badgeText: '10',
+            isActive: widget.selectedTab == 1,
+            activeGradient: const LinearGradient(
+              colors: [Color(0xFFF59E0B), Color(0xFFD97706)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            activeTextColor: Colors.white,
+            activeGlowColor: Colors.amberAccent.withValues(alpha: 0.50),
+            iconAnimationType: _IconAnimType.pulse,
+            onTap: () {
+              _scrollToChip(2);
+              if (widget.selectedTab == 1) return;
+              HapticFeedback.selectionClick();
+              widget.onTabChanged(1);
+            },
+          ),
+          const SizedBox(width: 6),
+
+          // ─── 3. 📍 Near Me (Emerald Teal Pulse & Floating Pin) ───
+          _buildAnimatedCategoryChip(
+            index: 3,
+            icon: Icons.location_on_rounded,
+            label: 'Near Me',
+            isActive: widget.selectedTab == 2,
+            activeGradient: const LinearGradient(
+              colors: [Color(0xFF10B981), Color(0xFF059669)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            activeTextColor: Colors.white,
+            activeGlowColor: const Color(0xFF10B981).withValues(alpha: 0.50),
+            iconAnimationType: _IconAnimType.float,
+            onTap: () {
+              _scrollToChip(3);
+              if (widget.selectedTab == 2) return;
+              HapticFeedback.selectionClick();
+              widget.onTabChanged(2);
+            },
+          ),
+          const SizedBox(width: 6),
+
+          // ─── 4. 👑 VIP Verified (Royal Violet & Solar Crown Shimmer) ───
+          _buildAnimatedCategoryChip(
+            index: 4,
+            icon: Icons.workspace_premium_rounded,
+            label: 'VIP Verified',
+            isActive: widget.selectedTab == 3,
+            activeGradient: const LinearGradient(
+              colors: [Color(0xFF8B5CF6), Color(0xFF6D28D9)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            activeTextColor: Colors.white,
+            activeGlowColor: const Color(0xFF8B5CF6).withValues(alpha: 0.50),
+            iconAnimationType: _IconAnimType.pulse,
+            onTap: () {
+              _scrollToChip(4);
+              if (widget.selectedTab == 3) return;
+              HapticFeedback.selectionClick();
+              widget.onTabChanged(3);
+            },
+          ),
+          const SizedBox(width: 6),
+
+          // ─── 5. 🔍 Search (Electric Indigo Active State) ───
+          _buildAnimatedCategoryChip(
+            index: 5,
+            icon: _isSearchExpanded ? Icons.search_off_rounded : Icons.search_rounded,
+            label: 'Search',
+            isActive: _isSearchExpanded,
+            activeGradient: const LinearGradient(
+              colors: [Color(0xFF3B82F6), Color(0xFF2563EB)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            activeTextColor: Colors.white,
+            activeGlowColor: const Color(0xFF3B82F6).withValues(alpha: 0.50),
+            iconAnimationType: _IconAnimType.none,
+            onTap: () {
+              _scrollToChip(5);
+              _toggleSearch();
+            },
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSearchRow(BuildContext context, ThemeData theme) {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            key: TourKeys.searchKey,
-            height: 4.h,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(30),
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.25),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.08),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
+  Widget _buildAnimatedCategoryChip({
+    required int index,
+    required IconData icon,
+    required String label,
+    String? badgeText,
+    required bool isActive,
+    required LinearGradient activeGradient,
+    required Color activeTextColor,
+    required Color activeGlowColor,
+    required _IconAnimType iconAnimationType,
+    required VoidCallback onTap,
+  }) {
+    return TactilePressable(
+      onTap: onTap,
+      child: AnimatedBuilder(
+        animation: Listenable.merge([
+          if (_pulseController != null) _pulseController!,
+          if (_sheenController != null) _sheenController!,
+          if (_iconFloatController != null) _iconFloatController!,
+        ]),
+        builder: (context, child) {
+          final pulseVal = _pulseController?.value ?? 0.0;
+          final sheenVal = _sheenController?.value ?? 0.0;
+          final floatVal = _iconFloatController?.value ?? 0.0;
+
+          final double scale = isActive ? (1.0 + (pulseVal * 0.025)) : 1.0;
+          final double glowSpread = isActive ? (4.0 + (pulseVal * 4.0)) : 0.0;
+
+          return Transform.scale(
+            scale: scale,
+            child: Stack(
+              children: [
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 260),
+                  curve: Curves.easeOutCubic,
+                  padding: const EdgeInsets.symmetric(vertical: 5.5, horizontal: 9.5),
+                  decoration: BoxDecoration(
+                    gradient: isActive ? activeGradient : null,
+                    color: isActive ? null : Colors.black.withValues(alpha: 0.24),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: isActive
+                          ? Colors.white.withValues(alpha: 0.85)
+                          : Colors.white.withValues(alpha: 0.22),
+                      width: isActive ? 1.4 : 1.0,
+                    ),
+                    boxShadow: isActive
+                        ? [
+                            BoxShadow(
+                              color: activeGlowColor,
+                              blurRadius: glowSpread,
+                              offset: const Offset(0, 2),
+                            ),
+                          ]
+                        : null,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // ─── Micro-Animated Icon ───
+                      _buildAnimatedIcon(
+                        icon: icon,
+                        isActive: isActive,
+                        activeColor: activeTextColor,
+                        type: iconAnimationType,
+                        floatVal: floatVal,
+                        pulseVal: pulseVal,
+                      ),
+                      const SizedBox(width: 4.5),
+                      Text(
+                        label,
+                        style: TextStyle(
+                          color: isActive ? activeTextColor : Colors.white,
+                          fontWeight: isActive ? AppTypography.black : AppTypography.semiBold,
+                          fontSize: AppTypography.labelMedium,
+                          letterSpacing: 0.1,
+                        ),
+                      ),
+                      if (badgeText != null) ...[
+                        const SizedBox(width: 4),
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          padding: const EdgeInsets.symmetric(horizontal: 4.5, vertical: 1),
+                          decoration: BoxDecoration(
+                            color: isActive
+                                ? Colors.white.withValues(alpha: 0.32)
+                                : Colors.amberAccent,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            badgeText,
+                            style: TextStyle(
+                              color: isActive ? Colors.white : const Color(0xFF78350F),
+                              fontWeight: AppTypography.black,
+                              fontSize: AppTypography.labelTiny,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
+
+                // ─── Continuous Ambient Light Sheen Glint on Active Capsule ───
+                if (isActive)
+                  Positioned.fill(
+                    child: IgnorePointer(
+                      child: CustomPaint(
+                        painter: _PillSheenPainter(progress: sheenVal),
+                      ),
+                    ),
+                  ),
               ],
             ),
-            child: SizedBox(
-              width: double.infinity,
-              child: TextField(
-                controller: searchController,
-                onChanged: onSearchChanged,
-                textAlignVertical: TextAlignVertical.center,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                  fontSize: AppTypography.bodyMedium,
-                ),
-                cursorColor: Colors.white,
-                decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context)?.searchProfiles ?? 'Search profiles...',
-                  hintStyle: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.65),
-                    fontSize: AppTypography.bodySmall,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  prefixIcon: Container(
-                    margin: const EdgeInsets.only(left: 14, right: 8),
-                    child: Icon(Icons.search_rounded, color: Colors.white.withValues(alpha: 0.85), size: 22),
-                  ),
-                  prefixIconConstraints: const BoxConstraints(
-                    minWidth: 40,
-                    minHeight: 24,
-                  ),
-                  suffixIconConstraints: const BoxConstraints(
-                    minWidth: 36,
-                    minHeight: 24,
-                  ),
-                  border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  filled: false,
-                  isDense: true,
-                  contentPadding: EdgeInsets.zero,
-                  suffixIcon: searchController.text.isNotEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: IconButton(
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                            icon: Icon(Icons.close_rounded, color: Colors.white.withValues(alpha: 0.8), size: 18),
-                            onPressed: onSearchClear,
-                          ),
-                        )
-                      : null,
-                ),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(width: 3.w),
-        // Filter Button
-        InkWell(
-          key: TourKeys.filterKey,
-          onTap: onFilterTap,
-          borderRadius: BorderRadius.circular(12),
-          child: Container(
-            height: 4.h,
-            width: 4.h,
-            decoration: BoxDecoration(
-              color: activeFilterCount > 0 ? theme.colorScheme.secondary : Colors.white.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: Colors.white.withValues(alpha: activeFilterCount > 0 ? 0.3 : 0.25),
-              ),
-            ),
-            child: Center(
-              child: CustomIconWidget(
-                iconName: 'tune',
-                color: activeFilterCount > 0 ? theme.colorScheme.onSecondary : Colors.white,
-                size: 20,
-              ),
-            ),
-          ),
-        ),
-      ],
+          );
+        },
+      ),
     );
   }
+
+  Widget _buildAnimatedIcon({
+    required IconData icon,
+    required bool isActive,
+    required Color activeColor,
+    required _IconAnimType type,
+    required double floatVal,
+    required double pulseVal,
+  }) {
+    final Widget iconWidget = Icon(
+      icon,
+      size: 13.5,
+      color: isActive ? activeColor : Colors.white,
+    );
+
+    if (!isActive || type == _IconAnimType.none) {
+      return iconWidget;
+    }
+
+    switch (type) {
+      case _IconAnimType.twinkle:
+        // Rotate ±12 degrees and subtle scale
+        final angle = (floatVal - 0.5) * 0.45;
+        return Transform.rotate(
+          angle: angle,
+          child: Transform.scale(
+            scale: 1.0 + (pulseVal * 0.15),
+            child: iconWidget,
+          ),
+        );
+      case _IconAnimType.float:
+        // Float up/down 2.5 dp
+        return Transform.translate(
+          offset: Offset(0, -2.5 * floatVal),
+          child: iconWidget,
+        );
+      case _IconAnimType.pulse:
+        // Breathe scale
+        return Transform.scale(
+          scale: 1.0 + (pulseVal * 0.18),
+          child: iconWidget,
+        );
+      case _IconAnimType.none:
+        return iconWidget;
+    }
+  }
+
+  Widget _buildAnimatedFilterChip({
+    required String label,
+    required int count,
+    required VoidCallback onTap,
+  }) {
+    final bool hasActiveFilters = count > 0;
+
+    return TactilePressable(
+      key: _isHomeTourActive ? TourKeys.filterKey : null,
+      onTap: () {
+        HapticFeedback.selectionClick();
+        onTap();
+      },
+      child: AnimatedBuilder(
+        animation: Listenable.merge([
+          if (_pulseController != null) _pulseController!,
+          if (_sheenController != null) _sheenController!,
+        ]),
+        builder: (context, child) {
+          final pulseVal = _pulseController?.value ?? 0.0;
+          final sheenVal = _sheenController?.value ?? 0.0;
+          final double glowSpread = hasActiveFilters ? (4.0 + (pulseVal * 4.5)) : 0.0;
+
+          return Stack(
+            children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 260),
+                curve: Curves.easeOutCubic,
+                padding: const EdgeInsets.symmetric(vertical: 5.5, horizontal: 9.5),
+                decoration: BoxDecoration(
+                  gradient: hasActiveFilters
+                      ? const LinearGradient(
+                          colors: [Color(0xFFF59E0B), Color(0xFFD97706)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        )
+                      : null,
+                  color: hasActiveFilters ? null : Colors.black.withValues(alpha: 0.24),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: hasActiveFilters
+                        ? Colors.amberAccent
+                        : Colors.white.withValues(alpha: 0.35),
+                    width: hasActiveFilters ? 1.4 : 1.0,
+                  ),
+                  boxShadow: hasActiveFilters
+                      ? [
+                          BoxShadow(
+                            color: Colors.amberAccent.withValues(alpha: 0.50),
+                            blurRadius: glowSpread,
+                            offset: const Offset(0, 2),
+                          ),
+                        ]
+                      : null,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Filter icon with subtle pulse when active
+                    Transform.rotate(
+                      angle: hasActiveFilters ? ((pulseVal - 0.5) * 0.18) : 0.0,
+                      child: Icon(
+                        Icons.tune_rounded,
+                        size: 13.5,
+                        color: hasActiveFilters ? Colors.white : Colors.amberAccent,
+                      ),
+                    ),
+                    const SizedBox(width: 4.5),
+                    Text(
+                      label,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: hasActiveFilters ? AppTypography.black : AppTypography.bold,
+                        fontSize: AppTypography.labelMedium,
+                      ),
+                    ),
+                    if (hasActiveFilters) ...[
+                      const SizedBox(width: 4),
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 200),
+                        transitionBuilder: (child, anim) => ScaleTransition(scale: anim, child: child),
+                        child: Container(
+                          key: ValueKey('filter_count_$count'),
+                          padding: const EdgeInsets.symmetric(horizontal: 4.5, vertical: 1),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.32),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            count.toString(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: AppTypography.black,
+                              fontSize: AppTypography.labelTiny,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+
+              // Light Sheen for Active Filter
+              if (hasActiveFilters)
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: CustomPaint(
+                      painter: _PillSheenPainter(progress: sheenVal),
+                    ),
+                  ),
+                ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+enum _IconAnimType {
+  none,
+  twinkle,
+  float,
+  pulse,
+}
+
+/// Custom painter that sweeps a diagonal light sheen across the active chip.
+class _PillSheenPainter extends CustomPainter {
+  final double progress; // 0.0 to 1.0
+
+  _PillSheenPainter({required this.progress});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (progress <= 0.05 || progress >= 0.95) return;
+
+    final paint = Paint()
+      ..shader = LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Colors.white.withValues(alpha: 0.0),
+          Colors.white.withValues(alpha: 0.38),
+          Colors.white.withValues(alpha: 0.0),
+        ],
+        stops: const [0.0, 0.5, 1.0],
+      ).createShader(Rect.fromLTWH(
+        (size.width * 2.2 * progress) - (size.width * 0.6),
+        0,
+        size.width * 0.5,
+        size.height,
+      ));
+
+    final rrect = RRect.fromRectAndRadius(
+      Rect.fromLTWH(0, 0, size.width, size.height),
+      const Radius.circular(16),
+    );
+
+    canvas.clipRRect(rrect);
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), paint);
+  }
+
+  @override
+  bool shouldRepaint(_PillSheenPainter oldDelegate) => oldDelegate.progress != progress;
 }

@@ -11,7 +11,7 @@ import 'package:banjarabio/core/theme/app_gradients.dart';
 import 'package:banjarabio/widgets/trust_score_badge.dart';
 
 import 'package:banjarabio/core/models/profile_model.dart';
-import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/core/services/profile_display_policy.dart';
 
 /// Daily Match widget that shows curated daily profiles
 /// with a premium reveal animation and countdown timer.
@@ -169,7 +169,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: AppTypography.bodyMedium,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: AppTypography.bold,
                   ),
                 ),
                 Text(
@@ -330,7 +330,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: AppTypography.headingSmall,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: AppTypography.extraBold,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -362,12 +362,12 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
         ? (photos[0] as Map<String, dynamic>)['url']?.toString() ?? ''
         : '';
         
-    final name = profile.fullName;
+    final name = ProfileDisplayPolicy.getDisplayName(profile);
     final age = profile.age.toString();
     final location = profile.locationExcludingVillage;
-    final education = profile.education;
+    final education = ProfileDisplayPolicy.getFormattedEducation(profile);
     final profession = profile.profession;
-    final trustScore = profile.trustScore;
+    final trustScore = ProfileDisplayPolicy.getDynamicTrustScore(profile);
     final isVerified = profile.isVerified;
 
     return AnimatedBuilder(
@@ -469,7 +469,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: AppTypography.labelMedium,
-                            fontWeight: FontWeight.w700,
+                            fontWeight: AppTypography.bold,
                           ),
                         ),
                       ],
@@ -496,7 +496,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: AppTypography.headingMedium,
-                                  fontWeight: FontWeight.w800,
+                                  fontWeight: AppTypography.extraBold,
                                   shadows: const [
                                     Shadow(
                                         blurRadius: 10,
@@ -513,11 +513,9 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
                                   color: Colors.blueAccent,
                                   size: 18.sp),
                             ],
-                            if (trustScore >= 50) ...[
-                              SizedBox(width: 1.w),
-                              TrustScoreBadge(
-                                  score: trustScore, size: 3.5.h),
-                            ],
+                            SizedBox(width: 1.w),
+                            TrustScoreBadge(
+                                score: trustScore, size: 3.5.h),
                           ],
                         ),
                         SizedBox(height: 0.8.h),
@@ -532,7 +530,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
                                 style: TextStyle(
                                   color: Colors.white70,
                                   fontSize: AppTypography.bodyMedium,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: AppTypography.medium,
                                 ),
                               ),
                             ],
@@ -581,7 +579,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.9),
               fontSize: AppTypography.labelMedium,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTypography.medium,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -680,7 +678,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
           style: TextStyle(
             fontSize: AppTypography.labelSmall,
             color: Theme.of(context).colorScheme.onSurfaceVariant,
-            fontWeight: FontWeight.w500,
+            fontWeight: AppTypography.medium,
           ),
         ),
       ],
@@ -716,7 +714,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
             AppLocalizations.of(context)?.noDailyMatchesYet ??
                 'No Daily Matches Yet',
             style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTypography.bold,
             ),
           ),
           SizedBox(height: 1.h),
@@ -804,7 +802,7 @@ class _CountdownTimerRowState extends State<_CountdownTimerRow> {
               style: TextStyle(
                 color: theme.colorScheme.primary,
                 fontSize: AppTypography.bodySmall,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTypography.semiBold,
               ),
             ),
           ],
@@ -828,7 +826,7 @@ class _CountdownTimerRowState extends State<_CountdownTimerRow> {
             style: TextStyle(
               color: Colors.white,
               fontSize: AppTypography.bodySmall,
-              fontWeight: FontWeight.w700,
+              fontWeight: AppTypography.bold,
               fontFeatures: const [FontFeature.tabularFigures()],
             ),
           ),

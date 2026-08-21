@@ -1,4 +1,5 @@
 import 'package:banjarabio/core/services/persistent_cache_manager.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -72,12 +73,10 @@ class ProfileShareCard extends StatelessWidget {
               right: 0,
               child: Column(
                 children: [
-                  const Text(
-                    '॥ जय सेवालाल ॥',
-                    style: TextStyle(
-                      color: Color(0xFFFFD700), // Gold
-                      fontSize: 32,
-                      fontWeight: FontWeight.w800,
+                  Text('॥ जय सेवालाल ॥', style: TextStyle(
+                      color: const Color(0xFFFFD700), // Gold
+                      fontSize: AppTypography.displayLarge,
+                      fontWeight: AppTypography.extraBold,
                       letterSpacing: 2,
                     ),
                   ),
@@ -88,12 +87,10 @@ class ProfileShareCard extends StatelessWidget {
                     errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'BANJARABIO',
-                    style: TextStyle(
+                  Text('BANJARABIO', style: TextStyle(
                       color: Colors.white,
-                      fontSize: 38,
-                      fontWeight: FontWeight.w900,
+                      fontSize: AppTypography.displayLarge,
+                      fontWeight: AppTypography.black,
                       letterSpacing: 8,
                     ),
                   ),
@@ -112,17 +109,17 @@ class ProfileShareCard extends StatelessWidget {
                     border: Border.all(color: Colors.greenAccent, width: 4),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.verified, color: Colors.greenAccent, size: 40),
-                      SizedBox(width: 10),
+                      const Icon(Icons.verified, color: Colors.greenAccent, size: 40),
+                      const SizedBox(width: 10),
                       Text(
                         'VERIFIED',
                         style: TextStyle(
                           color: Colors.greenAccent,
-                          fontSize: 32,
-                          fontWeight: FontWeight.w900,
+                          fontSize: AppTypography.displayLarge,
+                          fontWeight: AppTypography.black,
                         ),
                       ),
                     ],
@@ -140,10 +137,10 @@ class ProfileShareCard extends StatelessWidget {
                 children: [
                   Text(
                     '${profile.fullName}, ${profile.age}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 80,
-                      fontWeight: FontWeight.w900,
+                      fontSize: AppTypography.displayLarge,
+                      fontWeight: AppTypography.black,
                       height: 1.1,
                     ),
                   ),
@@ -154,10 +151,10 @@ class ProfileShareCard extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(
                         profile.locationExcludingVillage,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white70,
-                          fontSize: 36,
-                          fontWeight: FontWeight.w600,
+                          fontSize: AppTypography.displayLarge,
+                          fontWeight: AppTypography.semiBold,
                         ),
                       ),
                     ],
@@ -169,10 +166,10 @@ class ProfileShareCard extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(
                         profile.profession,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white70,
-                          fontSize: 36,
-                          fontWeight: FontWeight.w600,
+                          fontSize: AppTypography.displayLarge,
+                          fontWeight: AppTypography.semiBold,
                         ),
                       ),
                     ],
@@ -213,7 +210,7 @@ class ProfileShareCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 40),
-                  const Expanded(
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -221,17 +218,17 @@ class ProfileShareCard extends StatelessWidget {
                           'Interested?',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 48,
-                            fontWeight: FontWeight.w900,
+                            fontSize: AppTypography.displayLarge,
+                            fontWeight: AppTypography.black,
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Text(
                           'Scan QR to view full Bio on BanjaraBio Matrimony app',
                           style: TextStyle(
                             color: Colors.white70,
-                            fontSize: 28,
-                            fontWeight: FontWeight.w500,
+                            fontSize: AppTypography.headingLarge,
+                            fontWeight: AppTypography.medium,
                           ),
                         ),
                       ],

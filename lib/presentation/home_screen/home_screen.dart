@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -21,14 +22,15 @@ import 'package:banjarabio/notification/features/notification_bridge.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/guest_restricted_dialog.dart';
 import 'package:banjarabio/notification/features/nudge_engine.dart';
 import 'package:banjarabio/core/session_manager.dart';
+import 'package:banjarabio/core/services/biodata_preload_service.dart';
 import 'package:banjarabio/routes/app_routes.dart';
 
 
-// 🚨 ANR FIX: Import tab screens directly for IndexedStack (no more Navigator)
-import 'package:banjarabio/presentation/shared_profiles_screen/shared_profiles_screen.dart';
-import 'package:banjarabio/presentation/melava_screen/melava_screen.dart';
-import 'package:banjarabio/presentation/my_profile_screen/my_profile_screen.dart';
+import 'package:banjarabio/presentation/connect_screen/connect_screen.dart';
+import 'package:banjarabio/presentation/biodata_pdf_screen/biodata_pdf_screen.dart';
+import 'package:banjarabio/presentation/services_hub_screen/services_hub_screen.dart';
 import 'package:banjarabio/presentation/settings_screen/settings_screen.dart';
+import 'package:banjarabio/widgets/exit_confirmation_dialog.dart';
 
 import 'package:banjarabio/core/providers/home_tab_provider.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
@@ -61,9 +63,9 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     return _builtTabs.putIfAbsent(index, () {
       switch (index) {
         case 0: return const HomeScreenInitialPage();
-        case 1: return const SharedProfilesScreen();
-        case 2: return const MelavaScreen();
-        case 3: return const MyProfileScreen();
+        case 1: return const ConnectScreen();
+        case 2: return const BiodataPdfScreen();
+        case 3: return const ServicesHubScreen();
         case 4: return const SettingsScreen();
         default: return const SizedBox.shrink();
       }
@@ -97,6 +99,14 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
       // Guest Tour Logic
       _checkAndStartGuestTour();
     }, name: 'Matchmaking & Analytics');
+
+    // ⚡ BIODATA BACKGROUND PREWARM: Preload candidate profile, template images,
+    // and pre-compile default A4 Biodata PDF in background isolate right after first frame renders.
+    StartupOrchestrator().registerTask(StartupPhase.interactive, () async {
+      await Future.delayed(const Duration(milliseconds: 800));
+      if (!mounted) return;
+      await BiodataPreloadService.instance.preload();
+    }, name: 'Biodata Background Preload');
 
     // Evaluate and schedule daily Mass-Market subscription nudge in background phase
     StartupOrchestrator().registerTask(StartupPhase.background, () async {
@@ -147,7 +157,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                 children: [
                    Text(
                     AppLocalizations.of(context)?.tourLocationTitle ?? 'Select Location',
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
+                    style: TextStyle(fontWeight: AppTypography.bold, color: Colors.white, fontSize: AppTypography.headingLarge),
                   ),
                   const SizedBox(height: 10),
                    Text(
@@ -170,7 +180,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                 children: [
                    Text(
                     AppLocalizations.of(context)?.tourSearchTitle ?? 'Search Profiles',
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
+                    style: TextStyle(fontWeight: AppTypography.bold, color: Colors.white, fontSize: AppTypography.headingLarge),
                   ),
                   const SizedBox(height: 10),
                    Text(
@@ -184,7 +194,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
         ),
         TargetFocus(
           identify: 'chat',
-          keyTarget: TourKeys.chatKey,
+          keyTarget: TourKeys.chatTabKey,
           contents: [
             TargetContent(
               builder: (context, controller) => Column(
@@ -193,7 +203,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                 children: [
                    Text(
                     AppLocalizations.of(context)?.tourChatTitle ?? 'Messages & Chat',
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
+                    style: TextStyle(fontWeight: AppTypography.bold, color: Colors.white, fontSize: AppTypography.headingLarge),
                   ),
                   const SizedBox(height: 10),
                    Text(
@@ -216,7 +226,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                 children: [
                    Text(
                     AppLocalizations.of(context)?.tourFilterTitle ?? 'Advanced Filters',
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
+                    style: TextStyle(fontWeight: AppTypography.bold, color: Colors.white, fontSize: AppTypography.headingLarge),
                   ),
                   const SizedBox(height: 10),
                    Text(
@@ -239,7 +249,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                 children: [
                    Text(
                     AppLocalizations.of(context)?.tourWhatsappTitle ?? 'WhatsApp Support',
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
+                    style: TextStyle(fontWeight: AppTypography.bold, color: Colors.white, fontSize: AppTypography.headingLarge),
                   ),
                   const SizedBox(height: 10),
                    Text(
@@ -262,107 +272,11 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                 children: [
                    Text(
                     AppLocalizations.of(context)?.tourInstagramTitle ?? 'Follow Us',
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
+                    style: TextStyle(fontWeight: AppTypography.bold, color: Colors.white, fontSize: AppTypography.headingLarge),
                   ),
                   const SizedBox(height: 10),
                    Text(
                     AppLocalizations.of(context)?.tourInstagramDesc ?? 'See daily success stories.',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        TargetFocus(
-          identify: 'home_tab',
-          keyTarget: TourKeys.homeTabKey,
-          contents: [
-            TargetContent(
-              align: ContentAlign.top,
-              builder: (context, controller) => Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                   Text(
-                    AppLocalizations.of(context)?.tourBottomHome ?? 'Home Feed',
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
-                  ),
-                  const SizedBox(height: 10),
-                   Text(
-                    AppLocalizations.of(context)?.tourBottomHomeDesc ?? 'Explore verified profiles.',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        TargetFocus(
-          identify: 'shared_tab',
-          keyTarget: TourKeys.sharedTabKey,
-          contents: [
-            TargetContent(
-              align: ContentAlign.top,
-              builder: (context, controller) => Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                   Text(
-                    AppLocalizations.of(context)?.tourBottomShared ?? 'Shared Profiles',
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
-                  ),
-                  const SizedBox(height: 10),
-                   Text(
-                    AppLocalizations.of(context)?.tourBottomSharedDesc ?? 'See your incoming/outgoing shares.',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        TargetFocus(
-          identify: 'profile_tab',
-          keyTarget: TourKeys.profileTabKey,
-          contents: [
-            TargetContent(
-              align: ContentAlign.top,
-              builder: (context, controller) => Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                   Text(
-                    AppLocalizations.of(context)?.tourBottomProfile ?? 'Your Profile',
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
-                  ),
-                  const SizedBox(height: 10),
-                   Text(
-                    AppLocalizations.of(context)?.tourBottomProfileDesc ?? 'Manage your biodata here.',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        TargetFocus(
-          identify: 'settings_tab',
-          keyTarget: TourKeys.settingsTabKey,
-          contents: [
-            TargetContent(
-              align: ContentAlign.top,
-              builder: (context, controller) => Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                   Text(
-                    AppLocalizations.of(context)?.tourBottomSettings ?? 'App Settings',
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
-                  ),
-                  const SizedBox(height: 10),
-                   Text(
-                    AppLocalizations.of(context)?.tourBottomSettingsDesc ?? 'Language and notifications.',
                     style: const TextStyle(color: Colors.white),
                   ),
                 ],
@@ -393,10 +307,11 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
 
   // Tab labels for debug logging
   static const List<String> _tabNames = [
-    'Home', 'Shared', 'Melavas', 'Profile', 'Settings',
+    'Home', 'Connect', 'Biodata', 'Services', 'Profile',
   ];
 
   Future<bool> _onWillPop() async {
+    // 🔙 If user is on any non-Home tab (Connect, Biodata, Services, Menu), switch to Tab 0 (Home)
     if (ref.read(homeTabProvider) != 0) {
       ref.read(homeTabProvider.notifier).state = 0;
       setState(() {
@@ -415,12 +330,15 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
         builder: (context) => AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           title: Text(l10n?.exitApp ?? 'Exit App'),
-          content: const Text('तुम्हाला शोध पर्याय बदलायचे आहेत की ॲपमधून बाहेर पडायचे आहे?'),
+          content: Text(
+            l10n?.changeCriteriaOrExitPrompt ??
+                'Do you want to change your search options or exit the app?',
+          ),
           actionsOverflowDirection: VerticalDirection.up,
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: Text(l10n?.cancel ?? 'रद्द करा'),
+              child: Text(l10n?.cancel ?? 'No'),
             ),
             OutlinedButton(
               style: OutlinedButton.styleFrom(
@@ -435,7 +353,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                       .pushNamedAndRemoveUntil(AppRoutes.userTypeSelection, (route) => false);
                 }
               },
-              child: const Text('पर्याय बदला ✏️'),
+              child: Text(l10n?.changeOptionsCta ?? 'Change Options ✏️'),
             ),
             ElevatedButton(
               onPressed: () => Navigator.pop(context, true),
@@ -444,7 +362,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
-              child: Text(l10n?.exit ?? 'बाहेर पडा 🚪'),
+              child: Text(l10n?.exit ?? 'Yes, Exit'),
             ),
           ],
         ),
@@ -462,41 +380,14 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
       return false;
     }
 
-    // Show standard exit confirmation for normal profile users
-    final bool? shouldExit = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n?.exitApp ?? 'Exit App'),
-        content: Text(l10n?.areYouSureExit ?? 'Are you sure you want to exit the app?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n?.cancel ?? 'Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              foregroundColor: Colors.white,
-            ),
-            child: Text(l10n?.exit ?? 'Exit'),
-          ),
-        ],
-      ),
-    );
-    return shouldExit ?? false;
+    // 🛑 Show animated exit confirmation popup for all users on Tab 0 (Home tab)
+    return await ExitConfirmationDialog.show(context) ?? false;
   }
 
   @override
   Widget build(BuildContext context) {
     // 🚨 DEFERRED BUILD GATE: On the very first frame, render a trivial placeholder.
-    // The full widget tree (SliverAppBar + filters + grid + bottom bar) takes 2.27s
-    // on Vivo V2105, which triggers Signal 3 ANR. By rendering immediately with a
-    // lightweight screen, we break the ANR window. The real UI builds on frame 2.
     if (!_isReady) {
-      // 🚨 ZERO-GPU PLACEHOLDER: No CircularProgressIndicator!
-      // CPI has an internal AnimationController that generates ~60
-      // gralloc4 GPU allocations/sec on MediaTek, compounding the ANR.
       return const Scaffold(
         backgroundColor: Color(0xFF2A1B4D),
         body: SizedBox.shrink(),
@@ -504,35 +395,17 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     }
 
     return PopScope(
-      canPop: LocalCacheService().isGuestMode(),
+      canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
         if (didPop) return;
         final shouldPop = await _onWillPop();
         if (shouldPop && mounted) {
-          // Since we can't pop the root from here if canPop is false,
-          // we use SystemNavigator.pop() to exit the app
           SystemNavigator.pop();
         }
       },
       child: Scaffold(
         extendBody: true, // Allows body to flow behind the floating nav bar
         resizeToAvoidBottomInset: false,
-        floatingActionButton: (LocalCacheService().isGuestMode() || ref.watch(homeTabProvider) != 3)
-            ? null
-            : AnimatedSlide(
-                offset: _isBottomBarVisible ? Offset.zero : const Offset(0, 2),
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                child: AnimatedOpacity(
-                  opacity: _isBottomBarVisible ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 250),
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 0.2.h),
-                    child: const _BeautifulPdfFloatingActionButton(),
-                  ),
-                ),
-              ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         // 🚨 ANR FIX: IndexedStack keeps all tabs alive. No destruction/creation.
         body: NotificationListener<UserScrollNotification>(
           onNotification: (notification) {
@@ -580,8 +453,8 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                 final cache = LocalCacheService();
                 if (index != 0 && (cache.isGuestMode() || cache.isRelativeBrowseMode())) {
                   // Relative browse & guest: only Home tab (0) allowed
-                  // Allow Melavas tab (2) for relative browse users
-                  if (cache.isRelativeBrowseMode() && index == 2) {
+                  // Allow Melavas tab (3) for relative browse users
+                  if (cache.isRelativeBrowseMode() && index == 3) {
                     // Melavas allowed for relative browse
                   } else {
                     GuestRestrictedDialog.show(context);
@@ -612,186 +485,6 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ),
       ),
-    );
-  }
-}
-
-/// 🚀 PREMIUM ANIMATED FAB: A gorgeous, custom-designed floating action button.
-/// Includes a breathing outer ring pulse animation and a periodic diagonal
-/// shimmer sweep to catch the user's eye without being obtrusive.
-class _BeautifulPdfFloatingActionButton extends StatefulWidget {
-  const _BeautifulPdfFloatingActionButton();
-
-  @override
-  State<_BeautifulPdfFloatingActionButton> createState() =>
-      __BeautifulPdfFloatingActionButtonState();
-}
-
-class __BeautifulPdfFloatingActionButtonState
-    extends State<_BeautifulPdfFloatingActionButton>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _pulseAnimation;
-  late Animation<double> _shimmerAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 3000),
-    )..repeat();
-
-    _pulseAnimation = Tween<double>(begin: 1.0, end: 1.25).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
-      ),
-    );
-
-    _shimmerAnimation = Tween<double>(begin: -1.0, end: 2.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.4, 1.0, curve: Curves.easeInOut),
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        final double pulseOpacity = _controller.value <= 0.6
-            ? (1.0 - (_controller.value / 0.6)).clamp(0.0, 1.0)
-            : 0.0;
-
-        return Stack(
-          alignment: Alignment.center,
-          clipBehavior: Clip.none,
-          children: [
-            // Pulsing Background Ring (Breathing effect)
-            Positioned(
-              child: Transform.scale(
-                scale: _pulseAnimation.value,
-                child: Opacity(
-                  opacity: pulseOpacity * 0.4,
-                  child: Container(
-                    width: 46.w,
-                    height: 5.6.h,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFC62828),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            // Main Button Container
-            Container(
-              width: 46.w,
-              height: 5.6.h,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [
-                    Color(0xFFC62828), // Deep red
-                    Color(0xFFAD1457), // Rich magenta
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(
-                  color: const Color(0xFFFFD700).withValues(alpha: 0.5), // Premium gold border outline
-                  width: 1.5,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFFC62828).withValues(alpha: 0.4),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(30),
-                child: Stack(
-                  children: [
-                    // Shimmer Sweep
-                    Positioned.fill(
-                      child: Transform(
-                        transform: Matrix4.translationValues(
-                          _shimmerAnimation.value * 46.w,
-                          0,
-                          0,
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.white.withValues(alpha: 0.0),
-                                Colors.white.withValues(alpha: 0.25),
-                                Colors.white.withValues(alpha: 0.0),
-                              ],
-                              stops: const [0.3, 0.5, 0.7],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // Content
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/biodata-editor');
-                        },
-                        borderRadius: BorderRadius.circular(30),
-                        child: Center(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.picture_as_pdf_rounded,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                              SizedBox(width: 2.w),
-                              Text(
-                                'Download Biodata',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 11.5.sp,
-                                  letterSpacing: 0.5,
-                                  shadows: const [
-                                    Shadow(
-                                      color: Colors.black38,
-                                      offset: Offset(0, 1),
-                                      blurRadius: 2,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 }

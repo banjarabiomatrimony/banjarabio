@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/data/location_data.dart';
 import 'package:banjarabio/core/repositories/volunteer_repository.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
@@ -212,12 +213,12 @@ class _MelavaBiodataDigitizerDialogState
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           '⚡ मेळावा बायोडेटा ऑनबोर्डिंग',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                            fontSize: AppTypography.headingMedium,
+                            fontWeight: AppTypography.bold,
                           ),
                         ),
                         const SizedBox(height: 2),
@@ -225,7 +226,7 @@ class _MelavaBiodataDigitizerDialogState
                           'सत्रात नोंदणी केलेले: $_sessionCount बायो-डाटा',
                           style: TextStyle(
                             color: Colors.white.withValues(alpha: 0.6),
-                            fontSize: 12,
+                            fontSize: AppTypography.bodyMedium,
                           ),
                         ),
                       ],
@@ -271,19 +272,19 @@ class _MelavaBiodataDigitizerDialogState
           child: const Icon(Icons.check_circle_rounded, color: Colors.green, size: 56),
         ),
         const SizedBox(height: 16),
-        const Text(
+        Text(
           'बायो-डाटा ऑनबोर्ड पूर्ण! 🎉',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+            fontSize: AppTypography.headingLarge,
+            fontWeight: AppTypography.bold,
           ),
         ),
         const SizedBox(height: 8),
         Text(
           '$name ची प्रोफाईल बंजाराबायो सिस्टीमवर यशस्वीरित्या जोडली गेली आहे.',
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white.withValues(alpha: 0.7), fontSize: 14),
+          style: TextStyle(color: Colors.white.withValues(alpha: 0.7), fontSize: AppTypography.bodyLarge),
         ),
         const SizedBox(height: 24),
         ElevatedButton.icon(
@@ -297,7 +298,7 @@ class _MelavaBiodataDigitizerDialogState
           icon: const Icon(Icons.chat_bubble_rounded),
           label: const Text(
             'उमेदवाराला व्हॉट्सॲपवर निमंत्रण पाठवा 📲',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: AppTypography.bold),
           ),
         ),
         const SizedBox(height: 12),
@@ -312,7 +313,7 @@ class _MelavaBiodataDigitizerDialogState
           icon: const Icon(Icons.add_rounded),
           label: const Text(
             '➕ पुढील कागदी बायोडेटा ऑनबोर्ड करा (Next Form)',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: AppTypography.bold),
           ),
         ),
         const SizedBox(height: 12),
@@ -500,14 +501,14 @@ class _MelavaBiodataDigitizerDialogState
                     width: 22,
                     child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white),
                   )
-                : const Row(
+                : Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.bolt_rounded, size: 20),
-                      SizedBox(width: 8),
+                      const Icon(Icons.bolt_rounded, size: 20),
+                      const SizedBox(width: 8),
                       Text(
                         'ऑनबोर्ड करा (Save & Invite Candidate)',
-                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: AppTypography.headingSmall, fontWeight: AppTypography.bold),
                       ),
                     ],
                   ),
@@ -529,10 +530,10 @@ class _MelavaBiodataDigitizerDialogState
       controller: controller,
       keyboardType: keyboardType,
       validator: validator,
-      style: const TextStyle(color: Colors.white, fontSize: 13),
+      style: TextStyle(color: Colors.white, fontSize: AppTypography.bodyLarge),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 12),
+        labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: AppTypography.bodyMedium),
         prefixIcon: Icon(icon, color: Colors.white54, size: 18),
         filled: true,
         fillColor: kCardBg,
@@ -556,12 +557,12 @@ class _MelavaBiodataDigitizerDialogState
 
     return DropdownButtonFormField<String>(
       initialValue: validValue,
-      style: const TextStyle(color: Colors.white, fontSize: 13),
+      style: TextStyle(color: Colors.white, fontSize: AppTypography.bodyLarge),
       dropdownColor: kCardBg,
       onChanged: onChanged,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 12),
+        labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: AppTypography.bodyMedium),
         filled: true,
         fillColor: kCardBg,
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),

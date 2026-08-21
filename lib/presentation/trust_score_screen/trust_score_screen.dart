@@ -8,28 +8,29 @@ import 'package:share_plus/share_plus.dart';
 
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
+import 'package:banjarabio/core/models/trust_score_config.dart';
 import 'package:banjarabio/core/providers/profile_providers.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/features/trust_score/providers/trust_score_providers.dart';
 import 'package:banjarabio/features/trust_score/repository/trust_score_repository.dart';
-import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
+import 'package:banjarabio/widgets/tactile/tactile_back_button.dart';
+import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
+import 'package:banjarabio/widgets/branded_refresh_indicator.dart';
 import 'package:banjarabio/widgets/skeleton_loaders.dart';
 import 'package:banjarabio/presentation/trust_score_screen/widgets/trust_score_share_card.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
-import 'package:banjarabio/core/constants/app_typography.dart';
 
-/// Riverpod-based Trust Score screen.
+/// Riverpod-based Trust Score screen with rich animations and discount perks.
 class TrustScoreScreen extends ConsumerStatefulWidget {
   const TrustScoreScreen({super.key});
 
   @override
-  ConsumerState<TrustScoreScreen> createState() =>
-      _TrustScoreScreenState();
+  ConsumerState<TrustScoreScreen> createState() => _TrustScoreScreenState();
 }
 
-class _TrustScoreScreenState
-    extends ConsumerState<TrustScoreScreen> {
+class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
+    with SingleTickerProviderStateMixin {
   late final TrustScoreRepository _trustScoreRepository;
   late final ProfileRepository _profileRepository;
   bool _isLoading = true;
@@ -47,14 +48,17 @@ class _TrustScoreScreenState
 
   Future<void> _loadTrustScore() async {
     if (kDebugMode) {
-      AppLogger.debug('TrustScoreScreen', '[TRUST_SCORE] TrustScoreScreen > _loadTrustScore > Loading');
+      AppLogger.debug(
+        'TrustScoreScreen',
+        '[TRUST_SCORE] TrustScoreScreen > _loadTrustScore > Loading',
+      );
     }
     setState(() => _isLoading = true);
 
     try {
       final scoreRes = await _trustScoreRepository.calculateTrustScore();
       final statusRes = await _trustScoreRepository.getVerificationStatus();
-      final profileRes = await _profileRepository.getOwnProfile();
+      final profileRes = await _profileRepository.getOwnProfile(forceRefresh: true);
 
       if (mounted) {
         if (scoreRes.isSuccess && statusRes.isSuccess && profileRes.isSuccess) {
@@ -81,12 +85,20 @@ class _TrustScoreScreenState
       }
     } catch (e) {
       if (kDebugMode) {
-        AppLogger.error('TrustScoreScreen', '[TRUST_SCORE] TrustScoreScreen > _loadTrustScore > Error: $e');
+        AppLogger.error(
+          'TrustScoreScreen',
+          '[TRUST_SCORE] TrustScoreScreen > _loadTrustScore > Error: $e',
+        );
       }
       if (mounted) {
         setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)?.failedToLoadTrustScoreStats ?? 'Failed to load trust score stats')),
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)?.failedToLoadTrustScoreStats ??
+                  'Failed to load trust score stats',
+            ),
+          ),
         );
       }
     }
@@ -121,8 +133,12 @@ class _TrustScoreScreenState
 
     if (route.isNotEmpty) {
       if (kDebugMode) {
-        AppLogger.debug('TrustScoreScreen', '[TRUST_SCORE] TrustScoreScreen > _handleVerifyItem > $itemKey');
+        AppLogger.debug(
+          'TrustScoreScreen',
+          '[TRUST_SCORE] TrustScoreScreen > _handleVerifyItem > $itemKey',
+        );
       }
+      HapticFeedback.lightImpact();
       await Navigator.pushNamed(context, route);
       _loadTrustScore();
     }
@@ -131,34 +147,84 @@ class _TrustScoreScreenState
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: CustomAppBar(
-        title: AppLocalizations.of(context)?.trustScoreDiscounts ?? 'Trust Score & Discounts',
+        leading: const TactileBackButton(),
+        title: l10n?.trustScoreDiscounts ?? 'Trust Score & Discounts',
         actions: [
-          IconButton(
-            onPressed: _showShareCard,
-            icon: const Icon(Icons.share_rounded),
+          TactilePressable(
+            onTap: _showShareCard,
+            pressedScale: 0.92,
+            child: Container(
+              margin: EdgeInsets.only(right: 3.w),
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.share_rounded,
+                size: 20,
+                color: theme.colorScheme.primary,
+              ),
+            ),
           ),
         ],
       ),
       body: _isLoading
           ? const TrustScoreSkeleton()
-          : SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _buildScoreCard(theme),
-                  SizedBox(height: 2.h),
-                  Text(AppLocalizations.of(context)?.increaseYourTrustScoreToConfirmYourIdent ?? 'Increase your Trust Score to confirm your identity and unlock exclusive discounts.',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
+          : BrandedRefreshIndicator(
+              onRefresh: _loadTrustScore,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics(),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _buildScoreCard(theme),
+                    SizedBox(height: 2.h),
+                    _buildDiscountCard(theme),
+                    SizedBox(height: 2.5.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Verifications Checklist',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: AppTypography.extraBold,
+                            fontSize: AppTypography.headingSmall,
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 2.5.w,
+                            vertical: 0.4.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            'Max 100 Pts',
+                            style: TextStyle(
+                              fontSize: AppTypography.labelSmall,
+                              fontWeight: AppTypography.bold,
+                              color: theme.colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  SizedBox(height: 2.h),
-                  _buildVerificationList(theme),
-                ],
+                    SizedBox(height: 1.2.h),
+                    _buildVerificationList(theme),
+                    SizedBox(height: 3.h),
+                  ],
+                ),
               ),
             ),
     );
@@ -200,15 +266,46 @@ class _TrustScoreScreenState
             SizedBox(height: 30.sp),
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () {
+              child: TactilePressable(
+                onTap: () {
                   Navigator.pop(context);
                   Share.share(
                     "I just verified my profile on BanjaraBio with a Trust Score of $_currentScore! Check out my profile and join our community: https://play.google.com/store/apps/details?id=com.avishio.banjarabio&referrer=profile/${_profile?.id ?? ""}",
                   );
                 },
-                icon: const Icon(Icons.share_rounded, color: Colors.white),
-                label: Text(AppLocalizations.of(context)?.shareToSocialMedia ?? 'Share to Social Media'),
+                pressedScale: 0.96,
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 1.5.h),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF8B1A2E), Color(0xFF5A000F)],
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF8B1A2E).withValues(alpha: 0.35),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.share_rounded, color: Colors.white, size: 20),
+                      SizedBox(width: 2.w),
+                      Text(
+                        AppLocalizations.of(context)?.shareToSocialMedia ??
+                            'Share to Social Media',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: AppTypography.bold,
+                          fontSize: AppTypography.bodyLarge,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
             SizedBox(height: 20.sp),
@@ -226,25 +323,25 @@ class _TrustScoreScreenState
     String nextTierName;
 
     if (_currentScore >= 90) {
-      scoreColor = const Color(0xFF6A1B9A); // Deep purple
+      scoreColor = const Color(0xFF6A1B9A); // Deep purple Platinum
       tierName = 'Platinum Verified';
       tierEmoji = '🛡️';
       nextMilestoneScore = 100;
       nextTierName = 'Max Trust';
     } else if (_currentScore >= 70) {
-      scoreColor = const Color(0xFF2E7D32); // Green
+      scoreColor = const Color(0xFF10B981); // Emerald Gold
       tierName = 'Gold Trusted';
       tierEmoji = '🥇';
       nextMilestoneScore = 90;
       nextTierName = 'Platinum';
     } else if (_currentScore >= 40) {
-      scoreColor = const Color(0xFFE65100); // Orange
+      scoreColor = const Color(0xFFF59E0B); // Amber Silver
       tierName = 'Silver Profile';
       tierEmoji = '🥈';
       nextMilestoneScore = 70;
       nextTierName = 'Gold';
     } else {
-      scoreColor = const Color(0xFFC62828); // Red
+      scoreColor = const Color(0xFFEF4444); // Crimson Bronze
       tierName = 'Bronze Profile';
       tierEmoji = '🥉';
       nextMilestoneScore = 40;
@@ -254,42 +351,90 @@ class _TrustScoreScreenState
     final pointsNeeded = nextMilestoneScore - _currentScore;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w),
+      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.5.h),
       decoration: BoxDecoration(
         color: theme.cardColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: scoreColor.withValues(alpha: 0.25),
+          width: 1.5,
+        ),
         boxShadow: [
           BoxShadow(
-            color: theme.shadowColor.withValues(alpha: 0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: scoreColor.withValues(alpha: 0.08),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Column(
         children: [
-          Text(
-            AppLocalizations.of(context)?.yourTrustScore ?? 'Your Trust Score',
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                AppLocalizations.of(context)?.yourTrustScore ?? 'Your Trust Score',
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: AppTypography.black,
+                  fontSize: AppTypography.headingSmall,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.6.h),
+                decoration: BoxDecoration(
+                  color: scoreColor.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: scoreColor.withValues(alpha: 0.3)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(tierEmoji, style: TextStyle(fontSize: AppTypography.bodyLarge)),
+                    SizedBox(width: 1.5.w),
+                    Text(
+                      tierName,
+                      style: TextStyle(
+                        fontWeight: AppTypography.extraBold,
+                        color: scoreColor,
+                        fontSize: AppTypography.bodySmall,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 1.5.h),
+          SizedBox(height: 2.5.h),
           TweenAnimationBuilder<double>(
             tween: Tween<double>(begin: 0, end: _currentScore / 100),
-            duration: const Duration(milliseconds: 1200),
+            duration: const Duration(milliseconds: 1400),
             curve: Curves.easeOutCubic,
             builder: (context, value, child) {
               final animatedScore = (value * 100).round();
               return Stack(
                 alignment: Alignment.center,
                 children: [
+                  Container(
+                    width: 32.w,
+                    height: 32.w,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: scoreColor.withValues(alpha: 0.15 * value),
+                          blurRadius: 25,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                  ),
                   SizedBox(
-                    width: 26.w,
-                    height: 26.w,
+                    width: 30.w,
+                    height: 30.w,
                     child: CircularProgressIndicator(
                       value: value,
-                      strokeWidth: 10,
+                      strokeWidth: 12,
+                      strokeCap: StrokeCap.round,
                       backgroundColor: theme.colorScheme.surfaceContainerHighest,
                       valueColor: AlwaysStoppedAnimation<Color>(scoreColor),
                     ),
@@ -299,14 +444,21 @@ class _TrustScoreScreenState
                     children: [
                       Text(
                         '$animatedScore',
-                        style: theme.textTheme.displayMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
+                        style: TextStyle(
+                          fontSize: AppTypography.displayLarge,
+                          fontWeight: AppTypography.black,
                           color: scoreColor,
+                          height: 1.0,
                         ),
                       ),
+                      SizedBox(height: 0.4.h),
                       Text(
                         AppLocalizations.of(context)?.num100 ?? '/ 100',
-                        style: theme.textTheme.bodySmall,
+                        style: TextStyle(
+                          fontSize: AppTypography.labelMedium,
+                          fontWeight: AppTypography.semiBold,
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),
@@ -314,50 +466,35 @@ class _TrustScoreScreenState
               );
             },
           ),
-          SizedBox(height: 1.5.h),
-          // Tier badge
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.8.h),
-            decoration: BoxDecoration(
-              color: scoreColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: scoreColor.withValues(alpha: 0.3)),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(tierEmoji, style: const TextStyle(fontSize: 16)),
-                SizedBox(width: 2.w),
-                Text(
-                  tierName,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: scoreColor,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          SizedBox(height: 2.h),
           // Nudge bar to next milestone
           if (pointsNeeded > 0 && _currentScore < 100) ...[
-            SizedBox(height: 1.5.h),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+              padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.2.h),
               decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: 0.05),
-                borderRadius: BorderRadius.circular(10),
+                color: scoreColor.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: scoreColor.withValues(alpha: 0.2)),
               ),
               child: Row(
                 children: [
-                  const Text('💡', style: TextStyle(fontSize: 14)),
-                  SizedBox(width: 2.w),
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: scoreColor.withValues(alpha: 0.15),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(Icons.trending_up_rounded, color: scoreColor, size: 18),
+                  ),
+                  SizedBox(width: 2.5.w),
                   Expanded(
                     child: Text(
-                      'Complete $pointsNeeded more points of verification to reach $nextTierName Tier!',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.primary,
-                        fontWeight: FontWeight.w700,
-                        fontSize: AppTypography.labelMedium,
+                      'Earn $pointsNeeded more points to reach $nextTierName Tier & unlock bigger discounts!',
+                      style: TextStyle(
+                        color: scoreColor,
+                        fontWeight: AppTypography.bold,
+                        fontSize: AppTypography.bodySmall,
+                        height: 1.3,
                       ),
                     ),
                   ),
@@ -370,74 +507,210 @@ class _TrustScoreScreenState
     );
   }
 
+  Widget _buildDiscountCard(ThemeData theme) {
+    final discount = TrustScoreConfig.getDiscountPercentage(_currentScore);
+
+    return Container(
+      padding: EdgeInsets.all(4.5.w),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            const Color(0xFF1E3A8A).withValues(alpha: 0.95),
+            const Color(0xFF3B82F6).withValues(alpha: 0.9),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF1E3A8A).withValues(alpha: 0.25),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.2),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.local_offer_rounded,
+                  color: Colors.white,
+                  size: 18,
+                ),
+              ),
+              SizedBox(width: 2.w),
+              Expanded(
+                child: Text(
+                  'Discounts & Perks',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: AppTypography.extraBold,
+                    fontSize: AppTypography.headingSmall,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              SizedBox(width: 2.w),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.5.h),
+                decoration: BoxDecoration(
+                  color: Colors.amber,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  discount > 0 ? '$discount% OFF' : 'UP TO 30% OFF',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: AppTypography.black,
+                    fontSize: AppTypography.labelMedium,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 1.5.h),
+          Text(
+            discount > 0
+                ? '🎉 Congratulations! You have unlocked a $discount% discount applied automatically at checkout on all premium matrimonial plans.'
+                : 'Complete more profile verification steps to unlock up to 30% instant discount on all matrimonial plans!',
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.9),
+              fontSize: AppTypography.bodySmall,
+              height: 1.4,
+            ),
+          ),
+          SizedBox(height: 1.5.h),
+          Wrap(
+            spacing: 2.w,
+            runSpacing: 0.8.h,
+            children: [
+              _buildPerkChip('🛡️ Verified Badge'),
+              _buildPerkChip('🚀 3x Views'),
+              _buildPerkChip('⚡ Priority Rank'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPerkChip(String label) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.4.h),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: AppTypography.semiBold,
+          fontSize: AppTypography.labelSmall,
+        ),
+      ),
+    );
+  }
+
   Widget _buildVerificationList(ThemeData theme) {
-    return Column(
-      children: [
-        _buildVerificationItem(
-          theme,
-          title: AppLocalizations.of(context)?.mobileNumber ?? 'Mobile Number',
-          points: 10,
-          itemKey: 'mobile',
-          iconName: 'phone_android',
-          color: Colors.blue,
-        ),
-        _buildVerificationItem(
-          theme,
-          title: AppLocalizations.of(context)?.emailAddress ?? 'Email Address',
-          points: 10,
-          itemKey: 'email',
-          iconName: 'email',
-          color: Colors.orange,
-        ),
-        _buildVerificationItem(
-          theme,
-          title: AppLocalizations.of(context)?.liveSelfie ?? 'Live Selfie',
-          points: 10,
-          itemKey: 'photo',
-          iconName: 'face',
-          color: Colors.pink,
-        ),
-        _buildVerificationItem(
-          theme,
-          title: AppLocalizations.of(context)?.governmentId ?? 'Government ID',
-          points: 15,
-          itemKey: 'govtId',
-          iconName: 'badge',
-          color: Colors.purple,
-        ),
-        _buildVerificationItem(
-          theme,
-          title: AppLocalizations.of(context)?.bvsMembershipCard ?? 'BVS Membership Card',
-          points: 15,
-          itemKey: 'communityId',
-          iconName: 'badge',
-          color: const Color(0xFF8B1A2E),
-        ),
-        _buildVerificationItem(
-          theme,
-          title: AppLocalizations.of(context)?.references ?? 'References',
-          points: 10,
-          itemKey: 'reference',
-          iconName: 'group_add',
-          color: Colors.indigo,
-        ),
-        _buildVerificationItem(
-          theme,
-          title: 'Video Bio / Intro',
-          points: 10,
-          itemKey: 'videoBio',
-          iconName: 'videocam',
-          color: Colors.red,
-        ),
-        _buildVerificationItem(
-          theme,
-          title: AppLocalizations.of(context)?.profileCompleted ?? 'Profile Completed',
-          points: 20,
-          itemKey: 'profileCompletion',
-          iconName: 'assignment_turned_in',
-          color: Colors.green,
-        ),
-      ],
+    final items = [
+      {
+        'title': AppLocalizations.of(context)?.mobileNumber ?? 'Mobile Number',
+        'points': 10,
+        'itemKey': 'mobile',
+        'icon': Icons.phone_android_rounded,
+        'color': const Color(0xFF3B82F6),
+      },
+      {
+        'title': AppLocalizations.of(context)?.emailAddress ?? 'Email Address',
+        'points': 10,
+        'itemKey': 'email',
+        'icon': Icons.email_rounded,
+        'color': const Color(0xFFF97316),
+      },
+      {
+        'title': AppLocalizations.of(context)?.liveSelfie ?? 'Live Selfie',
+        'points': 10,
+        'itemKey': 'photo',
+        'icon': Icons.face_retouching_natural_rounded,
+        'color': const Color(0xFFEC4899),
+      },
+      {
+        'title': AppLocalizations.of(context)?.governmentId ?? 'Government ID',
+        'points': 15,
+        'itemKey': 'govtId',
+        'icon': Icons.badge_rounded,
+        'color': const Color(0xFF8B5CF6),
+      },
+      {
+        'title': AppLocalizations.of(context)?.bvsMembershipCard ?? 'BVS Membership Card',
+        'points': 15,
+        'itemKey': 'communityId',
+        'icon': Icons.verified_user_rounded,
+        'color': const Color(0xFF8B1A2E),
+      },
+      {
+        'title': AppLocalizations.of(context)?.references ?? 'Family References',
+        'points': 10,
+        'itemKey': 'reference',
+        'icon': Icons.group_add_rounded,
+        'color': const Color(0xFF6366F1),
+      },
+      {
+        'title': 'Video Bio / Intro',
+        'points': 10,
+        'itemKey': 'videoBio',
+        'icon': Icons.videocam_rounded,
+        'color': const Color(0xFFEF4444),
+      },
+      {
+        'title': AppLocalizations.of(context)?.profileCompleted ?? 'Profile Completed',
+        'points': 20,
+        'itemKey': 'profileCompletion',
+        'icon': Icons.assignment_turned_in_rounded,
+        'color': const Color(0xFF10B981),
+      },
+    ];
+
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        final item = items[index];
+        return TweenAnimationBuilder<double>(
+          tween: Tween<double>(begin: 0.0, end: 1.0),
+          duration: Duration(milliseconds: 350 + (index * 50)),
+          curve: Curves.easeOutCubic,
+          builder: (context, value, child) {
+            return Transform.translate(
+              offset: Offset(0, 16 * (1 - value)),
+              child: Opacity(
+                opacity: value.clamp(0.0, 1.0),
+                child: child,
+              ),
+            );
+          },
+          child: _buildVerificationItem(
+            theme,
+            title: item['title'] as String,
+            points: item['points'] as int,
+            itemKey: item['itemKey'] as String,
+            icon: item['icon'] as IconData,
+            color: item['color'] as Color,
+          ),
+        );
+      },
     );
   }
 
@@ -446,46 +719,36 @@ class _TrustScoreScreenState
     required String title,
     required int points,
     required String itemKey,
-    required String iconName,
+    required IconData icon,
     required Color color,
   }) {
     final status =
         _verificationStatus[itemKey] ?? TrustScoreRepository.statusNotStarted;
 
-    IconData statusIcon;
-    Color statusColor;
     String statusText;
     VoidCallback? onTap;
 
     switch (status) {
       case TrustScoreRepository.statusVerified:
-        statusIcon = Icons.check_circle;
-        statusColor = Colors.green;
         statusText = 'Verified';
         onTap = () => _handleVerifyItem(itemKey);
         break;
       case TrustScoreRepository.statusPendingReview:
-        statusIcon = Icons.schedule;
-        statusColor = Colors.orange;
-        statusText = 'Pending';
+        statusText = 'Under Review';
         onTap = () => _handleVerifyItem(itemKey);
         break;
       case TrustScoreRepository.statusRejected:
-        statusIcon = Icons.cancel;
-        statusColor = Colors.red;
         statusText = 'Rejected';
         onTap = () => _handleVerifyItem(itemKey);
         break;
       default:
-        statusIcon = Icons.arrow_forward_ios;
-        statusColor = Colors.grey;
-        statusText = itemKey == 'profileCompletion' ? 'Update' : 'Start';
+        statusText = itemKey == 'profileCompletion' ? 'Update' : 'Verify';
         onTap = itemKey == 'profileCompletion'
             ? () => Navigator.pushNamed(
                   context,
                   AppRoutes.biodataCreation,
                   arguments: {'profile': _profile, 'isEditMode': true},
-                )
+                ).then((_) => _loadTrustScore())
             : () => _handleVerifyItem(itemKey);
         break;
     }
@@ -496,125 +759,186 @@ class _TrustScoreScreenState
             context,
             AppRoutes.biodataCreation,
             arguments: {'profile': _profile, 'isEditMode': true},
-          );
+          ).then((_) => _loadTrustScore());
     }
 
-    return Card(
-      margin: EdgeInsets.only(bottom: 0.8.h),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 2,
-      child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 3.w),
-        leading: Container(
-          padding: EdgeInsets.all(1.5.w),
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.1),
-            shape: BoxShape.circle,
+    return TactilePressable(
+      onTap: onTap,
+      pressedScale: 0.97,
+      child: Container(
+        margin: EdgeInsets.only(bottom: 1.2.h),
+        decoration: BoxDecoration(
+          color: theme.cardColor,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: status == TrustScoreRepository.statusVerified
+                ? const Color(0xFF10B981).withValues(alpha: 0.25)
+                : theme.colorScheme.outline.withValues(alpha: 0.08),
           ),
-          child: Icon(_getIconData(iconName), color: color, size: 20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.03),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
-        title: Text(
-          title,
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        subtitle: Text(
-          '+$points Points',
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: Colors.green,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (itemKey == 'profileCompletion' && _profile != null) ...[
-              Text(
-                '${_profile!.calculateCompletionPercentage()}%',
-                style: TextStyle(
-                  color: _profile!.calculateCompletionPercentage() >= 100
-                      ? Colors.green
-                      : Colors.orange,
-                  fontWeight: FontWeight.bold,
-                  fontSize: AppTypography.bodySmall,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.4.h),
+          child: Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.12),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, color: color, size: 22),
+              ),
+              SizedBox(width: 3.5.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontWeight: AppTypography.bold,
+                        fontSize: AppTypography.bodyMedium,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    SizedBox(height: 0.3.h),
+                    Row(
+                      children: [
+                        Text(
+                          '+$points Points',
+                          style: TextStyle(
+                            color: const Color(0xFF10B981),
+                            fontWeight: AppTypography.bold,
+                            fontSize: AppTypography.bodySmall,
+                          ),
+                        ),
+                        if (itemKey == 'profileCompletion' && _profile != null) ...[
+                          SizedBox(width: 2.w),
+                          Flexible(
+                            child: Text(
+                              '• ${_profile!.calculateCompletionPercentage()}% Complete',
+                              style: TextStyle(
+                                color: theme.colorScheme.onSurfaceVariant,
+                                fontWeight: AppTypography.semiBold,
+                                fontSize: AppTypography.bodySmall,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ],
                 ),
               ),
               SizedBox(width: 2.w),
-              if (_profile!.calculateCompletionPercentage() >= 100)
-                const Icon(Icons.check_circle, color: Colors.green, size: 20)
-              else
+              if (status == TrustScoreRepository.statusVerified)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.6.h),
                   decoration: BoxDecoration(
-                    color: theme.primaryColor,
+                    color: const Color(0xFF10B981).withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: const Color(0xFF10B981).withValues(alpha: 0.3),
+                    ),
                   ),
-                  child: Text(AppLocalizations.of(context)?.update ?? 'Update',
-                    style: TextStyle(color: Colors.white, fontSize: AppTypography.bodySmall),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.check_circle_rounded,
+                        color: Color(0xFF10B981),
+                        size: 16,
+                      ),
+                      SizedBox(width: 1.5.w),
+                      Text(
+                        'Verified',
+                        style: TextStyle(
+                          color: const Color(0xFF10B981),
+                          fontWeight: AppTypography.extraBold,
+                          fontSize: AppTypography.bodySmall,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-            ] else if (status == TrustScoreRepository.statusVerified) ...[
-              Text(
-                statusText,
-                style: TextStyle(
-                  color: statusColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: AppTypography.bodySmall,
-                ),
-              ),
-              SizedBox(width: 1.w),
-              Icon(statusIcon, color: statusColor, size: 20),
-              SizedBox(width: 2.w),
-              const Icon(Icons.edit, color: Colors.grey, size: 16),
-            ] else ...[
-              if (status == TrustScoreRepository.statusPendingReview)
-                Text(
-                  statusText,
-                  style: TextStyle(color: statusColor, fontSize: AppTypography.bodySmall),
-                ),
-              if (statusText == 'Start' || statusText == 'Rejected')
+                )
+              else if (status == TrustScoreRepository.statusPendingReview)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.6.h),
                   decoration: BoxDecoration(
-                    color: theme.primaryColor,
+                    color: const Color(0xFFF59E0B).withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: const Color(0xFFF59E0B).withValues(alpha: 0.3),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.hourglass_top_rounded,
+                        color: Color(0xFFF59E0B),
+                        size: 15,
+                      ),
+                      SizedBox(width: 1.5.w),
+                      Text(
+                        'In Review',
+                        style: TextStyle(
+                          color: const Color(0xFFF59E0B),
+                          fontWeight: AppTypography.extraBold,
+                          fontSize: AppTypography.bodySmall,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              else if (status == TrustScoreRepository.statusRejected)
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.6.h),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFEF4444).withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: const Color(0xFFEF4444).withValues(alpha: 0.3),
+                    ),
                   ),
                   child: Text(
-                    statusText == 'Rejected'
-                        ? 'Retry'
-                        : (itemKey == 'profileCompletion' ? 'Go' : 'Verify'),
-                    style: TextStyle(color: Colors.white, fontSize: AppTypography.bodySmall),
+                    'Retry',
+                    style: TextStyle(
+                      color: const Color(0xFFEF4444),
+                      fontWeight: AppTypography.extraBold,
+                      fontSize: AppTypography.bodySmall,
+                    ),
+                  ),
+                )
+              else
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 0.7.h),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    statusText,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: AppTypography.extraBold,
+                      fontSize: AppTypography.bodySmall,
+                    ),
                   ),
                 ),
             ],
-          ],
+          ),
         ),
-        onTap: onTap,
       ),
     );
-  }
-
-  IconData _getIconData(String name) {
-    switch (name) {
-      case 'phone_android':
-        return Icons.phone_android;
-      case 'email':
-        return Icons.email;
-      case 'face':
-        return Icons.face;
-      case 'badge':
-        return Icons.badge;
-      case 'diversity_3':
-        return Icons.diversity_3;
-      case 'group_add':
-        return Icons.group_add;
-      case 'videocam':
-        return Icons.videocam;
-      case 'assignment_turned_in':
-        return Icons.assignment_turned_in;
-      default:
-        return Icons.verified;
-    }
   }
 }

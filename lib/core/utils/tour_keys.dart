@@ -1,36 +1,68 @@
 import 'package:flutter/material.dart';
 
 class TourKeys {
-  static final GlobalKey locationKey = GlobalKey();
-  static final GlobalKey searchKey = GlobalKey();
-  static final GlobalKey filterKey = GlobalKey();
-  static final GlobalKey whatsappKey = GlobalKey();
-  static final GlobalKey instagramKey = GlobalKey();
-  static final GlobalKey chatKey = GlobalKey();
+  static GlobalKey locationKey = GlobalKey();
+  static GlobalKey searchKey = GlobalKey();
+  static GlobalKey filterKey = GlobalKey();
+  static GlobalKey whatsappKey = GlobalKey();
+  static GlobalKey instagramKey = GlobalKey();
+  static GlobalKey chatKey = GlobalKey();
   
   // Bottom Bar Keys
-  static final GlobalKey homeTabKey = GlobalKey();
-  static final GlobalKey sharedTabKey = GlobalKey();
-  static final GlobalKey melavaTabKey = GlobalKey();
-  static final GlobalKey profileTabKey = GlobalKey();
-  static final GlobalKey settingsTabKey = GlobalKey();
+  static GlobalKey homeTabKey = GlobalKey();
+  static GlobalKey sharedTabKey = GlobalKey();
+  static GlobalKey chatTabKey = GlobalKey();
+  static GlobalKey melavaTabKey = GlobalKey();
+  static GlobalKey biodataTabKey = GlobalKey();
+  static GlobalKey profileTabKey = GlobalKey();
+  static GlobalKey settingsTabKey = GlobalKey();
   
   // Profile Detail Page Keys
-  static final GlobalKey interestButtonKey = GlobalKey();
-  static final GlobalKey shareButtonKey = GlobalKey();
-  static final GlobalKey bookmarkButtonKey = GlobalKey();
-  static final GlobalKey trustScoreKey = GlobalKey();
+  static GlobalKey interestButtonKey = GlobalKey();
+  static GlobalKey shareButtonKey = GlobalKey();
+  static GlobalKey bookmarkButtonKey = GlobalKey();
+  static GlobalKey trustScoreKey = GlobalKey();
 
   // ─── Matches / Share Hub Screen Keys ───
-  static final GlobalKey matchesSearchKey = GlobalKey();
-  static final GlobalKey matchesSentTabKey = GlobalKey();
-  static final GlobalKey matchesReceivedTabKey = GlobalKey();
-  static final GlobalKey matchesMatchedTabKey = GlobalKey();
+  static GlobalKey matchesSearchKey = GlobalKey();
+  static GlobalKey matchesSentTabKey = GlobalKey();
+  static GlobalKey matchesReceivedTabKey = GlobalKey();
+  static GlobalKey matchesMatchedTabKey = GlobalKey();
 
   // ─── My Profile Screen Keys ───
-  static final GlobalKey profileManagePhotosKey = GlobalKey();
-  static final GlobalKey profileTrustScoreKey = GlobalKey();
-  static final GlobalKey profileExportPdfKey = GlobalKey();
-  static final GlobalKey profileSavedProfilesKey = GlobalKey();
-  static final GlobalKey profileEditKey = GlobalKey();
+  static GlobalKey profileManagePhotosKey = GlobalKey();
+  static GlobalKey profileTrustScoreKey = GlobalKey();
+  static GlobalKey profileExportPdfKey = GlobalKey();
+  static GlobalKey profileSavedProfilesKey = GlobalKey();
+  static GlobalKey profileEditKey = GlobalKey();
+
+  /// Reset all keys with brand new instances to avoid duplicate GlobalKey collision
+  static void resetAll() {
+    locationKey = GlobalKey();
+    searchKey = GlobalKey();
+    filterKey = GlobalKey();
+    whatsappKey = GlobalKey();
+    instagramKey = GlobalKey();
+    chatKey = GlobalKey();
+    homeTabKey = GlobalKey();
+    sharedTabKey = GlobalKey();
+    chatTabKey = GlobalKey();
+    melavaTabKey = GlobalKey();
+    biodataTabKey = GlobalKey();
+    profileTabKey = GlobalKey();
+    settingsTabKey = GlobalKey();
+    interestButtonKey = GlobalKey();
+    shareButtonKey = GlobalKey();
+    bookmarkButtonKey = GlobalKey();
+    trustScoreKey = GlobalKey();
+    matchesSearchKey = GlobalKey();
+    matchesSentTabKey = GlobalKey();
+    matchesReceivedTabKey = GlobalKey();
+    matchesMatchedTabKey = GlobalKey();
+    profileManagePhotosKey = GlobalKey();
+    profileTrustScoreKey = GlobalKey();
+    profileExportPdfKey = GlobalKey();
+    profileSavedProfilesKey = GlobalKey();
+    profileEditKey = GlobalKey();
+  }
 }

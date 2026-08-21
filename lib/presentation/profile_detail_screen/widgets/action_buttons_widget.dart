@@ -9,6 +9,8 @@ import 'package:banjarabio/core/theme/app_gradients.dart';
 import 'package:banjarabio/core/utils/tour_keys.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/core/services/local_cache_service.dart';
+import 'package:banjarabio/core/services/guest_guided_tour_service.dart';
 
 /// Action buttons widget for profile interactions
 /// Provides sharing, messaging, and bookmarking functionality
@@ -34,6 +36,11 @@ class ActionButtonsWidget extends StatefulWidget {
 
 class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
   bool _isBookmarked = false;
+
+  bool get _isProfileTourActive {
+    final cache = LocalCacheService();
+    return cache.isGuestMode() && !cache.isTourStageCompleted(TourStage.profileDetail.name);
+  }
 
   @override
   void initState() {
@@ -120,7 +127,7 @@ class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
                         ],
                       ),
                       alignment: Alignment.center,
-                      key: TourKeys.bookmarkButtonKey,
+                      key: _isProfileTourActive ? TourKeys.bookmarkButtonKey : null,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -140,7 +147,7 @@ class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
                               color: _isBookmarked
                                   ? Colors.white
                                   : theme.colorScheme.onSurface,
-                              fontWeight: FontWeight.w900,
+                              fontWeight: AppTypography.black,
                               fontSize: AppTypography.labelMedium,
                               letterSpacing: 0.6,
                             ),
@@ -181,7 +188,7 @@ class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
                         ],
                       ),
                       alignment: Alignment.center,
-                      key: TourKeys.interestButtonKey,
+                      key: _isProfileTourActive ? TourKeys.interestButtonKey : null,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -195,7 +202,7 @@ class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
                             AppLocalizations.of(context)?.interest ?? 'INTEREST',
                             style: theme.textTheme.labelLarge?.copyWith(
                               color: Colors.white,
-                              fontWeight: FontWeight.w900,
+                              fontWeight: AppTypography.black,
                               fontSize: AppTypography.bodySmall,
                               letterSpacing: 0.4,
                             ),
@@ -244,7 +251,7 @@ class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
                           Text(AppLocalizations.of(context)?.message ?? 'MESSAGE',
                             style: theme.textTheme.labelLarge?.copyWith(
                               color: Colors.white,
-                              fontWeight: FontWeight.w900,
+                              fontWeight: AppTypography.black,
                               fontSize: AppTypography.labelMedium,
                               letterSpacing: 0.6,
                             ),
@@ -266,7 +273,7 @@ class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
                       widget.onShare(widget.profileData);
                     },
                     child: Container(
-                      key: TourKeys.shareButtonKey,
+                      key: _isProfileTourActive ? TourKeys.shareButtonKey : null,
                       margin: EdgeInsets.symmetric(horizontal: 1.w),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -299,7 +306,7 @@ class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
                           Text(AppLocalizations.of(context)?.share ?? 'SHARE',
                             style: theme.textTheme.labelLarge?.copyWith(
                               color: Colors.white,
-                              fontWeight: FontWeight.w900,
+                              fontWeight: AppTypography.black,
                               fontSize: AppTypography.labelMedium,
                               letterSpacing: 0.6,
                             ),

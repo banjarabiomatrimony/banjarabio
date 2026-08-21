@@ -124,7 +124,7 @@ class _AdminPaymentsTabState extends State<AdminPaymentsTab> {
           children: [
             Icon(icon, size: 14.sp, color: isActive ? theme.colorScheme.primary : theme.hintColor.withValues(alpha: 0.7)),
             SizedBox(width: 1.5.w),
-            Text(label, style: TextStyle(color: isActive ? theme.colorScheme.primary : theme.hintColor.withValues(alpha: 0.7), fontWeight: isActive ? FontWeight.bold : FontWeight.w500, fontSize: AppTypography.labelMedium)),
+            Text(label, style: TextStyle(color: isActive ? theme.colorScheme.primary : theme.hintColor.withValues(alpha: 0.7), fontWeight: isActive ? AppTypography.bold : AppTypography.medium, fontSize: AppTypography.labelMedium)),
           ],
         ),
       ),
@@ -218,7 +218,7 @@ class _AdminPaymentsTabState extends State<AdminPaymentsTab> {
                               Expanded(
                                 child: Text(
                                   '${profile?['full_name'] ?? ''} ${profile?['surname'] ?? ''}'.trim().isEmpty ? 'Unknown User' : '${profile?['full_name'] ?? ''} ${profile?['surname'] ?? ''}'.trim(),
-                                  style: const TextStyle(fontWeight: FontWeight.bold), maxLines: 1, overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontWeight: AppTypography.bold), maxLines: 1, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                               if (isTest)
@@ -226,11 +226,11 @@ class _AdminPaymentsTabState extends State<AdminPaymentsTab> {
                                   margin: EdgeInsets.only(left: 2.w),
                                   padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                                   decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
-                                  child: Text('TEST', style: TextStyle(color: Colors.red, fontSize: AppTypography.labelSmall, fontWeight: FontWeight.bold)),
+                                  child: Text('TEST', style: TextStyle(color: Colors.red, fontSize: AppTypography.labelSmall, fontWeight: AppTypography.bold)),
                                 ),
                             ]),
                             if (payment['user_id'] != null)
-                              Text('ID: ${payment['user_id']}', style: theme.textTheme.bodySmall?.copyWith(fontSize: 10, color: theme.hintColor)),
+                              Text('ID: ${payment['user_id']}', style: theme.textTheme.bodySmall?.copyWith(fontSize: AppTypography.labelSmall, color: theme.hintColor)),
                             Text(profile?['email'] ?? 'No email available', style: theme.textTheme.bodySmall?.copyWith(color: theme.hintColor), maxLines: 1, overflow: TextOverflow.ellipsis),
                             SizedBox(height: 0.5.h),
                             Text('${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')}', style: theme.textTheme.bodySmall?.copyWith(fontSize: AppTypography.labelSmall)),
@@ -248,12 +248,12 @@ class _AdminPaymentsTabState extends State<AdminPaymentsTab> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text('₹${amount.toStringAsFixed(2)}', style: TextStyle(color: theme.colorScheme.primary, fontWeight: FontWeight.bold, fontSize: AppTypography.bodySmall)),
+                          Text('₹${amount.toStringAsFixed(2)}', style: TextStyle(color: theme.colorScheme.primary, fontWeight: AppTypography.bold, fontSize: AppTypography.bodySmall)),
                           SizedBox(height: 0.5.h),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(color: (category == 'PDF' ? Colors.orange : Colors.blue).withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)),
-                            child: Text(category, style: TextStyle(color: category == 'PDF' ? Colors.orange : Colors.blue, fontSize: AppTypography.labelSmall, fontWeight: FontWeight.bold)),
+                            child: Text(category, style: TextStyle(color: category == 'PDF' ? Colors.orange : Colors.blue, fontSize: AppTypography.labelSmall, fontWeight: AppTypography.bold)),
                           ),
                         ],
                       ),

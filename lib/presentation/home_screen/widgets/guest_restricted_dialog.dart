@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/routes/app_routes.dart';
@@ -21,16 +21,17 @@ class GuestRestrictedDialog {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             title: Text(
               l10n?.createBiodata ?? 'बायोडेटा आवश्यक आहे',
-              style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: AppTypography.bodyLarge, fontWeight: AppTypography.bold),
             ),
             content: Text(
-              'इतर सर्व माहिती पाहण्यासाठी, स्थळे सेव्ह करण्यासाठी आणि संपर्क साधण्यासाठी तुमचा बायोडेटा तयार करा किंवा शोध पर्याय बदला.',
-              style: TextStyle(fontSize: 10.sp),
+              l10n?.guestRestrictedContent ??
+                  'To view all details, save profiles, and communicate with matches, please create your biodata or change your search options.',
+              style: TextStyle(fontSize: AppTypography.bodySmall),
             ),
             actionsOverflowDirection: VerticalDirection.up,
             actions: <Widget>[
               TextButton(
-                child: Text(l10n?.cancel ?? 'रद्द करा'),
+                child: Text(l10n?.cancel ?? 'Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -40,7 +41,7 @@ class GuestRestrictedDialog {
                   side: BorderSide(color: theme.colorScheme.primary),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                child: const Text('पर्याय बदला ✏️'),
+                child: Text(l10n?.changeOptionsCta ?? 'Change Options ✏️'),
                 onPressed: () async {
                   await LocalCacheService().clearRelativeBrowseSession();
                   if (context.mounted) {
@@ -58,7 +59,7 @@ class GuestRestrictedDialog {
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                child: const Text('बायोडेटा बनवा ✨'),
+                child: Text(l10n?.createBiodataCta ?? 'Create Biodata ✨'),
                 onPressed: () async {
                   await LocalCacheService().clearRelativeBrowseSession();
                   await LocalCacheService().setGuestMode(false);
@@ -77,11 +78,11 @@ class GuestRestrictedDialog {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           title: Text(
             l10n?.signInRequired ?? 'Sign In Required',
-            style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: AppTypography.bodyLarge, fontWeight: AppTypography.bold),
           ),
           content: Text(
             l10n?.signInRequiredContent ?? 'Please sign in or create an account to perform this action.',
-            style: TextStyle(fontSize: 10.sp),
+            style: TextStyle(fontSize: AppTypography.bodySmall),
           ),
           actionsOverflowDirection: VerticalDirection.up,
           actions: <Widget>[

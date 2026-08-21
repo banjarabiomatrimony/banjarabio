@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/widgets/glassmorphism_container.dart';
 import '../helpers/golden_test_helpers.dart';
 
@@ -10,13 +11,13 @@ void main() {
       addTearDown(() => tester.view.resetPhysicalSize());
 
       await tester.pumpWidget(goldenLightApp(
-        const Scaffold(
+        Scaffold(
           body: Center(
             child: GlassmorphismContainer(
               width: 300,
               height: 200,
               child: Center(
-                child: Text('Hello Glass', style: TextStyle(fontSize: 20)),
+                child: Text('Hello Glass', style: TextStyle(fontSize: AppTypography.titleLarge)),
               ),
             ),
           ),
@@ -36,13 +37,13 @@ void main() {
       addTearDown(() => tester.view.resetPhysicalSize());
 
       await tester.pumpWidget(goldenDarkApp(
-        const Scaffold(
+        Scaffold(
           body: Center(
             child: GlassmorphismContainer(
               width: 300,
               height: 200,
               child: Center(
-                child: Text('Hello Glass', style: TextStyle(fontSize: 20)),
+                child: Text('Hello Glass', style: TextStyle(fontSize: AppTypography.titleLarge)),
               ),
             ),
           ),

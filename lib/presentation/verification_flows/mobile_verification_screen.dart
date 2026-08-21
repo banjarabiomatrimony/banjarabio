@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'dart:async';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -220,7 +221,7 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
             Text(
               _isOtpSent ? (AppLocalizations.of(context)?.verifyOtp ?? 'Verify OTP') : (AppLocalizations.of(context)?.enterMobileNumber ?? 'Enter Mobile Number'),
               style: theme.textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTypography.bold,
               ),
             ),
             SizedBox(height: 1.h),

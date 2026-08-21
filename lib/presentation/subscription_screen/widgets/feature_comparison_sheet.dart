@@ -73,7 +73,7 @@ class FeatureComparisonSheet extends StatelessWidget {
                     Text(
                       'Feature Matrix Comparison',
                       style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTypography.bold,
                       ),
                     ),
                     IconButton(
@@ -99,7 +99,7 @@ class FeatureComparisonSheet extends StatelessWidget {
                           'FEATURE',
                           style: TextStyle(
                             fontSize: AppTypography.labelSmall,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTypography.bold,
                             color: theme.colorScheme.onSurfaceVariant,
                             letterSpacing: 0.5,
                           ),
@@ -135,7 +135,7 @@ class FeatureComparisonSheet extends StatelessWidget {
                                 row.featureName,
                                 style: TextStyle(
                                   fontSize: AppTypography.labelMedium,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: AppTypography.semiBold,
                                 ),
                               ),
                             ),
@@ -178,7 +178,7 @@ class FeatureComparisonSheet extends StatelessWidget {
           text,
           style: TextStyle(
             fontSize: AppTypography.labelSmall,
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTypography.bold,
             color: color,
             letterSpacing: 0.2,
           ),
@@ -198,7 +198,7 @@ class FeatureComparisonSheet extends StatelessWidget {
       val,
       style: TextStyle(
         fontSize: AppTypography.labelMedium,
-        fontWeight: FontWeight.bold,
+        fontWeight: AppTypography.bold,
         color: val == '∞' ? theme.colorScheme.primary : theme.colorScheme.onSurface,
       ),
     );

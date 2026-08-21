@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
@@ -180,7 +181,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Glassmorphic Active Filter Badge
-                        Flexible(
+                        Expanded(
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 2.8.w, vertical: 0.6.h),
                             decoration: BoxDecoration(
@@ -191,7 +192,6 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                               ),
                             ),
                             child: Row(
-                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 const Icon(
                                   Icons.explore_rounded,
@@ -199,15 +199,15 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                                   color: Color(0xFFFFD700),
                                 ),
                                 SizedBox(width: 1.5.w),
-                                Flexible(
+                                Expanded(
                                   child: Text(
                                     chipLabel,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 8.5.sp,
-                                      fontWeight: FontWeight.w700,
+                                      fontSize: AppTypography.labelMedium,
+                                      fontWeight: AppTypography.bold,
                                       letterSpacing: 0.1,
                                     ),
                                   ),
@@ -247,8 +247,8 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                                     'बदला',
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 8.5.sp,
-                                      fontWeight: FontWeight.w600,
+                                      fontSize: AppTypography.labelMedium,
+                                      fontWeight: AppTypography.semiBold,
                                     ),
                                   ),
                                 ],
@@ -274,8 +274,8 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                                     : 'उमेदवाराचा बायोडेटा उपलब्ध आहे का?',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 10.8.sp,
-                                  fontWeight: FontWeight.w800,
+                                  fontSize: AppTypography.bodySmall,
+                                  fontWeight: AppTypography.extraBold,
                                   letterSpacing: -0.2,
                                   height: 1.2,
                                 ),
@@ -287,8 +287,8 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                                     : 'इतर बंजारा परिवारांना स्थळ दाखवण्यासाठी बायोडेटा बनवा.',
                                 style: TextStyle(
                                   color: Colors.white.withValues(alpha: 0.85),
-                                  fontSize: 8.5.sp,
-                                  fontWeight: FontWeight.w400,
+                                  fontSize: AppTypography.labelMedium,
+                                  fontWeight: AppTypography.regular,
                                   height: 1.25,
                                 ),
                               ),
@@ -348,8 +348,8 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                                       _hasDraft ? 'बायोडेटा पूर्ण करा' : 'बायोडेटा बनवा',
                                       style: TextStyle(
                                         color: const Color(0xFF3E1700),
-                                        fontSize: 9.5.sp,
-                                        fontWeight: FontWeight.w900,
+                                        fontSize: AppTypography.labelMedium,
+                                        fontWeight: AppTypography.black,
                                         letterSpacing: 0.1,
                                       ),
                                     ),
@@ -389,8 +389,8 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                                   : '🔒 बायोडेटा बनवल्याने इतर परिवार थेट तुमच्याशी संपर्क करू शकतील',
                               style: TextStyle(
                                 color: Colors.white.withValues(alpha: 0.92),
-                                fontSize: 8.0.sp,
-                                fontWeight: FontWeight.w500,
+                                fontSize: AppTypography.labelSmall,
+                                fontWeight: AppTypography.medium,
                               ),
                             ),
                           ),

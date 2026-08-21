@@ -4,6 +4,7 @@ import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/models/trust_score_config.dart';
 import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/widgets/glassmorphism_container.dart';
+import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 
 class TrustScoreDiscountWidget extends StatelessWidget {
   final int trustScore;
@@ -16,6 +17,7 @@ class TrustScoreDiscountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final discount = TrustScoreConfig.getDiscountPercentage(trustScore);
     final levelName = TrustScoreConfig.getLevelName(trustScore) ?? 'Basic';
     final levelColor = TrustScoreConfig.getLevelColor(trustScore);
@@ -41,171 +43,131 @@ class TrustScoreDiscountWidget extends StatelessWidget {
     }
     final pointsNeeded = nextThreshold - trustScore;
 
-    return GlassmorphismContainer(
-      padding: EdgeInsets.all(4.w),
-      borderRadius: BorderRadius.circular(20),
-      color: theme.colorScheme.surface,
-      opacity: 0.85,
-      blur: 20,
-      border: Border.all(
-        color: levelColor.withValues(alpha: 0.35),
-        width: 1.5,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.verified_user_rounded,
-                    color: levelColor,
-                    size: 22,
+    return TactilePressable(
+      onTap: () => Navigator.pushNamed(context, AppRoutes.trustScore),
+      pressedScale: 0.98,
+      child: GlassmorphismContainer(
+        padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.2.h),
+        borderRadius: BorderRadius.circular(16),
+        color: theme.colorScheme.surface,
+        opacity: 0.85,
+        blur: 16,
+        border: Border.all(
+          color: levelColor.withValues(alpha: 0.35),
+          width: 1.2,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Row 1: Icon + Level + Score + Discount Badge
+            Row(
+              children: [
+                Icon(
+                  Icons.verified_user_rounded,
+                  color: levelColor,
+                  size: 18,
+                ),
+                SizedBox(width: 1.8.w),
+                Expanded(
+                  child: Text(
+                    'Trust Level: $levelName ($trustScore/100)',
+                    style: TextStyle(
+                      fontWeight: AppTypography.bold,
+                      fontSize: AppTypography.bodySmall,
+                      color: theme.colorScheme.onSurface,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(width: 2.w),
-                  Text(
-                    'Profile Trust Level: $levelName',
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.1,
+                ),
+                if (discount > 0) ...[
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 2.2.w, vertical: 0.3.h),
+                    decoration: BoxDecoration(
+                      color:
+                          Colors.green.withValues(alpha: isDark ? 0.2 : 0.12),
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(
+                        color: Colors.green.withValues(alpha: 0.4),
+                      ),
+                    ),
+                    child: Text(
+                      '🔥 $discount% OFF Applied',
+                      style: TextStyle(
+                        color:
+                            isDark ? Colors.greenAccent : Colors.green.shade800,
+                        fontWeight: AppTypography.bold,
+                        fontSize: AppTypography.labelSmall,
+                      ),
+                    ),
+                  ),
+                ] else ...[
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 2.2.w, vertical: 0.3.h),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      'Verify & Save',
+                      style: TextStyle(
+                        color: theme.colorScheme.primary,
+                        fontWeight: AppTypography.bold,
+                        fontSize: AppTypography.labelSmall,
+                      ),
                     ),
                   ),
                 ],
-              ),
-              if (discount > 0)
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.4.h),
-                  decoration: BoxDecoration(
-                    color: Colors.green.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Colors.green.withValues(alpha: 0.35),
+              ],
+            ),
+            SizedBox(height: 0.8.h),
+
+            // Row 2: Progress Gauge Bar + Incentive/Action text
+            Row(
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: LinearProgressIndicator(
+                      value: (trustScore / 100.0).clamp(0.05, 1.0),
+                      backgroundColor: theme.colorScheme.outlineVariant
+                          .withValues(alpha: 0.25),
+                      valueColor: AlwaysStoppedAnimation<Color>(levelColor),
+                      minHeight: 5,
                     ),
                   ),
-                  child: Text(
-                    '$discount% OFF Applied',
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontWeight: FontWeight.bold,
-                      fontSize: AppTypography.bodySmall,
-                    ),
-                  ),
                 ),
-            ],
-          ),
-          SizedBox(height: 2.h),
-          Row(
-            children: [
-              // Radial Gauge
-              SizedBox(
-                width: 14.w,
-                height: 14.w,
-                child: Stack(
+                SizedBox(width: 3.w),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Center(
-                      child: SizedBox(
-                        width: 13.w,
-                        height: 13.w,
-                        child: CircularProgressIndicator(
-                          value: trustScore / 100.0,
-                          backgroundColor: theme.colorScheme.outlineVariant.withValues(alpha: 0.25),
-                          valueColor: AlwaysStoppedAnimation<Color>(levelColor),
-                          strokeWidth: 4,
-                        ),
+                    Text(
+                      trustScore < 90
+                          ? '+$pointsNeeded pts for $nextDiscount% OFF'
+                          : 'Max Discount Active',
+                      style: TextStyle(
+                        fontSize: AppTypography.labelTiny,
+                        color: isDark
+                            ? Colors.white70
+                            : theme.colorScheme.onSurfaceVariant,
+                        fontWeight: AppTypography.medium,
                       ),
                     ),
-                    Center(
-                      child: Text(
-                        '$trustScore',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: levelColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(width: 4.w),
-              // Message & CTA
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (trustScore < 90) ...[
-                      Text(
-                        'Unlock higher discounts by verifying your profile details.',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                          height: 1.25,
-                        ),
-                      ),
-                      SizedBox(height: 0.5.h),
-                      Text(
-                        'Verify more steps (need $pointsNeeded points) to unlock $nextDiscount% OFF!',
-                        style: TextStyle(
-                          fontSize: AppTypography.labelMedium,
-                          fontWeight: FontWeight.bold,
-                          color: theme.colorScheme.primary,
-                        ),
-                      ),
-                    ] else ...[
-                      Text(
-                        'Congratulations! You have unlocked the highest trust verification discount level.',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                          height: 1.25,
-                        ),
-                      ),
-                      SizedBox(height: 0.5.h),
-                      Text(
-                        'Premium Verified Member Discount is Active!',
-                        style: TextStyle(
-                          fontSize: AppTypography.labelMedium,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 1.8.h),
-          SizedBox(
-            width: double.infinity,
-            height: 4.5.h,
-            child: OutlinedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, AppRoutes.trustScore);
-              },
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(color: theme.colorScheme.primary.withValues(alpha: 0.5)),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.shield_outlined, size: 16, color: theme.colorScheme.primary),
-                  SizedBox(width: 1.5.w),
-                  Text(
-                    'Boost Trust Score & Save More',
-                    style: TextStyle(
-                      fontSize: AppTypography.bodySmall,
-                      fontWeight: FontWeight.bold,
+                    SizedBox(width: 1.w),
+                    Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size: 10,
                       color: theme.colorScheme.primary,
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+              ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

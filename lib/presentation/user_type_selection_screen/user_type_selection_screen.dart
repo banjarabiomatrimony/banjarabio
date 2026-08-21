@@ -402,10 +402,10 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                 ),
                 SizedBox(width: 2.w),
                 Text(
-                  '100% Trusted Community',
+                  AppLocalizations.of(context)?.trustedCommunityBadge ?? '100% Trusted Community',
                   style: theme.textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 11.sp,
+                    fontWeight: AppTypography.bold,
+                    fontSize: AppTypography.bodySmall,
                     color: isDark ? AppTheme.secondaryDark : primary,
                   ),
                 ),
@@ -430,10 +430,10 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                 Icon(Icons.language_rounded, size: 14.sp, color: primary),
                 SizedBox(width: 1.w),
                 Text(
-                  'भाषा / Lang',
+                  '${AppLocalizations.of(context)?.languageSwitcherLabel ?? 'Language'} / Lang',
                   style: theme.textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 11.5.sp,
+                    fontWeight: AppTypography.extraBold,
+                    fontSize: AppTypography.bodyMedium,
                     color: primary,
                   ),
                 ),
@@ -449,32 +449,37 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
   // STEPPER PROGRESS INDICATOR BAR
   // ══════════════════════════════════════════════
   Widget _buildProgressIndicator(ThemeData theme, bool isDark, Color primary) {
-    final lang = Localizations.localeOf(context).languageCode;
-    final isMarathi = lang == 'mr';
+    final l10n = AppLocalizations.of(context);
     final secondary = theme.colorScheme.secondary;
+    final stepType = l10n?.stepLabelType ?? 'Type';
+    final stepGoal = l10n?.stepLabelGoal ?? 'Goal';
+    final stepDetails = l10n?.stepLabelDetails ?? 'Details';
+    final stepSignIn = l10n?.stepLabelSignIn ?? 'Sign In';
+    final stepWelcome = l10n?.stepLabelWelcome ?? 'Welcome';
+
     final List<String> stepLabels;
     if (_selectedPath == 'existing') {
       stepLabels = [
-        isMarathi ? 'प्रकार' : 'Type',
-        isMarathi ? 'साइन इन' : 'Sign In',
+        stepType,
+        stepSignIn,
       ];
     } else if (_selectedPath == 'new' && _selectedPurpose == 'relative') {
       stepLabels = [
-        isMarathi ? 'प्रकार' : 'Type',
-        isMarathi ? 'उद्देश' : 'Goal',
-        isMarathi ? 'माहिती' : 'Details',
-        isMarathi ? 'साइन इन' : 'Sign In',
+        stepType,
+        stepGoal,
+        stepDetails,
+        stepSignIn,
       ];
     } else if (_selectedPath == 'new') {
       stepLabels = [
-        isMarathi ? 'प्रकार' : 'Type',
-        isMarathi ? 'उद्देश' : 'Goal',
-        isMarathi ? 'साइन इन' : 'Sign In',
+        stepType,
+        stepGoal,
+        stepSignIn,
       ];
     } else {
       // No path selected yet — Gateway step
       stepLabels = [
-        isMarathi ? 'स्वागत' : 'Welcome',
+        stepWelcome,
       ];
     }
 
@@ -530,12 +535,11 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                     ),
                     SizedBox(width: 1.8.w),
                     Text(
-                      isMarathi
-                          ? 'टप्पा ${displayStepIndex + 1} पैकी $totalSteps'
-                          : 'Step ${displayStepIndex + 1} of $totalSteps',
+                      l10n?.stepCounterFormat(displayStepIndex + 1, totalSteps) ??
+                          'Step ${displayStepIndex + 1} of $totalSteps',
                       style: theme.textTheme.labelMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 11.sp,
+                        fontWeight: AppTypography.extraBold,
+                        fontSize: AppTypography.bodySmall,
                         color: isDark
                             ? AppTheme.secondaryDark
                             : primary,
@@ -562,8 +566,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                   child: Text(
                     percentText,
                     style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 9.8.sp,
+                      fontWeight: AppTypography.black,
+                      fontSize: AppTypography.labelMedium,
                       color: primary,
                       letterSpacing: 0.5,
                     ),
@@ -640,8 +644,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                                 color: isActive
                                     ? Colors.white
                                     : (isDark ? Colors.white54 : Colors.black45),
-                                fontWeight: FontWeight.w900,
-                                fontSize: isCurrent ? 11.sp : 9.5.sp,
+                                fontWeight: AppTypography.black,
+                                fontSize: isCurrent ? AppTypography.bodySmall : AppTypography.labelMedium,
                               ),
                             ),
                     ),
@@ -656,14 +660,14 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                       overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.labelMedium?.copyWith(
                         fontWeight: isCurrent
-                            ? FontWeight.w800
-                            : (isCompleted ? FontWeight.w700 : FontWeight.w500),
+                            ? AppTypography.extraBold
+                            : (isCompleted ? AppTypography.bold : AppTypography.medium),
                         color: isCurrent
                             ? primary
                             : (isCompleted
                                 ? theme.colorScheme.onSurface
                                 : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6)),
-                        fontSize: isCurrent ? 11.sp : 9.5.sp,
+                        fontSize: isCurrent ? AppTypography.bodySmall : AppTypography.labelMedium,
                       ),
                     ),
                   ),
@@ -762,22 +766,15 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
   }
 
   Widget _buildDraftResumeCard(ThemeData theme, bool isDark, Color primary) {
-    final lang = Localizations.localeOf(context).languageCode;
-    final isMarathi = lang == 'mr';
+    final l10n = AppLocalizations.of(context);
     final candidateName = _draftData?['name']?.toString().trim();
     final nameDisplay = candidateName != null && candidateName.isNotEmpty ? candidateName : null;
 
-    final title = isMarathi
-        ? '📝 अपूर्ण बायोडेटा सेव्ह आहे!'
-        : '📝 Unsaved Biodata Draft Found!';
+    final title = l10n?.unsavedDraftTitle ?? '📝 Unsaved Biodata Draft Found!';
     final body = nameDisplay != null
-        ? (isMarathi
-            ? '$nameDisplay चा बायोडेटा मसुदा सुरक्षित आहे. तिथून पुढे सुरू करा.'
-            : '$nameDisplay\'s biodata draft is saved. Resume from where you left.')
-        : (isMarathi
-            ? 'तुम्ही भरलेली माहिती सुरक्षित आहे. तिथून पुढे सुरू करा.'
-            : 'Your entered information is saved safely. Tap to resume.');
-    final btnText = isMarathi ? 'ड्राफ्ट पूर्ण करा (पुढे सुरू ठेवा) 👉' : 'Resume Draft Now 👉';
+        ? (l10n?.unsavedDraftBodyWithName(nameDisplay) ?? '$nameDisplay\'s biodata draft is saved. Resume from where you left.')
+        : (l10n?.unsavedDraftBodyGeneric ?? 'Your entered information is saved safely. Tap to resume.');
+    final btnText = l10n?.resumeDraftCta ?? 'Resume Draft Now 👉';
 
     return Container(
       width: double.infinity,
@@ -833,8 +830,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w800,
+                          fontSize: AppTypography.bodyMedium,
+                          fontWeight: AppTypography.extraBold,
                           color: isDark ? const Color(0xFFFDE68A) : const Color(0xFF92400E),
                         ),
                       ),
@@ -867,7 +864,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
           Text(
             body,
             style: TextStyle(
-              fontSize: 10.5.sp,
+              fontSize: AppTypography.bodySmall,
               height: 1.25,
               color: isDark ? Colors.white.withValues(alpha: 0.85) : const Color(0xFF78350F),
             ),
@@ -909,8 +906,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                   btnText,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 11.5.sp,
-                    fontWeight: FontWeight.w800,
+                    fontSize: AppTypography.bodyMedium,
+                    fontWeight: AppTypography.extraBold,
                     letterSpacing: 0.2,
                   ),
                 ),
@@ -951,8 +948,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
             title,
             textAlign: TextAlign.center,
             style: theme.textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.w900,
-              fontSize: 18.sp,
+              fontWeight: AppTypography.black,
+              fontSize: AppTypography.headingMedium,
               color: theme.colorScheme.onSurface,
             ),
           ),
@@ -961,7 +958,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
             subtitle,
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyMedium?.copyWith(
-              fontSize: 12.sp,
+              fontSize: AppTypography.bodyMedium,
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
@@ -1018,15 +1015,15 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                         Text(
                           existingTitle,
                           style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14.sp,
+                            fontWeight: AppTypography.bold,
+                            fontSize: AppTypography.bodyLarge,
                           ),
                         ),
                         SizedBox(height: 0.4.h),
                         Text(
                           existingSub,
                           style: theme.textTheme.bodySmall?.copyWith(
-                            fontSize: 11.sp,
+                            fontSize: AppTypography.bodySmall,
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
                         ),
@@ -1086,15 +1083,15 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                         Text(
                           newTitle,
                           style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14.sp,
+                            fontWeight: AppTypography.bold,
+                            fontSize: AppTypography.bodyLarge,
                           ),
                         ),
                         SizedBox(height: 0.4.h),
                         Text(
                           newSub,
                           style: theme.textTheme.bodySmall?.copyWith(
-                            fontSize: 11.sp,
+                            fontSize: AppTypography.bodySmall,
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
                         ),
@@ -1112,9 +1109,6 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
   }
 
   Widget _buildStep2PurposeSelection(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
-    final lang = Localizations.localeOf(context).languageCode;
-    final isMarathi = lang == 'mr';
-
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Column(
@@ -1128,15 +1122,15 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
           ],
 
           // ── Card 1: Search Matches (Instant Discovery) ──
-          _buildSearchMatchesCard(theme, isDark, l10n, primary, isMarathi),
+          _buildSearchMatchesCard(theme, isDark, l10n, primary),
           SizedBox(height: 1.0.h),
 
           // ── Card 2: Create Biodata (Hero Conversion Card) ──
-          _buildCreateBiodataCard(theme, isDark, l10n, primary, isMarathi),
+          _buildCreateBiodataCard(theme, isDark, l10n, primary),
           SizedBox(height: 1.0.h),
 
           // ── Card 3: Guest Mode ──
-          _buildGuestModeCard(theme, isDark, l10n, primary, isMarathi),
+          _buildGuestModeCard(theme, isDark, l10n, primary),
           SizedBox(height: 1.h),
         ],
       ),
@@ -1144,13 +1138,12 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
   }
 
   /// CARD 1: Search Matches — Same-to-same from OnboardingSelectionScreen
-  Widget _buildSearchMatchesCard(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary, bool isMarathi) {
-    final badgeText = isMarathi ? 'पर्याय १ • लॉगिन न करता' : 'OPTION 1 • NO LOGIN NEEDED';
-    final cardTitle = isMarathi ? 'नातेवाईकांसाठी स्थळ शोधा' : (l10n?.browseMatchesTitle ?? 'Search Matches Directly').replaceAll('🔍', '').trim();
-    final cardSub = isMarathi
-        ? 'अकाऊंट न बनवता मुलासाठी, मुलीसाठी किंवा नातेवाईकांसाठी लगेच स्थळे पहा'
-        : 'Search matches instantly for son, daughter, or relative without creating an account.';
-    final ctaText = isMarathi ? 'नातेवाईकांसाठी स्थळ शोधा 👉' : 'Search Matches Directly 👉';
+  Widget _buildSearchMatchesCard(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
+    final badgeText = l10n?.option1Badge ?? 'OPTION 1 • NO LOGIN NEEDED';
+    final cardTitle = l10n?.searchMatchesForRelativesTitle ?? 'Find Matches for Relatives';
+    final cardSub = l10n?.searchMatchesForRelativesSubtitle ??
+        'Search thousands of verified profiles for son, daughter, brother or sister directly without creating a profile.';
+    final ctaText = l10n?.searchMatchesForRelativesCta ?? 'Find Matches for Relatives 👉';
 
     return _TactileWrapper(
       onTap: () {
@@ -1202,8 +1195,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                             badgeText,
                             overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.labelMedium?.copyWith(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 11.5.sp,
+                              fontWeight: AppTypography.black,
+                              fontSize: AppTypography.bodyMedium,
                               color: const Color(0xFF0284C7),
                               letterSpacing: 0.4,
                             ),
@@ -1233,9 +1226,9 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
             Text(
               cardTitle,
               style: theme.textTheme.titleMedium?.copyWith(
-                fontFamily: AppTheme.headingFontFamily,
-                fontWeight: FontWeight.w900,
-                fontSize: 16.sp,
+                fontFamily: AppTypography.headingFontFamily,
+                fontWeight: AppTypography.black,
+                fontSize: AppTypography.headingSmall,
                 color: theme.colorScheme.onSurface,
                 height: 1.15,
               ),
@@ -1246,9 +1239,9 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
             Text(
               cardSub,
               style: theme.textTheme.bodyMedium?.copyWith(
-                fontFamily: AppTheme.bodyFontFamily,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w500,
+                fontFamily: AppTypography.bodyFontFamily,
+                fontSize: AppTypography.bodyMedium,
+                fontWeight: AppTypography.medium,
                 color: theme.colorScheme.onSurfaceVariant,
                 height: 1.25,
               ),
@@ -1260,9 +1253,9 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
               spacing: 1.8.w,
               runSpacing: 0.5.h,
               children: [
-                _stepperFeatureChip(theme, isMarathi ? '⚡ विना अकाउंट' : '⚡ No Account Needed', isDark),
-                _stepperFeatureChip(theme, isMarathi ? '🔍 १ मिनिटात फिल्टर' : '🔍 1-Min Search', isDark),
-                _stepperFeatureChip(theme, isMarathi ? '⭐ १००% मोफत' : '⭐ Free Access', isDark),
+                _stepperFeatureChip(theme, l10n?.chipNoAccount ?? '⚡ No Account Needed', isDark),
+                _stepperFeatureChip(theme, l10n?.chipQuickFilter ?? '🔍 1-Min Search', isDark),
+                _stepperFeatureChip(theme, l10n?.chipFreeAccess ?? '⭐ 100% Free Access', isDark),
               ],
             ),
             SizedBox(height: 1.2.h),
@@ -1284,8 +1277,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                   Text(
                     ctaText,
                     style: theme.textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 13.5.sp,
+                      fontWeight: AppTypography.black,
+                      fontSize: AppTypography.bodyLarge,
                       color: const Color(0xFF0284C7),
                     ),
                   ),
@@ -1299,13 +1292,12 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
   }
 
   /// CARD 2: Create Biodata — Same-to-same hero card from OnboardingSelectionScreen
-  Widget _buildCreateBiodataCard(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary, bool isMarathi) {
-    final badgeText = isMarathi ? 'पर्याय २ • मोफत नोंदणी' : 'OPTION 2 • MOST POPULAR • 100% FREE';
-    final cardTitle = isMarathi ? 'स्वतःचा / उमेदवाराचा बायोडेटा बनवा' : (l10n?.createMyBiodata ?? 'Create My Biodata');
-    final cardSub = isMarathi
-        ? 'पूर्ण विवाह बायोडेटा बनवून फोटो, मोबाईल नंबर आणि PDF डाउनलोड करा'
-        : 'Create official biodata to view photos, mobile numbers & download PDF.';
-    final ctaText = isMarathi ? 'लॉगिन करा आणि बायोडेटा बनवा ✨' : 'Login & Create Biodata ✨';
+  Widget _buildCreateBiodataCard(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
+    final badgeText = l10n?.option2Badge ?? 'OPTION 2 • MOST POPULAR • 100% FREE';
+    final cardTitle = l10n?.createBiodataForSelfOrCandidateTitle ?? (l10n?.createMyBiodata ?? 'Create My Biodata');
+    final cardSub = l10n?.createBiodataForSelfOrCandidateSubtitle ??
+        'Create an attractive marriage biodata in 2 minutes, download PDF, share on WhatsApp, and receive matches directly.';
+    final ctaText = l10n?.loginAndCreateBiodataCta ?? 'Login & Create Biodata ✨';
 
     return _TactileWrapper(
       onTap: () {
@@ -1357,15 +1349,15 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text('⭐', style: TextStyle(fontSize: 11)),
+                        Text('⭐', style: TextStyle(fontSize: AppTypography.bodySmall)),
                         SizedBox(width: 1.w),
                         Flexible(
                           child: Text(
                             badgeText,
                             overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.labelMedium?.copyWith(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 11.5.sp,
+                              fontWeight: AppTypography.black,
+                              fontSize: AppTypography.bodyMedium,
                               color: const Color(0xFF92400E),
                               letterSpacing: 0.4,
                             ),
@@ -1393,9 +1385,9 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
             Text(
               cardTitle,
               style: theme.textTheme.titleMedium?.copyWith(
-                fontFamily: AppTheme.headingFontFamily,
-                fontWeight: FontWeight.w900,
-                fontSize: 16.5.sp,
+                fontFamily: AppTypography.headingFontFamily,
+                fontWeight: AppTypography.black,
+                fontSize: AppTypography.headingSmall,
                 color: Colors.white,
                 height: 1.15,
               ),
@@ -1406,9 +1398,9 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
             Text(
               cardSub,
               style: theme.textTheme.bodyMedium?.copyWith(
-                fontFamily: AppTheme.bodyFontFamily,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w500,
+                fontFamily: AppTypography.bodyFontFamily,
+                fontSize: AppTypography.bodyMedium,
+                fontWeight: AppTypography.medium,
                 color: Colors.white.withValues(alpha: 0.9),
                 height: 1.25,
               ),
@@ -1416,11 +1408,11 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
             SizedBox(height: 0.8.h),
 
             // Benefit Rows
-            _stepperBenefitRow(theme, '✨', isMarathi ? '२ मिनिटांत सुंदर PDF बायोडेटा बनवा' : 'Create Beautiful PDF Biodata in 2 Mins'),
+            _stepperBenefitRow(theme, '✨', l10n?.benefitPdfBiodata ?? 'Create Beautiful PDF Biodata in 2 Mins'),
             SizedBox(height: 0.4.h),
-            _stepperBenefitRow(theme, '📱', isMarathi ? 'WhatsApp वर थेट शेअर करा' : 'Share Directly on WhatsApp'),
+            _stepperBenefitRow(theme, '📱', l10n?.benefitShareWhatsApp ?? 'Share Directly on WhatsApp'),
             SizedBox(height: 0.4.h),
-            _stepperBenefitRow(theme, '🛡️', isMarathi ? '१००% पडताळणी केलेले प्रोफाईल्स' : '100% Verified Community Profiles'),
+            _stepperBenefitRow(theme, '🛡️', l10n?.benefitVerifiedProfiles ?? '100% Verified Community Profiles'),
             SizedBox(height: 1.2.h),
 
             // Golden CTA Button
@@ -1442,8 +1434,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                   Text(
                     ctaText,
                     style: theme.textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 13.5.sp,
+                      fontWeight: AppTypography.black,
+                      fontSize: AppTypography.bodyLarge,
                       color: const Color(0xFF451A03),
                     ),
                   ),
@@ -1457,13 +1449,11 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
   }
 
   /// CARD 3: Guest Mode — Matching design language
-  Widget _buildGuestModeCard(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary, bool isMarathi) {
-    final badgeText = isMarathi ? 'पर्याय ३ • गेस्ट मोड' : 'OPTION 3 • GUEST MODE';
-    final cardTitle = isMarathi ? 'गेस्ट सर्च (खात्याशिवाय पहा)' : 'Guest Mode (Instant Browse)';
-    final cardSub = isMarathi
-        ? 'कोणत्याही नोंदणीशिवाय थेट सर्व स्थळे पहा'
-        : 'Explore community matches without sign up';
-    final ctaText = isMarathi ? 'गेस्ट म्हणून सुरू करा 🚀' : 'Continue as Guest 🚀';
+  Widget _buildGuestModeCard(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
+    final badgeText = l10n?.option3Badge ?? 'OPTION 3 • GUEST MODE';
+    final cardTitle = l10n?.guestModeInstantBrowseTitle ?? 'Guest Mode (Instant Browse)';
+    final cardSub = l10n?.guestModeInstantBrowseSubtitle ?? 'Explore BanjaraBio instantly without an account to see features and available profiles.';
+    final ctaText = l10n?.continueAsGuestCta ?? 'Continue as Guest 🚀';
 
     return _TactileWrapper(
       onTap: () async {
@@ -1515,8 +1505,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                             badgeText,
                             overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.labelMedium?.copyWith(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 11.5.sp,
+                              fontWeight: AppTypography.black,
+                              fontSize: AppTypography.bodyMedium,
                               color: const Color(0xFF059669),
                               letterSpacing: 0.4,
                             ),
@@ -1546,9 +1536,9 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
             Text(
               cardTitle,
               style: theme.textTheme.titleMedium?.copyWith(
-                fontFamily: AppTheme.headingFontFamily,
-                fontWeight: FontWeight.w900,
-                fontSize: 16.sp,
+                fontFamily: AppTypography.headingFontFamily,
+                fontWeight: AppTypography.black,
+                fontSize: AppTypography.headingSmall,
                 color: theme.colorScheme.onSurface,
                 height: 1.15,
               ),
@@ -1559,9 +1549,9 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
             Text(
               cardSub,
               style: theme.textTheme.bodyMedium?.copyWith(
-                fontFamily: AppTheme.bodyFontFamily,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w500,
+                fontFamily: AppTypography.bodyFontFamily,
+                fontSize: AppTypography.bodyMedium,
+                fontWeight: AppTypography.medium,
                 color: theme.colorScheme.onSurfaceVariant,
                 height: 1.25,
               ),
@@ -1585,8 +1575,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                   Text(
                     ctaText,
                     style: theme.textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 13.5.sp,
+                      fontWeight: AppTypography.black,
+                      fontSize: AppTypography.bodyLarge,
                       color: const Color(0xFF10B981),
                     ),
                   ),
@@ -1610,8 +1600,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
       child: Text(
         text,
         style: theme.textTheme.bodySmall?.copyWith(
-          fontSize: 11.5.sp,
-          fontWeight: FontWeight.w600,
+          fontSize: AppTypography.bodyMedium,
+          fontWeight: AppTypography.semiBold,
           color: isDark ? Colors.white70 : const Color(0xFF334155),
         ),
       ),
@@ -1621,14 +1611,14 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
   Widget _stepperBenefitRow(ThemeData theme, String emoji, String text) {
     return Row(
       children: [
-        Text(emoji, style: TextStyle(fontSize: 11.5.sp)),
+        Text(emoji, style: TextStyle(fontSize: AppTypography.bodyMedium)),
         SizedBox(width: 1.5.w),
         Expanded(
           child: Text(
             text,
             style: theme.textTheme.bodyMedium?.copyWith(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w600,
+              fontSize: AppTypography.bodyMedium,
+              fontWeight: AppTypography.semiBold,
               color: Colors.white.withValues(alpha: 0.95),
             ),
           ),
@@ -1648,8 +1638,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
           Text(
             'काही अडचण आहे? मदत हवी असल्यास संपर्क साधा',
             style: theme.textTheme.bodySmall?.copyWith(
-              fontWeight: FontWeight.w600,
-              fontSize: 10.5.sp,
+              fontWeight: AppTypography.semiBold,
+              fontSize: AppTypography.bodySmall,
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
@@ -1673,8 +1663,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                       Text(
                         'WhatsApp Support',
                         style: theme.textTheme.labelMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 11.sp,
+                          fontWeight: AppTypography.extraBold,
+                          fontSize: AppTypography.bodySmall,
                           color: const Color(0xFF25D366),
                         ),
                       ),
@@ -1699,8 +1689,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                       Text(
                         'Call Us',
                         style: theme.textTheme.labelMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 11.sp,
+                          fontWeight: AppTypography.extraBold,
+                          fontSize: AppTypography.bodySmall,
                           color: primary,
                         ),
                       ),

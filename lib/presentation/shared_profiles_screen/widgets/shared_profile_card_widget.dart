@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/core/app_export.dart';
-import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 
-/// Individual sharing card widget with swipe actions and selection support
-/// Redesigned for a "premium" and "vibrant" look
+/// Individual sharing card widget with modern floating actions and selection support
 class SharedProfileCardWidget extends StatelessWidget {
   final Map<String, dynamic> profile;
   final bool isSharedByMe;
@@ -54,6 +54,8 @@ class SharedProfileCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     final contactName =
         (isSharedByMe ? profile['recipientName'] : profile['senderName'])
             ?.toString() ??
@@ -74,326 +76,434 @@ class SharedProfileCardWidget extends StatelessWidget {
     final isMatched = status.toLowerCase() == 'matched';
     final isPremium = profile['isPremium'] as bool? ?? false;
 
+    // Dynamic Tab-Matching Border & Glow Colors
+    final Color cardBorderColor;
+    final Color cardShadowColor;
+    if (isSelected) {
+      cardBorderColor = const Color(0xFFBE123C);
+      cardShadowColor = const Color(0xFFBE123C).withValues(alpha: isDark ? 0.35 : 0.2);
+    } else if (isMatched) {
+      // 💍 Matched Tab: Sacred 24K Gold
+      cardBorderColor = const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.55 : 0.45);
+      cardShadowColor = const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.22 : 0.09);
+    } else if (isSharedByMe) {
+      // 📤 Sent Tab: Royal Amethyst Purple
+      cardBorderColor = const Color(0xFF7C3AED).withValues(alpha: isDark ? 0.45 : 0.35);
+      cardShadowColor = const Color(0xFF7C3AED).withValues(alpha: isDark ? 0.18 : 0.07);
+    } else {
+      // 📥 Received Tab: Trust Sapphire Blue
+      cardBorderColor = const Color(0xFF2563EB).withValues(alpha: isDark ? 0.45 : 0.35);
+      cardShadowColor = const Color(0xFF2563EB).withValues(alpha: isDark ? 0.18 : 0.07);
+    }
+
     return Semantics(
       label: "Shared profile card of $profileName, age $profileAge. ${isSharedByMe ? 'Shared to' : 'Shared from'} $contactName.",
       hint: 'Double tap to view details.',
-      child: GestureDetector(
-        onTap: onTap,
+      child: TactilePressable(
+        onTap: isSelectionMode ? onTap : onTap,
         onLongPress: onLongPress,
+        pressedScale: 0.98,
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(
-              color: isSelected
-                  ? theme.colorScheme.primary
-                  : isMatched
-                  ? const Color(0xFFFF416C).withValues(alpha: 0.2)
-                  : theme.colorScheme.outlineVariant.withValues(alpha: 0.3),
-              width: isSelected || isMatched ? 1.5 : 1,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.08),
-                blurRadius: 15,
-                offset: const Offset(0, 8),
+            margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xFF1B1B24) : Colors.white,
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(
+                color: cardBorderColor,
+                width: (isSelected || isMatched) ? 1.5 : 1.3,
               ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(24),
+              boxShadow: [
+                BoxShadow(
+                  color: cardShadowColor,
+                  blurRadius: 16,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+            borderRadius: BorderRadius.circular(22),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-              // Header: Share Metadata (To/From/Timestamp)
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.2.h),
-                child: Row(
-                  children: [
-                    if (isSelectionMode)
-                      Padding(
-                        padding: EdgeInsets.only(right: 3.w),
+                // Header: Share Metadata (To/From/Timestamp)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+                  child: Row(
+                    children: [
+                      if (isSelectionMode)
+                        Padding(
+                          padding: EdgeInsets.only(right: 2.5.w),
+                          child: Icon(
+                            isSelected
+                                ? Icons.check_circle_rounded
+                                : Icons.radio_button_unchecked_rounded,
+                            color: isSelected
+                                ? const Color(0xFFBE123C)
+                                : (isDark ? Colors.white38 : Colors.black38),
+                            size: 20,
+                          ),
+                        ),
+                      Container(
+                        padding: const EdgeInsets.all(5.5),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: isMatched
+                              ? const Color(0xFFBE123C).withValues(alpha: 0.15)
+                              : (isDark ? Colors.white10 : const Color(0xFFEFF6FF)),
+                        ),
                         child: Icon(
-                          isSelected
-                              ? Icons.check_circle
-                              : Icons.radio_button_unchecked,
-                          color: isSelected
-                              ? theme.colorScheme.primary
-                              : theme.colorScheme.onSurfaceVariant,
-                          size: 20,
+                          isMatched
+                              ? Icons.favorite_rounded
+                              : (isSharedByMe
+                                  ? Icons.arrow_outward_rounded
+                                  : Icons.call_received_rounded),
+                          size: 13,
+                          color: isMatched
+                              ? const Color(0xFFBE123C)
+                              : (isDark ? const Color(0xFF60A5FA) : const Color(0xFF2563EB)),
                         ),
                       ),
-                    CircleAvatar(
-                      radius: 12,
-                      backgroundColor:
-                          (isMatched
-                                  ? const Color(0xFFFF416C)
-                                  : theme.colorScheme.primary)
-                              .withValues(alpha: 0.1),
-                      child: Icon(
-                        isMatched
-                            ? Icons.favorite
-                            : (isSharedByMe
-                                  ? Icons.arrow_upward
-                                  : Icons.arrow_downward),
-                        size: 12,
-                        color: isMatched
-                            ? const Color(0xFFFF416C)
-                            : theme.colorScheme.primary,
-                      ),
-                    ),
-                    SizedBox(width: 2.w),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            isMatched
-                                ? (l10n?.mutualMatch ?? 'Mutual Match')
-                                : (isSharedByMe
-                                    ? (l10n?.toContact(contactName) ??
-                                        'To: $contactName')
-                                    : (l10n?.fromContact(contactName) ??
-                                        'From: $contactName')),
-                            style: theme.textTheme.labelSmall?.copyWith(
-                              fontWeight: FontWeight.w900,
-                              color: isMatched
-                                  ? const Color(0xFFFF416C)
-                                  : theme.colorScheme.onSurface,
+                      SizedBox(width: 2.5.w),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              isMatched
+                                  ? (l10n?.mutualMatch ?? 'Mutual Match 💍')
+                                  : (isSharedByMe
+                                      ? (l10n?.toContact(contactName) ?? 'To: $contactName')
+                                      : (l10n?.fromContact(contactName) ?? 'From: $contactName')),
+                              style: TextStyle(
+                                fontWeight: AppTypography.extraBold,
+                                fontSize: AppTypography.labelSmall,
+                                color: isMatched
+                                    ? const Color(0xFFBE123C)
+                                    : (isDark ? Colors.white : const Color(0xFF0F172A)),
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            contactRelation,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              fontSize: AppTypography.labelSmall,
+                            Text(
+                              contactRelation,
+                              style: TextStyle(
+                                fontSize: AppTypography.labelTiny,
+                                fontWeight: AppTypography.medium,
+                                color: isDark ? Colors.white54 : const Color(0xFF64748B),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      _formatTimestamp(context, timestamp),
-                      style:
-                          theme.textTheme.bodySmall?.copyWith(fontSize: AppTypography.labelSmall),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Profile Image with Badges
-              Stack(
-                children: [
-                  CustomImageWidget(
-                    imageUrl: profileImage,
-                    width: double.infinity,
-                    height: 25.h,
-                    fit: BoxFit.cover,
-                  ),
-                  // Bottom Gradient
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    height: 8.h,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.transparent,
-                            Colors.black.withValues(alpha: 0.6),
                           ],
                         ),
                       ),
-                    ),
-                  ),
-                  // Matched Badge
-                  if (isMatched)
-                    Positioned(
-                      top: 1.5.h,
-                      left: 3.w,
-                      child: _buildBadge(
-                          l10n?.matchedBadge ?? 'MATCHED',
-                          [
-                            const Color(0xFFFF4B2B),
-                            const Color(0xFFFF416C),
-                          ],
-                          Icons.favorite),
-                    ),
-                  // Premium Badge
-                  if (isPremium)
-                    Positioned(
-                      top: 1.5.h,
-                      right: 3.w,
-                      child: _buildBadge(
-                          l10n?.premiumBadge ?? 'PREMIUM',
-                          [
-                            const Color(0xFFFFD700),
-                            const Color(0xFFFFA500),
-                          ],
-                          Icons.star),
-                    ),
-                  // Name Overlay
-                  Positioned(
-                    bottom: 1.h,
-                    left: 4.w,
-                    child: Text(
-                      '$profileName, ${l10n?.yrs(profileAge) ?? "$profileAge Yrs"}',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w900,
-                        shadows: [
-                          const Shadow(color: Colors.black45, blurRadius: 4),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              // Detail Section
-              Padding(
-                padding: EdgeInsets.all(4.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Wrap(
-                      spacing: 3.w,
-                      runSpacing: 1.h,
-                      children: [
-                        _buildTinyTag(
-                          context,
-                          'school',
-                          profile['education']?.toString() ??
-                              (l10n?.notAvailable ?? 'N/A'),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: isDark ? Colors.white.withValues(alpha: 0.06) : const Color(0xFFF1F5F9),
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        _buildTinyTag(
-                          context,
-                          'work',
-                          profile['job']?.toString() ??
-                              (l10n?.notAvailable ?? 'N/A'),
-                        ),
-                        _buildTinyTag(
-                          context,
-                          'straighten',
-                          profile['height']?.toString() ??
-                              (l10n?.notAvailable ?? 'N/A'),
-                        ),
-                        _buildTinyTag(
-                          context,
-                          'family_restroom',
-                          profile['maritalStatus']?.toString() ??
-                              (l10n?.notAvailable ?? 'N/A'),
-                        ),
-                      ],
-                    ),
-                    if (viewCount > 0) ...[
-                      SizedBox(height: 1.h),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.visibility_outlined,
-                            size: 12,
-                            color: theme.colorScheme.onSurfaceVariant,
+                        child: Text(
+                          _formatTimestamp(context, timestamp),
+                          style: TextStyle(
+                            fontSize: AppTypography.labelTiny,
+                            fontWeight: AppTypography.bold,
+                            color: isDark ? Colors.white54 : const Color(0xFF64748B),
                           ),
-                          SizedBox(width: 1.w),
-                          Text(
-                            l10n?.countProfileViews(viewCount) ??
-                                '$viewCount profile views',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              fontSize: AppTypography.labelSmall,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ],
-                  ],
-                ),
-              ),
-
-              // Action Bar
-              Container(
-                height: 6.h,
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(
-                      color: isMatched
-                          ? const Color(0xFFFF416C).withValues(alpha: 0.2)
-                          : theme.colorScheme.outlineVariant.withValues(
-                              alpha: 0.3,
-                            ),
-                    ),
                   ),
                 ),
-                child: Row(
+
+                // Profile Image with Badges & Gradient Overlay
+                Stack(
                   children: [
-                    _buildFullWidthAction(
-                      label: AppLocalizations.of(context)?.view ?? 'VIEW',
-                      icon: Icons.visibility,
-                      color: theme.colorScheme.primary,
-                      onTap: onTap,
-                      semanticsLabel: 'View details of $profileName',
+                    CustomImageWidget(
+                      imageUrl: profileImage,
+                      width: double.infinity,
+                      height: 24.h,
+                      fit: BoxFit.cover,
                     ),
-                    const VerticalDivider(width: 1, color: Colors.white24),
-                    _buildFullWidthAction(
-                      label: AppLocalizations.of(context)?.reshare ?? 'RESHARE',
-                      icon: Icons.share,
-                      color: const Color(0xFF6B48FF),
-                      onTap: onReshare,
-                      semanticsLabel: 'Reshare profile of $profileName',
+                    // High-contrast Bottom Gradient
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: 10.h,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withValues(alpha: 0.75),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                    const VerticalDivider(width: 1, color: Colors.white24),
-                    _buildFullWidthAction(
-                      label: AppLocalizations.of(context)?.remove ?? 'REMOVE',
-                      icon: Icons.delete_outline,
-                      color: theme.colorScheme.error,
-                      onTap: onRemove,
-                      semanticsLabel: 'Remove shared profile of $profileName',
+                    // Verified Badge (Top Left)
+                    Positioned(
+                      top: 1.2.h,
+                      left: 3.w,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3.5),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withValues(alpha: 0.55),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.25),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.verified_rounded, color: Color(0xFF3B82F6), size: 12),
+                            const SizedBox(width: 3.5),
+                            Text(
+                              'Verified',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: AppTypography.labelTiny,
+                                fontWeight: AppTypography.extraBold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    // Matched Badge (Top Right)
+                    if (isMatched)
+                      Positioned(
+                        top: 1.2.h,
+                        right: 3.w,
+                        child: _buildBadge(
+                          l10n?.matchedBadge ?? 'MATCHED',
+                          [
+                            const Color(0xFFBE123C),
+                            const Color(0xFFE11D48),
+                          ],
+                          Icons.favorite_rounded,
+                        ),
+                      ),
+                    // Premium Crown Badge
+                    if (isPremium && !isMatched)
+                      Positioned(
+                        top: 1.2.h,
+                        right: 3.w,
+                        child: _buildBadge(
+                          l10n?.premiumBadge ?? 'PREMIUM',
+                          [
+                            const Color(0xFFF59E0B),
+                            const Color(0xFFD97706),
+                          ],
+                          Icons.star_rounded,
+                        ),
+                      ),
+                    // Name & Age Overlay
+                    Positioned(
+                      bottom: 1.2.h,
+                      left: 4.w,
+                      right: 4.w,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              '$profileName, ${l10n?.yrs(profileAge) ?? "$profileAge Yrs"}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: AppTypography.black,
+                                fontSize: AppTypography.headingSmall,
+                                shadows: [
+                                  const Shadow(color: Colors.black54, blurRadius: 6),
+                                ],
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
-}
 
-  Widget _buildFullWidthAction({
-    required String label,
-    required IconData icon,
-    required Color color,
-    required VoidCallback onTap,
-    String? semanticsLabel,
-  }) {
-    return Expanded(
-      child: Semantics(
-        label: semanticsLabel,
-        button: true,
-        child: InkWell(
-          onTap: onTap,
-          child: Container(
-            color: color,
-            alignment: Alignment.center,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(icon, color: Colors.white, size: 16),
-                SizedBox(width: 1.5.w),
-                Text(
-                  label,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w900,
-                    fontSize: AppTypography.labelSmall,
-                    letterSpacing: 0.5,
+                // Detail Section: Micro-tag Pills
+                Padding(
+                  padding: EdgeInsets.fromLTRB(4.w, 1.2.h, 4.w, 1.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Wrap(
+                        spacing: 2.w,
+                        runSpacing: 0.8.h,
+                        children: [
+                          _buildModernTag(
+                            context,
+                            isDark,
+                            Icons.school_rounded,
+                            profile['education']?.toString() ?? (l10n?.notAvailable ?? 'N/A'),
+                          ),
+                          _buildModernTag(
+                            context,
+                            isDark,
+                            Icons.work_outline_rounded,
+                            profile['job']?.toString() ?? (l10n?.notAvailable ?? 'N/A'),
+                          ),
+                          _buildModernTag(
+                            context,
+                            isDark,
+                            Icons.straighten_rounded,
+                            profile['height']?.toString() ?? (l10n?.notAvailable ?? 'N/A'),
+                          ),
+                          _buildModernTag(
+                            context,
+                            isDark,
+                            Icons.favorite_outline_rounded,
+                            profile['maritalStatus']?.toString() ?? (l10n?.notAvailable ?? 'N/A'),
+                          ),
+                        ],
+                      ),
+                      if (viewCount > 0) ...[
+                        SizedBox(height: 0.8.h),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.visibility_outlined,
+                              size: 13,
+                              color: isDark ? Colors.white38 : const Color(0xFF64748B),
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              l10n?.countProfileViews(viewCount) ?? '$viewCount profile views',
+                              style: TextStyle(
+                                fontSize: AppTypography.labelTiny,
+                                fontWeight: AppTypography.semiBold,
+                                color: isDark ? Colors.white54 : const Color(0xFF64748B),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+
+                // Modern Floating Action Bar
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.h),
+                  decoration: BoxDecoration(
+                    color: isDark ? const Color(0xFF171720) : const Color(0xFFF8FAFC),
+                    border: Border(
+                      top: BorderSide(
+                        color: isDark ? Colors.white.withValues(alpha: 0.06) : const Color(0xFFF1F5F9),
+                      ),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      // View Biodata Primary Button
+                      Expanded(
+                        child: TactilePressable(
+                          onTap: () {
+                            HapticFeedback.lightImpact();
+                            onTap();
+                          },
+                          pressedScale: 0.96,
+                          child: Container(
+                            height: 38,
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Color(0xFFBE123C),
+                                  Color(0xFF9F1239),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xFFBE123C).withValues(alpha: 0.35),
+                                  blurRadius: 6,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            alignment: Alignment.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.visibility_rounded, color: Colors.white, size: 15),
+                                const SizedBox(width: 5),
+                                Text(
+                                  AppLocalizations.of(context)?.view ?? 'View Details',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: AppTypography.extraBold,
+                                    fontSize: AppTypography.labelSmall,
+                                    letterSpacing: 0.3,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+
+                      // Reshare Action Button
+                      TactilePressable(
+                        onTap: () {
+                          HapticFeedback.lightImpact();
+                          onReshare();
+                        },
+                        pressedScale: 0.9,
+                        child: Container(
+                          width: 38,
+                          height: 38,
+                          decoration: BoxDecoration(
+                            color: isDark ? const Color(0xFF252532) : Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
+                            ),
+                          ),
+                          child: Icon(
+                            Icons.share_rounded,
+                            color: isDark ? const Color(0xFF93C5FD) : const Color(0xFF2563EB),
+                            size: 16,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+
+                      // Remove Action Button
+                      TactilePressable(
+                        onTap: () {
+                          HapticFeedback.lightImpact();
+                          onRemove();
+                        },
+                        pressedScale: 0.9,
+                        child: Container(
+                          width: 38,
+                          height: 38,
+                          decoration: BoxDecoration(
+                            color: isDark ? const Color(0xFF2A1C1F) : const Color(0xFFFFF1F2),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: const Color(0xFFBE123C).withValues(alpha: 0.2),
+                            ),
+                          ),
+                          child: const Icon(
+                            Icons.delete_outline_rounded,
+                            color: Color(0xFFBE123C),
+                            size: 17,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -405,55 +515,68 @@ class SharedProfileCardWidget extends StatelessWidget {
   }
 
   Widget _buildBadge(String text, List<Color> colors, IconData icon) {
-    return Semantics(
-      label: '$text badge',
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.4.h),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(colors: colors),
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(color: colors.last.withValues(alpha: 0.3), blurRadius: 4),
-          ],
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, color: Colors.white, size: 10),
-            SizedBox(width: 1.w),
-            Text(
-              text,
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w900,
-                fontSize: AppTypography.labelSmall,
-              ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(colors: colors),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: colors.first.withValues(alpha: 0.4),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: Colors.white, size: 11),
+          const SizedBox(width: 4),
+          Text(
+            text,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: AppTypography.black,
+              fontSize: AppTypography.labelTiny,
+              letterSpacing: 0.3,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildTinyTag(BuildContext context, String icon, String text) {
-    final theme = Theme.of(context);
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CustomIconWidget(
-          iconName: icon,
-          color: theme.colorScheme.primary,
-          size: 14,
+  Widget _buildModernTag(BuildContext context, bool isDark, IconData icon, String text) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF242432) : const Color(0xFFF1F5F9),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: isDark ? Colors.white.withValues(alpha: 0.05) : const Color(0xFFE2E8F0),
         ),
-        SizedBox(width: 1.5.w),
-        Text(
-          text,
-          style: theme.textTheme.bodySmall?.copyWith(
-            fontWeight: FontWeight.w600,
-            fontSize: AppTypography.labelSmall,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            size: 12,
+            color: isDark ? const Color(0xFFF43F5E) : const Color(0xFFBE123C),
           ),
-        ),
-      ],
+          const SizedBox(width: 4),
+          Text(
+            text,
+            style: TextStyle(
+              fontWeight: AppTypography.bold,
+              fontSize: AppTypography.labelTiny,
+              color: isDark ? Colors.white70 : const Color(0xFF334155),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
+

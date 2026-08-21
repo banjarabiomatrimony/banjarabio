@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
@@ -387,7 +388,7 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
                   '${AppLocalizations.of(context)?.totalCount ?? 'Total:'} ${_siblingsList.length}',
                   style: theme.textTheme.labelLarge?.copyWith(
                     color: theme.colorScheme.onSecondaryContainer,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTypography.bold,
                   ),
                 ),
               ),
@@ -519,7 +520,7 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
                           : '✨ ${AppLocalizations.of(context)?.generateBio ?? 'Generate Bio'}'),
                   style: TextStyle(
                     color: _isPremiumUser ? Colors.amber[800] : theme.colorScheme.primary,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTypography.bold,
                   ),
                 ),
               ),
@@ -624,7 +625,7 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
                   '${sibling.position}',
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: theme.colorScheme.onPrimary,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTypography.bold,
                   ),
                 ),
               ),
@@ -641,7 +642,7 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
                       _getLocalizedRelation(context, key),
                       style: theme.textTheme.bodySmall?.copyWith(
                         fontWeight: key == 'Self'
-                            ? FontWeight.bold
+                            ? AppTypography.bold
                             : FontWeight.normal,
                         color: key == 'Self' ? theme.colorScheme.primary : null,
                       ),

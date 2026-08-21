@@ -6,8 +6,8 @@ import 'package:banjarabio/core/models/subscription_model.dart';
 import 'package:banjarabio/core/models/coupon_model.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/presentation/subscription_screen/widgets/plan_card.dart';
-import 'package:banjarabio/presentation/subscription_screen/widgets/trust_score_discount_widget.dart';
 import 'package:banjarabio/presentation/subscription_screen/widgets/feature_comparison_sheet.dart';
+import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 
 class VipTabView extends StatelessWidget {
   final SubscriptionModel? currentSubscription;
@@ -30,13 +30,14 @@ class VipTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context);
     
     // Get defined VIP plans from config
     final plans = SubscriptionConfig.getVipPlans();
 
-    return SingleChildScrollView(
-      padding: EdgeInsets.all(4.w),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
       child: Column(
         children: [
           // ── Majestic VIP Concierge Header ──
@@ -50,13 +51,13 @@ class VipTabView extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(24),
               border: Border.all(
-                color: const Color(0xFFFFD700).withValues(alpha: 0.35),
+                color: const Color(0xFFFFD700).withValues(alpha: 0.4),
                 width: 1.5,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF2C1654).withValues(alpha: 0.4),
-                  blurRadius: 20,
+                  color: const Color(0xFF2C1654).withValues(alpha: 0.45),
+                  blurRadius: 22,
                   spreadRadius: 1,
                   offset: const Offset(0, 8),
                 ),
@@ -77,8 +78,8 @@ class VipTabView extends StatelessWidget {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFFFFD700).withValues(alpha: 0.4),
-                        blurRadius: 16,
+                        color: const Color(0xFFFFD700).withValues(alpha: 0.45),
+                        blurRadius: 18,
                         spreadRadius: 2,
                         offset: const Offset(0, 4),
                       ),
@@ -93,8 +94,9 @@ class VipTabView extends StatelessWidget {
                 // VIP Title
                 Text(
                   l10n?.personalConcierge ?? 'Personal Concierge',
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
+                  style: TextStyle(
+                    fontSize: AppTypography.headingMedium,
+                    fontWeight: AppTypography.bold,
                     color: const Color(0xFFFFD700),
                     letterSpacing: 0.5,
                   ),
@@ -139,24 +141,34 @@ class VipTabView extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 3.h),
-
-          // Trust Score Discount Gauge
-          TrustScoreDiscountWidget(trustScore: trustScore),
-          SizedBox(height: 4.h),
+          SizedBox(height: 2.h),
 
           // VIP Plans List Title
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 1.w),
-              child: Text(
-                'VIP EXCLUSIVE PLANS',
-                style: theme.textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.2,
-                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
-                ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 4,
+                    height: 16,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF8E2DE2),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  SizedBox(width: 2.w),
+                  Text(
+                    'VIP EXCLUSIVE PLANS',
+                    style: TextStyle(
+                      fontSize: AppTypography.labelMedium,
+                      fontWeight: AppTypography.bold,
+                      letterSpacing: 1.2,
+                      color: isDark ? Colors.white70 : theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -189,16 +201,40 @@ class VipTabView extends StatelessWidget {
             );
           }),
 
-          SizedBox(height: 2.h),
+          SizedBox(height: 1.5.h),
 
           // Compare all features button
-          OutlinedButton.icon(
-            onPressed: () => FeatureComparisonSheet.show(context),
-            icon: const Icon(Icons.compare_arrows),
-            label: const Text('Compare All Plan Features'),
-            style: OutlinedButton.styleFrom(
-              padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 1.5.h),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          TactilePressable(
+            onTap: () => FeatureComparisonSheet.show(context),
+            pressedScale: 0.97,
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.6.h),
+              decoration: BoxDecoration(
+                color: isDark
+                    ? const Color(0xFF8E2DE2).withValues(alpha: 0.12)
+                    : const Color(0xFF8E2DE2).withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(
+                  color: const Color(0xFF8E2DE2).withValues(alpha: 0.4),
+                  width: 1.2,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.compare_arrows_rounded, color: Color(0xFF8E2DE2), size: 20),
+                  SizedBox(width: 2.5.w),
+                  Text(
+                    AppLocalizations.of(context)?.compareAllPlanFeatures ?? 'Compare All Plan Features',
+                    style: TextStyle(
+                      fontSize: AppTypography.bodySmall,
+                      fontWeight: AppTypography.bold,
+                      color: isDark ? const Color(0xFFD1B2FF) : const Color(0xFF6A1B9A),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
 
@@ -232,7 +268,7 @@ class VipTabView extends StatelessWidget {
               text,
               style: TextStyle(
                 color: const Color(0xFFF0E6FF),
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTypography.semiBold,
                 fontSize: AppTypography.bodyLarge,
               ),
             ),
@@ -256,7 +292,7 @@ class VipTabView extends StatelessWidget {
                 'Secure 256-bit SSL Encrypted Payment',
                 style: TextStyle(
                   fontSize: AppTypography.labelSmall,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTypography.semiBold,
                   color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                 ),
               ),
@@ -286,7 +322,7 @@ class VipTabView extends StatelessWidget {
           label,
           style: TextStyle(
             fontSize: AppTypography.labelMedium,
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTypography.bold,
             color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
           ),
         ),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:banjarabio/core/services/persistent_cache_manager.dart';
@@ -192,11 +193,9 @@ class _InAppNotificationBannerState
                                   widget.payload.title!,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 14,
-                                    fontFamily: 'Outfit',
-                                    color: Color(0xFF1F2937),
+                                  style: AppTypography.headingStyle(
+                                    fontSize: AppTypography.bodyLarge,
+                                    color: const Color(0xFF1F2937),
                                     letterSpacing: -0.2,
                                   ),
                                 ),
@@ -207,7 +206,7 @@ class _InAppNotificationBannerState
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                    fontSize: 12.5,
+                                    fontSize: AppTypography.bodyMedium,
                                     color: Colors.grey.shade700,
                                     height: 1.3,
                                   ),
@@ -226,19 +225,19 @@ class _InAppNotificationBannerState
                             color: const Color(0xFFE91E63).withValues(alpha: 0.08),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Row(
+                          child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
                                 'View',
                                 style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFE91E63),
+                                  fontSize: AppTypography.bodyMedium,
+                                  fontWeight: AppTypography.bold,
+                                  color: const Color(0xFFE91E63),
                                 ),
                               ),
-                              SizedBox(width: 2),
-                              Icon(
+                              const SizedBox(width: 2),
+                              const Icon(
                                 Icons.chevron_right_rounded,
                                 color: Color(0xFFE91E63),
                                 size: 16,
@@ -271,8 +270,8 @@ class _InAppNotificationBannerState
       child: Text(
         label.toUpperCase(),
         style: TextStyle(
-          fontSize: 9.5,
-          fontWeight: FontWeight.w800,
+          fontSize: AppTypography.labelMedium,
+          fontWeight: AppTypography.extraBold,
           color: color,
           letterSpacing: 0.5,
         ),
@@ -347,7 +346,7 @@ class _InAppNotificationBannerState
         ),
       ),
       child: Center(
-        child: Text(icon, style: const TextStyle(fontSize: 20)),
+        child: Text(icon, style: TextStyle(fontSize: AppTypography.headingLarge)),
       ),
     );
   }

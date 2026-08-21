@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
@@ -57,7 +58,7 @@ class FAQScreen extends StatelessWidget {
               title: Text(
                 faqs[index]['question']!,
                 style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTypography.bold,
                   color: theme.colorScheme.primary,
                 ),
               ),

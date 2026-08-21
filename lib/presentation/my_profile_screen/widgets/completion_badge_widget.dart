@@ -59,8 +59,8 @@ class CompletionBadgeWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Badge row — all tiers
-        SizedBox(
-          height: 5.5.h,
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 0.5.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: CompletionTier.values.map((tier) {
@@ -100,7 +100,7 @@ class CompletionBadgeWidget extends StatelessWidget {
                       '${nextTier.minPct - completionPercentage}% more to unlock ${nextTier.label}!',
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: nextTier.color,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: AppTypography.bold,
                         fontSize: AppTypography.labelMedium,
                       ),
                     ),
@@ -127,14 +127,14 @@ class CompletionBadgeWidget extends StatelessWidget {
             ),
             child: Row(
               children: [
-                const Text('🏆', style: TextStyle(fontSize: 16)),
+                Text('🏆', style: TextStyle(fontSize: AppTypography.headingSmall)),
                 SizedBox(width: 2.w),
                 Expanded(
                   child: Text(
                     'Profile 100% Complete — Champion Badge Unlocked!',
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: const Color(0xFF6A1B9A),
-                      fontWeight: FontWeight.w800,
+                      fontWeight: AppTypography.extraBold,
                       fontSize: AppTypography.labelMedium,
                     ),
                   ),
@@ -164,7 +164,7 @@ class _BadgeIcon extends StatelessWidget {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 400),
       curve: Curves.easeOutBack,
-      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
+      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.4.h),
       decoration: BoxDecoration(
         color: isCurrent
             ? tier.color.withValues(alpha: 0.12)
@@ -185,12 +185,12 @@ class _BadgeIcon extends StatelessWidget {
               style: TextStyle(fontSize: isCurrent ? 18 : 14),
             ),
           ),
-          SizedBox(height: 0.3.h),
+          SizedBox(height: 0.2.h),
           Text(
             tier.label,
             style: TextStyle(
               fontSize: AppTypography.labelSmall,
-              fontWeight: isCurrent ? FontWeight.w800 : FontWeight.w500,
+              fontWeight: isCurrent ? AppTypography.extraBold : AppTypography.medium,
               color: isAchieved
                   ? tier.color
                   : Colors.grey.withValues(alpha: 0.5),

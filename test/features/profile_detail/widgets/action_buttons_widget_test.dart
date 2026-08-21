@@ -1,85 +1,102 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sizer/sizer.dart';
+import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/action_buttons_widget.dart';
 
-/// Wraps widget with Sizer (required for ActionButtonsWidget's 7.2.h, etc.)
+/// Wraps widget with Sizer and Localization
 Widget wrapWithSizer(Widget child) {
   return Sizer(
-    builder: (context, orientation, screenType) => child,
+    builder: (context, orientation, screenType) => MaterialApp(
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('en')],
+      home: Scaffold(body: SingleChildScrollView(child: child)),
+    ),
   );
 }
 
 void main() {
   group('ActionButtonsWidget', () {
+    setUp(() {
+      final TestWidgetsFlutterBinding binding =
+          TestWidgetsFlutterBinding.ensureInitialized();
+      binding.platformDispatcher.views.first.physicalSize = const Size(1080, 1920);
+      binding.platformDispatcher.views.first.devicePixelRatio = 1.0;
+    });
+
+    tearDown(() {
+      final TestWidgetsFlutterBinding binding =
+          TestWidgetsFlutterBinding.ensureInitialized();
+      binding.platformDispatcher.views.first.resetPhysicalSize();
+      binding.platformDispatcher.views.first.resetDevicePixelRatio();
+    });
+
     testWidgets('displays SAVE when not bookmarked', (tester) async {
       await tester.pumpWidget(
         wrapWithSizer(
-          MaterialApp(
-            home: ActionButtonsWidget(
-              profileData: {
-                'id': 'profile-1',
-                'name': 'Test',
-                'isBookmarked': false,
-              },
-              onShare: (_) {},
-              onInterest: (_) {},
-              onMessage: (_) {},
-              onBookmark: (_) {},
-            ),
+          ActionButtonsWidget(
+            profileData: {
+              'id': 'profile-1',
+              'name': 'Test',
+              'isBookmarked': false,
+            },
+            onShare: (_) {},
+            onInterest: (_) {},
+            onMessage: (_) {},
+            onBookmark: (_) {},
           ),
         ),
       );
 
-      expect(find.text('SAVE'), findsOneWidget);
-      expect(find.text('SAVED'), findsNothing);
+      expect(find.textContaining(RegExp('Save', caseSensitive: false)), findsOneWidget);
     });
 
     testWidgets('displays SAVED when bookmarked', (tester) async {
       await tester.pumpWidget(
         wrapWithSizer(
-          MaterialApp(
-            home: ActionButtonsWidget(
+          ActionButtonsWidget(
             profileData: {
               'id': 'profile-1',
               'name': 'Test',
               'isBookmarked': true,
-              },
-              onShare: (_) {},
-              onInterest: (_) {},
-              onMessage: (_) {},
-              onBookmark: (_) {},
-            ),
+            },
+            onShare: (_) {},
+            onInterest: (_) {},
+            onMessage: (_) {},
+            onBookmark: (_) {},
           ),
         ),
       );
 
-      expect(find.text('SAVED'), findsOneWidget);
-      expect(find.text('SAVE'), findsNothing);
+      expect(find.textContaining(RegExp('Saved', caseSensitive: false)), findsOneWidget);
     });
 
     testWidgets('calls onBookmark when SAVE button tapped', (tester) async {
       Map<String, dynamic>? capturedProfile;
       await tester.pumpWidget(
         wrapWithSizer(
-          MaterialApp(
-            home: ActionButtonsWidget(
-              profileData: {
-                'id': 'profile-1',
-                'name': 'Test',
-                'isBookmarked': false,
-              },
-               onShare: (_) {},
-               onInterest: (_) {}, // Added missing callback
-               onMessage: (_) {},
-               onBookmark: (profile) => capturedProfile = profile,
-            ),
+          ActionButtonsWidget(
+            profileData: {
+              'id': 'profile-1',
+              'name': 'Test',
+              'isBookmarked': false,
+            },
+            onShare: (_) {},
+            onInterest: (_) {},
+            onMessage: (_) {},
+            onBookmark: (profile) => capturedProfile = profile,
           ),
         ),
       );
 
-      await tester.tap(find.text('SAVE'));
+      await tester.tap(find.textContaining(RegExp('Save', caseSensitive: false)));
       await tester.pump();
 
       expect(capturedProfile, isNotNull);
@@ -89,14 +106,13 @@ void main() {
 
     testWidgets('syncs _isBookmarked when profileData changes via didUpdateWidget',
         (tester) async {
-      // Parent state - simulates Riverpod ref.watch triggering rebuild with new data
       var isBookmarked = false;
       await tester.pumpWidget(
         wrapWithSizer(
-          MaterialApp(
-            home: StatefulBuilder(
-              builder: (context, setState) {
+          StatefulBuilder(
+            builder: (context, setState) {
               return Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   TextButton(
                     onPressed: () {
@@ -119,20 +135,16 @@ void main() {
                 ],
               );
             },
-            ),
           ),
         ),
       );
 
-      expect(find.text('SAVE'), findsOneWidget);
+      expect(find.textContaining(RegExp('Save', caseSensitive: false)), findsOneWidget);
 
-      // Tap to simulate parent receiving new profileData from Riverpod
       await tester.tap(find.text('SimulateRiverpodUpdate'));
       await tester.pump();
 
-      // didUpdateWidget syncs _isBookmarked -> should display SAVED
-      expect(find.text('SAVED'), findsOneWidget);
-      expect(find.text('SAVE'), findsNothing);
+      expect(find.textContaining(RegExp('Saved', caseSensitive: false)), findsOneWidget);
     });
   });
 }

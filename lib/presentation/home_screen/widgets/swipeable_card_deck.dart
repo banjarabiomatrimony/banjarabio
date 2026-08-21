@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
-import 'package:banjarabio/core/app_export.dart';
-import 'package:banjarabio/core/theme/app_gradients.dart';
-import 'package:banjarabio/widgets/trust_score_badge.dart';
-
-import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/core/theme/app_gradients.dart';
+import 'package:banjarabio/core/models/profile_model.dart';
+import 'package:banjarabio/presentation/home_screen/widgets/profile_card_widget.dart';
 
 /// Tinder-style swipeable card deck widget.
 class SwipeableCardDeck extends StatefulWidget {
@@ -49,9 +47,6 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
   late Animation<double> _heartScaleAnim;
 
   bool _showHeartBurst = false;
-
-  // Current photo index for the top card
-  int _currentPhotoIndex = 0;
 
   @override
   void initState() {
@@ -149,7 +144,6 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
 
         setState(() {
           _currentIndex++;
-          _currentPhotoIndex = 0;
           _dragPosition = Offset.zero;
           _dragAngle = 0;
         });
@@ -211,7 +205,6 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
     // Move to next card
     setState(() {
       _currentIndex++;
-      _currentPhotoIndex = 0;
     });
 
     // Check if we need to load more
@@ -238,13 +231,20 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
               ..._buildBackgroundCards(),
 
               // Top card (draggable)
-              _buildTopCard(),
+              Positioned.fill(
+                child: _buildTopCard(),
+              ),
 
               // Swipe decision overlays
-              _buildSwipeOverlays(),
+              Positioned.fill(
+                child: _buildSwipeOverlays(),
+              ),
 
               // Heart burst animation
-              if (_showHeartBurst) _buildHeartBurst(),
+              if (_showHeartBurst)
+                Positioned.fill(
+                  child: Center(child: _buildHeartBurst()),
+                ),
             ],
           ),
         ),
@@ -263,14 +263,14 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
       final profile = widget.profiles[index];
       cards.add(
         Positioned(
-          top: (i * 8).toDouble(),
-          left: (i * 4).toDouble(),
-          right: (i * 4).toDouble(),
-          bottom: (i * 8).toDouble(),
+          top: (i * 6).toDouble(),
+          left: (i * 3).toDouble(),
+          right: (i * 3).toDouble(),
+          bottom: (i * 6).toDouble(),
           child: Opacity(
             opacity: 1.0 - (i * 0.15),
             child: Transform.scale(
-              scale: 1.0 - (i * 0.04),
+              scale: 1.0 - (i * 0.035),
               child: RepaintBoundary(
                 child: _buildProfileCard(profile, isBackground: true),
               ),
@@ -307,58 +307,106 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
 
   Widget _buildSwipeOverlays() {
     final dx = _dragPosition.dx;
-    final opacity = (dx.abs() / 150).clamp(0.0, 1.0);
+    if (dx == 0) return const SizedBox.shrink();
+
+    final opacity = (dx.abs() / 140).clamp(0.0, 1.0);
+    final scale = 0.9 + (dx.abs() / 300).clamp(0.0, 0.25);
 
     return IgnorePointer(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 6.w),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
+        child: Stack(
           children: [
-            // NOPE label (left swipe)
-            Opacity(
-              opacity: dx < 0 ? opacity : 0,
-              child: Transform.rotate(
-                angle: 0.2,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.redAccent, width: 3),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(AppLocalizations.of(context)?.skip ?? 'SKIP',
-                    style: TextStyle(
-                      color: Colors.redAccent,
-                      fontSize: AppTypography.headingLarge,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 2,
+            // NOPE / PASS stamp (left swipe)
+            if (dx < 0)
+              Align(
+                alignment: Alignment.topRight,
+                child: Opacity(
+                  opacity: opacity,
+                  child: Transform.scale(
+                    scale: scale,
+                    child: Transform.rotate(
+                      angle: 0.18,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 4.5.w, vertical: 0.8.h),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withValues(alpha: 0.4),
+                          border: Border.all(color: const Color(0xFFFF3366), width: 3),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFFFF3366).withValues(alpha: 0.5),
+                              blurRadius: 16,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.close_rounded, color: Color(0xFFFF3366), size: 24),
+                            const SizedBox(width: 6),
+                            Text(
+                              AppLocalizations.of(context)?.skip ?? 'PASS',
+                              style: TextStyle(
+                                color: const Color(0xFFFF3366),
+                                fontSize: AppTypography.headingMedium,
+                                fontWeight: AppTypography.black,
+                                letterSpacing: 2,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            // LIKE label (right swipe)
-            Opacity(
-              opacity: dx > 0 ? opacity : 0,
-              child: Transform.rotate(
-                angle: -0.2,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.greenAccent, width: 3),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(AppLocalizations.of(context)?.interest ?? 'INTEREST',
-                    style: TextStyle(
-                      color: Colors.greenAccent,
-                      fontSize: AppTypography.headingLarge,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 2,
+            // LIKE / INTEREST stamp (right swipe)
+            if (dx > 0)
+              Align(
+                alignment: Alignment.topLeft,
+                child: Opacity(
+                  opacity: opacity,
+                  child: Transform.scale(
+                    scale: scale,
+                    child: Transform.rotate(
+                      angle: -0.18,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 4.5.w, vertical: 0.8.h),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withValues(alpha: 0.4),
+                          border: Border.all(color: const Color(0xFF10B981), width: 3),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF10B981).withValues(alpha: 0.5),
+                              blurRadius: 16,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.favorite_rounded, color: Color(0xFF10B981), size: 24),
+                            const SizedBox(width: 6),
+                            Text(
+                              AppLocalizations.of(context)?.interest ?? 'INTEREST',
+                              style: TextStyle(
+                                color: const Color(0xFF10B981),
+                                fontSize: AppTypography.headingMedium,
+                                fontWeight: AppTypography.black,
+                                letterSpacing: 2,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
           ],
         ),
       ),
@@ -367,290 +415,91 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
 
   Widget _buildProfileCard(ProfileModel profile,
       {required bool isBackground}) {
-    // 🧬 PERFORMANCE: Convert to display map lazily ONLY for the rendered card.
-    final displayMap = profile.toDisplayMap();
-    final theme = Theme.of(context);
-    
-    final name = profile.fullName;
-    final age = profile.age.toString();
-    final photos = (displayMap['photos'] as List<dynamic>?) ?? [];
-    
-    final mainPhoto = photos.isNotEmpty
-        ? (photos[isBackground ? 0 : _currentPhotoIndex.clamp(0, photos.length - 1)] as Map<String, dynamic>)['url']?.toString() ?? ''
-        : '';
-        
-    final location = profile.locationExcludingVillage;
-    final education = profile.education;
-    final profession = profile.profession;
-    final trustScore = profile.trustScore;
-    final isVerified = profile.isVerified;
-
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 3.w),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.15),
-            blurRadius: 8,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            // Full-screen photo with tap regions for photo cycling
-            if (!isBackground)
-              GestureDetector(
-                onTapUp: (details) {
-                  if (photos.length <= 1) return;
-                  final width = context.size?.width ?? 100;
-                  if (details.localPosition.dx < width * 0.3) {
-                    // Left tap — previous photo
-                    setState(() {
-                      _currentPhotoIndex =
-                          (_currentPhotoIndex - 1).clamp(0, photos.length - 1);
-                    });
-                  } else if (details.localPosition.dx > width * 0.7) {
-                    // Right tap — next photo
-                    setState(() {
-                      _currentPhotoIndex =
-                          (_currentPhotoIndex + 1).clamp(0, photos.length - 1);
-                    });
-                  }
-                },
-                child: CustomImageWidget(
-                  imageUrl: mainPhoto,
-                  fit: BoxFit.cover,
-                ),
-              )
-            else
-              CustomImageWidget(
-                imageUrl: mainPhoto,
-                fit: BoxFit.cover,
-              ),
-
-            // Photo indicators (dots at top)
-            if (!isBackground && photos.length > 1)
-              Positioned(
-                top: 1.5.h,
-                left: 3.w,
-                right: 3.w,
-                child: Row(
-                  children: List.generate(photos.length, (i) {
-                    final isActive = i == _currentPhotoIndex;
-                    return Expanded(
-                      child: Container(
-                        height: 3,
-                        margin: EdgeInsets.symmetric(horizontal: 0.5.w),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(2),
-                          color: isActive
-                              ? Colors.white
-                              : Colors.white.withValues(alpha: 0.4),
-                        ),
-                      ),
-                    );
-                  }),
-                ),
-              ),
-
-            // Bottom gradient overlay
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: 40.h,
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black.withValues(alpha: 0.3),
-                      Colors.black.withValues(alpha: 0.85),
-                    ],
-                    stops: const [0.0, 0.4, 1.0],
-                  ),
-                ),
-              ),
-            ),
-
-            // Profile info at bottom
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Padding(
-                padding: EdgeInsets.all(5.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Name + Age + Verified
-                    Row(
-                      children: [
-                        Flexible(
-                          child: Text(
-                            '$name${age.isNotEmpty ? ', $age' : ''}',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: AppTypography.headingMedium,
-                              fontWeight: FontWeight.w800,
-                              shadows: const [
-                                Shadow(
-                                    blurRadius: 10,
-                                    color: Colors.black54),
-                              ],
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        if (isVerified) ...[
-                          SizedBox(width: 2.w),
-                          Icon(Icons.verified,
-                              color: Colors.blueAccent, size: 18.sp),
-                        ],
-                        if (trustScore >= 50) ...[
-                          SizedBox(width: 1.w),
-                          TrustScoreBadge(
-                              score: trustScore, size: 3.5.h),
-                          Text(
-                            location, // Formerly city
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ],
-                    ),
-                    SizedBox(height: 0.2.h),
-                    Text(
-                      location, // Formerly city
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: Colors.white.withValues(
-                          alpha: 0.9,
-                        ),
-                        fontWeight: FontWeight.w500,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-
-                    SizedBox(height: 0.5.h),
-
-                    // Tags
-                    Wrap(
-                      spacing: 2.w,
-                      runSpacing: 0.8.h,
-                      children: [
-                        if (profession.isNotEmpty)
-                          _buildInfoTag(Icons.work_outline, profession, theme),
-                        if (education.isNotEmpty)
-                          _buildInfoTag(Icons.school_outlined, education, theme),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInfoTag(IconData icon, String text, ThemeData theme) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.5.h),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-            color: Colors.white.withValues(alpha: 0.2), width: 0.5),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: Colors.white70, size: 11.sp),
-          SizedBox(width: 1.w),
-          Text(
-            text,
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.9),
-              fontSize: AppTypography.labelMedium,
-              fontWeight: FontWeight.w500,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 2.w),
+      child: ProfileCardWidget(
+        profile: profile,
+        showActionButtons: false,
+        onTap: () => widget.onTap(profile),
+        onBookmark: () => widget.onBookmark(profile),
+        onShare: (p) => widget.onShare(p),
+        onInterest: (p) => widget.onInterest(p),
       ),
     );
   }
 
   Widget _buildActionButtons(BuildContext context) {
+    final topProfile = _topProfileOrNull;
+    final isBookmarked = topProfile?.isBookmarked ?? false;
+
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 8.w),
+      padding: EdgeInsets.symmetric(vertical: 0.6.h, horizontal: 4.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          // Skip button
+          // 1. ❌ Skip / Pass button
           _buildCircularButton(
             icon: Icons.close_rounded,
             gradient: const LinearGradient(
-              colors: [Color(0xFFFF6B6B), Color(0xFFEE5A24)],
+              colors: [Color(0xFFFF416C), Color(0xFFFF4B2B)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            size: 7.h,
-            iconSize: 22.sp,
+            size: 5.4.h,
+            iconSize: 18.sp,
             onPressed: _handleButtonSkip,
-            label: AppLocalizations.of(context)?.skip ?? 'Skip',
+            label: AppLocalizations.of(context)?.skip ?? 'Pass',
           ),
 
-          // Bookmark button
+          // 2. 🔖 Bookmark / Shortlist button
           _buildCircularButton(
-            icon: Icons.bookmark_outline_rounded,
-            gradient: const LinearGradient(
-              colors: [Color(0xFFFFA726), Color(0xFFEF6C00)],
-            ),
-            size: 5.5.h,
-            iconSize: 16.sp,
+            icon: isBookmarked ? Icons.bookmark_rounded : Icons.bookmark_outline_rounded,
+            gradient: isBookmarked
+                ? const LinearGradient(
+                    colors: [Color(0xFFF59E0B), Color(0xFFD97706)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )
+                : LinearGradient(
+                    colors: [
+                      Colors.grey.shade800,
+                      Colors.grey.shade700,
+                    ],
+                  ),
+            size: 4.5.h,
+            iconSize: 15.sp,
             onPressed: () {
               final profile = _topProfileOrNull;
               if (profile != null) {
-                HapticFeedback.lightImpact();
+                HapticFeedback.mediumImpact();
                 widget.onBookmark(profile);
               }
             },
-            label: AppLocalizations.of(context)?.save ?? 'Save',
+            label: isBookmarked
+                ? (AppLocalizations.of(context)?.saved ?? 'Saved')
+                : (AppLocalizations.of(context)?.save ?? 'Shortlist'),
           ),
 
-          // Super Like button
+          // 3. ⭐ Super Like button
           _buildCircularButton(
             icon: Icons.star_rounded,
             gradient: const LinearGradient(
-              colors: [Color(0xFF4FC3F7), Color(0xFF1976D2)],
+              colors: [Color(0xFF38BDF8), Color(0xFF0284C7)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            size: 5.5.h,
+            size: 4.5.h,
             iconSize: 16.sp,
             onPressed: _handleSuperLike,
             label: AppLocalizations.of(context)?.textSuper ?? 'Super',
           ),
 
-          // Interest button
+          // 4. 💖 Express Interest / Like button
           _buildCircularButton(
             icon: Icons.favorite_rounded,
-            gradient: AppGradients.romance,
-            size: 7.h,
-            iconSize: 22.sp,
+            gradient: AppGradients.love,
+            size: 5.4.h,
+            iconSize: 19.sp,
             onPressed: _handleButtonInterest,
             label: AppLocalizations.of(context)?.interest ?? 'Interest',
           ),
@@ -670,32 +519,45 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        GestureDetector(
-          onTap: onPressed,
-          child: Container(
-            width: size,
-            height: size,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: gradient,
-              boxShadow: [
-                BoxShadow(
-                  color: gradient.colors.first.withValues(alpha: 0.4),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              HapticFeedback.lightImpact();
+              onPressed();
+            },
+            customBorder: const CircleBorder(),
+            child: Container(
+              width: size,
+              height: size,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: gradient,
+                border: Border.all(
+                  color: Colors.white.withValues(alpha: 0.35),
+                  width: 1.2,
                 ),
-              ],
+                boxShadow: [
+                  BoxShadow(
+                    color: gradient.colors.first.withValues(alpha: 0.40),
+                    blurRadius: 10,
+                    spreadRadius: 0.5,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Icon(icon, color: Colors.white, size: iconSize),
             ),
-            child: Icon(icon, color: Colors.white, size: iconSize),
           ),
         ),
-        SizedBox(height: 0.5.h),
+        SizedBox(height: 0.2.h),
         Text(
           label,
           style: TextStyle(
-            fontSize: AppTypography.labelSmall,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-            fontWeight: FontWeight.w500,
+            fontSize: AppTypography.labelTiny,
+            color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.90),
+            fontWeight: AppTypography.bold,
+            letterSpacing: 0.2,
           ),
         ),
       ],
@@ -748,7 +610,7 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
           Text(
             AppLocalizations.of(context)?.seenAllProfiles ?? "You've seen all profiles!",
             style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTypography.bold,
             ),
           ),
           SizedBox(height: 1.h),

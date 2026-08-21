@@ -145,7 +145,7 @@ class _VideoIntroScreenState extends State<VideoIntroScreen> {
               const Icon(Icons.videocam, size: 80, color: Colors.pink),
               SizedBox(height: 2.h),
               Text(AppLocalizations.of(context)?.recordAShortIntro ?? 'Record a Short Intro',
-                style: TextStyle(fontSize: AppTypography.headingSmall, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: AppTypography.headingSmall, fontWeight: AppTypography.bold),
               ),
               SizedBox(height: 1.h),
               Text(AppLocalizations.of(context)?.introduceYourselfIn30SecondsTalkAboutYou ?? 'Introduce yourself in 30 seconds. Talk about your family, profession, and expectations.',
@@ -171,7 +171,7 @@ class _VideoIntroScreenState extends State<VideoIntroScreen> {
               const Icon(Icons.check_circle, size: 60, color: Colors.green),
               SizedBox(height: 2.h),
               Text(AppLocalizations.of(context)?.videoRecorded ?? 'Video Recorded!',
-                style: TextStyle(fontSize: AppTypography.bodyLarge, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: AppTypography.bodyLarge, fontWeight: AppTypography.bold),
               ),
               SizedBox(height: 1.h),
               Text(

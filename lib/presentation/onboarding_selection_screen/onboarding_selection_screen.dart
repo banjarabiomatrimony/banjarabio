@@ -112,7 +112,11 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
       onFailure: (error) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Logout failed: $error')),
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context)?.failedToLogout(error) ?? 'Logout failed: $error',
+              ),
+            ),
           );
         }
       },
@@ -313,8 +317,8 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: theme.textTheme.labelMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 12.sp,
+                        fontWeight: AppTypography.bold,
+                        fontSize: AppTypography.bodyMedium,
                         color: isDark ? AppTheme.secondaryDark : AppTheme.secondaryVariantLight,
                         letterSpacing: 0.2,
                       ),
@@ -347,8 +351,8 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                   Text(
                     l10n?.changeLanguage ?? 'भाषा',
                     style: theme.textTheme.labelMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 13.sp,
+                      fontWeight: AppTypography.extraBold,
+                      fontSize: AppTypography.bodyLarge,
                       color: primary,
                     ),
                   ),
@@ -423,14 +427,14 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('🚩', style: TextStyle(fontSize: 11.5.sp)),
+                Text('🚩', style: TextStyle(fontSize: AppTypography.bodyMedium)),
                 SizedBox(width: 1.5.w),
                 Text(
                   'बंजारा समाजाचे #1 बायोडेटा प्लॅटफॉर्म',
                   textAlign: TextAlign.center,
                   style: theme.textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 12.sp,
+                    fontWeight: AppTypography.black,
+                    fontSize: AppTypography.bodyMedium,
                     color: primary,
                   ),
                 ),
@@ -444,9 +448,9 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
             welcome,
             textAlign: TextAlign.center,
             style: theme.textTheme.headlineSmall?.copyWith(
-              fontFamily: AppTheme.headingFontFamily,
-              fontWeight: FontWeight.w900,
-              fontSize: 15.5.sp,
+              fontFamily: AppTypography.headingFontFamily,
+              fontWeight: AppTypography.black,
+              fontSize: AppTypography.headingSmall,
               color: theme.colorScheme.onSurface,
               height: 1.15,
               letterSpacing: -0.3,
@@ -459,10 +463,10 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
             subtitle,
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyMedium?.copyWith(
-              fontFamily: AppTheme.bodyFontFamily,
+              fontFamily: AppTypography.bodyFontFamily,
               color: theme.colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w500,
-              fontSize: 10.5.sp,
+              fontWeight: AppTypography.medium,
+              fontSize: AppTypography.bodySmall,
               height: 1.25,
             ),
           ),
@@ -489,15 +493,11 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
 
   /// CARD 1: Search Matches (Instant Discovery / Relative Search Card)
   Widget _buildSearchMatchesCard(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
-    final lang = Localizations.localeOf(context).languageCode;
-    final isMarathi = lang == 'mr';
-
-    final badgeText = isMarathi ? 'पर्याय १ • लॉगिन न करता' : 'OPTION 1 • NO LOGIN NEEDED';
-    final cardTitle = isMarathi ? 'नातेवाईकांसाठी स्थळ शोधा' : (l10n?.browseMatchesTitle ?? 'Search Matches Directly').replaceAll('🔍', '').trim();
-    final cardSub = isMarathi
-        ? 'अकाऊंट न बनवता मुलासाठी, मुलीसाठी किंवा नातेवाईकांसाठी लगेच स्थळे पहा'
-        : 'Search matches instantly for son, daughter, or relative without creating an account.';
-    final ctaText = isMarathi ? 'नातेवाईकांसाठी स्थळ शोधा 👉' : 'Search Matches Directly 👉';
+    final badgeText = l10n?.option1Badge ?? 'OPTION 1 • NO LOGIN NEEDED';
+    final cardTitle = l10n?.searchMatchesForRelativesTitle ?? 'Find Matches for Relatives';
+    final cardSub = l10n?.searchMatchesForRelativesSubtitle ??
+        'Search thousands of verified profiles for son, daughter, brother or sister directly without creating a profile.';
+    final ctaText = l10n?.searchMatchesForRelativesCta ?? 'Find Matches for Relatives 👉';
 
     return _staggered(
       start: 0.2,
@@ -545,8 +545,8 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                         Text(
                           badgeText,
                           style: theme.textTheme.labelMedium?.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 11.5.sp,
+                            fontWeight: AppTypography.black,
+                            fontSize: AppTypography.bodyMedium,
                             color: const Color(0xFF0284C7),
                             letterSpacing: 0.4,
                           ),
@@ -575,9 +575,9 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
               Text(
                 cardTitle,
                 style: theme.textTheme.titleMedium?.copyWith(
-                  fontFamily: AppTheme.headingFontFamily,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 16.sp,
+                  fontFamily: AppTypography.headingFontFamily,
+                  fontWeight: AppTypography.black,
+                  fontSize: AppTypography.headingSmall,
                   color: theme.colorScheme.onSurface,
                   height: 1.15,
                 ),
@@ -588,9 +588,9 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
               Text(
                 cardSub,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  fontFamily: AppTheme.bodyFontFamily,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w500,
+                  fontFamily: AppTypography.bodyFontFamily,
+                  fontSize: AppTypography.bodyMedium,
+                  fontWeight: AppTypography.medium,
                   color: theme.colorScheme.onSurfaceVariant,
                   height: 1.25,
                 ),
@@ -602,9 +602,9 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                 spacing: 1.8.w,
                 runSpacing: 0.5.h,
                 children: [
-                  _featureChip(theme, isMarathi ? '⚡ विना अकाउंट (No Account Needed)' : '⚡ No Account Needed', isDark),
-                  _featureChip(theme, isMarathi ? '🔍 १ मिनिटात फिल्टर (Quick Search)' : '🔍 1-Min Search', isDark),
-                  _featureChip(theme, isMarathi ? '⭐ १००% मोफत व्ह्यू (Free Access)' : '⭐ Free Access', isDark),
+                  _featureChip(theme, l10n?.chipNoAccount ?? '⚡ No Account Needed', isDark),
+                  _featureChip(theme, l10n?.chipQuickFilter ?? '🔍 1-Min Search', isDark),
+                  _featureChip(theme, l10n?.chipFreeAccess ?? '⭐ 100% Free Access', isDark),
                 ],
               ),
               SizedBox(height: 1.2.h),
@@ -626,8 +626,8 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                     Text(
                       ctaText,
                       style: theme.textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 13.5.sp,
+                        fontWeight: AppTypography.black,
+                        fontSize: AppTypography.bodyLarge,
                         color: const Color(0xFF0284C7),
                       ),
                     ),
@@ -643,23 +643,11 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
 
   /// CARD 2: Create My Biodata (Luxurious Primary Hero Card)
   Widget _buildCreateBiodataCard(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
-    final lang = Localizations.localeOf(context).languageCode;
-    final isMarathi = lang == 'mr';
-
-    final badgeText = _isAuthenticated
-        ? (isMarathi ? 'पर्याय २ • प्रोफाईल तयार करा' : 'OPTION 2 • CREATE YOUR PROFILE')
-        : (isMarathi ? 'पर्याय २ • मोफत नोंदणी' : 'OPTION 2 • MOST POPULAR • 100% FREE');
-    final cardTitle = isMarathi ? 'स्वतःचा / उमेदवाराचा बायोडेटा बनवा' : (l10n?.createMyBiodata ?? 'Create My Biodata');
-    final cardSub = _isAuthenticated
-        ? (isMarathi
-            ? 'तुमचा बायोडेटा तयार करा आणि योग्य जोडीदार शोधा'
-            : 'Create your biodata to receive interest from verified matches.')
-        : (isMarathi
-            ? 'पूर्ण विवाह बायोडेटा बनवून फोटो, मोबाईल नंबर आणि PDF डाउनलोड करा'
-            : 'Create official biodata to view photos, mobile numbers & download PDF.');
-    final ctaText = _isAuthenticated
-        ? (isMarathi ? 'प्रोफाईल तयार करा ✨' : 'Create My Biodata Now ✨')
-        : (isMarathi ? 'लॉगिन करा आणि बायोडेटा बनवा ✨' : 'Login & Create Biodata ✨');
+    final badgeText = l10n?.option2Badge ?? 'OPTION 2 • MOST POPULAR • 100% FREE';
+    final cardTitle = l10n?.createBiodataForSelfOrCandidateTitle ?? (l10n?.createMyBiodata ?? 'Create My Biodata');
+    final cardSub = l10n?.createBiodataForSelfOrCandidateSubtitle ??
+        'Create official biodata to view photos, mobile numbers & download PDF.';
+    final ctaText = l10n?.loginAndCreateBiodataCta ?? 'Login & Create Biodata ✨';
 
     return _staggered(
       start: 0.35,
@@ -714,13 +702,13 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text('⭐', style: TextStyle(fontSize: 11)),
+                        Text('⭐', style: TextStyle(fontSize: AppTypography.bodySmall)),
                         SizedBox(width: 1.w),
                         Text(
                           badgeText,
                           style: theme.textTheme.labelMedium?.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 11.5.sp,
+                            fontWeight: AppTypography.black,
+                            fontSize: AppTypography.bodyMedium,
                             color: const Color(0xFF92400E),
                             letterSpacing: 0.4,
                           ),
@@ -747,9 +735,9 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
               Text(
                 cardTitle,
                 style: theme.textTheme.titleMedium?.copyWith(
-                  fontFamily: AppTheme.headingFontFamily,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 16.5.sp,
+                  fontFamily: AppTypography.headingFontFamily,
+                  fontWeight: AppTypography.black,
+                  fontSize: AppTypography.headingSmall,
                   color: Colors.white,
                   height: 1.15,
                 ),
@@ -760,9 +748,9 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
               Text(
                 cardSub,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  fontFamily: AppTheme.bodyFontFamily,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w500,
+                  fontFamily: AppTypography.bodyFontFamily,
+                  fontSize: AppTypography.bodyMedium,
+                  fontWeight: AppTypography.medium,
                   color: Colors.white.withValues(alpha: 0.9),
                   height: 1.25,
                 ),
@@ -773,19 +761,19 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
               _heroBenefitRow(
                 theme,
                 '✨',
-                isMarathi ? '२ मिनिटांत सुंदर डिजिटल PDF बायोडेटा बनवा' : 'Create Beautiful PDF Biodata in 2 Mins',
+                l10n?.benefitPdfBiodata ?? 'Create Beautiful PDF Biodata in 2 Mins',
               ),
               SizedBox(height: 0.4.h),
               _heroBenefitRow(
                 theme,
                 '📱',
-                isMarathi ? 'WhatsApp वर थेट नातेवाईकांसोबत शेअर करा' : 'Share Directly on WhatsApp with Families',
+                l10n?.benefitShareWhatsApp ?? 'Share Directly on WhatsApp with Families',
               ),
               SizedBox(height: 0.4.h),
               _heroBenefitRow(
                 theme,
                 '🛡️',
-                isMarathi ? '१००% पडताळणी केलेले बंजारा समाज प्रोफाईल्स' : '100% Verified Community Profiles',
+                l10n?.benefitVerifiedProfiles ?? '100% Verified Community Profiles',
               ),
               SizedBox(height: 1.2.h),
 
@@ -814,8 +802,8 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                     Text(
                       ctaText,
                       style: theme.textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 13.5.sp,
+                        fontWeight: AppTypography.black,
+                        fontSize: AppTypography.bodyLarge,
                         color: const Color(0xFF451A03),
                       ),
                     ),
@@ -840,8 +828,8 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
       child: Text(
         text,
         style: theme.textTheme.bodySmall?.copyWith(
-          fontSize: 11.5.sp,
-          fontWeight: FontWeight.w600,
+          fontSize: AppTypography.bodyMedium,
+          fontWeight: AppTypography.semiBold,
           color: isDark ? Colors.white70 : const Color(0xFF334155),
         ),
       ),
@@ -851,14 +839,14 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
   Widget _heroBenefitRow(ThemeData theme, String emoji, String text) {
     return Row(
       children: [
-        Text(emoji, style: TextStyle(fontSize: 11.5.sp)),
+        Text(emoji, style: TextStyle(fontSize: AppTypography.bodyMedium)),
         SizedBox(width: 1.5.w),
         Expanded(
           child: Text(
             text,
             style: theme.textTheme.bodyMedium?.copyWith(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w600,
+              fontSize: AppTypography.bodyMedium,
+              fontWeight: AppTypography.semiBold,
               color: Colors.white.withValues(alpha: 0.95),
             ),
           ),
@@ -871,9 +859,6 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
   // 3.5 ACCOUNT ACTION STRIP (Login / Logout)
   // ══════════════════════════════════════════════
   Widget _buildAccountActionStrip(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
-    final lang = Localizations.localeOf(context).languageCode;
-    final isMarathi = lang == 'mr';
-
     return _staggered(
       start: 0.55, end: 0.8,
       child: Column(
@@ -895,10 +880,10 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                     Icon(Icons.logout_rounded, size: 14.sp, color: theme.colorScheme.onSurfaceVariant),
                     SizedBox(width: 1.5.w),
                     Text(
-                      isMarathi ? 'लॉगआउट करा' : 'Logout',
+                      l10n?.logout ?? 'Logout',
                       style: theme.textTheme.labelMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 12.sp,
+                        fontWeight: AppTypography.bold,
+                        fontSize: AppTypography.bodyMedium,
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
@@ -923,10 +908,10 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                     Icon(Icons.login_rounded, size: 14.sp, color: primary),
                     SizedBox(width: 1.5.w),
                     Text(
-                      isMarathi ? 'प्रोफाईल आहे? लॉगिन करा' : 'Already have a profile? Login',
+                      l10n?.alreadyHaveProfileLogin ?? 'Already have a profile? Login',
                       style: theme.textTheme.labelMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 12.sp,
+                        fontWeight: AppTypography.extraBold,
+                        fontSize: AppTypography.bodyMedium,
                         color: primary,
                       ),
                     ),
@@ -959,8 +944,8 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
           Text(
             needHelp,
             style: theme.textTheme.bodySmall?.copyWith(
-              fontWeight: FontWeight.w600,
-              fontSize: 12.sp,
+              fontWeight: AppTypography.semiBold,
+              fontSize: AppTypography.bodyMedium,
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
@@ -986,8 +971,8 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                       Text(
                         'WhatsApp',
                         style: theme.textTheme.labelMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 13.sp,
+                          fontWeight: AppTypography.extraBold,
+                          fontSize: AppTypography.bodyLarge,
                           color: const Color(0xFF25D366),
                         ),
                       ),
@@ -1015,8 +1000,8 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                       Text(
                         'Call Us',
                         style: theme.textTheme.labelMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 13.sp,
+                          fontWeight: AppTypography.extraBold,
+                          fontSize: AppTypography.bodyLarge,
                           color: primary,
                         ),
                       ),

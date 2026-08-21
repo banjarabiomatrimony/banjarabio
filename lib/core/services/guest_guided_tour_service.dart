@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
@@ -266,8 +267,8 @@ class _TourControlsWidgetState extends State<_TourControlsWidget> {
           label,
           style: TextStyle(
             color: isSelected ? Colors.white : theme.colorScheme.primary,
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
+            fontWeight: AppTypography.bold,
+            fontSize: AppTypography.bodyLarge,
           ),
         ),
       ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/app_export.dart';
-import 'package:banjarabio/core/constants/app_typography.dart';
 
 class TrustScoreShareCard extends StatelessWidget {
   final int score;
@@ -52,15 +51,15 @@ class TrustScoreShareCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(AppLocalizations.of(context)?.banjarabio ?? 'BanjaraBio',
-                    style: TextStyle(fontFamily: AppTheme.headingFontFamily,
+                    style: AppTypography.headingStyle(
                       color: Colors.white,
                       fontSize: AppTypography.headingMedium,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTypography.bold,
                       letterSpacing: 1.2,
                     ),
                   ),
                   Text(AppLocalizations.of(context)?.verifiedCommunityMember ?? 'Verified Community Member',
-                    style: TextStyle(fontFamily: AppTheme.bodyFontFamily,
+                    style: AppTypography.bodyStyle(
                       color: Colors.white70,
                       fontSize: AppTypography.bodySmall,
                     ),
@@ -75,10 +74,10 @@ class TrustScoreShareCard extends StatelessWidget {
           SizedBox(height: 30.sp),
           Text(
             userName,
-            style: TextStyle(fontFamily: AppTheme.headingFontFamily,
+            style: AppTypography.headingStyle(
               color: Colors.white,
               fontSize: AppTypography.headingMedium,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTypography.semiBold,
             ),
           ),
           SizedBox(height: 8.sp),
@@ -90,9 +89,9 @@ class TrustScoreShareCard extends StatelessWidget {
             ),
             child: Text(
               _getBadgeLabel(context, score),
-              style: TextStyle(fontFamily: AppTheme.bodyFontFamily,
+              style: AppTypography.bodyStyle(
                 color: Colors.white,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTypography.bold,
                 fontSize: AppTypography.bodyMedium,
               ),
             ),
@@ -102,7 +101,7 @@ class TrustScoreShareCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(AppLocalizations.of(context)?.joinMeOnBanjarabio ?? 'Join me on BanjaraBio',
-                style: TextStyle(fontFamily: AppTheme.bodyFontFamily,
+                style: AppTypography.bodyStyle(
                   color: Colors.white70,
                   fontSize: AppTypography.bodySmall,
                 ),
@@ -135,17 +134,14 @@ class TrustScoreShareCard extends StatelessWidget {
           children: [
             Text(
               '$score',
-              style: TextStyle(fontFamily: AppTheme.headingFontFamily,
+              style: AppTypography.displayStyle(
                 color: Colors.white,
-                fontSize: AppTypography.displayLarge,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTypography.bold,
               ),
             ),
             Text(AppLocalizations.of(context)?.trustScore ?? 'TRUST SCORE',
-              style: TextStyle(fontFamily: AppTheme.bodyFontFamily,
+              style: AppTypography.captionStyle(
                 color: Colors.white70,
-                fontSize: AppTypography.bodySmall,
-                fontWeight: FontWeight.w500,
                 letterSpacing: 2,
               ),
             ),

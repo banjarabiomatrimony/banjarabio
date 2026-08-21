@@ -51,62 +51,152 @@ class ProfileCardSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       width: double.infinity,
-      height: 62.h,
-      margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+      height: 60.h,
+      margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.2.h),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
+        border: Border.all(
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.08)
+              : Colors.black.withValues(alpha: 0.06),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.06),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Expanded(
-            child: ShimmerWidget.rectangular(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(23),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            // Full-bleed image placeholder
+            const ShimmerWidget.rectangular(
               height: double.infinity,
               shapeBorder: RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                borderRadius: BorderRadius.all(Radius.circular(23)),
               ),
             ),
-          ), // Image area
-          Padding(
-            padding: EdgeInsets.all(4.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ShimmerWidget.rectangular(height: 3.h, width: 50.w), // Name
-                SizedBox(height: 1.h),
-                ShimmerWidget.rectangular(
-                  height: 2.h,
-                  width: 35.w,
-                ), // Subtitle
-                SizedBox(height: 2.h),
-                ShimmerWidget.rectangular(height: 5.h), // Details
-              ],
-            ),
-          ),
-          // Action row skeleton
-          Container(
-            height: 6.h,
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(color: Colors.grey.withValues(alpha: 0.1)),
-              ),
-            ),
-            child: Row(
-              children: List.generate(
-                3,
-                (_) => Expanded(
-                  child: Center(
-                    child: ShimmerWidget.rectangular(height: 2.h, width: 10.w),
+
+            // Top Badges Row
+            Positioned(
+              top: 1.6.h,
+              left: 4.w,
+              right: 4.w,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: ShimmerWidget.rectangular(
+                      height: 3.2.h,
+                      width: 80,
+                      shapeBorder: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
                   ),
+                  const ShimmerWidget.circular(width: 32, height: 32),
+                ],
+              ),
+            ),
+
+            // Bottom Gradient Content Area
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 4.5.w, vertical: 2.h),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.transparent,
+                      Colors.black.withValues(alpha: 0.6),
+                      Colors.black.withValues(alpha: 0.9),
+                    ],
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Name & Age Shimmer
+                    FractionallySizedBox(
+                      widthFactor: 0.65,
+                      child: ShimmerWidget.rectangular(
+                        height: 2.8.h,
+                        shapeBorder: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 0.8.h),
+                    // Occupation & Location Shimmer
+                    FractionallySizedBox(
+                      widthFactor: 0.45,
+                      child: ShimmerWidget.rectangular(
+                        height: 1.6.h,
+                        shapeBorder: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 1.2.h),
+                    // Detail Chips Row
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ShimmerWidget.rectangular(
+                            height: 2.6.h,
+                            shapeBorder: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 2.w),
+                        Expanded(
+                          child: ShimmerWidget.rectangular(
+                            height: 2.6.h,
+                            shapeBorder: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 1.6.h),
+                    // Action Buttons Row
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ShimmerWidget.rectangular(
+                            height: 4.6.h,
+                            shapeBorder: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 3.w),
+                        const ShimmerWidget.circular(width: 44, height: 44),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

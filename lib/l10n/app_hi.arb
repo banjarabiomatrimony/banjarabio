@@ -1,15 +1,957 @@
 {
   "@@locale": "hi",
-  "genderSelectHeading": "आपका लिंग है",
+  "@addClearPhotos": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "@ageAndSurnameSubtitle": {
+    "placeholders": {
+      "age": {
+        "type": "String"
+      },
+      "surname": {
+        "type": "String"
+      }
+    }
+  },
+  "@allInDistrict": {
+    "placeholders": {
+      "district": {
+        "type": "String"
+      }
+    }
+  },
+  "@allInState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "@allPhotosCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "@anErrorOccurred": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@areYouSureDeleteSelectedPhotos": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@bookmarkLimitReached": {
+    "description": "Title when user hits bookmark limit"
+  },
+  "@bookmarksCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@brothersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@bulkDiscount": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "@clanExogamyPillarSubtitle": {
+    "placeholders": {
+      "gotra": {
+        "type": "String"
+      },
+      "maternalGotra": {
+        "type": "String"
+      }
+    }
+  },
+  "@contactUnlocks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@copyLinkSubtitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@countProfileViews": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@criticalFailure": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@curatedProfilesJustForYou": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@dailyRewardClaimedSuccess": {
+    "placeholders": {
+      "rewardName": {
+        "type": "String"
+      }
+    }
+  },
+  "@daysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@daysLeft": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "@daysRemaining": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "@deleteCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@deleteSelectedSharesQuery": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@discountPercentage": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      },
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "@districtInState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "@errorCheckingShareLimits": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@errorCheckingStatus": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@errorCheckingViewLimits": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@errorLoadingAdminData": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@errorLoadingRequests": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@errorOccurred": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@errorPrefix": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@errorWithLabel": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@exitGuestMode": {},
+  "@exploreAsGuest": {},
+  "@extraViewsUnlocked": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedLoadProfile": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSignInGoogle": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToBlockUser": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToDeleteAccount": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToDeletePhotoError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToLoadBookmarks": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToLoadPhotosError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToLoadProfileError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToLoadSubscription": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToLogout": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToSave": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToSavePdf": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToSaveProfile": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToSendMessage": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToStartChat": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToSubmitReport": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToUpdateBookmark": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToUpdatePremiumStatus": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToUpdatePrimaryPhotoError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToUploadPhoto": {
+    "placeholders": {
+      "index": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToVerify": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@fieldRequired": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "@forMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fromContact": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@gunasMatchedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
+  "@handpickedMatches": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@idLabel": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "@interestConfirmationDesc": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@interestConfirmationMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@interestShared": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@languageChanged": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "@loginFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@mamakulAndTandaSubtitle": {
+    "placeholders": {
+      "mamakul": {
+        "type": "String"
+      },
+      "tanda": {
+        "type": "String"
+      }
+    }
+  },
+  "@matchNOfTotal": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "@melavaEventCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@messagingLimitReached": {
+    "description": "Title when user hits messaging limit"
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@mrpPrice": {
+    "placeholders": {
+      "price": {
+        "type": "int"
+      }
+    }
+  },
+  "@nextRefreshTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@noLocationsFoundForQuery": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "@onePhotoLockedTeaser": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@paymentFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@paymentFailedError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@paymentSuccessfulWelcome": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "@pdfSavedToDownloads": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "@percentComplete": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
+  "@percentCompleteBadge": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "@percentMatchBadge": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "@percentTrustBadge": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "@permissionRequiredMessage": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "@photoAddedWithKb": {
+    "placeholders": {
+      "kb": {
+        "type": "int"
+      }
+    }
+  },
+  "@photosCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@photosSelectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@pleaseComplete": {
+    "placeholders": {
+      "fields": {
+        "type": "String"
+      }
+    }
+  },
+  "@pleaseCompleteRequiredFields": {
+    "placeholders": {
+      "section": {
+        "type": "String"
+      }
+    }
+  },
+  "@pointsCount": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
+  "@pricePerMonth": {
+    "placeholders": {
+      "price": {
+        "type": "int"
+      }
+    }
+  },
+  "@profileBoostPerMonth": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@profileSharedVia": {
+    "placeholders": {
+      "profileName": {
+        "type": "String"
+      },
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "@profileSharedWith": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@profileStrengthLabel": {
+    "placeholders": {
+      "strength": {
+        "type": "String"
+      }
+    }
+  },
+  "@profileViewsPerDay": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@referenceWithNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "@referralInviteMessage": {
+    "placeholders": {
+      "link": {
+        "type": "String"
+      }
+    }
+  },
+  "@referralShareMessage": {
+    "placeholders": {
+      "link": {
+        "type": "String"
+      }
+    }
+  },
+  "@requestProcessedSuccessfullyMsg": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "@selfAndMamakulSubtitle": {
+    "placeholders": {
+      "self": {
+        "type": "String"
+      },
+      "mamakul": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareMyProfileWith": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@sharedProfilesWithEachOther": {
+    "description": "Text shown when two users share profiles with each other",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Someone"
+      }
+    }
+  },
+  "@sharedVia": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "@sharesPerMonth": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@siblingsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@sistersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@stepCounterFormat": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@stepNOfTotal": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "@talukaInDistrictState": {
+    "placeholders": {
+      "district": {
+        "type": "String"
+      },
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "@toContact": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@totalSavings": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "@trustScoreShareMessage": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      },
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "@unexpectedError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@unexpectedErrorOccurred": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@unlockMoreVisitors": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@unsavedDraftBodyWithName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@updateFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@uploadFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@verifiedCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@verifyLabel": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@whatsappShareSubtitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@yearsLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@yearsOld": {
+    "placeholders": {
+      "age": {
+        "type": "String"
+      }
+    }
+  },
+  "@youSave": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "@yrs": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ableBodied": "Able-Bodied",
+  "aboutFamily": "About Family",
   "aboutSelf": "स्वयं के बारे में",
   "aboutYourself": "अपने बारे में",
   "abusiveBehavior": "अपमानजनक व्यवहार",
+  "acceptAndConnect": "ACCEPT & CONNECT 💖",
   "account": "खाता",
   "accountAndAllDataDeletedSuccessfully": "खाता और सारा डेटा सफलतापूर्वक हटा दिया गया.",
   "accountDeletion": "खाता हटाना",
+  "acres": "Acres",
   "actionIsIrreversible": "यह क्रिया अपरिवर्तनीय है।",
+  "activeCreators": "सक्रिय निर्माता",
   "activeSubscriptionCancelledNoRefund": "आपकी सक्रिय सदस्यता बिना किसी वापसी के रद्द कर दी जाएगी।",
+  "activity": "Activity",
+  "adCompletedSuccessfully": "विज्ञापन सफलतापूर्वक पूरा हुआ",
   "adFreeExperience": "विज्ञापन-मुक्त अनुभव",
+  "adNotReady": "विज्ञापन अभी तैयार नहीं है। कृपया थोड़ी देर में पुनः प्रयास करें।",
+  "adTemporarilyUnavailable": "विज्ञापन अस्थायी रूप से अनुपलब्ध है",
   "addClearPhotos": "साफ़ तस्वीरें जोड़ें (अधिकतम {max})",
   "addPhoto": "फ़ोटो जोड़ें",
   "addPhotosToYourBiodataProfileToIncreaseV": "दृश्यता और विश्वास बढ़ाने के लिए अपने बायोडाटा प्रोफ़ाइल में फ़ोटो जोड़ें",
@@ -29,24 +971,45 @@
   "advancedFilters": "उन्नत फिल्टर",
   "affluent": "समृद्ध",
   "age": "आयु",
+  "ageAndSurnameSubtitle": "{age} Yrs • {surname}",
+  "ageLabel": "आयु",
   "ageRange": "आयु सीमा",
+  "ageRangeYears": "{min} - {max} yrs",
   "aiBio": "AI बायो",
+  "algorithmInsightsDescription": "Our matchmaking algorithm evaluates authentic Banjara exogamy rules (checking self gotra & maternal gotra separation), Vedic astrological Guna Milan, verified education & income parameters, and mutual partner preferences.",
+  "alignedExpectations": "Aligned Expectations",
+  "all": "All",
   "allInDistrict": "{district} में सभी",
   "allInSelectedDistrict": "All in selected District",
   "allInSelectedState": "All in selected State",
   "allInState": "{state} में सभी",
   "allIndia": "अखिल भारतीय",
   "allPhotosCount": "सभी तस्वीरें ({count}/{max})",
+  "allProfiles": "All Profiles",
   "allYourProfileDataPermanentlyRemoved": "आपका सारा प्रोफ़ाइल डेटा स्थायी रूप से हटा दिया जाएगा।",
   "almostDone": "लगभग पूरा हो गया!",
   "almostDoneReview": "सभी अनुभागों की समीक्षा करें और अपनी प्रोफ़ाइल पूरी करने के लिए \"बायोडेटा सहेजें\" पर क्लिक करें। आपका बायोडेटा आपकी गोपनीयता सेटिंग्स के आधार पर अन्य समुदाय के सदस्यों को दिखाई देगा।",
+  "alreadyHaveProfileLogin": "प्रोफाइल है? लॉगिन करें",
+  "alternateRelativeContactNumberOptional": "Alternate / Relative Contact Number (Optional)",
   "anErrorOccurred": "एक त्रुटि हुई: {error}",
+  "ancestralLand": "Ancestral Land",
+  "ancestralLandHoldingsAcres": "Ancestral Land Holdings (Acres)",
+  "ancestralLandSubtitle": "Filter candidates by family agricultural land ownership",
   "and": " और ",
+  "annual": "वार्षिक",
   "annualIncome": "स्वयं की वार्षिक आय (Self Annual Income)",
   "annualIncomeHint": "केवल आपकी सालाना कमाई (जैसे सैलरी/धंधा)। घर की पूरी सेविंग या बैंक बैलेंस न डालें।",
+  "annualIncomeLabel": "वार्षिक आय",
+  "annualIncomeSalary": "Annual Income / Salary",
+  "annualIncomeSubtitle": "Select candidate yearly income expectations",
   "annulled": "रद्द किया गया",
+  "appGrowth": "ऐप प्रगति",
   "appName": "बंजारा बायो",
+  "apply": "लागू करें",
+  "applyAllFilters": "Apply All Filters",
   "applyFilters": "फ़िल्टर लागू करें",
+  "applyFiltersCount": "Apply Filters ({count} Active)",
+  "applyLocation": "Apply Location",
   "approve": "मंज़ूरी देना",
   "areYouReadyForDiscussions": "क्या आप चर्चा के लिए तैयार हैं?",
   "areYouSureDeleteSelectedPhotos": "क्या आप वाकई {count} फोटो हटाना चाहते हैं?",
@@ -54,141 +1017,242 @@
   "areYouSureLogout": "क्या आप लॉगआउट करना चाहते हैं?",
   "areYouSureYouWantToBlockThisUserYouWillN": "क्या वाकई आपको इस प्रयोगकर्ता को ब्लॉक करना है? आप उनकी प्रोफ़ाइल दोबारा नहीं देख पाएंगे.",
   "areYouSureYouWantToDeleteThisPhoto": "क्या आप निश्चित हैं कि आप इस फ़ोटो को हटाना चाहते हैं?",
-  "bvsMembershipCard": "बणजारा विरासत संघ पहचान पत्र",
-  "bvsMemberId": "BVS सदस्य क्रमांक (उदा. 405812)",
-  "uploadBvsCardPrompt": "अपना बणजारा विरासत संघ (BVS) पहचान पत्र अपलोड करें",
-  "bvsSpecialDiscountBanner": "क्या आप बणजारा विरासत संघ के सदस्य हैं? BVS कार्ड सत्यापित करें और वार्षिक प्लान सिर्फ ₹२०० में पाएं!",
-  "joinBvsNow": "BVS में शामिल हों (यहाँ पंजीकरण करें)",
-  "bvsVerifiedSpecialPlan": "BVS सदस्य विशेष योजना",
-  "bvsTitle": "बणजारा विरासत संघ",
-  "bvsConceptSubtitle": "संकल्पना: माननीय श्री संजयभाऊ राठौड़\nमंत्री, महाराष्ट्र सरकार",
-  "bvsMovementDesc": "बंजारा समाज की एकता और भविष्य को मजबूत करने का एक ऐतिहासिक आंदोलन।",
-  "bvsOfficialEmblems": "आधिकारिक BVS प्रतीक",
-  "bvsUnityEmblemTitle": "एकता मुद्रा",
-  "bvsUnityEmblemDesc": "हाथों की श्रृंखला और बंजारा कढ़ाई",
-  "bvsHeritageEmblemTitle": "विरासत मुद्रा",
-  "bvsHeritageEmblemDesc": "पोहरादेवी और १२+ करोड़ समाज की अस्मिता",
-  "bvsSubsidyCardTitle": "BVS सदस्यों के लिए विशेष छूट!",
-  "bvsSubsidyCardSubtitle": "BanjaraBio पर मैट्रिमोनी सब्सक्रिप्शन में भारी बचत!",
-  "bvsAnnualPlanLabel": "वार्षिक प्लान",
-  "bvsMonthlyPlanLabel": "मासिक प्लान",
-  "bvsAnnualPrice": "₹२०० / वर्ष",
-  "bvsMonthlyPrice": "₹२० / महीना",
-  "bvsVerifiedActiveBadge": "👑 BVS प्रमाणित सदस्य छूट सक्रिय!",
-  "bvsVerifiedActiveDesc": "आपके लिए मासिक प्लान ₹२० और वार्षिक सब्सक्रिप्शन सिर्फ ₹२०० में उपलब्ध है।",
-  "bvsHowToJoinTitle": "BVS सदस्य कैसे बनें और छूट कैसे पाएं?",
-  "bvsStep1Title": "ऑनलाइन पंजीकरण करें",
-  "bvsStep1Desc": "BVS पोर्टल पर अपना विवरण दर्ज करें।",
-  "bvsStep2Title": "मेंबरशिप कार्ड प्राप्त करें",
-  "bvsStep2Desc": "अपना आधिकारिक BVS मेंबर आईडी और डिजिटल पहचान पत्र प्राप्त करें।",
-  "bvsStep3Title": "BanjaraBio पर कार्ड अपलोड करें",
-  "bvsStep3Desc": "BVS कार्ड जोड़कर ₹२००/वर्ष छूट प्लान सक्रिय करें।",
-  "bvsWhatsAppInviteTitle": "WhatsApp ऑटोमेशन आमंत्रण",
-  "bvsShareOnWhatsApp": "WhatsApp पर शेयर करें",
-  "bvsCopyMessageToast": "🚩 BVS आमंत्रण संदेश कॉपी किया गया!",
-  "bvsJoinNowButton": "आज ही BVS के सदस्य बनें (Join Now)",
-  "bvsJoinCardSubtitle": "⚡ BVS पोर्टल पर रजिस्टर करें और ₹२००/वर्ष छूट पाएं",
-  "bvsUploadCardButton": "BVS कार्ड अपलोड करें (छूट पाएं)",
-  "bvsUploadCardPromptSubtitle": "BVS मेंबरशिप कार्ड फोटो अपलोड करें",
-  "bvsCardSelected": "कार्ड चुना गया",
-  "bvsNotRegisteredYet": "अभी तक BVS सदस्य नहीं हैं? यहाँ पंजीकरण करें »",
   "areYouSureYouWantToDeleteYourAccount": "क्या आप इस खाते को हटाने के लिए सुनिश्चित हैं?",
   "askFamilySuggestionsTip": "Ask family members for photo suggestions",
+  "astro36GunaMilanScore": "Astro 36 Guna Milan Score",
+  "astro36GunaSubtitle": "Filter matches by minimum astrological compatibility threshold",
   "atLeastOnePhotoRequired": "कम से कम एक फोटो आवश्यक है",
   "awaitingDivorce": "तलाक प्रतीक्षाधीन",
   "bachelorsDegree": "बैचलर डिग्री",
+  "back": "वापस",
   "backSide": "पीछे का हिस्सा",
   "backToGoogleSignIn": "Google साइन इन पर वापस जाएं",
+  "banjaraBioPro": "बंजाराबायो प्रो",
+  "banjaraClanRoots": "BANJARA CLAN ROOTS",
+  "banjaraGotraClan": "Banjara Gotra (Clan)",
+  "banjaraGotraCustoms": "Banjara Gotra Customs (गोत्र व मोसळ)",
+  "banjaraGotraSelfClan": "Banjara Gotra (Self Clan)",
   "banjaraMember": "बंजारा सदस्य",
+  "banjaraVirasatSangh": "Banjara Virasat Sangh",
   "banjarabio": "BanjaraBio",
+  "basicInformation": "Basic Information",
+  "basicPlanDesc": "आपकी खोज के लिए आवश्यक सुविधाएँ",
+  "basicPlanName": "बेसिक",
+  "benefitPdfBiodata": "२ मिनट में सुंदर PDF बायोडाटा बनाएं",
+  "benefitShareWhatsApp": "WhatsApp पर सीधे शेयर करें",
+  "benefitVerifiedProfiles": "१००% सत्यापित समुदाय प्रोफाइल",
+  "bestTimeToContact": "संपर्क करने का सबसे अच्छा समय",
+  "bestValue": "सर्वोत्तम मूल्य",
+  "biodata": "Biodata",
   "biodataDraftRestored": "बायोडेटा ड्राफ्ट बहाल किया गया!",
   "biodataDraftRestoredSuccess": "Biodata draft restored successfully!",
   "biodataPdf": "बायोडाटा PDF",
+  "biodataPremiumIncluded": "बायोडेटा प्रीमियम शामिल है",
+  "biodataRequired": "बायोडाटा आवश्यक है",
   "biodataSavedSuccessfully": "बायोडाटा सफलतापूर्वक सेव हो गया!",
   "biodataUnlockPlanDesc": "प्रोफेशनल प्रीमियम टेम्प्लेट अनलॉक करें",
   "biodataUnlockPlanName": "प्रीमियम बायोडेटा",
   "birthDetails": "अतिरिक्त जन्म विवरण",
   "birthPlace": "जन्म स्थान",
   "birthPlaceAndTime": "जन्म स्थान और समय",
+  "birthPlaceLabel": "जन्म स्थान",
   "birthTime": "जन्म समय",
+  "birthTimeLabel": "जन्म का समय",
+  "birthTimeVisibleOnPdf": "Birth time & birth place visible on PDF",
   "block": "ब्लॉक करें",
   "blockUser": "खंड उपयोगकर्ता",
   "bloodGroup": "रक्त समूह",
+  "bloodGroupLabel": "रक्त समूह",
   "blurryLowQualityImages": "धुंधली, गहरी या कम गुणवत्ता वाली छवियां",
   "bookmarkLimitReached": "बुकमार्क की सीमा पूरी हो गई",
   "bookmarksCount": "{count} बुकमार्क",
+  "bride": "Bride",
+  "brideGirl": "👧 वधू (Bride)",
+  "brideOption": "👧 Bride (Girl)",
   "bronze": "कांस्य",
   "brother": "भाई",
   "brotherCount": "भाई",
+  "brothersCount": "{count, plural, =1{1 भाई} other{{count} भाई}}",
+  "browseMatchesDesc": "बेटे, बेटी, रिश्तेदार के लिए उपयुक्त रिश्ता खोजें.",
+  "browseMatchesSubtitle": "कुछ सवालों के जवाब दें और उपयुक्त रिश्ते देखें",
+  "browseMatchesTitle": "🔍 रिश्ता खोजें (Browse Matches)",
   "browseProfiles": "प्रोफ़ाइल ब्राउज़ करें",
+  "bulkDiscount": "{percent}% की छूट",
   "business": "व्यवसाय",
   "businessOwner": "व्यवसाय मालिक",
+  "bvsAnnualPlanLabel": "वार्षिक प्लान",
+  "bvsAnnualPrice": "₹२०० / वर्ष",
+  "bvsCardSelected": "कार्ड चुना गया",
+  "bvsConceptSubtitle": "संकल्पना: माननीय श्री संजयभाऊ राठौड़\nमंत्री, महाराष्ट्र सरकार",
+  "bvsCopyMessageToast": "🚩 BVS आमंत्रण संदेश कॉपी किया गया!",
+  "bvsHeritageEmblemDesc": "पोहरादेवी और १२+ करोड़ समाज की अस्मिता",
+  "bvsHeritageEmblemTitle": "विरासत मुद्रा",
+  "bvsHowToJoinTitle": "BVS सदस्य कैसे बनें और छूट कैसे पाएं?",
+  "bvsJoinCardSubtitle": "⚡ BVS पोर्टल पर रजिस्टर करें और ₹२००/वर्ष छूट पाएं",
+  "bvsJoinNowButton": "आज ही BVS के सदस्य बनें (Join Now)",
+  "bvsMember": "🏛️ BVS Member",
+  "bvsMemberId": "BVS सदस्य संख्या (उदा. 405812)",
+  "bvsMembershipCard": "बणजारा विरासत संघ पहचान पत्र",
+  "bvsMonthlyPlanLabel": "मासिक प्लान",
+  "bvsMonthlyPrice": "₹२० / महीना",
+  "bvsMovementDesc": "बंजारा समाज की एकता और भविष्य को मजबूत करने का एक ऐतिहासिक आंदोलन।",
+  "bvsNotRegisteredYet": "अभी तक BVS सदस्य नहीं हैं? यहाँ पंजीकरण करें »",
+  "bvsOfficialEmblems": "आधिकारिक BVS प्रतीक",
+  "bvsShareOnWhatsApp": "WhatsApp पर शेयर करें",
+  "bvsSpecialDiscountBanner": "क्या आप बणजारा विरासत संघ के सदस्य हैं? BVS कार्ड अपलोड करें और पाएं वार्षिक प्लान केवल ₹200 में!",
+  "bvsStep1Desc": "BVS पोर्टल पर अपना विवरण दर्ज करें।",
+  "bvsStep1Title": "ऑनलाइन पंजीकरण करें",
+  "bvsStep2Desc": "अपना आधिकारिक BVS मेंबर आईडी और डिजिटल पहचान पत्र प्राप्त करें।",
+  "bvsStep2Title": "मेंबरशिप कार्ड प्राप्त करें",
+  "bvsStep3Desc": "BVS कार्ड जोड़कर ₹२००/वर्ष छूट प्लान सक्रिय करें।",
+  "bvsStep3Title": "BanjaraBio पर कार्ड अपलोड करें",
+  "bvsSubsidyCardSubtitle": "BanjaraBio पर मैट्रिमोनी सब्सक्रिप्शन में भारी बचत!",
+  "bvsSubsidyCardTitle": "BVS सदस्यों के लिए विशेष छूट!",
+  "bvsTitle": "बणजारा विरासत संघ",
+  "bvsUnityEmblemDesc": "हाथों की श्रृंखला और बंजारा कढ़ाई",
+  "bvsUnityEmblemTitle": "एकता मुद्रा",
+  "bvsUploadCardButton": "BVS कार्ड अपलोड करें (छूट पाएं)",
+  "bvsUploadCardPromptSubtitle": "BVS मेंबरशिप कार्ड फोटो अपलोड करें",
+  "bvsVerifiedActiveBadge": "👑 BVS प्रमाणित सदस्य छूट सक्रिय!",
+  "bvsVerifiedActiveDesc": "आपके लिए मासिक प्लान ₹२० और वार्षिक सब्सक्रिप्शन सिर्फ ₹२०० में उपलब्ध है।",
+  "bvsVerifiedSpecialPlan": "BVS सदस्य विशेष प्लान",
+  "bvsWhatsAppInviteTitle": "WhatsApp ऑटोमेशन आमंत्रण",
   "byContAcceptTerms": "जारी रखकर, आप हमारी ",
+  "callAdmin": "एडमिन को कॉल करें",
+  "callOrganizer": "आयोजक को कॉल करें",
   "camera": "कैमरा",
   "cancel": "रद्द करें",
   "cancelAnytime": "किसी भी समय रद्द करें",
+  "candidatesMeet": "Candidates Meet",
+  "careerPillarSubtitle": "Graduate / Professional background & steady income",
+  "careerSocioeconomicPillar": "Career & Socioeconomic Level",
+  "careerWealthHoldings": "Career & Wealth Holdings",
+  "changeCriteriaOrExitPrompt": "क्या आप अपने खोज विकल्प बदलना चाहते हैं या ऐप से बाहर निकलना चाहते हैं?",
   "changeLanguage": "भाषा बदलें",
+  "changeOptionsCta": "विकल्प बदलें ✏️",
   "chat": "चैट",
+  "chatConversationArchived": "Chat conversation archived",
   "checkBackSoonForNewMatchesnpullDownToRef": "नए मैचों के लिए जल्द ही दोबारा जाँचें।\nरीफ्रेश करने के लिए नीचे खींचें।",
   "checkInbox": "Check Inbox",
   "checkInternet": "कृपया अपना इंटरनेट कनेक्शन जाँचें और पुनः प्रयास करें।",
   "checkWhoIsLookingAtYourProfile": "जांचें कि आपकी प्रोफ़ाइल कौन देख रहा है",
+  "chipFreeAccess": "⭐ १००% मुफ्त",
+  "chipNoAccount": "⚡ बिना अकाउंट",
+  "chipQuickFilter": "🔍 १ मिनट में खोज",
   "chooseFromGallery": "गैलरी से चुनें",
+  "chooseHowToStart": "चुनें कि आप कैसे शुरू करना चाहते हैं",
+  "chooseQuickIntroTemplate": "CHOOSE A QUICK INTRO TEMPLATE",
   "chooseTemplate": "टेम्पलेट चुनें",
+  "claimMarriageGift": "विवाह उपहार का दावा करें",
+  "clanExogamyPillar": "Clan Exogamy (गोत्र व मोसळ)",
+  "clanExogamyPillarSubtitle": "Different paternal Gotra ({gotra}) & Mamakul ({maternalGotra})",
   "clear": "साफ़ करें",
   "clearAllFilters": "सभी फ़िल्टर साफ़ करें",
+  "clearSearch": "Clear search",
+  "clearText": "Clear text",
   "clearWellLitPhotos": "स्पष्ट, अच्छी रोशनी वाली तस्वीरें जिनमें आपका चेहरा साफ दिखे",
   "close": "बंद करें",
+  "closePreview": "Close Preview",
+  "collegeInstitute": "College / Institute",
   "comeBackTomorrowFornnewCuratedMatches": "नए क्यूरेटेड मैचों के लिए कल वापस आएँ!",
-  "bvsMembershipCard": "बणजारा विरासत संघ पहचान पत्र",
-  "bvsMemberId": "BVS सदस्य संख्या (उदा. 405812)",
-  "uploadBvsCardPrompt": "अपना बणजारा विरासत संघ (BVS) सदस्यता कार्ड अपलोड करें",
-  "bvsSpecialDiscountBanner": "क्या आप बणजारा विरासत संघ के सदस्य हैं? BVS कार्ड अपलोड करें और पाएं वार्षिक प्लान केवल ₹200 में!",
-  "joinBvsNow": "BVS सदस्य बनें (यहां रजिस्टर करें)",
-  "bvsVerifiedSpecialPlan": "BVS सदस्य विशेष प्लान",
+  "communityFiltersSubtitle": "Gotra, Mamakul, Origin, Height, Income & Lineage",
+  "communityFiltersTitle": "Community Filters (BVS)",
   "communityId": "Community ID",
   "communityIdSubmitted": "सामुदायिक आईडी जमा की गई",
   "communityIdVerification": "समुदाय पहचान पत्र",
   "communityMember": "Community Member",
+  "communityTrustedProfiles": "Community Trusted Profiles",
+  "communityTrustedProfilesSubtitle": "Vouched Banjara profiles with Community Trust Score > 75%",
   "communityVerification": "सामुदायिक सत्यापन",
+  "company": "कंपनी",
   "companyName": "कंपनी का नाम",
+  "companyOrg": "Company / Org",
+  "compareAllPlanFeatures": "सभी प्लान सुविधाओं की तुलना करें",
+  "compatibleRoots": "Compatible Roots",
   "completeVerificationToUnlockPremium": "'Premium' स्थिति अनलॉक करने के लिए सत्यापन पूरा करें।",
   "completeYourProfileToGetNoticed": "ध्यान आकर्षित करने के लिए अपनी प्रोफ़ाइल पूरी करें!",
+  "completedReferrals": "पूरे हुए रेफरल",
   "completion": "समापन",
   "complexion": "रंग",
   "compressingUnder500Kb": "Compressing under 500KB...",
+  "confidentialMatchmaking": "Confidential & Private Matchmaking",
+  "confidentialMatchmakingSubtitle": "High-profile biodatas viewable exclusively with mutual RM consent",
   "confirm": "पुष्टि करें",
   "connectInApp": "इन-ऐप कनेक्ट",
   "connectWithCommunity": "अपने बंजारा समुदाय से जुड़ें",
+  "connectionAcceptedToast": "Connection Accepted! You can now chat directly 🎉",
   "contact": "संपर्क",
+  "contactLabel": "संपर्क",
+  "contactPersonLabel": "संपर्क व्यक्ति",
   "contactPreferences": "संपर्क प्राथमिकताएं",
+  "contactUnlocks": "{count} संपर्क अनलॉक/माह",
   "contactUs": "हमसे संपर्क करें",
   "contactUsTitle": "हमसे संपर्क करें",
+  "continueAsGuestCta": "गेस्ट के रूप में आगे बढ़ें 🚀",
+  "continueBlockedUntilAdEnds": "विज्ञापन समाप्त होने तक ऐप जारी रखना अवरुद्ध है",
+  "continueToApp": "ऐप पर जारी रखें",
   "continueWithFreeAccount": "मुफ़्त खाते के साथ जारी रखें",
   "continueWithGoogle": "Google से जारी रखें",
+  "continueWithStandardFilters": "Continue with Standard Filters",
+  "conversationPinnedToTop": "Conversation pinned to top 📌",
+  "conversationUnpinned": "Conversation unpinned",
   "conversations": "बातचीत",
+  "copiedToClipboard": "Copied to clipboard",
   "copyLink": "लिंक कॉपी करें",
   "copyLinkSubtitle": "{name} की प्रोफ़ाइल का लिंक कॉपी करें",
+  "copyMessage": "Copy Message",
+  "couldNotLaunchDialer": "फ़ोन डायलर नहीं खोला जा सका",
+  "couldNotLaunchUrl": "Could not launch URL",
+  "couldNotLaunchWhatsApp": "WhatsApp नहीं खोला जा सका",
   "couldNotLoadProfile": "हम आपकी प्रोफ़ाइल लोड नहीं कर सके. कृपया पुन: प्रयास करें।",
+  "couldNotTriggerSharing": "शेयरिंग शुरू नहीं की जा सकी",
+  "countProfileViews": "{count, plural, =1{1 प्रोफ़ाइल दृश्य} other{{count} प्रोफ़ाइल दृश्य}}",
+  "countryLabel": "Country",
+  "couponDiscountApplied": "कूपन छूट लागू",
   "createBiodata": "बायोडाटा बनाएं",
+  "createBiodataCta": "बायोडाटा बनाएं ✨",
+  "createBiodataDesc": "अपनी प्रोफ़ाइल भरें और तुरंत जुड़ना शुरू करें।",
+  "createBiodataForSelfOrCandidateSubtitle": "२ मिनट में सुंदर विवाह बायोडाटा बनाएं, PDF डाउनलोड करें, WhatsApp पर शेयर करें और सीधे रिश्ते प्राप्त करें।",
+  "createBiodataForSelfOrCandidateTitle": "स्वयं का / उम्मीदवार का बायोडाटा बनाएं",
+  "createFreeProfile100PercentFree": "✨ Create Free Profile (100% Free)",
+  "createMyBiodata": "मेरा बायोडेटा बनाएं",
+  "createNow": "अभी बनाएं",
   "createProfile": "प्रोफ़ाइल बनाएं",
   "criticalFailure": "महत्वपूर्ण विफलता: {error}",
   "cropPhoto": "फसल तस्वीर",
   "cropRotate": "काटें और घुमाएँ",
+  "culturallyVerified": "CULTURALLY VERIFIED",
   "curatedProfilesJustForYou": "{count} आपके लिए चुने गए प्रोफाइल",
+  "currentCity": "Current City",
   "currentLocation": "वर्तमान स्थान",
+  "currentNativeRegion": "CURRENT & NATIVE REGION",
   "currentPlan": "वर्तमान प्लान",
+  "currentResidence": "वर्तमान निवास",
   "currentResidenceState": "वर्तमान निवास राज्य",
+  "currentState": "Current State",
   "currentVillageHint": "वर्तमान गांव",
+  "customMessage": "कस्टम संदेश",
+  "customize": "Customize",
   "customizeBiodata": "बायोडाटा अनुकूलित करें",
   "daily": "दैनिक",
+  "dailyActiveUsers": "दैनिक सक्रिय उपयोगकर्ता",
+  "dailyLimitReached": "दैनिक सीमा समाप्त",
+  "dailyLimitViewsReached": "आपने अपनी सभी दैनिक प्रोफाइल विज़िट्स का उपयोग कर लिया है।",
   "dailyMatch": "दैनिक मैच",
+  "dailyMatchPicks": "दैनिक मैच पिक्स",
+  "dailyMessageLimitReached": "Daily message limit reached.",
+  "dailyRewardClaimedSuccess": "🎉 बधाई! {rewardName}",
+  "dailyViewLimitReached": "Daily view limit reached.",
   "dark": "गहरा",
   "dateOfBirth": "जन्म तिथि",
+  "dateOfBirthLabel": "जन्म तिथि",
   "daughter": "बेटी",
   "daysAgo": "{count}दि पहले",
   "daysLeft": "{days} दिन शेष",
   "daysRemaining": "{days} दिन शेष",
+  "decline": "DECLINE",
+  "dedicatedManager": "समर्पित संबंध प्रबंधक",
+  "degreeField": "Degree / Field",
   "delete": "हटाएं",
   "deleteAccount": "खाता हटाएं",
   "deleteAccountWarning": "यह कार्रवाई स्थायी है और पूर्ववत नहीं की जा सकती।",
@@ -200,11 +1264,26 @@
   "deleteShares": "शेयर हटाएँ",
   "deletingYourAccountWillResultIn": "आपका खाता हटाने का परिणाम यह होगा:",
   "demo": "डेमो",
+  "demographicsAndPremium": "जनसांख्यिकी और प्रीमियम",
   "describeYourselfInterestsHobbies": "अपना, रुचियों का, शौक का वर्णन करें...",
   "details": "विवरण",
+  "diamond": "Diamond",
+  "dietHabits": "Diet / Food Habits",
   "differentSettingsTip": "विभिन्न सेटिंग्स (औपचारिक, अनौपचारिक) में तस्वीरें शामिल करें",
+  "differentlyAbled": "Diff. Abled",
+  "digital": "डिजिटल",
   "diploma": "डिप्लोमा",
+  "directAdminSupport": "Direct Admin Support",
+  "directContactAccess": "सीधा संपर्क एक्सेस",
+  "directContactUnlocked": "Direct Contact Unlocked Profiles",
+  "directContactUnlockedSubtitle": "Direct Phone Number & WhatsApp verified access",
+  "directMessage": "सीधा संदेश",
+  "directMessages": "Direct Messages",
+  "directMessagesSubtitle": "Stay responsive when your match sends you a message.",
   "directMessaging": "सीधा संदेश",
+  "directMessagingPremium": "सीधा संदेश भेजना एक प्रीमियम सुविधा है।",
+  "directNoteSentToast": "Direct Note sent with high priority! 💌",
+  "directWhatsAppLeads": "📱 Direct WhatsApp Leads",
   "disabledHint": "विकलांगों के लिए वैकल्पिक जानकारी",
   "disabledTagLabel": "विकलांग",
   "discard": "रद्द करें",
@@ -212,6 +1291,7 @@
   "discardChangesBody": "क्या आप वापस जाना चाहते हैं? आपकी प्रगति ड्राफ्ट के रूप में सेव है।",
   "discountPercentage": "{percentage}% छूट (ट्रस्ट स्कोर {score})",
   "discoverProfilesFromYourCommunityNsmartM": "अपने समुदाय से प्रोफ़ाइल खोजें।\\nसंगतता स्कोर द्वारा संचालित स्मार्ट मैचमेकिंग।",
+  "displayLayoutLabel": "दिखाने का तरीका",
   "district": "ज़िला",
   "districtInState": "{state} में जिला",
   "districtInStateLabel": "District in State",
@@ -222,13 +1302,19 @@
   "documentView": "दस्तावेज़ देखें",
   "done": "हो गया",
   "downloadBtn": "डाउनलोड करना",
+  "downloadWatermarkFreeBiodataDesc": "Download watermark-free high definition 2-Page Biodata in all formats.",
+  "drinkingHabits": "Drinking Habits",
   "dusky": "सांवला",
   "easiest": "सबसे आसान",
   "edit": "संपादन करना",
+  "editBiodataInfoPhotos": "Edit Biodata Info & Photos",
+  "editBiodataInfoPhotosDesc": "Edit Education, Gotra, Family, Native Tanda & Photo in your master profile.",
   "editProfile": "प्रोफ़ाइल संपादित करें",
   "education": "शिक्षा",
   "educationAndProfession": "शिक्षा और व्यवसाय",
   "educationDetails": "शिक्षा विवरण",
+  "educationFieldStream": "Education Field / Stream",
+  "educationFieldSubtitle": "Filter by specialized degree stream & career path",
   "educationLabel": "शिक्षा",
   "educationProfession": "Education & Profession",
   "educationProfessionDetails": "शिक्षा और करियर",
@@ -239,39 +1325,75 @@
   "egTime": "उदा. सुबह 10:30 बजे",
   "elderBrother": "बड़े भाई",
   "elderSister": "बड़ी बहन",
+  "elitePlanDesc": "वीआईपी एक्सेस के साथ चुनिंदा मैच",
+  "elitePlanName": "एलीट",
   "email": "ईमेल",
   "emailAddress": "मेल पता",
   "emailLabel": "Email",
+  "emailNotifications": "ईमेल सूचनाएं",
   "emailSupport": "ई - मेल समर्थन",
   "emailVerification": "ईमेल सत्यापन",
   "emailVerificationTip": "Tip: Check your spam folder if you don't see the email.",
   "emailVerifiedSuccessfully10Points": "ईमेल सफलतापूर्वक सत्यापित! +10 अंक",
+  "employmentSector": "Employment Sector",
   "emptyStr": "₹",
+  "enableNotifications": "Enable Notifications",
   "english": "English",
   "enterBasicInfo": "अपनी बुनियादी जानकारी आधिकारिक दस्तावेज़ों के अनुसार दर्ज करें",
   "enterCityVillage": "शहर/गांव दर्ज करें",
+  "enterDistrictExample": "Enter District (e.g. Nanded, Yavatmal, Nizamabad)",
   "enterEducationDetails": "अपनी शिक्षा विवरण दर्ज करें",
   "enterFullName": "अपना पूरा नाम दर्ज करें",
   "enterMobileNumber": "Enter mobile number",
   "enterProfessionDetails": "अपना व्यवसाय विवरण दर्ज करें",
+  "enterVillageHint": "गांव या तांडा का नाम दर्ज करें...",
+  "enterVillageManually": "गांव/अन्य नाम दर्ज करें",
   "enterYourBasicInformationAsItAppearsInOf": "अपनी बुनियादी जानकारी वैसे ही दर्ज करें जैसी वह आधिकारिक दस्तावेज़ों में दिखाई देती है",
   "enterYourEducationDetails": "Enter your education details",
   "enterYourEmail": "अपना ईमेल दर्ज करें",
   "enterYourPassword": "अपना पासवर्ड दर्ज करें",
   "enterYourProfessionDetails": "Enter your profession details",
   "error": "गलती",
+  "errorAdminActionFailed": "अनुरोधित कार्य पूरा नहीं किया जा सका। कृपया बाद में पुनः प्रयास करें।",
   "errorCheckingShareLimits": "शेयर सीमा की जांच करने में त्रुटि: {error}",
   "errorCheckingStatus": "Error checking status: {error}",
   "errorCheckingViewLimits": "व्यू सीमा की जांच करने में त्रुटि: {error}",
+  "errorLaunchingLink": "Error launching link",
+  "errorLoadingAdminCoupons": "कूपन ऑफ़र लोड करने में विफल। कृपया पुनः प्रयास करें।",
+  "errorLoadingAdminCreators": "निर्माता सूची प्राप्त नहीं की जा सकी। कृपया अपना नेटवर्क जांचें।",
   "errorLoadingAdminData": "एडमिन डेटा लोड करने में त्रुटि: {error}",
+  "errorLoadingAdminPayments": "भुगतान इतिहास लोड करने में विफल। कृपया पुनः प्रयास करें।",
+  "errorLoadingAdminReferences": "लंबित संदर्भ प्राप्त करने में असमर्थ। कृपया रिफ्रेश करें।",
+  "errorLoadingAdminStats": "डैशबोर्ड आँकड़े लोड करने में असमर्थ। कृपया रिफ्रेश करने का प्रयास करें।",
+  "errorLoadingAdminUsers": "उपयोगकर्ता सूची प्राप्त नहीं की जा सकी। कृपया अपना कनेक्शन जांचें।",
+  "errorLoadingAdminVerifications": "सत्यापन अनुरोध लोड नहीं किए जा सके। कृपया पुनः प्रयास करें।",
   "errorLoadingRequests": "अनुरोध लोड करने में त्रुटि: {error}",
   "errorOccurred": "एक त्रुटि हुई: {error}",
   "errorPrefix": "Error: {error}",
+  "errorWithLabel": "त्रुटि: {label}",
+  "estimatedRefund": "अनुमानित रिफंड",
+  "eternalElitePlanDesc": "अपने करियर पर ध्यान दें, हम आपका साथी ढूंढेंगे",
+  "eternalElitePlanName": "इटर्नल एलीट",
+  "eternalPlanDesc": "समाप्ति के बारे में फिर कभी चिंता न करें",
+  "eternalPlanName": "इटर्नल - शादी तक",
+  "eventDetails": "कार्यक्रम का विवरण",
   "everyProfileIsVerifiedWithIdSelfieRefere": "प्रत्येक प्रोफ़ाइल को आईडी, सेल्फी और संदर्भों के साथ सत्यापित किया जाता है।\\nट्रस्ट स्कोर वास्तविक कनेक्शन सुनिश्चित करता है।",
+  "exactBirthTimeAndKundali": "Exact Birth Time & Kundali",
+  "excellentMatch": "EXCELLENT MATCH",
   "exit": "बाहर निकलें",
   "exitApp": "ऐप बंद करें",
+  "exitGuestMode": "गेस्ट मोड से बाहर निकलें",
+  "exogamous": "EXOGAMOUS",
+  "exogamyCompliant": "EXOGAMY COMPLIANT",
+  "exogamyRuleDescription": "In traditional Banjara (Gor) culture, marriages follow strict Clan Exogamy (गोत्र बहिर्विवाह):",
+  "exploreAsGuest": "अतिथि के रूप में अन्वेषण करें",
+  "exploreMatchmakerPlans": "Explore Matchmaker Plans",
+  "exploreMatchmakerPlansButton": "Explore Matchmaker Plans ➔",
+  "explorePremiumPlans": "Explore Premium Plans",
   "exportBiodataPdf": "बायोडाटा पीडीएफ निर्यात करें",
+  "expressInterest": "रुचि व्यक्त करें?",
   "expressInterestDesc": "अपना बायोडाटा सीधे साझा करके अपनी रुचि व्यक्त करें",
+  "extraViewsUnlocked": "{count} अतिरिक्त व्यूज अनलॉक किए गए!",
   "failedLoadProfile": "प्रोफ़ाइल लोड नहीं हो सकी: {error}",
   "failedSignInGoogle": "Google से साइन इन विफल: {error}",
   "failedSignInGoogleRetry": "Google से साइन इन विफल। कृपया पुनः प्रयास करें।",
@@ -293,6 +1415,8 @@
   "failedToSave": "सेव नहीं हो सका: {error}",
   "failedToSavePdf": "पीडीएफ सहेजने में विफल: {error}",
   "failedToSaveProfile": "प्रोफ़ाइल सेव नहीं हो सकी: {error}",
+  "failedToSendMessage": "संदेश भेजने में विफल: {error}",
+  "failedToSendNote": "Failed to send note: {error}",
   "failedToSharePdf": "पीडीएफ साझा करने में विफल",
   "failedToStartChat": "चैट शुरू करने में विफल: {error}",
   "failedToSubmitReport": "रिपोर्ट सबमिट करने में विफल: {error}",
@@ -302,14 +1426,22 @@
   "failedToUpdateProfile": "Failed to update profile",
   "failedToUploadPhoto": "फ़ोटो {index} अपलोड नहीं हो सकी",
   "failedToVerify": "सत्यापित करने में विफल: {error}",
+  "failedWithError": "Failed: {error}",
   "fair": "गोरा",
   "fakeProfile": "नकली प्रोफ़ाइल",
   "familyBackground": "पारिवारिक पृष्ठभूमि",
   "familyDetails": "पारिवारिक विवरण",
   "familyFirstValues": "परिवार-प्रथम मूल्य",
   "familyOnly": "केवल परिवार",
+  "familyReputationVetted": "Family Background & Reputation Vetted",
+  "familyReputationVettedSubtitle": "Clean background check conducted by field relationship managers",
   "familyStatus": "परिवार की स्थिति",
+  "familyStatusSubtitle": "Select socioeconomic family status requirement",
+  "familyStructure": "Family Structure",
+  "familyStructureSubtitle": "Select nuclear or joint family preferences",
   "familyType": "परिवार का प्रकार",
+  "familyValues": "Family Values",
+  "familyValuesSubtitle": "Filter by cultural and social outlook",
   "faqA1": "प्रोफ़ाइल टैब पर जाएं और \"बायोडाटा बनाएं\" पर क्लिक करें या अपनी मौजूदा प्रोफ़ाइल संपादित करें। अपना व्यक्तिगत, पारिवारिक और पेशेवर विवरण भरने के लिए बहु-चरणीय फॉर्म का पालन करें।",
   "faqA2": "हाँ, हम गोपनीयता को गंभीरता से लेते हैं। आपके संपर्क विवरण केवल सत्यापित उपयोगकर्ताओं को दिखाए जाते हैं और हमारे सामुदायिक सुरक्षा दिशानिर्देशों का सम्मान करते हैं।",
   "faqA3": "होम स्क्रीन पर, उम्र, स्थान, शिक्षा और पेशे के आधार पर प्रोफाइल को सीमित करने के लिए \"फ़िल्टर\" बटन का उपयोग करें।",
@@ -325,26 +1457,51 @@
   "farmer": "किसान",
   "fatherName": "पिता का नाम",
   "fatherOccupation": "पिता का व्यवसाय",
+  "featuredBadge": "एलीट सत्यापित बैज",
+  "featuresIncluded": "शामिल सुविधाएं:",
   "feet": "फीट",
   "female": "महिला",
   "fieldRequired": "{field} आवश्यक है",
   "fifteenToTwentyLakh": "₹15 लाख - ₹20 लाख",
+  "fiftyPercentOffVipUpgrade": "🔥 50% OFF VIP Upgrade",
+  "filterAstrologicalCompatibility": "Filter candidate astrological horoscope compatibility",
+  "filterCandidateHomeState": "Filter candidate home state or current residing district",
+  "filterProfiles": "Filter profiles",
   "filtered": "(छाना हुआ)",
+  "filters": "Filters",
+  "filtersResetToDefault": "Filters reset to default",
+  "financialPerformance": "वित्तीय प्रदर्शन",
   "findYourPerfectMatch": "अपना आदर्श साथी खोजें",
   "fiveToSevenHalfLakh": "₹5 लाख - ₹7.5 लाख",
+  "focusOnCareer": "अपने करियर पर ध्यान दें, जबकि हम आपका जीवनसाथी ढूंढते हैं",
   "followAndGetFivePercent": "फॉलो करें और +5% प्राप्त करें",
+  "followDailyMatchUpdates": "Follow Daily Match Updates",
   "followUsOnInstagramBonus": "5% बायोडेटा पूर्णता बोनस प्राप्त करने और नवीनतम मैचों के साथ अपडेट रहने के लिए हमें इंस्टाग्राम पर फॉलो करें।",
+  "forLifetime": "आजीवन के लिए",
   "forMonths": "{count} महीनों के लिए",
+  "forMyDaughter": "👧 For My Daughter",
+  "forMyRelative": "👨‍👩‍👧 For My Relative",
+  "forMySibling": "👫 For My Sibling",
+  "forMySon": "👦 For My Son",
+  "forMyself": "👤 For Myself",
+  "forOther": "✨ For Someone Else",
+  "forWhomSearching": "किसके लिए रिश्ता खोज रहे हैं?",
+  "foundYourPartner": "जीवनसाथी मिल गया?",
   "free": "मुफ्त",
   "free1PhotonpremiumUpTo6Photos": "मुफ़्त: 1 फ़ोटो\\nप्रीमियम: 6 फ़ोटो तक",
+  "freePlan": "Free Plan",
   "freePlanDesc": "बुनियादी सुविधाओं का प्रयास करें",
   "freeUserLimitInfo": "Free user limit reached. Upgrade to continue.",
   "freeUsersCanUpload1PhotoUpgradeToUploadU": "नि:शुल्क उपयोगकर्ता 1 फोटो अपलोड कर सकते हैं। अधिकतम 5 फ़ोटो अपलोड करने के लिए अपग्रेड करें।",
   "friend": "दोस्त",
+  "fromContact": "से: {name}",
   "frontSide": "सामने का हिस्सा",
+  "fullAddress": "Full Address",
+  "fullKundaliAvailableOnMutual": "Full Kundali chart available on mutual match interest.",
   "fullName": "पूरा नाम",
   "gallery": "गैलरी",
   "gender": "लिंग",
+  "genderSelectHeading": "आपका लिंग है",
   "generateBio": "बायो जनरेट करें",
   "generatingPreview": "पूर्वावलोकन जनरेट किया जा रहा है...",
   "getAProfessionalWellformattedPdfWithoutW": "बिना वॉटरमार्क और सभी विवरण दृश्यमान एक पेशेवर, अच्छी तरह से प्रारूपित पीडीएफ प्राप्त करें।",
@@ -353,10 +1510,14 @@
   "getStartedLabel": "शुरू करें",
   "go": "जाएं",
   "goBack": "वापस जाओ",
+  "goProAdFree": "विज्ञापन-मुक्त अनुभव के लिए प्रो बनें",
   "gold": "स्वर्ण",
+  "goldMember": "⭐ Gold Member",
   "goldPlanDesc": "सबसे लोकप्रिय - सर्वोत्तम मूल्य",
   "goldPlanName": "गोल्ड",
   "goldVerified": "Gold Verified",
+  "goodMatch": "GOOD MATCH",
+  "gorBanjara": "Gor / Banjara",
   "gotIt": "समझ गया",
   "gotra": "गोत्र",
   "governmentEmployee": "सरकारी कर्मचारी",
@@ -366,41 +1527,93 @@
   "governmentJob": "सरकारी नौकरी",
   "govtId": "Govt ID",
   "govtIdVerification": "सरकारी पहचान पत्र",
+  "govtIdVerified": "Govt ID / Aadhaar Verified",
+  "govtIdVerifiedSubtitle": "Only show candidates with 100% verified Govt ID badge",
   "graduate": "स्नातक",
   "great": "महान!",
   "grid": "ग्रिड",
+  "groom": "Groom",
+  "groomBoy": "👦 वर (Groom)",
+  "groomOption": "👦 Groom (Boy)",
   "groupPhotosNotVisible": "सामूहिक तस्वीरें जहां आप स्पष्ट रूप से दिखाई नहीं दे रहे हैं",
+  "growYourWeddingBusiness": "Grow Your Wedding Business",
   "growth": "Growth",
+  "guestModeDesc": "अपनी प्रोफ़ाइल बनाने से पहले ऐप का निर्देशित दौरा करें।",
+  "guestModeInstantBrowseSubtitle": "खाता बनाए बिना सीधे BanjaraBio के फीचर्स और प्रोफाइल देखें।",
+  "guestModeInstantBrowseTitle": "गेस्ट मोड (तुरंत ब्राउज़ करें)",
+  "guestRestrictedContent": "अन्य सभी विवरण देखने, प्रोफाइल सहेजने और संपर्क करने के लिए कृपया अपना बायोडाटा बनाएं या खोज विकल्प बदलें।",
+  "guestRestrictionMessage": "प्रोफ़ाइल के साथ बातचीत करने, रुचि व्यक्त करने या संदेश भेजने के लिए, आपको पहले अपना स्वयं का बायोडाटा बनाना होगा।",
+  "gunaMilanScore": "Guna Milan (36 Points)",
+  "gunasMatchedCount": "{count} / 36 Gunas Matched ({percentage}%)",
+  "gunasMatchedStatus": "28 / 36 Gunas Matched",
+  "habitatNativeOrigin": "Habitat / Native Origin",
+  "habitatPillarSubtitle": "Shared cultural values & open relocation preferences",
+  "habitatSubtitle": "Filter candidate living environment & origin type",
+  "habitatTandaPillar": "Habitat, Tanda & Lifestyle",
+  "handpickedMatches": "{count} चुनिंदा मैच/सप्ताह",
   "haveQuestionsOrNeedAssistanceOurTeamIsHe": "क्या आपके कोई प्रश्न हैं या सहायता की आवश्यकता है? हमारी टीम आपका आदर्श साथी ढूंढ़ने में आपकी सहायता के लिए यहां मौजूद है।",
+  "headerBlessingSubtitle": "Select which divine blessing is engraved at the top of your PDF",
+  "headerBlessingTitle": "🪔 Header Blessing / Deity Mantra",
   "heavilyFilteredEdited": "भारी फ़िल्टर या संपादित तस्वीरें",
   "height": "ऊँचाई",
+  "heightLabel": "ऊँचाई",
   "helpOurCommunityGrowAndUnlockPremiumRewa": "हमारे समुदाय को बढ़ने में मदद करें और अपने लिए प्रीमियम पुरस्कार अनलॉक करें।",
+  "hideAlgorithmInsights": "Hide Algorithm Insights",
+  "highMatch": "HIGH MATCH",
   "highSchool": "हाई स्कूल",
   "hindi": "हिंदी",
   "home": "होम",
   "homemaker": "गृहिणी",
+  "horoscopeChartVerified": "Horoscope chart verified & matched.",
+  "horoscopeKundali": "Horoscope & Kundali (कुंडली)",
+  "horoscopeKundaliAttached": "Horoscope / Kundali Attached",
   "hoursAgo": "{count}घं पहले",
+  "houseOwnership": "House Ownership",
+  "howDidYouMeet": "आप कैसे मिले? आपको उनके बारे में क्या पसंद है?",
+  "howIsScoreCalculated": "How is this score calculated?",
   "howItWorks": "यह काम किस प्रकार करता है",
   "iUnderstandThatThisActionCannotBeUndone": "मैं समझता हूं कि इस कार्रवाई को पूर्ववत नहीं किया जा सकता.",
   "idLabel": "ID: {id}",
   "idNumber": "आईडी नंबर",
   "idType": "ID Type",
+  "identityDetails": "Identity Details",
   "inappropriateBackgrounds": "अनुचित पृष्ठभूमि वाली तस्वीरें",
   "inappropriateContentOrFakeProfile": "अनुपयुक्त सामग्री या नकली प्रोफ़ाइल",
   "inappropriatePhotos": "अनुचित तस्वीरें",
   "inches": "इंच",
+  "incognitoMode": "निजी प्रोफ़ाइल ब्राउज़िंग",
+  "incomeHiddenFromPdf": "Hidden from shared PDF for privacy",
+  "incomeSalaryVerified": "Income / Salary Verified",
+  "incomeSalaryVerifiedSubtitle": "Candidates with verified salary slip or ITR documentation",
+  "incomeVisibleOnPdf": "Package & income details visible on PDF",
   "increaseBiodataScore": "बायोडेटा स्कोर बढ़ाएं!",
   "increaseYourTrustScoreToConfirmYourIdent": "अपनी पहचान की पुष्टि करने और विशेष छूट अनलॉक करने के लिए अपना ट्रस्ट स्कोर बढ़ाएं।",
+  "india": "India",
+  "instagramLink": "इंस्टाग्राम रील/स्टोरी लिंक",
+  "instagramStories": "Instagram Stories",
+  "instantAlert": "Instant Alert",
+  "instantMatchAlerts": "Instant Match Alerts",
+  "instantMatchAlertsSubtitle": "Get notified immediately when mutual interest is accepted.",
+  "interest": "रुचि",
+  "interestConfirmationDesc": "क्या आप अपनी रुचि दिखाने के लिए {name} के साथ अपनी प्रोफ़ाइल साझा करना चाहते हैं?",
+  "interestConfirmationMessage": "इससे आपकी प्रोफ़ाइल {name} के साथ साझा की जाएगी और वे आपसे जुड़ सकेंगे। क्या आप सुनिश्चित हैं?",
+  "interestConfirmationTitle": "रुचि व्यक्त करें?",
+  "interestDeclinedToast": "Interest declined",
   "interestSent": "रुचि भेजी गई",
+  "interestShared": "{name} के साथ रुचि साझा की गई!",
   "introduceYourselfIn30SecondsTalkAboutYou": "30 सेकंड में अपना परिचय दें. अपने परिवार, पेशे और अपेक्षाओं के बारे में बात करें।",
   "invalidEmailOrPassword": "अमान्य ईमेल या पासवर्ड",
   "inviteARelative": "किसी रिश्तेदार को आमंत्रित करें",
   "inviteFriendsRewards": "दोस्तों को आमंत्रित करें और प्रीमियम पुरस्कार पाएं!",
+  "inviteRelativesToVouch": "सत्यापन (Vouch) के लिए रिश्तेदारों को आमंत्रित करें",
   "inviteStep1": "Step 1",
   "inviteStep2": "Step 2",
   "inviteStep3": "Step 3",
   "isDisabledPerson": "क्या आप विकलांग हैं?",
+  "itSAMatch": "जोड़ी मिल गई!",
+  "job": "कार्य / नौकरी",
   "jobDetails": "नौकरी का विवरण",
+  "joinBvsNow": "BVS सदस्य बनें (यहां रजिस्टर करें)",
   "joinMeOnBanjarabio": "बंजाराबायो पर मेरे साथ जुड़ें",
   "joinOurCommunity": "हमारे 10K+ समुदाय में शामिल हों!",
   "jointFamily": "संयुक्त परिवार",
@@ -408,73 +1621,120 @@
   "kannada": "ಕನ್ನಡ",
   "keepBrowsing": "ब्राउज़ करते रहें",
   "keywordSearch": "कीवर्ड खोज",
+  "kundaliGunasPillar": "Kundali & Gunas (अष्टकूट जुळणी)",
+  "kundaliHoroscopeAttached": "Kundali / Horoscope Attached",
+  "kundaliHoroscopeAttachedSubtitle": "Only show profiles with uploaded Janam Kundali chart",
+  "kundaliOnRequest": "Kundali Available on Request",
+  "kundaliPillarSubtitle": "No severe Manglik Dosha; high compatibility score",
   "language": "भाषा",
   "languageChanged": "भाषा {language} में बदली गई",
+  "languageSwitcherLabel": "भाषा",
   "lastUpdatedJanuary2026": "अंतिम अद्यतन: जनवरी 2026",
   "legalAndInformation": "कानूनी और जानकारी",
+  "lifetime": "आजीवन",
+  "limitReached": "सीमा समाप्त",
+  "linkRequiredForRefund": "रिफंड के लिए लिंक आवश्यक है",
   "linkShare": "लिंक साझा करें",
   "linkedInIntegration": "LinkedIn एकीकरण",
   "linkedInIntegrationSubtitle": "अधिक विश्वास बनाने के लिए अपने पेशेवर प्रोफाइल को कनेक्ट करें।",
   "liveSelfie": "लाइव सेल्फी",
   "liveSelfieVerification": "लाइव सेल्फी सत्यापन",
+  "liveSync": "LIVE SYNC",
   "livenessCheck": "जीवंतता की जांच",
   "loading": "लोड हो रहा है...",
   "loadingAssets": "संपत्ति लोड हो रही है...",
   "loadingProfile": "आपकी प्रोफ़ाइल लोड हो रही है...",
   "loadingViews": "दृश्य लोड हो रहे हैं...",
   "location": "स्थान",
+  "locationAndState": "Location & Native State",
   "locationDetails": "स्थान विवरण",
   "locationPreferences": "स्थान और प्राथमिकताएं",
   "locationPreview": "स्थान पूर्वावलोकन",
+  "logCallOutcome": "कॉल का परिणाम रिकॉर्ड करें",
   "login": "लॉगिन",
+  "loginAndCreateBiodataCta": "लॉगिन करें और बायोडाटा बनाएं ✨",
   "loginFailed": "लॉगिन विफल: {error}",
   "loginFailedRetry": "लॉगिन विफल। कृपया पुनः प्रयास करें।",
   "logout": "लॉगआउट",
+  "lookingForGender": "वर चाहिए या वधू?",
   "loseMatchesAndSavedProfiles": "आप अपने सभी मैच और सहेजे गए प्रोफ़ाइल खो देंगे।",
   "main": "मुख्य",
   "male": "पुरुष",
+  "mamakulAndTandaSubtitle": "Mamakul: {mamakul} • Tanda: {tanda}",
+  "mamakulLabel": "Mamakul (मोसळ)",
+  "mamakulRule": "Maternal Gotras are verified to ensure complete cultural harmony and lineage respect.",
+  "mamakulTitle": "2. Mamakul / Mosam (मोसळ):",
   "managePhotos": "फ़ोटो प्रबंधित करें",
   "managenphotos": "तस्वीरें प्रबंधित करें",
+  "manglikDosha": "Manglik / Kuja Dosha",
   "manualSelection": "मैन्युअल चयन",
   "marathi": "मराठी",
   "maritalStatus": "वैवाहिक स्थिति",
   "maritalStatusLabel": "वैवाहिक स्थिति",
   "marriageReadiness": "विवाह तत्परता",
+  "marriageRewardSubtitle": "विवाह का प्रमाण साझा करें और ३५% तक रिफंड प्राप्त करें!",
   "married": "विवाहित",
   "maskFamilySuggestionsTip": "Ask family members for photo suggestions",
   "mastersDegree": "मास्टर डिग्री",
+  "matchCompatibility": "Match Compatibility",
   "matchNOfTotal": "मैच {current} / {total}",
   "matched": "मिलान हुआ",
-  "sent": "भेजे गए",
-  "received": "प्राप्त हुए",
+  "matchedBadge": "मिलान हुआ",
+  "matchesCategoryLabel": "रिश्ते के प्रकार",
   "matchmakerConsultation": "मैचमेकर परामर्श",
+  "matchmakerFiltersSubtitle": "Direct Contact, RM Handpicked, 36 Guna Score & Land Holdings",
+  "matchmakerFiltersTitle": "Matchmaker Filters",
+  "matchmakerPlansSubtitle": "Elite • Royal • Eternal Elite",
+  "maternalGotraMamakul": "Maternal Gotra (Mamakul / मोसळ)",
+  "maternalGotraSubtitle": "Exclude or specify maternal lineage to avoid customary gotra clash",
   "matrimonyFor": "विवाह के लिए",
   "maxAge": "अधिकतम आयु",
   "maybeLater": "शायद बाद में",
+  "melavaBannerSubtitle": "भारत भर के विभिन्न वधू-वर परिचय मेलों की जानकारी प्राप्त करें। पंजीकरण के लिए आयोजकों से सीधे संपर्क करें।",
+  "melavaBannerTitle": "बंजारा परिचय मेलावा",
+  "melavaEventCount": "{count} मेलावा",
+  "melavas": "मेलावा",
+  "men": "पुरुष",
   "menu": "मेनू",
   "message": "संदेश",
   "messageUsOnWhatsapp": "हमें व्हाट्सएप पर संदेश भेजें",
   "messages": "संदेशों",
+  "messagingLimitReached": "संदेश भेजने की सीमा समाप्त",
   "middleClass": "मध्यम वर्ग",
   "minAge": "न्यूनतम आयु",
+  "minimumHeight": "Minimum Height",
+  "minimumHeightSubtitle": "Select minimum height requirement for matches",
   "minutesAgo": "{count}मि पहले",
   "mobileNumber": "मोबाइल नंबर",
   "mobileVerification": "मोबाइल सत्यापन",
   "mobileVerifiedSuccessfully10Points": "मोबाइल सफलतापूर्वक सत्यापित! +10 अंक",
   "month": "/महीना",
+  "monthly": "मासिक",
+  "monthlyCheckIn": "मासिक चेक-इन",
+  "monthlyRevenue": "मासिक राजस्व (₹)",
   "months": "महीने",
   "moreAboutYourStudiesAndWork": "अपनी पढ़ाई और काम के बारे में और बताएं",
+  "moreInvitesToUnlockTier": "{count} more invites to unlock {tier} tier ({reward})",
   "moreOptions": "अधिक विकल्प",
   "mostPopular": "सबसे लोकप्रिय",
   "motherName": "माँ का नाम",
   "motherOccupation": "माँ का व्यवसाय",
+  "mrpPrice": "MRP ₹{price}",
+  "mustHavePhoto": "Must Have Photo",
+  "mutualMatch": "आपसी मिलान",
+  "mutualMatchesDesc": "जब दोनों उपयोगकर्ता एक-दूसरे में रुचि दिखाएंगे तो परस्पर मैच यहां दिखाई देंगे",
   "myProfile": "मेरी प्रोफ़ाइल",
+  "nakshatraStar": "Nakshatra (Star)",
   "name": "नाम",
+  "nativeDistrict": "Native District",
   "nativePlace": "मूल स्थान",
   "naturalPosesRespectful": "सम्मानजनक भावों के साथ प्राकृतिक पोज़",
+  "needHelpContactAdmin": "मदद चाहिए? व्यवस्थापक से संपर्क करें",
   "needProfileToShareToast": "You need to create a profile before sharing it.",
   "neverMarried": "अविवाहित",
+  "neverMissVerifiedMatch": "Never miss a verified match, instant message, or profile update.",
   "newLabel": "नया",
+  "newMatchAlerts": "नया मैच अलर्ट",
   "newMatches": "नये मिलान",
   "next": "आगे",
   "nextLabel": "अगला",
@@ -486,6 +1746,7 @@
   "noIncome": "कोई आय नहीं",
   "noInternetConnection": "इंटरनेट कनेक्शन नहीं",
   "noLocationsFoundForQuery": "\"{query}\" के लिए कोई स्थान नहीं मिला",
+  "noMatchesYet": "अभी तक कोई मैच नहीं",
   "noPendingRequests": "कोई लंबित अनुरोध नहीं",
   "noPendingVerifications": "No pending verifications",
   "noPhotosAdded": "कोई तस्वीर नहीं जोड़ी गई",
@@ -493,16 +1754,23 @@
   "noProfileFound": "कोई प्रोफ़ाइल नहीं मिली",
   "noProfilesFound": "कोई प्रोफ़ाइल नहीं मिली",
   "noProfilesMatchYourFilters": "कोई भी प्रोफ़ाइल आपके फ़िल्टर से मेल नहीं खाती",
+  "noProfilesReceived": "कोई प्रोफ़ाइल प्राप्त नहीं हुआ",
+  "noProfilesSharedYet": "अभी तक कोई प्रोफ़ाइल साझा नहीं किया गया",
   "noResultsMessage": "अपने फ़िल्टर बदलकर देखें या नई प्रोफ़ाइल के लिए बाद में जाँचें।",
   "noSiblingsAddedYet": "अभी तक कोई भाई-बहन नहीं जोड़ा गया",
   "noTalukasAvailable": "कोई तालुका उपलब्ध नहीं है",
   "noViewsYet": "अभी तक कोई दृश्य नहीं",
+  "none": "कोई नहीं",
+  "normalFit": "Normal / Fit",
   "notAvailable": "उपलब्ध नहीं",
   "notEntered": "दर्ज नहीं किया",
+  "notMatchedCannotMessage": "आप इस प्रोफाइल से मैच नहीं हुए हैं, इसलिए आप उन्हें सीधे मैसेज नहीं कर सकते।",
   "notMatchedCantMessage": "आप इस प्रोफ़ाइल से मेल नहीं खाते हैं, इसलिए आप उन्हें सीधे संदेश नहीं भेज सकते।",
   "notReadyYet": "अभी तैयार नहीं",
   "notRepresentAppearance": "तस्वीरें जो आपके वर्तमान स्वरूप का प्रतिनिधित्व नहीं करतीं",
+  "notSpecified": "Not Specified",
   "notVerifiedYetPleaseClickTheLinkInYourEm": "अभी तक सत्यापित नहीं हुआ. कृपया अपने ईमेल में दिए गए लिंक पर क्लिक करें।",
+  "notWorking": "Not Working",
   "notYetVerifiedBadge": "अभी तक सत्यापित नहीं",
   "nuclearFamily": "एकल परिवार",
   "num100": "/ 100",
@@ -510,38 +1778,73 @@
   "num15PointsPending": "+15 अंक लंबित",
   "num499": "499",
   "num919876543210": "+91 98765 43210",
+  "occupationLabel": "व्यवसाय",
   "officeAddress": "कार्यालय का पता",
+  "officialBiodataPdfShared": "Official Biodata PDF Shared 📄",
   "ok": "ठीक है",
   "onHold": "होल्ड पर",
   "onboardingTitle1": "अपना सही जीवनसाथी खोजें",
   "onboardingTitle2": "विश्वसनीय समुदाय",
   "onboardingTitle3": "सुरक्षित और निजी",
+  "oneFreeNote": "1 FREE 💌",
+  "oneHundredPercentCompliant": "100% Compliant",
+  "oneHundredPercentPrivate": "100% Private",
+  "oneMessageUnlocked": "१ मैसेज अनलॉक हुआ!",
+  "oneMonthFree": "1 Month Free",
+  "onePhotoLockedTeaser": "📸 1 Photo (🔒 +{count})",
+  "oneTapSelect": "1-Tap Select",
   "oneTime": "एक बार",
+  "oneYearVip": "1 Year VIP",
   "online": "ऑनलाइन",
+  "onlyDobShownOnPdf": "Only Date of Birth shown on PDF",
+  "onlyShowProfilesWithPhoto": "Only show profiles with verified photo albums",
   "openCamera": "कैमरा खोलें",
   "openProfileToShare": "साझा करने के लिए प्रोफ़ाइल खोलें",
   "openSettings": "खुली सेटिंग",
+  "openToRelocate": "Open to Relocate",
   "openingConversation": "बातचीत शुरू हो रही है...",
   "openingConversationToast": "Opening conversation...",
+  "option1Badge": "विकल्प १ • बिना लॉगिन के",
+  "option2Badge": "विकल्प २ • सबसे लोकप्रिय • १००% मुफ्त",
+  "option3Badge": "विकल्प ३ • गेस्ट मोड",
+  "optional": "वैकल्पिक",
+  "orCustomizeYourNote": "OR CUSTOMIZE YOUR NOTE",
+  "organizer": "आयोजक",
   "originalVillageHint": "मूल गांव",
   "other": "अन्य",
+  "ownHouseVilla": "Own House / Villa",
+  "ownResidentialHouseVilla": "Own Residential House / Villa",
+  "ownResidentialHouseVillaSubtitle": "Family owns self-acquired or independent residential house",
   "partnerExpectations": "जीवनसाथी अपेक्षाएं",
   "partnerExpectationsHint": "बताएं कि आप क्या ढूंढ रहे हैं...",
+  "partnerName": "साथी का नाम",
   "partnerPreferences": "साझेदार प्राथमिकताएँ",
   "password": "पासवर्ड",
+  "pasteUrlHere": "यहां यूआरएल पेस्ट करें",
   "pay199ToUnlockFullPdf": "पूर्ण पीडीएफ अनलॉक करने के लिए ₹199 का भुगतान करें",
+  "payInstantUnlock": "Pay ₹{price} Instant Unlock",
   "paymentFailed": "भुगतान विफल: {error}",
   "paymentFailedError": "भुगतान विफल: {error}",
   "paymentSuccessful": "भुगतान सफल! टेम्प्लेट अनलॉक किए गए.",
   "paymentSuccessfulPdfUnlocked": "भुगतान सफल! पीडीएफ अनलॉक.",
   "paymentSuccessfulWelcome": "भुगतान सफल! {plan} में आपका स्वागत है",
+  "pdfDisplayStudio": "PDF Display Studio",
+  "pdfDisplayStudioDesc": "Customize header deity blessings and toggle confidential fields on your shareable PDF.",
+  "pdfRevenue": "PDF राजस्व (₹)",
   "pdfSavedToDownloads": "पीडीएफ डाउनलोड में सहेजा गया: {path}",
   "pending": "लंबित",
+  "pendingReferences": "लंबित संदर्भ",
+  "pendingReports": "लंबित रिपोर्ट",
   "pendingVerifications": "Pending Verifications",
+  "perMonth": "/माह",
   "percentComplete": "{percentage}% पूर्ण",
+  "percentCompleteBadge": "{score}% Complete",
+  "percentMatchBadge": "{score}% Match",
+  "percentTrustBadge": "{score}% Trust",
   "permissionDeniedSettings": "Permission denied. Please enable in settings.",
   "permissionRequired": "अनुमति आवश्यक है",
   "permissionRequiredMessage": "फोटो अपलोड करने के लिए {type} अनुमति आवश्यक है। कृपया इसे ऐप सेटिंग्स में सक्षम करें।",
+  "personalConcierge": "व्यक्तिगत कंसीयज",
   "personalDetails": "व्यक्तिगत विवरण",
   "phoneLabel": "Phone",
   "phoneSupport": "फ़ोन सहायता",
@@ -561,10 +1864,17 @@
   "photosReflectPersonality": "तस्वीरें जो आपके व्यक्तित्व और मूल्यों को दर्शाती हैं",
   "photosSelectedCount": "{count} चयनित",
   "photosToAvoid": "इन तस्वीरों से बचें",
+  "physicalHealthStatus": "Physical Health Status",
+  "physicalHealthStatusSubtitle": "Select physical disability match preferences",
   "physicalSocialAttributes": "शारीरिक और सामाजिक विवरण",
   "physicalStatus": "शारीरिक स्थिति",
+  "physicallyChallenged": "Physically Challenged",
+  "pickNote": "Pick Note",
+  "pinCodeLabel": "Pin Code",
+  "planetaryLagnaAlignment": "Planetary Lagna & Ashtakoot Alignment",
   "platinumPlanDesc": "सभी सुविधाओं के साथ बेहतरीन अनुभव",
   "platinumPlanName": "प्लेटिनम",
+  "pleaseAcceptVendorPartnerTerms": "Please accept the vendor partner terms",
   "pleaseComplete": "कृपया पूरा करें: {fields}",
   "pleaseCompleteRequiredFields": "कृपया {section} में सभी आवश्यक फ़ील्ड पूरे करें",
   "pleaseEnter6DigitOtp": "कृपया 6 अंकों का ओटीपी दर्ज करें",
@@ -573,8 +1883,10 @@
   "pleaseEnterBothEmailPassword": "कृपया ईमेल और पासवर्ड दोनों दर्ज करें",
   "pleaseEnterFull6DigitOtp": "कृपया पूर्ण 6-अंकीय ओटीपी दर्ज करें",
   "pleaseFillAllFields": "कृपया सभी क्षेत्रों को भरें",
+  "pleaseFillAllRequiredFields": "Please fill all required fields",
   "pleaseSelectAnnualIncome": "कृपया अपनी वार्षिक आय चुनें",
   "pleaseSelectEducationLevel": "कृपया अपना शिक्षा स्तर चुनें",
+  "pleaseSelectOrWriteShortNote": "Please select or write a short intro note",
   "pleaseSelectProfession": "कृपया अपना व्यवसाय चुनें",
   "pleaseSelectYourGotra": "कृपया अपना गोत्र चुनें",
   "pleaseSelectYourSurname": "कृपया अपना उपनाम चुनें",
@@ -585,19 +1897,38 @@
   "pointsCount": "+{points} अंक",
   "postGraduate": "स्नातकोत्तर",
   "premium": "प्रीमियम",
+  "premiumAccess": "प्रीमियम एक्सेस",
+  "premiumBadge": "प्रीमियम",
   "premiumFeature": "यह एक प्रीमियम सुविधा है",
+  "premiumFiltersSubtitle": "ID Verification, Trust Score, Horoscope, Lifestyle & Activity",
+  "premiumFiltersTitle": "Premium Filters",
+  "premiumGateSupport": "त्वरित विज्ञापन देखकर हमारे समुदाय का समर्थन करें,\nया विज्ञापन-मुक्त अनुभव के लिए प्रो में अपग्रेड करें।",
   "premiumMembership": "प्रीमियम सदस्यता",
+  "premiumMen": "प्रीमियम पुरुष",
+  "premiumPlanDesc": "उन्नत सुविधाएँ और बेहतर दृश्यता",
+  "premiumPlanName": "प्रीमियम",
+  "premiumPlansSubtitle": "Standard • Silver • Gold • Platinum • Eternal",
+  "premiumPriceFiltersInactive": "प्रीमियम मूल्य फ़िल्टर वर्तमान में निष्क्रिय हैं।",
   "premiumTemplate": "प्रीमियम टेम्पलेट",
   "premiumUsers": "Premium Users",
+  "premiumWomen": "प्रीमियम महिलाएं",
+  "preparingAdExperience": "विज्ञापन अनुभव तैयार किया जा रहा है...",
   "preparingBiodata": "आपका बायोडाटा तैयार किया जा रहा है...",
+  "preview": "Preview",
+  "previewCustomizedBiodata": "Preview Customized Biodata",
   "previewGenerationFailed": "पूर्वावलोकन जनरेशन विफल रहा. कृपया पुन: प्रयास करें।",
   "previous": "पीछे",
   "pricePerMonth": "₹{price}/माह",
   "primary": "प्राथमिक",
+  "primaryContactHiddenOnPdf": "Hidden for privacy",
+  "primaryContactNumber": "Primary Contact Number",
+  "primaryContactVisibleOnPdf": "Registered calling number visible on PDF",
   "primaryPhoto": "प्राथमिक फ़ोटो",
   "primaryPhotoUpdated": "प्राथमिक फोटो अपडेट कर दिया गया",
   "printBtn": "छाप",
   "prioritySupport": "प्राथमिकता सहायता",
+  "privacyAndContentSwitches": "🔒 Privacy & Content Switches",
+  "privacyAndContentSwitchesSubtitle": "Toggle visibility of sensitive fields on your shared PDF",
   "privacyPolicy": "गोपनीयता नीति",
   "privacyS1Content": "• व्यक्तिगत डेटा: नाम, आयु, लिंग, जाति, शिक्षा, पेशा, पारिवारिक विवरण।\\n• संपर्क डेटा: फोन नंबर, ईमेल पता।\\n• मीडिया: आपकी प्रोफ़ाइल पर अपलोड किए गए फ़ोटो।\\n• डिवाइस डेटा: डिवाइस आईडी, आईपी पता (सुरक्षा और विश्लेषण के लिए)।\\n• स्थान डेटा: आस-पास के मिलान सुझाने के लिए अनुमानित स्थान (शहर/जिला)।",
   "privacyS1Title": "1. हमारे द्वारा एकत्रित की जाने वाली जानकारी",
@@ -618,6 +1949,7 @@
   "privateSectorEmployee": "निजी क्षेत्र के कर्मचारी",
   "pro": "प्रो",
   "proTips": "प्रो टिप्स",
+  "proceedToLogin": "आगे बढ़ें → लॉग इन करें",
   "processingImage": "तस्वीर प्रोसेस की जा रही है",
   "processingStatusCompressing": "Compressing...",
   "processingStatusPreparing": "Preparing...",
@@ -635,21 +1967,33 @@
   "profileDataNotFound": "प्रोफ़ाइल डेटा नहीं मिला",
   "profileInsights": "प्रोफ़ाइल अंतर्दृष्टि",
   "profileLinkCopied": "प्रोफाइल लिंक क्लिपबोर्ड पर कॉपी की गई!",
+  "profileMakeover": "प्रोफेशनल प्रोफ़ाइल मेकओवर",
+  "profileManagedBy": "Profile Managed By",
+  "profileManagedBySubtitle": "Select who created and manages the candidate biodata",
   "profileNotFound": "प्रोफ़ाइल नहीं मिला",
   "profilePhotos": "प्रोफ़ाइल तस्वीरें",
   "profileRemovedFromSaved": "प्रोफ़ाइल सहेजी गई सूचि से हटा दी गई",
   "profileSaved": "प्रोफ़ाइल सहेजी गई!",
+  "profileSharedVia": "{title} के माध्यम से {profileName} साझा किया गया",
   "profileSharedWith": "{name} के साथ प्रोफाइल शेयर की गई",
   "profileStrengthLabel": "प्रोफ़ाइल ताकत: {strength}",
   "profileViewLimitReached": "प्रोफ़ाइल दृश्य सीमा पूरी हो गई",
+  "profileViews": "प्रोफ़ाइल दृश्य",
   "profileViewsPerDay": "{count} प्रोफ़ाइल दृश्य/दिन",
+  "profiles": "प्रोफ़ाइल",
+  "profilesSharedWithYouDesc": "आपके परिवार और दोस्तों द्वारा आपके साथ साझा किए गए प्रोफ़ाइल यहां दिखाई देंगे",
   "profilesYouSaveWillAppearHere": "आपके द्वारा सहेजी गई प्रोफ़ाइलें यहां दिखाई देंगी",
+  "proofOfMarriage": "विवाह का प्रमाण",
   "provideDetailsAboutYourGotraAndVillageTo": "समुदाय सत्यापित बैज प्राप्त करने के लिए अपने गोत्र और गांव के बारे में विवरण प्रदान करें।",
   "provideInformationAboutYourFamilyBackgro": "अपनी पारिवारिक पृष्ठभूमि के बारे में जानकारी प्रदान करें",
   "public": "जनता",
   "quick": "तेज़",
+  "quickOneTapSuggestions": "Quick 1-Tap Suggestions:",
+  "rashiMoonSign": "Rashi (Moon Sign)",
+  "readAll": "Read All",
   "ready": "तैयार",
   "readyForMarriage": "शादी के लिए तैयार",
+  "received": "प्राप्त हुए",
   "recentConversations": "हाल की बातचीत",
   "recentPhotosSixMonths": "पिछले 6 महीनों में ली गई हालिया तस्वीरें",
   "recentSearches": "हाल की खोजें",
@@ -660,23 +2004,35 @@
   "recordAShortIntro": "एक संक्षिप्त परिचय रिकॉर्ड करें",
   "refer3FriendsGet1MonthFree": "3 दोस्तों को रेफर करें, 1 महीना मुफ़्त पाएं!",
   "referAndEarn": "रेफर करें और कमाएं",
+  "referenceRejected": "संदर्भ अस्वीकृत",
   "referenceVerification": "संदर्भ सत्यापन",
+  "referenceVerified": "संदर्भ सत्यापित",
+  "referenceWithNumber": "संदर्भ {number}",
   "references": "संदर्भ",
   "referralInvite": "रेफरल आमंत्रण",
   "referralInviteMessage": "बंजाराबायो से जुड़ें, हमारे समुदाय के लिए सबसे भरोसेमंद वैवाहिक ऐप! शुरू करने के लिए मेरे लिंक का उपयोग करें: {link}",
   "referralInviteSubject": "बंजाराबायो में शामिल होने का निमंत्रण",
   "referralLinkCopiedToClipboard": "रेफ़रल लिंक क्लिपबोर्ड पर कॉपी किया गया!",
+  "referralRewardsTiers": "Referral Rewards Tiers 👑",
   "referralShareMessage": "बंजाराबायो (BanjaraBio) में शामिल हों, हमारे समुदाय के लिए सबसे भरोसेमंद मैट्रिमोनियल ऐप! शुरू करने के लिए मेरे लिंक का उपयोग करें: {link}",
   "referralShareSubject": "BanjaraBio invitation",
   "referrals": "Referrals",
   "referralsLabel": "रेफरल",
   "refresh": "रिफ्रेश",
+  "refund25": "25% रिफंड",
+  "refund35": "35% रिफंड",
+  "registrationFee": "पंजीकरण शुल्क",
+  "registrationSubmitted": "Registration Submitted!",
   "reject": "अस्वीकार करना",
   "rejected": "अस्वीकृत",
+  "relationLabel": "संबंध",
+  "relationSubtitle": "Select Relationship",
   "relative": "रिश्तेदार",
+  "relocationPreference": "Relocation Preference",
   "remainingToday": "आज शेष",
   "remove": "निकालना",
   "removePhoto": "हटाएं",
+  "replacePhoto": "फोटो बदलें",
   "report": "रिपोर्ट करें",
   "reportSubmittedReview": "रिपोर्ट सबमिट कर दी गई है। हमारी टीम 24 घंटे के भीतर इसकी समीक्षा करेगी।",
   "reportUser": "उपयोगकर्ता को रिपोर्ट करें",
@@ -686,15 +2042,25 @@
   "requestsSentSuccessfully": "अनुरोध सफलतापूर्वक भेजे गए!",
   "rerecord": "पुन: रिकॉर्ड",
   "reset": "रीसेट",
+  "resetAllFilters": "Reset All Filters",
   "reshare": "पुनः साझा करना",
+  "resumeDraftCta": "ड्राफ्ट पूरा करें (आगे बढ़ें) 👉",
   "retake": "फिर से लेना",
   "retry": "पुनः प्रयास",
+  "revenueToday": "आज का राजस्व (₹)",
+  "revenueTotal": "कुल राजस्व (₹)",
   "reviewDetails": "विवरण की समीक्षा करें",
   "reviewVideoManuallyInStorageForNow": "अभी के लिए स्टोरेज में मैन्युअल रूप से वीडियो की समीक्षा करें",
   "rewards": "Rewards",
   "rewardsLabel": "पुरस्कार",
   "rich": "धनवान",
+  "rmHandpickedMatches": "RM Handpicked Matches",
+  "rmHandpickedMatchesSubtitle": "Profiles curated and vetted by your Personal Relationship Manager",
+  "royalBanjaraTemplatesWithCount": "{count} Royal Banjara Templates",
+  "royalPlanDesc": "समर्पित प्रबंधक आपका मैच ढूँढता है",
+  "royalPlanName": "रॉयल",
   "rupeeSymbol": "₹",
+  "safetyAndHealth": "सुरक्षा और स्वास्थ्य",
   "save": "सेव करें",
   "saveBiodata": "बायोडाटा सेव करें",
   "saved": "सहेजा गया",
@@ -702,6 +2068,10 @@
   "sayHelloLabel": "नमस्ते कहें!",
   "search": "खोजें",
   "searchByNameJobEducation": "नाम, नौकरी, शिक्षा से खोजें...",
+  "searchLeads": "लीड्स खोजें...",
+  "searchMatchesForRelativesCta": "रिश्तेदारों के लिए रिश्ता खोजें 👉",
+  "searchMatchesForRelativesSubtitle": "बेटा, बेटी, भाई या बहन के लिए हजारों सत्यापित प्रोफाइल सीधे देखें (बिना बायोडाटा बनाए)।",
+  "searchMatchesForRelativesTitle": "रिश्तेदारों के लिए रिश्ता खोजें",
   "searchProfiles": "प्रोफ़ाइल खोजें...",
   "searchResults": "खोज परिणाम",
   "searchSharedProfiles": "साझा प्रोफ़ाइल खोजें...",
@@ -709,15 +2079,24 @@
   "searchUserName": "उपयोगकर्ता नाम खोजें...",
   "secure": "सुरक्षित",
   "seeAll": "सभी देखें",
+  "seenAllProfiles": "आपने सभी प्रोफाइल देख लिए हैं!",
   "selectAnnualIncome": "सालाना कमाई की श्रेणी चुनें",
   "selectAnnualIncomeRange": "वार्षिक आय सीमा चुनें",
+  "selectAppLanguageTitle": "ऐप की भाषा चुनें",
+  "selectBiodataLanguage": "Select Biodata Language",
+  "selectBudgetRange": "Select Budget Range",
   "selectDate": "तारीख चुनें",
+  "selectDistrict": "जिला चुनें",
   "selectDistrictFirst": "पहले जिला चुनें",
   "selectDocumentType": "दस्तावेज़ प्रकार चुनें",
   "selectEducationLevel": "अपना शिक्षा स्तर चुनें",
   "selectFromYourPhotos": "अपनी तस्वीरों में से चुनें",
   "selectLanguage": "भाषा चुने",
   "selectLocation": "स्थान चुनें",
+  "selectMaritalStatus": "Select marital status requirement",
+  "selectMatchPreference": "Select match preference for groom or bride search",
+  "selectPaternalGotra": "Select candidate paternal Gotra customary clan",
+  "selectRewardType": "उपहार का प्रकार चुनें",
   "selectState": "राज्य चुनें",
   "selectStateFirst": "पहले राज्य चुनें",
   "selectTalukaOptional": "तालुका चुनें (वैकल्पिक)",
@@ -728,13 +2107,20 @@
   "selectYourSurname": "अपना उपनाम चुनें",
   "selectedPhotos": "चयनित तस्वीरें",
   "self": "Self",
+  "selfAndMamakulSubtitle": "Self: {self} • Mamakul: {mamakul}",
+  "selfClanRule": "Bride & Groom must not share the same paternal Gotra (e.g. Rathod, Pawar, Chavan, Jadhav).",
+  "selfClanTitle": "1. Self Clan (गोत्र):",
   "selfEmployed": "स्वरोजगार",
+  "selfServicePlans": "स्वयं सेवा",
   "selfieSubmitted": "सेल्फी सबमिट की गई",
   "send": "भेजें",
+  "sendHeartInterested": "आप रुचि रखते हैं यह दिखाने के लिए दिल भेजें।",
   "sendInterest": "रुचि भेजें",
   "sendMessage": "मेसेज भेजें",
+  "sendToCandidateWhatsApp": "Send to Bride/Groom on WhatsApp 🚩",
   "sendVerification": "सत्यापन भेजें",
   "sendVerificationRequests": "सत्यापन अनुरोध भेजें",
+  "sent": "भेजे गए",
   "setAsPrimary": "प्राथमिक के रूप में सेट करें",
   "settings": "सेटिंग्स",
   "settingsAndMenu": "सेटिंग्स और मेनू",
@@ -756,49 +2142,111 @@
   "shareYourProfileProfessionally": "अपनी प्रोफ़ाइल पेशेवर रूप से साझा करें",
   "shared": "मैचेस",
   "sharedProfiles": "शेयर की गई प्रोफ़ाइल",
+  "sharedProfilesWithEachOther": "आपने और {name} ने एक-दूसरे के साथ प्रोफाइल साझा किए हैं।",
   "sharedVia": "{method} के माध्यम से {name} को शेयर किया गया",
   "sharesPerMonth": "{count} शेयर/महीना",
   "sharingBiodataPdf": "बायोडाटा पीडीएफ साझा करना",
+  "sharingProfile": "प्रोफ़ाइल साझा कर रहे हैं...",
+  "sharingProfiles": "प्रोफ़ाइल साझा करना",
+  "sibling": "भाई/बहन",
+  "siblingsCount": "{count, plural, =1{1 भाई-बहन} other{{count} भाई-बहन}}",
+  "siblingsLabel": "भाई-बहन",
+  "signIn": "साइन इन करें",
+  "signInRequired": "साइन इन आवश्यक है",
+  "signInRequiredContent": "कृपया इस सुविधा का उपयोग करने के लिए साइन इन करें या एक खाता बनाएं।",
   "silver": "रजत",
   "silverPlanDesc": "शुरुआत करने के लिए उत्तम",
   "silverPlanName": "सिल्वर",
+  "similarMatches": "Similar Matches",
   "sister": "बहन",
   "sisterCount": "बहनें",
+  "sistersCount": "{count, plural, =1{1 बहन} other{{count} बहनें}}",
+  "sixMonthsFree": "6 Months Free",
   "skip": "छोड़ें",
+  "skipAndSelectLevel": "छोड़ें और तालुका/जिला चुनें",
+  "skipAndUseDistrict": "Skip & Use District",
+  "smartRecommendations": "Smart Recommendations",
+  "smartRecommendationsSubtitle": "Receive curated bio recommendations tailored for you.",
   "smileNaturallyTip": "मिलनसार दिखने के लिए स्वाभाविक रूप से मुस्कुराएं",
+  "smokingHabits": "Smoking Habits",
   "socialMediaTextOverlays": "टेक्स्ट ओवरले वाली सोशल मीडिया की तस्वीरें",
   "solicitingMoney": "पैसे मांगना",
   "someone": "कोई",
   "somethingWentWrong": "कुछ गड़बड़ हो गई",
   "son": "बेटे",
+  "sortServicesBy": "Sort Services By",
+  "specificLocation": "विशिष्ट स्थान",
+  "specified": "Specified",
   "specifyEducation": "शिक्षा निर्दिष्ट करें",
   "specifyProfession": "पेशा निर्दिष्ट करें",
+  "standardFilters": "Standard Filters",
+  "standardFiltersSubtitle": "Basic demographic criteria for all registered members",
+  "standardPlanDesc": "एक महीने के लिए प्रीमियम सुविधाओं का प्रयास करें",
+  "standardPlanName": "स्टैंडर्ड",
   "standardProfile": "मानक प्रोफाइल",
   "start": "शुरू करें",
   "startAConversation": "Start a conversation",
+  "startChatting": "START CHATTING 💬",
   "startConversation": "बातचीत शुरू करें",
   "startRecording": "रिकॉर्डिंग प्रारंभ करें",
+  "startSharingProfilesDesc": "सही जीवनसाथी खोजने में मदद करने के लिए परिवार और दोस्तों के साथ प्रोफ़ाइल साझा करना शुरू करें",
   "state": "राज्य",
+  "stateInIndia": "State in India",
   "statusWaitingForApproval": "स्थिति: अनुमोदन की प्रतीक्षा में",
   "stay": "रुकें",
+  "stayConnectedOnBanjaraBio": "Stay Connected on BanjaraBio",
+  "step1SelectCategory": "1. Select Your Service Category",
+  "step1SelectCategorySubtitle": "Choose the primary wedding service you provide",
+  "step2BusinessContact": "2. Business & Contact Information",
+  "step2BusinessContactSubtitle": "Enter authentic details for community clients",
+  "step3ServiceSpecs": "3. Dynamic Service Specifications",
+  "step3ServiceSpecsSubtitle": "Specific details tailored for {category}",
+  "step4PricingExperience": "4. Pricing & Experience",
+  "step4PricingExperienceSubtitle": "Help families understand your package range",
+  "stepCounterFormat": "चरण {current} का {total}",
+  "stepLabelDetails": "विवरण",
+  "stepLabelGoal": "उद्देश्य",
+  "stepLabelSignIn": "साइन इन",
+  "stepLabelType": "प्रकार",
+  "stepLabelWelcome": "स्वागत",
   "stepNOfTotal": "चरण {current} / {total}",
+  "strictPrivacyNotificationNote": "100% Strict Privacy: Bookmarks & profile views are completely private and never triggered as notifications.",
+  "strongBanjaraClanAlignment": "Strong Banjara Clan & Astro Alignment",
   "student": "छात्र",
+  "subCaste": "Sub-Caste",
+  "subCasteJatiVariant": "Sub-Caste / Jati Variant",
+  "subCasteSubtitle": "Filter by regional Banjara cultural designation",
   "submit": "सबमिट करें",
+  "submitForReview": "समीक्षा के लिए सबमिट करें",
   "submitForVerification": "सत्यापन के लिए सबमिट करें",
+  "submitVendorRegistration": "Submit Vendor Registration",
   "submittedForReview": "समीक्षा हेतु प्रस्तुत किया गया",
   "subscription": "सदस्यता",
+  "subsidizedPricePill": "Subsidized: ₹20 / month  •  ₹200 / year",
+  "successSubmission": "सफलता! आपका अनुरोध समीक्षा के लिए सबमिट कर दिया गया है।",
   "supportAndHelp": "सहायता और मदद",
   "supportBanjarabioApp": "support@banjarabio.com",
   "surname": "उपनाम",
+  "surnameLabel": "उपनाम",
   "swipe": "स्वाइप",
   "takePhoto": "फोटो लें",
   "taluka": "तालुका",
   "talukaInDistrictState": "{district}, {state} में तालुका",
   "talukaOptional": "तालुका (वैकल्पिक)",
+  "tapAgainToChat": "Tap again to Chat ➔",
+  "tapAgainToJoin": "Tap again to Join ➔",
+  "tapAgainToOpen": "Tap again to Open ➔",
+  "tapAgainToView": "Tap again to View ➔",
+  "tapAnyThemeToApply": "Tap any theme to instantly apply it to your biodata.",
   "tapTheButtonToAddAPhoto": "फ़ोटो जोड़ने के लिए + बटन पर टैप करें",
   "tapToAddPhoto": "Tap to add photo",
+  "tapToPreviewKundali": "Tap to preview Kundali chart & planetary alignments",
   "tapToReveal": "प्रकट करने के लिए टैप करें",
+  "targetBiodataQuestion": "Which biodata are you looking for?",
+  "targetGenderSubtitle": "Select Gender (Bride / Groom)",
   "teacherProfessor": "शिक्षक/प्रोफेसर",
+  "teamVisit": "टीम विजिट",
+  "tellUsYourStory": "हमें अपनी कहानी बताएं",
   "telugu": "తెలుగు",
   "template": "खाका",
   "tenToFifteenLakh": "₹10 लाख - ₹15 लाख",
@@ -822,311 +2270,42 @@
   "termsS7Title": "7. शासी कानून",
   "termsTitle": "नियम और शर्तें",
   "textSuper": "बहुत अच्छा",
+  "themesCount": "Themes ({count})",
   "thisFieldIsRequired": "यह फ़ील्ड आवश्यक है",
-  "totalCount": "कुल:",
-  "totalProfiles": "Total Profiles",
-  "traditionalFormalAttire": "पारंपरिक या औपचारिक पोशाक (साड़ी, सलवार कमीज, कुर्ता)",
-  "trustScore": "विश्वास स्कोर",
-  "trustScoreBeyondBeauty": "सुंदरता से परे ट्रस्ट स्कोर",
-  "trustScoreDiscounts": "विश्वास स्कोर और छूट",
-  "trustScoreShareMessage": "मैंने अभी बंजाराबायो पर {score} ट्रस्ट स्कोर के साथ अपना प्रोफाइल सत्यापित किया है! मेरा प्रोफाइल देखें और हमारे समुदाय में शामिल हों: {url}",
-  "trustVerification": "विश्वास और सत्यापन",
-  "trusted": "विश्वसनीय",
-  "trustedMember": "Trusted Member",
-  "trustedProfile": "विश्वसनीय प्रोफाइल",
-  "tryAdjustingYourFilterCriteria": "अपने फ़िल्टर मानदंड को समायोजित करने का प्रयास करें",
-  "tryAdjustingYourFiltersToSeeMoreProfiles": "बंजारा समुदाय से अधिक प्रोफ़ाइल देखने के लिए अपने फ़िल्टर समायोजित करने का प्रयास करें",
-  "tryAgain": "पुनः प्रयास करें",
-  "trySearchingForADifferentCity": "कोई भिन्न शहर खोजने का प्रयास करें",
-  "trySearchingForDifferentCity": "किसी अन्य शहर को खोजने का प्रयास करें",
-  "twentyLakhPlus": "₹20 लाख+",
-  "twoToFiveLakh": "₹2 लाख - ₹5 लाख",
-  "typeAMessage": "एक संदेश टाइप करें...",
-  "typeMessage": "संदेश लिखें...",
-  "unauthorizedAccessAdminsOnly": "अनधिकृत पहुंच। केवल व्यवस्थापक.",
-  "under2Lakh": "₹2 लाख से कम",
-  "undo": "पूर्ववत करें",
-  "unexpectedError": "एक अप्रत्याशित त्रुटि हुई: {error}",
-  "unexpectedErrorOccurred": "एक अप्रत्याशित त्रुटि हुई: {error}",
-  "unknownUser": "Unknown User",
-  "unlimitedBookmarks": "असीमित बुकमार्क",
-  "unlimitedProfileViews": "असीमित प्रोफ़ाइल दृश्य",
-  "unlimitedSharing": "असीमित शेयरिंग",
-  "unlockAdvancedFilters": "उन्नत फ़िल्टर अनलॉक करें",
-  "unlockNow": "अभी अनलॉक करें",
-  "unlockPremiumBiodata": "प्रीमियम बायोडाटा अनलॉक करें",
-  "unlockPremiumFeaturesToEnhanceYourBiodat": "अपने बायोडाटा प्रोफ़ाइल को बढ़ाने के लिए प्रीमियम सुविधाओं को अनलॉक करें",
-  "unlockToDownload": "इस टेम्पलेट को 5+ भाषाओं में डाउनलोड और साझा करने के लिए अनलॉक करें।",
-  "unmarried": "अविवाहित",
-  "unsave": "अनसेव",
-  "update": "अद्यतन",
-  "updateProfile": "प्रोफ़ाइल अपडेट करें",
-  "upgrade": "उन्नत करना",
-  "upgradeNow": "अभी अपग्रेड करें",
-  "upgradePlan": "प्लान अपग्रेड करें",
-  "upgradePremiumFilters": "व्यवसाय, स्थान और अधिक के लिए प्रीमियम फ़िल्टर में अपग्रेड करें।",
-  "upgradeRequired": "अपग्रेड आवश्यक",
-  "upgradeToPremium": "प्रीमियम में अपग्रेड करें",
-  "upgradeToPremiumFor6PhotosAdvancedFilter": "6 फ़ोटो और उन्नत फ़िल्टर के लिए प्रीमियम में अपग्रेड करें",
-  "upgradeToPremiumToAccessGranularFiltersF": "Upgrade to Premium to access granular filters",
-  "upgradeToUnlockAllFeatures": "सभी सुविधाओं को अनलॉक करने के लिए अपग्रेड करें",
-  "uploadCommunityCertificateLetter": "सामुदायिक प्रमाणपत्र/पत्र अपलोड करें",
-  "uploadYourPhotos": "अपनी बेहतरीन फ़ोटो अपलोड करें",
-  "uploadedSuccessfully": "सफलतापूर्वक अपलोड किया गया",
-  "upperMiddleClass": "उच्च मध्यम वर्ग",
-  "useCameraToCapture": "कैप्चर करने के लिए कैमरे का उपयोग करें",
-  "useCurrentLocation": "वर्तमान स्थान का उपयोग करें",
-  "useEmailPassword": "ईमेल / पासवर्ड का उपयोग करें",
-  "useNaturalLightingTip": "सर्वोत्तम परिणामों के लिए प्राकृतिक रोशनी का उपयोग करें",
-  "userBlockedSuccessfully": "उपयोगकर्ता को सफलतापूर्वक ब्लॉक कर दिया गया",
-  "userIdNotFound": "उपयोगकर्ता आईडी नहीं मिली",
-  "userIdNotFoundToast": "User ID not found",
-  "userLabel": "उपयोगकर्ता",
-  "userNotUploadedPhoto": "उपयोगकर्ता ने फ़ोटो अपलोड नहीं किया",
-  "users": "Users",
-  "usingGps": "जीपीएस का उपयोग करना",
-  "verificationBadge": "सत्यापन बैज",
-  "verificationCodeSent": "सत्यापन कोड भेजा गया!",
-  "verificationFailed": "Verification failed",
-  "verificationLinkcodeSent": "सत्यापन लिंक/कोड भेजा गया!",
-  "verificationRequests": "Verification Requests",
-  "verifications": "Verifications",
-  "verified": "सत्यापित",
-  "verified10PointsAddedToTrustScore": "सत्यापित! ट्रस्ट स्कोर में +10 अंक जोड़े गए",
-  "verifiedCommunityMember": "सत्यापित समुदाय सदस्य",
-  "verifiedProfile": "सत्यापित प्रोफाइल",
-  "verifiedProfileBadge": "सत्यापित प्रोफाइल",
-  "verifiedProfilesGet5xMoreResponses": "सत्यापित प्रोफाइल को 5 गुना अधिक प्रतिक्रियाएं मिलती हैं और वे खोज परिणामों में ऊपर दिखाई देते हैं।",
-  "verifiedTrusted": "सत्यापित एवं विश्वसनीय",
-  "verify": "सत्यापित करें",
-  "verifyEmailAddressHeading": "Verify Email Address",
-  "verifyLabel": "सत्यापित करें {label}",
-  "verifyMobile": "मोबाइल सत्यापित करें",
-  "verifyNow": "अभी सत्यापित करें",
-  "verifyOtp": "Verify OTP",
-  "verifyYourCommunityStatus": "अपनी सामुदायिक स्थिति सत्यापित करें",
-  "verifyYourEmailAddressToAddTrustAndReach": "विश्वास बढ़ाने और अधिक प्रोफ़ाइलों तक पहुँचने के लिए अपना ईमेल पता सत्यापित करें।",
-  "verifyYourMobileNumberToAddTrustAndReach": "विश्वास बढ़ाने और अधिक प्रोफ़ाइल तक पहुंचने के लिए अपना मोबाइल नंबर सत्यापित करें।",
-  "veryFair": "बहुत गोरा",
-  "videoBioIntro": "वीडियो बायो / परिचय",
-  "videoIntro": "वीडियो परिचय",
-  "videoIntroUploaded": "वीडियो परिचय अपलोड किया गया",
-  "videoRecorded": "वीडियो रिकॉर्ड किया गया!",
-  "view": "देखें",
-  "viewAll": "सभी को देखें",
-  "viewBiodata": "बायोडाटा देखें",
-  "viewDetails": "विवरण देखें",
-  "viewLabel": "देखें",
-  "viewProfile": "प्रोफ़ाइल देखें",
-  "viewYourBookmarkedProfiles": "अपने बुकमार्क किए गए प्रोफाइल देखें",
-  "viewsLabel": "दृश्य",
-  "village": "गाँव",
-  "visibleToAllProfiles": "सभी प्रोफ़ाइलों के लिए दृश्यमान",
-  "visibleToCloseMatchesOnly": "केवल मैच बंद करने के लिए दृश्यमान",
-  "weEncounteredAnUnexpectedErrorWhileProce": "आपके अनुरोध को संसाधित करते समय हमें एक अप्रत्याशित त्रुटि का सामना करना पड़ा।",
-  "weWillSendAVerificationRequestToTheirMob": "हम उनके मोबाइल नंबर पर एक सत्यापन अनुरोध भेजेंगे। एक बार जब वे स्वीकृत हो जाते हैं, तो आपको +10 अंक मिलते हैं।",
-  "weWillVerifyYourCommunityDetailsShortly1": "हम शीघ्र ही आपके समुदाय विवरण का सत्यापन करेंगे। +15 अंक लंबित।",
-  "welcomeToBanjaraBio": "बंजारा बायो में आपका स्वागत है",
-  "whatDoYouLookFor": "आप जीवनसाथी में क्या चाहते हैं?",
-  "whatsApp": "व्हाट्सएप",
-  "whatsAppContact": "व्हाट्सएप संपर्क",
-  "whatsappShareSubtitle": "{name} का विवरण परिवार या दोस्तों के साथ साझा करें",
-  "whatsappSupport": "व्हाट्सएप सपोर्ट",
-  "wheatish": "गेहुआं",
-  "whereDoYouWork": "आप कहाँ काम करते हैं?",
-  "whoViewedMe": "मुझे किसने देखा",
-  "whyBanjaraBio": "बंजारा बायो क्यों?",
-  "widowed": "विधवा/विधुर",
-  "writeAboutYourself": "अपने बारे में कुछ लिखें...",
-  "year": "वर्ष",
-  "yearsOld": "{age} वर्ष",
-  "yes": "हाँ",
-  "yesterday": "कल",
-  "youNeedAProfileToShareIt": "साझा करने के लिए आपको एक प्रोफ़ाइल की आवश्यकता है।",
-  "youWillNoLongerSeeThisProfile": "अब आपको यह प्रोफ़ाइल दिखाई नहीं देगी",
-  "youngerBrother": "छोटे भाई",
-  "youngerSister": "छोटी बहन",
-  "your": "आपका",
-  "yourDailyMatches": "आपके दैनिक मिलान",
-  "yourDocumentsAreEncrypted": "आपके दस्तावेज़ एन्क्रिप्टेड हैं और अन्य उपयोगकर्ताओं को कभी नहीं दिखाए जाते हैं। केवल बैज दिखाई देता है।",
-  "yourDocumentsHaveBeenSubmittedSecurelyWe": "आपके दस्तावेज़ सुरक्षित रूप से जमा कर दिए गए हैं. सत्यापित होने पर हम आपको सूचित करेंगे.",
-  "yourIntroVideoIsUnderReview10PointsPendi": "आपका परिचय वीडियो समीक्षाधीन है. +10 अंक अनुमोदन हेतु लंबित।",
-  "yourMatchesWillAppearHereOnceYouBothExpr": "जब आप दोनों रुचि व्यक्त करेंगे तो आपके मैच यहां दिखाई देंगे। अपना आदर्श साथी ढूंढने के लिए प्रोफ़ाइल साझा करते रहें!",
-  "yourPersonalInviteLink": "आपका व्यक्तिगत आमंत्रण लिंक",
-  "yourReferralCode": "आपका रेफरल कोड",
-  "yourSelfieHasBeenSubmittedOurTeamWillVer": "आपकी सेल्फी सबमिट कर दी गई है. हमारी टीम इसे आपकी प्रोफ़ाइल फ़ोटो से सत्यापित करेगी।",
-  "yourTrustScore": "आपका विश्वास स्कोर",
-  "yrs": "{count} वर्ष",
-  "interest": "रुचि",
-  "revenueToday": "आज का राजस्व (₹)",
-  "premiumMen": "प्रीमियम पुरुष",
-  "premiumWomen": "प्रीमियम महिलाएं",
-  "financialPerformance": "वित्तीय प्रदर्शन",
-  "demographicsAndPremium": "जनसांख्यिकी और प्रीमियम",
-  "sharingProfiles": "प्रोफ़ाइल साझा करना",
-  "sharingProfile": "प्रोफ़ाइल साझा कर रहे हैं...",
-  "expressInterest": "रुचि व्यक्त करें?",
-  "interestConfirmationDesc": "क्या आप अपनी रुचि दिखाने के लिए {name} के साथ अपनी प्रोफ़ाइल साझा करना चाहते हैं?",
-  "yesInterest": "हाँ, रुचि है",
-  "interestConfirmationTitle": "रुचि व्यक्त करें?",
-  "interestConfirmationMessage": "इससे आपकी प्रोफ़ाइल {name} के साथ साझा की जाएगी और वे आपसे जुड़ सकेंगे। क्या आप सुनिश्चित हैं?",
-  "interestShared": "{name} के साथ रुचि साझा की गई!",
-  "upgradeToShareMore": "अधिक साझा करने के लिए अपग्रेड करें",
-  "itSAMatch": "जोड़ी मिल गई!",
-  "sharedProfilesWithEachOther": "आपने और {name} ने एक-दूसरे के साथ प्रोफाइल साझा किए हैं।",
-  "mutualMatch": "आपसी मिलान",
+  "threeXReplies": "3x Replies",
+  "tier4Vip": "TIER 4 VIP",
+  "tillUMarry": "शादी तक",
+  "tipPersonalizedNotes": "Tip: Personalized notes get 3x replies",
   "toContact": "को: {name}",
-  "fromContact": "से: {name}",
-  "countProfileViews": "{count, plural, =1{1 प्रोफ़ाइल दृश्य} other{{count} प्रोफ़ाइल दृश्य}}",
-  "matchedBadge": "मिलान हुआ",
-  "premiumBadge": "प्रीमियम",
-  "contactLabel": "संपर्क",
-  "profileSharedVia": "{title} के माध्यम से {profileName} साझा किया गया",
-  "failedToSendMessage": "संदेश भेजने में विफल: {error}",
-  "uploadFailed": "अपलोड विफल: {error}",
-  "updateFailed": "अपडेट विफल: {error}",
-  "errorWithLabel": "त्रुटि: {label}",
-  "referenceWithNumber": "संदर्भ {number}",
-  "villageTanda": "गांव / तांडा",
-  "ageLabel": "आयु",
-  "heightLabel": "ऊँचाई",
-  "surnameLabel": "उपनाम",
-  "dateOfBirthLabel": "जन्म तिथि",
-  "birthTimeLabel": "जन्म का समय",
-  "birthPlaceLabel": "जन्म स्थान",
-  "bloodGroupLabel": "रक्त समूह",
-  "occupationLabel": "व्यवसाय",
-  "annualIncomeLabel": "वार्षिक आय",
-  "currentResidence": "वर्तमान निवास",
-  "contactPersonLabel": "संपर्क व्यक्ति",
-  "limitReached": "सीमा समाप्त",
-  "relationLabel": "संबंध",
-  "bestTimeToContact": "संपर्क करने का सबसे अच्छा समय",
-  "none": "कोई नहीं",
-  "yearsLabel": "{count, plural, =1{वर्ष} other{वर्ष}}",
-  "brothersCount": "{count, plural, =1{1 भाई} other{{count} भाई}}",
-  "sistersCount": "{count, plural, =1{1 बहन} other{{count} बहनें}}",
-  "siblingsCount": "{count, plural, =1{1 भाई-बहन} other{{count} भाई-बहन}}",
-  "siblingsLabel": "भाई-बहन",
-  "company": "कंपनी",
-  "job": "कार्य / नौकरी",
-  "biodataRequired": "बायोडाटा आवश्यक है",
-  "guestRestrictionMessage": "प्रोफ़ाइल के साथ बातचीत करने, रुचि व्यक्त करने या संदेश भेजने के लिए, आपको पहले अपना स्वयं का बायोडाटा बनाना होगा।",
-  "createNow": "अभी बनाएं",
-  "tourLocationTitle": "स्थान चुनें",
-  "tourLocationDesc": "अपने आस-पास के मिलान खोजने के लिए राज्य, जिला या तालुका द्वारा प्रोफ़ाइल फ़िल्टर करें।",
-  "tourSearchTitle": "प्रोफ़ाइल खोजें",
-  "tourSearchDesc": "किसी विशिष्ट व्यक्ति की तलाश है? उनका नाम या शिक्षा यहाँ टाइप करें।",
-  "tourFilterTitle": "उन्नत फ़िल्टर",
-  "tourFilterDesc": "केवल वही देखने के लिए आयु, शिक्षा या पेशे के आधार पर सीमित करें जो आप चाहते हैं।",
-  "tourChatTitle": "संदेश और चैट",
-  "tourChatDesc": "अपनी बातचीत और आने वाली रुचियां यहां देखें।",
+  "topDelivery": "Top Delivery",
+  "totalBlocks": "कुल ब्लॉक",
+  "totalCount": "कुल:",
+  "totalFemales": "कुल महिलाएँ",
+  "totalMales": "कुल पुरुष",
+  "totalMessages": "कुल संदेश",
+  "totalProfiles": "Total Profiles",
+  "totalSavings": "कुल बचत: ₹{amount}",
+  "totalUsers": "कुल उपयोगकर्ता",
+  "tourBookmarkDesc": "पसंद आने वाली प्रोफ़ाइल को बाद में अपनी सहेजी गई सूची में देखने के लिए बुकमार्क करें।",
+  "tourBookmarkTitle": "बाद के लिए सहेजें",
   "tourBottomHome": "होम फ़ीड",
   "tourBottomHomeDesc": "हजारों सत्यापित प्रोफ़ाइलों को स्क्रॉल करें।",
-  "tourBottomShared": "साझा प्रोफ़ाइल",
-  "tourBottomSharedDesc": "WhatsApp/लिंक के माध्यम से साझा की गई या प्राप्त प्रोफ़ाइल देखें।",
   "tourBottomProfile": "आपकी प्रोफ़ाइल",
   "tourBottomProfileDesc": "अपना स्वयं का बायोडाटा और फ़ोटो यहाँ प्रबंधित करें।",
   "tourBottomSettings": "ऐप सेटिंग्स",
   "tourBottomSettingsDesc": "भाषा, अधिसूचना सेटिंग्स बदलें या सहायता से संपर्क करें।",
-  "tourWhatsappTitle": "WhatsApp सहायता",
-  "tourWhatsappDesc": "मदद या प्रोफ़ाइल परिवर्तन के लिए हमारे एडमिन से सीधा संपर्क।",
-  "tourInstagramTitle": "हमें फॉलो करें",
+  "tourBottomShared": "साझा प्रोफ़ाइल",
+  "tourBottomSharedDesc": "WhatsApp/लिंक के माध्यम से साझा की गई या प्राप्त प्रोफ़ाइल देखें।",
+  "tourChatDesc": "अपनी बातचीत और आने वाली रुचियां यहां देखें।",
+  "tourChatTitle": "संदेश और चैट",
+  "tourFilterDesc": "केवल वही देखने के लिए आयु, शिक्षा या पेशे के आधार पर सीमित करें जो आप चाहते हैं।",
+  "tourFilterTitle": "उन्नत फ़िल्टर",
   "tourInstagramDesc": "Instagram पर रोज़ाना नई प्रोफ़ाइल और सफलता की कहानियाँ देखें।",
-  "tourBookmarkTitle": "बाद के लिए सहेजें",
-  "tourBookmarkDesc": "पसंद आने वाली प्रोफ़ाइल को बाद में अपनी सहेजी गई सूची में देखने के लिए बुकमार्क करें।",
-  "tourInterestTitle": "रुचि व्यक्त करें",
+  "tourInstagramTitle": "हमें फॉलो करें",
   "tourInterestDesc": "उन्हें यह बताने के लिए दिल भेजें कि आप उनके बायोडाटा में रुचि रखते हैं।",
-  "tourShareTitle": "परिवार के साथ साझा करें",
-  "tourShareDesc": "उनकी राय के लिए WhatsApp के माध्यम से माता-पिता या रिश्तेदारों के साथ आसानी से प्रोफ़ाइल साझा करें।",
-  "chooseHowToStart": "चुनें कि आप कैसे शुरू करना चाहते हैं",
-  "exploreAsGuest": "अतिथि के रूप में अन्वेषण करें",
-  "exitGuestMode": "गेस्ट मोड से बाहर निकलें",
-  "guestModeDesc": "अपनी प्रोफ़ाइल बनाने से पहले ऐप का निर्देशित दौरा करें।",
-  "createMyBiodata": "मेरा बायोडेटा बनाएं",
-  "createBiodataDesc": "अपनी प्रोफ़ाइल भरें और तुरंत जुड़ना शुरू करें।",
-  "needHelpContactAdmin": "मदद चाहिए? व्यवस्थापक से संपर्क करें",
-  "noMatchesYet": "अभी तक कोई मैच नहीं",
-  "noProfilesSharedYet": "अभी तक कोई प्रोफ़ाइल साझा नहीं किया गया",
-  "noProfilesReceived": "कोई प्रोफ़ाइल प्राप्त नहीं हुआ",
-  "mutualMatchesDesc": "जब दोनों उपयोगकर्ता एक-दूसरे में रुचि दिखाएंगे तो परस्पर मैच यहां दिखाई देंगे",
-  "startSharingProfilesDesc": "सही जीवनसाथी खोजने में मदद करने के लिए परिवार और दोस्तों के साथ प्रोफ़ाइल साझा करना शुरू करें",
-  "profilesSharedWithYouDesc": "आपके परिवार और दोस्तों द्वारा आपके साथ साझा किए गए प्रोफ़ाइल यहां दिखाई देंगे",
-  "back": "वापस",
-  "enterVillageManually": "गांव/अन्य नाम दर्ज करें",
-  "enterVillageHint": "गांव या तांडा का नाम दर्ज करें...",
-  "specificLocation": "विशिष्ट स्थान",
-  "skipAndSelectLevel": "छोड़ें और तालुका/जिला चुनें",
-  "optional": "वैकल्पिक",
-  "emailNotifications": "ईमेल सूचनाएं",
-  "dailyMatchPicks": "दैनिक मैच पिक्स",
-  "newMatchAlerts": "नया मैच अलर्ट",
-  "activeCreators": "सक्रिय निर्माता",
-  "appGrowth": "ऐप प्रगति",
-  "basicPlanDesc": "आपकी खोज के लिए आवश्यक सुविधाएँ",
-  "basicPlanName": "बेसिक",
-  "bestValue": "सर्वोत्तम मूल्य",
-  "biodataPremiumIncluded": "बायोडेटा प्रीमियम शामिल है",
-  "bulkDiscount": "{percent}% की छूट",
-  "completedReferrals": "पूरे हुए रेफरल",
-  "contactUnlocks": "{count} संपर्क अनलॉक/माह",
-  "couponDiscountApplied": "कूपन छूट लागू",
-  "dailyActiveUsers": "दैनिक सक्रिय उपयोगकर्ता",
-  "dedicatedManager": "समर्पित संबंध प्रबंधक",
-  "directContactAccess": "सीधा संपर्क एक्सेस",
-  "elitePlanDesc": "वीआईपी एक्सेस के साथ चुनिंदा मैच",
-  "elitePlanName": "एलीट",
-  "errorAdminActionFailed": "अनुरोधित कार्य पूरा नहीं किया जा सका। कृपया बाद में पुनः प्रयास करें।",
-  "errorLoadingAdminCoupons": "कूपन ऑफ़र लोड करने में विफल। कृपया पुनः प्रयास करें।",
-  "errorLoadingAdminCreators": "निर्माता सूची प्राप्त नहीं की जा सकी। कृपया अपना नेटवर्क जांचें।",
-  "errorLoadingAdminPayments": "भुगतान इतिहास लोड करने में विफल। कृपया पुनः प्रयास करें।",
-  "errorLoadingAdminReferences": "लंबित संदर्भ प्राप्त करने में असमर्थ। कृपया रिफ्रेश करें।",
-  "errorLoadingAdminStats": "डैशबोर्ड आँकड़े लोड करने में असमर्थ। कृपया रिफ्रेश करने का प्रयास करें।",
-  "errorLoadingAdminUsers": "उपयोगकर्ता सूची प्राप्त नहीं की जा सकी। कृपया अपना कनेक्शन जांचें।",
-  "errorLoadingAdminVerifications": "सत्यापन अनुरोध लोड नहीं किए जा सके। कृपया पुनः प्रयास करें।",
-  "eternalElitePlanDesc": "अपने करियर पर ध्यान दें, हम आपका साथी ढूंढेंगे",
-  "eternalElitePlanName": "इटर्नल एलीट",
-  "eternalPlanDesc": "समाप्ति के बारे में फिर कभी चिंता न करें",
-  "eternalPlanName": "इटर्नल - शादी तक",
-  "featuredBadge": "एलीट सत्यापित बैज",
-  "featuresIncluded": "शामिल सुविधाएं:",
-  "focusOnCareer": "अपने करियर पर ध्यान दें, जबकि हम आपका जीवनसाथी ढूंढते हैं",
-  "forLifetime": "आजीवन के लिए",
-  "handpickedMatches": "{count} चुनिंदा मैच/सप्ताह",
-  "incognitoMode": "निजी प्रोफ़ाइल ब्राउज़िंग",
-  "lifetime": "आजीवन",
-  "men": "पुरुष",
-  "messagingLimitReached": "संदेश भेजने की सीमा समाप्त",
-  "monthlyCheckIn": "मासिक चेक-इन",
-  "monthlyRevenue": "मासिक राजस्व (₹)",
-  "mrpPrice": "MRP ₹{price}",
-  "pdfRevenue": "PDF राजस्व (₹)",
-  "pendingReferences": "लंबित संदर्भ",
-  "pendingReports": "लंबित रिपोर्ट",
-  "perMonth": "/माह",
-  "personalConcierge": "व्यक्तिगत कंसीयज",
-  "premiumPlanDesc": "उन्नत सुविधाएँ और बेहतर दृश्यता",
-  "premiumPlanName": "प्रीमियम",
-  "profileMakeover": "प्रोफेशनल प्रोफ़ाइल मेकओवर",
-  "profileViews": "प्रोफ़ाइल दृश्य",
-  "profiles": "प्रोफ़ाइल",
-  "referenceRejected": "संदर्भ अस्वीकृत",
-  "referenceVerified": "संदर्भ सत्यापित",
-  "replacePhoto": "फोटो बदलें",
-  "revenueTotal": "कुल राजस्व (₹)",
-  "royalPlanDesc": "समर्पित प्रबंधक आपका मैच ढूँढता है",
-  "royalPlanName": "रॉयल",
-  "safetyAndHealth": "सुरक्षा और स्वास्थ्य",
-  "selfServicePlans": "स्वयं सेवा",
-  "standardPlanDesc": "एक महीने के लिए प्रीमियम सुविधाओं का प्रयास करें",
-  "standardPlanName": "स्टैंडर्ड",
-  "tillUMarry": "शादी तक",
-  "totalBlocks": "कुल ब्लॉक",
-  "totalFemales": "कुल महिलाएँ",
-  "totalMales": "कुल पुरुष",
-  "totalMessages": "कुल संदेश",
-  "totalSavings": "कुल बचत: ₹{amount}",
-  "totalUsers": "कुल उपयोगकर्ता",
+  "tourInterestTitle": "रुचि व्यक्त करें",
+  "tourLocationDesc": "अपने आस-पास के मिलान खोजने के लिए राज्य, जिला या तालुका द्वारा प्रोफ़ाइल फ़िल्टर करें।",
+  "tourLocationTitle": "स्थान चुनें",
   "tourMatchesMatchedDesc": "आपसी मैच जहां आप और दूसरे व्यक्ति दोनों ने रुचि व्यक्त की!",
   "tourMatchesMatchedTitle": "मैच हुई प्रोफ़ाइल",
   "tourMatchesReceivedDesc": "दूसरों द्वारा व्हाट्सएप या लिंक के माध्यम से आपके साथ साझा की गई प्रोफ़ाइल।",
@@ -1145,87 +2324,225 @@
   "tourProfileSavedTitle": "सहेजी गई प्रोफ़ाइल",
   "tourProfileTrustDesc": "आपकी विश्वसनीयता स्कोर। अपना आईडी, सेल्फी और समुदाय सत्यापित करके इसे बढ़ाएं।",
   "tourProfileTrustTitle": "ट्रस्ट स्कोर",
+  "tourSearchDesc": "किसी विशिष्ट व्यक्ति की तलाश है? उनका नाम या शिक्षा यहाँ टाइप करें।",
+  "tourSearchTitle": "प्रोफ़ाइल खोजें",
+  "tourShareDesc": "उनकी राय के लिए WhatsApp के माध्यम से माता-पिता या रिश्तेदारों के साथ आसानी से प्रोफ़ाइल साझा करें।",
+  "tourShareTitle": "परिवार के साथ साझा करें",
+  "tourWhatsappDesc": "मदद या प्रोफ़ाइल परिवर्तन के लिए हमारे एडमिन से सीधा संपर्क।",
+  "tourWhatsappTitle": "WhatsApp सहायता",
+  "traditionalFormalAttire": "पारंपरिक या औपचारिक पोशाक (साड़ी, सलवार कमीज, कुर्ता)",
+  "translatesWholePdfDesc": "Translates whole PDF (keys & profile info)",
+  "trustAllianceBadge": "✦ विश्वसनीय गठबंधन",
   "trustDiscountApplied": "ट्रस्ट स्कोर छूट लागू",
+  "trustLevel": "TRUST LEVEL",
+  "trustScore": "विश्वास स्कोर",
+  "trustScoreBeyondBeauty": "सुंदरता से परे ट्रस्ट स्कोर",
+  "trustScoreDiscounts": "विश्वास स्कोर और छूट",
+  "trustScoreShareMessage": "मैंने अभी बंजाराबायो पर {score} ट्रस्ट स्कोर के साथ अपना प्रोफाइल सत्यापित किया है! मेरा प्रोफाइल देखें और हमारे समुदाय में शामिल हों: {url}",
+  "trustVerification": "विश्वास और सत्यापन",
+  "trusted": "विश्वसनीय",
+  "trustedCommunityBadge": "१००% विश्वसनीय समुदाय",
+  "trustedMember": "Trusted Member",
+  "trustedProfile": "विश्वसनीय प्रोफाइल",
+  "tryAdjustingYourFilterCriteria": "अपने फ़िल्टर मानदंड को समायोजित करने का प्रयास करें",
+  "tryAdjustingYourFiltersToSeeMoreProfiles": "बंजारा समुदाय से अधिक प्रोफ़ाइल देखने के लिए अपने फ़िल्टर समायोजित करने का प्रयास करें",
+  "tryAgain": "पुनः प्रयास करें",
+  "trySearchingForADifferentCity": "कोई भिन्न शहर खोजने का प्रयास करें",
+  "trySearchingForDifferentCity": "किसी अन्य शहर को खोजने का प्रयास करें",
+  "twentyLakhPlus": "₹20 लाख+",
+  "twoMonthsFree": "2 Months Free",
+  "twoToFiveLakh": "₹2 लाख - ₹5 लाख",
+  "typeAMessage": "एक संदेश टाइप करें...",
+  "typeCustomIntroNoteHint": "Type your custom matrimonial intro note here...\n(e.g., family background, career aspirations, shared values)",
+  "typeMessage": "संदेश लिखें...",
+  "unauthorizedAccessAdminsOnly": "अनधिकृत पहुंच। केवल व्यवस्थापक.",
+  "unblockAllProFeatures": "सभी प्रो सुविधाओं को अनलॉक करें",
+  "under2Lakh": "₹2 लाख से कम",
+  "undo": "पूर्ववत करें",
+  "unexpectedError": "एक अप्रत्याशित त्रुटि हुई: {error}",
+  "unexpectedErrorOccurred": "एक अप्रत्याशित त्रुटि हुई: {error}",
+  "unknownUser": "Unknown User",
+  "unlimitedBookmarks": "असीमित बुकमार्क",
   "unlimitedContactUnlocks": "अनलिमिटेड संपर्क अनलॉक",
   "unlimitedHandpickedMatches": "दैनिक ऑन-डिमांड मैच",
+  "unlimitedProfileViews": "असीमित प्रोफ़ाइल दृश्य",
+  "unlimitedSharing": "असीमित शेयरिंग",
+  "unlockAdvancedFilters": "उन्नत फ़िल्टर अनलॉक करें",
+  "unlockCommunityFiltersDesc": "Filter Gotra, Maternal Gotra (मोसळ), Sub-Caste, Tanda/Origin, Height, Income & Lineage for just ₹20/mo or ₹200/yr.",
+  "unlockCommunityFiltersTitle": "Unlock Community Filters (BVS)",
+  "unlockDirectMessageAd": "मुफ्त में 1 सीधा संदेश अनलॉक करने के लिए 3 विज्ञापन देखें!",
+  "unlockForPriceButton": "Unlock for ₹20/mo or ₹200/yr ➔",
+  "unlockMatchmakerFiltersDesc": "Direct contact numbers, 36 Guna Score, Ancestral Land Holdings & RM Curation available on VIP Matchmaker plans.",
+  "unlockMatchmakerFiltersTitle": "Unlock Matchmaker Filters",
+  "unlockMoreViewsAd": "आज के लिए 5 और विज़िट्स अनलॉक करने के लिए एक त्वरित विज्ञापन देखें!",
+  "unlockMoreVisitors": "अनलॉक करें {count} और विज़िटर्स!",
+  "unlockNow": "अभी अनलॉक करें",
+  "unlockPremiumBiodata": "प्रीमियम बायोडाटा अनलॉक करें",
+  "unlockPremiumFeaturesToEnhanceYourBiodat": "अपने बायोडाटा प्रोफ़ाइल को बढ़ाने के लिए प्रीमियम सुविधाओं को अनलॉक करें",
+  "unlockPremiumFiltersDesc": "Access Govt ID Verified, Kundali Dosha, Diet, Sector, and Active Responder filters with Premium self-service plans.",
+  "unlockPremiumFiltersTitle": "Unlock Premium Filters",
+  "unlockToDownload": "इस टेम्पलेट को 5+ भाषाओं में डाउनलोड और साझा करने के लिए अनलॉक करें।",
+  "unmarried": "अविवाहित",
+  "unsave": "अनसेव",
+  "unsavedDraftBodyGeneric": "आपकी भरी हुई जानकारी सुरक्षित है। जारी रखने के लिए टैप करें।",
+  "unsavedDraftBodyWithName": "{name} का बायोडाटा ड्राफ्ट सुरक्षित है। वहीं से आगे जारी रखें।",
+  "unsavedDraftTitle": "📝 अधूरा बायोडाटा ड्राफ्ट सुरक्षित है!",
+  "unverified": "असत्यापित",
+  "upcomingMelavas": "आगामी मेलावा",
+  "update": "अद्यतन",
+  "updateFailed": "अपडेट विफल: {error}",
+  "updateProfile": "प्रोफ़ाइल अपडेट करें",
+  "upgrade": "उन्नत करना",
+  "upgradeNow": "अभी अपग्रेड करें",
+  "upgradePlan": "प्लान अपग्रेड करें",
+  "upgradePremiumFilters": "व्यवसाय, स्थान और अधिक के लिए प्रीमियम फ़िल्टर में अपग्रेड करें।",
+  "upgradeRequired": "अपग्रेड आवश्यक",
+  "upgradeToCommunityButton": "Upgrade to Community (₹20/mo or ₹200/yr)",
+  "upgradeToPremium": "प्रीमियम में अपग्रेड करें",
+  "upgradeToPremiumFor6PhotosAdvancedFilter": "6 फ़ोटो और उन्नत फ़िल्टर के लिए प्रीमियम में अपग्रेड करें",
+  "upgradeToPremiumToAccessGranularFiltersF": "Upgrade to Premium to access granular filters",
+  "upgradeToShareMore": "अधिक साझा करने के लिए अपग्रेड करें",
+  "upgradeToUnlockAllFeatures": "सभी सुविधाओं को अनलॉक करने के लिए अपग्रेड करें",
+  "upgradeToUnlockPremiumFeatures": "सभी विज्ञापनों को हटाने और प्रीमियम बायोडाटा सुविधाओं को अनलॉक करने के लिए अपग्रेड करें।",
+  "uploadBvsCardPrompt": "अपना बणजारा विरासत संघ (BVS) सदस्यता कार्ड अपलोड करें",
+  "uploadCommunityCertificateLetter": "सामुदायिक प्रमाणपत्र/पत्र अपलोड करें",
+  "uploadFailed": "अपलोड विफल: {error}",
+  "uploadYourPhotos": "अपनी बेहतरीन फ़ोटो अपलोड करें",
+  "uploadedSuccessfully": "सफलतापूर्वक अपलोड किया गया",
+  "upperMiddleClass": "उच्च मध्यम वर्ग",
+  "useCameraToCapture": "कैप्चर करने के लिए कैमरे का उपयोग करें",
+  "useCurrentLocation": "वर्तमान स्थान का उपयोग करें",
+  "useEmailPassword": "ईमेल / पासवर्ड का उपयोग करें",
+  "useNaturalLightingTip": "सर्वोत्तम परिणामों के लिए प्राकृतिक रोशनी का उपयोग करें",
+  "userBlockRequestSubmitted": "User block request submitted",
+  "userBlockedSuccessfully": "उपयोगकर्ता को सफलतापूर्वक ब्लॉक कर दिया गया",
   "userEngagement": "उपयोगकर्ता सहभागिता",
+  "userIdNotFound": "उपयोगकर्ता आईडी नहीं मिली",
+  "userIdNotFoundToast": "User ID not found",
+  "userLabel": "उपयोगकर्ता",
+  "userNotUploadedPhoto": "उपयोगकर्ता ने फ़ोटो अपलोड नहीं किया",
+  "users": "Users",
+  "usingGps": "जीपीएस का उपयोग करना",
+  "vadhuVarSuchakInitiative": "Vadhu Var Suchak Initiative",
+  "vendorNetworkEffectDesc": "Self-register your services to receive direct 1-click WhatsApp inquiries from thousands of Banjara families.",
+  "vendorRegistration": "Vendor Registration",
+  "vendorRegistrationSubmittedCongrats": "Congratulations! {name} has been submitted for verified vendor listing on the BanjaraBio Network.",
+  "vendorTermsAgreement": "I agree to provide authentic, verified wedding services to Banjara community families with 100% transparency.",
+  "vendorVerificationDeskNote": "Our vendor verification desk will verify and activate your listing within 2-4 hours.",
+  "venue": "स्थान",
+  "verificationBadge": "सत्यापन बैज",
+  "verificationCodeSent": "सत्यापन कोड भेजा गया!",
+  "verificationFailed": "Verification failed",
+  "verificationLinkcodeSent": "सत्यापन लिंक/कोड भेजा गया!",
+  "verificationRequests": "Verification Requests",
+  "verifications": "Verifications",
+  "verified": "सत्यापित",
+  "verified10PointsAddedToTrustScore": "सत्यापित! ट्रस्ट स्कोर में +10 अंक जोड़े गए",
+  "verifiedBiodata": "Verified Biodata",
+  "verifiedCommunityMember": "सत्यापित समुदाय सदस्य",
+  "verifiedCountBadge": "{count} Verified",
+  "verifiedHoroscopeOnMutual": "Verified horoscope chart on mutual match interest",
+  "verifiedProfile": "सत्यापित प्रोफाइल",
+  "verifiedProfileBadge": "सत्यापित प्रोफाइल",
+  "verifiedProfilesGet5xMoreResponses": "सत्यापित प्रोफाइल को 5 गुना अधिक प्रतिक्रियाएं मिलती हैं और वे खोज परिणामों में ऊपर दिखाई देते हैं।",
+  "verifiedSalary": "VERIFIED SALARY",
+  "verifiedTrusted": "सत्यापित एवं विश्वसनीय",
+  "verify": "सत्यापित करें",
+  "verifyEmailAddressHeading": "Verify Email Address",
+  "verifyLabel": "सत्यापित करें {label}",
+  "verifyMobile": "मोबाइल सत्यापित करें",
+  "verifyNow": "अभी सत्यापित करें",
+  "verifyOtp": "Verify OTP",
+  "verifyYourCommunityStatus": "अपनी सामुदायिक स्थिति सत्यापित करें",
+  "verifyYourEmailAddressToAddTrustAndReach": "विश्वास बढ़ाने और अधिक प्रोफ़ाइलों तक पहुँचने के लिए अपना ईमेल पता सत्यापित करें।",
+  "verifyYourMobileNumberToAddTrustAndReach": "विश्वास बढ़ाने और अधिक प्रोफ़ाइल तक पहुंचने के लिए अपना मोबाइल नंबर सत्यापित करें।",
+  "veryFair": "बहुत गोरा",
+  "vettedFamily": "VETTED FAMILY",
+  "videoBioIntro": "वीडियो बायो / परिचय",
+  "videoIntro": "वीडियो परिचय",
+  "videoIntroUploaded": "वीडियो परिचय अपलोड किया गया",
+  "videoRecorded": "वीडियो रिकॉर्ड किया गया!",
+  "view": "देखें",
+  "viewAll": "सभी को देखें",
+  "viewBiodata": "बायोडाटा देखें",
+  "viewBiodataPdf": "View Biodata PDF",
+  "viewDetails": "विवरण देखें",
+  "viewLabel": "देखें",
+  "viewPremiumPlansButton": "View Premium Plans ➔",
+  "viewProfile": "प्रोफ़ाइल देखें",
+  "viewVenue": "स्थान देखें",
+  "viewYourBookmarkedProfiles": "अपने बुकमार्क किए गए प्रोफाइल देखें",
+  "viewsLabel": "दृश्य",
+  "village": "गाँव",
+  "villageTanda": "गांव / तांडा",
+  "villageTandaExampleHint": "e.g. Pohradevi Tanda, Sevadas Nagar...",
   "vipFeatures": "वीआईपी सुविधाएँ",
+  "vipFiftyPercentOff": "50% OFF VIP",
   "vipMatchmaker": "वीआईपी मैचमेकर",
+  "vipNote": "VIP NOTE 👑",
   "vipPlanDesc": "प्राथमिकता सहायता के साथ बेहतरीन अनुभव",
   "vipPlanName": "वीआईपी",
-  "weeklyCheckIn": "साप्ताहिक चेक-इन",
-  "women": "महिलाएँ",
-  "youSave": "आप बचाते हैं ₹{amount}",
-  "extraViewsUnlocked": "{count} अतिरिक्त व्यूज अनलॉक किए गए!",
-  "signInRequired": "साइन इन आवश्यक है",
-  "signInRequiredContent": "कृपया इस सुविधा का उपयोग करने के लिए साइन इन करें या एक खाता बनाएं।",
+  "vipPropertyAssets": "VIP PROPERTY & ASSET HOLDINGS",
+  "vipRoyal": "👑 VIP Royal",
+  "vipSpotlightElitePool": "VIP Spotlight & Elite Pool",
+  "vipSpotlightElitePoolSubtitle": "Top-tier prominent Banjara families with premium background checks",
+  "visibleToAllProfiles": "सभी प्रोफ़ाइलों के लिए दृश्यमान",
+  "visibleToCloseMatchesOnly": "केवल मैच बंद करने के लिए दृश्यमान",
+  "vouchBadgeRequirementNotice": "\"समाज विश्वसनीय\" बैज प्राप्त करने के लिए सत्यापित सदस्यों से ५ सत्यापन (Vouches) प्राप्त करें।",
   "watchAdToUnlock": "अनलॉक करने के लिए विज्ञापन देखें",
   "watchAdToUnlockAll": "सभी को अनलॉक करने के लिए विज्ञापन देखें",
-  "goProAdFree": "विज्ञापन-मुक्त अनुभव के लिए प्रो बनें",
-  "adNotReady": "विज्ञापन अभी तैयार नहीं है। कृपया थोड़ी देर में पुनः प्रयास करें।",
-  "upgradeToUnlockPremiumFeatures": "सभी विज्ञापनों को हटाने और प्रीमियम बायोडाटा सुविधाओं को अनलॉक करने के लिए अपग्रेड करें।",
-  "couldNotLaunchWhatsApp": "व्हाट्सएप लॉन्च नहीं किया जा सका",
-  "couldNotLaunchDialer": "फोन डायलर लॉन्च नहीं किया जा सका",
-  "searchLeads": "लीड्स खोजें...",
-  "workspace": "कार्यक्षेत्र",
-  "customMessage": "कस्टम संदेश",
-  "logCallOutcome": "कॉल का परिणाम रिकॉर्ड करें",
-  "apply": "लागू करें",
-  "registrationFee": "पंजीकरण शुल्क",
-  "unverified": "असत्यापित",
-  "signIn": "साइन इन करें",
-  "unlockMoreVisitors": "अनलॉक करें {count} और विज़िटर्स!",
-  "dailyLimitReached": "दैनिक सीमा समाप्त",
-  "dailyLimitViewsReached": "आपने अपनी सभी दैनिक प्रोफाइल विज़िट्स का उपयोग कर लिया है।",
-  "unlockMoreViewsAd": "आज के लिए 5 और विज़िट्स अनलॉक करने के लिए एक त्वरित विज्ञापन देखें!",
-  "directMessage": "सीधा संदेश",
-  "directMessagingPremium": "सीधा संदेश भेजना एक प्रीमियम सुविधा है।",
-  "unlockDirectMessageAd": "मुफ्त में 1 सीधा संदेश अनलॉक करने के लिए 3 विज्ञापन देखें!",
-  "premiumAccess": "प्रीमियम एक्सेस",
-  "premiumGateSupport": "त्वरित विज्ञापन देखकर हमारे समुदाय का समर्थन करें,\nया विज्ञापन-मुक्त अनुभव के लिए प्रो में अपग्रेड करें।",
-  "unblockAllProFeatures": "सभी प्रो सुविधाओं को अनलॉक करें",
-  "monthly": "मासिक",
-  "annual": "वार्षिक",
   "watchQuickAd": "त्वरित विज्ञापन देखें",
-  "continueBlockedUntilAdEnds": "विज्ञापन समाप्त होने तक ऐप जारी रखना अवरुद्ध है",
-  "adCompletedSuccessfully": "विज्ञापन सफलतापूर्वक पूरा हुआ",
-  "continueToApp": "ऐप पर जारी रखें",
-  "preparingAdExperience": "विज्ञापन अनुभव तैयार किया जा रहा है...",
-  "adTemporarilyUnavailable": "विज्ञापन अस्थायी रूप से अनुपलब्ध है",
-  "callAdmin": "एडमिन को कॉल करें",
-  "banjaraBioPro": "बंजाराबायो प्रो",
-  "claimMarriageGift": "विवाह उपहार का दावा करें",
-  "tellUsYourStory": "हमें अपनी कहानी बताएं",
-  "partnerName": "साथी का नाम",
-  "yourSuccessStory": "आपकी सफलता की कहानी",
-  "howDidYouMeet": "आप कैसे मिले? आपको उनके बारे में क्या पसंद है?",
-  "proofOfMarriage": "विवाह का प्रमाण",
-  "instagramLink": "इंस्टाग्राम रील/स्टोरी लिंक",
-  "pasteUrlHere": "यहां यूआरएल पेस्ट करें",
+  "weEncounteredAnUnexpectedErrorWhileProce": "आपके अनुरोध को संसाधित करते समय हमें एक अप्रत्याशित त्रुटि का सामना करना पड़ा।",
+  "weWillSendAVerificationRequestToTheirMob": "हम उनके मोबाइल नंबर पर एक सत्यापन अनुरोध भेजेंगे। एक बार जब वे स्वीकृत हो जाते हैं, तो आपको +10 अंक मिलते हैं।",
+  "weWillVerifyYourCommunityDetailsShortly1": "हम शीघ्र ही आपके समुदाय विवरण का सत्यापन करेंगे। +15 अंक लंबित।",
   "weddingDate": "विवाह की तिथि",
-  "estimatedRefund": "अनुमानित रिफंड",
-  "submitForReview": "समीक्षा के लिए सबमिट करें",
-  "selectRewardType": "उपहार का प्रकार चुनें",
-  "digital": "डिजिटल",
-  "refund25": "25% रिफंड",
-  "teamVisit": "टीम विजिट",
-  "refund35": "35% रिफंड",
-  "successSubmission": "सफलता! आपका अनुरोध समीक्षा के लिए सबमिट कर दिया गया है।",
-  "melavas": "मेलावा",
-  "upcomingMelavas": "आगामी मेलावा",
-  "callOrganizer": "आयोजक को कॉल करें",
-  "viewVenue": "स्थान देखें",
-  "organizer": "आयोजक",
-  "venue": "स्थान",
-  "eventDetails": "कार्यक्रम का विवरण",
-  "browseMatchesTitle": "🔍 रिश्ता खोजें (Browse Matches)",
-  "browseMatchesDesc": "बेटे, बेटी, रिश्तेदार के लिए उपयुक्त रिश्ता खोजें.",
-  "browseMatchesSubtitle": "कुछ सवालों के जवाब दें और उपयुक्त रिश्ते देखें",
-  "forWhomSearching": "किसके लिए रिश्ता खोज रहे हैं?",
-  "lookingForGender": "वर चाहिए या वधू?",
-  "groomBoy": "👦 वर (Groom)",
-  "brideGirl": "👧 वधू (Bride)",
-  "selectDistrict": "जिला चुनें",
-  "proceedToLogin": "आगे बढ़ें → लॉग इन करें",
-  "sibling": "भाई/बहन"
+  "weeklyCheckIn": "साप्ताहिक चेक-इन",
+  "welcomeBackAccountFound": "वेलकम बैक! आपका खाता मिल गया है।",
+  "welcomeToBanjaraBio": "बंजारा बायो में आपका स्वागत है",
+  "whatDoYouLookFor": "आप जीवनसाथी में क्या चाहते हैं?",
+  "whatsApp": "व्हाट्सएप",
+  "whatsAppContact": "व्हाट्सएप संपर्क",
+  "whatsAppRishtaCardSubtitle": "Share premium biodata image card with QR code on WhatsApp",
+  "whatsAppRishtaCardTitle": "🚩 WhatsApp Rishta Card (Image + QR)",
+  "whatsAppStatusCardPremium": "WhatsApp Status Card (Premium)",
+  "whatsappHelp": "WhatsApp Help",
+  "whatsappShareSubtitle": "{name} का विवरण परिवार या दोस्तों के साथ साझा करें",
+  "whatsappSupport": "व्हाट्सएप सपोर्ट",
+  "wheatish": "गेहुआं",
+  "whereDoYouWork": "आप कहाँ काम करते हैं?",
+  "whoIsThisForQuestion": "Who are you searching for?",
+  "whoViewedMe": "मुझे किसने देखा",
+  "whyBanjaraBio": "बंजारा बायो क्यों?",
+  "widowed": "विधवा/विधुर",
+  "women": "महिलाएँ",
+  "working": "Working",
+  "workspace": "कार्यक्षेत्र",
+  "writeAboutYourself": "अपने बारे में कुछ लिखें...",
+  "writeCustomBlessing": "Write Custom Blessing / Deity Name",
+  "writeCustomBlessingSubtitle": "Type any family Kuldevi, Guru, or personalized deity mantra",
+  "writeYourOwnGenuineMessage": "Write your own genuine message or edit the selected template above:",
+  "year": "वर्ष",
+  "yearsLabel": "{count, plural, =1{वर्ष} other{वर्ष}}",
+  "yearsOld": "{age} वर्ष",
+  "yes": "हाँ",
+  "yesInterest": "हाँ, रुचि है",
+  "yesterday": "कल",
+  "youNeedAProfileToShareIt": "साझा करने के लिए आपको एक प्रोफ़ाइल की आवश्यकता है।",
+  "youSave": "आप बचाते हैं ₹{amount}",
+  "youWillNoLongerSeeThisProfile": "अब आपको यह प्रोफ़ाइल दिखाई नहीं देगी",
+  "youngerBrother": "छोटे भाई",
+  "youngerSister": "छोटी बहन",
+  "your": "आपका",
+  "yourDailyMatches": "आपके दैनिक मिलान",
+  "yourDocumentsAreEncrypted": "आपके दस्तावेज़ एन्क्रिप्टेड हैं और अन्य उपयोगकर्ताओं को कभी नहीं दिखाए जाते हैं। केवल बैज दिखाई देता है।",
+  "yourDocumentsHaveBeenSubmittedSecurelyWe": "आपके दस्तावेज़ सुरक्षित रूप से जमा कर दिए गए हैं. सत्यापित होने पर हम आपको सूचित करेंगे.",
+  "yourIntroVideoIsUnderReview10PointsPendi": "आपका परिचय वीडियो समीक्षाधीन है. +10 अंक अनुमोदन हेतु लंबित।",
+  "yourMatchesWillAppearHereOnceYouBothExpr": "जब आप दोनों रुचि व्यक्त करेंगे तो आपके मैच यहां दिखाई देंगे। अपना आदर्श साथी ढूंढने के लिए प्रोफ़ाइल साझा करते रहें!",
+  "yourPersonalInviteLink": "आपका व्यक्तिगत आमंत्रण लिंक",
+  "yourReferralCode": "आपका रेफरल कोड",
+  "yourSelfieHasBeenSubmittedOurTeamWillVer": "आपकी सेल्फी सबमिट कर दी गई है. हमारी टीम इसे आपकी प्रोफ़ाइल फ़ोटो से सत्यापित करेगी।",
+  "yourSuccessStory": "आपकी सफलता की कहानी",
+  "yourTrustScore": "आपका विश्वास स्कोर",
+  "yrs": "{count} वर्ष",
+  "zeroPercentCommission": "💰 0% Commission"
 }

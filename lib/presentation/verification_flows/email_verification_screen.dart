@@ -259,7 +259,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
             Text(
               _isSent ? (AppLocalizations.of(context)?.checkInbox ?? 'Check your Inbox') : (AppLocalizations.of(context)?.verifyEmailAddressHeading ?? 'Verify Email Address'),
               style: theme.textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTypography.bold,
               ),
             ),
             SizedBox(height: 2.h),
@@ -302,7 +302,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                         AppLocalizations.of(context)?.emailVerificationTip ?? 'Tip: If your email contains a "Log In" link instead of a code, just click that link to verify.',
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: Colors.blue[800],
-                          fontWeight: FontWeight.w500,
+                          fontWeight: AppTypography.medium,
                         ),
                       ),
                     ),

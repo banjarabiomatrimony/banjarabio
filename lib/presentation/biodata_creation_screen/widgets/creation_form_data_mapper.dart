@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/core/models/sibling_model.dart';
 import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
@@ -52,6 +54,9 @@ class CreationFormDataMapper {
       'aboutSelf': '',
       'partnerExpectations': '',
       'expectation': '',
+      'contactPerson': '',
+      'contactRelation': '',
+      'preferredContactTime': 'Any time',
       'photos': <String>[],
       'tempPhotos': <String>[],
     };
@@ -71,11 +76,12 @@ class CreationFormDataMapper {
     if (data.containsKey('photos') && data['photos'] is List) {
       final List<dynamic> photoData = data['photos'] as List<dynamic>;
       for (final p in photoData) {
-        if (p is Map<String, dynamic>) {
-          if (p['url'] != null && p['url'] is String) {
-            photoUrls.add(p['url'] as String);
-          } else if (p['image_url'] != null && p['image_url'] is String) {
-            photoUrls.add(p['image_url'] as String);
+        if (p is PhotoModel) {
+          if (p.publicUrl.isNotEmpty) photoUrls.add(p.publicUrl);
+        } else if (p is Map) {
+          final url = p['url'] ?? p['public_url'] ?? p['image_url'];
+          if (url != null && url.toString().isNotEmpty) {
+            photoUrls.add(url.toString());
           }
         } else if (p is String && p.isNotEmpty) {
           photoUrls.add(p);
@@ -100,12 +106,25 @@ class CreationFormDataMapper {
     newData['marriageReadiness'] = data['marriageReadiness'] == 'Ready for marriage' || data['marriageReadiness'] == true;
     newData['isDisabled'] = data['isDisabled'] == true || data['is_disabled'] == true;
 
-    final dynamic dobData = data['dateOfBirth'] ?? data['dob'] ?? data['date_of_birth'];
+    final dynamic dobData = data['rawDateOfBirth'] ?? data['dateOfBirth'] ?? data['date_of_birth'] ?? data['dob'];
     if (dobData != null) {
       if (dobData is DateTime) {
         newData['dateOfBirth'] = dobData;
       } else {
-        newData['dateOfBirth'] = DateTime.tryParse(dobData.toString());
+        final str = dobData.toString().trim();
+        DateTime? parsed = DateTime.tryParse(str);
+        if (parsed == null && str.isNotEmpty && str != 'Not Entered') {
+          try {
+            parsed = DateFormat('dd MMM yyyy').parse(str);
+          } catch (_) {
+            try {
+              parsed = DateFormat('yyyy-MM-dd').parse(str);
+            } catch (_) {}
+          }
+        }
+        if (parsed != null) {
+          newData['dateOfBirth'] = parsed;
+        }
       }
     }
 
@@ -189,13 +208,30 @@ class CreationFormDataMapper {
       }
     }
 
-    addIfPresent('profileCreatedBy', 'profile_created_by');
+    if (formData.containsKey('profileCreatedBy') &&
+        formData['profileCreatedBy'] != null &&
+        formData['profileCreatedBy'].toString().trim().isNotEmpty) {
+      data['profile_created_by'] = formData['profileCreatedBy'];
+    } else if (formData.containsKey('profile_created_by') &&
+        formData['profile_created_by'] != null &&
+        formData['profile_created_by'].toString().trim().isNotEmpty) {
+      data['profile_created_by'] = formData['profile_created_by'];
+    }
     addIfPresent('name', 'full_name');
     addIfPresent('phone_number', 'phone_number');
+    addIfPresent('phoneNumber', 'phone_number');
     addIfPresent('surname', 'surname');
     addIfPresent('gotra', 'gotra');
     addIfPresent('age', 'age', transform: (v) => int.tryParse(v.toString()));
-    addIfPresent('dateOfBirth', 'date_of_birth', transform: (v) => (v as DateTime?)?.toIso8601String());
+    addIfPresent('dateOfBirth', 'date_of_birth', transform: (v) {
+      if (v == null) return null;
+      if (v is DateTime) return v.toIso8601String();
+      if (v is String && v.isNotEmpty) {
+        final parsed = DateTime.tryParse(v);
+        return parsed?.toIso8601String() ?? v;
+      }
+      return null;
+    });
     addIfPresent('gender', 'gender');
     addIfPresent('height', 'height');
     addIfPresent('complexion', 'complexion');

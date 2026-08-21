@@ -111,7 +111,7 @@ class _ReferenceVerificationScreenState
             Icon(Icons.group_add, size: 48.sp, color: Colors.purple),
             SizedBox(height: 2.h),
             Text(AppLocalizations.of(context)?.addTwoReferences ?? 'Add Two References',
-              style: TextStyle(fontSize: AppTypography.headingSmall, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: AppTypography.headingSmall, fontWeight: AppTypography.bold),
             ),
             SizedBox(height: 1.h),
             Text(AppLocalizations.of(context)?.weWillSendAVerificationRequestToTheirMob ?? 'We will send a verification request to their mobile number. Once they approve, you get +10 Points.',
@@ -143,7 +143,7 @@ class _ReferenceVerificationScreenState
               Icon(Icons.check_circle, size: 60.sp, color: Colors.green),
               SizedBox(height: 2.h),
               Text(AppLocalizations.of(context)?.requestsSent ?? 'Requests Sent!',
-                style: TextStyle(fontSize: AppTypography.headingMedium, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: AppTypography.headingMedium, fontWeight: AppTypography.bold),
               ),
               SizedBox(height: 1.h),
               Text(AppLocalizations.of(context)?.statusWaitingForApproval ?? 'Status: Waiting for approval',
@@ -172,7 +172,7 @@ class _ReferenceVerificationScreenState
         Text(
           AppLocalizations.of(context)?.referenceWithNumber(index) ??
               'Reference $index',
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: AppTypography.bold),
         ),
         SizedBox(height: 1.h),
         TextField(

@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:banjarabio/core/models/biodata_content.dart';
@@ -44,13 +45,13 @@ abstract class BiodataTemplateBase {
 
   // Common styles
   pw.TextStyle sectionTitleStyle(PdfColor primaryColor) =>
-      pw.TextStyle(font: boldFont, fontSize: 14, color: primaryColor);
+      pw.TextStyle(font: boldFont, fontSize: AppTypography.bodyMediumFixed, color: primaryColor);
 
   pw.TextStyle labelStyle() =>
-      pw.TextStyle(font: boldFont, fontSize: 10, color: PdfColors.black);
+      pw.TextStyle(font: boldFont, fontSize: AppTypography.labelTinyFixed, color: PdfColors.black);
 
   pw.TextStyle valueStyle() =>
-      pw.TextStyle(font: font, fontSize: 10, color: PdfColors.black);
+      pw.TextStyle(font: font, fontSize: AppTypography.labelTinyFixed, color: PdfColors.black);
 
   // Ornate Border with layered lines
   pw.Widget buildOrnateBorder(PdfColor color, {bool luxury = false}) {
@@ -196,7 +197,7 @@ abstract class BiodataTemplateBase {
         text,
         style: pw.TextStyle(
           font: boldFont,
-          fontSize: 14,
+          fontSize: AppTypography.bodyMediumFixed,
           color: PdfColors.black,
           letterSpacing: 2,
         ),
@@ -442,7 +443,7 @@ abstract class BiodataTemplateBase {
         '॥ जय सेवालाल ॥   ॥ श्री गणेशाय नमः ॥',
         style: pw.TextStyle(
           font: mantraFont,
-          fontSize: 14,
+          fontSize: AppTypography.bodyMediumFixed,
           color: color,
           letterSpacing: 3,
         ),
@@ -603,7 +604,7 @@ abstract class BiodataTemplateBase {
                   'PREMIUM BIODATA',
                   style: pw.TextStyle(
                     font: boldFont,
-                    fontSize: 40,
+                    fontSize: AppTypography.displayLargeFixed,
                     letterSpacing: 8,
                   ),
                 ),
@@ -620,7 +621,7 @@ abstract class BiodataTemplateBase {
                     'AUTHENTIC BY BANJARA BIO',
                     style: pw.TextStyle(
                       font: boldFont,
-                      fontSize: 12,
+                      fontSize: AppTypography.bodySmallFixed,
                       letterSpacing: 4,
                     ),
                   ),
@@ -645,7 +646,7 @@ abstract class BiodataTemplateBase {
             'BanjaraBio Matrimony • #1 Trusted Banjara Community Platform',
             style: pw.TextStyle(
               font: boldFont,
-              fontSize: 9,
+              fontSize: AppTypography.labelTinyFixed,
               color: PdfColors.grey700,
             ),
           ),
@@ -655,7 +656,7 @@ abstract class BiodataTemplateBase {
             textAlign: pw.TextAlign.center,
             style: pw.TextStyle(
               font: font,
-              fontSize: 7.5,
+              fontSize: AppTypography.labelTinyFixed,
               color: PdfColors.grey600,
             ),
           ),
@@ -669,7 +670,7 @@ abstract class BiodataTemplateBase {
       alignment: pw.Alignment.centerRight,
       child: pw.Text(
         'Page ${context.pageNumber} of ${context.pagesCount}',
-        style: pw.TextStyle(font: font, fontSize: 8, color: PdfColors.grey),
+        style: pw.TextStyle(font: font, fontSize: AppTypography.labelTinyFixed, color: PdfColors.grey),
       ),
     );
   }
@@ -708,7 +709,7 @@ abstract class BiodataTemplateBase {
                         nameTitle.toUpperCase(),
                         style: pw.TextStyle(
                           font: boldFont,
-                          fontSize: 18,
+                          fontSize: AppTypography.headingMediumFixed,
                           color: primaryColor,
                           letterSpacing: 2,
                         ),
@@ -717,12 +718,12 @@ abstract class BiodataTemplateBase {
                     ],
 
                     pw.Text(
-                      'CANDIDATE PROFILE PHOTO',
+                      label('Candidate Profile Photo'),
                       style: pw.TextStyle(
                         font: boldFont,
-                        fontSize: 10,
+                        fontSize: AppTypography.labelTinyFixed,
                         color: PdfColors.grey700,
-                        letterSpacing: 3,
+                        letterSpacing: language == 'English' ? 3 : 0.5,
                       ),
                     ),
                     pw.SizedBox(height: 16),
@@ -757,7 +758,7 @@ abstract class BiodataTemplateBase {
                         'VERIFIED CANDIDATE • BANJARABIO MATRIMONY',
                         style: pw.TextStyle(
                           font: boldFont,
-                          fontSize: 9,
+                          fontSize: AppTypography.labelTinyFixed,
                           color: PdfColors.white,
                           letterSpacing: 2,
                         ),

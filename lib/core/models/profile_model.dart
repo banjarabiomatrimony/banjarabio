@@ -66,6 +66,9 @@ class ProfileModel {
   final String? aboutSelf;
   final String? partnerExpectations;
   final String? expectation; // New field for partner expectations
+  final String? contactPerson; // Contact person name / role
+  final String? contactRelation; // Relation with candidate (e.g. Self, Father, Brother)
+  final String? preferredContactTime; // Preferred calling / contact time
 
   // Metadata
   final bool isPremium;
@@ -168,6 +171,9 @@ class ProfileModel {
     this.aboutSelf,
     this.partnerExpectations,
     this.expectation,
+    this.contactPerson,
+    this.contactRelation,
+    this.preferredContactTime,
     this.isPremium = false,
     this.isAdmin = false,
     this.profileCompletion = 0,
@@ -240,38 +246,22 @@ class ProfileModel {
     // 1. Identity (20%)
     if (isSet('full_name', 'name')) score += 4;
     if (isSet('surname', 'surname')) score += 4;
-    if (isSet('gender', 'gender')) {
-       final g = val('gender', 'gender').toString();
-       if (g != 'Female') {
-         score += 3;
-       } else {
-         score += 1; // 3 if picked non-default, 1 baseline
-       }
-    }
+    if (isSet('gender', 'gender')) score += 3;
     
     final age = int.tryParse(val('age', 'age')?.toString() ?? '0') ?? 0;
-    if (age > 18) score += 3;
+    if (age >= 18 || age > 0) score += 3;
 
-    final height = val('height', 'height')?.toString() ?? '';
-    if (height.isNotEmpty && height != "5'5\"") score += 3;
+    if (isSet('height', 'height')) score += 3;
 
-    if (isSet('marital_status', 'maritalStatus')) {
-      final m = val('marital_status', 'maritalStatus').toString();
-      if (m != 'Never Married') {
-        score += 3;
-      } else {
-        score += 1;
-      }
-    }
+    if (isSet('marital_status', 'maritalStatus')) score += 3;
 
     // 2. Family (15%)
     bool hasParent = false;
     if (isSet('father_name', 'fatherName')) { score += 5; hasParent = true; }
     if (isSet('mother_name', 'motherName')) { score += 5; hasParent = true; }
     
-    final sibsCount = int.tryParse(val('siblings_count', 'siblingsCount')?.toString() ?? '0') ?? 0;
     final hasSibsData = (val('siblings_data', 'siblings') as List?)?.isNotEmpty ?? false;
-    if (hasSibsData || (sibsCount == 0 && hasParent)) score += 5;
+    if (hasSibsData || isSet('siblings_count', 'siblingsCount') || hasParent) score += 5;
 
     // 3. Career (25%)
     if (isSet('education', 'education')) score += 10;
@@ -285,10 +275,10 @@ class ProfileModel {
       if (photos.length > 1) score += 5;
     }
 
-    // 5. Preferences (20%)
+    // 5. Preferences & Location (20%)
     if (isSet('state', 'state')) score += 5;
     if (isSet('district', 'district')) score += 5;
-    if (isSet('taluka', 'taluka') || isSet('native_place', 'nativePlace')) score += 2; // Split 10 pts for location
+    if (isSet('taluka', 'taluka') || isSet('native_place', 'nativePlace') || isSet('village', 'village')) score += 2;
     if (isSet('about_self', 'aboutSelf')) score += 4;
     if (isSet('expectation', 'expectation') || isSet('partner_expectations', 'partnerExpectations')) score += 4;
 
@@ -355,6 +345,14 @@ class ProfileModel {
       aboutSelf: json['about_self']?.toString(),
       partnerExpectations: json['partner_expectations']?.toString(),
       expectation: json['expectation']?.toString(),
+      contactPerson: json['contact_person']?.toString() ??
+          json['contactPerson']?.toString() ??
+          json['profile_created_by']?.toString(),
+      contactRelation: json['contact_relation']?.toString() ??
+          json['contactRelation']?.toString() ??
+          json['profile_created_by']?.toString(),
+      preferredContactTime: json['preferred_contact_time']?.toString() ??
+          json['preferredContactTime']?.toString(),
       isPremium: json['is_premium'] == true,
       isAdmin: json['is_admin'] == true,
       profileCompletion: (json['profile_completion'] as num?)?.toInt() ?? 0,
@@ -412,7 +410,7 @@ class ProfileModel {
     return {
       'id': id,
       'user_id': userId,
-      // 'email': email, // Removed for privacy
+      'email': email,
       'full_name': fullName,
       'surname': surname,
       'gotra': gotra,
@@ -430,7 +428,7 @@ class ProfileModel {
       'district': district,
       'taluka': taluka,
       'village': village,
-      // 'phone_number': phoneNumber, // Removed for privacy
+      'phone_number': phoneNumber,
       'permanent_location': permanentLocation,
       'current_location': permanentLocation, // Keep for backward compat
       'native_place': nativePlace,
@@ -468,7 +466,7 @@ class ProfileModel {
       'profile_created_by': profileCreatedBy,
       'is_disabled': isDisabled,
       'fcm_token': fcmToken,
-      // 'search_vector': searchVector, // Usually not sent back to server
+      'photos': photos.map((p) => p.toJson()).toList(),
       'siblings_data': siblings.map((s) => s.toJson()).toList(),
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
@@ -521,6 +519,9 @@ class ProfileModel {
     String? aboutSelf,
     String? partnerExpectations,
     String? expectation,
+    String? contactPerson,
+    String? contactRelation,
+    String? preferredContactTime,
     String? birthPlace,
     String? birthTime,
     String? educationDetails,
@@ -595,6 +596,9 @@ class ProfileModel {
       aboutSelf: aboutSelf ?? this.aboutSelf,
       partnerExpectations: partnerExpectations ?? this.partnerExpectations,
       expectation: expectation ?? this.expectation,
+      contactPerson: contactPerson ?? this.contactPerson,
+      contactRelation: contactRelation ?? this.contactRelation,
+      preferredContactTime: preferredContactTime ?? this.preferredContactTime,
       birthPlace: birthPlace ?? this.birthPlace,
       birthTime: birthTime ?? this.birthTime,
       educationDetails: educationDetails ?? this.educationDetails,
@@ -652,10 +656,13 @@ class ProfileModel {
       'fullName': fullName, // Keep for compatibility during transition
       'surname': surname,
       'gotra': gotra,
-      // 'email': email, // Removed for privacy
+      'email': email,
+      'phoneNumber': phoneNumber,
+      'phone_number': phoneNumber,
       'age': age,
       'dob': formattedDOB,
       'dateOfBirth': formattedDOB,
+      'rawDateOfBirth': dateOfBirth?.toIso8601String(),
       'gender': gender,
       'height': height,
       'complexion': complexion,
@@ -665,7 +672,8 @@ class ProfileModel {
       'profession': profession,
       'job': profession, // Standardized key
       'occupation': profession, // Standardized key
-      'annualIncome': annualIncome,
+      'annualIncome': formatAnnualIncome(annualIncome),
+      'rawAnnualIncome': annualIncome,
       'state': state,
       'district': district,
       'taluka': taluka,
@@ -691,6 +699,10 @@ class ProfileModel {
       'about': aboutSelf, // Standardized key
       'expectation': expectation,
       'partnerExpectations': partnerExpectations,
+      'partnerPreferences': partnerExpectations ?? expectation ?? '',
+      'contactPerson': contactPerson ?? profileCreatedBy ?? 'Self',
+      'contactRelation': contactRelation ?? profileCreatedBy ?? 'Self',
+      'preferredContactTime': preferredContactTime ?? 'Any time',
       'birthPlace': birthPlace,
       'birthTime': birthTime,
       'educationDetails': educationDetails,
@@ -763,6 +775,76 @@ class ProfileModel {
 
   /// DEPRECATED: Use [completionPercentage] field for better performance.
   int calculateCompletionPercentage() => completionPercentage;
+
+  /// Returns numeric annual income formatted with rupee symbol: "₹2,00,000 - ₹5,00,000 / Year"
+  String get formattedAnnualIncome => formatAnnualIncome(annualIncome);
+
+  /// Formats raw annual income key or text into pure numeric rupee display string.
+  static String formatAnnualIncome(dynamic value) {
+    if (value == null) return 'Not Entered';
+    final str = value.toString().trim();
+    if (str.isEmpty || str == '-' || str == 'null') return 'Not Entered';
+
+    switch (str) {
+      case 'noIncome':
+        return '₹0 (No Income)';
+      case 'under2Lakh':
+        return '₹0 - ₹2,00,000 / Year';
+      case 'twoToFiveLakh':
+        return '₹2,00,000 - ₹5,00,000 / Year';
+      case 'fiveToSevenHalfLakh':
+        return '₹5,00,000 - ₹7,50,000 / Year';
+      case 'sevenHalfToTenLakh':
+        return '₹7,50,000 - ₹10,00,000 / Year';
+      case 'tenToFifteenLakh':
+        return '₹10,00,000 - ₹15,00,000 / Year';
+      case 'fifteenToTwentyLakh':
+        return '₹15,00,000 - ₹20,00,000 / Year';
+      case 'twentyLakhPlus':
+        return '₹20,00,000+ / Year';
+    }
+
+    // Convert Indic/Marathi digits if present
+    String formatted = str
+        .replaceAll('०', '0')
+        .replaceAll('१', '1')
+        .replaceAll('२', '2')
+        .replaceAll('३', '3')
+        .replaceAll('४', '4')
+        .replaceAll('५', '5')
+        .replaceAll('६', '6')
+        .replaceAll('७', '7')
+        .replaceAll('८', '8')
+        .replaceAll('९', '9');
+
+    if (formatted.contains('2 Lakh') || formatted.contains('२ लाख')) {
+      if (formatted.contains('5') || formatted.contains('५')) return '₹2,00,000 - ₹5,00,000 / Year';
+    }
+    if (formatted.contains('5 Lakh') || formatted.contains('५ लाख')) {
+      if (formatted.contains('7.5') || formatted.contains('७.५')) return '₹5,00,000 - ₹7,50,000 / Year';
+    }
+    if (formatted.contains('7.5') || formatted.contains('७.५')) {
+      if (formatted.contains('10') || formatted.contains('१०')) return '₹7,50,000 - ₹10,00,000 / Year';
+    }
+    if (formatted.contains('10') || formatted.contains('१०')) {
+      if (formatted.contains('15') || formatted.contains('१५')) return '₹10,00,000 - ₹15,00,000 / Year';
+    }
+    if (formatted.contains('15') || formatted.contains('१५')) {
+      if (formatted.contains('20') || formatted.contains('२०')) return '₹15,00,000 - ₹20,00,000 / Year';
+    }
+    if (formatted.contains('20+') || formatted.contains('२०+')) {
+      return '₹20,00,000+ / Year';
+    }
+
+    if (!formatted.startsWith('₹') && !formatted.startsWith('Rs')) {
+      formatted = '₹$formatted';
+    }
+    if (!formatted.contains('/ Year') && !formatted.contains('Year') && !formatted.contains('Lakh')) {
+      formatted = '$formatted / Year';
+    }
+
+    return formatted;
+  }
 }
 
 /// Photo model for profile images

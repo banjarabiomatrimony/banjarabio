@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'dart:io' as io;
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/services/persistent_cache_manager.dart';
@@ -303,9 +304,11 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(AppLocalizations.of(context)?.profilePhotos ?? 'Profile Photos',
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+          Text(
+            AppLocalizations.of(context)?.profilePhotos ?? 'Profile Photos',
+            style: theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: AppTypography.extraBold,
+              letterSpacing: -0.5,
             ),
           ),
           SizedBox(height: 0.5.h),
@@ -476,7 +479,7 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
               children: [
                 Text(AppLocalizations.of(context)?.processingImage ?? 'Processing Image',
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTypography.semiBold,
                   ),
                 ),
                 SizedBox(height: 0.5.h),
@@ -552,7 +555,7 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
               child: Text(AppLocalizations.of(context)?.main ?? 'Main',
                 style: theme.textTheme.labelSmall?.copyWith(
                   color: theme.colorScheme.onPrimary,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTypography.bold,
                 ),
               ),
             ),
@@ -630,7 +633,7 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
             Text(AppLocalizations.of(context)?.addPhoto ?? 'Add Photo',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.primary,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTypography.medium,
               ),
             ),
           ],

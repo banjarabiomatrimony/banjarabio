@@ -8,6 +8,9 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/services/analytics_service.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
+import 'package:banjarabio/widgets/tactile/tactile_back_button.dart';
+import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
+import 'package:flutter/services.dart';
 
 
 class MelavaEvent {
@@ -339,9 +342,63 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not launch phone dialer')),
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)?.couldNotLaunchDialer ?? 'Could not launch phone dialer',
+            ),
+          ),
         );
       }
+    }
+  }
+
+  Future<void> _whatsappInquiry(MelavaEvent event) async {
+    await AnalyticsService.logEvent('melava_whatsapp_inquiry', parameters: {
+      'melava_id': event.id,
+      'melava_title': event.title,
+    });
+    HapticFeedback.lightImpact();
+    final String cleanContact = event.contact.replaceAll('+', '').replaceAll(' ', '');
+    final String message =
+        'Hello! I saw "${event.title}" on BanjaraBio Matrimony and would like to get registration/attendance details.';
+    final Uri uri = Uri.parse(
+      'https://wa.me/$cleanContact?text=${Uri.encodeComponent(message)}',
+    );
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)?.couldNotLaunchWhatsApp ??
+                  'Could not launch WhatsApp',
+            ),
+          ),
+        );
+      }
+    }
+  }
+
+  int _getCountForState(String state) {
+    if (state == 'All') return _events.length;
+    if (state == 'Exclusive') {
+      return _events.where((e) => e.partnerType == 'BanjaraBio Exclusive').length;
+    } else if (state == 'Maharashtra') {
+      return _events.where((e) => e.venue.toLowerCase().contains('maharashtra')).length;
+    } else if (state == 'Karnataka') {
+      return _events.where((e) => e.venue.toLowerCase().contains('karnataka')).length;
+    } else if (state == 'Telangana') {
+      return _events.where((e) => e.venue.toLowerCase().contains('telangana')).length;
+    } else {
+      bool isOthers(MelavaEvent e) {
+        final v = e.venue.toLowerCase();
+        return !v.contains('maharashtra') &&
+            !v.contains('karnataka') &&
+            !v.contains('telangana') &&
+            e.partnerType != 'BanjaraBio Exclusive';
+      }
+      return _events.where(isOthers).length;
     }
   }
 
@@ -370,7 +427,11 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not trigger sharing')),
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)?.couldNotTriggerSharing ?? 'Could not trigger sharing',
+            ),
+          ),
         );
       }
     }
@@ -431,7 +492,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
               Text(
                 label,
                 style: theme.textTheme.labelSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTypography.semiBold,
                   color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
                 ),
               ),
@@ -439,10 +500,10 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
               Text(
                 value,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTypography.semiBold,
                   color: theme.colorScheme.onSurface,
                   height: 1.25,
-                  fontSize: 12.5,
+                  fontSize: AppTypography.bodyMedium,
                 ),
               ),
             ],
@@ -541,10 +602,10 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                       Text(
                         event.title,
                         style: theme.textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTypography.bold,
                           color: theme.colorScheme.onSurface,
-                          fontFamily: 'Outfit',
-                          fontSize: 20,
+                          fontFamily: AppTypography.headingFontFamily,
+                          fontSize: AppTypography.headingLarge,
                         ),
                       ),
                       SizedBox(height: 0.8.h),
@@ -552,7 +613,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                         'by ${event.organizer}',
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTypography.semiBold,
                         ),
                       ),
 
@@ -649,9 +710,9 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                       Text(
                         localizations?.eventDetails ?? 'Event Details',
                         style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTypography.bold,
                           color: theme.colorScheme.primary,
-                          fontFamily: 'Outfit',
+                          fontFamily: AppTypography.headingFontFamily,
                         ),
                       ),
                       SizedBox(height: 1.h),
@@ -660,7 +721,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant,
                           height: 1.4,
-                          fontSize: 13,
+                          fontSize: AppTypography.bodyLarge,
                         ),
                       ),
                       SizedBox(height: 2.5.h),
@@ -698,9 +759,9 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                   child: Text(
                                     'BanjaraBio Platform Partnership',
                                     style: theme.textTheme.titleSmall?.copyWith(
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: AppTypography.bold,
                                       color: theme.colorScheme.onSurface,
-                                      fontFamily: 'Outfit',
+                                      fontFamily: AppTypography.headingFontFamily,
                                     ),
                                   ),
                                 ),
@@ -730,11 +791,11 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                     child: OutlinedButton.icon(
                       onPressed: () => _shareEvent(event),
                       icon: Icon(Icons.share_rounded, size: 16, color: theme.colorScheme.primary),
-                      label: const Text(
+                      label: Text(
                         'Share Invitation',
                         style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
+                          fontSize: AppTypography.bodyLarge,
+                          fontWeight: AppTypography.bold,
                         ),
                       ),
                       style: OutlinedButton.styleFrom(
@@ -756,9 +817,9 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                       icon: const Icon(Icons.call_rounded, size: 16, color: Colors.white),
                       label: Text(
                         localizations?.callOrganizer ?? 'Call Organizer',
-                        style: const TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
+                        style: TextStyle(
+                          fontSize: AppTypography.bodyLarge,
+                          fontWeight: AppTypography.bold,
                           color: Colors.white,
                         ),
                       ),
@@ -817,8 +878,8 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
           Text(
             partnerType.toUpperCase(),
             style: TextStyle(
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
+              fontSize: AppTypography.bodySmall,
+              fontWeight: AppTypography.bold,
               letterSpacing: 0.5,
               color: baseColor,
             ),
@@ -894,13 +955,13 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
         focusNode: _searchFocusNode,
         style: theme.textTheme.bodyMedium?.copyWith(
           color: theme.colorScheme.onSurface,
-          fontFamily: 'Outfit',
+          fontFamily: AppTypography.headingFontFamily,
         ),
         decoration: InputDecoration(
           hintText: 'Search by location, trust, or keywords...',
           hintStyle: theme.textTheme.bodyMedium?.copyWith(
             color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
-            fontFamily: 'Outfit',
+            fontFamily: AppTypography.headingFontFamily,
           ),
           prefixIcon: Icon(
             Icons.search_rounded,
@@ -939,17 +1000,19 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
         itemBuilder: (context, index) {
           final state = states[index];
           final isSelected = _selectedState == state;
+          final count = _getCountForState(state);
           return Padding(
             padding: EdgeInsets.only(right: 2.w, bottom: 0.5.h),
-            child: GestureDetector(
+            child: TactilePressable(
               onTap: () {
+                HapticFeedback.selectionClick();
                 setState(() {
                   _selectedState = state;
                 });
               },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 250),
-                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.8.h),
+                padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 0.8.h),
                 decoration: BoxDecoration(
                   color: isSelected
                       ? theme.colorScheme.primary
@@ -971,17 +1034,42 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                         ]
                       : null,
                 ),
-                child: Center(
-                  child: Text(
-                    state,
-                    style: theme.textTheme.labelMedium?.copyWith(
-                      color: isSelected
-                          ? theme.colorScheme.secondary
-                          : theme.colorScheme.onSurface,
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                      fontFamily: 'Outfit',
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      state,
+                      style: theme.textTheme.labelMedium?.copyWith(
+                        color: isSelected
+                            ? theme.colorScheme.secondary
+                            : theme.colorScheme.onSurface,
+                        fontWeight: isSelected ? AppTypography.bold : AppTypography.medium,
+                        fontFamily: AppTypography.headingFontFamily,
+                      ),
                     ),
-                  ),
+                    if (count > 0) ...[
+                      SizedBox(width: 1.5.w),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? theme.colorScheme.secondary.withValues(alpha: 0.25)
+                              : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.8),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          '$count',
+                          style: TextStyle(
+                            fontSize: AppTypography.labelTiny,
+                            fontWeight: AppTypography.extraBold,
+                            color: isSelected
+                                ? theme.colorScheme.secondary
+                                : theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
               ),
             ),
@@ -1014,8 +1102,8 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
             Text(
               'No Parichay Melavas Found',
               style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Outfit',
+                fontWeight: AppTypography.bold,
+                fontFamily: AppTypography.headingFontFamily,
               ),
             ),
             SizedBox(height: 1.h),
@@ -1027,24 +1115,39 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
               ),
             ),
             SizedBox(height: 3.h),
-            ElevatedButton.icon(
-              onPressed: _suggestEvent,
-              icon: const Icon(Icons.add_comment_rounded, color: Colors.white),
-              label: const Text(
-                'Suggest an Event',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontFamily: 'Outfit',
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: theme.colorScheme.primary,
+            TactilePressable(
+              onTap: () {
+                HapticFeedback.lightImpact();
+                _suggestEvent();
+              },
+              pressedScale: 0.95,
+              child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 1.5.h),
-                shape: RoundedRectangleBorder(
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary,
                   borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.25),
+                      blurRadius: 10,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
-                elevation: 0,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.add_comment_rounded, color: Colors.white, size: 18),
+                    SizedBox(width: 2.w),
+                    Text(
+                      'Suggest an Event',
+                      style: AppTypography.headingStyle(
+                        fontWeight: AppTypography.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -1064,7 +1167,11 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not launch WhatsApp')),
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)?.couldNotLaunchWhatsApp ?? 'Could not launch WhatsApp',
+            ),
+          ),
         );
       }
     }
@@ -1093,7 +1200,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
             text,
             style: theme.textTheme.labelSmall?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTypography.semiBold,
             ),
           ),
         ],
@@ -1108,8 +1215,8 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
 
     return Scaffold(
       appBar: CustomAppBar(
+        leading: const TactileBackButton(),
         title: localizations?.upcomingMelavas ?? 'Upcoming Melavas',
-        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 12.h), // Spacing for bottom floating bar
@@ -1161,12 +1268,12 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                   ),
                                   SizedBox(width: 1.w),
                                   Text(
-                                    '✦ TRUST ALLIANCE',
+                                    localizations?.trustAllianceBadge ?? '✦ TRUST ALLIANCE',
                                     style: theme.textTheme.labelSmall?.copyWith(
                                       color: theme.colorScheme.secondary,
-                                      fontWeight: FontWeight.w800,
+                                      fontWeight: AppTypography.extraBold,
                                       letterSpacing: 1.0,
-                                      fontSize: 9,
+                                      fontSize: AppTypography.labelMedium,
                                     ),
                                   ),
                                 ],
@@ -1174,16 +1281,17 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                             ),
                             SizedBox(height: 1.5.h),
                             Text(
-                              'Banjara Parichay Melavas',
+                              localizations?.melavaBannerTitle ?? 'Banjara Parichay Melavas',
                               style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: AppTypography.bold,
                                 color: theme.colorScheme.primary,
-                                fontFamily: 'Outfit',
+                                fontFamily: AppTypography.headingFontFamily,
                               ),
                             ),
                             SizedBox(height: 0.8.h),
                             Text(
-                              'Discover regional matrimonial get-togethers. Partner trusts list these events. Reach organizers directly to register.',
+                              localizations?.melavaBannerSubtitle ??
+                                  'Discover regional matrimonial get-togethers. Partner trusts list these events. Reach organizers directly to register.',
                               style: theme.textTheme.bodyMedium?.copyWith(
                                 color: theme.colorScheme.onSurfaceVariant,
                                 height: 1.3,
@@ -1218,17 +1326,18 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                 Text(
                   localizations?.upcomingMelavas ?? 'Upcoming Events',
                   style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTypography.bold,
                     color: theme.colorScheme.onSurface,
-                    fontFamily: 'Outfit',
+                    fontFamily: AppTypography.headingFontFamily,
                   ),
                 ),
                 Text(
-                  '${_filteredEvents.length} events',
+                  localizations?.melavaEventCount(_filteredEvents.length) ??
+                      '${_filteredEvents.length} events',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
-                    fontFamily: 'Outfit',
-                    fontWeight: FontWeight.w500,
+                    fontFamily: AppTypography.headingFontFamily,
+                    fontWeight: AppTypography.medium,
                   ),
                 ),
               ],
@@ -1313,9 +1422,9 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                           Text(
                                             event.title,
                                             style: theme.textTheme.titleMedium?.copyWith(
-                                              fontWeight: FontWeight.bold,
+                                              fontWeight: AppTypography.bold,
                                               color: theme.colorScheme.onSurface,
-                                              fontFamily: 'Outfit',
+                                              fontFamily: AppTypography.headingFontFamily,
                                             ),
                                           ),
                                           SizedBox(height: 1.2.h),
@@ -1379,8 +1488,8 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                                           Text(
                                                             'DATE & TIME',
                                                             style: TextStyle(
-                                                              fontSize: 9,
-                                                              fontWeight: FontWeight.w800,
+                                                              fontSize: AppTypography.labelMedium,
+                                                              fontWeight: AppTypography.extraBold,
                                                               letterSpacing: 0.5,
                                                               color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
                                                             ),
@@ -1390,8 +1499,8 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                                             '${event.date} • ${event.time}',
                                                             style: theme.textTheme.bodyMedium?.copyWith(
                                                               color: theme.colorScheme.onSurface,
-                                                              fontWeight: FontWeight.w600,
-                                                              fontSize: 12.5,
+                                                              fontWeight: AppTypography.semiBold,
+                                                              fontSize: AppTypography.bodyMedium,
                                                             ),
                                                           ),
                                                         ],
@@ -1438,8 +1547,8 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                                           Text(
                                                             'VENUE LOCATION',
                                                             style: TextStyle(
-                                                              fontSize: 9,
-                                                              fontWeight: FontWeight.w800,
+                                                              fontSize: AppTypography.labelMedium,
+                                                              fontWeight: AppTypography.extraBold,
                                                               letterSpacing: 0.5,
                                                               color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
                                                             ),
@@ -1451,8 +1560,8 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                                             overflow: TextOverflow.ellipsis,
                                                             style: theme.textTheme.bodyMedium?.copyWith(
                                                               color: theme.colorScheme.onSurface,
-                                                              fontWeight: FontWeight.w500,
-                                                              fontSize: 12.5,
+                                                              fontWeight: AppTypography.medium,
+                                                              fontSize: AppTypography.bodyMedium,
                                                             ),
                                                           ),
                                                         ],
@@ -1465,59 +1574,149 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                           ),
                                           SizedBox(height: 2.5.h),
 
-                                          // Action Buttons
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: OutlinedButton(
-                                                  onPressed: () => _viewEventDetails(event),
-                                                  style: OutlinedButton.styleFrom(
-                                                    padding: EdgeInsets.symmetric(vertical: 1.2.h),
-                                                    side: BorderSide(
-                                                      color: theme.colorScheme.primary.withValues(alpha: 0.5),
-                                                    ),
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(10),
-                                                    ),
-                                                  ),
-                                                  child: Text(
-                                                    localizations?.viewVenue ?? 'View Details',
-                                                    style: TextStyle(
-                                                      fontSize: AppTypography.bodySmall,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: theme.colorScheme.primary,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(width: 3.w),
-                                              Expanded(
-                                                child: ElevatedButton(
-                                                  onPressed: () => _callOrganizer(
-                                                    event.contact,
-                                                    event.id,
-                                                    event.title,
-                                                  ),
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: theme.colorScheme.primary,
-                                                    padding: EdgeInsets.symmetric(vertical: 1.2.h),
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(10),
-                                                    ),
-                                                    elevation: 0,
-                                                  ),
-                                                  child: Text(
-                                                    localizations?.callOrganizer ?? 'Call',
-                                                    style: TextStyle(
-                                                      fontSize: AppTypography.bodySmall,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                           // Action Buttons:
+                                           // 1. Prominent WhatsApp Inquiry / RSVP Button
+                                           TactilePressable(
+                                             onTap: () => _whatsappInquiry(event),
+                                             pressedScale: 0.97,
+                                             child: Container(
+                                               width: double.infinity,
+                                               padding: EdgeInsets.symmetric(vertical: 1.2.h),
+                                               decoration: BoxDecoration(
+                                                 gradient: const LinearGradient(
+                                                   colors: [Color(0xFF25D366), Color(0xFF128C7E)],
+                                                 ),
+                                                 borderRadius: BorderRadius.circular(12),
+                                                 boxShadow: [
+                                                   BoxShadow(
+                                                     color: const Color(0xFF25D366).withValues(alpha: 0.25),
+                                                     blurRadius: 8,
+                                                     offset: const Offset(0, 3),
+                                                   ),
+                                                 ],
+                                               ),
+                                               child: Center(
+                                                 child: Row(
+                                                   mainAxisAlignment: MainAxisAlignment.center,
+                                                   children: [
+                                                     const Icon(Icons.chat_bubble_rounded, color: Colors.white, size: 16),
+                                                     const SizedBox(width: 6),
+                                                     Text(
+                                                       'WhatsApp Inquiry / RSVP',
+                                                       style: AppTypography.headingStyle(
+                                                         fontSize: AppTypography.bodyMedium,
+                                                         fontWeight: AppTypography.bold,
+                                                         color: Colors.white,
+                                                       ),
+                                                     ),
+                                                   ],
+                                                 ),
+                                               ),
+                                             ),
+                                           ),
+                                           SizedBox(height: 1.2.h),
+
+                                           // 2. Row of 2 Action Buttons: View Details & Call Organizer
+                                           Row(
+                                             children: [
+                                               // View Details Button
+                                               Expanded(
+                                                 child: TactilePressable(
+                                                   onTap: () {
+                                                     HapticFeedback.lightImpact();
+                                                     _viewEventDetails(event);
+                                                   },
+                                                   pressedScale: 0.96,
+                                                   child: Container(
+                                                     padding: EdgeInsets.symmetric(vertical: 1.1.h),
+                                                     decoration: BoxDecoration(
+                                                       borderRadius: BorderRadius.circular(12),
+                                                       border: Border.all(
+                                                         color: theme.colorScheme.primary.withValues(alpha: 0.5),
+                                                         width: 1.2,
+                                                       ),
+                                                     ),
+                                                     child: Center(
+                                                       child: Row(
+                                                         mainAxisAlignment: MainAxisAlignment.center,
+                                                         children: [
+                                                           Icon(
+                                                             Icons.visibility_outlined,
+                                                             size: 15,
+                                                             color: theme.colorScheme.primary,
+                                                           ),
+                                                           const SizedBox(width: 4),
+                                                           Flexible(
+                                                             child: Text(
+                                                               localizations?.viewVenue ?? 'View Details',
+                                                               maxLines: 1,
+                                                               overflow: TextOverflow.ellipsis,
+                                                               style: AppTypography.headingStyle(
+                                                                 fontSize: AppTypography.bodySmall,
+                                                                 fontWeight: AppTypography.bold,
+                                                                 color: theme.colorScheme.primary,
+                                                               ),
+                                                             ),
+                                                           ),
+                                                         ],
+                                                       ),
+                                                     ),
+                                                   ),
+                                                 ),
+                                               ),
+                                               SizedBox(width: 2.5.w),
+
+                                               // Direct Phone Call Button
+                                               Expanded(
+                                                 child: TactilePressable(
+                                                   onTap: () {
+                                                     HapticFeedback.mediumImpact();
+                                                     _callOrganizer(
+                                                       event.contact,
+                                                       event.id,
+                                                       event.title,
+                                                     );
+                                                   },
+                                                   pressedScale: 0.96,
+                                                   child: Container(
+                                                     padding: EdgeInsets.symmetric(vertical: 1.1.h),
+                                                     decoration: BoxDecoration(
+                                                       color: theme.colorScheme.primary,
+                                                       borderRadius: BorderRadius.circular(12),
+                                                       boxShadow: [
+                                                         BoxShadow(
+                                                           color: theme.colorScheme.primary.withValues(alpha: 0.25),
+                                                           blurRadius: 8,
+                                                           offset: const Offset(0, 3),
+                                                         ),
+                                                       ],
+                                                     ),
+                                                     child: Center(
+                                                       child: Row(
+                                                         mainAxisAlignment: MainAxisAlignment.center,
+                                                         children: [
+                                                           const Icon(Icons.phone_rounded, color: Colors.white, size: 14),
+                                                           const SizedBox(width: 4),
+                                                           Flexible(
+                                                             child: Text(
+                                                               localizations?.callOrganizer ?? 'Call Organizer',
+                                                               maxLines: 1,
+                                                               overflow: TextOverflow.ellipsis,
+                                                               style: AppTypography.headingStyle(
+                                                                 fontSize: AppTypography.bodySmall,
+                                                                 fontWeight: AppTypography.bold,
+                                                                 color: Colors.white,
+                                                               ),
+                                                             ),
+                                                           ),
+                                                         ],
+                                                       ),
+                                                     ),
+                                                   ),
+                                                 ),
+                                               ),
+                                             ],
+                                           ),
                                         ],
                                       ),
                                     ),
@@ -1530,8 +1729,116 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                       );
                     },
                   ),
+            SizedBox(height: 2.h),
+
+            // 🏢 Organizer Partnership Callout Card
+            _buildOrganizerPartnerBanner(theme, localizations),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildOrganizerPartnerBanner(ThemeData theme, AppLocalizations? l10n) {
+    final isDark = theme.brightness == Brightness.dark;
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(4.5.w),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1F1F2B) : const Color(0xFFFFFBEB),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: const Color(0xFFD97706).withValues(alpha: 0.35),
+          width: 1.2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFFD97706).withValues(alpha: isDark ? 0.15 : 0.08),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFD97706).withValues(alpha: 0.15),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.campaign_rounded, color: Color(0xFFD97706), size: 22),
+              ),
+              SizedBox(width: 3.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Are you a Melava Organizer? 📢',
+                      style: TextStyle(
+                        fontSize: AppTypography.headingSmall,
+                        fontWeight: AppTypography.black,
+                        letterSpacing: 0.2,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'List your community Vadhu-Var Melava on BanjaraBio for Free & connect with 50,000+ candidates.',
+                      style: TextStyle(
+                        fontSize: AppTypography.labelSmall,
+                        color: theme.colorScheme.onSurfaceVariant,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 1.5.h),
+          TactilePressable(
+            onTap: _suggestEvent,
+            pressedScale: 0.96,
+            child: Container(
+              width: double.infinity,
+              height: 44,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF880E4F), Color(0xFF961B33)],
+                ),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF961B33).withValues(alpha: 0.3),
+                    blurRadius: 10,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.add_circle_outline_rounded, color: Colors.white, size: 18),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Submit Melava on WhatsApp',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: AppTypography.bold,
+                        fontSize: AppTypography.bodyMedium,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

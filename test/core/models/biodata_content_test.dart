@@ -106,7 +106,7 @@ void main() {
       expect(content.educationProfession['Edu. Details'], 'Computer Science');
       expect(content.educationProfession['Occupation'], 'Software Engineer');
       expect(content.educationProfession['Job Details'], 'Senior Dev');
-      expect(content.educationProfession['Annual Income'], '10 LPA');
+      expect(content.educationProfession['Annual Income'], '₹10 LPA / Year');
       expect(content.educationProfession['Company'], 'TCS');
     });
 

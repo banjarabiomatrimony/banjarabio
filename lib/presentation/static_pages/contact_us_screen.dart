@@ -39,7 +39,7 @@ class ContactUsScreen extends StatelessWidget {
             SizedBox(height: 4.h),
             Text(AppLocalizations.of(context)?.getInTouchWithUs ?? 'Get in touch with us',
               style: theme.textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTypography.bold,
               ),
             ),
             SizedBox(height: 1.h),
@@ -77,7 +77,7 @@ class ContactUsScreen extends StatelessWidget {
             SizedBox(height: 4.h),
             Text(AppLocalizations.of(context)?.officeAddress ?? 'Office Address',
               style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTypography.bold,
               ),
             ),
             SizedBox(height: 1.h),
@@ -130,7 +130,7 @@ class ContactUsScreen extends StatelessWidget {
                   Text(
                     title,
                     style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTypography.bold,
                     ),
                   ),
                   Text(

@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:banjarabio/core/services/pdf/templates/biodata_template_base.dart';
@@ -115,7 +116,7 @@ class PremiumTemplate extends BiodataTemplateBase {
             '॥ श्री ॥',
             style: pw.TextStyle(
               font: boldFont,
-              fontSize: 16,
+              fontSize: AppTypography.headingSmallFixed,
               color: gold,
               letterSpacing: 5,
             ),
@@ -132,7 +133,7 @@ class PremiumTemplate extends BiodataTemplateBase {
                   label('biodata').toUpperCase(),
                   style: pw.TextStyle(
                     font: boldFont,
-                    fontSize: 14,
+                    fontSize: AppTypography.bodyMediumFixed,
                     color: gold,
                     letterSpacing: 6,
                   ),
@@ -142,7 +143,7 @@ class PremiumTemplate extends BiodataTemplateBase {
                   content.personalDetails['Full Name'] ?? 'PROFILE',
                   style: pw.TextStyle(
                     font: boldFont,
-                    fontSize: 34,
+                    fontSize: AppTypography.displayLargeFixed,
                     color: navy,
                     letterSpacing: 1,
                   ),
@@ -264,7 +265,7 @@ class PremiumTemplate extends BiodataTemplateBase {
                     e.key,
                     style: labelStyle().copyWith(
                       color: PdfColors.grey800,
-                      fontSize: 11,
+                      fontSize: AppTypography.bodyExtraSmallFixed,
                     ),
                     textAlign: pw.TextAlign.right,
                   ),
@@ -281,7 +282,7 @@ class PremiumTemplate extends BiodataTemplateBase {
                     e.value,
                     style: valueStyle().copyWith(
                       font: boldFont,
-                      fontSize: 11,
+                      fontSize: AppTypography.bodyExtraSmallFixed,
                       color: navy,
                     ),
                   ),

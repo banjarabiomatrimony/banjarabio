@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -37,7 +38,7 @@ class GenderSelectorWidget extends StatelessWidget {
           children: [
             Text(
               AppLocalizations.of(context)?.genderSelectHeading ?? 'Your Gender is',
-              style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.bold),
             ),
             if (!isAdminEdit) ...[
               SizedBox(width: 1.w),
@@ -45,7 +46,7 @@ class GenderSelectorWidget extends StatelessWidget {
                 '*',
                 style: theme.textTheme.titleSmall?.copyWith(
                   color: theme.colorScheme.error,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTypography.bold,
                 ),
               ),
             ],
@@ -118,7 +119,7 @@ class GenderSelectorWidget extends StatelessWidget {
                                 getLocalizedGender(context, gender).toUpperCase(),
                                 style: theme.textTheme.headlineSmall?.copyWith(
                                   color: Colors.white,
-                                  fontWeight: FontWeight.w900,
+                                  fontWeight: AppTypography.black,
                                   letterSpacing: 2.0,
                                   shadows: [
                                     const Shadow(

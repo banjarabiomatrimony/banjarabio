@@ -4,7 +4,7 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
@@ -56,6 +56,7 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
 
   bool _isEditMode = false;
   bool _isAdminEdit = false; // Admin editing another user's profile
+  bool _onlyPendingFields = false; // Filter to show only pending/incomplete fields
   bool _isInitialDataLoaded = false;
   bool _isPopulating = false; // Flag to prevent validation loops during population
   bool _isPointerDown = false; // Prevents programmatic scrolls from dismissing keyboard
@@ -72,7 +73,12 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
       );
 
   /// Active steps for the current mode
-  List<CreationStep> get _activeSteps => CreationStepConfig.getSteps(_creationMode);
+  List<CreationStep> get _activeSteps {
+    if (_onlyPendingFields) {
+      return CreationStepConfig.getPendingSteps(_formData);
+    }
+    return CreationStepConfig.getSteps(_creationMode);
+  }
 
   /// Total number of active steps
   int get _totalSteps => _activeSteps.length;
@@ -126,6 +132,7 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
       // Check for isEditMode flag
       _isEditMode = args['isEditMode'] as bool? ?? false;
       _isAdminEdit = args['isAdminEdit'] as bool? ?? false;
+      _onlyPendingFields = args['onlyPendingFields'] as bool? ?? false;
 
       // Check if profile data is passed directly or
       final profileInput = args['profile'];
@@ -569,11 +576,25 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
                     continue;
                   }
 
-                  final uploadRes = await _photoRepository.uploadPhoto(
-                    profileId: savedProfile.id,
-                    imageFile: uploadFile!,
-                    semanticLabel: 'Profile Photo ${i + 1}',
-                  );
+                  final BackendResponse<PhotoModel> uploadRes;
+                  if (_existingProfile != null &&
+                      i < _existingProfile!.photos.length &&
+                      _existingProfile!.photos[i].id.isNotEmpty) {
+                    final existingPhoto = _existingProfile!.photos[i];
+                    uploadRes = await _photoRepository.replacePhoto(
+                      profileId: savedProfile.id,
+                      existingPhotoId: existingPhoto.id,
+                      existingStoragePath: existingPhoto.storagePath,
+                      newImageFile: uploadFile!,
+                      semanticLabel: 'Profile Photo ${i + 1}',
+                    );
+                  } else {
+                    uploadRes = await _photoRepository.uploadPhoto(
+                      profileId: savedProfile.id,
+                      imageFile: uploadFile!,
+                      semanticLabel: 'Profile Photo ${i + 1}',
+                    );
+                  }
 
                   await uploadRes.fold(
                     onSuccess: (photo) async => debugPrint('Photo uploaded: ${photo.publicUrl}'),
@@ -596,9 +617,16 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
             }
           }
 
-          // Clear cache to show fresh data
-          _profileRepository.clearCache();
-          // 🧬 PERFORMANCE: Removed global imageCache.clear() here.
+          // Force refresh: sync fresh DB record with all photos, DOB and contacts into caches
+          final freshRes = await _profileRepository.getOwnProfile(forceRefresh: true);
+          freshRes.fold(
+            onSuccess: (freshProfile) {
+              if (freshProfile != null) {
+                saved = freshProfile;
+              }
+            },
+            onFailure: (_) {},
+          );
         },
         onFailure: (error) {
           if (mounted) {
@@ -755,17 +783,79 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
           key: _formKey,
           child: Column(
             children: [
-              // Progress indicator — uses dynamic active steps
+              // Progress indicator — uses dynamic active steps with interactive tab switching in Edit Mode
               CreationProgressIndicator(
                 currentStep: _currentStep,
                 activeSteps: _activeSteps,
                 formData: _formData,
                 sectionValidation: _sectionValidation,
                 isLite: _isLite,
+                isEditMode: _isEditMode || _isAdminEdit,
+                onStepTapped: (_isEditMode || _isAdminEdit)
+                    ? (index) {
+                        setState(() => _currentStep = index);
+                      }
+                    : null,
               ),
 
-              // Form sections - Replaced PageView with indexed renderer for memory performance
-              Expanded(child: _buildCurrentSection()),
+              if (_onlyPendingFields)
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.8.h),
+                  padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.h),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        const Color(0xFFD4AF37).withValues(alpha: 0.12),
+                        theme.colorScheme.primary.withValues(alpha: 0.06),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: const Color(0xFFD4AF37).withValues(alpha: 0.4),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Text('🎯', style: TextStyle(fontSize: AppTypography.headingMedium)),
+                      SizedBox(width: 2.w),
+                      Expanded(
+                        child: Text(
+                          'Showing pending sections to help boost your profile completion!',
+                          style: TextStyle(
+                            fontSize: AppTypography.labelMedium,
+                            fontWeight: AppTypography.bold,
+                            color: theme.colorScheme.onSurface,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+              // Form sections - Animated transition between form steps
+              Expanded(
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 280),
+                  switchInCurve: Curves.easeOutCubic,
+                  switchOutCurve: Curves.easeInCubic,
+                  transitionBuilder: (child, animation) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: SlideTransition(
+                        position: Tween<Offset>(
+                          begin: const Offset(0.04, 0),
+                          end: Offset.zero,
+                        ).animate(animation),
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: KeyedSubtree(
+                    key: ValueKey<int>(_currentStep),
+                    child: _buildCurrentSection(),
+                  ),
+                ),
+              ),
 
               // Navigation buttons — uses dynamic total steps
               CreationNavigationButtons(

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_category_theme.dart';
 
 /// A class that contains all theme configurations for the Banjara matrimonial application.
 /// Implements Cultural Minimalism design style with Warm Trust Palette colors.
 class AppTheme {
   AppTheme._();
 
-  // Typography definitions
-  static const String headingFontFamily = 'Outfit';
-  static const String bodyFontFamily = 'PlusJakartaSans';
+  // Typography definitions — delegates to AppTypography as single source of truth
+  static const String headingFontFamily = AppTypography.headingFontFamily;
+  static const String bodyFontFamily = AppTypography.bodyFontFamily;
 
   // Primary color palette - Royal Crimson & Champagne Gold
   static const Color primaryLight = Color(0xFF961B33); // Royal Crimson (Sacred/Love)
@@ -429,6 +430,9 @@ class AppTheme {
         side: const BorderSide(color: dividerLight),
       ),
     ),
+    extensions: [
+      AppCategoryTheme.light(),
+    ],
   );
 
   /// Dark theme with Cultural Minimalism design
@@ -778,6 +782,9 @@ class AppTheme {
         side: const BorderSide(color: dividerDark),
       ),
     ),
+    extensions: [
+      AppCategoryTheme.dark(),
+    ],
   );
 
   /// Helper method to build text theme based on brightness
@@ -786,7 +793,7 @@ class AppTheme {
     final Color textPrimary = isLight ? textPrimaryLight : textPrimaryDark;
 
     return TextTheme(
-      // Display styles - Poppins for headings
+      // Display styles - Outfit for prominent headers
       displayLarge: TextStyle(
         fontFamily: headingFontFamily,
         fontSize: AppTypography.displayLarge,
@@ -796,18 +803,18 @@ class AppTheme {
       ),
       displayMedium: TextStyle(
         fontFamily: headingFontFamily,
-        fontSize: AppTypography.displayLarge,
+        fontSize: AppTypography.displayMedium,
         fontWeight: FontWeight.w400,
         color: textPrimary,
       ),
       displaySmall: TextStyle(
         fontFamily: headingFontFamily,
-        fontSize: AppTypography.displayLarge,
+        fontSize: AppTypography.displaySmall,
         fontWeight: FontWeight.w400,
         color: textPrimary,
       ),
 
-      // Headline styles - Poppins for headings
+      // Headline styles - Outfit for headings
       headlineLarge: TextStyle(
         fontFamily: headingFontFamily,
         fontSize: AppTypography.headingLarge,
@@ -818,88 +825,88 @@ class AppTheme {
       ),
       headlineMedium: TextStyle(
         fontFamily: headingFontFamily,
-        fontSize: AppTypography.headingLarge,
+        fontSize: AppTypography.headingMedium,
         fontWeight: FontWeight.w700,
         color: textPrimary,
-        letterSpacing: -0.5,
+        letterSpacing: -0.3,
         height: 1.2,
       ),
       headlineSmall: TextStyle(
         fontFamily: headingFontFamily,
-        fontSize: AppTypography.headingLarge,
+        fontSize: AppTypography.headingSmall,
         fontWeight: FontWeight.w600,
         color: textPrimary,
-        letterSpacing: -0.25,
+        letterSpacing: -0.2,
         height: 1.2,
       ),
 
-      // Title styles - Lato for body titles
+      // Title styles - PlusJakartaSans for body titles & category cards
       titleLarge: TextStyle(
         fontFamily: bodyFontFamily,
-        fontSize: AppTypography.headingLarge,
-        fontWeight: FontWeight.w500,
+        fontSize: AppTypography.titleLarge,
+        fontWeight: FontWeight.w700,
         color: textPrimary,
-        letterSpacing: 0,
+        letterSpacing: -0.2,
       ),
       titleMedium: TextStyle(
         fontFamily: bodyFontFamily,
-        fontSize: AppTypography.headingSmall,
+        fontSize: AppTypography.titleMedium,
         fontWeight: FontWeight.w600,
         color: textPrimary,
         letterSpacing: 0.15,
       ),
       titleSmall: TextStyle(
         fontFamily: bodyFontFamily,
-        fontSize: AppTypography.bodyLarge,
+        fontSize: AppTypography.titleSmall,
         fontWeight: FontWeight.w600,
         color: textPrimary,
         letterSpacing: 0.1,
       ),
 
-      // Body styles - Lato for content
+      // Body styles - PlusJakartaSans for content & description
       bodyLarge: TextStyle(
         fontFamily: bodyFontFamily,
         fontSize: AppTypography.bodyLarge,
         fontWeight: FontWeight.w400,
         color: textPrimary,
-        letterSpacing: 0.5,
+        letterSpacing: 0.3,
       ),
       bodyMedium: TextStyle(
         fontFamily: bodyFontFamily,
         fontSize: AppTypography.bodyMedium,
         fontWeight: FontWeight.w400,
         color: textPrimary,
-        letterSpacing: 0.25,
+        letterSpacing: 0.2,
       ),
       bodySmall: TextStyle(
         fontFamily: bodyFontFamily,
         fontSize: AppTypography.bodySmall,
         fontWeight: FontWeight.w400,
         color: textPrimary,
-        letterSpacing: 0.4,
+        letterSpacing: 0.3,
       ),
 
-      // Label styles - Lato for UI labels
+      // Label styles - PlusJakartaSans for UI labels, chips & action buttons
       labelLarge: TextStyle(
         fontFamily: bodyFontFamily,
-        fontSize: AppTypography.bodyLarge,
-        fontWeight: FontWeight.w600,
+        fontSize: AppTypography.labelLarge,
+        fontWeight: FontWeight.w700,
         color: textPrimary,
         letterSpacing: 0.1,
       ),
       labelMedium: TextStyle(
         fontFamily: bodyFontFamily,
-        fontSize: AppTypography.bodyMedium,
-        fontWeight: FontWeight.w500,
+        fontSize: AppTypography.labelMedium,
+        fontWeight: FontWeight.w600,
         color: textPrimary,
-        letterSpacing: 0.5,
+        letterSpacing: 0.3,
       ),
       labelSmall: TextStyle(
         fontFamily: bodyFontFamily,
-        fontSize: AppTypography.bodySmall,
-        fontWeight: FontWeight.w500,
+        fontSize: AppTypography.labelSmall,
+        fontWeight: FontWeight.w600,
         color: textPrimary,
-        letterSpacing: 0.5,
+        letterSpacing: 0.4,
       ),
     );
   }

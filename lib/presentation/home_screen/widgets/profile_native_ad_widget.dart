@@ -29,14 +29,26 @@ class _ProfileNativeAdWidgetState extends State<ProfileNativeAdWidget> with Auto
   }
 
   Future<void> _loadAd() async {
-    // Hide totally for premium users
-    if (SessionManager.instance.isPremium) return;
+    if (SessionManager.instance.isPremium) {
+      AppLogger.debug('NativeAd', '📢 [NativeAd:ABORT] User is Premium. Suppressing native ad.');
+      return;
+    }
 
+    AppLogger.debug('NativeAd', '📢 [NativeAd:STEP 1/4:WAIT_SDK] Awaiting AdMob initialization...');
     await AdMobService.ensureInitialized();
     if (!mounted) return;
 
+    final unitId = AdMobService.nativeAdUnitId;
+    AppLogger.debug('NativeAd', '📢 [NativeAd:STEP 2/4:REQUEST] Requesting NativeAd for Unit: $unitId');
+
+    if (unitId == null || unitId.isEmpty) {
+      AppLogger.error('NativeAd', '❌ [NativeAd:ERROR] No valid Native Ad Unit ID configured.');
+      setState(() => _isAdFailed = true);
+      return;
+    }
+
     _nativeAd = NativeAd(
-      adUnitId: AdMobService.nativeAdUnitId ?? '',
+      adUnitId: unitId,
       nativeTemplateStyle: NativeTemplateStyle(
         templateType: TemplateType.medium,
         mainBackgroundColor: Theme.of(context).colorScheme.surface,
@@ -69,6 +81,7 @@ class _ProfileNativeAdWidgetState extends State<ProfileNativeAdWidget> with Auto
       request: const AdRequest(),
       listener: NativeAdListener(
         onAdLoaded: (ad) {
+          AppLogger.debug('NativeAd', '✅ [NativeAd:STEP 3/4:LOADED] Native ad loaded and ready for rendering! Unit: ${ad.adUnitId}');
           if (mounted) {
             setState(() {
               _isAdLoaded = true;
@@ -76,14 +89,19 @@ class _ProfileNativeAdWidgetState extends State<ProfileNativeAdWidget> with Auto
           }
         },
         onAdFailedToLoad: (ad, error) {
+          final diagnostic = AdMobService.describeAdError(error.code, error.message);
+          AppLogger.error('NativeAd', '❌ [NativeAd:FAILED] Native ad failed to load.');
+          AppLogger.error('NativeAd', '❌ [NativeAd:DIAGNOSTIC] $diagnostic');
+          AppLogger.error('NativeAd', '❌ [NativeAd:DETAILS] Code: ${error.code} | Message: ${error.message} | Domain: ${error.domain}');
           ad.dispose();
-          AppLogger.error('ProfileNativeAdWidget', 'NativeAd failed to load: $error');
           if (mounted) {
             setState(() {
               _isAdFailed = true;
             });
           }
         },
+        onAdOpened: (ad) => AppLogger.debug('NativeAd', '📢 [NativeAd:STEP 4/4:CLICKED] User clicked native ad.'),
+        onAdClosed: (ad) => AppLogger.debug('NativeAd', '📢 [NativeAd:STEP 4/4:CLOSED] User closed native ad.'),
       ),
     );
 
@@ -99,26 +117,10 @@ class _ProfileNativeAdWidgetState extends State<ProfileNativeAdWidget> with Auto
   @override
   Widget build(BuildContext context) {
     super.build(context); // Required for AutomaticKeepAliveClientMixin
-    if (_isAdFailed) {
-      return const SizedBox.shrink();
-    }
 
-    if (!_isAdLoaded || SessionManager.instance.isPremium) {
-      return Container(
-        height: 62.h,
-        margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-        // 🚨 ZERO-GPU FIX: Removed CircularProgressIndicator
-        child: Center(
-          child: Text(
-            '. . .',
-            style: TextStyle(
-              fontSize: 24,
-              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      );
+    // 🛡️ PREMIUM SUPPRESSION: Completely hide native ads for Premium subscribers
+    if (SessionManager.instance.isPremium || _isAdFailed || !_isAdLoaded || _nativeAd == null) {
+      return const SizedBox.shrink();
     }
 
     final theme = Theme.of(context);
@@ -173,7 +175,7 @@ class _ProfileNativeAdWidgetState extends State<ProfileNativeAdWidget> with Auto
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: AppTypography.labelSmall,
-                        fontWeight: FontWeight.w900,
+                        fontWeight: AppTypography.black,
                         letterSpacing: 1.0,
                       ),
                     ),

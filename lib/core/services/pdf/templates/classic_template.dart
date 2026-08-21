@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:banjarabio/core/services/pdf/templates/biodata_template_base.dart';
@@ -107,7 +108,7 @@ class ClassicTemplate extends BiodataTemplateBase {
             label('biodata').toUpperCase(),
             style: pw.TextStyle(
               font: boldFont,
-              fontSize: 34,
+              fontSize: AppTypography.displayLargeFixed,
               color: PdfColors.black,
               letterSpacing: 10,
             ),
@@ -174,7 +175,7 @@ class ClassicTemplate extends BiodataTemplateBase {
                 title.toUpperCase(),
                 style: pw.TextStyle(
                   font: boldFont,
-                  fontSize: 14,
+                  fontSize: AppTypography.bodyMediumFixed,
                   color: color,
                   letterSpacing: 3,
                 ),

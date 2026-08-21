@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:banjarabio/core/services/persistent_cache_manager.dart';
 import 'package:banjarabio/notification/core/notification_history.dart';
@@ -44,9 +46,9 @@ class _ActivityHubScreenState extends State<ActivityHubScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
-        title: const Text(
-          'Activity',
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+        title: Text(
+          AppLocalizations.of(context)?.activity ?? 'Activity',
+          style: TextStyle(fontWeight: AppTypography.bold, fontSize: AppTypography.headingLarge),
         ),
         centerTitle: false,
         actions: [
@@ -56,7 +58,7 @@ class _ActivityHubScreenState extends State<ActivityHubScreen> {
                 setState(() => _store.markAllAsRead());
               },
               icon: const Icon(Icons.done_all_rounded, size: 18),
-              label: const Text('Read All'),
+              label: Text(AppLocalizations.of(context)?.readAll ?? 'Read All'),
               style: TextButton.styleFrom(
                 foregroundColor: const Color(0xFFC94B4B),
               ),
@@ -125,8 +127,8 @@ class _ActivityHubScreenState extends State<ActivityHubScreen> {
             selectedColor: const Color(0xFFC94B4B).withValues(alpha: 0.15),
             checkmarkColor: const Color(0xFFC94B4B),
             labelStyle: TextStyle(
-              fontSize: 12.5,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+              fontSize: AppTypography.bodyMedium,
+              fontWeight: isSelected ? AppTypography.semiBold : AppTypography.regular,
               color: isSelected
                   ? const Color(0xFFC94B4B)
                   : Colors.grey.shade700,
@@ -159,8 +161,8 @@ class _ActivityHubScreenState extends State<ActivityHubScreen> {
                 color: const Color(0xFFC94B4B).withValues(alpha: 0.08),
                 shape: BoxShape.circle,
               ),
-              child: const Center(
-                child: Text('🔔', style: TextStyle(fontSize: 36)),
+              child: Center(
+                child: Text('🔔', style: TextStyle(fontSize: AppTypography.displayLarge)),
               ),
             ),
             const SizedBox(height: 20),
@@ -168,10 +170,10 @@ class _ActivityHubScreenState extends State<ActivityHubScreen> {
               _selectedFilter == 'all'
                   ? 'No notifications yet'
                   : 'No notifications in this category',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF333333),
+              style: TextStyle(
+                fontSize: AppTypography.headingSmall,
+                fontWeight: AppTypography.semiBold,
+                color: const Color(0xFF333333),
               ),
             ),
             const SizedBox(height: 8),
@@ -179,7 +181,7 @@ class _ActivityHubScreenState extends State<ActivityHubScreen> {
               'When someone shows interest or sends a message,\nyou\'ll see it here.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 13,
+                fontSize: AppTypography.bodyLarge,
                 color: Colors.grey.shade500,
                 height: 1.4,
               ),
@@ -239,9 +241,9 @@ class _NotificationCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontWeight: item.isRead
-                                  ? FontWeight.w500
-                                  : FontWeight.w700,
-                              fontSize: 14,
+                                  ? AppTypography.medium
+                                  : AppTypography.bold,
+                              fontSize: AppTypography.bodyLarge,
                               color: const Color(0xFF1A1A1A),
                             ),
                           ),
@@ -264,7 +266,7 @@ class _NotificationCard extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: 12.5,
+                        fontSize: AppTypography.bodyMedium,
                         color: Colors.grey.shade600,
                         height: 1.3,
                       ),
@@ -273,7 +275,7 @@ class _NotificationCard extends StatelessWidget {
                     Text(
                       _formatTime(item.createdAt),
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: AppTypography.bodySmall,
                         color: Colors.grey.shade400,
                       ),
                     ),
@@ -316,7 +318,7 @@ class _NotificationCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Center(
-        child: Text(icon, style: const TextStyle(fontSize: 22)),
+        child: Text(icon, style: TextStyle(fontSize: AppTypography.headingLarge)),
       ),
     );
   }

@@ -106,7 +106,7 @@ class _EditorActionButton extends StatelessWidget {
                   label,
                   style: TextStyle(
                     fontSize: AppTypography.bodySmall,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTypography.semiBold,
                     color: disabled
                         ? theme.colorScheme.onSurface.withValues(alpha: 0.4)
                         : theme.colorScheme.onSurface,

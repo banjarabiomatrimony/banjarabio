@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banjarabio/core/models/backend_response.dart';
 import 'package:banjarabio/core/models/coupon_model.dart';
@@ -62,6 +63,35 @@ class CouponRepository {
       return BackendResponse.success(coupons);
     } catch (e) {
       AppLogger.error('CouponRepository', 'Error fetching targeted coupons: $e');
+      return BackendResponse.failure(e.toString());
+    }
+  }
+
+  /// Fetches all active, non-expired dynamic coupons from Supabase (created by Admin/Founder).
+  Future<BackendResponse<List<CouponModel>>> getActiveCoupons({String? userId}) async {
+    try {
+      if (userId != null && userId.isNotEmpty) {
+        final targetedRes = await getTargetedCoupons(userId);
+        if (targetedRes.isSuccess && targetedRes.data.isNotEmpty) {
+          return targetedRes;
+        }
+      }
+
+      final nowStr = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      final res = await _client
+          .from('coupons')
+          .select()
+          .eq('is_active', true)
+          .gte('valid_until', nowStr)
+          .order('discount_percentage', ascending: false);
+
+      final list = (res as List)
+          .map((e) => CouponModel.fromJson(Map<String, dynamic>.from(e as Map)))
+          .toList();
+
+      return BackendResponse.success(list);
+    } catch (e) {
+      AppLogger.error('CouponRepository', 'Error fetching active coupons: $e');
       return BackendResponse.failure(e.toString());
     }
   }

@@ -4,11 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/models/filter_criteria.dart';
+import 'package:banjarabio/core/models/subscription_model.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
-import 'package:banjarabio/core/services/local_cache_service.dart';
+import 'package:banjarabio/core/repositories/subscription_repository.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
-import 'package:banjarabio/widgets/skeleton_loaders.dart';
+import 'package:banjarabio/widgets/app_logo_image.dart';
+import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -19,99 +22,244 @@ class FilterScreen extends StatefulWidget {
   State<FilterScreen> createState() => _FilterScreenState();
 }
 
-class _FilterScreenState extends State<FilterScreen> {
+class _FilterScreenState extends State<FilterScreen>
+    with SingleTickerProviderStateMixin {
   final ProfileRepository _profileRepository = ProfileRepository();
+  final SubscriptionRepository _subscriptionRepository = SubscriptionRepository();
+
   bool _isPremium = false;
-  bool _isLoading = true;
+  PlanType _planType = PlanType.free;
   late FilterCriteria _currentFilters;
 
-  final LocalCacheService _cacheService = LocalCacheService();
-  final TextEditingController _searchController = TextEditingController();
   final TextEditingController _districtController = TextEditingController();
-  List<String> _recentSearches = [];
+  final ScrollController _scrollController = ScrollController();
+  final ScrollController _tabScrollController = ScrollController();
+
+  // Navigation & Scroll-Spy Keys
+  final GlobalKey _stickyNavKey = GlobalKey();
+  final GlobalKey _standardTierKey = GlobalKey();
+  final GlobalKey _communityTierKey = GlobalKey();
+  final GlobalKey _premiumTierKey = GlobalKey();
+  final GlobalKey _matchmakerTierKey = GlobalKey();
+
+  int _selectedCategoryIndex = 0; // 0: Standard, 1: Community, 2: Premium, 3: Matchmaker
+  int? _hoveredCategoryIndex;
+  bool _isAutoScrolling = false;
 
   // Default age bounds for dual range slider
   static const double _minAgeLimit = 18;
   static const double _maxAgeLimit = 70;
 
+  AnimationController? _animController;
+  Animation<double>? _fadeAnimation;
+
+  void _initAnimations() {
+    _animController ??= AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 350),
+    )..forward();
+
+    _fadeAnimation ??= CurvedAnimation(
+      parent: _animController!,
+      curve: Curves.easeOutCubic,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
     _currentFilters = widget.initialFilters ?? const FilterCriteria();
-    _searchController.text = _currentFilters.searchQuery ?? '';
     _districtController.text = _currentFilters.district ?? '';
-    _checkPremiumStatus();
-    _loadSearchHistory();
+    _initAnimations();
+    _loadUserStatus();
+    _scrollController.addListener(_onScrollSpy);
   }
 
-  Future<void> _checkPremiumStatus() async {
-    try {
-      final response = await _profileRepository.getOwnProfile();
-      await response.fold(
-        onSuccess: (profile) async {
-          if (mounted) {
-            setState(() {
-              _isPremium = profile?.isPremium ?? false;
-              _isLoading = false;
-            });
+  void _onScrollSpy() {
+    if (_isAutoScrolling) return;
+    if (!_scrollController.hasClients) return;
+
+    // Check if scrolled near the bottom of the list -> highlight last tier (Matchmaker)
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 80) {
+      if (_selectedCategoryIndex != 3) {
+        setState(() => _selectedCategoryIndex = 3);
+        _ensureActiveTabVisible(3);
+      }
+      return;
+    }
+
+    // Measure threshold relative to the sticky navigator bar bottom
+    double cutoffY = 170.0;
+    final navCtx = _stickyNavKey.currentContext;
+    if (navCtx != null) {
+      final navBox = navCtx.findRenderObject() as RenderBox?;
+      if (navBox != null && navBox.attached) {
+        cutoffY = navBox.localToGlobal(Offset.zero).dy + navBox.size.height + 30.0;
+      }
+    }
+
+    int activeIndex = 0;
+
+    // 1. Check Matchmaker Tier position
+    final matchmakerCtx = _matchmakerTierKey.currentContext;
+    if (matchmakerCtx != null) {
+      final box = matchmakerCtx.findRenderObject() as RenderBox?;
+      if (box != null && box.attached) {
+        final dy = box.localToGlobal(Offset.zero).dy;
+        if (dy <= cutoffY) {
+          activeIndex = 3;
+        }
+      }
+    }
+
+    // 2. Check Premium Tier position
+    if (activeIndex == 0) {
+      final premiumCtx = _premiumTierKey.currentContext;
+      if (premiumCtx != null) {
+        final box = premiumCtx.findRenderObject() as RenderBox?;
+        if (box != null && box.attached) {
+          final dy = box.localToGlobal(Offset.zero).dy;
+          if (dy <= cutoffY) {
+            activeIndex = 2;
           }
-        },
-        onFailure: (error) async {
-          AppLogger.error('FilterScreen', 'FilterScreen: Error fetching profile: $error');
-          if (mounted) {
-            setState(() {
-              _isPremium = false;
-              _isLoading = false;
-            });
+        }
+      }
+    }
+
+    // 3. Check Community Tier position
+    if (activeIndex == 0) {
+      final communityCtx = _communityTierKey.currentContext;
+      if (communityCtx != null) {
+        final box = communityCtx.findRenderObject() as RenderBox?;
+        if (box != null && box.attached) {
+          final dy = box.localToGlobal(Offset.zero).dy;
+          if (dy <= cutoffY) {
+            activeIndex = 1;
           }
-        },
-      );
-    } catch (e) {
-      AppLogger.error('FilterScreen', 'FilterScreen: Exception in _checkPremiumStatus: $e');
-      if (mounted) setState(() => _isLoading = false);
+        }
+      }
+    }
+
+    // Update state if changed
+    if (activeIndex != _selectedCategoryIndex) {
+      setState(() {
+        _selectedCategoryIndex = activeIndex;
+      });
+      _ensureActiveTabVisible(activeIndex);
     }
   }
 
-  void _loadSearchHistory() {
-    setState(() {
-      _recentSearches = _cacheService.getSearchHistory();
-    });
+  void _ensureActiveTabVisible(int index) {
+    if (!_tabScrollController.hasClients) return;
+    final double targetOffset = (index * 88.0).clamp(
+      0.0,
+      _tabScrollController.position.maxScrollExtent,
+    );
+    _tabScrollController.animateTo(
+      targetOffset,
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeOutCubic,
+    );
   }
 
-  void _onSearchCleared() {
-    HapticFeedback.lightImpact();
-    _searchController.clear();
-    setState(() {
-      _currentFilters = _currentFilters.copyWith(searchQuery: '');
-    });
+  Future<void> _loadUserStatus() async {
+    try {
+      final profileRes = await _profileRepository.getOwnProfile();
+      profileRes.fold(
+        onSuccess: (profile) {
+          if (mounted && profile != null) {
+            setState(() {
+              _isPremium = profile.isPremium;
+            });
+          }
+        },
+        onFailure: (error) {
+          AppLogger.error('FilterScreen', 'Error fetching profile: $error');
+        },
+      );
+
+      final planRes = await _subscriptionRepository.getPlanType();
+      planRes.fold(
+        onSuccess: (plan) {
+          if (mounted) {
+            setState(() {
+              _planType = plan;
+            });
+          }
+        },
+        onFailure: (error) {
+          AppLogger.error('FilterScreen', 'Error fetching plan type: $error');
+        },
+      );
+    } catch (e) {
+      AppLogger.error('FilterScreen', 'Exception in _loadUserStatus: $e');
+    }
+  }
+
+  bool get _hasCommunityAccess {
+    if (_isPremium) return true;
+    if (_planType.isPaidPlan) return true;
+    return false;
+  }
+
+  bool get _hasPremiumAccess {
+    if (_isPremium && _planType != PlanType.mass_market && _planType != PlanType.mass_market_annual) {
+      return true;
+    }
+    return _planType.isSelfServicePlan &&
+        _planType != PlanType.mass_market &&
+        _planType != PlanType.mass_market_annual;
+  }
+
+  bool get _hasMatchmakerAccess {
+    return _planType.isVipPlan;
   }
 
   @override
   void dispose() {
-    _searchController.dispose();
+    _scrollController.removeListener(_onScrollSpy);
+    _animController?.dispose();
+    _scrollController.dispose();
+    _tabScrollController.dispose();
     _districtController.dispose();
     super.dispose();
   }
 
   int get _activeFilterCount {
     int count = 0;
-    if (_searchController.text.trim().isNotEmpty) count++;
+    // Tier 1
     if (_currentFilters.minAge != null || _currentFilters.maxAge != null) count++;
     if (_currentFilters.gender != null && _currentFilters.gender!.isNotEmpty) count++;
     if (_currentFilters.hasPhoto == true) count++;
     if (_currentFilters.maritalStatus != null && _currentFilters.maritalStatus!.isNotEmpty) count++;
+    if (_currentFilters.state != null && _currentFilters.state!.isNotEmpty) count++;
+    if (_districtController.text.trim().isNotEmpty) count++;
     if (_currentFilters.education != null && _currentFilters.education!.isNotEmpty) {
       count += _currentFilters.education!.length;
     }
-    if (_currentFilters.profession != null && _currentFilters.profession!.isNotEmpty) {
-      count += _currentFilters.profession!.length;
-    }
+
+    // Tier 2
     if (_currentFilters.gotra != null && _currentFilters.gotra!.isNotEmpty) {
       count += _currentFilters.gotra!.length;
     }
-    if (_currentFilters.minHeight != null || _currentFilters.maxHeight != null) count++;
+    if (_currentFilters.maternalGotra != null && _currentFilters.maternalGotra!.isNotEmpty) {
+      count += _currentFilters.maternalGotra!.length;
+    }
+    if (_currentFilters.subCaste != null && _currentFilters.subCaste!.isNotEmpty) {
+      count += _currentFilters.subCaste!.length;
+    }
+    if (_currentFilters.originType != null && _currentFilters.originType!.isNotEmpty) {
+      count += _currentFilters.originType!.length;
+    }
+    if (_currentFilters.minHeight != null && _currentFilters.minHeight!.isNotEmpty) count++;
     if (_currentFilters.annualIncome != null && _currentFilters.annualIncome!.isNotEmpty) {
       count += _currentFilters.annualIncome!.length;
+    }
+    if (_currentFilters.educationField != null && _currentFilters.educationField!.isNotEmpty) {
+      count += _currentFilters.educationField!.length;
+    }
+    if (_currentFilters.profession != null && _currentFilters.profession!.isNotEmpty) {
+      count += _currentFilters.profession!.length;
     }
     if (_currentFilters.familyType != null && _currentFilters.familyType!.isNotEmpty) {
       count += _currentFilters.familyType!.length;
@@ -119,26 +267,63 @@ class _FilterScreenState extends State<FilterScreen> {
     if (_currentFilters.familyStatus != null && _currentFilters.familyStatus!.isNotEmpty) {
       count += _currentFilters.familyStatus!.length;
     }
+    if (_currentFilters.familyValues != null && _currentFilters.familyValues!.isNotEmpty) {
+      count += _currentFilters.familyValues!.length;
+    }
     if (_currentFilters.profileCreatedBy != null && _currentFilters.profileCreatedBy!.isNotEmpty) {
       count += _currentFilters.profileCreatedBy!.length;
     }
-    if (_currentFilters.state != null && _currentFilters.state!.isNotEmpty) count++;
-    if (_currentFilters.district != null && _currentFilters.district!.isNotEmpty) count++;
+    if (_currentFilters.isDisabled != null) count++;
+
+    // Tier 3
     if (_currentFilters.isVerified == true) count++;
     if (_currentFilters.isCommunityTrusted == true) count++;
-    if (_currentFilters.isDisabled != null) count++;
+    if (_currentFilters.isIncomeVerified == true) count++;
+    if (_currentFilters.manglikStatus != null && _currentFilters.manglikStatus!.isNotEmpty) {
+      count += _currentFilters.manglikStatus!.length;
+    }
+    if (_currentFilters.rashi != null && _currentFilters.rashi!.isNotEmpty) {
+      count += _currentFilters.rashi!.length;
+    }
+    if (_currentFilters.hasHoroscope == true) count++;
+    if (_currentFilters.employmentSector != null && _currentFilters.employmentSector!.isNotEmpty) {
+      count += _currentFilters.employmentSector!.length;
+    }
+    if (_currentFilters.diet != null && _currentFilters.diet!.isNotEmpty) {
+      count += _currentFilters.diet!.length;
+    }
+    if (_currentFilters.smokingHabits != null && _currentFilters.smokingHabits!.isNotEmpty) {
+      count += _currentFilters.smokingHabits!.length;
+    }
+    if (_currentFilters.drinkingHabits != null && _currentFilters.drinkingHabits!.isNotEmpty) {
+      count += _currentFilters.drinkingHabits!.length;
+    }
+    if (_currentFilters.relocationPreference != null && _currentFilters.relocationPreference!.isNotEmpty) {
+      count += _currentFilters.relocationPreference!.length;
+    }
+    if (_currentFilters.isRecentlyActive == true) count++;
+    if (_currentFilters.isHighResponse == true) count++;
+    if (_currentFilters.hasMultiplePhotos == true) count++;
+
+    // Tier 4
+    if (_currentFilters.isDirectContactUnlocked == true) count++;
+    if (_currentFilters.isRmHandpicked == true) count++;
+    if (_currentFilters.minGunaScore != null) count++;
+    if (_currentFilters.isVipSpotlight == true) count++;
+    if (_currentFilters.ancestralLandAcres != null && _currentFilters.ancestralLandAcres!.isNotEmpty) {
+      count += _currentFilters.ancestralLandAcres!.length;
+    }
+    if (_currentFilters.isHouseOwner == true) count++;
+    if (_currentFilters.isFamilyVetted == true) count++;
+    if (_currentFilters.isConfidentialMode == true) count++;
+
     return count;
   }
 
-  void _applyFilters() async {
+  void _applyFilters() {
     HapticFeedback.mediumImpact();
-    final query = _searchController.text.trim();
     final district = _districtController.text.trim();
-    if (query.isNotEmpty) {
-      await _cacheService.addSearchTerm(query);
-    }
     _currentFilters = _currentFilters.copyWith(
-      searchQuery: query,
       district: district.isNotEmpty ? district : '',
     );
     if (!mounted) return;
@@ -149,186 +334,614 @@ class _FilterScreenState extends State<FilterScreen> {
     HapticFeedback.lightImpact();
     setState(() {
       _currentFilters = const FilterCriteria();
-      _searchController.clear();
       _districtController.clear();
+    });
+  }
+
+  void _scrollToTier(int index, GlobalKey key) async {
+    HapticFeedback.selectionClick();
+    setState(() {
+      _selectedCategoryIndex = index;
+      _isAutoScrolling = true;
+    });
+    _ensureActiveTabVisible(index);
+
+    final context = key.currentContext;
+    if (context != null) {
+      await Scrollable.ensureVisible(
+        context,
+        duration: const Duration(milliseconds: 380),
+        curve: Curves.easeInOutCubic,
+      );
+    }
+
+    Future.delayed(const Duration(milliseconds: 400), () {
+      if (mounted) {
+        _isAutoScrolling = false;
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    _initAnimations();
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-
-    if (_isLoading) {
-      return Scaffold(
-        appBar: CustomAppBar(title: AppLocalizations.of(context)?.advancedFilters ?? 'Advanced Filters'),
-        body: const FilterScreenSkeleton(),
-      );
-    }
+    final foreground = theme.appBarTheme.foregroundColor ?? Colors.white;
 
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: isDark ? const Color(0xFF0F0E17) : const Color(0xFFF8FAFC),
       appBar: CustomAppBar(
-        title: AppLocalizations.of(context)?.advancedFilters ?? 'Advanced Filters',
-        actions: [
-          if (_activeFilterCount > 0)
-            Center(
-              child: Container(
-                margin: EdgeInsets.only(right: 2.w),
-                padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.5.h),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.3),
-                  ),
-                ),
-                child: Text(
-                  '$_activeFilterCount Active',
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.colorScheme.primary,
-                    fontWeight: FontWeight.w700,
+        automaticallyImplyLeading: false,
+        leadingWidth: 175,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TactilePressable(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  Navigator.pop(context);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                  child: Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: foreground,
+                    size: 16,
                   ),
                 ),
               ),
+              ClipOval(
+                child: Container(
+                  width: 26,
+                  height: 26,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: const AppLogoImage(
+                    width: 26,
+                    height: 26,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 5),
+              Image.asset(
+                'assets/logo/brand_kit/wordmark.png',
+                height: 22,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) =>
+                    const SizedBox.shrink(),
+              ),
+            ],
+          ),
+        ),
+        titleWidget: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              AppLocalizations.of(context)?.filters ?? 'Filters',
+              style: (theme.appBarTheme.titleTextStyle ?? theme.textTheme.titleMedium)?.copyWith(
+                fontSize: AppTypography.headingSmall,
+                fontWeight: AppTypography.bold,
+                color: foreground,
+                letterSpacing: 0.2,
+              ),
             ),
-          TextButton(
-            onPressed: _resetFilters,
-            child: Text(
-              AppLocalizations.of(context)?.reset ?? 'Reset',
-              style: TextStyle(
-                color: _activeFilterCount > 0
-                    ? theme.colorScheme.primary
-                    : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
-                fontWeight: FontWeight.w600,
+            const SizedBox(width: 4),
+            const Icon(
+              Icons.tune_rounded,
+              size: 16,
+              color: Color(0xFFFBBF24),
+            ),
+          ],
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: Center(
+              child: TactilePressable(
+                onTap: _resetFilters,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  padding: EdgeInsets.symmetric(horizontal: 2.4.w, vertical: 0.4.h),
+                  decoration: BoxDecoration(
+                    color: _activeFilterCount > 0
+                        ? const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.25 : 0.20)
+                        : foreground.withValues(alpha: isDark ? 0.12 : 0.16),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: _activeFilterCount > 0
+                          ? const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.6 : 0.4)
+                          : foreground.withValues(alpha: isDark ? 0.20 : 0.25),
+                      width: 1.1,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.refresh_rounded,
+                        size: 13,
+                        color: _activeFilterCount > 0
+                            ? const Color(0xFFF59E0B)
+                            : foreground.withValues(alpha: isDark ? 0.85 : 0.9),
+                      ),
+                      const SizedBox(width: 3.5),
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 200),
+                        transitionBuilder: (child, anim) =>
+                            ScaleTransition(scale: anim, child: child),
+                        child: Text(
+                          _activeFilterCount > 0
+                              ? '$_activeFilterCount ${AppLocalizations.of(context)?.reset ?? "Reset"}'
+                              : (AppLocalizations.of(context)?.reset ?? 'Reset'),
+                          key: ValueKey<int>(_activeFilterCount),
+                          style: TextStyle(
+                            fontSize: AppTypography.labelSmall,
+                            fontWeight: AppTypography.bold,
+                            color: _activeFilterCount > 0
+                                ? const Color(0xFFF59E0B)
+                                : foreground.withValues(alpha: isDark ? 0.85 : 0.9),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
         ],
+        bottom: _buildAppBarCategoryTabs(theme, isDark),
       ),
       body: Stack(
         children: [
-          // Background ambient gradient blur
+          // Ambient background glow bubbles
           Positioned(
-            top: -100,
-            right: -50,
+            top: -40,
+            right: -40,
             child: Container(
-              width: 250,
-              height: 250,
+              width: 260,
+              height: 260,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: theme.colorScheme.primary.withValues(alpha: 0.08),
+                color: const Color(0xFFBE123C).withValues(alpha: isDark ? 0.08 : 0.04),
               ),
             ),
           ),
           Positioned(
-            bottom: 100,
-            left: -80,
+            bottom: 120,
+            left: -60,
             child: Container(
-              width: 300,
-              height: 300,
+              width: 280,
+              height: 280,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: theme.colorScheme.secondary.withValues(alpha: 0.06),
+                color: const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.06 : 0.03),
               ),
             ),
           ),
 
-          SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildQuickTierSelectorBar(theme, isDark),
-                SizedBox(height: 2.5.h),
+          FadeTransition(
+            opacity: _fadeAnimation ?? const AlwaysStoppedAnimation(1.0),
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              physics: const BouncingScrollPhysics(),
+              padding: EdgeInsets.fromLTRB(4.w, 1.4.h, 4.w, 16.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // =============================================================
+                  // 🟢 1. STANDARD (Available to All Registered Members)
+                  // =============================================================
+                  Container(
+                    key: _standardTierKey,
+                    child: _buildTierHeader(
+                      theme: theme,
+                      title: AppLocalizations.of(context)?.standardFilters ?? 'Standard Filters',
+                      subtitle: AppLocalizations.of(context)?.standardFiltersSubtitle ?? 'Basic demographic criteria for all registered members',
+                      badgeText: 'STANDARD',
+                      badgeColor: const Color(0xFF10B981),
+                      icon: Icons.check_circle_outline_rounded,
+                      isDark: isDark,
+                    ),
+                  ),
+                  SizedBox(height: 1.6.h),
+                  _buildGenderSection(theme, isDark),
+                  SizedBox(height: 1.8.h),
+                  _buildAgeSection(theme, isDark),
+                  SizedBox(height: 1.8.h),
+                  _buildPhotoOnlySection(theme, isDark),
+                  SizedBox(height: 1.8.h),
+                  _buildMaritalStatusSection(theme, isDark),
+                  SizedBox(height: 1.8.h),
+                  _buildLocationSection(theme, isDark),
+                  SizedBox(height: 1.8.h),
+                  _buildBasicEducationSection(theme, isDark),
+                  SizedBox(height: 3.2.h),
 
-                // -------------------------------------------------------------
-                // 🟢 TIER 1: FREE FILTERS (Available to all)
-                // -------------------------------------------------------------
-                _buildTierHeader(
-                  theme: theme,
-                  title: 'Free Basic Filters',
-                  subtitle: 'Available to all community members',
-                  badgeText: 'FREE',
-                  badgeColor: const Color(0xFF2E7D32),
-                  icon: Icons.lock_open_rounded,
-                ),
-                SizedBox(height: 1.8.h),
-                _buildSearchSection(theme, isDark),
-                SizedBox(height: 2.5.h),
-                _buildGenderSection(theme, isDark),
-                SizedBox(height: 2.5.h),
-                _buildAgeSection(theme, isDark),
-                SizedBox(height: 2.5.h),
-                _buildPhotoOnlySection(theme, isDark),
-                SizedBox(height: 2.5.h),
-                _buildMaritalStatusSection(theme, isDark),
-                SizedBox(height: 2.5.h),
-                _buildLocationSection(theme, isDark),
-                SizedBox(height: 3.5.h),
+                  // =============================================================
+                  // 🌟 2. COMMUNITY / BVS (₹20/mo or ₹200/yr Subsidized)
+                  // =============================================================
+                  Container(
+                    key: _communityTierKey,
+                    child: _buildTierHeader(
+                      theme: theme,
+                      title: AppLocalizations.of(context)?.communityFiltersTitle ?? 'Community Filters (BVS)',
+                      subtitle: AppLocalizations.of(context)?.communityFiltersSubtitle ?? 'Gotra, Mamakul, Origin, Height, Income & Lineage',
+                      badgeText: AppLocalizations.of(context)?.subsidizedPricePill ?? '₹20/mo or ₹200/yr',
+                      badgeColor: const Color(0xFFF59E0B),
+                      icon: _hasCommunityAccess ? Icons.stars_rounded : Icons.lock_outline_rounded,
+                      isDark: isDark,
+                    ),
+                  ),
+                  SizedBox(height: 1.6.h),
+                  _buildCommunityContainer(theme, isDark),
+                  SizedBox(height: 3.2.h),
 
-                // -------------------------------------------------------------
-                // 🟡 TIER 2: SMART MATCH FILTERS (₹20/mo or ₹200/yr)
-                // -------------------------------------------------------------
-                _buildTierHeader(
-                  theme: theme,
-                  title: 'Smart Match Filters',
-                  subtitle: 'Gotra, Height, Income & Family Criteria',
-                  badgeText: '₹20/mo or ₹200/yr',
-                  badgeColor: const Color(0xFFD4AF37),
-                  icon: _isPremium ? Icons.stars_rounded : Icons.lock_outline_rounded,
-                ),
-                SizedBox(height: 1.8.h),
-                _buildSmartFiltersContainer(theme, isDark),
-                SizedBox(height: 3.5.h),
+                  // =============================================================
+                  // ⚡ 3. PREMIUM (Self-Service Plans)
+                  // =============================================================
+                  Container(
+                    key: _premiumTierKey,
+                    child: _buildTierHeader(
+                      theme: theme,
+                      title: AppLocalizations.of(context)?.premiumFiltersTitle ?? 'Premium Filters',
+                      subtitle: AppLocalizations.of(context)?.premiumFiltersSubtitle ?? 'ID Verification, Trust Score, Horoscope, Lifestyle & Activity',
+                      badgeText: 'PREMIUM',
+                      badgeColor: const Color(0xFF8B5CF6),
+                      icon: _hasPremiumAccess ? Icons.verified_rounded : Icons.lock_outline_rounded,
+                      isDark: isDark,
+                    ),
+                  ),
+                  SizedBox(height: 1.6.h),
+                  _buildPremiumContainer(theme, isDark),
+                  SizedBox(height: 3.2.h),
 
-                // -------------------------------------------------------------
-                // 🔒 TIER 3: PREMIUM PRICE FILTERS (INACTIVE / COMING SOON)
-                // -------------------------------------------------------------
-                _buildTierHeader(
-                  theme: theme,
-                  title: 'Premium Price Filters',
-                  subtitle: 'ID Verification & VIP Matchmaker Criteria',
-                  badgeText: 'INACTIVE • COMING SOON',
-                  badgeColor: Colors.grey,
-                  icon: Icons.lock_clock_rounded,
-                ),
-                SizedBox(height: 1.8.h),
-                _buildPremiumInactiveContainer(theme, isDark),
+                  // =============================================================
+                  // 👑 4. MATCHMAKER (VIP Assisted Plans)
+                  // =============================================================
+                  Container(
+                    key: _matchmakerTierKey,
+                    child: _buildTierHeader(
+                      theme: theme,
+                      title: AppLocalizations.of(context)?.matchmakerFiltersTitle ?? 'Matchmaker Filters',
+                      subtitle: AppLocalizations.of(context)?.matchmakerFiltersSubtitle ?? 'Direct Contact, RM Handpicked, 36 Guna Score & Land Holdings',
+                      badgeText: 'MATCHMAKER',
+                      badgeColor: const Color(0xFFBE123C),
+                      icon: _hasMatchmakerAccess ? Icons.workspace_premium_rounded : Icons.lock_clock_rounded,
+                      isDark: isDark,
+                    ),
+                  ),
+                  SizedBox(height: 1.6.h),
+                  _buildMatchmakerContainer(theme, isDark),
 
-                SizedBox(height: 14.h), // Space for floating bottom button
-              ],
+                  SizedBox(height: 10.h),
+                ],
+              ),
             ),
           ),
 
-          // Floating Apply CTA Bar for ALL users
+          // Floating Apply CTA Bar
           _buildFloatingApplyBar(theme, isDark),
         ],
       ),
     );
   }
 
-  /// Glassmorphic Section Header Helper
+  /// Compact Category Segment Navigation Bar integrated directly under AppBar
+  PreferredSizeWidget _buildAppBarCategoryTabs(ThemeData theme, bool isDark) {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(5.2.h),
+      child: Container(
+        key: _stickyNavKey,
+        width: double.infinity,
+        padding: EdgeInsets.fromLTRB(2.5.w, 0.2.h, 2.5.w, 0.8.h),
+        decoration: BoxDecoration(
+          color: theme.appBarTheme.backgroundColor ?? (isDark ? const Color(0xFF0F0E17) : Colors.white),
+          border: Border(
+            bottom: BorderSide(
+              color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
+            ),
+          ),
+        ),
+        child: SingleChildScrollView(
+          controller: _tabScrollController,
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          child: Row(
+            children: [
+              _buildStickyTabButton(
+                index: 0,
+                label: 'Standard',
+                icon: Icons.check_circle_outline_rounded,
+                color: const Color(0xFF10B981),
+                onTap: () => _scrollToTier(0, _standardTierKey),
+                isDark: isDark,
+              ),
+              SizedBox(width: 1.6.w),
+              _buildStickyTabButton(
+                index: 1,
+                label: 'Community',
+                icon: _hasCommunityAccess ? Icons.stars_rounded : Icons.lock_outline_rounded,
+                color: const Color(0xFFF59E0B),
+                onTap: () => _scrollToTier(1, _communityTierKey),
+                isDark: isDark,
+              ),
+              SizedBox(width: 1.6.w),
+              _buildStickyTabButton(
+                index: 2,
+                label: 'Premium',
+                icon: _hasPremiumAccess ? Icons.verified_rounded : Icons.lock_outline_rounded,
+                color: const Color(0xFF8B5CF6),
+                onTap: () => _scrollToTier(2, _premiumTierKey),
+                isDark: isDark,
+              ),
+              SizedBox(width: 1.6.w),
+              _buildStickyTabButton(
+                index: 3,
+                label: 'Matchmaker',
+                icon: _hasMatchmakerAccess ? Icons.workspace_premium_rounded : Icons.lock_clock_rounded,
+                color: const Color(0xFFBE123C),
+                onTap: () => _scrollToTier(3, _matchmakerTierKey),
+                isDark: isDark,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStickyTabButton({
+    required int index,
+    required String label,
+    required IconData icon,
+    required Color color,
+    required VoidCallback onTap,
+    required bool isDark,
+  }) {
+    final bool isSelected = _selectedCategoryIndex == index;
+    final bool isHovered = _hoveredCategoryIndex == index;
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hoveredCategoryIndex = index),
+      onExit: (_) => setState(() => _hoveredCategoryIndex = null),
+      child: TactilePressable(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 220),
+          curve: Curves.easeOutCubic,
+          padding: EdgeInsets.symmetric(horizontal: 2.8.w, vertical: 0.65.h),
+          decoration: BoxDecoration(
+            gradient: isSelected
+                ? LinearGradient(
+                    colors: [color, color.withValues(alpha: 0.88)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )
+                : (isHovered
+                    ? LinearGradient(
+                        colors: [color.withValues(alpha: 0.22), color.withValues(alpha: 0.12)],
+                      )
+                    : null),
+            color: isSelected
+                ? null
+                : (isHovered
+                    ? null
+                    : (isDark ? const Color(0xFF1B182B) : const Color(0xFFF1F5F9))),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: isSelected
+                  ? Colors.white.withValues(alpha: 0.95)
+                  : (isHovered
+                      ? color.withValues(alpha: 0.65)
+                      : (isDark ? Colors.white.withValues(alpha: 0.10) : const Color(0xFFCBD5E1))),
+              width: isSelected ? 1.6 : 1.0,
+            ),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: color.withValues(alpha: 0.50),
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
+                    ),
+                  ]
+                : (isHovered
+                    ? [
+                        BoxShadow(
+                          color: color.withValues(alpha: 0.20),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ]
+                    : null),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.all(3),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? Colors.white.withValues(alpha: 0.25)
+                      : (isHovered ? color.withValues(alpha: 0.18) : Colors.transparent),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  icon,
+                  size: 13,
+                  color: isSelected ? Colors.white : (isHovered ? color : (isDark ? Colors.white70 : const Color(0xFF475569))),
+                ),
+              ),
+              SizedBox(width: 1.4.w),
+              Text(
+                label,
+                style: TextStyle(
+                  color: isSelected
+                      ? Colors.white
+                      : (isHovered ? color : (isDark ? Colors.white70 : const Color(0xFF334155))),
+                  fontWeight: isSelected ? AppTypography.black : (isHovered ? AppTypography.extraBold : AppTypography.semiBold),
+                  fontSize: AppTypography.labelMedium,
+                  letterSpacing: isSelected ? 0.2 : 0.05,
+                ),
+                softWrap: false,
+              ),
+              if (isSelected) ...[
+                SizedBox(width: 1.2.w),
+                Container(
+                  width: 5,
+                  height: 5,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTierHeader({
+    required ThemeData theme,
+    required String title,
+    required String subtitle,
+    required String badgeText,
+    required Color badgeColor,
+    required IconData icon,
+    required bool isDark,
+  }) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 240),
+      curve: Curves.easeOutCubic,
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.4.h),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            badgeColor.withValues(alpha: isDark ? 0.16 : 0.10),
+            badgeColor.withValues(alpha: isDark ? 0.05 : 0.03),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: badgeColor.withValues(alpha: isDark ? 0.40 : 0.32),
+          width: 1.2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: badgeColor.withValues(alpha: isDark ? 0.12 : 0.05),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(9),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  badgeColor.withValues(alpha: 0.28),
+                  badgeColor.withValues(alpha: 0.15),
+                ],
+              ),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: badgeColor.withValues(alpha: 0.5),
+                width: 1.2,
+              ),
+            ),
+            child: Icon(icon, color: badgeColor, size: 19),
+          ),
+          SizedBox(width: 3.2.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: AppTypography.black,
+                    fontSize: AppTypography.bodyMedium,
+                    letterSpacing: 0.3,
+                  ),
+                ),
+                const SizedBox(height: 2.5),
+                Text(
+                  subtitle,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.85),
+                    fontSize: AppTypography.labelSmall,
+                    height: 1.25,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 2.4.w, vertical: 0.45.h),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [badgeColor, badgeColor.withValues(alpha: 0.85)],
+              ),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: badgeColor.withValues(alpha: 0.35),
+                  blurRadius: 6,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Text(
+              badgeText,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: AppTypography.black,
+                fontSize: AppTypography.labelTiny,
+                letterSpacing: 0.4,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildSectionHeader({
     required ThemeData theme,
     required IconData icon,
     required String title,
     String? subtitle,
     int? selectedCount,
+    Color? iconAccent,
   }) {
+    final accent = iconAccent ?? theme.colorScheme.primary;
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8.5),
           decoration: BoxDecoration(
-            color: theme.colorScheme.primary.withValues(alpha: 0.12),
-            borderRadius: BorderRadius.circular(12),
+            color: accent.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: accent.withValues(alpha: 0.25),
+            ),
           ),
           child: Icon(
             icon,
-            size: 20,
-            color: theme.colorScheme.primary,
+            size: 18,
+            color: accent,
           ),
         ),
         SizedBox(width: 3.w),
@@ -338,27 +951,46 @@ class _FilterScreenState extends State<FilterScreen> {
             children: [
               Row(
                 children: [
-                  Text(
-                    title,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: theme.colorScheme.onSurface,
-                      letterSpacing: 0.2,
+                  Flexible(
+                    child: Text(
+                      title,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: AppTypography.extraBold,
+                        fontSize: AppTypography.headingSmall,
+                        letterSpacing: -0.2,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   if (selectedCount != null && selectedCount > 0) ...[
                     SizedBox(width: 2.w),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.primary,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        '$selectedCount',
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: theme.colorScheme.onPrimary,
-                          fontWeight: FontWeight.bold,
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 220),
+                      transitionBuilder: (child, anim) =>
+                          ScaleTransition(scale: anim, child: child),
+                      child: Container(
+                        key: ValueKey<int>(selectedCount),
+                        padding: const EdgeInsets.symmetric(horizontal: 7.5, vertical: 2.0),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [accent, accent.withValues(alpha: 0.85)],
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: accent.withValues(alpha: 0.35),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          '$selectedCount',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: AppTypography.labelTiny,
+                            fontWeight: AppTypography.black,
+                          ),
                         ),
                       ),
                     ),
@@ -366,11 +998,12 @@ class _FilterScreenState extends State<FilterScreen> {
                 ],
               ),
               if (subtitle != null) ...[
-                SizedBox(height: 0.3.h),
+                const SizedBox(height: 2),
                 Text(
                   subtitle,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.75),
+                    fontSize: AppTypography.labelSmall,
                   ),
                 ),
               ],
@@ -381,358 +1014,17 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 
-  /// 1. Keyword Search Bar with Glass Card
-  Widget _buildSearchSection(ThemeData theme, bool isDark) {
-    return Container(
-      padding: EdgeInsets.all(4.w),
-      decoration: BoxDecoration(
-        color: theme.cardColor.withValues(alpha: isDark ? 0.7 : 0.9),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: theme.dividerColor.withValues(alpha: 0.3),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.04),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionHeader(
-            theme: theme,
-            icon: Icons.search_rounded,
-            title: AppLocalizations.of(context)?.keywordSearch ?? 'Keyword Search',
-            subtitle: 'Filter profiles by name, qualification, or role',
-          ),
-          SizedBox(height: 1.8.h),
-          TextField(
-            controller: _searchController,
-            style: theme.textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
-            decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)?.searchByNameJobEducation ??
-                  'Search by name, job, education...',
-              prefixIcon: Icon(
-                Icons.search_rounded,
-                color: theme.colorScheme.primary.withValues(alpha: 0.7),
-              ),
-              suffixIcon: _searchController.text.isNotEmpty
-                  ? IconButton(
-                      icon: const Icon(Icons.cancel_rounded),
-                      onPressed: _onSearchCleared,
-                    )
-                  : null,
-              filled: true,
-              fillColor: isDark
-                  ? theme.colorScheme.surface.withValues(alpha: 0.5)
-                  : const Color(0xFFF7F8FA),
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 4.w,
-                vertical: 1.8.h,
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: BorderSide.none,
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: BorderSide(
-                  color: theme.dividerColor.withValues(alpha: 0.2),
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: BorderSide(
-                  color: theme.colorScheme.primary,
-                  width: 1.5,
-                ),
-              ),
-            ),
-            onChanged: (val) {
-              setState(() {
-                _currentFilters = _currentFilters.copyWith(searchQuery: val);
-              });
-            },
-          ),
-          if (_recentSearches.isNotEmpty) ...[
-            SizedBox(height: 2.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  AppLocalizations.of(context)?.recentSearches ?? 'Recent Searches',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    HapticFeedback.lightImpact();
-                    await _cacheService.clearSearchHistory();
-                    _loadSearchHistory();
-                  },
-                  child: Text(
-                    AppLocalizations.of(context)?.clear ?? 'Clear',
-                    style: theme.textTheme.labelMedium?.copyWith(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            Wrap(
-              spacing: 2.w,
-              runSpacing: 1.h,
-              children: _recentSearches.map(
-                (term) {
-                  return InkWell(
-                    onTap: () {
-                      HapticFeedback.selectionClick();
-                      _searchController.text = term;
-                      setState(() {
-                        _currentFilters = _currentFilters.copyWith(searchQuery: term);
-                      });
-                    },
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 0.8.h),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.08),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: theme.colorScheme.primary.withValues(alpha: 0.2),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.history_rounded,
-                            size: 14,
-                            color: theme.colorScheme.primary,
-                          ),
-                          SizedBox(width: 1.5.w),
-                          Text(
-                            term,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.primary,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ).toList(),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
+  // ===========================================================================
+  // 🟢 1. STANDARD FILTERS SECTION BUILDERS
+  // ===========================================================================
 
-  /// 2. Verification Badges Section (ID Verified & Community Trusted)
-  Widget _buildVerificationBadgesSection(ThemeData theme, bool isDark) {
-    final isVerified = _currentFilters.isVerified ?? false;
-    final isTrusted = _currentFilters.isCommunityTrusted ?? false;
-
-    Widget buildToggleTile({
-      required String title,
-      required String subtitle,
-      required IconData icon,
-      required bool value,
-      required Color activeColor,
-      required Function(bool) onChanged,
-    }) {
-      return AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.4.h),
-        decoration: BoxDecoration(
-          color: value
-              ? activeColor.withValues(alpha: isDark ? 0.15 : 0.08)
-              : theme.cardColor.withValues(alpha: isDark ? 0.7 : 0.9),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: value ? activeColor.withValues(alpha: 0.5) : theme.dividerColor.withValues(alpha: 0.3),
-            width: value ? 1.5 : 1,
-          ),
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: value ? activeColor : activeColor.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: Icon(
-                icon,
-                size: 20,
-                color: value ? Colors.white : activeColor,
-              ),
-            ),
-            SizedBox(width: 3.5.w),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: theme.colorScheme.onSurface,
-                    ),
-                  ),
-                  SizedBox(height: 0.2.h),
-                  Text(
-                    subtitle,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                      fontSize: 10.sp,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Switch.adaptive(
-              value: value,
-              activeTrackColor: activeColor,
-              onChanged: (val) {
-                HapticFeedback.selectionClick();
-                onChanged(val);
-              },
-            ),
-          ],
-        ),
-      );
-    }
-
-    return Column(
-      children: [
-        buildToggleTile(
-          title: 'Verified Profiles Only',
-          subtitle: 'Show profiles with verified Govt ID badge',
-          icon: Icons.verified_user_rounded,
-          value: isVerified,
-          activeColor: const Color(0xFF2E7D32),
-          onChanged: (val) {
-            setState(() {
-              _currentFilters = _currentFilters.copyWith(isVerified: val);
-            });
-          },
-        ),
-        SizedBox(height: 1.5.h),
-        buildToggleTile(
-          title: 'Community Trusted Only',
-          subtitle: 'Highly vouched & trusted Banjara profiles',
-          icon: Icons.shield_rounded,
-          value: isTrusted,
-          activeColor: const Color(0xFFD4AF37),
-          onChanged: (val) {
-            setState(() {
-              _currentFilters = _currentFilters.copyWith(isCommunityTrusted: val);
-            });
-          },
-        ),
-      ],
-    );
-  }
-
-  /// 3. Photo Availability Switch Card
-  Widget _buildPhotoOnlySection(ThemeData theme, bool isDark) {
-    final hasPhoto = _currentFilters.hasPhoto ?? false;
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
-      decoration: BoxDecoration(
-        color: hasPhoto
-            ? theme.colorScheme.primary.withValues(alpha: isDark ? 0.15 : 0.08)
-            : theme.cardColor.withValues(alpha: isDark ? 0.7 : 0.9),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: hasPhoto
-              ? theme.colorScheme.primary.withValues(alpha: 0.4)
-              : theme.dividerColor.withValues(alpha: 0.3),
-          width: hasPhoto ? 1.5 : 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: hasPhoto
-                  ? theme.colorScheme.primary
-                  : theme.colorScheme.primary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Icon(
-              Icons.photo_camera_rounded,
-              size: 22,
-              color: hasPhoto ? theme.colorScheme.onPrimary : theme.colorScheme.primary,
-            ),
-          ),
-          SizedBox(width: 3.5.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Must Have Photo',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: theme.colorScheme.onSurface,
-                  ),
-                ),
-                SizedBox(height: 0.3.h),
-                Text(
-                  'Only show profiles with visible photos',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Switch.adaptive(
-            value: hasPhoto,
-            activeTrackColor: theme.colorScheme.primary,
-            onChanged: (val) {
-              HapticFeedback.selectionClick();
-              setState(() {
-                _currentFilters = _currentFilters.copyWith(hasPhoto: val);
-              });
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// 4. Gender Segment Selector
   Widget _buildGenderSection(ThemeData theme, bool isDark) {
     final selectedGender = _currentFilters.gender ?? '';
 
-    Widget buildGenderPill(String label, String value, IconData icon) {
+    Widget buildGenderPill(String label, String value, IconData icon, Color color) {
       final isSelected = selectedGender.toLowerCase() == value.toLowerCase();
       return Expanded(
-        child: InkWell(
+        child: TactilePressable(
           onTap: () {
             HapticFeedback.selectionClick();
             setState(() {
@@ -741,36 +1033,30 @@ class _FilterScreenState extends State<FilterScreen> {
               );
             });
           },
-          borderRadius: BorderRadius.circular(16),
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            padding: EdgeInsets.symmetric(vertical: 1.4.h),
+            duration: const Duration(milliseconds: 220),
+            curve: Curves.easeOutCubic,
+            padding: EdgeInsets.symmetric(vertical: 1.3.h),
             decoration: BoxDecoration(
               gradient: isSelected
                   ? LinearGradient(
-                      colors: [
-                        theme.colorScheme.primary,
-                        theme.colorScheme.primary.withValues(alpha: 0.85),
-                      ],
+                      colors: [color, color.withValues(alpha: 0.85)],
                     )
                   : null,
               color: isSelected
                   ? null
-                  : isDark
-                      ? theme.colorScheme.surface.withValues(alpha: 0.6)
-                      : const Color(0xFFF4F6F8),
+                  : (isDark ? const Color(0xFF1E1B2E) : const Color(0xFFF1F5F9)),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: isSelected
-                    ? theme.colorScheme.primary
-                    : theme.dividerColor.withValues(alpha: 0.2),
+                color: isSelected ? color : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+                width: isSelected ? 1.6 : 1,
               ),
               boxShadow: isSelected
                   ? [
                       BoxShadow(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                        color: color.withValues(alpha: 0.38),
                         blurRadius: 10,
-                        offset: const Offset(0, 4),
+                        offset: const Offset(0, 3),
                       ),
                     ]
                   : null,
@@ -780,19 +1066,16 @@ class _FilterScreenState extends State<FilterScreen> {
               children: [
                 Icon(
                   icon,
-                  size: 18,
-                  color: isSelected
-                      ? theme.colorScheme.onPrimary
-                      : theme.colorScheme.onSurfaceVariant,
+                  size: 17,
+                  color: isSelected ? Colors.white : (isDark ? Colors.white70 : const Color(0xFF475569)),
                 ),
-                SizedBox(width: 1.5.w),
+                const SizedBox(width: 6),
                 Text(
                   label,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                    color: isSelected
-                        ? theme.colorScheme.onPrimary
-                        : theme.colorScheme.onSurfaceVariant,
+                  style: TextStyle(
+                    fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
+                    fontSize: AppTypography.bodySmall,
+                    color: isSelected ? Colors.white : (isDark ? Colors.white : const Color(0xFF1E293B)),
                   ),
                 ),
               ],
@@ -805,15 +1088,15 @@ class _FilterScreenState extends State<FilterScreen> {
     return Container(
       padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(
-        color: theme.cardColor.withValues(alpha: isDark ? 0.7 : 0.9),
-        borderRadius: BorderRadius.circular(20),
+        color: isDark ? const Color(0xFF161424) : Colors.white,
+        borderRadius: BorderRadius.circular(22),
         border: Border.all(
-          color: theme.dividerColor.withValues(alpha: 0.3),
+          color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.03),
-            blurRadius: 12,
+            blurRadius: 14,
             offset: const Offset(0, 4),
           ),
         ],
@@ -824,17 +1107,18 @@ class _FilterScreenState extends State<FilterScreen> {
           _buildSectionHeader(
             theme: theme,
             icon: Icons.wc_rounded,
-            title: 'Looking For',
-            subtitle: 'Select gender preference for matching profiles',
+            iconAccent: const Color(0xFFEC4899),
+            title: AppLocalizations.of(context)?.lookingForGender ?? 'Looking For (Gender)',
+            subtitle: AppLocalizations.of(context)?.selectMatchPreference ?? 'Select match preference for groom or bride search',
           ),
-          SizedBox(height: 1.8.h),
+          SizedBox(height: 1.6.h),
           Row(
             children: [
-              buildGenderPill('All', '', Icons.people_outline_rounded),
+              buildGenderPill(AppLocalizations.of(context)?.all ?? 'All', '', Icons.people_outline_rounded, const Color(0xFF6366F1)),
               SizedBox(width: 2.w),
-              buildGenderPill('Bride', 'female', Icons.female_rounded),
+              buildGenderPill(AppLocalizations.of(context)?.bride ?? 'Bride', 'female', Icons.female_rounded, const Color(0xFFEC4899)),
               SizedBox(width: 2.w),
-              buildGenderPill('Groom', 'male', Icons.male_rounded),
+              buildGenderPill(AppLocalizations.of(context)?.groom ?? 'Groom', 'male', Icons.male_rounded, const Color(0xFF0EA5E9)),
             ],
           ),
         ],
@@ -842,7 +1126,6 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 
-  /// 5. Dual Range Age Controller & Presets
   Widget _buildAgeSection(ThemeData theme, bool isDark) {
     final double minAge = (_currentFilters.minAge ?? 18).toDouble().clamp(_minAgeLimit, _maxAgeLimit);
     final double maxAge = (_currentFilters.maxAge ?? 60).toDouble().clamp(minAge, _maxAgeLimit);
@@ -851,38 +1134,36 @@ class _FilterScreenState extends State<FilterScreen> {
 
     Widget buildPresetPill(String label, int min, int max) {
       final isSelected = _currentFilters.minAge == min && _currentFilters.maxAge == max;
-      return InkWell(
+      return TactilePressable(
         onTap: () {
           HapticFeedback.selectionClick();
           setState(() {
             _currentFilters = _currentFilters.copyWith(minAge: min, maxAge: max);
           });
         },
-        borderRadius: BorderRadius.circular(16),
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 0.8.h),
+          duration: const Duration(milliseconds: 180),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
             color: isSelected
-                ? theme.colorScheme.primary.withValues(alpha: 0.15)
-                : isDark
-                    ? theme.colorScheme.surface.withValues(alpha: 0.4)
-                    : const Color(0xFFF4F6F8),
-            borderRadius: BorderRadius.circular(16),
+                ? const Color(0xFF8B5CF6).withValues(alpha: 0.20)
+                : (isDark ? const Color(0xFF1E1B2E) : const Color(0xFFF1F5F9)),
+            borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: isSelected
-                  ? theme.colorScheme.primary
-                  : theme.dividerColor.withValues(alpha: 0.2),
-              width: isSelected ? 1.5 : 1,
+                  ? const Color(0xFF8B5CF6)
+                  : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+              width: isSelected ? 1.4 : 1,
             ),
           ),
           child: Text(
             label,
-            style: theme.textTheme.bodySmall?.copyWith(
-              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+            style: TextStyle(
+              fontWeight: isSelected ? AppTypography.bold : AppTypography.medium,
+              fontSize: AppTypography.labelSmall,
               color: isSelected
-                  ? theme.colorScheme.primary
-                  : theme.colorScheme.onSurfaceVariant,
+                  ? const Color(0xFF8B5CF6)
+                  : (isDark ? Colors.white70 : const Color(0xFF475569)),
             ),
           ),
         ),
@@ -890,18 +1171,18 @@ class _FilterScreenState extends State<FilterScreen> {
     }
 
     return Container(
-      padding: EdgeInsets.all(4.w),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
       decoration: BoxDecoration(
-        color: theme.cardColor.withValues(alpha: isDark ? 0.7 : 0.9),
-        borderRadius: BorderRadius.circular(20),
+        color: isDark ? const Color(0xFF161424) : Colors.white,
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: theme.dividerColor.withValues(alpha: 0.3),
+          color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.03),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -915,43 +1196,50 @@ class _FilterScreenState extends State<FilterScreen> {
                 child: _buildSectionHeader(
                   theme: theme,
                   icon: Icons.cake_rounded,
+                  iconAccent: const Color(0xFF8B5CF6),
                   title: AppLocalizations.of(context)?.ageRange ?? 'Age Range',
                 ),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.6.h),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 180),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3.5),
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      theme.colorScheme.primary,
-                      theme.colorScheme.primary.withValues(alpha: 0.8),
-                    ],
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF8B5CF6), Color(0xFF6D28D9)],
                   ),
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF8B5CF6).withValues(alpha: 0.30),
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: Text(
-                  '${minAge.toInt()} - ${maxAge.toInt()} yrs',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onPrimary,
-                    fontWeight: FontWeight.bold,
+                  AppLocalizations.of(context)?.ageRangeYears(minAge.toInt(), maxAge.toInt()) ?? '${minAge.toInt()} - ${maxAge.toInt()} yrs',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: AppTypography.extraBold,
+                    fontSize: AppTypography.labelSmall,
                   ),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 2.h),
+          const SizedBox(height: 2),
 
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
-              activeTrackColor: theme.colorScheme.primary,
-              inactiveTrackColor: theme.colorScheme.primary.withValues(alpha: 0.15),
-              thumbColor: theme.colorScheme.primary,
-              overlayColor: theme.colorScheme.primary.withValues(alpha: 0.2),
+              activeTrackColor: const Color(0xFF8B5CF6),
+              inactiveTrackColor: const Color(0xFF8B5CF6).withValues(alpha: 0.18),
+              thumbColor: const Color(0xFF8B5CF6),
+              overlayColor: const Color(0xFF8B5CF6).withValues(alpha: 0.2),
               rangeThumbShape: const RoundRangeSliderThumbShape(
-                enabledThumbRadius: 12.0,
-                elevation: 4,
+                enabledThumbRadius: 8.5,
+                elevation: 3,
               ),
-              trackHeight: 6.0,
+              trackHeight: 3.5,
             ),
             child: RangeSlider(
               values: currentRange,
@@ -973,94 +1261,174 @@ class _FilterScreenState extends State<FilterScreen> {
             ),
           ),
 
-          SizedBox(height: 1.5.h),
-          Text(
-            'Quick Presets',
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w600,
+          const SizedBox(height: 2),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            child: Row(
+              children: [
+                buildPresetPill('18-25', 18, 25),
+                const SizedBox(width: 6),
+                buildPresetPill('22-28', 22, 28),
+                const SizedBox(width: 6),
+                buildPresetPill('25-32', 25, 32),
+                const SizedBox(width: 6),
+                buildPresetPill('28-35', 28, 35),
+                const SizedBox(width: 6),
+                buildPresetPill('35-45', 35, 45),
+                const SizedBox(width: 6),
+                buildPresetPill('Any Age', 18, 60),
+              ],
             ),
-          ),
-          SizedBox(height: 1.h),
-          Wrap(
-            spacing: 2.w,
-            runSpacing: 1.h,
-            children: [
-              buildPresetPill('18 - 25', 18, 25),
-              buildPresetPill('22 - 28', 22, 28),
-              buildPresetPill('25 - 35', 25, 35),
-              buildPresetPill('30 - 45', 30, 45),
-              buildPresetPill('Any Age', 18, 60),
-            ],
           ),
         ],
       ),
     );
   }
 
-  /// 6. Banjara Gotra Multi-Chip Section
-  Widget _buildGotraSection(ThemeData theme, bool isDark) {
-    final gotraOptions = [
-      'Pawar / Pramara',
-      'Rathod',
-      'Chauan / Chauhan',
-      'Jadhav',
-      'Vaditya',
-      'Naik',
-      'Bhukya',
-      'Khamawat',
-      'Puri',
-      'Other Gotra',
+  Widget _buildPhotoOnlySection(ThemeData theme, bool isDark) {
+    final hasPhoto = _currentFilters.hasPhoto ?? false;
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 220),
+      curve: Curves.easeOutCubic,
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.4.h),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF161424) : Colors.white,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(
+          color: hasPhoto
+              ? const Color(0xFF0EA5E9).withValues(alpha: 0.65)
+              : (isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0)),
+          width: hasPhoto ? 1.6 : 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: hasPhoto
+                ? const Color(0xFF0EA5E9).withValues(alpha: 0.15)
+                : Colors.black.withValues(alpha: isDark ? 0.15 : 0.03),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 220),
+            padding: const EdgeInsets.all(9.5),
+            decoration: BoxDecoration(
+              color: hasPhoto
+                  ? const Color(0xFF0EA5E9)
+                  : const Color(0xFF0EA5E9).withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(14),
+              boxShadow: hasPhoto
+                  ? [
+                      BoxShadow(
+                        color: const Color(0xFF0EA5E9).withValues(alpha: 0.35),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ]
+                  : null,
+            ),
+            child: Icon(
+              Icons.photo_camera_rounded,
+              size: 20,
+              color: hasPhoto ? Colors.white : const Color(0xFF0EA5E9),
+            ),
+          ),
+          SizedBox(width: 3.5.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppLocalizations.of(context)?.mustHavePhoto ?? 'Must Have Photo',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: AppTypography.extraBold,
+                    fontSize: AppTypography.bodyMedium,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  AppLocalizations.of(context)?.onlyShowProfilesWithPhoto ?? 'Only show profiles with verified photo albums',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                    fontSize: AppTypography.labelSmall,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Switch.adaptive(
+            value: hasPhoto,
+            activeTrackColor: const Color(0xFF0EA5E9),
+            onChanged: (val) {
+              HapticFeedback.selectionClick();
+              setState(() {
+                _currentFilters = _currentFilters.copyWith(hasPhoto: val);
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMaritalStatusSection(ThemeData theme, bool isDark) {
+    final options = [
+      AppLocalizations.of(context)?.neverMarried ?? 'Never Married',
+      AppLocalizations.of(context)?.divorced ?? 'Divorced',
+      AppLocalizations.of(context)?.widowed ?? 'Widowed',
+      AppLocalizations.of(context)?.awaitingDivorce ?? 'Awaiting Divorce',
     ];
-    final selectedList = _currentFilters.gotra ?? [];
+    final selectedStatus = _currentFilters.maritalStatus ?? '';
 
     return _buildGlassMultiChipGroup(
       theme: theme,
       isDark: isDark,
-      icon: Icons.auto_awesome_rounded,
-      title: 'Banjara Gotra (गोत्र)',
-      subtitle: 'Select Gotras for customary match preferences',
-      options: gotraOptions,
-      selectedItems: selectedList,
+      icon: Icons.favorite_rounded,
+      iconAccent: const Color(0xFFBE123C),
+      title: AppLocalizations.of(context)?.maritalStatusLabel ?? 'Marital Status',
+      subtitle: AppLocalizations.of(context)?.selectMaritalStatus ?? 'Select marital status requirement',
+      options: options,
+      selectedItems: selectedStatus.isNotEmpty ? [selectedStatus] : [],
       onToggle: (opt) {
         HapticFeedback.selectionClick();
-        final list = List<String>.from(selectedList);
-        if (list.contains(opt)) {
-          list.remove(opt);
-        } else {
-          list.add(opt);
-        }
         setState(() {
-          _currentFilters = _currentFilters.copyWith(gotra: list);
+          _currentFilters = _currentFilters.copyWith(
+            maritalStatus: selectedStatus == opt ? '' : opt,
+          );
         });
       },
     );
   }
 
-  /// 7. Height Preference Section
-  Widget _buildHeightSection(ThemeData theme, bool isDark) {
-    final heightOptions = [
-      'Any Height',
-      '5\'0"+',
-      '5\'3"+',
-      '5\'5"+',
-      '5\'8"+',
-      '6\'0"+',
+  Widget _buildLocationSection(ThemeData theme, bool isDark) {
+    final states = [
+      'Maharashtra',
+      'Telangana',
+      'Karnataka',
+      'Andhra Pradesh',
+      'Madhya Pradesh',
+      'Gujarat',
+      'Rajasthan',
+      'Other States',
     ];
-    final selectedMin = _currentFilters.minHeight ?? 'Any Height';
+    final selectedState = _currentFilters.state ?? '';
 
     return Container(
       padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(
-        color: theme.cardColor.withValues(alpha: isDark ? 0.7 : 0.9),
-        borderRadius: BorderRadius.circular(20),
+        color: isDark ? const Color(0xFF161424) : Colors.white,
+        borderRadius: BorderRadius.circular(22),
         border: Border.all(
-          color: theme.dividerColor.withValues(alpha: 0.3),
+          color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.03),
-            blurRadius: 12,
+            blurRadius: 14,
             offset: const Offset(0, 4),
           ),
         ],
@@ -1070,66 +1438,124 @@ class _FilterScreenState extends State<FilterScreen> {
         children: [
           _buildSectionHeader(
             theme: theme,
-            icon: Icons.height_rounded,
-            title: 'Minimum Height',
-            subtitle: 'Select minimum height requirement',
+            icon: Icons.location_on_rounded,
+            iconAccent: const Color(0xFF0EA5E9),
+            title: AppLocalizations.of(context)?.locationAndState ?? 'Location & Native State',
+            subtitle: AppLocalizations.of(context)?.filterCandidateHomeState ?? 'Filter candidate home state or current residing district',
           ),
-          SizedBox(height: 1.8.h),
+          SizedBox(height: 1.6.h),
           Wrap(
             spacing: 2.w,
-            runSpacing: 1.2.h,
-            children: heightOptions.map((h) {
-              final isSelected = (selectedMin == h) || (h == 'Any Height' && (selectedMin.isEmpty || selectedMin == 'Any Height'));
-              return InkWell(
+            runSpacing: 1.0.h,
+            children: states.map((st) {
+              final isSelected = selectedState.toLowerCase() == st.toLowerCase();
+              return TactilePressable(
                 onTap: () {
                   HapticFeedback.selectionClick();
                   setState(() {
                     _currentFilters = _currentFilters.copyWith(
-                      minHeight: h == 'Any Height' ? '' : h,
+                      state: isSelected ? '' : st,
                     );
                   });
                 },
-                borderRadius: BorderRadius.circular(16),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
-                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.2.h),
+                  padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 0.9.h),
                   decoration: BoxDecoration(
+                    gradient: isSelected
+                        ? const LinearGradient(
+                            colors: [Color(0xFF0EA5E9), Color(0xFF0284C7)],
+                          )
+                        : null,
                     color: isSelected
-                        ? theme.colorScheme.primary
-                        : isDark
-                            ? theme.colorScheme.surface.withValues(alpha: 0.6)
-                            : const Color(0xFFF4F6F8),
+                        ? null
+                        : (isDark ? const Color(0xFF1E1B2E) : const Color(0xFFF1F5F9)),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: isSelected
-                          ? theme.colorScheme.primary
-                          : theme.dividerColor.withValues(alpha: 0.25),
+                          ? const Color(0xFF0EA5E9)
+                          : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
                     ),
+                    boxShadow: isSelected
+                        ? [
+                            BoxShadow(
+                              color: const Color(0xFF0EA5E9).withValues(alpha: 0.35),
+                              blurRadius: 8,
+                              offset: const Offset(0, 3),
+                            ),
+                          ]
+                        : null,
                   ),
                   child: Text(
-                    h,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                      color: isSelected ? Colors.white : theme.colorScheme.onSurface,
+                    st,
+                    style: TextStyle(
+                      fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
+                      fontSize: AppTypography.labelSmall,
+                      color: isSelected ? Colors.white : (isDark ? Colors.white : const Color(0xFF1E293B)),
                     ),
                   ),
                 ),
               );
             }).toList(),
           ),
+          SizedBox(height: 1.6.h),
+          TextField(
+            controller: _districtController,
+            style: theme.textTheme.bodyMedium?.copyWith(fontWeight: AppTypography.semiBold),
+            decoration: InputDecoration(
+              hintText: AppLocalizations.of(context)?.enterDistrictExample ?? 'Enter District (e.g. Nanded, Yavatmal, Nizamabad)',
+              prefixIcon: const Icon(
+                Icons.map_rounded,
+                color: Color(0xFF0EA5E9),
+                size: 20,
+              ),
+              suffixIcon: _districtController.text.isNotEmpty
+                  ? IconButton(
+                      icon: const Icon(Icons.cancel_rounded, size: 18),
+                      onPressed: () {
+                        _districtController.clear();
+                        setState(() {
+                          _currentFilters = _currentFilters.copyWith(district: '');
+                        });
+                      },
+                    )
+                  : null,
+              filled: true,
+              fillColor: isDark ? const Color(0xFF0F0D1A) : const Color(0xFFF8FAFC),
+              contentPadding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.3.h),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide(
+                  color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: const BorderSide(
+                  color: Color(0xFF0EA5E9),
+                  width: 1.5,
+                ),
+              ),
+            ),
+            onChanged: (val) {
+              _currentFilters = _currentFilters.copyWith(district: val);
+            },
+          ),
         ],
       ),
     );
   }
 
-  /// 8. Education Multi-Chip Section
-  Widget _buildEducationSection(ThemeData theme, bool isDark) {
+  Widget _buildBasicEducationSection(ThemeData theme, bool isDark) {
     final options = [
+      'High School / Below',
       AppLocalizations.of(context)?.graduate ?? 'Graduate',
       AppLocalizations.of(context)?.postGraduate ?? 'Post Graduate',
       AppLocalizations.of(context)?.doctorate ?? 'Doctorate',
-      AppLocalizations.of(context)?.professional ?? 'Professional',
-      'High School / Below'
     ];
     final selectedList = _currentFilters.education ?? [];
 
@@ -1137,8 +1563,9 @@ class _FilterScreenState extends State<FilterScreen> {
       theme: theme,
       isDark: isDark,
       icon: Icons.school_rounded,
-      title: AppLocalizations.of(context)?.educationLabel ?? 'Education',
-      subtitle: 'Select one or more education levels',
+      iconAccent: const Color(0xFF10B981),
+      title: 'Basic Education Level',
+      subtitle: 'Filter by primary academic attainment',
       options: options,
       selectedItems: selectedList,
       onToggle: (opt) {
@@ -1156,7 +1583,424 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 
-  /// 9. Profession Multi-Chip Section
+  // ===========================================================================
+  // 🌟 2. COMMUNITY / BVS FILTERS CONTAINER (₹20/mo or ₹200/yr)
+  // ===========================================================================
+
+  Widget _buildCommunityContainer(ThemeData theme, bool isDark) {
+    final child = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildGotraSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+        _buildMaternalGotraSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+        _buildSubCasteSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+        _buildOriginTypeSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+        _buildHeightSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+        _buildEducationFieldSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+        _buildProfessionSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+        _buildAnnualIncomeSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+        _buildFamilyTypeSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+        _buildFamilyValuesSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+        _buildFamilyStatusSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+        _buildProfileCreatedBySection(theme, isDark),
+        SizedBox(height: 1.8.h),
+        _buildPhysicalStatusSection(theme, isDark),
+      ],
+    );
+
+    if (_hasCommunityAccess) {
+      return child;
+    }
+
+    return Stack(
+      children: [
+        IgnorePointer(
+          child: Opacity(
+            opacity: 0.38,
+            child: child,
+          ),
+        ),
+        Positioned.fill(
+          child: GestureDetector(
+            onTap: () => _showCommunityUpgradeSheet(context, theme, isDark),
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 1.5.h),
+              padding: EdgeInsets.all(5.w),
+              decoration: BoxDecoration(
+                color: (isDark ? const Color(0xFF12101C) : Colors.white).withValues(alpha: 0.94),
+                borderRadius: BorderRadius.circular(26),
+                border: Border.all(
+                  color: const Color(0xFFF59E0B).withValues(alpha: 0.65),
+                  width: 1.5,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFF59E0B).withValues(alpha: 0.18),
+                    blurRadius: 22,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: const Color(0xFFF59E0B).withValues(alpha: 0.15),
+                      border: Border.all(color: const Color(0xFFF59E0B), width: 1.5),
+                    ),
+                    child: const Icon(
+                      Icons.stars_rounded,
+                      size: 32,
+                      color: Color(0xFFF59E0B),
+                    ),
+                  ),
+                  SizedBox(height: 1.4.h),
+                  Text(
+                    AppLocalizations.of(context)?.unlockCommunityFiltersTitle ?? 'Unlock Community Filters (BVS)',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: AppTypography.black,
+                      fontSize: AppTypography.headingSmall,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 0.6.h),
+                  Text(
+                    AppLocalizations.of(context)?.unlockCommunityFiltersDesc ?? 'Filter Gotra, Maternal Gotra (मोसळ), Sub-Caste, Tanda/Origin, Height, Income & Lineage for just ₹20/mo or ₹200/yr.',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      fontSize: AppTypography.labelSmall,
+                      height: 1.35,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 1.8.h),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 4.5.w, vertical: 1.0.h),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFFBE123C), Color(0xFF881337)],
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFFBE123C).withValues(alpha: 0.35),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)?.unlockForPriceButton ?? 'Unlock for ₹20/mo or ₹200/yr ➔',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: AppTypography.extraBold,
+                        fontSize: AppTypography.bodySmall,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGotraSection(ThemeData theme, bool isDark) {
+    final gotraOptions = [
+      'Pawar / Pramara',
+      'Rathod',
+      'Chauhan / Chawan',
+      'Jadhav',
+      'Vaditya',
+      'Naik',
+      'Bhukya',
+      'Khamawat',
+      'Puri',
+      'Other Gotra',
+    ];
+    final selectedList = _currentFilters.gotra ?? [];
+
+    return _buildGlassMultiChipGroup(
+      theme: theme,
+      isDark: isDark,
+      icon: Icons.auto_awesome_rounded,
+      iconAccent: const Color(0xFFF59E0B),
+      title: AppLocalizations.of(context)?.banjaraGotraSelfClan ?? 'Banjara Gotra (Self Clan)',
+      subtitle: AppLocalizations.of(context)?.selectPaternalGotra ?? 'Select candidate paternal Gotra customary clan',
+      options: gotraOptions,
+      selectedItems: selectedList,
+      onToggle: (opt) {
+        HapticFeedback.selectionClick();
+        final list = List<String>.from(selectedList);
+        if (list.contains(opt)) {
+          list.remove(opt);
+        } else {
+          list.add(opt);
+        }
+        setState(() {
+          _currentFilters = _currentFilters.copyWith(gotra: list);
+        });
+      },
+    );
+  }
+
+  Widget _buildMaternalGotraSection(ThemeData theme, bool isDark) {
+    final gotraOptions = [
+      'Pawar / Pramara',
+      'Rathod',
+      'Chauhan / Chawan',
+      'Jadhav',
+      'Vaditya',
+      'Naik',
+      'Bhukya',
+      'Khamawat',
+      'Puri',
+      'Other Gotra',
+    ];
+    final selectedList = _currentFilters.maternalGotra ?? [];
+
+    return _buildGlassMultiChipGroup(
+      theme: theme,
+      isDark: isDark,
+      icon: Icons.family_restroom_rounded,
+      iconAccent: const Color(0xFFF59E0B),
+      title: AppLocalizations.of(context)?.maternalGotraMamakul ?? 'Maternal Gotra (Mamakul / मोसळ)',
+      subtitle: AppLocalizations.of(context)?.maternalGotraSubtitle ?? 'Exclude or specify maternal lineage to avoid customary gotra clash',
+      options: gotraOptions,
+      selectedItems: selectedList,
+      onToggle: (opt) {
+        HapticFeedback.selectionClick();
+        final list = List<String>.from(selectedList);
+        if (list.contains(opt)) {
+          list.remove(opt);
+        } else {
+          list.add(opt);
+        }
+        setState(() {
+          _currentFilters = _currentFilters.copyWith(maternalGotra: list);
+        });
+      },
+    );
+  }
+
+  Widget _buildSubCasteSection(ThemeData theme, bool isDark) {
+    final options = [
+      'Gor / Lambadi',
+      'Sugali',
+      'Banjara',
+      'Mathura Banjara',
+      'Labana',
+      'Other Sub-Caste',
+    ];
+    final selectedList = _currentFilters.subCaste ?? [];
+
+    return _buildGlassMultiChipGroup(
+      theme: theme,
+      isDark: isDark,
+      icon: Icons.diversity_3_rounded,
+      iconAccent: const Color(0xFFF59E0B),
+      title: AppLocalizations.of(context)?.subCasteJatiVariant ?? 'Sub-Caste / Jati Variant',
+      subtitle: AppLocalizations.of(context)?.subCasteSubtitle ?? 'Filter by regional Banjara cultural designation',
+      options: options,
+      selectedItems: selectedList,
+      onToggle: (opt) {
+        HapticFeedback.selectionClick();
+        final list = List<String>.from(selectedList);
+        if (list.contains(opt)) {
+          list.remove(opt);
+        } else {
+          list.add(opt);
+        }
+        setState(() {
+          _currentFilters = _currentFilters.copyWith(subCaste: list);
+        });
+      },
+    );
+  }
+
+  Widget _buildOriginTypeSection(ThemeData theme, bool isDark) {
+    final options = [
+      'Native Tanda (तांडा)',
+      'Taluka Town',
+      'Tier 1/2 City',
+      'Metro City',
+    ];
+    final selectedList = _currentFilters.originType ?? [];
+
+    return _buildGlassMultiChipGroup(
+      theme: theme,
+      isDark: isDark,
+      icon: Icons.holiday_village_rounded,
+      iconAccent: const Color(0xFFF59E0B),
+      title: AppLocalizations.of(context)?.habitatNativeOrigin ?? 'Habitat / Native Origin',
+      subtitle: AppLocalizations.of(context)?.habitatSubtitle ?? 'Filter candidate living environment & origin type',
+      options: options,
+      selectedItems: selectedList,
+      onToggle: (opt) {
+        HapticFeedback.selectionClick();
+        final list = List<String>.from(selectedList);
+        if (list.contains(opt)) {
+          list.remove(opt);
+        } else {
+          list.add(opt);
+        }
+        setState(() {
+          _currentFilters = _currentFilters.copyWith(originType: list);
+        });
+      },
+    );
+  }
+
+  Widget _buildHeightSection(ThemeData theme, bool isDark) {
+    final heightOptions = [
+      'Any Height',
+      '5\'0"+',
+      '5\'3"+',
+      '5\'5"+',
+      '5\'8"+',
+      '6\'0"+',
+    ];
+    final selectedMin = _currentFilters.minHeight ?? 'Any Height';
+
+    return Container(
+      padding: EdgeInsets.all(4.w),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF161424) : Colors.white,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(
+          color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.03),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionHeader(
+            theme: theme,
+            icon: Icons.height_rounded,
+            iconAccent: const Color(0xFF10B981),
+            title: AppLocalizations.of(context)?.minimumHeight ?? 'Minimum Height',
+            subtitle: AppLocalizations.of(context)?.minimumHeightSubtitle ?? 'Select minimum height requirement for matches',
+          ),
+          SizedBox(height: 1.6.h),
+          Wrap(
+            spacing: 2.w,
+            runSpacing: 1.0.h,
+            children: heightOptions.map((h) {
+              final isSelected = (selectedMin == h) || (h == 'Any Height' && (selectedMin.isEmpty || selectedMin == 'Any Height'));
+              return TactilePressable(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  setState(() {
+                    _currentFilters = _currentFilters.copyWith(
+                      minHeight: h == 'Any Height' ? '' : h,
+                    );
+                  });
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  padding: EdgeInsets.symmetric(horizontal: 3.8.w, vertical: 1.0.h),
+                  decoration: BoxDecoration(
+                    gradient: isSelected
+                        ? const LinearGradient(
+                            colors: [Color(0xFF10B981), Color(0xFF059669)],
+                          )
+                        : null,
+                    color: isSelected
+                        ? null
+                        : (isDark ? const Color(0xFF1E1B2E) : const Color(0xFFF1F5F9)),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: isSelected
+                          ? const Color(0xFF10B981)
+                          : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+                    ),
+                    boxShadow: isSelected
+                        ? [
+                            BoxShadow(
+                              color: const Color(0xFF10B981).withValues(alpha: 0.35),
+                              blurRadius: 8,
+                              offset: const Offset(0, 3),
+                            ),
+                          ]
+                        : null,
+                  ),
+                  child: Text(
+                    h,
+                    style: TextStyle(
+                      fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
+                      fontSize: AppTypography.bodySmall,
+                      color: isSelected ? Colors.white : (isDark ? Colors.white : const Color(0xFF1E293B)),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEducationFieldSection(ThemeData theme, bool isDark) {
+    final options = [
+      'Engineering / IT',
+      'Medical / Healthcare',
+      'CA / Finance / Accounts',
+      'Law / Judiciary',
+      'Govt Administration',
+      'Arts / Science / Commerce',
+      'Business / Management (MBA)',
+      'Diploma / Technical',
+    ];
+    final selectedList = _currentFilters.educationField ?? [];
+
+    return _buildGlassMultiChipGroup(
+      theme: theme,
+      isDark: isDark,
+      icon: Icons.school_rounded,
+      iconAccent: const Color(0xFF6366F1),
+      title: AppLocalizations.of(context)?.educationFieldStream ?? 'Education Field / Stream',
+      subtitle: AppLocalizations.of(context)?.educationFieldSubtitle ?? 'Filter by specialized degree stream & career path',
+      options: options,
+      selectedItems: selectedList,
+      onToggle: (opt) {
+        HapticFeedback.selectionClick();
+        final list = List<String>.from(selectedList);
+        if (list.contains(opt)) {
+          list.remove(opt);
+        } else {
+          list.add(opt);
+        }
+        setState(() {
+          _currentFilters = _currentFilters.copyWith(educationField: list);
+        });
+      },
+    );
+  }
+
   Widget _buildProfessionSection(ThemeData theme, bool isDark) {
     final options = [
       AppLocalizations.of(context)?.governmentJob ?? 'Government Job',
@@ -1167,6 +2011,8 @@ class _FilterScreenState extends State<FilterScreen> {
       'Doctor / Healthcare',
       'Banking / Finance',
       'Teaching / Education',
+      'Civil Services / Police',
+      'Defense / Armed Forces',
     ];
     final selectedList = _currentFilters.profession ?? [];
 
@@ -1174,8 +2020,9 @@ class _FilterScreenState extends State<FilterScreen> {
       theme: theme,
       isDark: isDark,
       icon: Icons.work_rounded,
+      iconAccent: const Color(0xFF14B8A6),
       title: AppLocalizations.of(context)?.professionLabel ?? 'Profession',
-      subtitle: 'Select occupation categories',
+      subtitle: 'Select candidate career and occupation categories',
       options: options,
       selectedItems: selectedList,
       onToggle: (opt) {
@@ -1193,14 +2040,14 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 
-  /// 10. Annual Income Section
   Widget _buildAnnualIncomeSection(ThemeData theme, bool isDark) {
     final options = [
       'Below ₹3 Lakhs',
       '₹3L - ₹6L',
       '₹6L - ₹10L',
       '₹10L - ₹15L',
-      '₹15L+',
+      '₹15L - ₹25L',
+      '₹25L+',
     ];
     final selectedList = _currentFilters.annualIncome ?? [];
 
@@ -1208,8 +2055,9 @@ class _FilterScreenState extends State<FilterScreen> {
       theme: theme,
       isDark: isDark,
       icon: Icons.payments_rounded,
-      title: 'Annual Income',
-      subtitle: 'Select candidate income expectations',
+      iconAccent: const Color(0xFF22C55E),
+      title: AppLocalizations.of(context)?.annualIncome ?? 'Annual Income',
+      subtitle: AppLocalizations.of(context)?.annualIncomeSubtitle ?? 'Select candidate yearly income expectations',
       options: options,
       selectedItems: selectedList,
       onToggle: (opt) {
@@ -1227,147 +2075,6 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 
-  /// 11. Marital Status Single Selection Group
-  Widget _buildMaritalStatusSection(ThemeData theme, bool isDark) {
-    final options = [
-      AppLocalizations.of(context)?.neverMarried ?? 'Never Married',
-      AppLocalizations.of(context)?.divorced ?? 'Divorced',
-      AppLocalizations.of(context)?.widowed ?? 'Widowed',
-      AppLocalizations.of(context)?.awaitingDivorce ?? 'Awaiting Divorce',
-    ];
-    final selectedStatus = _currentFilters.maritalStatus ?? '';
-
-    return _buildGlassMultiChipGroup(
-      theme: theme,
-      isDark: isDark,
-      icon: Icons.favorite_rounded,
-      title: AppLocalizations.of(context)?.maritalStatusLabel ?? 'Marital Status',
-      subtitle: 'Select marital status requirement',
-      options: options,
-      selectedItems: selectedStatus.isNotEmpty ? [selectedStatus] : [],
-      onToggle: (opt) {
-        HapticFeedback.selectionClick();
-        setState(() {
-          _currentFilters = _currentFilters.copyWith(
-            maritalStatus: selectedStatus == opt ? '' : opt,
-          );
-        });
-      },
-    );
-  }
-
-  /// 12. Location (State & District) Selection
-  Widget _buildLocationSection(ThemeData theme, bool isDark) {
-    final states = [
-      'Maharashtra',
-      'Telangana',
-      'Karnataka',
-      'Andhra Pradesh',
-      'Madhya Pradesh',
-      'Gujarat',
-      'Rajasthan',
-      'Other States',
-    ];
-    final selectedState = _currentFilters.state ?? '';
-
-    return Container(
-      padding: EdgeInsets.all(4.w),
-      decoration: BoxDecoration(
-        color: theme.cardColor.withValues(alpha: isDark ? 0.7 : 0.9),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: theme.dividerColor.withValues(alpha: 0.3),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.03),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionHeader(
-            theme: theme,
-            icon: Icons.location_on_rounded,
-            title: 'Location & State',
-            subtitle: 'Filter candidate home state or native place',
-          ),
-          SizedBox(height: 1.8.h),
-          Wrap(
-            spacing: 2.w,
-            runSpacing: 1.2.h,
-            children: states.map((st) {
-              final isSelected = selectedState.toLowerCase() == st.toLowerCase();
-              return InkWell(
-                onTap: () {
-                  HapticFeedback.selectionClick();
-                  setState(() {
-                    _currentFilters = _currentFilters.copyWith(
-                      state: isSelected ? '' : st,
-                    );
-                  });
-                },
-                borderRadius: BorderRadius.circular(16),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.h),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? theme.colorScheme.primary
-                        : isDark
-                            ? theme.colorScheme.surface.withValues(alpha: 0.6)
-                            : const Color(0xFFF4F6F8),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: isSelected
-                          ? theme.colorScheme.primary
-                          : theme.dividerColor.withValues(alpha: 0.25),
-                    ),
-                  ),
-                  child: Text(
-                    st,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                      color: isSelected ? Colors.white : theme.colorScheme.onSurface,
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-          SizedBox(height: 2.h),
-          TextField(
-            controller: _districtController,
-            style: theme.textTheme.bodyMedium,
-            decoration: InputDecoration(
-              hintText: 'Enter District (e.g. Nanded, Yavatmal, Nizamabad)',
-              prefixIcon: Icon(
-                Icons.map_rounded,
-                color: theme.colorScheme.primary.withValues(alpha: 0.7),
-              ),
-              filled: true,
-              fillColor: isDark
-                  ? theme.colorScheme.surface.withValues(alpha: 0.5)
-                  : const Color(0xFFF7F8FA),
-              contentPadding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: BorderSide.none,
-              ),
-            ),
-            onChanged: (val) {
-              _currentFilters = _currentFilters.copyWith(district: val);
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// 13. Family Type Section
   Widget _buildFamilyTypeSection(ThemeData theme, bool isDark) {
     final options = ['Nuclear Family', 'Joint Family'];
     final selectedList = _currentFilters.familyType ?? [];
@@ -1376,8 +2083,9 @@ class _FilterScreenState extends State<FilterScreen> {
       theme: theme,
       isDark: isDark,
       icon: Icons.groups_rounded,
-      title: 'Family Type',
-      subtitle: 'Select family structure preference',
+      iconAccent: const Color(0xFFA855F7),
+      title: AppLocalizations.of(context)?.familyStructure ?? 'Family Structure',
+      subtitle: AppLocalizations.of(context)?.familyStructureSubtitle ?? 'Select nuclear or joint family preferences',
       options: options,
       selectedItems: selectedList,
       onToggle: (opt) {
@@ -1395,7 +2103,34 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 
-  /// 14. Family Status Section
+  Widget _buildFamilyValuesSection(ThemeData theme, bool isDark) {
+    final options = ['Traditional', 'Moderate', 'Liberal'];
+    final selectedList = _currentFilters.familyValues ?? [];
+
+    return _buildGlassMultiChipGroup(
+      theme: theme,
+      isDark: isDark,
+      icon: Icons.favorite_outline_rounded,
+      iconAccent: const Color(0xFFF59E0B),
+      title: AppLocalizations.of(context)?.familyValues ?? 'Family Values',
+      subtitle: AppLocalizations.of(context)?.familyValuesSubtitle ?? 'Filter by cultural and social outlook',
+      options: options,
+      selectedItems: selectedList,
+      onToggle: (opt) {
+        HapticFeedback.selectionClick();
+        final list = List<String>.from(selectedList);
+        if (list.contains(opt)) {
+          list.remove(opt);
+        } else {
+          list.add(opt);
+        }
+        setState(() {
+          _currentFilters = _currentFilters.copyWith(familyValues: list);
+        });
+      },
+    );
+  }
+
   Widget _buildFamilyStatusSection(ThemeData theme, bool isDark) {
     final options = ['Middle Class', 'Upper Middle Class', 'Rich / Affluent'];
     final selectedList = _currentFilters.familyStatus ?? [];
@@ -1404,8 +2139,9 @@ class _FilterScreenState extends State<FilterScreen> {
       theme: theme,
       isDark: isDark,
       icon: Icons.villa_rounded,
-      title: 'Family Status',
-      subtitle: 'Select socioeconomic family status',
+      iconAccent: const Color(0xFFD946EF),
+      title: AppLocalizations.of(context)?.familyStatus ?? 'Family Status',
+      subtitle: AppLocalizations.of(context)?.familyStatusSubtitle ?? 'Select socioeconomic family status requirement',
       options: options,
       selectedItems: selectedList,
       onToggle: (opt) {
@@ -1423,17 +2159,17 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 
-  /// 15. Profile Created By Section
   Widget _buildProfileCreatedBySection(ThemeData theme, bool isDark) {
-    final options = ['Self', 'Parent', 'Sibling', 'Relative / Friend'];
+    final options = ['Self', 'Parent', 'Sibling', 'Relative / Guardian', 'Friend'];
     final selectedList = _currentFilters.profileCreatedBy ?? [];
 
     return _buildGlassMultiChipGroup(
       theme: theme,
       isDark: isDark,
       icon: Icons.person_pin_rounded,
-      title: 'Profile Managed By',
-      subtitle: 'Select who created the candidate biodata',
+      iconAccent: const Color(0xFF0284C7),
+      title: AppLocalizations.of(context)?.profileManagedBy ?? 'Profile Managed By',
+      subtitle: AppLocalizations.of(context)?.profileManagedBySubtitle ?? 'Select who created and manages the candidate biodata',
       options: options,
       selectedItems: selectedList,
       onToggle: (opt) {
@@ -1451,43 +2187,53 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 
-  /// 16. Physical Disability Section
   Widget _buildPhysicalStatusSection(ThemeData theme, bool isDark) {
     final bool? isDisabled = _currentFilters.isDisabled;
 
     Widget buildOptionPill(String label, bool? value) {
       final isSelected = isDisabled == value;
       return Expanded(
-        child: InkWell(
+        child: TactilePressable(
           onTap: () {
             HapticFeedback.selectionClick();
             setState(() {
               _currentFilters = _currentFilters.copyWith(isDisabled: value);
             });
           },
-          borderRadius: BorderRadius.circular(16),
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            padding: EdgeInsets.symmetric(vertical: 1.4.h),
+            duration: const Duration(milliseconds: 220),
+            curve: Curves.easeOutCubic,
+            padding: EdgeInsets.symmetric(vertical: 1.2.h),
             decoration: BoxDecoration(
+              gradient: isSelected
+                  ? const LinearGradient(
+                      colors: [Color(0xFF6366F1), Color(0xFF4F46E5)],
+                    )
+                  : null,
               color: isSelected
-                  ? theme.colorScheme.primary
-                  : isDark
-                      ? theme.colorScheme.surface.withValues(alpha: 0.6)
-                      : const Color(0xFFF4F6F8),
+                  ? null
+                  : (isDark ? const Color(0xFF1E1B2E) : const Color(0xFFF1F5F9)),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: isSelected
-                    ? theme.colorScheme.primary
-                    : theme.dividerColor.withValues(alpha: 0.25),
+                color: isSelected ? const Color(0xFF6366F1) : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
               ),
+              boxShadow: isSelected
+                  ? [
+                      BoxShadow(
+                        color: const Color(0xFF6366F1).withValues(alpha: 0.35),
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
+                      ),
+                    ]
+                  : null,
             ),
             child: Text(
               label,
               textAlign: TextAlign.center,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                color: isSelected ? Colors.white : theme.colorScheme.onSurface,
+              style: TextStyle(
+                fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
+                fontSize: AppTypography.labelSmall,
+                color: isSelected ? Colors.white : (isDark ? Colors.white : const Color(0xFF1E293B)),
               ),
             ),
           ),
@@ -1498,15 +2244,15 @@ class _FilterScreenState extends State<FilterScreen> {
     return Container(
       padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(
-        color: theme.cardColor.withValues(alpha: isDark ? 0.7 : 0.9),
-        borderRadius: BorderRadius.circular(20),
+        color: isDark ? const Color(0xFF161424) : Colors.white,
+        borderRadius: BorderRadius.circular(22),
         border: Border.all(
-          color: theme.dividerColor.withValues(alpha: 0.3),
+          color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.03),
-            blurRadius: 12,
+            blurRadius: 14,
             offset: const Offset(0, 4),
           ),
         ],
@@ -1517,17 +2263,18 @@ class _FilterScreenState extends State<FilterScreen> {
           _buildSectionHeader(
             theme: theme,
             icon: Icons.accessible_rounded,
-            title: 'Physical Disability',
-            subtitle: 'Select physical status requirements',
+            iconAccent: const Color(0xFF6366F1),
+            title: AppLocalizations.of(context)?.physicalHealthStatus ?? 'Physical Health Status',
+            subtitle: AppLocalizations.of(context)?.physicalHealthStatusSubtitle ?? 'Select physical disability match preferences',
           ),
-          SizedBox(height: 1.8.h),
+          SizedBox(height: 1.6.h),
           Row(
             children: [
-              buildOptionPill('All Profiles', null),
+              buildOptionPill(AppLocalizations.of(context)?.allProfiles ?? 'All Profiles', null),
               SizedBox(width: 2.w),
-              buildOptionPill('Able-Bodied', false),
+              buildOptionPill(AppLocalizations.of(context)?.ableBodied ?? 'Able-Bodied', false),
               SizedBox(width: 2.w),
-              buildOptionPill('Differently Abled', true),
+              buildOptionPill(AppLocalizations.of(context)?.differentlyAbled ?? 'Diff. Abled', true),
             ],
           ),
         ],
@@ -1535,7 +2282,982 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 
-  /// Shared Multi-Chip Group Builder
+  // ===========================================================================
+  // ⚡ 3. PREMIUM FILTERS CONTAINER (Self Service)
+  // ===========================================================================
+
+  Widget _buildPremiumContainer(ThemeData theme, bool isDark) {
+    final isVerified = _currentFilters.isVerified ?? false;
+    final isTrusted = _currentFilters.isCommunityTrusted ?? false;
+    final isIncomeVer = _currentFilters.isIncomeVerified ?? false;
+    final hasHoro = _currentFilters.hasHoroscope ?? false;
+    final isRecent = _currentFilters.isRecentlyActive ?? false;
+    final isHighResp = _currentFilters.isHighResponse ?? false;
+    final hasMultiPics = _currentFilters.hasMultiplePhotos ?? false;
+
+    final child = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // 1. Trust & Verification
+        _buildToggleTile(
+          title: AppLocalizations.of(context)?.govtIdVerified ?? 'Govt ID / Aadhaar Verified',
+          subtitle: AppLocalizations.of(context)?.govtIdVerifiedSubtitle ?? 'Only show candidates with 100% verified Govt ID badge',
+          icon: Icons.verified_user_rounded,
+          value: isVerified,
+          activeColor: const Color(0xFF10B981),
+          onChanged: (val) {
+            setState(() {
+              _currentFilters = _currentFilters.copyWith(isVerified: val);
+            });
+          },
+          isDark: isDark,
+        ),
+        SizedBox(height: 1.2.h),
+        _buildToggleTile(
+          title: AppLocalizations.of(context)?.communityTrustedProfiles ?? 'Community Trusted Profiles',
+          subtitle: AppLocalizations.of(context)?.communityTrustedProfilesSubtitle ?? 'Vouched Banjara profiles with Community Trust Score > 75%',
+          icon: Icons.shield_rounded,
+          value: isTrusted,
+          activeColor: const Color(0xFF8B5CF6),
+          onChanged: (val) {
+            setState(() {
+              _currentFilters = _currentFilters.copyWith(isCommunityTrusted: val);
+            });
+          },
+          isDark: isDark,
+        ),
+        SizedBox(height: 1.2.h),
+        _buildToggleTile(
+          title: AppLocalizations.of(context)?.incomeSalaryVerified ?? 'Income / Salary Verified',
+          subtitle: AppLocalizations.of(context)?.incomeSalaryVerifiedSubtitle ?? 'Candidates with verified salary slip or ITR documentation',
+          icon: Icons.request_quote_rounded,
+          value: isIncomeVer,
+          activeColor: const Color(0xFF22C55E),
+          onChanged: (val) {
+            setState(() {
+              _currentFilters = _currentFilters.copyWith(isIncomeVerified: val);
+            });
+          },
+          isDark: isDark,
+        ),
+        SizedBox(height: 1.8.h),
+
+        // 2. Astrological / Kundali Section
+        _buildManglikSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+        _buildRashiSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+        _buildToggleTile(
+          title: AppLocalizations.of(context)?.kundaliHoroscopeAttached ?? 'Kundali / Horoscope Attached',
+          subtitle: AppLocalizations.of(context)?.kundaliHoroscopeAttachedSubtitle ?? 'Only show profiles with uploaded Janam Kundali chart',
+          icon: Icons.auto_awesome_rounded,
+          value: hasHoro,
+          activeColor: Colors.amber,
+          onChanged: (val) {
+            setState(() {
+              _currentFilters = _currentFilters.copyWith(hasHoroscope: val);
+            });
+          },
+          isDark: isDark,
+        ),
+        SizedBox(height: 1.8.h),
+
+        // 3. Employment Sector
+        _buildEmploymentSectorSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+
+        // 4. Dietary & Habits
+        _buildDietSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+        _buildHabitsSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+
+        // 5. Relocation & Activity
+        _buildRelocationSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+        _buildToggleTile(
+          title: 'Recently Active Profiles',
+          subtitle: 'Candidates active within the last 24 hours or 7 days',
+          icon: Icons.bolt_rounded,
+          value: isRecent,
+          activeColor: const Color(0xFF0EA5E9),
+          onChanged: (val) {
+            setState(() {
+              _currentFilters = _currentFilters.copyWith(isRecentlyActive: val);
+            });
+          },
+          isDark: isDark,
+        ),
+        SizedBox(height: 1.2.h),
+        _buildToggleTile(
+          title: 'High Response Rate (>80%)',
+          subtitle: 'Profiles with proven track record of replying to interest messages',
+          icon: Icons.chat_bubble_outline_rounded,
+          value: isHighResp,
+          activeColor: const Color(0xFFEC4899),
+          onChanged: (val) {
+            setState(() {
+              _currentFilters = _currentFilters.copyWith(isHighResponse: val);
+            });
+          },
+          isDark: isDark,
+        ),
+        SizedBox(height: 1.2.h),
+        _buildToggleTile(
+          title: 'Multiple Photos Album (3+ Photos)',
+          subtitle: 'Profiles with complete verified photo albums',
+          icon: Icons.photo_library_rounded,
+          value: hasMultiPics,
+          activeColor: const Color(0xFF8B5CF6),
+          onChanged: (val) {
+            setState(() {
+              _currentFilters = _currentFilters.copyWith(hasMultiplePhotos: val);
+            });
+          },
+          isDark: isDark,
+        ),
+      ],
+    );
+
+    if (_hasPremiumAccess) {
+      return child;
+    }
+
+    return Stack(
+      children: [
+        IgnorePointer(
+          child: Opacity(
+            opacity: 0.38,
+            child: child,
+          ),
+        ),
+        Positioned.fill(
+          child: GestureDetector(
+            onTap: () => _showPremiumUpgradeSheet(context, theme, isDark),
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 1.5.h),
+              padding: EdgeInsets.all(5.w),
+              decoration: BoxDecoration(
+                color: (isDark ? const Color(0xFF141022) : Colors.white).withValues(alpha: 0.94),
+                borderRadius: BorderRadius.circular(26),
+                border: Border.all(
+                  color: const Color(0xFF8B5CF6).withValues(alpha: 0.65),
+                  width: 1.5,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF8B5CF6).withValues(alpha: 0.18),
+                    blurRadius: 22,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: const Color(0xFF8B5CF6).withValues(alpha: 0.15),
+                      border: Border.all(color: const Color(0xFF8B5CF6), width: 1.5),
+                    ),
+                    child: const Icon(
+                      Icons.verified_rounded,
+                      size: 32,
+                      color: Color(0xFF8B5CF6),
+                    ),
+                  ),
+                  SizedBox(height: 1.4.h),
+                  Text(
+                    AppLocalizations.of(context)?.unlockPremiumFiltersTitle ?? 'Unlock Premium Filters',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: AppTypography.black,
+                      fontSize: AppTypography.headingSmall,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 0.6.h),
+                  Text(
+                    AppLocalizations.of(context)?.unlockPremiumFiltersDesc ?? 'Access Govt ID Verified, Kundali Dosha, Diet, Sector, and Active Responder filters with Premium self-service plans.',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      fontSize: AppTypography.labelSmall,
+                      height: 1.35,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 1.8.h),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 4.5.w, vertical: 1.0.h),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF8B5CF6), Color(0xFF6D28D9)],
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF8B5CF6).withValues(alpha: 0.35),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)?.viewPremiumPlansButton ?? 'View Premium Plans ➔',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: AppTypography.extraBold,
+                        fontSize: AppTypography.bodySmall,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildManglikSection(ThemeData theme, bool isDark) {
+    final options = ['Non-Manglik', 'Manglik', 'Anshik (Mild)', 'Doesn\'t Matter'];
+    final selectedList = _currentFilters.manglikStatus ?? [];
+
+    return _buildGlassMultiChipGroup(
+      theme: theme,
+      isDark: isDark,
+      icon: Icons.wb_sunny_rounded,
+      iconAccent: Colors.amber,
+      title: AppLocalizations.of(context)?.manglikDosha ?? 'Manglik / Kuja Dosha',
+      subtitle: AppLocalizations.of(context)?.filterAstrologicalCompatibility ?? 'Filter candidate astrological horoscope compatibility',
+      options: options,
+      selectedItems: selectedList,
+      onToggle: (opt) {
+        HapticFeedback.selectionClick();
+        final list = List<String>.from(selectedList);
+        if (list.contains(opt)) {
+          list.remove(opt);
+        } else {
+          list.add(opt);
+        }
+        setState(() {
+          _currentFilters = _currentFilters.copyWith(manglikStatus: list);
+        });
+      },
+    );
+  }
+
+  Widget _buildRashiSection(ThemeData theme, bool isDark) {
+    final options = [
+      'Mesha (मेष)',
+      'Vrishabha (वृषभ)',
+      'Mithuna (मिथुन)',
+      'Karka (कर्क)',
+      'Simha (सिंह)',
+      'Kanya (कन्या)',
+      'Tula (तूळ)',
+      'Vrishchika (वृश्चिक)',
+      'Dhanu (धनु)',
+      'Makara (मकर)',
+      'Kumbha (कुंभ)',
+      'Meena (मीन)',
+    ];
+    final selectedList = _currentFilters.rashi ?? [];
+
+    return _buildGlassMultiChipGroup(
+      theme: theme,
+      isDark: isDark,
+      icon: Icons.brightness_2_rounded,
+      iconAccent: const Color(0xFF8B5CF6),
+      title: 'Rashi (Moon Sign / रास)',
+      subtitle: 'Select one or more compatible zodiac signs',
+      options: options,
+      selectedItems: selectedList,
+      onToggle: (opt) {
+        HapticFeedback.selectionClick();
+        final list = List<String>.from(selectedList);
+        if (list.contains(opt)) {
+          list.remove(opt);
+        } else {
+          list.add(opt);
+        }
+        setState(() {
+          _currentFilters = _currentFilters.copyWith(rashi: list);
+        });
+      },
+    );
+  }
+
+  Widget _buildEmploymentSectorSection(ThemeData theme, bool isDark) {
+    final options = [
+      'Central / State Govt (Class 1/2/3)',
+      'Public Sector Unit (PSU)',
+      'MNC / Private Corporate',
+      'Business / Startup Founder',
+      'Self-Employed Professional',
+    ];
+    final selectedList = _currentFilters.employmentSector ?? [];
+
+    return _buildGlassMultiChipGroup(
+      theme: theme,
+      isDark: isDark,
+      icon: Icons.domain_rounded,
+      iconAccent: const Color(0xFF0EA5E9),
+      title: 'Employment Sector',
+      subtitle: 'Filter by organization and employer category',
+      options: options,
+      selectedItems: selectedList,
+      onToggle: (opt) {
+        HapticFeedback.selectionClick();
+        final list = List<String>.from(selectedList);
+        if (list.contains(opt)) {
+          list.remove(opt);
+        } else {
+          list.add(opt);
+        }
+        setState(() {
+          _currentFilters = _currentFilters.copyWith(employmentSector: list);
+        });
+      },
+    );
+  }
+
+  Widget _buildDietSection(ThemeData theme, bool isDark) {
+    final options = ['Pure Vegetarian', 'Eggetarian', 'Non-Vegetarian'];
+    final selectedList = _currentFilters.diet ?? [];
+
+    return _buildGlassMultiChipGroup(
+      theme: theme,
+      isDark: isDark,
+      icon: Icons.restaurant_rounded,
+      iconAccent: const Color(0xFF10B981),
+      title: 'Dietary Preference',
+      subtitle: 'Filter candidate food habits',
+      options: options,
+      selectedItems: selectedList,
+      onToggle: (opt) {
+        HapticFeedback.selectionClick();
+        final list = List<String>.from(selectedList);
+        if (list.contains(opt)) {
+          list.remove(opt);
+        } else {
+          list.add(opt);
+        }
+        setState(() {
+          _currentFilters = _currentFilters.copyWith(diet: list);
+        });
+      },
+    );
+  }
+
+  Widget _buildHabitsSection(ThemeData theme, bool isDark) {
+    final smokeOpts = ['Non-Smoker', 'Occasional Smoker'];
+    final drinkOpts = ['Non-Drinker', 'Social Drinker', 'Regular Drinker'];
+    final selectedSmoke = _currentFilters.smokingHabits ?? [];
+    final selectedDrink = _currentFilters.drinkingHabits ?? [];
+
+    return Container(
+      padding: EdgeInsets.all(4.w),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF161424) : Colors.white,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(
+          color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.03),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionHeader(
+            theme: theme,
+            icon: Icons.smoke_free_rounded,
+            iconAccent: const Color(0xFFF43F5E),
+            title: 'Lifestyle & Habits',
+            subtitle: 'Smoking and drinking preferences',
+          ),
+          SizedBox(height: 1.6.h),
+          Text(
+            'Smoking Habits',
+            style: theme.textTheme.labelMedium?.copyWith(
+              fontWeight: AppTypography.bold,
+              fontSize: AppTypography.labelSmall,
+            ),
+          ),
+          SizedBox(height: 0.8.h),
+          Wrap(
+            spacing: 2.w,
+            runSpacing: 0.8.h,
+            children: smokeOpts.map((opt) {
+              final isSelected = selectedSmoke.contains(opt);
+              return TactilePressable(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  final list = List<String>.from(selectedSmoke);
+                  if (list.contains(opt)) {
+                    list.remove(opt);
+                  } else {
+                    list.add(opt);
+                  }
+                  setState(() => _currentFilters = _currentFilters.copyWith(smokingHabits: list));
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 180),
+                  padding: EdgeInsets.symmetric(horizontal: 3.4.w, vertical: 0.8.h),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? const Color(0xFFF43F5E).withValues(alpha: 0.20)
+                        : (isDark ? const Color(0xFF1E1B2E) : const Color(0xFFF1F5F9)),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: isSelected ? const Color(0xFFF43F5E) : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+                    ),
+                  ),
+                  child: Text(
+                    opt,
+                    style: TextStyle(
+                      fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
+                      fontSize: AppTypography.labelSmall,
+                      color: isSelected ? const Color(0xFFF43F5E) : (isDark ? Colors.white70 : const Color(0xFF475569)),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+          SizedBox(height: 1.4.h),
+          Text(
+            'Drinking Habits',
+            style: theme.textTheme.labelMedium?.copyWith(
+              fontWeight: AppTypography.bold,
+              fontSize: AppTypography.labelSmall,
+            ),
+          ),
+          SizedBox(height: 0.8.h),
+          Wrap(
+            spacing: 2.w,
+            runSpacing: 0.8.h,
+            children: drinkOpts.map((opt) {
+              final isSelected = selectedDrink.contains(opt);
+              return TactilePressable(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  final list = List<String>.from(selectedDrink);
+                  if (list.contains(opt)) {
+                    list.remove(opt);
+                  } else {
+                    list.add(opt);
+                  }
+                  setState(() => _currentFilters = _currentFilters.copyWith(drinkingHabits: list));
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 180),
+                  padding: EdgeInsets.symmetric(horizontal: 3.4.w, vertical: 0.8.h),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? const Color(0xFF8B5CF6).withValues(alpha: 0.20)
+                        : (isDark ? const Color(0xFF1E1B2E) : const Color(0xFFF1F5F9)),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: isSelected ? const Color(0xFF8B5CF6) : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+                    ),
+                  ),
+                  child: Text(
+                    opt,
+                    style: TextStyle(
+                      fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
+                      fontSize: AppTypography.labelSmall,
+                      color: isSelected ? const Color(0xFF8B5CF6) : (isDark ? Colors.white70 : const Color(0xFF475569)),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRelocationSection(ThemeData theme, bool isDark) {
+    final options = [
+      'Willing to Relocate in India',
+      'Willing to Relocate Abroad',
+      'NRI / Currently Living Abroad',
+    ];
+    final selectedList = _currentFilters.relocationPreference ?? [];
+
+    return _buildGlassMultiChipGroup(
+      theme: theme,
+      isDark: isDark,
+      icon: Icons.flight_takeoff_rounded,
+      iconAccent: const Color(0xFF0EA5E9),
+      title: 'Relocation & Geographic Flexibility',
+      subtitle: 'Filter candidate mobility and NRI status',
+      options: options,
+      selectedItems: selectedList,
+      onToggle: (opt) {
+        HapticFeedback.selectionClick();
+        final list = List<String>.from(selectedList);
+        if (list.contains(opt)) {
+          list.remove(opt);
+        } else {
+          list.add(opt);
+        }
+        setState(() {
+          _currentFilters = _currentFilters.copyWith(relocationPreference: list);
+        });
+      },
+    );
+  }
+
+  // ===========================================================================
+  // 👑 4. MATCHMAKER FILTERS CONTAINER (VIP Assisted)
+  // ===========================================================================
+
+  Widget _buildMatchmakerContainer(ThemeData theme, bool isDark) {
+    final isDirectUnlocked = _currentFilters.isDirectContactUnlocked ?? false;
+    final isHandpicked = _currentFilters.isRmHandpicked ?? false;
+    final isSpotlight = _currentFilters.isVipSpotlight ?? false;
+    final isHouse = _currentFilters.isHouseOwner ?? false;
+    final isFamilyOk = _currentFilters.isFamilyVetted ?? false;
+    final isConfidential = _currentFilters.isConfidentialMode ?? false;
+
+    final child = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildToggleTile(
+          title: AppLocalizations.of(context)?.directContactUnlocked ?? 'Direct Contact Unlocked Profiles',
+          subtitle: AppLocalizations.of(context)?.directContactUnlockedSubtitle ?? 'Direct Phone Number & WhatsApp verified access',
+          icon: Icons.contact_phone_rounded,
+          value: isDirectUnlocked,
+          activeColor: const Color(0xFFBE123C),
+          onChanged: (val) {
+            setState(() {
+              _currentFilters = _currentFilters.copyWith(isDirectContactUnlocked: val);
+            });
+          },
+          isDark: isDark,
+        ),
+        SizedBox(height: 1.2.h),
+        _buildToggleTile(
+          title: AppLocalizations.of(context)?.rmHandpickedMatches ?? 'RM Handpicked Matches',
+          subtitle: AppLocalizations.of(context)?.rmHandpickedMatchesSubtitle ?? 'Profiles curated and vetted by your Personal Relationship Manager',
+          icon: Icons.star_rounded,
+          value: isHandpicked,
+          activeColor: const Color(0xFFF59E0B),
+          onChanged: (val) {
+            setState(() {
+              _currentFilters = _currentFilters.copyWith(isRmHandpicked: val);
+            });
+          },
+          isDark: isDark,
+        ),
+        SizedBox(height: 1.8.h),
+
+        // 36 Guna Matchmaker Score
+        _build36GunaScoreSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+
+        _buildToggleTile(
+          title: AppLocalizations.of(context)?.vipSpotlightElitePool ?? 'VIP Spotlight & Elite Pool',
+          subtitle: AppLocalizations.of(context)?.vipSpotlightElitePoolSubtitle ?? 'Top-tier prominent Banjara families with premium background checks',
+          icon: Icons.military_tech_rounded,
+          value: isSpotlight,
+          activeColor: const Color(0xFFE11D48),
+          onChanged: (val) {
+            setState(() {
+              _currentFilters = _currentFilters.copyWith(isVipSpotlight: val);
+            });
+          },
+          isDark: isDark,
+        ),
+        SizedBox(height: 1.8.h),
+
+        // Ancestral Land Holding (VIP Exclusive)
+        _buildAncestralLandSection(theme, isDark),
+        SizedBox(height: 1.8.h),
+
+        _buildToggleTile(
+          title: AppLocalizations.of(context)?.ownResidentialHouseVilla ?? 'Own Residential House / Villa',
+          subtitle: AppLocalizations.of(context)?.ownResidentialHouseVillaSubtitle ?? 'Family owns self-acquired or independent residential house',
+          icon: Icons.home_work_rounded,
+          value: isHouse,
+          activeColor: const Color(0xFF10B981),
+          onChanged: (val) {
+            setState(() {
+              _currentFilters = _currentFilters.copyWith(isHouseOwner: val);
+            });
+          },
+          isDark: isDark,
+        ),
+        SizedBox(height: 1.2.h),
+        _buildToggleTile(
+          title: AppLocalizations.of(context)?.familyReputationVetted ?? 'Family Background & Reputation Vetted',
+          subtitle: AppLocalizations.of(context)?.familyReputationVettedSubtitle ?? 'Clean background check conducted by field relationship managers',
+          icon: Icons.verified_user_rounded,
+          value: isFamilyOk,
+          activeColor: const Color(0xFFBE123C),
+          onChanged: (val) {
+            setState(() {
+              _currentFilters = _currentFilters.copyWith(isFamilyVetted: val);
+            });
+          },
+          isDark: isDark,
+        ),
+        SizedBox(height: 1.2.h),
+        _buildToggleTile(
+          title: AppLocalizations.of(context)?.confidentialMatchmaking ?? 'Confidential & Private Matchmaking',
+          subtitle: AppLocalizations.of(context)?.confidentialMatchmakingSubtitle ?? 'High-profile biodatas viewable exclusively with mutual RM consent',
+          icon: Icons.lock_person_rounded,
+          value: isConfidential,
+          activeColor: const Color(0xFF8B5CF6),
+          onChanged: (val) {
+            setState(() {
+              _currentFilters = _currentFilters.copyWith(isConfidentialMode: val);
+            });
+          },
+          isDark: isDark,
+        ),
+      ],
+    );
+
+    if (_hasMatchmakerAccess) {
+      return child;
+    }
+
+    return Stack(
+      children: [
+        IgnorePointer(
+          child: Opacity(
+            opacity: 0.35,
+            child: child,
+          ),
+        ),
+        Positioned.fill(
+          child: GestureDetector(
+            onTap: () => _showMatchmakerUpgradeSheet(context, theme, isDark),
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 1.5.h),
+              padding: EdgeInsets.all(5.w),
+              decoration: BoxDecoration(
+                color: (isDark ? const Color(0xFF1E101A) : Colors.white).withValues(alpha: 0.94),
+                borderRadius: BorderRadius.circular(26),
+                border: Border.all(
+                  color: const Color(0xFFBE123C).withValues(alpha: 0.65),
+                  width: 1.5,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFBE123C).withValues(alpha: 0.20),
+                    blurRadius: 22,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: const Color(0xFFBE123C).withValues(alpha: 0.15),
+                      border: Border.all(color: const Color(0xFFBE123C), width: 1.5),
+                    ),
+                    child: const Icon(
+                      Icons.workspace_premium_rounded,
+                      size: 32,
+                      color: Color(0xFFBE123C),
+                    ),
+                  ),
+                  SizedBox(height: 1.4.h),
+                  Text(
+                    AppLocalizations.of(context)?.unlockMatchmakerFiltersTitle ?? 'Unlock Matchmaker Filters',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: AppTypography.black,
+                      fontSize: AppTypography.headingSmall,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 0.6.h),
+                  Text(
+                    AppLocalizations.of(context)?.unlockMatchmakerFiltersDesc ?? 'Direct contact numbers, 36 Guna Score, Ancestral Land Holdings & RM Curation available on VIP Matchmaker plans.',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      fontSize: AppTypography.labelSmall,
+                      height: 1.35,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 1.8.h),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 4.5.w, vertical: 1.0.h),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFFBE123C), Color(0xFF881337)],
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFFBE123C).withValues(alpha: 0.35),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)?.exploreMatchmakerPlansButton ?? 'Explore Matchmaker Plans ➔',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: AppTypography.extraBold,
+                        fontSize: AppTypography.bodySmall,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _build36GunaScoreSection(ThemeData theme, bool isDark) {
+    final options = [
+      {'label': '18+ Gunas (Average)', 'val': 18},
+      {'label': '21+ Gunas (Good)', 'val': 21},
+      {'label': '24+ Gunas (Excellent)', 'val': 24},
+      {'label': '28+ Gunas (Utam Match)', 'val': 28},
+      {'label': '32+ Gunas (Perfect)', 'val': 32},
+    ];
+    final selectedVal = _currentFilters.minGunaScore;
+
+    return Container(
+      padding: EdgeInsets.all(4.w),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF161424) : Colors.white,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(
+          color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.03),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionHeader(
+            theme: theme,
+            icon: Icons.auto_awesome_rounded,
+            iconAccent: const Color(0xFFF59E0B),
+            title: AppLocalizations.of(context)?.astro36GunaMilanScore ?? 'Astro 36 Guna Milan Score',
+            subtitle: AppLocalizations.of(context)?.astro36GunaSubtitle ?? 'Filter matches by minimum astrological compatibility threshold',
+          ),
+          SizedBox(height: 1.6.h),
+          Wrap(
+            spacing: 2.w,
+            runSpacing: 1.0.h,
+            children: options.map((item) {
+              final val = item['val'] as int;
+              final label = item['label'] as String;
+              final isSelected = selectedVal == val;
+              return TactilePressable(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  setState(() {
+                    _currentFilters = _currentFilters.copyWith(
+                      minGunaScore: isSelected ? null : val,
+                    );
+                  });
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  padding: EdgeInsets.symmetric(horizontal: 3.8.w, vertical: 0.9.h),
+                  decoration: BoxDecoration(
+                    gradient: isSelected
+                        ? const LinearGradient(
+                            colors: [Color(0xFFF59E0B), Color(0xFFD97706)],
+                          )
+                        : null,
+                    color: isSelected
+                        ? null
+                        : (isDark ? const Color(0xFF1E1B2E) : const Color(0xFFF1F5F9)),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: isSelected
+                          ? const Color(0xFFF59E0B)
+                          : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+                    ),
+                    boxShadow: isSelected
+                        ? [
+                            BoxShadow(
+                              color: const Color(0xFFF59E0B).withValues(alpha: 0.35),
+                              blurRadius: 8,
+                              offset: const Offset(0, 3),
+                            ),
+                          ]
+                        : null,
+                  ),
+                  child: Text(
+                    label,
+                    style: TextStyle(
+                      fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
+                      fontSize: AppTypography.labelSmall,
+                      color: isSelected ? Colors.white : (isDark ? Colors.white : const Color(0xFF1E293B)),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAncestralLandSection(ThemeData theme, bool isDark) {
+    final options = [
+      '5+ Acres Land',
+      '10+ Acres Land',
+      '20+ Acres Land',
+      '50+ Acres Land',
+    ];
+    final selectedList = _currentFilters.ancestralLandAcres ?? [];
+
+    return _buildGlassMultiChipGroup(
+      theme: theme,
+      isDark: isDark,
+      icon: Icons.agriculture_rounded,
+      iconAccent: const Color(0xFF10B981),
+      title: AppLocalizations.of(context)?.ancestralLandHoldingsAcres ?? 'Ancestral Land Holdings (Acres)',
+      subtitle: AppLocalizations.of(context)?.ancestralLandSubtitle ?? 'Filter candidates by family agricultural land ownership',
+      options: options,
+      selectedItems: selectedList,
+      onToggle: (opt) {
+        HapticFeedback.selectionClick();
+        final list = List<String>.from(selectedList);
+        if (list.contains(opt)) {
+          list.remove(opt);
+        } else {
+          list.add(opt);
+        }
+        setState(() {
+          _currentFilters = _currentFilters.copyWith(ancestralLandAcres: list);
+        });
+      },
+    );
+  }
+
+  // ===========================================================================
+  // 🧩 REUSABLE WIDGET HELPERS
+  // ===========================================================================
+
+  Widget _buildToggleTile({
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required bool value,
+    required Color activeColor,
+    required Function(bool) onChanged,
+    required bool isDark,
+  }) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 220),
+      curve: Curves.easeOutCubic,
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.2.h),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF161424) : Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: value ? activeColor.withValues(alpha: 0.65) : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+          width: value ? 1.6 : 1,
+        ),
+        boxShadow: value
+            ? [
+                BoxShadow(
+                  color: activeColor.withValues(alpha: 0.15),
+                  blurRadius: 10,
+                  offset: const Offset(0, 3),
+                ),
+              ]
+            : null,
+      ),
+      child: Row(
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 220),
+            padding: const EdgeInsets.all(9.5),
+            decoration: BoxDecoration(
+              color: value ? activeColor : activeColor.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(14),
+              boxShadow: value
+                  ? [
+                      BoxShadow(
+                        color: activeColor.withValues(alpha: 0.35),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ]
+                  : null,
+            ),
+            child: Icon(
+              icon,
+              size: 18,
+              color: value ? Colors.white : activeColor,
+            ),
+          ),
+          SizedBox(width: 3.5.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: AppTypography.extraBold,
+                    fontSize: AppTypography.bodySmall,
+                    color: isDark ? Colors.white : const Color(0xFF1E293B),
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    color: isDark ? Colors.white60 : const Color(0xFF64748B),
+                    fontSize: AppTypography.labelSmall,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Switch.adaptive(
+            value: value,
+            activeTrackColor: activeColor,
+            onChanged: (val) {
+              HapticFeedback.selectionClick();
+              onChanged(val);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildGlassMultiChipGroup({
     required ThemeData theme,
     required bool isDark,
@@ -1545,19 +3267,21 @@ class _FilterScreenState extends State<FilterScreen> {
     required List<String> options,
     required List<String> selectedItems,
     required Function(String) onToggle,
+    Color? iconAccent,
   }) {
+    final accent = iconAccent ?? theme.colorScheme.primary;
     return Container(
       padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(
-        color: theme.cardColor.withValues(alpha: isDark ? 0.7 : 0.9),
-        borderRadius: BorderRadius.circular(20),
+        color: isDark ? const Color(0xFF161424) : Colors.white,
+        borderRadius: BorderRadius.circular(22),
         border: Border.all(
-          color: theme.dividerColor.withValues(alpha: 0.3),
+          color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.03),
-            blurRadius: 12,
+            blurRadius: 14,
             offset: const Offset(0, 4),
           ),
         ],
@@ -1568,47 +3292,43 @@ class _FilterScreenState extends State<FilterScreen> {
           _buildSectionHeader(
             theme: theme,
             icon: icon,
+            iconAccent: accent,
             title: title,
             subtitle: subtitle,
             selectedCount: selectedItems.length,
           ),
-          SizedBox(height: 1.8.h),
+          SizedBox(height: 1.6.h),
           Wrap(
             spacing: 2.w,
-            runSpacing: 1.4.h,
+            runSpacing: 1.0.h,
             children: options.map((opt) {
               final isSelected = selectedItems.contains(opt);
-              return InkWell(
+              return TactilePressable(
                 onTap: () => onToggle(opt),
-                borderRadius: BorderRadius.circular(20),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
-                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.2.h),
+                  curve: Curves.easeOutCubic,
+                  padding: EdgeInsets.symmetric(horizontal: 3.6.w, vertical: 0.9.h),
                   decoration: BoxDecoration(
                     gradient: isSelected
                         ? LinearGradient(
-                            colors: [
-                              theme.colorScheme.primary,
-                              theme.colorScheme.primary.withValues(alpha: 0.85),
-                            ],
+                            colors: [accent, accent.withValues(alpha: 0.85)],
                           )
                         : null,
                     color: isSelected
                         ? null
-                        : isDark
-                            ? theme.colorScheme.surface.withValues(alpha: 0.6)
-                            : const Color(0xFFF4F6F8),
-                    borderRadius: BorderRadius.circular(20),
+                        : (isDark ? const Color(0xFF1E1B2E) : const Color(0xFFF1F5F9)),
+                    borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: isSelected
-                          ? theme.colorScheme.primary
-                          : theme.dividerColor.withValues(alpha: 0.25),
-                      width: isSelected ? 1.5 : 1,
+                          ? accent
+                          : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+                      width: isSelected ? 1.4 : 1.0,
                     ),
                     boxShadow: isSelected
                         ? [
                             BoxShadow(
-                              color: theme.colorScheme.primary.withValues(alpha: 0.25),
+                              color: accent.withValues(alpha: 0.35),
                               blurRadius: 8,
                               offset: const Offset(0, 3),
                             ),
@@ -1618,21 +3338,27 @@ class _FilterScreenState extends State<FilterScreen> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (isSelected) ...[
-                        Icon(
-                          Icons.check_circle_rounded,
-                          size: 16,
-                          color: theme.colorScheme.onPrimary,
-                        ),
-                        SizedBox(width: 1.5.w),
-                      ],
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 180),
+                        transitionBuilder: (child, anim) =>
+                            ScaleTransition(scale: anim, child: child),
+                        child: isSelected
+                            ? const Row(
+                                key: ValueKey('selected'),
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.check_rounded, size: 14, color: Colors.white),
+                                  SizedBox(width: 4),
+                                ],
+                              )
+                            : const SizedBox.shrink(key: ValueKey('unselected')),
+                      ),
                       Text(
                         opt,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                          color: isSelected
-                              ? theme.colorScheme.onPrimary
-                              : theme.colorScheme.onSurface,
+                        style: TextStyle(
+                          fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
+                          fontSize: AppTypography.labelSmall,
+                          color: isSelected ? Colors.white : (isDark ? Colors.white : const Color(0xFF1E293B)),
                         ),
                       ),
                     ],
@@ -1646,90 +3372,122 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 
-  /// Floating Glass Bottom Apply Button
   Widget _buildFloatingApplyBar(ThemeData theme, bool isDark) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: ClipRRect(
         child: BackdropFilter(
-          filter: ui.ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+          filter: ui.ImageFilter.blur(sigmaX: 18, sigmaY: 18),
           child: Container(
-            padding: EdgeInsets.only(
-              left: 5.w,
-              right: 5.w,
-              top: 2.h,
-              bottom: 3.h,
-            ),
+            padding: EdgeInsets.fromLTRB(4.w, 1.2.h, 4.w, 2.5.h),
             decoration: BoxDecoration(
-              color: (isDark ? theme.scaffoldBackgroundColor : Colors.white)
-                  .withValues(alpha: 0.8),
+              color: (isDark ? const Color(0xFF0F0E17) : Colors.white).withValues(alpha: 0.88),
               border: Border(
                 top: BorderSide(
-                  color: theme.dividerColor.withValues(alpha: 0.2),
+                  color: isDark ? Colors.white12 : const Color(0xFFE2E8F0),
                 ),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
-                  blurRadius: 20,
-                  offset: const Offset(0, -5),
+                  color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.08),
+                  blurRadius: 22,
+                  offset: const Offset(0, -6),
                 ),
               ],
             ),
             child: SafeArea(
               top: false,
-              child: SizedBox(
-                width: double.infinity,
-                height: 6.2.h,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    gradient: LinearGradient(
-                      colors: [
-                        theme.colorScheme.primary,
-                        theme.colorScheme.primary.withValues(alpha: 0.85),
-                      ],
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.35),
-                        blurRadius: 12,
-                        offset: const Offset(0, 6),
-                      ),
-                    ],
-                  ),
-                  child: ElevatedButton(
-                    onPressed: _applyFilters,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.tune_rounded,
-                          size: 20,
-                          color: Colors.white,
+              child: Row(
+                children: [
+                  TactilePressable(
+                    onTap: _resetFilters,
+                    child: Container(
+                      height: 5.4.h,
+                      padding: EdgeInsets.symmetric(horizontal: 4.w),
+                      decoration: BoxDecoration(
+                        color: isDark ? const Color(0xFF161424) : const Color(0xFFF1F5F9),
+                        borderRadius: BorderRadius.circular(18),
+                        border: Border.all(
+                          color: isDark ? Colors.white12 : const Color(0xFFCBD5E1),
                         ),
-                        SizedBox(width: 2.5.w),
-                        Text(
-                          _activeFilterCount > 0
-                              ? '${AppLocalizations.of(context)?.applyFilters ?? 'Apply Filters'} ($_activeFilterCount)'
-                              : AppLocalizations.of(context)?.applyFilters ?? 'Apply Filters',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 0.5,
+                      ),
+                      child: Center(
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.refresh_rounded,
+                              size: 16,
+                              color: isDark ? Colors.white70 : const Color(0xFF475569),
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              AppLocalizations.of(context)?.reset ?? 'Reset',
+                              style: TextStyle(
+                                fontSize: AppTypography.bodySmall,
+                                fontWeight: AppTypography.bold,
+                                color: isDark ? Colors.white70 : const Color(0xFF475569),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(width: 3.w),
+
+                  Expanded(
+                    child: TactilePressable(
+                      onTap: _applyFilters,
+                      child: Container(
+                        height: 5.4.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(18),
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFFBE123C), Color(0xFF881337)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
                           ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFFBE123C).withValues(alpha: 0.38),
+                              blurRadius: 14,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
                         ),
-                      ],
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.tune_rounded,
+                              size: 18,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(width: 8),
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 200),
+                              transitionBuilder: (child, anim) =>
+                                  ScaleTransition(scale: anim, child: child),
+                              child: Text(
+                                _activeFilterCount > 0
+                                    ? (AppLocalizations.of(context)?.applyFiltersCount(_activeFilterCount) ?? 'Apply Filters ($_activeFilterCount Active)')
+                                    : (AppLocalizations.of(context)?.applyAllFilters ?? 'Apply All Filters'),
+                                key: ValueKey<int>(_activeFilterCount),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: AppTypography.extraBold,
+                                  fontSize: AppTypography.bodyMedium,
+                                  letterSpacing: 0.3,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
           ),
@@ -1738,20 +3496,18 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 
-
-
-  Widget _buildPerkRow(ThemeData theme, String text) {
+  Widget _buildPerkRow(ThemeData theme, String text, Color color) {
     return Row(
       children: [
         Container(
           padding: const EdgeInsets.all(4),
-          decoration: const BoxDecoration(
-            color: Color(0xFF2E7D32),
+          decoration: BoxDecoration(
+            color: color,
             shape: BoxShape.circle,
           ),
           child: const Icon(
             Icons.check,
-            size: 12,
+            size: 11,
             color: Colors.white,
           ),
         ),
@@ -1759,9 +3515,9 @@ class _FilterScreenState extends State<FilterScreen> {
         Expanded(
           child: Text(
             text,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurface,
-              fontWeight: FontWeight.w500,
+            style: TextStyle(
+              fontWeight: AppTypography.semiBold,
+              fontSize: AppTypography.bodySmall,
             ),
           ),
         ),
@@ -1769,380 +3525,11 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 
-  /// Tier Navigation & Section Header Helpers
-  Widget _buildQuickTierSelectorBar(ThemeData theme, bool isDark) {
-    return Container(
-      padding: EdgeInsets.all(1.w),
-      decoration: BoxDecoration(
-        color: theme.cardColor.withValues(alpha: isDark ? 0.7 : 0.9),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: theme.dividerColor.withValues(alpha: 0.3),
-        ),
-      ),
-      child: Row(
-        children: [
-          _buildTierChip(
-            theme: theme,
-            label: 'Free Filters',
-            icon: Icons.check_circle_outline_rounded,
-            color: const Color(0xFF2E7D32),
-            isSelected: true,
-          ),
-          SizedBox(width: 1.w),
-          _buildTierChip(
-            theme: theme,
-            label: '₹20/mo Filters',
-            icon: _isPremium ? Icons.stars_rounded : Icons.lock_outline_rounded,
-            color: const Color(0xFFD4AF37),
-            isSelected: false,
-            onTap: () {
-              if (!_isPremium) {
-                _showSmartFilterUpgradeSheet(context, theme, isDark);
-              }
-            },
-          ),
-          SizedBox(width: 1.w),
-          _buildTierChip(
-            theme: theme,
-            label: 'Premium (Inactive)',
-            icon: Icons.lock_clock_rounded,
-            color: Colors.grey,
-            isSelected: false,
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Premium price filters are currently inactive.'),
-                  duration: Duration(seconds: 2),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
+  // ===========================================================================
+  // 🛍️ UPGRADE MODALS (Community, Premium, Matchmaker)
+  // ===========================================================================
 
-  Widget _buildTierChip({
-    required ThemeData theme,
-    required String label,
-    required IconData icon,
-    required Color color,
-    required bool isSelected,
-    VoidCallback? onTap,
-  }) {
-    return Expanded(
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 1.2.h, horizontal: 1.w),
-          decoration: BoxDecoration(
-            color: isSelected ? color.withValues(alpha: 0.15) : Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
-            border: isSelected ? Border.all(color: color.withValues(alpha: 0.5)) : null,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, size: 14, color: color),
-              SizedBox(width: 1.w),
-              Flexible(
-                child: Text(
-                  label,
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: color,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 8.5.sp,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTierHeader({
-    required ThemeData theme,
-    required String title,
-    required String subtitle,
-    required String badgeText,
-    required Color badgeColor,
-    required IconData icon,
-  }) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
-      decoration: BoxDecoration(
-        color: badgeColor.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: badgeColor.withValues(alpha: 0.3),
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: badgeColor.withValues(alpha: 0.2),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, color: badgeColor, size: 20),
-          ),
-          SizedBox(width: 3.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 0.3,
-                  ),
-                ),
-                SizedBox(height: 0.2.h),
-                Text(
-                  subtitle,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.6.h),
-            decoration: BoxDecoration(
-              color: badgeColor,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              badgeText,
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.5,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Tier 2: Smart Filters (₹20/m or ₹200/yr) Container
-  Widget _buildSmartFiltersContainer(ThemeData theme, bool isDark) {
-    final child = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildGotraSection(theme, isDark),
-        SizedBox(height: 2.5.h),
-        _buildHeightSection(theme, isDark),
-        SizedBox(height: 2.5.h),
-        _buildEducationSection(theme, isDark),
-        SizedBox(height: 2.5.h),
-        _buildProfessionSection(theme, isDark),
-        SizedBox(height: 2.5.h),
-        _buildAnnualIncomeSection(theme, isDark),
-        SizedBox(height: 2.5.h),
-        _buildFamilyTypeSection(theme, isDark),
-        SizedBox(height: 2.5.h),
-        _buildFamilyStatusSection(theme, isDark),
-        SizedBox(height: 2.5.h),
-        _buildProfileCreatedBySection(theme, isDark),
-        SizedBox(height: 2.5.h),
-        _buildPhysicalStatusSection(theme, isDark),
-      ],
-    );
-
-    if (_isPremium) {
-      return child;
-    }
-
-    return Stack(
-      children: [
-        IgnorePointer(
-          child: Opacity(
-            opacity: 0.45,
-            child: child,
-          ),
-        ),
-        Positioned.fill(
-          child: GestureDetector(
-            onTap: () => _showSmartFilterUpgradeSheet(context, theme, isDark),
-            child: Container(
-              margin: EdgeInsets.symmetric(vertical: 2.h),
-              padding: EdgeInsets.all(5.w),
-              decoration: BoxDecoration(
-                color: (isDark ? Colors.black : Colors.white).withValues(alpha: 0.85),
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(
-                  color: const Color(0xFFD4AF37).withValues(alpha: 0.6),
-                  width: 1.5,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFFD4AF37).withValues(alpha: 0.15),
-                    blurRadius: 20,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: const Color(0xFFD4AF37).withValues(alpha: 0.15),
-                      border: Border.all(color: const Color(0xFFD4AF37)),
-                    ),
-                    child: const Icon(
-                      Icons.workspace_premium_rounded,
-                      size: 32,
-                      color: Color(0xFFD4AF37),
-                    ),
-                  ),
-                  SizedBox(height: 1.5.h),
-                  Text(
-                    'Unlock Smart Match Filters',
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 0.8.h),
-                  Text(
-                    'Unlock Gotra, Height, Income, Profession & Family criteria for ₹20/month or ₹200/year.',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                      height: 1.4,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 2.h),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.2.h),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF961B33), Color(0xFF731224)],
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFF961B33).withValues(alpha: 0.3),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Text(
-                      'Unlock for ₹20/mo or ₹200/yr',
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  /// Tier 3: Premium Price Filters (Inactive) Container
-  Widget _buildPremiumInactiveContainer(ThemeData theme, bool isDark) {
-    final child = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildVerificationBadgesSection(theme, isDark),
-        SizedBox(height: 2.5.h),
-        _buildAstroMatchingSection(theme, isDark),
-        SizedBox(height: 2.5.h),
-        _buildVipMatchmakerSection(theme, isDark),
-      ],
-    );
-
-    return Stack(
-      children: [
-        IgnorePointer(
-          child: Opacity(
-            opacity: 0.4,
-            child: child,
-          ),
-        ),
-        Positioned.fill(
-          child: GestureDetector(
-            onTap: () {
-              HapticFeedback.lightImpact();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Premium price filters are currently inactive.'),
-                  duration: Duration(seconds: 2),
-                ),
-              );
-            },
-            child: Container(
-              padding: EdgeInsets.all(4.w),
-              decoration: BoxDecoration(
-                color: (isDark ? Colors.black : Colors.white).withValues(alpha: 0.7),
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(
-                  color: theme.dividerColor.withValues(alpha: 0.3),
-                ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.grey.withValues(alpha: 0.15),
-                      border: Border.all(color: Colors.grey),
-                    ),
-                    child: const Icon(
-                      Icons.lock_clock_rounded,
-                      size: 28,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  SizedBox(height: 1.h),
-                  Text(
-                    'Premium Price Filters (Inactive)',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                  SizedBox(height: 0.5.h),
-                  Text(
-                    'ID Verification, VIP & Astro match filters are currently inactive.',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  /// Modal Bottom Sheet for ₹20/mo or ₹200/yr Filter Plan Upgrade
-  void _showSmartFilterUpgradeSheet(BuildContext context, ThemeData theme, bool isDark) {
+  void _showCommunityUpgradeSheet(BuildContext context, ThemeData theme, bool isDark) {
     HapticFeedback.mediumImpact();
     showModalBottomSheet(
       context: context,
@@ -2152,10 +3539,10 @@ class _FilterScreenState extends State<FilterScreen> {
         return Container(
           padding: EdgeInsets.all(6.w),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1E1B1B) : Colors.white,
+            color: isDark ? const Color(0xFF1E1B2E) : Colors.white,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
             border: Border.all(
-              color: const Color(0xFFD4AF37).withValues(alpha: 0.5),
+              color: const Color(0xFFF59E0B).withValues(alpha: 0.5),
               width: 1.5,
             ),
           ),
@@ -2166,91 +3553,96 @@ class _FilterScreenState extends State<FilterScreen> {
                 width: 12.w,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: theme.dividerColor,
+                  color: isDark ? Colors.white24 : Colors.black12,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              SizedBox(height: 2.5.h),
+              SizedBox(height: 2.2.h),
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color(0xFFD4AF37).withValues(alpha: 0.15),
-                  border: Border.all(color: const Color(0xFFD4AF37)),
+                  color: const Color(0xFFF59E0B).withValues(alpha: 0.15),
+                  border: Border.all(color: const Color(0xFFF59E0B)),
                 ),
                 child: const Icon(
                   Icons.stars_rounded,
-                  size: 36,
-                  color: Color(0xFFD4AF37),
+                  size: 34,
+                  color: Color(0xFFF59E0B),
                 ),
               ),
-              SizedBox(height: 2.h),
+              SizedBox(height: 1.6.h),
               Text(
-                'Unlock Smart Match Filters',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
+                AppLocalizations.of(context)?.unlockCommunityFiltersTitle ?? 'Unlock Community Filters (BVS)',
+                style: TextStyle(
+                  fontWeight: AppTypography.black,
+                  fontSize: AppTypography.headingMedium,
                 ),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 0.8.h),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.8.h),
+                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.6.h),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFD4AF37).withValues(alpha: 0.15),
+                  color: const Color(0xFFF59E0B).withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  'Only ₹20 / month  •  ₹200 / year',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: const Color(0xFFD4AF37),
-                    fontWeight: FontWeight.w800,
+                  AppLocalizations.of(context)?.subsidizedPricePill ?? 'Subsidized: ₹20 / month  •  ₹200 / year',
+                  style: TextStyle(
+                    color: const Color(0xFFF59E0B),
+                    fontWeight: AppTypography.black,
+                    fontSize: AppTypography.bodySmall,
                   ),
                 ),
               ),
+              SizedBox(height: 2.0.h),
+              _buildPerkRow(theme, 'Banjara Gotra & Maternal Gotra (मोसळ) filters', const Color(0xFFF59E0B)),
+              SizedBox(height: 0.8.h),
+              _buildPerkRow(theme, 'Sub-caste / Jati & Native Tanda origin filters', const Color(0xFFF59E0B)),
+              SizedBox(height: 0.8.h),
+              _buildPerkRow(theme, 'Height & Physical health status filters', const Color(0xFFF59E0B)),
+              SizedBox(height: 0.8.h),
+              _buildPerkRow(theme, 'Annual Income & Specialized education streams', const Color(0xFFF59E0B)),
+              SizedBox(height: 0.8.h),
+              _buildPerkRow(theme, 'Family Structure, Values & Socioeconomic status', const Color(0xFFF59E0B)),
               SizedBox(height: 2.5.h),
-              _buildPerkRow(theme, 'Banjara Gotra & Clan filters'),
-              SizedBox(height: 1.h),
-              _buildPerkRow(theme, 'Height & Physical status filters'),
-              SizedBox(height: 1.h),
-              _buildPerkRow(theme, 'Annual Income & Profession brackets'),
-              SizedBox(height: 1.h),
-              _buildPerkRow(theme, 'Family Type & Socioeconomic status'),
-              SizedBox(height: 3.h),
               SizedBox(
                 width: double.infinity,
-                height: 6.h,
+                height: 5.5.h,
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
                     Navigator.pushNamed(context, '/subscription');
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF961B33),
+                    backgroundColor: const Color(0xFFBE123C),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
                   child: Text(
-                    'Upgrade Plan (₹20/mo or ₹200/yr)',
-                    style: theme.textTheme.titleMedium?.copyWith(
+                    AppLocalizations.of(context)?.upgradeToCommunityButton ?? 'Upgrade to Community (₹20/mo or ₹200/yr)',
+                    style: TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTypography.extraBold,
+                      fontSize: AppTypography.bodyMedium,
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 1.5.h),
+              SizedBox(height: 1.2.h),
               TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: Text(
-                  'Continue with Free Filters',
+                  AppLocalizations.of(context)?.continueWithStandardFilters ?? 'Continue with Standard Filters',
                   style: TextStyle(
                     color: theme.colorScheme.onSurfaceVariant,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTypography.semiBold,
+                    fontSize: AppTypography.labelSmall,
                   ),
                 ),
               ),
-              SizedBox(height: 1.h),
             ],
           ),
         );
@@ -2258,97 +3650,247 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 
-  /// Placeholder Section: Astro & Kundali Match
-  Widget _buildAstroMatchingSection(ThemeData theme, bool isDark) {
-    return Container(
-      padding: EdgeInsets.all(4.w),
-      decoration: BoxDecoration(
-        color: theme.cardColor.withValues(alpha: isDark ? 0.7 : 0.9),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: theme.dividerColor.withValues(alpha: 0.3),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionHeader(
-            theme: theme,
-            icon: Icons.auto_awesome_rounded,
-            title: 'Astro & Kundali Match',
-            subtitle: 'Filter by Guna score & Rashi compatibility',
-          ),
-          SizedBox(height: 1.5.h),
-          Container(
-            padding: EdgeInsets.all(3.w),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surface.withValues(alpha: 0.5),
-              borderRadius: BorderRadius.circular(14),
+  void _showPremiumUpgradeSheet(BuildContext context, ThemeData theme, bool isDark) {
+    HapticFeedback.mediumImpact();
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.all(6.w),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF1E1B2E) : Colors.white,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+            border: Border.all(
+              color: const Color(0xFF8B5CF6).withValues(alpha: 0.5),
+              width: 1.5,
             ),
-            child: Row(
-              children: [
-                const Icon(Icons.auto_awesome, color: Colors.amber, size: 20),
-                SizedBox(width: 2.w),
-                Expanded(
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 12.w,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: isDark ? Colors.white24 : Colors.black12,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              SizedBox(height: 2.2.h),
+              Container(
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color(0xFF8B5CF6).withValues(alpha: 0.15),
+                  border: Border.all(color: const Color(0xFF8B5CF6)),
+                ),
+                child: const Icon(
+                  Icons.verified_rounded,
+                  size: 34,
+                  color: Color(0xFF8B5CF6),
+                ),
+              ),
+              SizedBox(height: 1.6.h),
+              Text(
+                AppLocalizations.of(context)?.unlockPremiumFiltersTitle ?? 'Unlock Premium Filters',
+                style: TextStyle(
+                  fontWeight: AppTypography.black,
+                  fontSize: AppTypography.headingMedium,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 0.8.h),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.6.h),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF8B5CF6).withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  AppLocalizations.of(context)?.premiumPlansSubtitle ?? 'Standard • Silver • Gold • Platinum • Eternal',
+                  style: TextStyle(
+                    color: const Color(0xFF8B5CF6),
+                    fontWeight: AppTypography.black,
+                    fontSize: AppTypography.labelSmall,
+                  ),
+                ),
+              ),
+              SizedBox(height: 2.0.h),
+              _buildPerkRow(theme, 'Govt ID & Income verified profile filters', const Color(0xFF8B5CF6)),
+              SizedBox(height: 0.8.h),
+              _buildPerkRow(theme, 'Community Trust Score > 75% filter', const Color(0xFF8B5CF6)),
+              SizedBox(height: 0.8.h),
+              _buildPerkRow(theme, 'Manglik Dosha & Rashi (Horoscope) compatibility', const Color(0xFF8B5CF6)),
+              SizedBox(height: 0.8.h),
+              _buildPerkRow(theme, 'Diet, Habits, Relocation & Employment Sector', const Color(0xFF8B5CF6)),
+              SizedBox(height: 0.8.h),
+              _buildPerkRow(theme, 'Recently Active & High Responder filters', const Color(0xFF8B5CF6)),
+              SizedBox(height: 2.5.h),
+              SizedBox(
+                width: double.infinity,
+                height: 5.5.h,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/subscription');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF8B5CF6),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
                   child: Text(
-                    '36 Guna Score & Horoscope Matching (Inactive)',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
+                    AppLocalizations.of(context)?.explorePremiumPlans ?? 'Explore Premium Plans',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: AppTypography.extraBold,
+                      fontSize: AppTypography.bodyMedium,
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+              SizedBox(height: 1.2.h),
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  AppLocalizations.of(context)?.cancel ?? 'Cancel',
+                  style: TextStyle(
+                    color: theme.colorScheme.onSurfaceVariant,
+                    fontWeight: AppTypography.semiBold,
+                    fontSize: AppTypography.labelSmall,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  /// Placeholder Section: VIP Matchmaker Direct Contact
-  Widget _buildVipMatchmakerSection(ThemeData theme, bool isDark) {
-    return Container(
-      padding: EdgeInsets.all(4.w),
-      decoration: BoxDecoration(
-        color: theme.cardColor.withValues(alpha: isDark ? 0.7 : 0.9),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: theme.dividerColor.withValues(alpha: 0.3),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionHeader(
-            theme: theme,
-            icon: Icons.contact_phone_rounded,
-            title: 'VIP Direct Contact Access',
-            subtitle: 'Instant phone & WhatsApp access filters',
-          ),
-          SizedBox(height: 1.5.h),
-          Container(
-            padding: EdgeInsets.all(3.w),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surface.withValues(alpha: 0.5),
-              borderRadius: BorderRadius.circular(14),
+  void _showMatchmakerUpgradeSheet(BuildContext context, ThemeData theme, bool isDark) {
+    HapticFeedback.mediumImpact();
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.all(6.w),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF1E101A) : Colors.white,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+            border: Border.all(
+              color: const Color(0xFFBE123C).withValues(alpha: 0.5),
+              width: 1.5,
             ),
-            child: Row(
-              children: [
-                const Icon(Icons.star, color: Colors.purpleAccent, size: 20),
-                SizedBox(width: 2.w),
-                Expanded(
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 12.w,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: isDark ? Colors.white24 : Colors.black12,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              SizedBox(height: 2.2.h),
+              Container(
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color(0xFFBE123C).withValues(alpha: 0.15),
+                  border: Border.all(color: const Color(0xFFBE123C)),
+                ),
+                child: const Icon(
+                  Icons.workspace_premium_rounded,
+                  size: 34,
+                  color: Color(0xFFBE123C),
+                ),
+              ),
+              SizedBox(height: 1.6.h),
+              Text(
+                AppLocalizations.of(context)?.unlockMatchmakerFiltersTitle ?? 'Unlock Matchmaker Filters',
+                style: TextStyle(
+                  fontWeight: AppTypography.black,
+                  fontSize: AppTypography.headingMedium,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 0.8.h),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.6.h),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFBE123C).withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  AppLocalizations.of(context)?.matchmakerPlansSubtitle ?? 'Elite • Royal • Eternal Elite',
+                  style: TextStyle(
+                    color: const Color(0xFFBE123C),
+                    fontWeight: AppTypography.black,
+                    fontSize: AppTypography.labelSmall,
+                  ),
+                ),
+              ),
+              SizedBox(height: 2.0.h),
+              _buildPerkRow(theme, 'Direct Phone Number & WhatsApp Unlocks', const Color(0xFFBE123C)),
+              SizedBox(height: 0.8.h),
+              _buildPerkRow(theme, 'Dedicated Relationship Manager Handpicked Matches', const Color(0xFFBE123C)),
+              SizedBox(height: 0.8.h),
+              _buildPerkRow(theme, '36 Guna Score & High Compatibility Matching (≥24 Gunas)', const Color(0xFFBE123C)),
+              SizedBox(height: 0.8.h),
+              _buildPerkRow(theme, 'Ancestral Land Holdings (5+ to 50+ Acres) filter', const Color(0xFFBE123C)),
+              SizedBox(height: 0.8.h),
+              _buildPerkRow(theme, 'Own Residential House & Vetted Family Background', const Color(0xFFBE123C)),
+              SizedBox(height: 0.8.h),
+              _buildPerkRow(theme, 'VIP Spotlight & Confidential Matchmaking', const Color(0xFFBE123C)),
+              SizedBox(height: 2.5.h),
+              SizedBox(
+                width: double.infinity,
+                height: 5.5.h,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/subscription');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFBE123C),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
                   child: Text(
-                    'Direct Phone Number Verified Profiles (Inactive)',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
+                    AppLocalizations.of(context)?.exploreMatchmakerPlans ?? 'Explore Matchmaker Plans',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: AppTypography.extraBold,
+                      fontSize: AppTypography.bodyMedium,
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+              SizedBox(height: 1.2.h),
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  AppLocalizations.of(context)?.cancel ?? 'Cancel',
+                  style: TextStyle(
+                    color: theme.colorScheme.onSurfaceVariant,
+                    fontWeight: AppTypography.semiBold,
+                    fontSize: AppTypography.labelSmall,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

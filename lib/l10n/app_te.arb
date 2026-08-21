@@ -1,15 +1,957 @@
 {
   "@@locale": "te",
-  "genderSelectHeading": "మీ లింగం",
+  "@addClearPhotos": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "@ageAndSurnameSubtitle": {
+    "placeholders": {
+      "age": {
+        "type": "String"
+      },
+      "surname": {
+        "type": "String"
+      }
+    }
+  },
+  "@allInDistrict": {
+    "placeholders": {
+      "district": {
+        "type": "String"
+      }
+    }
+  },
+  "@allInState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "@allPhotosCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "@anErrorOccurred": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@areYouSureDeleteSelectedPhotos": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@bookmarkLimitReached": {
+    "description": "Title when user hits bookmark limit"
+  },
+  "@bookmarksCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@brothersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@bulkDiscount": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "@clanExogamyPillarSubtitle": {
+    "placeholders": {
+      "gotra": {
+        "type": "String"
+      },
+      "maternalGotra": {
+        "type": "String"
+      }
+    }
+  },
+  "@contactUnlocks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@copyLinkSubtitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@countProfileViews": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@criticalFailure": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@curatedProfilesJustForYou": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@dailyRewardClaimedSuccess": {
+    "placeholders": {
+      "rewardName": {
+        "type": "String"
+      }
+    }
+  },
+  "@daysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@daysLeft": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "@daysRemaining": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "@deleteCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@deleteSelectedSharesQuery": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@discountPercentage": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      },
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "@districtInState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "@errorCheckingShareLimits": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@errorCheckingStatus": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@errorCheckingViewLimits": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@errorLoadingAdminData": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@errorLoadingRequests": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@errorOccurred": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@errorPrefix": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@errorWithLabel": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@exitGuestMode": {},
+  "@exploreAsGuest": {},
+  "@extraViewsUnlocked": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@failedLoadProfile": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedSignInGoogle": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToBlockUser": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToDeleteAccount": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToDeletePhotoError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToLoadBookmarks": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToLoadPhotosError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToLoadProfileError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToLoadSubscription": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToLogout": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToSave": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToSavePdf": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToSaveProfile": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToSendMessage": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToStartChat": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToSubmitReport": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToUpdateBookmark": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToUpdatePremiumStatus": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToUpdatePrimaryPhotoError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToUploadPhoto": {
+    "placeholders": {
+      "index": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToVerify": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@fieldRequired": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "@forMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fromContact": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@gunasMatchedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
+  "@handpickedMatches": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@idLabel": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "@interestConfirmationDesc": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@interestConfirmationMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@interestShared": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@languageChanged": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "@loginFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@mamakulAndTandaSubtitle": {
+    "placeholders": {
+      "mamakul": {
+        "type": "String"
+      },
+      "tanda": {
+        "type": "String"
+      }
+    }
+  },
+  "@matchNOfTotal": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "@melavaEventCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@messagingLimitReached": {
+    "description": "Title when user hits messaging limit"
+  },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@mrpPrice": {
+    "placeholders": {
+      "price": {
+        "type": "int"
+      }
+    }
+  },
+  "@nextRefreshTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@noLocationsFoundForQuery": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "@onePhotoLockedTeaser": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@paymentFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@paymentFailedError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@paymentSuccessfulWelcome": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "@pdfSavedToDownloads": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "@percentComplete": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
+  "@percentCompleteBadge": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "@percentMatchBadge": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "@percentTrustBadge": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "@permissionRequiredMessage": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "@photoAddedWithKb": {
+    "placeholders": {
+      "kb": {
+        "type": "int"
+      }
+    }
+  },
+  "@photosCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@photosSelectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@pleaseComplete": {
+    "placeholders": {
+      "fields": {
+        "type": "String"
+      }
+    }
+  },
+  "@pleaseCompleteRequiredFields": {
+    "placeholders": {
+      "section": {
+        "type": "String"
+      }
+    }
+  },
+  "@pointsCount": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
+  "@pricePerMonth": {
+    "placeholders": {
+      "price": {
+        "type": "int"
+      }
+    }
+  },
+  "@profileBoostPerMonth": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@profileSharedVia": {
+    "placeholders": {
+      "profileName": {
+        "type": "String"
+      },
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "@profileSharedWith": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@profileStrengthLabel": {
+    "placeholders": {
+      "strength": {
+        "type": "String"
+      }
+    }
+  },
+  "@profileViewsPerDay": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@referenceWithNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "@referralInviteMessage": {
+    "placeholders": {
+      "link": {
+        "type": "String"
+      }
+    }
+  },
+  "@referralShareMessage": {
+    "placeholders": {
+      "link": {
+        "type": "String"
+      }
+    }
+  },
+  "@requestProcessedSuccessfullyMsg": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "@selfAndMamakulSubtitle": {
+    "placeholders": {
+      "self": {
+        "type": "String"
+      },
+      "mamakul": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@shareMyProfileWith": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@sharedProfilesWithEachOther": {
+    "description": "Text shown when two users share profiles with each other",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Someone"
+      }
+    }
+  },
+  "@sharedVia": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "@sharesPerMonth": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@siblingsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@sistersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@stepCounterFormat": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@stepNOfTotal": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "@talukaInDistrictState": {
+    "placeholders": {
+      "district": {
+        "type": "String"
+      },
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "@toContact": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@totalSavings": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "@trustScoreShareMessage": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      },
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "@unexpectedError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@unexpectedErrorOccurred": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@unlockMoreVisitors": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@unsavedDraftBodyWithName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@updateFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@uploadFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@verifiedCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@verifyLabel": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@whatsappShareSubtitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@yearsLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@yearsOld": {
+    "placeholders": {
+      "age": {
+        "type": "String"
+      }
+    }
+  },
+  "@youSave": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "@yrs": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ableBodied": "Able-Bodied",
+  "aboutFamily": "About Family",
   "aboutSelf": "స్వీయ గురించి",
   "aboutYourself": "మీ గురించి",
   "abusiveBehavior": "అసభ్యకర ప్రవర్తన",
+  "acceptAndConnect": "ACCEPT & CONNECT 💖",
   "account": "ఖాతా",
   "accountAndAllDataDeletedSuccessfully": "ఖాతా మరియు మొత్తం డేటా విజయవంతంగా తొలగించబడ్డాయి.",
   "accountDeletion": "ఖాతా తొలగింపు",
+  "acres": "Acres",
   "actionIsIrreversible": "ఈ చర్య మార్చలేనిది.",
+  "activeCreators": "యాక్టివ్ క్రియేటర్లు",
   "activeSubscriptionCancelledNoRefund": "మీ క్రియాశీల సభ్యత్వం ఎటువంటి వాపసు లేకుండా రద్దు చేయబడుతుంది.",
+  "activity": "Activity",
+  "adCompletedSuccessfully": "ప్రకటన విజయవంతంగా పూర్తయింది",
   "adFreeExperience": "ప్రకటనలు లేని అనుభవం",
+  "adNotReady": "ప్రకటన ఇంకా సిద్ధంగా లేదు. దయచేసి కాసేపటి తర్వాత మళ్లీ ప్రయత్నించండి.",
+  "adTemporarilyUnavailable": "ప్రకటన తాత్కాలికంగా అందుబాటులో లేదు",
   "addClearPhotos": "స్పష్టమైన ఫోటోలను జోడించండి (గరిష్టంగా {max})",
   "addPhoto": "ఫోటో జోడించు",
   "addPhotosToYourBiodataProfileToIncreaseV": "దృశ్యమానత మరియు నమ్మకాన్ని పెంచడానికి మీ బయోడేటా ప్రొఫైల్‌కు ఫోటోలను జోడించండి",
@@ -29,24 +971,45 @@
   "advancedFilters": "అధునాతన ఫిల్టర్లు",
   "affluent": "సంపన్నులు",
   "age": "వయసు",
+  "ageAndSurnameSubtitle": "{age} Yrs • {surname}",
+  "ageLabel": "వయస్సు",
   "ageRange": "వయసు పరిధి",
+  "ageRangeYears": "{min} - {max} yrs",
   "aiBio": "AI బయో",
+  "algorithmInsightsDescription": "Our matchmaking algorithm evaluates authentic Banjara exogamy rules (checking self gotra & maternal gotra separation), Vedic astrological Guna Milan, verified education & income parameters, and mutual partner preferences.",
+  "alignedExpectations": "Aligned Expectations",
+  "all": "All",
   "allInDistrict": "{district} లోని అన్ని",
   "allInSelectedDistrict": "All in selected District",
   "allInSelectedState": "All in selected State",
   "allInState": "{state} లోని అన్ని",
   "allIndia": "ఆల్ ఇండియా",
   "allPhotosCount": "అన్ని ఫోటోలు ({count}/{max})",
+  "allProfiles": "All Profiles",
   "allYourProfileDataPermanentlyRemoved": "మీ ప్రొఫైల్ డేటా అంతా శాశ్వతంగా తొలగించబడుతుంది.",
   "almostDone": "దాదాపు పూర్తయింది!",
   "almostDoneReview": "అన్ని విభాగాలను సమీక్షించండి మరియు మీ ప్రొఫైల్‌ను పూర్తి చేయడానికి \"బయోడేటాను సేవ్ చేయి\" క్లిక్ చేయండి. మీ గోప్యతా సెట్టింగ్‌ల ఆధారంగా మీ బయోడేటా ఇతర సామాజిక సభ్యులకు కనిపిస్తుంది.",
+  "alreadyHaveProfileLogin": "ఖాతా ఉందా? లాగిన్ చేయండి",
+  "alternateRelativeContactNumberOptional": "Alternate / Relative Contact Number (Optional)",
   "anErrorOccurred": "ఒక లోపం సంభవించింది: {error}",
+  "ancestralLand": "Ancestral Land",
+  "ancestralLandHoldingsAcres": "Ancestral Land Holdings (Acres)",
+  "ancestralLandSubtitle": "Filter candidates by family agricultural land ownership",
   "and": " మరియు ",
+  "annual": "వార్షిక",
   "annualIncome": "స్వంత వార్షిక ఆదాయం (Self Annual Income)",
   "annualIncomeHint": "కేవలం మీ వార్షిక సంపాదన మాత్రమే (ఉదా. జీతం/వ్యాపారం). ఇంటి మొత్తం పొదుపు లేదా బ్యాంక్ బ్యాలెన్స్ నమోదు చేయవద్దు.",
+  "annualIncomeLabel": "వార్షిక ఆదాయం",
+  "annualIncomeSalary": "Annual Income / Salary",
+  "annualIncomeSubtitle": "Select candidate yearly income expectations",
   "annulled": "రద్దు చేయబడింది",
+  "appGrowth": "యాప్ వృద్ధి",
   "appName": "బంజారా బయో",
+  "apply": "వర్తించు",
+  "applyAllFilters": "Apply All Filters",
   "applyFilters": "ఫిల్టర్‌లు వర్తింపజేయి",
+  "applyFiltersCount": "Apply Filters ({count} Active)",
+  "applyLocation": "Apply Location",
   "approve": "ఆమోదించండి",
   "areYouReadyForDiscussions": "చర్చలకు సిద్ధమా?",
   "areYouSureDeleteSelectedPhotos": "{count} ఫోటోలను తొలగించాలని మీరు ఖచ్చితంగా అనుకుంటున్నారా?",
@@ -56,133 +1019,240 @@
   "areYouSureYouWantToDeleteThisPhoto": "మీరు ఖచ్చితంగా ఈ ఫోటోను తొలగించాలనుకుంటున్నారా?",
   "areYouSureYouWantToDeleteYourAccount": "మీరు ఖచ్చితంగా మీ ఖాతాను తొలగించాలనుకుంటున్నారా?",
   "askFamilySuggestionsTip": "Ask family members for photo suggestions",
+  "astro36GunaMilanScore": "Astro 36 Guna Milan Score",
+  "astro36GunaSubtitle": "Filter matches by minimum astrological compatibility threshold",
   "atLeastOnePhotoRequired": "కనీసంగా ఒక ఫోటో అవసరం",
   "awaitingDivorce": "విడాకుల కోసం వేచి ఉన్నారు",
   "bachelorsDegree": "బ్యాచిలర్ డిగ్రీ",
+  "back": "వెనుకకు",
   "backSide": "వెనుక భాగం",
   "backToGoogleSignIn": "Google సైన్ ఇన్‌కు తిరిగి వెళ్ళండి",
+  "banjaraBioPro": "బంజారాబయో ప్రో",
+  "banjaraClanRoots": "BANJARA CLAN ROOTS",
+  "banjaraGotraClan": "Banjara Gotra (Clan)",
+  "banjaraGotraCustoms": "Banjara Gotra Customs (गोत्र व मोसळ)",
+  "banjaraGotraSelfClan": "Banjara Gotra (Self Clan)",
   "banjaraMember": "బంజారా సభ్యులు",
+  "banjaraVirasatSangh": "Banjara Virasat Sangh",
   "banjarabio": "BanjaraBio",
+  "basicInformation": "Basic Information",
+  "basicPlanDesc": "మీ అన్వేషణకు అవసరమైన ఫీచర్లు",
+  "basicPlanName": "బేసిక్",
+  "benefitPdfBiodata": "2 నిమిషాల్లో అందమైన PDF బయోడేటా సృష్టించండి",
+  "benefitShareWhatsApp": "WhatsApp లో నేరుగా షేర్ చేయండి",
+  "benefitVerifiedProfiles": "100% ధృవీకరించబడిన ప్రొఫైల్‌లు",
+  "bestTimeToContact": "సంప్రదించడానికి ఉత్తమ సమయం",
+  "bestValue": "ఉత్తమ విలువ",
+  "biodata": "Biodata",
   "biodataDraftRestored": "బయోడేటా డ్రాఫ్ట్ పునరుద్ధరించబడింది!",
   "biodataDraftRestoredSuccess": "Biodata draft restored successfully!",
   "biodataPdf": "బయోడేటా PDF",
+  "biodataPremiumIncluded": "బయోడేటా ప్రీమియం కూడా ఉంది",
+  "biodataRequired": "Biodata Required",
   "biodataSavedSuccessfully": "బయోడేటా విజయవంతంగా సేవ్ చేయబడింది!",
   "biodataUnlockPlanDesc": "ప్రొఫెషనల్ ప్రీమియం టెంప్లేట్‌లను అన్‌లాక్ చేయండి",
   "biodataUnlockPlanName": "ప్రీమియం బయోడేటా",
   "birthDetails": "అదనపు పుట్టిన వివరాలు",
   "birthPlace": "జన్మస్థలం",
   "birthPlaceAndTime": "పుట్టిన ప్రదేశం మరియు సమయం",
+  "birthPlaceLabel": "పుట్టిన స్థలం",
   "birthTime": "జన్మ సమయం",
+  "birthTimeLabel": "పుట్టిన సమయం",
+  "birthTimeVisibleOnPdf": "Birth time & birth place visible on PDF",
   "block": "బ్లాక్ చేయి",
   "blockUser": "వినియోగదారుని బ్లాక్ చేయండి",
   "bloodGroup": "రక్త వర్గం",
+  "bloodGroupLabel": "రక్త వర్గం",
   "blurryLowQualityImages": "అస్పష్టమైన, చీకటిగా లేదా తక్కువ నాణ్యత గల చిత్రాలు",
   "bookmarkLimitReached": "బుక్‌మార్క్ పరిమితిని చేరుకున్నారు",
   "bookmarksCount": "{count} బుక్‌మార్క్‌లు",
+  "bride": "Bride",
+  "brideGirl": "👧 వధువు (Bride)",
+  "brideOption": "👧 Bride (Girl)",
   "bronze": "కాంస్యం",
   "brother": "సోదరుడు",
   "brotherCount": "అన్నదమ్ములు",
+  "brothersCount": "{count, plural, =1{1 సోదరుడు} other{{count} సోదరులు}}",
+  "browseMatchesDesc": "కొడుకు, కూతురు, బంధువుల కోసం తగిన సంబంధం వెతకండి.",
+  "browseMatchesSubtitle": "కొన్ని ప్రశ్నలకు సమాధానం ఇవ్వండి మరియు తగిన సంబంధాలు చూడండి",
+  "browseMatchesTitle": "🔍 సంబంధం వెతకండి (Browse Matches)",
   "browseProfiles": "ప్రొఫైల్‌లు బ్రౌజ్ చేయండి",
+  "bulkDiscount": "{percent}% తగ్గింపు",
   "business": "వ్యాపారం",
   "businessOwner": "వ్యాపార యజమాని",
+  "bvsAnnualPlanLabel": "వార్షిక ప్లాన్",
+  "bvsAnnualPrice": "₹200 / సంవత్సరం",
+  "bvsCardSelected": "కార్డు ఎంపిక చేయబడింది",
+  "bvsConceptSubtitle": "సంకల్పం: గౌరవనీయులు శ్రీ సంజయ్‌భావూ రాథోడ్\nమంత్రి, మహారాష్ట్ర ప్రభుత్వం",
+  "bvsCopyMessageToast": "🚩 BVS ఆహ్వాన సందేశం కాపీ చేయబడింది!",
+  "bvsHeritageEmblemDesc": "పోహ్రాదేవి & 12+ కోట్ల సమాజ ఆత్మగౌరవం",
+  "bvsHeritageEmblemTitle": "వారసత్వ ముద్ర",
+  "bvsHowToJoinTitle": "BVS సభ్యులు ఎలా కావాలి & తగ్గింపు ఎలా పొందాలి?",
+  "bvsJoinCardSubtitle": "⚡ BVS పోర్టల్‌లో నమోదు చేసుకోండి ₹200/సంవత్సరం తగ్గింపు పొందండి",
+  "bvsJoinNowButton": "ఈరోజే BVS లో చేరండి (Join Now)",
+  "bvsMember": "🏛️ BVS Member",
+  "bvsMemberId": "BVS సభ్యత్వ సంఖ్య (ఉదా: 405812)",
+  "bvsMembershipCard": "బంజారా విరాసత్ సంఘ్ గుర్తింపు కార్డు",
+  "bvsMonthlyPlanLabel": "నెలవారీ ప్లాన్",
+  "bvsMonthlyPrice": "₹20 / నెల",
+  "bvsMovementDesc": "బంజారా సమాజం యొక్క ఐక్యత మరియు భవిష్యత్తును బలోపేతం చేసే చారిత్రాత్మక ఉద్యమం.",
+  "bvsNotRegisteredYet": "ఇంకా BVS సభ్యులు కాలేదా? ఇక్కడ నమోదు చేసుకోండి »",
+  "bvsOfficialEmblems": "అధికారిక BVS చిహ్నాలు",
+  "bvsShareOnWhatsApp": "WhatsApp లో షేర్ చేయండి",
+  "bvsSpecialDiscountBanner": "మీరు బంజారా విరాసత్ సంఘ్ సభ్యులా? BVS కార్డును ధృవీకరించి వార్షిక ప్లాన్‌ను కేవలం ₹200 కే పొందండి!",
+  "bvsStep1Desc": "అధికారిక BVS పోర్టల్‌లో మీ వివరాలను నమోదు చేయండి.",
+  "bvsStep1Title": "ఆన్‌లైన్ రిజిస్ట్రేషన్ చేసుకోండి",
+  "bvsStep2Desc": "మీ అధికారిక డిజిటల్ ID మరియు సభ్యత్వ సంఖ్యను పొందండి.",
+  "bvsStep2Title": "సభ్యత్వ కార్డు పొందండి",
+  "bvsStep3Desc": "BVS కార్డును జోడించి ₹200/సంవత్సరం తగ్గింపు ప్లాన్‌ను సక్రియం చేయండి.",
+  "bvsStep3Title": "BanjaraBio లో కార్డు అప్‌లోడ్ చేయండి",
+  "bvsSubsidyCardSubtitle": "BanjaraBio లో మ్యాట్రిమోనీ సబ్‌స్క్రిప్షన్‌లో భారీ ఆదా!",
+  "bvsSubsidyCardTitle": "BVS సభ్యులకు ప్రత్యేక తగ్గింపు!",
+  "bvsTitle": "బంజారా విరాసత్ సంఘ్",
+  "bvsUnityEmblemDesc": "చేతుల ఐక్యతా శృంఖల & సంప్రదాయ ఎంబ్రాయిడరీ",
+  "bvsUnityEmblemTitle": "ఐక్యతా చిహ్నం",
+  "bvsUploadCardButton": "BVS కార్డు అప్‌లోడ్ చేయండి (తగ్గింపు పొందండి)",
+  "bvsUploadCardPromptSubtitle": "BVS సభ్యత్వ కార్డు ఫోటో అప్‌లోడ్ చేయండి",
+  "bvsVerifiedActiveBadge": "👑 BVS ధృవీకరించబడిన సభ్యుల తగ్గింపు ప్రారంభమైంది!",
+  "bvsVerifiedActiveDesc": "మీ కోసం నెలవారీ ప్లాన్ ₹20 మరియు వార్షిక ప్లాన్ ₹200 అందుబాటులో ఉంది.",
+  "bvsVerifiedSpecialPlan": "BVS సభ్యుల ప్రత్యేక ప్లాన్",
+  "bvsWhatsAppInviteTitle": "WhatsApp ఆటోమేషన్ ఆహ్వానం",
   "byContAcceptTerms": "కొనసాగించడం ద్వారా, మీరు మా ",
+  "callAdmin": "అడ్మిన్ కు కాల్ చేయండి",
+  "callOrganizer": "నిర్వాహకుడికి కాల్ చేయండి",
   "camera": "కెమెరా",
   "cancel": "రద్దు చేయి",
   "cancelAnytime": "ఎప్పుడైనా రద్దు చేయండి",
+  "candidatesMeet": "Candidates Meet",
+  "careerPillarSubtitle": "Graduate / Professional background & steady income",
+  "careerSocioeconomicPillar": "Career & Socioeconomic Level",
+  "careerWealthHoldings": "Career & Wealth Holdings",
+  "changeCriteriaOrExitPrompt": "మీరు మీ శోధన ఎంపికలను మార్చాలనుకుంటున్నారా లేదా యాప్ నుండి నిష్క్రమించాలనుకుంటున్నారా?",
   "changeLanguage": "భాష మార్చు",
+  "changeOptionsCta": "ఎంపికలను మార్చండి ✏️",
   "chat": "చాట్",
+  "chatConversationArchived": "Chat conversation archived",
   "checkBackSoonForNewMatchesnpullDownToRef": "కొత్త మ్యాచ్‌ల కోసం త్వరలో తిరిగి తనిఖీ చేయండి.\\nరిఫ్రెష్ చేయడానికి క్రిందికి లాగండి.",
   "checkInbox": "Check Inbox",
   "checkInternet": "మీ ఇంటర్నెట్ కనెక్షన్ తనిఖీ చేసి మళ్ళీ ప్రయత్నించండి.",
   "checkWhoIsLookingAtYourProfile": "మీ ప్రొఫైల్‌ను ఎవరు చూస్తున్నారో తనిఖీ చేయండి",
+  "chipFreeAccess": "⭐ 100% ఉచితం",
+  "chipNoAccount": "⚡ ఖాతా అవసరం లేదు",
+  "chipQuickFilter": "🔍 1 నిమిషంలో ఫిల్టర్",
   "chooseFromGallery": "గ్యాలరీ నుండి ఎంచుకోండి",
+  "chooseHowToStart": "మీరు ఎలా ప్రారంభించాలనుకుంటున్నారో ఎంచుకోండి",
+  "chooseQuickIntroTemplate": "CHOOSE A QUICK INTRO TEMPLATE",
   "chooseTemplate": "టెంప్లేట్ ఎంచుకోండి",
+  "claimMarriageGift": "వివాహ బహుమతిని క్లెయిమ్ చేయండి",
+  "clanExogamyPillar": "Clan Exogamy (गोत्र व मोसळ)",
+  "clanExogamyPillarSubtitle": "Different paternal Gotra ({gotra}) & Mamakul ({maternalGotra})",
   "clear": "తొలగించు",
   "clearAllFilters": "అన్ని ఫిల్టర్‌లను క్లియర్ చేయండి",
+  "clearSearch": "Clear search",
+  "clearText": "Clear text",
   "clearWellLitPhotos": "మీ ముఖం స్పష్టంగా కనిపించే స్పష్టమైన, మంచి వెలుతురు ఉన్న ఫోటోలు",
   "close": "మూసివేయి",
+  "closePreview": "Close Preview",
+  "collegeInstitute": "College / Institute",
   "comeBackTomorrowFornnewCuratedMatches": "కొత్త క్యూరేటెడ్ మ్యాచ్‌ల కోసం\\nరేపు తిరిగి రండి!",
-  "bvsMembershipCard": "బంజారా విరాసత్ సంఘ్ గుర్తింపు కార్డు",
-  "bvsMemberId": "BVS సభ్యత్వ సంఖ్య (ఉదా: 405812)",
-  "uploadBvsCardPrompt": "మీ బంజారా విరాసత్ సంఘ్ (BVS) గుర్తింపు కార్డును అప్‌లోడ్ చేయండి",
-  "bvsSpecialDiscountBanner": "మీరు బంజారా విరాసత్ సంఘ్ సభ్యులా? BVS కార్డును ధృవీకరించి వార్షిక ప్లాన్‌ను కేవలం ₹200 కే పొందండి!",
-  "joinBvsNow": "BVS లో చేరండి (ఇక్కడ నమోదు చేసుకోండి)",
-  "bvsVerifiedSpecialPlan": "BVS సభ్యుల ప్రత్యేక ప్లాన్",
-  "bvsTitle": "బంజారా విరాసత్ సంఘ్",
-  "bvsConceptSubtitle": "సంకల్పం: గౌరవనీయులు శ్రీ సంజయ్‌భావూ రాథోడ్\nమంత్రి, మహారాష్ట్ర ప్రభుత్వం",
-  "bvsMovementDesc": "బంజారా సమాజం యొక్క ఐక్యత మరియు భవిష్యత్తును బలోపేతం చేసే చారిత్రాత్మక ఉద్యమం.",
-  "bvsOfficialEmblems": "అధికారిక BVS చిహ్నాలు",
-  "bvsUnityEmblemTitle": "ఐక్యతా చిహ్నం",
-  "bvsUnityEmblemDesc": "చేతుల ఐక్యతా శృంఖల & సంప్రదాయ ఎంబ్రాయిడరీ",
-  "bvsHeritageEmblemTitle": "వారసత్వ ముద్ర",
-  "bvsHeritageEmblemDesc": "పోహ్రాదేవి & 12+ కోట్ల సమాజ ఆత్మగౌరవం",
-  "bvsSubsidyCardTitle": "BVS సభ్యులకు ప్రత్యేక తగ్గింపు!",
-  "bvsSubsidyCardSubtitle": "BanjaraBio లో మ్యాట్రిమోనీ సబ్‌స్క్రిప్షన్‌లో భారీ ఆదా!",
-  "bvsAnnualPlanLabel": "వార్షిక ప్లాన్",
-  "bvsMonthlyPlanLabel": "నెలవారీ ప్లాన్",
-  "bvsAnnualPrice": "₹200 / సంవత్సరం",
-  "bvsMonthlyPrice": "₹20 / నెల",
-  "bvsVerifiedActiveBadge": "👑 BVS ధృవీకరించబడిన సభ్యుల తగ్గింపు ప్రారంభమైంది!",
-  "bvsVerifiedActiveDesc": "మీ కోసం నెలవారీ ప్లాన్ ₹20 మరియు వార్షిక ప్లాన్ ₹200 అందుబాటులో ఉంది.",
-  "bvsHowToJoinTitle": "BVS సభ్యులు ఎలా కావాలి & తగ్గింపు ఎలా పొందాలి?",
-  "bvsStep1Title": "ఆన్‌లైన్ రిజిస్ట్రేషన్ చేసుకోండి",
-  "bvsStep1Desc": "అధికారిక BVS పోర్టల్‌లో మీ వివరాలను నమోదు చేయండి.",
-  "bvsStep2Title": "సభ్యత్వ కార్డు పొందండి",
-  "bvsStep2Desc": "మీ అధికారిక డిజిటల్ ID మరియు సభ్యత్వ సంఖ్యను పొందండి.",
-  "bvsStep3Title": "BanjaraBio లో కార్డు అప్‌లోడ్ చేయండి",
-  "bvsStep3Desc": "BVS కార్డును జోడించి ₹200/సంవత్సరం తగ్గింపు ప్లాన్‌ను సక్రియం చేయండి.",
-  "bvsWhatsAppInviteTitle": "WhatsApp ఆటోమేషన్ ఆహ్వానం",
-  "bvsShareOnWhatsApp": "WhatsApp లో షేర్ చేయండి",
-  "bvsCopyMessageToast": "🚩 BVS ఆహ్వాన సందేశం కాపీ చేయబడింది!",
-  "bvsJoinNowButton": "ఈరోజే BVS లో చేరండి (Join Now)",
-  "bvsJoinCardSubtitle": "⚡ BVS పోర్టల్‌లో నమోదు చేసుకోండి ₹200/సంవత్సరం తగ్గింపు పొందండి",
-  "bvsUploadCardButton": "BVS కార్డు అప్‌లోడ్ చేయండి (తగ్గింపు పొందండి)",
-  "bvsUploadCardPromptSubtitle": "BVS సభ్యత్వ కార్డు ఫోటో అప్‌లోడ్ చేయండి",
-  "bvsCardSelected": "కార్డు ఎంపిక చేయబడింది",
-  "bvsNotRegisteredYet": "ఇంకా BVS సభ్యులు కాలేదా? ఇక్కడ నమోదు చేసుకోండి »",
+  "communityFiltersSubtitle": "Gotra, Mamakul, Origin, Height, Income & Lineage",
+  "communityFiltersTitle": "Community Filters (BVS)",
   "communityId": "Community ID",
   "communityIdSubmitted": "సంఘం ID సమర్పించబడింది",
   "communityIdVerification": "సమాజ గుర్తింపు పత్రం",
   "communityMember": "Community Member",
+  "communityTrustedProfiles": "Community Trusted Profiles",
+  "communityTrustedProfilesSubtitle": "Vouched Banjara profiles with Community Trust Score > 75%",
   "communityVerification": "సంఘం ధృవీకరణ",
+  "company": "కంపెనీ",
   "companyName": "కంపెనీ పేరు",
+  "companyOrg": "Company / Org",
+  "compareAllPlanFeatures": "అన్ని ప్లాన్ ఫీచర్లను సరిపోల్చండి",
+  "compatibleRoots": "Compatible Roots",
   "completeVerificationToUnlockPremium": "'Premium' హోదాను అన్‌లాక్ చేయడానికి ధృవీకరణను పూర్తి చేయండి.",
   "completeYourProfileToGetNoticed": "గుర్తించబడటానికి మీ ప్రొఫైల్‌ని పూర్తి చేయండి!",
+  "completedReferrals": "పూర్తయిన రిఫరల్స్",
   "completion": "పూర్తి",
   "complexion": "చర్మ రంగు",
   "compressingUnder500Kb": "Compressing under 500KB...",
+  "confidentialMatchmaking": "Confidential & Private Matchmaking",
+  "confidentialMatchmakingSubtitle": "High-profile biodatas viewable exclusively with mutual RM consent",
   "confirm": "నిర్ధారించు",
   "connectInApp": "యాప్‌లో కనెక్ట్ అవ్వండి",
   "connectWithCommunity": "మీ బంజారా సమాజంతో అనుసంధానించండి",
+  "connectionAcceptedToast": "Connection Accepted! You can now chat directly 🎉",
   "contact": "సంప్రదించండి",
+  "contactLabel": "సంప్రదించండి",
+  "contactPersonLabel": "సంప్రదించవలసిన వ్యక్తి",
   "contactPreferences": "సంప్రదింపు ప్రాధాన్యతలు",
+  "contactUnlocks": "నెలకు {count} కాంటాక్ట్ అన్లాక్లు",
   "contactUs": "మమ్మల్ని సంప్రదించండి",
   "contactUsTitle": "మమ్మల్ని సంప్రదించండి",
+  "continueAsGuestCta": "గెస్ట్‌గా కొనసాగండి 🚀",
+  "continueBlockedUntilAdEnds": "ప్రకటన ముగిసే వరకు యాప్ బ్లాక్ చేయబడింది",
+  "continueToApp": "యాప్‌కి కొనసాగండి",
   "continueWithFreeAccount": "ఉచిత ఖాతాతో కొనసాగించండి",
   "continueWithGoogle": "Googleతో కొనసాగండి",
+  "continueWithStandardFilters": "Continue with Standard Filters",
+  "conversationPinnedToTop": "Conversation pinned to top 📌",
+  "conversationUnpinned": "Conversation unpinned",
   "conversations": "సంభాషణలు",
+  "copiedToClipboard": "Copied to clipboard",
   "copyLink": "లింక్‌ను కాపీ చేయండి",
   "copyLinkSubtitle": "{name} ప్రొఫైల్ లింక్‌ను కాపీ చేయండి",
+  "copyMessage": "Copy Message",
+  "couldNotLaunchDialer": "ఫోన్ డయలర్‌ను ప్రారంభించలేకపోయాము",
+  "couldNotLaunchUrl": "Could not launch URL",
+  "couldNotLaunchWhatsApp": "WhatsApp ను ప్రారంభించలేకపోయాము",
   "couldNotLoadProfile": "మేము మీ ప్రొఫైల్‌ను లోడ్ చేయలేకపోయాము. దయచేసి మళ్లీ ప్రయత్నించండి.",
+  "couldNotTriggerSharing": "షేరింగ్‌ను ప్రారంభించలేకపోయాము",
+  "countProfileViews": "{count, plural, =1{1 ప్రొఫైల్ వీక్షణ} other{{count} ప్రొఫైల్ వీక్షణలు}}",
+  "countryLabel": "Country",
+  "couponDiscountApplied": "కూపన్ డిస్కౌంట్ వర్తించబడింది",
   "createBiodata": "బయోడేటా సృష్టించండి",
+  "createBiodataCta": "బయోడేటా సృష్టించండి ✨",
+  "createBiodataDesc": "మీ ప్రొఫైల్ నింపి తక్షణమే కనెక్ట్ అవ్వడం ప్రారంభించండి.",
+  "createBiodataForSelfOrCandidateSubtitle": "2 నిమిషాల్లో ఆకర్షణీయమైన వివాహ బయోడేటాను రూపొందించండి, PDF డౌన్‌లోడ్ చేయండి మరియు సంబంధాలు పొందండి.",
+  "createBiodataForSelfOrCandidateTitle": "మీ / అభ్యర్థి బయోడేటా సృష్టించండి",
+  "createFreeProfile100PercentFree": "✨ Create Free Profile (100% Free)",
+  "createMyBiodata": "నా బయోడేటాను సృష్టించండి",
+  "createNow": "Create Now",
   "createProfile": "ప్రొఫైల్ సృష్టించండి",
   "criticalFailure": "క్లిష్టమైన వైఫల్యం: {error}",
   "cropPhoto": "ఫోటోను కత్తిరించండి",
   "cropRotate": "కత్తిరించండి & తిప్పండి",
+  "culturallyVerified": "CULTURALLY VERIFIED",
   "curatedProfilesJustForYou": "{count} మీ కోసం ఎంపిక చేసిన ప్రొఫైల్‌లు",
+  "currentCity": "Current City",
   "currentLocation": "ప్రస్తుత స్థానం",
+  "currentNativeRegion": "CURRENT & NATIVE REGION",
   "currentPlan": "ప్రస్తుత ప్లాన్",
+  "currentResidence": "ప్రస్తుత నివాసం",
   "currentResidenceState": "ప్రస్తుత నివాస రాష్ట్రం",
+  "currentState": "Current State",
   "currentVillageHint": "ప్రస్తుత గ్రామం",
+  "customMessage": "అనుకూల సందేశం",
+  "customize": "Customize",
   "customizeBiodata": "బయోడేటాను అనుకూలీకరించండి",
   "daily": "రోజువారీ",
+  "dailyActiveUsers": "రోజువారీ యాక్టివ్ యూజర్లు",
+  "dailyLimitReached": "రోజువారీ పరిమితి ముగిసింది",
+  "dailyLimitViewsReached": "మీరు మీ రోజువారీ ప్రొఫైల్ వీక్షణలన్నింటినీ ఉపయోగించారు.",
   "dailyMatch": "రోజువారీ మ్యాచ్",
+  "dailyMatchPicks": "Daily Match Picks",
+  "dailyMessageLimitReached": "Daily message limit reached.",
+  "dailyRewardClaimedSuccess": "🎉 విజయం! {rewardName}",
+  "dailyViewLimitReached": "Daily view limit reached.",
   "dark": "నలుపు",
   "dateOfBirth": "పుట్టిన తేదీ",
+  "dateOfBirthLabel": "పుట్టిన తేదీ",
   "daughter": "కూతురు",
   "daysAgo": "{count}రోజుల క్రితం",
   "daysLeft": "{days} రోజులు మిగిలి ఉన్నాయి",
   "daysRemaining": "{days} రోజులు మిగిలి ఉన్నాయి",
+  "decline": "DECLINE",
+  "dedicatedManager": "ప్రత్యేక రిలేషన్షిప్ మేనేజర్",
+  "degreeField": "Degree / Field",
   "delete": "తొలగించు",
   "deleteAccount": "ఖాతా తొలగించు",
   "deleteAccountWarning": "ఈ చర్య శాశ్వతమైనది మరియు రద్దు చేయలేము.",
@@ -194,11 +1264,26 @@
   "deleteShares": "షేర్లను తొలగించండి",
   "deletingYourAccountWillResultIn": "మీ ఖాతాను తొలగించడం వలన ఇలా జరుగుతుంది:",
   "demo": "డెమో",
+  "demographicsAndPremium": "జనాభా మరియు ప్రీమియం",
   "describeYourselfInterestsHobbies": "మిమ్మల్ని మీరు, ఆసక్తులు, అభిరుచులను వివరించండి...",
   "details": "వివరాలు",
+  "diamond": "Diamond",
+  "dietHabits": "Diet / Food Habits",
   "differentSettingsTip": "విభిన్న సెట్టింగ్‌లలో (ఫార్మల్, క్యాజువల్) ఫోటోలను చేర్చండి",
+  "differentlyAbled": "Diff. Abled",
+  "digital": "డిజిటల్",
   "diploma": "డిప్లొమా",
+  "directAdminSupport": "Direct Admin Support",
+  "directContactAccess": "నేరుగా కాంటాక్ట్ యాక్సెస్",
+  "directContactUnlocked": "Direct Contact Unlocked Profiles",
+  "directContactUnlockedSubtitle": "Direct Phone Number & WhatsApp verified access",
+  "directMessage": "నేరుగా మెసేజ్",
+  "directMessages": "Direct Messages",
+  "directMessagesSubtitle": "Stay responsive when your match sends you a message.",
   "directMessaging": "నేరుగా మెసేజింగ్",
+  "directMessagingPremium": "నేరుగా మెసేజ్ పంపడం ఒక ప్రీమియం ఫీచర్.",
+  "directNoteSentToast": "Direct Note sent with high priority! 💌",
+  "directWhatsAppLeads": "📱 Direct WhatsApp Leads",
   "disabledHint": "వికలాంగులకు ఐచ్ఛిక సమాచారం",
   "disabledTagLabel": "వికలాంగుడు",
   "discard": "విస్మరించు",
@@ -206,6 +1291,7 @@
   "discardChangesBody": "మీరు వెనుకకు వెళ్ళాలని నిశ్చయంగా ఉన్నారా? మీ పురోగతి డ్రాఫ్ట్‌గా సేవ్ చేయబడింది.",
   "discountPercentage": "{percentage}% తగ్గింపు (ట్రస్ట్ స్కోర్ {score})",
   "discoverProfilesFromYourCommunityNsmartM": "మీ సంఘం నుండి ప్రొఫైల్‌లను కనుగొనండి.\\nఅనుకూలత స్కోర్‌ల ద్వారా ఆధారితమైన స్మార్ట్ మ్యాచ్‌మేకింగ్.",
+  "displayLayoutLabel": "చూపించే విధానం",
   "district": "జిల్లా",
   "districtInState": "{state} లోని జిల్లా",
   "districtInStateLabel": "District in State",
@@ -216,13 +1302,19 @@
   "documentView": "డాక్యుమెంట్ వీక్షణ",
   "done": "పూర్తైంది",
   "downloadBtn": "డౌన్‌లోడ్ చేయండి",
+  "downloadWatermarkFreeBiodataDesc": "Download watermark-free high definition 2-Page Biodata in all formats.",
+  "drinkingHabits": "Drinking Habits",
   "dusky": "శ్యామల వర్ణం",
   "easiest": "సులభమైనది",
   "edit": "సవరించు",
+  "editBiodataInfoPhotos": "Edit Biodata Info & Photos",
+  "editBiodataInfoPhotosDesc": "Edit Education, Gotra, Family, Native Tanda & Photo in your master profile.",
   "editProfile": "ప్రొఫైల్ సవరించు",
   "education": "విద్య",
   "educationAndProfession": "విద్య మరియు వృత్తి",
   "educationDetails": "విద్యా వివరాలు",
+  "educationFieldStream": "Education Field / Stream",
+  "educationFieldSubtitle": "Filter by specialized degree stream & career path",
   "educationLabel": "విద్య",
   "educationProfession": "Education & Profession",
   "educationProfessionDetails": "విద్య మరియు వృత్తి",
@@ -233,39 +1325,75 @@
   "egTime": "ఉదా. ఉదయం 10:30 గంటలకు",
   "elderBrother": "అన్నయ్య",
   "elderSister": "అక్కయ్య",
+  "elitePlanDesc": "VIP యాక్సెస్ తో ఎంపిక చేసిన ప్రొఫైల్స్",
+  "elitePlanName": "ఎలైట్",
   "email": "ఇమెయిల్",
   "emailAddress": "ఇమెయిల్ చిరునామా",
   "emailLabel": "Email",
+  "emailNotifications": "Email Notifications",
   "emailSupport": "ఇమెయిల్ మద్దతు",
   "emailVerification": "ఇమెయిల్ ధృవీకరణ",
   "emailVerificationTip": "Tip: Check your spam folder if you don't see the email.",
   "emailVerifiedSuccessfully10Points": "ఇమెయిల్ విజయవంతంగా ధృవీకరించబడింది! +10 పాయింట్లు",
+  "employmentSector": "Employment Sector",
   "emptyStr": "₹",
+  "enableNotifications": "Enable Notifications",
   "english": "English",
   "enterBasicInfo": "అధికారిక పత్రాలలో కనిపించే విధంగా మీ ప్రాథమిక సమాచారాన్ని నమోదు చేయండి",
   "enterCityVillage": "నగరం/గ్రామాన్ని నమోదు చేయండి",
+  "enterDistrictExample": "Enter District (e.g. Nanded, Yavatmal, Nizamabad)",
   "enterEducationDetails": "మీ విద్యా వివరాలు నమోదు చేయండి",
   "enterFullName": "మీ పూర్తి పేరు నమోదు చేయండి",
   "enterMobileNumber": "Enter mobile number",
   "enterProfessionDetails": "మీ వృత్తి వివరాలు నమోదు చేయండి",
+  "enterVillageHint": "గ్రామం లేదా తాండా పేరును నమోదు చేయండి...",
+  "enterVillageManually": "గ్రామం/ఇతర పేరును నమోదు చేయండి",
   "enterYourBasicInformationAsItAppearsInOf": "అధికారిక పత్రాలలో కనిపించే విధంగా మీ ప్రాథమిక సమాచారాన్ని నమోదు చేయండి",
   "enterYourEducationDetails": "Enter your education details",
   "enterYourEmail": "మీ ఇమెయిల్ నమోదు చేయండి",
   "enterYourPassword": "మీ పాస్‌వర్డ్ నమోదు చేయండి",
   "enterYourProfessionDetails": "Enter your profession details",
   "error": "లోపం",
+  "errorAdminActionFailed": "కోరిన చర్యను పూర్తి చేయలేకపోయాము. దయచేసి కాసేపటి తర్వాత మళ్ళీ ప్రయత్నించండి.",
   "errorCheckingShareLimits": "షేర్ పరిమితులను తనిఖీ చేయడంలో లోపం: {error}",
   "errorCheckingStatus": "Error checking status: {error}",
   "errorCheckingViewLimits": "వీక్షణ పరిమితులను తనిఖీ చేయడంలో లోపం: {error}",
+  "errorLaunchingLink": "Error launching link",
+  "errorLoadingAdminCoupons": "కూపన్ ఆఫర్లను లోడ్ చేయలేకపోయాము. దయచేసి మళ్ళీ ప్రయత్నించండి.",
+  "errorLoadingAdminCreators": "క్రియేటర్ల జాబితాను పొందలేకపోయాము. దయచేసి మీ నెట్వర్క్ను తనిఖీ చేయండి.",
   "errorLoadingAdminData": "అడ్మిన్ డేటాను లోడ్ చేయడంలో లోపం: {error}",
+  "errorLoadingAdminPayments": "పేమెంట్ హిస్టరీని లోడ్ చేయలేకపోయాము. దయచేసి మళ్ళీ ప్రయత్నించండి.",
+  "errorLoadingAdminReferences": "పెండింగ్ రిఫరెన్సులను పొందలేకపోయాము. దయచేసి రీఫ్రెష్ చేయండి.",
+  "errorLoadingAdminStats": "డ్యాష్బోర్డ్ గణాంకాలను లోడ్ చేయలేకపోయాము. దయచేసి రీఫ్రెష్ చేయడానికి ప్రయత్నించండి.",
+  "errorLoadingAdminUsers": "యూజర్ల జాబితాను పొందలేకపోయాము. దయచేసి మీ కనెక్షన్ని తనిఖీ చేయండి.",
+  "errorLoadingAdminVerifications": "వెరిఫికేషన్ అభ్యర్థనలను లోడ్ చేయలేకపోయాము. దయచేసి మళ్ళీ ప్రయత్నించండి.",
   "errorLoadingRequests": "అభ్యర్థనలను లోడ్ చేయడంలో లోపం: {error}",
   "errorOccurred": "ఒక లోపం సంభవించింది: {error}",
   "errorPrefix": "Error: {error}",
+  "errorWithLabel": "లోపం: {label}",
+  "estimatedRefund": "అంచనా వేసిన రీఫండ్",
+  "eternalElitePlanDesc": "మీ కెరీర్ మీద దృష్టి పెట్టండి, మేము మీ జీవిత భాగస్వామిని వెతుకుతాము",
+  "eternalElitePlanName": "ఎటర్నల్ ఎలైట్",
+  "eternalPlanDesc": "ప్లాన్ గడువు ముగిసిపోతుందని ఇకపై చింతించకండి",
+  "eternalPlanName": "ఎటర్నల్ - పెళ్లి వరకు",
+  "eventDetails": "కార్యక్రమ వివరాలు",
   "everyProfileIsVerifiedWithIdSelfieRefere": "ప్రతి ప్రొఫైల్ ID, సెల్ఫీ & సూచనలతో ధృవీకరించబడింది.\\nట్రస్ట్ స్కోర్ నిజమైన కనెక్షన్‌లను నిర్ధారిస్తుంది.",
+  "exactBirthTimeAndKundali": "Exact Birth Time & Kundali",
+  "excellentMatch": "EXCELLENT MATCH",
   "exit": "నిష్క్రమించు",
   "exitApp": "యాప్ నుండి నిష్క్రమించు",
+  "exitGuestMode": "గెస్ట్ మోడ్ నుండి నిష్క్రమించు",
+  "exogamous": "EXOGAMOUS",
+  "exogamyCompliant": "EXOGAMY COMPLIANT",
+  "exogamyRuleDescription": "In traditional Banjara (Gor) culture, marriages follow strict Clan Exogamy (गोत्र बहिर्विवाह):",
+  "exploreAsGuest": "అతిథిగా అన్వేషించండి",
+  "exploreMatchmakerPlans": "Explore Matchmaker Plans",
+  "exploreMatchmakerPlansButton": "Explore Matchmaker Plans ➔",
+  "explorePremiumPlans": "Explore Premium Plans",
   "exportBiodataPdf": "బయోడేటా PDFని ఎగుమతి చేయండి",
+  "expressInterest": "ఆసక్తిని తెలియజేయాలా?",
   "expressInterestDesc": "మీ బయోడేటాను నేరుగా పంచుకోవడం ద్వారా మీ ఆసక్తిని వ్యక్తపరచండి",
+  "extraViewsUnlocked": "{count} అదనపు వీక్షణలు అన్‌లాక్ చేయబడ్డాయి!",
   "failedLoadProfile": "ప్రొఫైల్ లోడ్ చేయడం విఫలమైంది: {error}",
   "failedSignInGoogle": "Googleతో సైన్ ఇన్ విఫలమైంది: {error}",
   "failedSignInGoogleRetry": "Googleతో సైన్ ఇన్ విఫలమైంది. మళ్ళీ ప్రయత్నించండి.",
@@ -287,6 +1415,8 @@
   "failedToSave": "సేవ్ చేయడం విఫలమైంది: {error}",
   "failedToSavePdf": "PDFని సేవ్ చేయడంలో విఫలమైంది: {error}",
   "failedToSaveProfile": "ప్రొఫైల్ సేవ్ చేయడం విఫలమైంది: {error}",
+  "failedToSendMessage": "సందేశాన్ని పంపడంలో విఫలమైంది: {error}",
+  "failedToSendNote": "Failed to send note: {error}",
   "failedToSharePdf": "PDFని భాగస్వామ్యం చేయడంలో విఫలమైంది",
   "failedToStartChat": "చాట్ ప్రారంభించడంలో విఫలమైంది: {error}",
   "failedToSubmitReport": "నివేదికను సమర్పించడంలో విఫలమైంది: {error}",
@@ -296,14 +1426,22 @@
   "failedToUpdateProfile": "Failed to update profile",
   "failedToUploadPhoto": "ఫోటో {index} అప్‌లోడ్ చేయడం విఫలమైంది",
   "failedToVerify": "వెరిఫై చేయడం విఫలమైంది: {error}",
+  "failedWithError": "Failed: {error}",
   "fair": "తెల్లగా",
   "fakeProfile": "నకిలీ ప్రొఫైల్",
   "familyBackground": "కుటుంబ నేపథ్యం",
   "familyDetails": "కుటుంబ వివరాలు",
   "familyFirstValues": "కుటుంబం-మొదటి విలువలు",
   "familyOnly": "కుటుంబం మాత్రమే",
+  "familyReputationVetted": "Family Background & Reputation Vetted",
+  "familyReputationVettedSubtitle": "Clean background check conducted by field relationship managers",
   "familyStatus": "కుటుంబ స్థితి",
+  "familyStatusSubtitle": "Select socioeconomic family status requirement",
+  "familyStructure": "Family Structure",
+  "familyStructureSubtitle": "Select nuclear or joint family preferences",
   "familyType": "కుటుంబ రకం",
+  "familyValues": "Family Values",
+  "familyValuesSubtitle": "Filter by cultural and social outlook",
   "faqA1": "ప్రొఫైల్ ట్యాబ్‌కు వెళ్లి, \"బయోడేటాను సృష్టించు\" క్లిక్ చేయండి లేదా మీ ప్రస్తుత ప్రొఫైల్‌ను సవరించండి. మీ వ్యక్తిగత, కుటుంబ మరియు వృత్తిపరమైన వివరాలను నింపడానికి బహుళ-దశల ఫారమ్‌ను అనుసరించండి.",
   "faqA2": "అవును, మేము గోప్యతను తీవ్రంగా పరిగణిస్తాము. మీ సంప్రదింపు వివరాలు ధృవీకరించబడిన వినియోగదారులకు మాత్రమే చూపబడతాయి మరియు మా సంఘం భద్రతా మార్గదర్శకాలను గౌరవిస్తాయి.",
   "faqA3": "హోమ్ స్క్రీన్‌లో, వయస్సు, ప్రాంతం, విద్య మరియు వృత్తి ఆధారంగా ప్రొఫైల్‌లను తగ్గించడానికి \"ఫిల్టర్లు\" బటన్‌ను ఉపయోగించండి.",
@@ -319,26 +1457,51 @@
   "farmer": "రైతు",
   "fatherName": "తండ్రి పేరు",
   "fatherOccupation": "తండ్రి వృత్తి",
+  "featuredBadge": "ఎలైట్ వెరిఫైడ్ బ్యాడ్జ్",
+  "featuresIncluded": "చేర్చబడిన ఫీచర్లు:",
   "feet": "అడుగులు",
   "female": "స్త్రీ",
   "fieldRequired": "{field} అవసరం",
   "fifteenToTwentyLakh": "15 - 20 లక్షలు",
+  "fiftyPercentOffVipUpgrade": "🔥 50% OFF VIP Upgrade",
+  "filterAstrologicalCompatibility": "Filter candidate astrological horoscope compatibility",
+  "filterCandidateHomeState": "Filter candidate home state or current residing district",
+  "filterProfiles": "Filter profiles",
   "filtered": "(ఫిల్టర్ చేయబడింది)",
+  "filters": "Filters",
+  "filtersResetToDefault": "Filters reset to default",
+  "financialPerformance": "ఆర్థిక పనితీరు",
   "findYourPerfectMatch": "మీ పరిపూర్ణ సరిపోలికను కనుగొనండి",
   "fiveToSevenHalfLakh": "5 - 7.5 లక్షలు",
+  "focusOnCareer": "మీ కెరీర్ మీద దృష్టి పెట్టండి, మేము మీ జీవిత భాగస్వామిని వెతుకుతాము",
   "followAndGetFivePercent": "ఫాలో అవ్వండి & +5% పొందండి",
+  "followDailyMatchUpdates": "Follow Daily Match Updates",
   "followUsOnInstagramBonus": "5% బయోడేటా పూర్తి బోనస్ పొందడానికి మరియు తాజా మ్యాచ్‌లతో అప్‌డేట్ కావడానికి మమ్మల్ని ఇన్‌స్టాగ్రామ్‌లో ఫాలో అవ్వండి.",
+  "forLifetime": "జీవితకాలం వరకు",
   "forMonths": "{count} నెలల పాటు",
+  "forMyDaughter": "👧 For My Daughter",
+  "forMyRelative": "👨‍👩‍👧 For My Relative",
+  "forMySibling": "👫 For My Sibling",
+  "forMySon": "👦 For My Son",
+  "forMyself": "👤 For Myself",
+  "forOther": "✨ For Someone Else",
+  "forWhomSearching": "ఎవరి కోసం సంబంధం వెతుకుతున్నారు?",
+  "foundYourPartner": "మీ భాగస్వామి దొరికారా?",
   "free": "ఉచితం",
   "free1PhotonpremiumUpTo6Photos": "ఉచితం: 1 ఫోటో\\nప్రీమియం: గరిష్టంగా 6 ఫోటోలు",
+  "freePlan": "Free Plan",
   "freePlanDesc": "ప్రాథమిక లక్షణాలను ప్రయత్నించండి",
   "freeUserLimitInfo": "Free user limit reached. Upgrade to continue.",
   "freeUsersCanUpload1PhotoUpgradeToUploadU": "ఉచిత వినియోగదారులు 1 ఫోటోను అప్‌లోడ్ చేయవచ్చు. గరిష్టంగా 5 ఫోటోలను అప్‌లోడ్ చేయడానికి అప్‌గ్రేడ్ చేయండి.",
   "friend": "స్నేహితుడు",
+  "fromContact": "వీరి నుండి: {name}",
   "frontSide": "ముందు భాగం",
+  "fullAddress": "Full Address",
+  "fullKundaliAvailableOnMutual": "Full Kundali chart available on mutual match interest.",
   "fullName": "పూర్తి పేరు",
   "gallery": "గ్యాలరీ",
   "gender": "లింగం",
+  "genderSelectHeading": "మీ లింగం",
   "generateBio": "బయోని రూపొందించండి",
   "generatingPreview": "ప్రివ్యూని రూపొందిస్తోంది...",
   "getAProfessionalWellformattedPdfWithoutW": "వాటర్‌మార్క్‌లు లేకుండా మరియు కనిపించే అన్ని వివరాలతో ప్రొఫెషనల్, బాగా ఫార్మాట్ చేయబడిన PDFని పొందండి.",
@@ -347,10 +1510,14 @@
   "getStartedLabel": "ప్రారంభించండి",
   "go": "వెళ్లండి",
   "goBack": "వెనక్కి వెళ్ళు",
+  "goProAdFree": "ప్రకటన రహిత అనుభవం కోసం ప్రో అవ్వండి",
   "gold": "బంగారం",
+  "goldMember": "⭐ Gold Member",
   "goldPlanDesc": "అత్యంత ప్రజాదరణ పొందినది - ఉత్తమ విలువ",
   "goldPlanName": "గోల్డ్",
   "goldVerified": "Gold Verified",
+  "goodMatch": "GOOD MATCH",
+  "gorBanjara": "Gor / Banjara",
   "gotIt": "అర్థమైంది",
   "gotra": "గోత్రం",
   "governmentEmployee": "ప్రభుత్వ ఉద్యోగి",
@@ -360,41 +1527,93 @@
   "governmentJob": "ప్రభుత్వ ఉద్యోగం",
   "govtId": "Govt ID",
   "govtIdVerification": "ప్రభుత్వ గుర్తింపు పత్రం",
+  "govtIdVerified": "Govt ID / Aadhaar Verified",
+  "govtIdVerifiedSubtitle": "Only show candidates with 100% verified Govt ID badge",
   "graduate": "స్నాతకుడు",
   "great": "గొప్ప!",
   "grid": "గ్రిడ్",
+  "groom": "Groom",
+  "groomBoy": "👦 వరుడు (Groom)",
+  "groomOption": "👦 Groom (Boy)",
   "groupPhotosNotVisible": "మీరు స్పష్టంగా కనిపించని సమూహ ఫోటోలు",
+  "growYourWeddingBusiness": "Grow Your Wedding Business",
   "growth": "Growth",
+  "guestModeDesc": "మీ ప్రొఫైల్‌ను సృష్టించడానికి ముందు యాప్ యొక్క గైడెడ్ టూర్ చేయండి.",
+  "guestModeInstantBrowseSubtitle": "ఖాతా లేకుండా నేరుగా BanjaraBio ఫీచర్‌లు మరియు ప్రొఫైల్‌లను అన్వేషించండి.",
+  "guestModeInstantBrowseTitle": "గెస్ట్ మోడ్ (వెంటనే చూడండి)",
+  "guestRestrictedContent": "అన్ని వివరాలను చూడటానికి, ప్రొఫైల్‌లను సేవ్ చేయడానికి మరియు సరిపోలికలతో మాట్లాడటానికి దయచేసి మీ బయోడేటాను సృష్టించండి లేదా మీ శోధన ఎంపికలను మార్చండి.",
+  "guestRestrictionMessage": "To interact with profiles, express interest, or send messages, you need to create your own biodata first.",
+  "gunaMilanScore": "Guna Milan (36 Points)",
+  "gunasMatchedCount": "{count} / 36 Gunas Matched ({percentage}%)",
+  "gunasMatchedStatus": "28 / 36 Gunas Matched",
+  "habitatNativeOrigin": "Habitat / Native Origin",
+  "habitatPillarSubtitle": "Shared cultural values & open relocation preferences",
+  "habitatSubtitle": "Filter candidate living environment & origin type",
+  "habitatTandaPillar": "Habitat, Tanda & Lifestyle",
+  "handpickedMatches": "వారానికి {count} ఎంపిక చేసిన ప్రొఫైల్స్",
   "haveQuestionsOrNeedAssistanceOurTeamIsHe": "ప్రశ్నలు ఉన్నాయా లేదా సహాయం కావాలా? మీ ఖచ్చితమైన సరిపోలికను కనుగొనడంలో మీకు సహాయం చేయడానికి మా బృందం ఇక్కడ ఉంది.",
+  "headerBlessingSubtitle": "Select which divine blessing is engraved at the top of your PDF",
+  "headerBlessingTitle": "🪔 Header Blessing / Deity Mantra",
   "heavilyFilteredEdited": "ఎక్కువగా ఫిల్టర్ చేసిన లేదా ఎడిట్ చేసిన ఫోటోలు",
   "height": "ఎత్తు",
+  "heightLabel": "ఎత్తు",
   "helpOurCommunityGrowAndUnlockPremiumRewa": "మీ కోసం ప్రీమియం రివార్డ్‌లను అభివృద్ధి చేయడంలో మరియు అన్‌లాక్ చేయడంలో మా కమ్యూనిటీకి సహాయపడండి.",
+  "hideAlgorithmInsights": "Hide Algorithm Insights",
+  "highMatch": "HIGH MATCH",
   "highSchool": "హైస్కూల్",
   "hindi": "हिंदी",
   "home": "హోమ్",
   "homemaker": "గృహిణి",
+  "horoscopeChartVerified": "Horoscope chart verified & matched.",
+  "horoscopeKundali": "Horoscope & Kundali (कुंडली)",
+  "horoscopeKundaliAttached": "Horoscope / Kundali Attached",
   "hoursAgo": "{count}గంటల క్రಿತం",
+  "houseOwnership": "House Ownership",
+  "howDidYouMeet": "మీరు ఎలా కలుసుకున్నారు? మీకు వారి గురించి ఏమి ఇష్టం?",
+  "howIsScoreCalculated": "How is this score calculated?",
   "howItWorks": "ఇది ఎలా పనిచేస్తుంది",
   "iUnderstandThatThisActionCannotBeUndone": "ఈ చర్య రద్దు చేయబడదని నేను అర్థం చేసుకున్నాను.",
   "idLabel": "ID: {id}",
   "idNumber": "ID సంఖ్య",
   "idType": "ID Type",
+  "identityDetails": "Identity Details",
   "inappropriateBackgrounds": "అనుచితమైన నేపథ్యాలతో కూడిన ఫోటోలు",
   "inappropriateContentOrFakeProfile": "తగని కంటెంట్ లేదా నకిలీ ప్రొఫైల్",
   "inappropriatePhotos": "అనుచిత ఫోటోలు",
   "inches": "అంగుళాలు",
+  "incognitoMode": "ప్రైవేట్ ప్రొఫైల్ బ్రೌజింగ్",
+  "incomeHiddenFromPdf": "Hidden from shared PDF for privacy",
+  "incomeSalaryVerified": "Income / Salary Verified",
+  "incomeSalaryVerifiedSubtitle": "Candidates with verified salary slip or ITR documentation",
+  "incomeVisibleOnPdf": "Package & income details visible on PDF",
   "increaseBiodataScore": "బయోడేటా స్కోర్‌ని పెంచండి!",
   "increaseYourTrustScoreToConfirmYourIdent": "మీ గుర్తింపును నిర్ధారించడానికి మరియు ప్రత్యేకమైన తగ్గింపులను అన్‌లాక్ చేయడానికి మీ విశ్వసనీయ స్కోర్‌ను పెంచండి.",
+  "india": "India",
+  "instagramLink": "ఇన్‌స్టాగ్రామ్ రీల్/స్టోరీ లింక్",
+  "instagramStories": "Instagram Stories",
+  "instantAlert": "Instant Alert",
+  "instantMatchAlerts": "Instant Match Alerts",
+  "instantMatchAlertsSubtitle": "Get notified immediately when mutual interest is accepted.",
+  "interest": "ఆసక్తి",
+  "interestConfirmationDesc": "మీ ఆసక్తిని తెలియజేయడానికి మీ ప్రొఫైల్‌ను {name}తో పంచుకోవాలనుకుంటున్నారా?",
+  "interestConfirmationMessage": "దీని ద్వారా మీ ప్రొఫైల్ {name}తో పంచుకోబడుతుంది మరియు వారు మిమ్మల్ని సంప్రదించగలరు. మీకు ఖచ్చితంగా ఉందా?",
+  "interestConfirmationTitle": "ఆసక్తిని తెలియజేయాలా?",
+  "interestDeclinedToast": "Interest declined",
   "interestSent": "ఆసక్తి పంపబడింది",
+  "interestShared": "{name}తో ఆసక్తిని పంచుకున్నారు!",
   "introduceYourselfIn30SecondsTalkAboutYou": "30 సెకన్లలో మిమ్మల్ని మీరు పరిచయం చేసుకోండి. మీ కుటుంబం, వృత్తి మరియు అంచనాల గురించి మాట్లాడండి.",
   "invalidEmailOrPassword": "చెల్లని ఇమెయిల్ లేదా పాస్‌వర్డ్",
   "inviteARelative": "బంధువును ఆహ్వానించండి",
   "inviteFriendsRewards": "స్నేహితులను ఆహ్వానించి ప్రీమియం బహుమతులు పొందండి!",
+  "inviteRelativesToVouch": "ధృవీకరించడానికి బంధువులను ఆహ్వానించండి",
   "inviteStep1": "Step 1",
   "inviteStep2": "Step 2",
   "inviteStep3": "Step 3",
   "isDisabledPerson": "మీరు వికలాంగులా?",
+  "itSAMatch": "మ్యాచ్ కుదిరింది!",
+  "job": "ఉద్యోగం / పని",
   "jobDetails": "ఉద్యోగ వివరాలు",
+  "joinBvsNow": "BVS లో చేరండి (ఇక్కడ నమోదు చేసుకోండి)",
   "joinMeOnBanjarabio": "బంజారాబయోలో నాతో చేరండి",
   "joinOurCommunity": "మా 10K+ కమ్యూనిటీలో చేరండి!",
   "jointFamily": "ఉమ్మడి కుటుంబం",
@@ -402,72 +1621,120 @@
   "kannada": "ಕನ್ನಡ",
   "keepBrowsing": "బ్రౌజింగ్ కొనసాగించండి",
   "keywordSearch": "కీవర్డ్ శోధన",
+  "kundaliGunasPillar": "Kundali & Gunas (अष्टकूट जुळणी)",
+  "kundaliHoroscopeAttached": "Kundali / Horoscope Attached",
+  "kundaliHoroscopeAttachedSubtitle": "Only show profiles with uploaded Janam Kundali chart",
+  "kundaliOnRequest": "Kundali Available on Request",
+  "kundaliPillarSubtitle": "No severe Manglik Dosha; high compatibility score",
   "language": "భాష",
   "languageChanged": "భాష {language}కి మార్చబడింది",
+  "languageSwitcherLabel": "భాష",
   "lastUpdatedJanuary2026": "చివరిగా నవీకరించబడింది: జనవరి 2026",
   "legalAndInformation": "చట్టపరమైన మరియు సమాచారం",
+  "lifetime": "జీవితకాలం",
+  "limitReached": "పరిమితి ముగిసింది",
+  "linkRequiredForRefund": "రీఫండ్ కోసం లింక్ అవసరం",
   "linkShare": "లింక్ షేర్ చేయండి",
   "linkedInIntegration": "LinkedIn ఇంటిగ్రేషన్",
   "linkedInIntegrationSubtitle": "మరింత నమ్మకాన్ని పెంపొందించుకోవడానికి మీ వృత్తిపరమైన ప్రొఫైల్‌ను కనెక్ట్ చేయండి.",
   "liveSelfie": "లైవ్ సెల్ఫీ",
   "liveSelfieVerification": "ప్రత్యక్ష సెల్ఫీ ధృవీకరణ",
+  "liveSync": "LIVE SYNC",
   "livenessCheck": "లైవ్‌నెస్ చెక్",
   "loading": "లోడ్ అవుతోంది...",
   "loadingAssets": "ఆస్తులను లోడ్ చేస్తోంది...",
   "loadingProfile": "మీ ప్రొఫైల్ లోడ్ అవుతోంది...",
   "loadingViews": "వీక్షణలను లోడ్ చేస్తోంది...",
   "location": "స్థానం",
+  "locationAndState": "Location & Native State",
   "locationDetails": "స్థాన వివరాలు",
   "locationPreferences": "స్థానం మరియు ప్రాధాన్యతలు",
   "locationPreview": "స్థాన పరిదృశ్యం",
+  "logCallOutcome": "కాల్ ఫలితాన్ని నమోదు చేయండి",
   "login": "లాగిన్",
+  "loginAndCreateBiodataCta": "లాగిన్ అయ్యి బయోడేటా సృష్టించండి ✨",
   "loginFailed": "లాగిన్ విఫలమైంది: {error}",
   "loginFailedRetry": "లాగిన్ విఫలమైంది. మళ్ళీ ప్రయత్నించండి.",
   "logout": "లాగ్అవుట్",
+  "lookingForGender": "వరుడు కావాలా లేదా వధువు?",
   "loseMatchesAndSavedProfiles": "మీరు మీ అన్ని మ్యాచ్‌లను మరియు సేవ్ చేసిన ప్రొఫైల్‌లను కోల్పోతారు.",
   "main": "ప్రధాన",
   "male": "పురుషుడు",
+  "mamakulAndTandaSubtitle": "Mamakul: {mamakul} • Tanda: {tanda}",
+  "mamakulLabel": "Mamakul (मोसळ)",
+  "mamakulRule": "Maternal Gotras are verified to ensure complete cultural harmony and lineage respect.",
+  "mamakulTitle": "2. Mamakul / Mosam (मोसळ):",
   "managePhotos": "ఫోటోలను నిర్వహించండి",
   "managenphotos": "ఫోటోలు\\nనిర్వహించండి",
+  "manglikDosha": "Manglik / Kuja Dosha",
   "manualSelection": "మాన్యువల్ ఎంపిక",
   "marathi": "मराठी",
   "maritalStatus": "వివాహ స్థితి",
   "maritalStatusLabel": "వైవాహిక స్థితి",
+  "marriageReadiness": "పెళ్లికి సిద్ధత",
+  "marriageRewardSubtitle": "వివాహ రుజువును పంచుకోండి మరియు 35% వరకు రీఫండ్ పొందండి!",
   "married": "వివాహం జరిగింది",
   "maskFamilySuggestionsTip": "Ask family members for photo suggestions",
   "mastersDegree": "మాస్టర్ డిగ్రీ",
+  "matchCompatibility": "Match Compatibility",
   "matchNOfTotal": "మ్యాచ్ {current} / {total}",
   "matched": "సరిపోలింది",
-  "sent": "పంపబడింది",
-  "received": "అందుకున్నారు",
+  "matchedBadge": "సరిపోలింది",
+  "matchesCategoryLabel": "మ్యాచ్ కేటగిరీ",
   "matchmakerConsultation": "మ్యాచ్ మేకర్ సంప్రదింపులు",
+  "matchmakerFiltersSubtitle": "Direct Contact, RM Handpicked, 36 Guna Score & Land Holdings",
+  "matchmakerFiltersTitle": "Matchmaker Filters",
+  "matchmakerPlansSubtitle": "Elite • Royal • Eternal Elite",
+  "maternalGotraMamakul": "Maternal Gotra (Mamakul / मोसळ)",
+  "maternalGotraSubtitle": "Exclude or specify maternal lineage to avoid customary gotra clash",
   "matrimonyFor": "వివాహం కోసం",
   "maxAge": "గరిష్ఠ వయసు",
   "maybeLater": "తర్వాత చూద్దాం",
+  "melavaBannerSubtitle": "భారతదేశం అంతటా జరిగే వధూవరుల పరిచయ వేదికలను కనుగొనండి. నేరుగా నిర్వాహకులను సంప్రదించండి.",
+  "melavaBannerTitle": "బంజారా పరిచయ మేళావాలు",
+  "melavaEventCount": "{count} మేళావాలు",
+  "melavas": "మేళావాలు",
+  "men": "పురుషులు",
   "menu": "మెనూ",
   "message": "సందేశం",
   "messageUsOnWhatsapp": "మాకు వాట్సాప్‌లో మెసేజ్ చేయండి",
   "messages": "సందేశాలు",
+  "messagingLimitReached": "మెసేజింగ్ పరిమితి ముగిసింది",
   "middleClass": "మధ్యతరగతి",
   "minAge": "కనిష్ఠ వయసు",
+  "minimumHeight": "Minimum Height",
+  "minimumHeightSubtitle": "Select minimum height requirement for matches",
   "minutesAgo": "{count}నిమిషాల క్రితం",
   "mobileNumber": "మొబైల్ నంబర్",
   "mobileVerification": "మొబైల్ ధృవీకరణ",
   "mobileVerifiedSuccessfully10Points": "మొబైల్ విజయవంతంగా ధృవీకరించబడింది! +10 పాయింట్లు",
   "month": "/నెల",
+  "monthly": "నెలవారీ",
+  "monthlyCheckIn": "నెలవారీ చెక్-ఇన్",
+  "monthlyRevenue": "నెలవారీ ఆదాయం (₹)",
   "months": "నెలలు",
   "moreAboutYourStudiesAndWork": "మీ చదువు మరియు పని గురించి మరిన్ని వివరాలు చెప్పండి",
+  "moreInvitesToUnlockTier": "{count} more invites to unlock {tier} tier ({reward})",
   "moreOptions": "మరిన్ని ఎంపికలు",
   "mostPopular": "అత్యంత ప్రజాదరణ పొందినది",
   "motherName": "అమ్మ పేరు",
   "motherOccupation": "అమ్మ వృత్తి",
+  "mrpPrice": "MRP ₹{price}",
+  "mustHavePhoto": "Must Have Photo",
+  "mutualMatch": "పరస్పర సరిపోలిక",
+  "mutualMatchesDesc": "ఇద్దరు వినియోగదారులు ఒకరిపై ఒకరు ఆసక్తిని కనబరిచినప్పుడు పరస్పర మ్యాచ్‌లు ఇక్కడ కనిపిస్తాయి",
   "myProfile": "నా ప్రొఫైల్",
+  "nakshatraStar": "Nakshatra (Star)",
   "name": "పేరు",
+  "nativeDistrict": "Native District",
   "nativePlace": "స్వగ్రామం",
   "naturalPosesRespectful": "గౌరవప్రదమైన వ్యక్తీకరణలతో సహజమైన భంగిమలు",
+  "needHelpContactAdmin": "సహాయం కావాలా? అడ్మిన్‌ని సంప్రదించండి",
   "needProfileToShareToast": "You need to create a profile before sharing it.",
   "neverMarried": "అవివాహితులు",
+  "neverMissVerifiedMatch": "Never miss a verified match, instant message, or profile update.",
   "newLabel": "కొత్తది",
+  "newMatchAlerts": "New Match Alerts",
   "newMatches": "కొత్త మ్యాచ్‌లు",
   "next": "తదుపరి",
   "nextLabel": "తదుపరి",
@@ -479,6 +1746,7 @@
   "noIncome": "ఆదాయం లేదు",
   "noInternetConnection": "ఇంటర్నెట్ కనెక్షన్ లేదు",
   "noLocationsFoundForQuery": "\"{query}\" కోసం ఎటువంటి స్థానాలు కనుగొనబడలేదు",
+  "noMatchesYet": "ఇంకా మ్యాచ్‌లు లేవు",
   "noPendingRequests": "పెండింగ్ అభ్యర్థనలు లేవు",
   "noPendingVerifications": "No pending verifications",
   "noPhotosAdded": "ఫోటోలు ఏవీ జోడించబడలేదు",
@@ -486,16 +1754,23 @@
   "noProfileFound": "ప్రొఫైల్ కనుగొనబడలేదు",
   "noProfilesFound": "ప్రొఫైల్‌లు లభించలేదు",
   "noProfilesMatchYourFilters": "మీ ఫిల్టర్‌లకు సరిపోలే ప్రొఫైల్‌లు ఏవీ లేవు",
+  "noProfilesReceived": "ఏ ప్రొఫైల్స్ రాలేదు",
+  "noProfilesSharedYet": "ఇంకా ఏ ప్రొఫైల్ భాగస్వామ్యం చేయబడలేదు",
   "noResultsMessage": "మీ ఫిల్టర్‌లను సర్దుబాటు చేయండి లేదా తర్వాత తనిఖీ చేయండి.",
   "noSiblingsAddedYet": "ఇంకా తోబుట్టువులు ఎవరూ జోడించబడలేదు",
   "noTalukasAvailable": "తాలూకా సమాచారం అందుబాటులో లేదు",
   "noViewsYet": "ఇంకా వీక్షణలు లేవు",
+  "none": "ఏదీ లేదు",
+  "normalFit": "Normal / Fit",
   "notAvailable": "అందుబాటులో లేదు",
   "notEntered": "నమోదు చేయలేదు",
+  "notMatchedCannotMessage": "మీరు ఈ ప్రొఫైల్‌తో మ్యాచ్ కాలేదు, కాబట్టి నేరుగా సందేశం పంపలేరు.",
   "notMatchedCantMessage": "మీరు ఈ ప్రొఫైల్‌తో సరిపోలలేదు, కాబట్టి మీరు వారికి నేరుగా మెసేజ్ చేయలేరు.",
   "notReadyYet": "ఇంకా సిద్ధంగా లేరు",
   "notRepresentAppearance": "మీ ప్రస్తుత రూపాన్ని ప్రతిబింబించని ఫోటోలు",
+  "notSpecified": "Not Specified",
   "notVerifiedYetPleaseClickTheLinkInYourEm": "ఇంకా ధృవీకరించబడలేదు. దయచేసి మీ ఇమెయిల్‌లోని లింక్‌పై క్లిక్ చేయండి.",
+  "notWorking": "Not Working",
   "notYetVerifiedBadge": "ఇంకా ధృవీకరించబడలేదు",
   "nuclearFamily": "వేర్పడిన కుటుంబం",
   "num100": "/ 100",
@@ -503,38 +1778,73 @@
   "num15PointsPending": "+15 పాయింట్లు పెండింగ్‌లో ఉన్నాయి",
   "num499": "499",
   "num919876543210": "+91 98765 43210",
+  "occupationLabel": "వృత్తి",
   "officeAddress": "కార్యాలయ చిరునామా",
+  "officialBiodataPdfShared": "Official Biodata PDF Shared 📄",
   "ok": "సరే",
   "onHold": "హోల్డ్‌లో ఉంది",
   "onboardingTitle1": "మీ సరైన జీవిత భాగస్వామిని కనుగొనండి",
   "onboardingTitle2": "నమ్మకమైన సమాజం",
   "onboardingTitle3": "సురక్షితం మరియు గోప్యం",
+  "oneFreeNote": "1 FREE 💌",
+  "oneHundredPercentCompliant": "100% Compliant",
+  "oneHundredPercentPrivate": "100% Private",
+  "oneMessageUnlocked": "1 సందేశం అన్‌లాక్ చేయబడింది!",
+  "oneMonthFree": "1 Month Free",
+  "onePhotoLockedTeaser": "📸 1 Photo (🔒 +{count})",
+  "oneTapSelect": "1-Tap Select",
   "oneTime": "ఒక సారి",
+  "oneYearVip": "1 Year VIP",
   "online": "ఆన్‌లైన్",
+  "onlyDobShownOnPdf": "Only Date of Birth shown on PDF",
+  "onlyShowProfilesWithPhoto": "Only show profiles with verified photo albums",
   "openCamera": "కెమెరాను తెరవండి",
   "openProfileToShare": "భాగస్వామ్యం చేయడానికి ప్రొఫైల్‌ని తెరవండి",
   "openSettings": "సెట్టింగ్‌లను తెరవండి",
+  "openToRelocate": "Open to Relocate",
   "openingConversation": "సంభాషణను ప్రారంభిస్తున్నాము...",
   "openingConversationToast": "Opening conversation...",
+  "option1Badge": "ఎంపిక 1 • లాగిన్ అవసరం లేదు",
+  "option2Badge": "ఎంపిక 2 • అత్యంత ప్రాచుర్యం • 100% ఉచితం",
+  "option3Badge": "ఎంపిక 3 • గెస్ట్ మోడ్",
+  "optional": "ఐచ్ఛికం",
+  "orCustomizeYourNote": "OR CUSTOMIZE YOUR NOTE",
+  "organizer": "నిర్వాహకుడు",
   "originalVillageHint": "సొంత గ్రామం",
   "other": "ఇతర",
+  "ownHouseVilla": "Own House / Villa",
+  "ownResidentialHouseVilla": "Own Residential House / Villa",
+  "ownResidentialHouseVillaSubtitle": "Family owns self-acquired or independent residential house",
   "partnerExpectations": "జీవిత భాగస్వామి అంచనాలు",
   "partnerExpectationsHint": "మీరు ఎలాంటి భాగస్వామిని కోరుకుంటున్నారో వివరించండి...",
+  "partnerName": "భాగస్వామి పేరు",
   "partnerPreferences": "భాగస్వామి ప్రాధాన్యతలు",
   "password": "పాస్‌వర్డ్",
+  "pasteUrlHere": "ఇక్కడ URL ని పేస్ట్ చేయండి",
   "pay199ToUnlockFullPdf": "పూర్తి PDFని అన్‌లాక్ చేయడానికి ₹199 చెల్లించండి",
+  "payInstantUnlock": "Pay ₹{price} Instant Unlock",
   "paymentFailed": "చెల్లింపు విఫలమైంది: {error}",
   "paymentFailedError": "చెల్లింపు విఫలమైంది: {error}",
   "paymentSuccessful": "చెల్లింపు విజయవంతమైంది! టెంప్లేట్‌లు అన్‌లాక్ చేయబడ్డాయి.",
   "paymentSuccessfulPdfUnlocked": "చెల్లింపు విజయవంతమైంది! PDF అన్‌లాక్ చేయబడింది.",
   "paymentSuccessfulWelcome": "చెల్లింపు విజయవంతమైంది! {plan}కి స్వాగతం",
+  "pdfDisplayStudio": "PDF Display Studio",
+  "pdfDisplayStudioDesc": "Customize header deity blessings and toggle confidential fields on your shareable PDF.",
+  "pdfRevenue": "PDF ఆదాయం (₹)",
   "pdfSavedToDownloads": "PDF డౌన్‌లోడ్‌లకు సేవ్ చేయబడింది: {path}",
   "pending": "పెండింగ్‌లో ఉంది",
+  "pendingReferences": "పెండింగ్ రిఫరెన్సులు",
+  "pendingReports": "పెండింగ్ రిపోర్టులు",
   "pendingVerifications": "Pending Verifications",
+  "perMonth": "/నెలకు",
   "percentComplete": "{percentage}% పూర్తైంది",
+  "percentCompleteBadge": "{score}% Complete",
+  "percentMatchBadge": "{score}% Match",
+  "percentTrustBadge": "{score}% Trust",
   "permissionDeniedSettings": "Permission denied. Please enable in settings.",
   "permissionRequired": "అనుమతి అవసరం",
   "permissionRequiredMessage": "ఫోటోలను అప్‌లోడ్ చేయడానికి {type} అనుమతి అవసరం. దయచేసి యాప్ సెట్టింగ్‌లలో దీన్ని ప్రారంభించండి.",
+  "personalConcierge": "పర్సనల్ సహాయకుడు",
   "personalDetails": "వ్యక్తిగత వివరాలు",
   "phoneLabel": "Phone",
   "phoneSupport": "ఫోన్ మద్దతు",
@@ -554,10 +1864,17 @@
   "photosReflectPersonality": "మీ వ్యక్తిత్వాన్ని మరియు విలువలను ప్రతిబింబించే ఫోటోలు",
   "photosSelectedCount": "{count} ఎంపిక చేయబడింది",
   "photosToAvoid": "నివారించాల్సిన ఫోటోలు",
+  "physicalHealthStatus": "Physical Health Status",
+  "physicalHealthStatusSubtitle": "Select physical disability match preferences",
   "physicalSocialAttributes": "శారీరక మరియు సామాజిక లక్షణాలు",
   "physicalStatus": "శారీరక స్థితి",
+  "physicallyChallenged": "Physically Challenged",
+  "pickNote": "Pick Note",
+  "pinCodeLabel": "Pin Code",
+  "planetaryLagnaAlignment": "Planetary Lagna & Ashtakoot Alignment",
   "platinumPlanDesc": "అన్ని ఫీచర్లతో అద్భుతమైన అనుభవం",
   "platinumPlanName": "ప్లాటినం",
+  "pleaseAcceptVendorPartnerTerms": "Please accept the vendor partner terms",
   "pleaseComplete": "పూర్తి చేయండి: {fields}",
   "pleaseCompleteRequiredFields": "{section} లో అన్ని అవసరమైన ఫీల్డ్‌లు పూర్తి చేయండి",
   "pleaseEnter6DigitOtp": "దయచేసి 6-అంకెల OTPని నమోదు చేయండి",
@@ -566,8 +1883,10 @@
   "pleaseEnterBothEmailPassword": "ఇమెయిల్ మరియు పాస్‌వర్డ్ రెండూ నమోదు చేయండి",
   "pleaseEnterFull6DigitOtp": "దయచేసి పూర్తి 6-అంకెల OTPని నమోదు చేయండి",
   "pleaseFillAllFields": "దయచేసి అన్ని ఫీల్డ్‌లను పూరించండి",
+  "pleaseFillAllRequiredFields": "Please fill all required fields",
   "pleaseSelectAnnualIncome": "మీ వార్షిక ఆదాయాన్ని ఎంచుకోండి",
   "pleaseSelectEducationLevel": "మీ విద్యా స్థాయిని ఎంచుకోండి",
+  "pleaseSelectOrWriteShortNote": "Please select or write a short intro note",
   "pleaseSelectProfession": "మీ వృత్తిని ఎంచుకోండి",
   "pleaseSelectYourGotra": "మీ గోత్రం ఎంచుకోండి",
   "pleaseSelectYourSurname": "మీ ఇంటిపేరు ఎంచుకోండి",
@@ -578,19 +1897,38 @@
   "pointsCount": "+{points} పాయింట్లు",
   "postGraduate": "పోస్ట్ గ్రాడ్యుయేట్",
   "premium": "ప్రీమియం",
+  "premiumAccess": "ప్రీమియం యాక్సెస్",
+  "premiumBadge": "ప్రీమియం",
   "premiumFeature": "ఇది ప్రీమియం ఫీచర్",
+  "premiumFiltersSubtitle": "ID Verification, Trust Score, Horoscope, Lifestyle & Activity",
+  "premiumFiltersTitle": "Premium Filters",
+  "premiumGateSupport": "శీఘ్ర ప్రకటనను చూడటం ద్వారా మా కమ్యూనిటీకి మద్దతు ఇవ్వండి,\nలేదా ప్రకటన రహిత అనుభవం కోసం ప్రోకి అప్‌గ్రేడ్ చేయండి.",
   "premiumMembership": "ప్రీమియం సభ్యత్వం",
+  "premiumMen": "ప్రీమియం పురుషులు",
+  "premiumPlanDesc": "అధునాతన ఫీచర్లు మరియు మెరుగైన విజిబిలిటీ",
+  "premiumPlanName": "ప్రీమియం",
+  "premiumPlansSubtitle": "Standard • Silver • Gold • Platinum • Eternal",
+  "premiumPriceFiltersInactive": "ప్రీమియం ధర ఫిల్టర్‌లు ప్రస్తుతం నిష్క్రియంగా ఉన్నాయి.",
   "premiumTemplate": "ప్రీమియం టెంప్లేట్",
   "premiumUsers": "Premium Users",
+  "premiumWomen": "ప్రీమియం మహిళలు",
+  "preparingAdExperience": "ప్రకటన అనుభవాన్ని సిద్ధం చేస్తోంది...",
   "preparingBiodata": "మీ బయోడేటాను సిద్ధం చేస్తోంది...",
+  "preview": "Preview",
+  "previewCustomizedBiodata": "Preview Customized Biodata",
   "previewGenerationFailed": "ప్రివ్యూ జనరేషన్ విఫలమైంది. దయచేసి మళ్లీ ప్రయత్నించండి.",
   "previous": "వెనుకకు",
   "pricePerMonth": "₹{price}/నెల",
   "primary": "ప్రాథమిక",
+  "primaryContactHiddenOnPdf": "Hidden for privacy",
+  "primaryContactNumber": "Primary Contact Number",
+  "primaryContactVisibleOnPdf": "Registered calling number visible on PDF",
   "primaryPhoto": "ప్రాథమిక ఫోటో",
   "primaryPhotoUpdated": "ప్రాథమిక ఫోటో నవీకరించబడింది",
   "printBtn": "ముద్రించు",
   "prioritySupport": "ప్రాధాన్యత మద్దతు",
+  "privacyAndContentSwitches": "🔒 Privacy & Content Switches",
+  "privacyAndContentSwitchesSubtitle": "Toggle visibility of sensitive fields on your shared PDF",
   "privacyPolicy": "గోప్యతా విధానానికి",
   "privacyS1Content": "• వ్యక్తిగత డేటా: పేరు, వయస్సు, లింగం, కులం, విద్య, వృత్తి, కుటుంబ వివరాలు.\\n• సంప్రదింపు డేటా: ఫోన్ నంబర్, ఇమెయిల్ చిరునామా.\\n• మీడియా: మీ ప్రొఫైల్‌కు అప్‌లోడ్ చేసిన ఫోటోలు.\\n• పరికర డేటా: పరికర ఐడి, ఐపి చిరునామా (భద్రత & విశ్లేషణల కోసం).\\n• స్థాన డేటా: సమీప సంబంధాలను సూచించడానికి సుమారు స్థానం (నగరం/జిల్లా).",
   "privacyS1Title": "1. మేము సేకరించే సమాచారం",
@@ -611,6 +1949,7 @@
   "privateSectorEmployee": "ప్రైవేట్ రంగ ఉద్యోగి",
   "pro": "PRO",
   "proTips": "ప్రో చిట్కాలు",
+  "proceedToLogin": "ముందుకు → లాగిన్ చేయండి",
   "processingImage": "ఫోటో ప్రాసెస్ చేయబడుతోంది",
   "processingStatusCompressing": "Compressing...",
   "processingStatusPreparing": "Preparing...",
@@ -628,21 +1967,33 @@
   "profileDataNotFound": "ప్రొఫైల్ డేటా కనుగొనబడలేదు",
   "profileInsights": "ప్రొఫైల్ అంతర్దృష్టులు",
   "profileLinkCopied": "ప్రొఫైల్ లింక్ క్లిప్‌బోర్డ్‌కు కాపీ చేయబడింది!",
+  "profileMakeover": "ప్రొఫెషనల్ ప్రొఫైల్ మేకోవర్",
+  "profileManagedBy": "Profile Managed By",
+  "profileManagedBySubtitle": "Select who created and manages the candidate biodata",
   "profileNotFound": "ప్రొఫైల్ కనుగొనబడలేదు",
   "profilePhotos": "ప్రొఫైల్ ఫోటోలు",
   "profileRemovedFromSaved": "సేవ్ చేసిన వాటి నుండి ప్రొఫైల్ తీసివేయబడింది",
   "profileSaved": "ప్రొఫైల్ సేవ్ చేయబడింది!",
+  "profileSharedVia": "{title} ద్వారా {profileName} షేర్ చేయబడింది",
   "profileSharedWith": "ప్రొఫైల్ {name}తో షేర్ చేయబడింది",
   "profileStrengthLabel": "ప్రొఫైల్ సామర్థ్యం: {strength}",
   "profileViewLimitReached": "ప్రొఫైల్ వీక్షణ పరిమితిని చేరుకున్నారు",
+  "profileViews": "ప్రొఫైల్ వీక్షణలు",
   "profileViewsPerDay": "{count} ప్రొఫైల్ వీక్షణలు/రోజు",
+  "profiles": "ప్రొఫైల్స్",
+  "profilesSharedWithYouDesc": "మీ కుటుంబం మరియు స్నేహితులు మీతో భాగస్వామ్యం చేసిన ప్రొఫైల్‌లు ఇక్కడ కనిపిస్తాయి",
   "profilesYouSaveWillAppearHere": "మీరు సేవ్ చేసిన ప్రొఫైల్‌లు ఇక్కడ కనిపిస్తాయి",
+  "proofOfMarriage": "వివాహ ధృవీకరణ",
   "provideDetailsAboutYourGotraAndVillageTo": "సంఘం ధృవీకరించబడిన బ్యాడ్జ్‌ని పొందడానికి మీ గోత్రం మరియు గ్రామం గురించిన వివరాలను అందించండి.",
   "provideInformationAboutYourFamilyBackgro": "మీ కుటుంబ నేపథ్యం గురించి సమాచారాన్ని అందించండి",
   "public": "పబ్లిక్",
   "quick": "వేగం",
+  "quickOneTapSuggestions": "Quick 1-Tap Suggestions:",
+  "rashiMoonSign": "Rashi (Moon Sign)",
+  "readAll": "Read All",
   "ready": "సిద్ధంగా ఉంది",
   "readyForMarriage": "వివాహానికి సిద్ధంగా ఉన్నారు",
+  "received": "అందుకున్నారు",
   "recentConversations": "ఇటీవలి సంభాషణలు",
   "recentPhotosSixMonths": "గత 6 నెలల్లో తీసిన ఇటీవలి ఫోటోలు",
   "recentSearches": "ఇటీవలి శోధనలు",
@@ -653,23 +2004,35 @@
   "recordAShortIntro": "చిన్న పరిచయాన్ని రికార్డ్ చేయండి",
   "refer3FriendsGet1MonthFree": "3 స్నేహితులను సూచించండి, 1 నెల ఉచితంగా పొందండి!",
   "referAndEarn": "రెఫర్ చేసి సంపాదించండి",
+  "referenceRejected": "రిఫరెన్స్ తిరస్కరించబడింది",
   "referenceVerification": "సూచన ధృవీకరణ",
+  "referenceVerified": "రిఫరెన్స్ వెరిఫై చేయబడింది",
+  "referenceWithNumber": "రిఫరెన్స్ {number}",
   "references": "సూచనలు",
   "referralInvite": "రెఫరల్ ఆహ్వానం",
   "referralInviteMessage": "మా సంఘం కోసం అత్యంత విశ్వసనీయమైన వైవాహిక యాప్ అయిన బంజారాబయోలో చేరండి! ప్రారంభించడానికి నా లింక్‌ని ఉపయోగించండి: {link}",
   "referralInviteSubject": "బంజారాబయోలో చేరడానికి ఆహ్వానం",
   "referralLinkCopiedToClipboard": "రెఫరల్ లింక్ క్లిప్‌బోర్డ్‌కి కాపీ చేయబడింది!",
+  "referralRewardsTiers": "Referral Rewards Tiers 👑",
   "referralShareMessage": "మా కమ్యూనిటీ కోసం అత్యంత విశ్వసనీయమైన వైవాహిక యాప్ అయిన బంజారాబయో (BanjaraBio) లో చేరండి! ప్రారంభించడానికి నా లింక్ని ఉపయోగించండి: {link}",
   "referralShareSubject": "BanjaraBio invitation",
   "referrals": "Referrals",
   "referralsLabel": "రిఫరల్స్",
   "refresh": "రిఫ్రెష్",
+  "refund25": "25% రీఫండ్",
+  "refund35": "35% రీఫండ్",
+  "registrationFee": "రిజిస్ట్రేషన్ ఫీజు",
+  "registrationSubmitted": "Registration Submitted!",
   "reject": "తిరస్కరించు",
   "rejected": "తిరస్కరించబడింది",
+  "relationLabel": "సంబంధం",
+  "relationSubtitle": "Select Relationship",
   "relative": "బంధువు",
+  "relocationPreference": "Relocation Preference",
   "remainingToday": "ఈరోజు మిగిలి ఉంది",
   "remove": "తొలగించు",
   "removePhoto": "తొలగించు",
+  "replacePhoto": "ఫోటో మార్చండి",
   "report": "రిపోర్ట్ చేయి",
   "reportSubmittedReview": "నివేదిక సమర్పించబడింది. మా బృందం 24 గంటల్లోగా దీన్ని సమీక్షిస్తుంది.",
   "reportUser": "వినియోగదారుని నివేదించండి",
@@ -679,15 +2042,25 @@
   "requestsSentSuccessfully": "అభ్యర్థనలు విజయవంతంగా పంపబడ్డాయి!",
   "rerecord": "రీ-రికార్డ్",
   "reset": "రీసెట్",
+  "resetAllFilters": "Reset All Filters",
   "reshare": "పునఃభాగస్వామ్యం",
+  "resumeDraftCta": "డ్రాఫ్ట్ పూర్తి చేయండి 👉",
   "retake": "తిరిగి తీసుకోండి",
   "retry": "మళ్ళీ ప్రయత్నించు",
+  "revenueToday": "నేటి ఆదాయం (₹)",
+  "revenueTotal": "మొత్తం ఆదాయం (₹)",
   "reviewDetails": "రివ్యూ వివరాలు",
   "reviewVideoManuallyInStorageForNow": "ప్రస్తుతానికి స్టోరేజ్‌లో వీడియోని మాన్యువల్‌గా రివ్యూ చేయండి",
   "rewards": "Rewards",
   "rewardsLabel": "రివార్డ్స్",
   "rich": "ధనవంతులు",
+  "rmHandpickedMatches": "RM Handpicked Matches",
+  "rmHandpickedMatchesSubtitle": "Profiles curated and vetted by your Personal Relationship Manager",
+  "royalBanjaraTemplatesWithCount": "{count} Royal Banjara Templates",
+  "royalPlanDesc": "రిలేషన్షిప్ మేనేజర్ మీ కోసం భాగస్వామిని వెతుకుతారు",
+  "royalPlanName": "రాయల్",
   "rupeeSymbol": "₹",
+  "safetyAndHealth": "భద్రత మరియు ఆరోగ్యం",
   "save": "సేవ్ చేయి",
   "saveBiodata": "బయోడేటా సేవ్ చేయి",
   "saved": "సేవ్ చేయబడింది",
@@ -695,6 +2068,10 @@
   "sayHelloLabel": "హలో చెప్పండి!",
   "search": "శోధించు",
   "searchByNameJobEducation": "పేరు, ఉద్యోగం, విద్య ద్వారా శోధించండి...",
+  "searchLeads": "లీడ్స్ వెతకండి...",
+  "searchMatchesForRelativesCta": "సంబంధాలు చూడండి 👉",
+  "searchMatchesForRelativesSubtitle": "కుమారుడు, కుమార్తె లేదా బంధువుల కోసం వేలాది ధృవీకరించబడిన ప్రొఫైల్‌లను నేరుగా చూడండి.",
+  "searchMatchesForRelativesTitle": "బంధువుల కోసం సంబంధాలు చూడండి",
   "searchProfiles": "ప్రొఫైల్‌లను శోధించండి...",
   "searchResults": "శోధన ఫలితాలు",
   "searchSharedProfiles": "భాగస్వామ్య ప్రొఫైల్‌లను శోధించండి...",
@@ -702,15 +2079,24 @@
   "searchUserName": "వినియోగదారు పేరును శోధించండి...",
   "secure": "సురక్షితం",
   "seeAll": "అన్నీ చూడు",
+  "seenAllProfiles": "మీరు అన్ని ప్రొఫైల్‌లను చూశారు!",
   "selectAnnualIncome": "వార్షిక ఆదాయ శ్రేణి ఎంచుకోండి",
   "selectAnnualIncomeRange": "వార్షిక ఆదాయ పరిధిని ఎంచుకోండి",
+  "selectAppLanguageTitle": "యాప్ భాషను ఎంచుకోండి",
+  "selectBiodataLanguage": "Select Biodata Language",
+  "selectBudgetRange": "Select Budget Range",
   "selectDate": "తేదీని ఎంచుకోండి",
+  "selectDistrict": "జిల్లాను ఎంచుకోండి",
   "selectDistrictFirst": "ముందుగా జిల్లాను ఎంచుకోండి",
   "selectDocumentType": "డాక్యుమెంట్ రకాన్ని ఎంచుకోండి",
   "selectEducationLevel": "మీ విద్యా స్థాయిని ఎంచుకోండి",
   "selectFromYourPhotos": "మీ ఫోటోల నుండి ఎంచుకోండి",
   "selectLanguage": "భాషను ఎంచుకోండి",
   "selectLocation": "స్థానాన్ని ఎంచుకోండి",
+  "selectMaritalStatus": "Select marital status requirement",
+  "selectMatchPreference": "Select match preference for groom or bride search",
+  "selectPaternalGotra": "Select candidate paternal Gotra customary clan",
+  "selectRewardType": "బహుమతి రకాన్ని ఎంచుకోండి",
   "selectState": "రాష్ట్రం ఎంచుకోండి",
   "selectStateFirst": "ముందుగా రాష్ట్రాన్ని ఎంచుకోండి",
   "selectTalukaOptional": "తాలూకాను ఎంచుకోండి (ఐచ్ఛికం)",
@@ -721,13 +2107,20 @@
   "selectYourSurname": "మీ ఇంటిపేరు ఎంచుకోండి",
   "selectedPhotos": "ఎంచుకున్న ఫోటోలు",
   "self": "Self",
+  "selfAndMamakulSubtitle": "Self: {self} • Mamakul: {mamakul}",
+  "selfClanRule": "Bride & Groom must not share the same paternal Gotra (e.g. Rathod, Pawar, Chavan, Jadhav).",
+  "selfClanTitle": "1. Self Clan (गोत्र):",
   "selfEmployed": "స్వయం ఉపాధి",
+  "selfServicePlans": "సెల్ఫ్ సర్వీస్",
   "selfieSubmitted": "సెల్ఫీ సమర్పించారు",
   "send": "పంపండి",
+  "sendHeartInterested": "మీకు ఆసక్తి ఉందని తెలియజేయడానికి హార్ట్ పంపండి.",
   "sendInterest": "ఆసక్తి పంపండి",
   "sendMessage": "సందేశం పంపండి",
+  "sendToCandidateWhatsApp": "Send to Bride/Groom on WhatsApp 🚩",
   "sendVerification": "ధృవీకరణను పంపండి",
   "sendVerificationRequests": "ధృవీకరణ అభ్యర్థనలను పంపండి",
+  "sent": "పంపబడింది",
   "setAsPrimary": "ప్రాథమికంగా సెట్ చేయండి",
   "settings": "సెట్టింగ్‌లు",
   "settingsAndMenu": "సెట్టింగ్‌లు మరియు మెనూ",
@@ -749,49 +2142,111 @@
   "shareYourProfileProfessionally": "వృత్తిపరంగా మీ ప్రొఫైల్‌ను భాగస్వామ్యం చేయండి",
   "shared": "మ్యాచ్‌లు",
   "sharedProfiles": "షేర్ చేసిన ప్రొఫైల్‌లు",
+  "sharedProfilesWithEachOther": "మీరు మరియు {name} ఒకరితో ఒకరు ప్రొఫైల్‌లను పంచుకున్నారు.",
   "sharedVia": "{method} ద్వారా {name} షేర్ చేయబడింది",
   "sharesPerMonth": "{count} షేర్లు/నెల",
   "sharingBiodataPdf": "బయోడేటా PDFని భాగస్వామ్యం చేస్తోంది",
+  "sharingProfile": "ప్రొఫైల్ భాగస్వామ్యం చేయబడుతోంది...",
+  "sharingProfiles": "ప్రొఫైల్‌ల భాగస్వామ్యం",
+  "sibling": "తోబుట్టువు",
+  "siblingsCount": "{count, plural, =1{1 తోబుట్టువు} other{{count} తోబుట్టువులు}}",
+  "siblingsLabel": "తోబుట్టువులు",
+  "signIn": "సైన్ ఇన్ చేయండి",
+  "signInRequired": "సైన్ ఇన్ అవసరం",
+  "signInRequiredContent": "ఈ ఫీచర్‌ని ఉపయోగించడానికి దయచేసి సైన్ ఇన్ చేయండి లేదా ఖాతాను సృష్టించండి.",
   "silver": "వెండి",
   "silverPlanDesc": "ప్రారంభించడానికి సరైనది",
   "silverPlanName": "సిల్వర్",
+  "similarMatches": "Similar Matches",
   "sister": "సోదరి",
   "sisterCount": "అక్కాచెల్లెళ్ళు",
+  "sistersCount": "{count, plural, =1{1 సోదరి} other{{count} సోదరీమణులు}}",
+  "sixMonthsFree": "6 Months Free",
   "skip": "దాటవేయి",
+  "skipAndSelectLevel": "దాటవేయి మరియు మండలం/జిల్లాను ఎంచుకోండి",
+  "skipAndUseDistrict": "Skip & Use District",
+  "smartRecommendations": "Smart Recommendations",
+  "smartRecommendationsSubtitle": "Receive curated bio recommendations tailored for you.",
   "smileNaturallyTip": "స్నేహపూర్వకంగా కనిపించడానికి సహజంగా నవ్వండి",
+  "smokingHabits": "Smoking Habits",
   "socialMediaTextOverlays": "టెక్స్ట్ ఓవర్లేలతో కూడిన సోషల్ మీడియా ఫోటోలు",
   "solicitingMoney": "డబ్బు అడగడం",
   "someone": "ఎవరో",
   "somethingWentWrong": "ఏదో తప్పు జరిగింది",
   "son": "కొడుకు",
+  "sortServicesBy": "Sort Services By",
+  "specificLocation": "నిర్దిష్ట స్థానం",
+  "specified": "Specified",
   "specifyEducation": "చదువు వివరాలను తెలపండి",
   "specifyProfession": "వృత్తిని తెలపండి",
+  "standardFilters": "Standard Filters",
+  "standardFiltersSubtitle": "Basic demographic criteria for all registered members",
+  "standardPlanDesc": "ఒక నెల పాటు ప్రీమియం ఫీచర్లను ప్రయత్నించండి",
+  "standardPlanName": "స్టాండర్డ్",
   "standardProfile": "సాధారణ ప్రొఫైల్",
   "start": "ప్రారంభించండి",
   "startAConversation": "Start a conversation",
+  "startChatting": "START CHATTING 💬",
   "startConversation": "సంభాషణ ప్రారంభించండి",
   "startRecording": "రికార్డింగ్ ప్రారంభించండి",
+  "startSharingProfilesDesc": "ఖచ్చితమైన మ్యాచ్‌ను కనుగొనడంలో సహాయపడటానికి కుటుంబం మరియు స్నేహితులతో ప్రొఫైల్‌లను భాగస్వామ్యం చేయడం ప్రారంభించండి",
   "state": "రాష్ట్రం",
+  "stateInIndia": "State in India",
   "statusWaitingForApproval": "స్థితి: ఆమోదం కోసం వేచి ఉంది",
   "stay": "ఉండండి",
+  "stayConnectedOnBanjaraBio": "Stay Connected on BanjaraBio",
+  "step1SelectCategory": "1. Select Your Service Category",
+  "step1SelectCategorySubtitle": "Choose the primary wedding service you provide",
+  "step2BusinessContact": "2. Business & Contact Information",
+  "step2BusinessContactSubtitle": "Enter authentic details for community clients",
+  "step3ServiceSpecs": "3. Dynamic Service Specifications",
+  "step3ServiceSpecsSubtitle": "Specific details tailored for {category}",
+  "step4PricingExperience": "4. Pricing & Experience",
+  "step4PricingExperienceSubtitle": "Help families understand your package range",
+  "stepCounterFormat": "{total} లో {current} వ దశ",
+  "stepLabelDetails": "వివరాలు",
+  "stepLabelGoal": "లక్ష్యం",
+  "stepLabelSignIn": "సైన్ ఇన్",
+  "stepLabelType": "రకం",
+  "stepLabelWelcome": "స్వాగతం",
   "stepNOfTotal": "దశ {current} / {total}",
+  "strictPrivacyNotificationNote": "100% Strict Privacy: Bookmarks & profile views are completely private and never triggered as notifications.",
+  "strongBanjaraClanAlignment": "Strong Banjara Clan & Astro Alignment",
   "student": "విద్యార్థి",
+  "subCaste": "Sub-Caste",
+  "subCasteJatiVariant": "Sub-Caste / Jati Variant",
+  "subCasteSubtitle": "Filter by regional Banjara cultural designation",
   "submit": "సమర్పించు",
+  "submitForReview": "సమీక్ష కోసం సమర్పించండి",
   "submitForVerification": "ధృవీకరణ కోసం సమర్పించండి",
+  "submitVendorRegistration": "Submit Vendor Registration",
   "submittedForReview": "సమీక్ష కోసం సమర్పించబడింది",
   "subscription": "సభ్యత్వం",
+  "subsidizedPricePill": "Subsidized: ₹20 / month  •  ₹200 / year",
+  "successSubmission": "విజయం! మీ అభ్యర్థన సమీక్ష కోసం సమర్పించబడింది.",
   "supportAndHelp": "మద్దతు మరియు సహాయం",
   "supportBanjarabioApp": "support@banjarabio.com",
   "surname": "ఇంటిపేరు",
+  "surnameLabel": "ఇంటి పేరు",
   "swipe": "స్వైప్",
   "takePhoto": "ఫోటో తీయండి",
   "taluka": "తాలూకా",
   "talukaInDistrictState": "{district}, {state} లోని తాలూకా",
   "talukaOptional": "తాలూకా (ఐచ్ఛికం)",
+  "tapAgainToChat": "Tap again to Chat ➔",
+  "tapAgainToJoin": "Tap again to Join ➔",
+  "tapAgainToOpen": "Tap again to Open ➔",
+  "tapAgainToView": "Tap again to View ➔",
+  "tapAnyThemeToApply": "Tap any theme to instantly apply it to your biodata.",
   "tapTheButtonToAddAPhoto": "ఫోటోను జోడించడానికి + బటన్‌ను నొక్కండి",
   "tapToAddPhoto": "Tap to add photo",
+  "tapToPreviewKundali": "Tap to preview Kundali chart & planetary alignments",
   "tapToReveal": "✨ బహిర్గతం చేయడానికి నొక్కండి",
+  "targetBiodataQuestion": "Which biodata are you looking for?",
+  "targetGenderSubtitle": "Select Gender (Bride / Groom)",
   "teacherProfessor": "టీచర్/ప్రొఫెసర్",
+  "teamVisit": "టీమ్ విజిట్",
+  "tellUsYourStory": "మీ కథను మాకు చెప్పండి",
   "telugu": "తెలుగు",
   "template": "మూస",
   "tenToFifteenLakh": "10 - 15 లక్షలు",
@@ -815,312 +2270,42 @@
   "termsS7Title": "7. పాలక చట్టం",
   "termsTitle": "నిబంధనలు మరియు షరతులు",
   "textSuper": "సూపర్",
+  "themesCount": "Themes ({count})",
   "thisFieldIsRequired": "ఈ ఫీల్డ్ అవసరం",
-  "totalCount": "మొత్తం:",
-  "totalProfiles": "Total Profiles",
-  "traditionalFormalAttire": "సాంప్రదాయ లేదా ఫార్మల్ దుస్తులు (చీర, సల్వార్ కమీజ్, కుర్తా)",
-  "trustScore": "నమ్మకం స్కోర్",
-  "trustScoreBeyondBeauty": "అందం మించిన నమ్మకం",
-  "trustScoreDiscounts": "ట్రస్ట్ స్కోర్ & డిస్కౌంట్లు",
-  "trustScoreShareMessage": "నేను ఇప్పుడే బంజారాబయోలో {score} ట్రస్ట్ స్కోర్‌తో నా ప్రొఫైల్‌ను ధృవీకరించాను! నా ప్రొఫైల్‌ని తనిఖీ చేయండి మరియు మా కమ్యూనిటీలో చేరండి: {url}",
-  "trustVerification": "నమ్మకం & ధృవీకరణ",
-  "trusted": "నమ్మకమైనది",
-  "trustedMember": "Trusted Member",
-  "trustedProfile": "నమ్మదగిన ప్రొఫైల్",
-  "tryAdjustingYourFilterCriteria": "మీ ఫిల్టర్ ప్రమాణాలను సర్దుబాటు చేయడానికి ప్రయత్నించండి",
-  "tryAdjustingYourFiltersToSeeMoreProfiles": "బంజారా సంఘం నుండి మరిన్ని ప్రొఫైల్‌లను చూడటానికి మీ ఫిల్టర్‌లను సర్దుబాటు చేయడానికి ప్రయత్నించండి",
-  "tryAgain": "మళ్లీ ప్రయత్నించండి",
-  "trySearchingForADifferentCity": "వేరే నగరం కోసం వెతకడానికి ప్రయత్నించండి",
-  "trySearchingForDifferentCity": "వేరే నగరం కోసం వెతకడానికి ప్రయత్నించండి",
-  "twentyLakhPlus": "₹20 లక్షలు+",
-  "twoToFiveLakh": "₹2 - ₹5 లక్షలు",
-  "typeAMessage": "సందేశాన్ని టైప్ చేయండి...",
-  "typeMessage": "సందేశం టైప్ చేయండి...",
-  "unauthorizedAccessAdminsOnly": "అనధికార యాక్సెస్. నిర్వాహకులు మాత్రమే.",
-  "under2Lakh": "₹2 లక్షల కంటే తక్కువ",
-  "undo": "వెనక్కి తీసుకో",
-  "unexpectedError": "ఊహించని లోపం సంభవించింది: {error}",
-  "unexpectedErrorOccurred": "ఊహించని లోపం సంభవించింది: {error}",
-  "unknownUser": "Unknown User",
-  "unlimitedBookmarks": "అపరిమిత బుక్‌మార్క్‌లు",
-  "unlimitedProfileViews": "అపరిమిత ప్రొఫైల్ వీక్షణలు",
-  "unlimitedSharing": "అపరిమిత భాగస్వామ్యం",
-  "unlockAdvancedFilters": "అధునాతన ఫిల్టర్‌లు అన్‌లాక్ చేయండి",
-  "unlockNow": "ఇప్పుడే అన్‌లాక్ చేయండి",
-  "unlockPremiumBiodata": "ప్రీమియం బయోడేటాను అన్‌లాక్ చేయండి",
-  "unlockPremiumFeaturesToEnhanceYourBiodat": "మీ బయోడేటా ప్రొఫైల్‌ని మెరుగుపరచడానికి ప్రీమియం ఫీచర్‌లను అన్‌లాక్ చేయండి",
-  "unlockToDownload": "ఈ టెంప్లేట్‌ని 5+ భాషల్లో డౌన్‌లోడ్ చేయడానికి మరియు భాగస్వామ్యం చేయడానికి అన్‌లాక్ చేయండి.",
-  "unmarried": "అవివాహితులు",
-  "unsave": "అన్‌సేవ్",
-  "update": "నవీకరించు",
-  "updateProfile": "ప్రొఫైల్ అప్‌డేట్ చేయి",
-  "upgrade": "అప్‌గ్రేడ్ చేయండి",
-  "upgradeNow": "ఇప్పుడు అప్‌గ్రేడ్ చేయండి",
-  "upgradePlan": "ప్లాన్ అప్‌గ్రేడ్ చేయి",
-  "upgradePremiumFilters": "వృత్తి, స్థానం మరియు మరిన్నింటికి ప్రీమియంకు అప్‌గ్రేడ్ చేయండి.",
-  "upgradeRequired": "అప్‌గ్రేడ్ అవసరం",
-  "upgradeToPremium": "ప్రీమియానికి అప్‌గ్రేడ్ అవ్వండి",
-  "upgradeToPremiumFor6PhotosAdvancedFilter": "6 ఫోటోలు & అధునాతన ఫిల్టర్‌ల కోసం Premiumకి అప్‌గ్రేడ్ చేయండి",
-  "upgradeToPremiumToAccessGranularFiltersF": "Upgrade to Premium to access granular filters",
-  "upgradeToUnlockAllFeatures": "అన్ని లక్షణాలను అన్‌లాక్ చేయడానికి అప్‌గ్రేడ్ చేయండి",
-  "uploadCommunityCertificateLetter": "కమ్యూనిటీ సర్టిఫికేట్ / లేఖను అప్‌లోడ్ చేయండి",
-  "uploadYourPhotos": "మీ అత్యుత్తమ ఫోటోలు అప్‌లోడ్ చేయండి",
-  "uploadedSuccessfully": "విజయవంతంగా అప్‌లోడ్ చేయబడింది",
-  "upperMiddleClass": "ఉన్నత మధ్యతరగతి",
-  "useCameraToCapture": "ఫోటో తీయడానికి కెమెరాను వాడండి",
-  "useCurrentLocation": "ప్రస్తుత స్థానాన్ని ఉపయోగించండి",
-  "useEmailPassword": "ఇమెయిల్ / పాస్‌వర్డ్ ఉపయోగించండి",
-  "useNaturalLightingTip": "ఉత్తమ ఫలితాల కోసం సహజ కాంతిని ఉపయోగించండి",
-  "userBlockedSuccessfully": "వినియోగదారు విజయవంతంగా బ్లాక్ చేయబడ్డారు",
-  "userIdNotFound": "వినియోగదారు ఐడి కనుగొనబడలేదు",
-  "userIdNotFoundToast": "User ID not found",
-  "userLabel": "వాడుకరి",
-  "userNotUploadedPhoto": "వినియోగదారు ఫోటోను అప్‌లోడ్ చేయలేదు",
-  "users": "Users",
-  "usingGps": "GPSని ఉపయోగించడం",
-  "verificationBadge": "ధృవీకరణ బ్యాడ్జ్",
-  "verificationCodeSent": "ధృవీకరణ కోడ్ పంపబడింది!",
-  "verificationFailed": "Verification failed",
-  "verificationLinkcodeSent": "ధృవీకరణ లింక్/కోడ్ పంపబడింది!",
-  "verificationRequests": "Verification Requests",
-  "verifications": "Verifications",
-  "verified": "ధృవీకరించబడింది",
-  "verified10PointsAddedToTrustScore": "ధృవీకరించబడింది! ట్రస్ట్ స్కోర్‌కి +10 పాయింట్లు జోడించబడ్డాయి",
-  "verifiedCommunityMember": "ధృవీకరించబడిన సంఘం సభ్యుడు",
-  "verifiedProfile": "ధృవీకరించబడిన ప్రొఫైల్",
-  "verifiedProfileBadge": "ధృవీకరించబడిన ప్రొఫైల్",
-  "verifiedProfilesGet5xMoreResponses": "ధృవీకరించబడిన ప్రొఫైల్‌లు 5 రెట్లు ఎక్కువ స్పందనలను పొందుతాయి మరియు సెర్చ్ ఫలితాల్లో పైన కనిపిస్తాయి.",
-  "verifiedTrusted": "ధృవీకరించబడింది & విశ్వసనీయమైనది",
-  "verify": "ధృవీకరించండి",
-  "verifyEmailAddressHeading": "Verify Email Address",
-  "verifyLabel": "{label} వెరిఫై చేయండి",
-  "verifyMobile": "మొబైల్ ధృవీకరించండి",
-  "verifyNow": "ఇప్పుడే ధృవీకరించండి",
-  "verifyOtp": "Verify OTP",
-  "verifyYourCommunityStatus": "మీ సంఘం స్థితిని ధృవీకరించండి",
-  "verifyYourEmailAddressToAddTrustAndReach": "నమ్మకాన్ని జోడించడానికి మరియు మరిన్ని ప్రొఫైల్‌లను చేరుకోవడానికి మీ ఇమెయిల్ చిరునామాను ధృవీకరించండి.",
-  "verifyYourMobileNumberToAddTrustAndReach": "నమ్మకాన్ని జోడించడానికి మరియు మరిన్ని ప్రొఫైల్‌లను చేరుకోవడానికి మీ మొబైల్ నంబర్‌ను ధృవీకరించండి.",
-  "veryFair": "చాలా తెల్లగా",
-  "videoBioIntro": "వీడియో బయో / పరిచయం",
-  "videoIntro": "వీడియో పరిచయం",
-  "videoIntroUploaded": "వీడియో పరిచయం అప్‌లోడ్ చేయబడింది",
-  "videoRecorded": "వీడియో రికార్డ్ చేయబడింది!",
-  "view": "చూడండి",
-  "viewAll": "అన్నీ వీక్షించండి",
-  "viewBiodata": "బయోడేటా చూడు",
-  "viewDetails": "వివరాలను వీక్షించండి",
-  "viewLabel": "వీక్షణ",
-  "viewProfile": "ప్రొఫైల్ చూడు",
-  "viewYourBookmarkedProfiles": "మీరు బుక్‌మార్క్ చేసిన ప్రొఫైల్‌లను వీక్షించండి",
-  "viewsLabel": "వీక్షణలు",
-  "village": "గ్రామం",
-  "visibleToAllProfiles": "అన్ని ప్రొఫైల్‌లకు కనిపిస్తుంది",
-  "visibleToCloseMatchesOnly": "మ్యాచ్‌లను మూసివేయడానికి మాత్రమే కనిపిస్తుంది",
-  "weEncounteredAnUnexpectedErrorWhileProce": "మీ అభ్యర్థనను ప్రాసెస్ చేస్తున్నప్పుడు మేము ఊహించని లోపాన్ని ఎదుర్కొన్నాము.",
-  "weWillSendAVerificationRequestToTheirMob": "మేము వారి మొబైల్ నంబర్‌కు ధృవీకరణ అభ్యర్థనను పంపుతాము. వారు ఆమోదించిన తర్వాత, మీరు +10 పాయింట్లను పొందుతారు.",
-  "weWillVerifyYourCommunityDetailsShortly1": "మేము మీ సంఘం వివరాలను త్వరలో ధృవీకరిస్తాము. +15 పాయింట్లు పెండింగ్‌లో ఉన్నాయి.",
-  "welcomeToBanjaraBio": "బంజారా బయోకు స్వాగతం",
-  "whatDoYouLookFor": "మీరు జీవిత భాగస్వామిలో ఏమి వెతుకుతున్నారు?",
-  "whatsApp": "WhatsApp",
-  "whatsAppContact": "వాట్సాప్ కాంటాక్ట్",
-  "whatsappShareSubtitle": "{name} వివరాలను కుటుంబం లేదా స్నేహితులతో పంచుకోండి",
-  "whatsappSupport": "WhatsApp మద్దతు",
-  "wheatish": "గోధుమ రంగు",
-  "whereDoYouWork": "మీరు ఎక్కడ పని చేస్తున్నారు?",
-  "whoViewedMe": "నన్ను ఎవరు చూసారు",
-  "whyBanjaraBio": "బంజారా బయో ఎందుకు?",
-  "widowed": "విధవలు/విధురులు",
-  "writeAboutYourself": "మీ గురించి ఏదైనా రాయండి...",
-  "year": "సంవత్సరం",
-  "yearsOld": "{age} సంవత్సరాలు",
-  "yes": "అవును",
-  "yesterday": "నిన్న",
-  "youNeedAProfileToShareIt": "షేర్ చేయడానికి మీకు ప్రొఫైల్ అవసరం.",
-  "youWillNoLongerSeeThisProfile": "మీరు ఇకపై ఈ ప్రొఫైల్‌ను చూడలేరు",
-  "youngerBrother": "తమ్ముడు",
-  "youngerSister": "చెల్లెలు",
-  "your": "మీ",
-  "yourDailyMatches": "మీ రోజువారీ మ్యాచ్‌లు",
-  "yourDocumentsAreEncrypted": "మీ పత్రాలు ఎన్‌క్రిప్ట్ చేయబడ్డాయి మరియు ఇతర వినియోగదారులకు ఎప్పుడూ చూపబడవు. బ్యాజ్ మాత్రమే కనిపిస్తుంది.",
-  "yourDocumentsHaveBeenSubmittedSecurelyWe": "మీ పత్రాలు సురక్షితంగా సమర్పించబడ్డాయి. ధృవీకరించబడిన తర్వాత మేము మీకు తెలియజేస్తాము.",
-  "yourIntroVideoIsUnderReview10PointsPendi": "మీ పరిచయ వీడియో సమీక్షలో ఉంది. +10 పాయింట్లు ఆమోదం పెండింగ్‌లో ఉన్నాయి.",
-  "yourMatchesWillAppearHereOnceYouBothExpr": "మీరిద్దరూ ఆసక్తిని వ్యక్తం చేసిన తర్వాత మీ మ్యాచ్‌లు ఇక్కడ కనిపిస్తాయి. మీ ఖచ్చితమైన సరిపోలికను కనుగొనడానికి ప్రొఫైల్‌లను భాగస్వామ్యం చేస్తూ ఉండండి!",
-  "yourPersonalInviteLink": "మీ వ్యక్తిగత ఆహ్వాన లింక్",
-  "yourReferralCode": "మీ రెఫరల్ కోడ్",
-  "yourSelfieHasBeenSubmittedOurTeamWillVer": "మీ సెల్ఫీ సమర్పించబడింది. మా బృందం దీన్ని మీ ప్రొఫైల్ ఫోటోతో ధృవీకరిస్తుంది.",
-  "yourTrustScore": "మీ ట్రస్ట్ స్కోర్",
-  "yrs": "{count} సంవత్సరాలు",
-  "interest": "ఆసక్తి",
-  "revenueToday": "నేటి ఆదాయం (₹)",
-  "premiumMen": "ప్రీమియం పురుషులు",
-  "premiumWomen": "ప్రీమియం మహిళలు",
-  "financialPerformance": "ఆర్థిక పనితీరు",
-  "demographicsAndPremium": "జనాభా మరియు ప్రీమియం",
-  "sharingProfiles": "ప్రొఫైల్‌ల భాగస్వామ్యం",
-  "sharingProfile": "ప్రొఫైల్ భాగస్వామ్యం చేయబడుతోంది...",
-  "expressInterest": "ఆసక్తిని తెలియజేయాలా?",
-  "interestConfirmationDesc": "మీ ఆసక్తిని తెలియజేయడానికి మీ ప్రొఫైల్‌ను {name}తో పంచుకోవాలనుకుంటున్నారా?",
-  "yesInterest": "అవును, ఆసక్తి ఉంది",
-  "interestConfirmationTitle": "ఆసక్తిని తెలియజేయాలా?",
-  "interestConfirmationMessage": "దీని ద్వారా మీ ప్రొఫైల్ {name}తో పంచుకోబడుతుంది మరియు వారు మిమ్మల్ని సంప్రదించగలరు. మీకు ఖచ్చితంగా ఉందా?",
-  "interestShared": "{name}తో ఆసక్తిని పంచుకున్నారు!",
-  "upgradeToShareMore": "మరింత భాగస్వామ్యం చేయడానికి అప్‌గ్రేడ్ చేయండి",
-  "itSAMatch": "మ్యాచ్ కుదిరింది!",
-  "sharedProfilesWithEachOther": "మీరు మరియు {name} ఒకరితో ఒకరు ప్రొఫైల్‌లను పంచుకున్నారు.",
-  "mutualMatch": "పరస్పర సరిపోలిక",
+  "threeXReplies": "3x Replies",
+  "tier4Vip": "TIER 4 VIP",
+  "tillUMarry": "మీకు పెళ్లి అయ్యేవరకు",
+  "tipPersonalizedNotes": "Tip: Personalized notes get 3x replies",
   "toContact": "వీరికి: {name}",
-  "fromContact": "వీరి నుండి: {name}",
-  "countProfileViews": "{count, plural, =1{1 ప్రొఫైల్ వీక్షణ} other{{count} ప్రొఫైల్ వీక్షణలు}}",
-  "matchedBadge": "సరిపోలింది",
-  "premiumBadge": "ప్రీమియం",
-  "contactLabel": "సంప్రదించండి",
-  "profileSharedVia": "{title} ద్వారా {profileName} షేర్ చేయబడింది",
-  "failedToSendMessage": "సందేశాన్ని పంపడంలో విఫలమైంది: {error}",
-  "uploadFailed": "అప్‌లోడ్ విఫలమైంది: {error}",
-  "updateFailed": "అప్‌డేట్ విఫలమైంది: {error}",
-  "errorWithLabel": "లోపం: {label}",
-  "referenceWithNumber": "రిఫరెన్స్ {number}",
-  "villageTanda": "గ్రామం / తాండా",
-  "ageLabel": "వయస్సు",
-  "heightLabel": "ఎత్తు",
-  "surnameLabel": "ఇంటి పేరు",
-  "dateOfBirthLabel": "పుట్టిన తేదీ",
-  "birthTimeLabel": "పుట్టిన సమయం",
-  "birthPlaceLabel": "పుట్టిన స్థలం",
-  "bloodGroupLabel": "రక్త వర్గం",
-  "occupationLabel": "వృత్తి",
-  "annualIncomeLabel": "వార్షిక ఆదాయం",
-  "currentResidence": "ప్రస్తుత నివాసం",
-  "contactPersonLabel": "సంప్రదించవలసిన వ్యక్తి",
-  "limitReached": "పరిమితి ముగిసింది",
-  "relationLabel": "సంబంధం",
-  "bestTimeToContact": "సంప్రదించడానికి ఉత్తమ సమయం",
-  "none": "ఏదీ లేదు",
-  "yearsLabel": "{count, plural, =1{సంవత్సరం} other{సంవత్సరాలు}}",
-  "brothersCount": "{count, plural, =1{1 సోదరుడు} other{{count} సోదరులు}}",
-  "sistersCount": "{count, plural, =1{1 సోదరి} other{{count} సోదరీమణులు}}",
-  "siblingsCount": "{count, plural, =1{1 తోబుట్టువు} other{{count} తోబుట్టువులు}}",
-  "siblingsLabel": "తోబుట్టువులు",
-  "company": "కంపెనీ",
-  "job": "ఉద్యోగం / పని",
-  "biodataRequired": "Biodata Required",
-  "guestRestrictionMessage": "To interact with profiles, express interest, or send messages, you need to create your own biodata first.",
-  "createNow": "Create Now",
-  "tourLocationTitle": "Select Location",
-  "tourLocationDesc": "Filter profiles by State, District, or Taluka to find matches near you.",
-  "tourSearchTitle": "Search Profiles",
-  "tourSearchDesc": "Looking for someone specific? Type their name or education here.",
-  "tourFilterTitle": "Advanced Filters",
-  "tourFilterDesc": "Narrow down by Age, Education, or Profession to see only who you want.",
-  "tourChatTitle": "Messages & Chat",
-  "tourChatDesc": "View your conversations and incoming interests here.",
+  "topDelivery": "Top Delivery",
+  "totalBlocks": "మొత్తం బ్లాక్స్",
+  "totalCount": "మొత్తం:",
+  "totalFemales": "మొత్తం మహిళలు",
+  "totalMales": "మొత్తం పురుషులు",
+  "totalMessages": "మొత్తం సందేశాలు",
+  "totalProfiles": "Total Profiles",
+  "totalSavings": "మొత్తం ఆదా: ₹{amount}",
+  "totalUsers": "మొత్తం యూజర్లు",
+  "tourBookmarkDesc": "Found a profile you like? Bookmark it to view it later in your Saved list.",
+  "tourBookmarkTitle": "Save for later",
   "tourBottomHome": "Home Feed",
   "tourBottomHomeDesc": "Scroll through thousands of verified profiles.",
-  "tourBottomShared": "Shared Profiles",
-  "tourBottomSharedDesc": "See profiles you've shared or received via WhatsApp/Link.",
   "tourBottomProfile": "Your Profile",
   "tourBottomProfileDesc": "Manage your own biodata and photos here.",
   "tourBottomSettings": "App Settings",
   "tourBottomSettingsDesc": "Change language, notification settings, or contact support.",
-  "tourWhatsappTitle": "WhatsApp Support",
-  "tourWhatsappDesc": "Direct contact with our admin for help or profile changes.",
-  "tourInstagramTitle": "Follow Us",
+  "tourBottomShared": "Shared Profiles",
+  "tourBottomSharedDesc": "See profiles you've shared or received via WhatsApp/Link.",
+  "tourChatDesc": "View your conversations and incoming interests here.",
+  "tourChatTitle": "Messages & Chat",
+  "tourFilterDesc": "Narrow down by Age, Education, or Profession to see only who you want.",
+  "tourFilterTitle": "Advanced Filters",
   "tourInstagramDesc": "See daily new profiles and success stories on Instagram.",
-  "tourBookmarkTitle": "Save for later",
-  "tourBookmarkDesc": "Found a profile you like? Bookmark it to view it later in your Saved list.",
-  "tourInterestTitle": "Express Interest",
+  "tourInstagramTitle": "Follow Us",
   "tourInterestDesc": "Send a heart to let them know you're interested in their biodata.",
-  "tourShareTitle": "Share with family",
-  "tourShareDesc": "Easily share profiles via WhatsApp with your parents or relatives for their opinion.",
-  "chooseHowToStart": "మీరు ఎలా ప్రారంభించాలనుకుంటున్నారో ఎంచుకోండి",
-  "exploreAsGuest": "అతిథిగా అన్వేషించండి",
-  "exitGuestMode": "గెస్ట్ మోడ్ నుండి నిష్క్రమించు",
-  "guestModeDesc": "మీ ప్రొఫైల్‌ను సృష్టించడానికి ముందు యాప్ యొక్క గైడెడ్ టూర్ చేయండి.",
-  "createMyBiodata": "నా బయోడేటాను సృష్టించండి",
-  "createBiodataDesc": "మీ ప్రొఫైల్ నింపి తక్షణమే కనెక్ట్ అవ్వడం ప్రారంభించండి.",
-  "needHelpContactAdmin": "సహాయం కావాలా? అడ్మిన్‌ని సంప్రదించండి",
-  "noMatchesYet": "ఇంకా మ్యాచ్‌లు లేవు",
-  "noProfilesSharedYet": "ఇంకా ఏ ప్రొఫైల్ భాగస్వామ్యం చేయబడలేదు",
-  "noProfilesReceived": "ఏ ప్రొఫైల్స్ రాలేదు",
-  "mutualMatchesDesc": "ఇద్దరు వినియోగదారులు ఒకరిపై ఒకరు ఆసక్తిని కనబరిచినప్పుడు పరస్పర మ్యాచ్‌లు ఇక్కడ కనిపిస్తాయి",
-  "startSharingProfilesDesc": "ఖచ్చితమైన మ్యాచ్‌ను కనుగొనడంలో సహాయపడటానికి కుటుంబం మరియు స్నేహితులతో ప్రొఫైల్‌లను భాగస్వామ్యం చేయడం ప్రారంభించండి",
-  "profilesSharedWithYouDesc": "మీ కుటుంబం మరియు స్నేహితులు మీతో భాగస్వామ్యం చేసిన ప్రొఫైల్‌లు ఇక్కడ కనిపిస్తాయి",
-  "back": "వెనుకకు",
-  "enterVillageManually": "గ్రామం/ఇతర పేరును నమోదు చేయండి",
-  "enterVillageHint": "గ్రామం లేదా తాండా పేరును నమోదు చేయండి...",
-  "specificLocation": "నిర్దిష్ట స్థానం",
-  "skipAndSelectLevel": "దాటవేయి మరియు మండలం/జిల్లాను ఎంచుకోండి",
-  "optional": "ఐచ్ఛికం",
-  "emailNotifications": "Email Notifications",
-  "dailyMatchPicks": "Daily Match Picks",
-  "newMatchAlerts": "New Match Alerts",
-  "activeCreators": "యాక్టివ్ క్రియేటర్లు",
-  "appGrowth": "యాప్ వృద్ధి",
-  "basicPlanDesc": "మీ అన్వేషణకు అవసరమైన ఫీచర్లు",
-  "basicPlanName": "బేసిక్",
-  "bestValue": "ఉత్తమ విలువ",
-  "biodataPremiumIncluded": "బయోడేటా ప్రీమియం కూడా ఉంది",
-  "bulkDiscount": "{percent}% తగ్గింపు",
-  "completedReferrals": "పూర్తయిన రిఫరల్స్",
-  "contactUnlocks": "నెలకు {count} కాంటాక్ట్ అన్లాక్లు",
-  "couponDiscountApplied": "కూపన్ డిస్కౌంట్ వర్తించబడింది",
-  "dailyActiveUsers": "రోజువారీ యాక్టివ్ యూజర్లు",
-  "dedicatedManager": "ప్రత్యేక రిలేషన్షిప్ మేనేజర్",
-  "directContactAccess": "నేరుగా కాంటాక్ట్ యాక్సెస్",
-  "elitePlanDesc": "VIP యాక్సెస్ తో ఎంపిక చేసిన ప్రొఫైల్స్",
-  "elitePlanName": "ఎలైట్",
-  "errorAdminActionFailed": "కోరిన చర్యను పూర్తి చేయలేకపోయాము. దయచేసి కాసేపటి తర్వాత మళ్ళీ ప్రయత్నించండి.",
-  "errorLoadingAdminCoupons": "కూపన్ ఆఫర్లను లోడ్ చేయలేకపోయాము. దయచేసి మళ్ళీ ప్రయత్నించండి.",
-  "errorLoadingAdminCreators": "క్రియేటర్ల జాబితాను పొందలేకపోయాము. దయచేసి మీ నెట్వర్క్ను తనిఖీ చేయండి.",
-  "errorLoadingAdminPayments": "పేమెంట్ హిస్టరీని లోడ్ చేయలేకపోయాము. దయచేసి మళ్ళీ ప్రయత్నించండి.",
-  "errorLoadingAdminReferences": "పెండింగ్ రిఫరెన్సులను పొందలేకపోయాము. దయచేసి రీఫ్రెష్ చేయండి.",
-  "errorLoadingAdminStats": "డ్యాష్బోర్డ్ గణాంకాలను లోడ్ చేయలేకపోయాము. దయచేసి రీఫ్రెష్ చేయడానికి ప్రయత్నించండి.",
-  "errorLoadingAdminUsers": "యూజర్ల జాబితాను పొందలేకపోయాము. దయచేసి మీ కనెక్షన్ని తనిఖీ చేయండి.",
-  "errorLoadingAdminVerifications": "వెరిఫికేషన్ అభ్యర్థనలను లోడ్ చేయలేకపోయాము. దయచేసి మళ్ళీ ప్రయత్నించండి.",
-  "eternalElitePlanDesc": "మీ కెరీర్ మీద దృష్టి పెట్టండి, మేము మీ జీవిత భాగస్వామిని వెతుకుతాము",
-  "eternalElitePlanName": "ఎటర్నల్ ఎలైట్",
-  "eternalPlanDesc": "ప్లాన్ గడువు ముగిసిపోతుందని ఇకపై చింతించకండి",
-  "eternalPlanName": "ఎటర్నల్ - పెళ్లి వరకు",
-  "featuredBadge": "ఎలైట్ వెరిఫైడ్ బ్యాడ్జ్",
-  "featuresIncluded": "చేర్చబడిన ఫీచర్లు:",
-  "focusOnCareer": "మీ కెరీర్ మీద దృష్టి పెట్టండి, మేము మీ జీవిత భాగస్వామిని వెతుకుతాము",
-  "forLifetime": "జీవితకాలం వరకు",
-  "handpickedMatches": "వారానికి {count} ఎంపిక చేసిన ప్రొఫైల్స్",
-  "incognitoMode": "ప్రైవేట్ ప్రొఫైల్ బ్రೌజింగ్",
-  "lifetime": "జీవితకాలం",
-  "marriageReadiness": "పెళ్లికి సిద్ధత",
-  "men": "పురుషులు",
-  "messagingLimitReached": "మెసేజింగ్ పరిమితి ముగిసింది",
-  "monthlyCheckIn": "నెలవారీ చెక్-ఇన్",
-  "monthlyRevenue": "నెలవారీ ఆదాయం (₹)",
-  "mrpPrice": "MRP ₹{price}",
-  "pdfRevenue": "PDF ఆదాయం (₹)",
-  "pendingReferences": "పెండింగ్ రిఫరెన్సులు",
-  "pendingReports": "పెండింగ్ రిపోర్టులు",
-  "perMonth": "/నెలకు",
-  "personalConcierge": "పర్సనల్ సహాయకుడు",
-  "premiumPlanDesc": "అధునాతన ఫీచర్లు మరియు మెరుగైన విజిబిలిటీ",
-  "premiumPlanName": "ప్రీమియం",
-  "profileMakeover": "ప్రొఫెషనల్ ప్రొఫైల్ మేకోవర్",
-  "profileViews": "ప్రొఫైల్ వీక్షణలు",
-  "profiles": "ప్రొఫైల్స్",
-  "referenceRejected": "రిఫరెన్స్ తిరస్కరించబడింది",
-  "referenceVerified": "రిఫరెన్స్ వెరిఫై చేయబడింది",
-  "replacePhoto": "ఫోటో మార్చండి",
-  "revenueTotal": "మొత్తం ఆదాయం (₹)",
-  "royalPlanDesc": "రిలేషన్షిప్ మేనేజర్ మీ కోసం భాగస్వామిని వెతుకుతారు",
-  "royalPlanName": "రాయల్",
-  "safetyAndHealth": "భద్రత మరియు ఆరోగ్యం",
-  "selfServicePlans": "సెల్ఫ్ సర్వీస్",
-  "standardPlanDesc": "ఒక నెల పాటు ప్రీమియం ఫీచర్లను ప్రయత్నించండి",
-  "standardPlanName": "స్టాండర్డ్",
-  "tillUMarry": "మీకు పెళ్లి అయ్యేవరకు",
-  "totalBlocks": "మొత్తం బ్లాక్స్",
-  "totalFemales": "మొత్తం మహిళలు",
-  "totalMales": "మొత్తం పురుషులు",
-  "totalMessages": "మొత్తం సందేశాలు",
-  "totalSavings": "మొత్తం ఆదా: ₹{amount}",
-  "totalUsers": "మొత్తం యూజర్లు",
+  "tourInterestTitle": "Express Interest",
+  "tourLocationDesc": "Filter profiles by State, District, or Taluka to find matches near you.",
+  "tourLocationTitle": "Select Location",
   "tourMatchesMatchedDesc": "మీరు మరియు అవతలి వ్యక్తులు ఇద్దరూ ఆసక్తి చూపిన ప్రొఫైల్స్!",
   "tourMatchesMatchedTitle": "మ్యాచ్ అయిన ప్రొఫైల్స్",
   "tourMatchesReceivedDesc": "వాట్సాప్ లేదా లింక్ ద్వారా ఇతరులు మీతో షేర్ చేసిన ప్రొఫైల్స్.",
@@ -1139,87 +2324,225 @@
   "tourProfileSavedTitle": "సేవ్ చేసిన ప్రొఫైల్స్",
   "tourProfileTrustDesc": "మీ విశ్వసనీయత స్కోరు. దీన్ని పెంచుకోవడానికి మీ ఐడి, సెల్ఫీ మరియు కమ్యూనిటీని వెరిఫై చేయండి.",
   "tourProfileTrustTitle": "ట్రస్ట్ స్కోరు",
+  "tourSearchDesc": "Looking for someone specific? Type their name or education here.",
+  "tourSearchTitle": "Search Profiles",
+  "tourShareDesc": "Easily share profiles via WhatsApp with your parents or relatives for their opinion.",
+  "tourShareTitle": "Share with family",
+  "tourWhatsappDesc": "Direct contact with our admin for help or profile changes.",
+  "tourWhatsappTitle": "WhatsApp Support",
+  "traditionalFormalAttire": "సాంప్రదాయ లేదా ఫార్మల్ దుస్తులు (చీర, సల్వార్ కమీజ్, కుర్తా)",
+  "translatesWholePdfDesc": "Translates whole PDF (keys & profile info)",
+  "trustAllianceBadge": "✦ అధికారిక భాగస్వామ్యం",
   "trustDiscountApplied": "ట్రస్ట్ స్కోరు తగ్గింపు వర్తించబడింది",
+  "trustLevel": "TRUST LEVEL",
+  "trustScore": "నమ్మకం స్కోర్",
+  "trustScoreBeyondBeauty": "అందం మించిన నమ్మకం",
+  "trustScoreDiscounts": "ట్రస్ట్ స్కోర్ & డిస్కౌంట్లు",
+  "trustScoreShareMessage": "నేను ఇప్పుడే బంజారాబయోలో {score} ట్రస్ట్ స్కోర్‌తో నా ప్రొఫైల్‌ను ధృవీకరించాను! నా ప్రొఫైల్‌ని తనిఖీ చేయండి మరియు మా కమ్యూనిటీలో చేరండి: {url}",
+  "trustVerification": "నమ్మకం & ధృవీకరణ",
+  "trusted": "నమ్మకమైనది",
+  "trustedCommunityBadge": "100% విశ్వసనీయ సమాజం",
+  "trustedMember": "Trusted Member",
+  "trustedProfile": "నమ్మదగిన ప్రొఫైల్",
+  "tryAdjustingYourFilterCriteria": "మీ ఫిల్టర్ ప్రమాణాలను సర్దుబాటు చేయడానికి ప్రయత్నించండి",
+  "tryAdjustingYourFiltersToSeeMoreProfiles": "బంజారా సంఘం నుండి మరిన్ని ప్రొఫైల్‌లను చూడటానికి మీ ఫిల్టర్‌లను సర్దుబాటు చేయడానికి ప్రయత్నించండి",
+  "tryAgain": "మళ్లీ ప్రయత్నించండి",
+  "trySearchingForADifferentCity": "వేరే నగరం కోసం వెతకడానికి ప్రయత్నించండి",
+  "trySearchingForDifferentCity": "వేరే నగరం కోసం వెతకడానికి ప్రయత్నించండి",
+  "twentyLakhPlus": "₹20 లక్షలు+",
+  "twoMonthsFree": "2 Months Free",
+  "twoToFiveLakh": "₹2 - ₹5 లక్షలు",
+  "typeAMessage": "సందేశాన్ని టైప్ చేయండి...",
+  "typeCustomIntroNoteHint": "Type your custom matrimonial intro note here...\n(e.g., family background, career aspirations, shared values)",
+  "typeMessage": "సందేశం టైప్ చేయండి...",
+  "unauthorizedAccessAdminsOnly": "అనధికార యాక్సెస్. నిర్వాహకులు మాత్రమే.",
+  "unblockAllProFeatures": "అన్ని ప్రో ఫీచర్లను అన్‌లాక్ చేయండి",
+  "under2Lakh": "₹2 లక్షల కంటే తక్కువ",
+  "undo": "వెనక్కి తీసుకో",
+  "unexpectedError": "ఊహించని లోపం సంభవించింది: {error}",
+  "unexpectedErrorOccurred": "ఊహించని లోపం సంభవించింది: {error}",
+  "unknownUser": "Unknown User",
+  "unlimitedBookmarks": "అపరిమిత బుక్‌మార్క్‌లు",
   "unlimitedContactUnlocks": "అపరిమిత కాంటాక్ట్ అన్లాక్లు",
   "unlimitedHandpickedMatches": "రోజువారీ ఆన్-డిమాండ్ మ్యాచెస్",
+  "unlimitedProfileViews": "అపరిమిత ప్రొఫైల్ వీక్షణలు",
+  "unlimitedSharing": "అపరిమిత భాగస్వామ్యం",
+  "unlockAdvancedFilters": "అధునాతన ఫిల్టర్‌లు అన్‌లాక్ చేయండి",
+  "unlockCommunityFiltersDesc": "Filter Gotra, Maternal Gotra (मोसळ), Sub-Caste, Tanda/Origin, Height, Income & Lineage for just ₹20/mo or ₹200/yr.",
+  "unlockCommunityFiltersTitle": "Unlock Community Filters (BVS)",
+  "unlockDirectMessageAd": "1 నేరుగా మెసేజ్‌ను ఉచితంగా అన్లాక్ చేయడానికి 3 ప్రకటనలను చూడండి!",
+  "unlockForPriceButton": "Unlock for ₹20/mo or ₹200/yr ➔",
+  "unlockMatchmakerFiltersDesc": "Direct contact numbers, 36 Guna Score, Ancestral Land Holdings & RM Curation available on VIP Matchmaker plans.",
+  "unlockMatchmakerFiltersTitle": "Unlock Matchmaker Filters",
+  "unlockMoreViewsAd": "ఈ రోజు కోసం మరో 5 వీక్షణలను అన్లాక్ చేయడానికి ఒక చిన్న ప్రకటనను చూడండి!",
+  "unlockMoreVisitors": "మరో {count} మంది సందర్శకులను అన్‌లాక్ చేయండి!",
+  "unlockNow": "ఇప్పుడే అన్‌లాక్ చేయండి",
+  "unlockPremiumBiodata": "ప్రీమియం బయోడేటాను అన్‌లాక్ చేయండి",
+  "unlockPremiumFeaturesToEnhanceYourBiodat": "మీ బయోడేటా ప్రొఫైల్‌ని మెరుగుపరచడానికి ప్రీమియం ఫీచర్‌లను అన్‌లాక్ చేయండి",
+  "unlockPremiumFiltersDesc": "Access Govt ID Verified, Kundali Dosha, Diet, Sector, and Active Responder filters with Premium self-service plans.",
+  "unlockPremiumFiltersTitle": "Unlock Premium Filters",
+  "unlockToDownload": "ఈ టెంప్లేట్‌ని 5+ భాషల్లో డౌన్‌లోడ్ చేయడానికి మరియు భాగస్వామ్యం చేయడానికి అన్‌లాక్ చేయండి.",
+  "unmarried": "అవివాహితులు",
+  "unsave": "అన్‌సేవ్",
+  "unsavedDraftBodyGeneric": "మీరు నమోదు చేసిన సమాచారం భద్రంగా ఉంది. కొనసాగించడానికి నొక్కండి.",
+  "unsavedDraftBodyWithName": "{name} గారి బయోడేటా డ్రాఫ్ట్ భద్రంగా ఉంది. అక్కడి నుంచే కొనసాగించండి.",
+  "unsavedDraftTitle": "📝 అసంపూర్ణ బయోడేటా డ్రాఫ్ట్ ఉంది!",
+  "unverified": "ధృవీకరించబడలేదు",
+  "upcomingMelavas": "రాబోయే మేళావాలు",
+  "update": "నవీకరించు",
+  "updateFailed": "అప్‌డేట్ విఫలమైంది: {error}",
+  "updateProfile": "ప్రొఫైల్ అప్‌డేట్ చేయి",
+  "upgrade": "అప్‌గ్రేడ్ చేయండి",
+  "upgradeNow": "ఇప్పుడు అప్‌గ్రేడ్ చేయండి",
+  "upgradePlan": "ప్లాన్ అప్‌గ్రేడ్ చేయి",
+  "upgradePremiumFilters": "వృత్తి, స్థానం మరియు మరిన్నింటికి ప్రీమియంకు అప్‌గ్రేడ్ చేయండి.",
+  "upgradeRequired": "అప్‌గ్రేడ్ అవసరం",
+  "upgradeToCommunityButton": "Upgrade to Community (₹20/mo or ₹200/yr)",
+  "upgradeToPremium": "ప్రీమియానికి అప్‌గ్రేడ్ అవ్వండి",
+  "upgradeToPremiumFor6PhotosAdvancedFilter": "6 ఫోటోలు & అధునాతన ఫిల్టర్‌ల కోసం Premiumకి అప్‌గ్రేడ్ చేయండి",
+  "upgradeToPremiumToAccessGranularFiltersF": "Upgrade to Premium to access granular filters",
+  "upgradeToShareMore": "మరింత భాగస్వామ్యం చేయడానికి అప్‌గ్రేడ్ చేయండి",
+  "upgradeToUnlockAllFeatures": "అన్ని లక్షణాలను అన్‌లాక్ చేయడానికి అప్‌గ్రేడ్ చేయండి",
+  "upgradeToUnlockPremiumFeatures": "అన్ని ప్రకటనలను తీసివేయడానికి మరియు ప్రీమియం బయోడేటా ఫీచర్‌లను అన్లాక్ చేయడానికి అప్‌గ్రేడ్ చేయండి.",
+  "uploadBvsCardPrompt": "మీ బంజారా విరాసత్ సంఘ్ (BVS) గుర్తింపు కార్డును అప్‌లోడ్ చేయండి",
+  "uploadCommunityCertificateLetter": "కమ్యూనిటీ సర్టిఫికేట్ / లేఖను అప్‌లోడ్ చేయండి",
+  "uploadFailed": "అప్‌లోడ్ విఫలమైంది: {error}",
+  "uploadYourPhotos": "మీ అత్యుత్తమ ఫోటోలు అప్‌లోడ్ చేయండి",
+  "uploadedSuccessfully": "విజయవంతంగా అప్‌లోడ్ చేయబడింది",
+  "upperMiddleClass": "ఉన్నత మధ్యతరగతి",
+  "useCameraToCapture": "ఫోటో తీయడానికి కెమెరాను వాడండి",
+  "useCurrentLocation": "ప్రస్తుత స్థానాన్ని ఉపయోగించండి",
+  "useEmailPassword": "ఇమెయిల్ / పాస్‌వర్డ్ ఉపయోగించండి",
+  "useNaturalLightingTip": "ఉత్తమ ఫలితాల కోసం సహజ కాంతిని ఉపయోగించండి",
+  "userBlockRequestSubmitted": "User block request submitted",
+  "userBlockedSuccessfully": "వినియోగదారు విజయవంతంగా బ్లాక్ చేయబడ్డారు",
   "userEngagement": "యూజర్ ఎంగేజ్మెంట్",
+  "userIdNotFound": "వినియోగదారు ఐడి కనుగొనబడలేదు",
+  "userIdNotFoundToast": "User ID not found",
+  "userLabel": "వాడుకరి",
+  "userNotUploadedPhoto": "వినియోగదారు ఫోటోను అప్‌లోడ్ చేయలేదు",
+  "users": "Users",
+  "usingGps": "GPSని ఉపయోగించడం",
+  "vadhuVarSuchakInitiative": "Vadhu Var Suchak Initiative",
+  "vendorNetworkEffectDesc": "Self-register your services to receive direct 1-click WhatsApp inquiries from thousands of Banjara families.",
+  "vendorRegistration": "Vendor Registration",
+  "vendorRegistrationSubmittedCongrats": "Congratulations! {name} has been submitted for verified vendor listing on the BanjaraBio Network.",
+  "vendorTermsAgreement": "I agree to provide authentic, verified wedding services to Banjara community families with 100% transparency.",
+  "vendorVerificationDeskNote": "Our vendor verification desk will verify and activate your listing within 2-4 hours.",
+  "venue": "వేదిక",
+  "verificationBadge": "ధృవీకరణ బ్యాడ్జ్",
+  "verificationCodeSent": "ధృవీకరణ కోడ్ పంపబడింది!",
+  "verificationFailed": "Verification failed",
+  "verificationLinkcodeSent": "ధృవీకరణ లింక్/కోడ్ పంపబడింది!",
+  "verificationRequests": "Verification Requests",
+  "verifications": "Verifications",
+  "verified": "ధృవీకరించబడింది",
+  "verified10PointsAddedToTrustScore": "ధృవీకరించబడింది! ట్రస్ట్ స్కోర్‌కి +10 పాయింట్లు జోడించబడ్డాయి",
+  "verifiedBiodata": "Verified Biodata",
+  "verifiedCommunityMember": "ధృవీకరించబడిన సంఘం సభ్యుడు",
+  "verifiedCountBadge": "{count} Verified",
+  "verifiedHoroscopeOnMutual": "Verified horoscope chart on mutual match interest",
+  "verifiedProfile": "ధృవీకరించబడిన ప్రొఫైల్",
+  "verifiedProfileBadge": "ధృవీకరించబడిన ప్రొఫైల్",
+  "verifiedProfilesGet5xMoreResponses": "ధృవీకరించబడిన ప్రొఫైల్‌లు 5 రెట్లు ఎక్కువ స్పందనలను పొందుతాయి మరియు సెర్చ్ ఫలితాల్లో పైన కనిపిస్తాయి.",
+  "verifiedSalary": "VERIFIED SALARY",
+  "verifiedTrusted": "ధృవీకరించబడింది & విశ్వసనీయమైనది",
+  "verify": "ధృవీకరించండి",
+  "verifyEmailAddressHeading": "Verify Email Address",
+  "verifyLabel": "{label} వెరిఫై చేయండి",
+  "verifyMobile": "మొబైల్ ధృవీకరించండి",
+  "verifyNow": "ఇప్పుడే ధృవీకరించండి",
+  "verifyOtp": "Verify OTP",
+  "verifyYourCommunityStatus": "మీ సంఘం స్థితిని ధృవీకరించండి",
+  "verifyYourEmailAddressToAddTrustAndReach": "నమ్మకాన్ని జోడించడానికి మరియు మరిన్ని ప్రొఫైల్‌లను చేరుకోవడానికి మీ ఇమెయిల్ చిరునామాను ధృవీకరించండి.",
+  "verifyYourMobileNumberToAddTrustAndReach": "నమ్మకాన్ని జోడించడానికి మరియు మరిన్ని ప్రొఫైల్‌లను చేరుకోవడానికి మీ మొబైల్ నంబర్‌ను ధృవీకరించండి.",
+  "veryFair": "చాలా తెల్లగా",
+  "vettedFamily": "VETTED FAMILY",
+  "videoBioIntro": "వీడియో బయో / పరిచయం",
+  "videoIntro": "వీడియో పరిచయం",
+  "videoIntroUploaded": "వీడియో పరిచయం అప్‌లోడ్ చేయబడింది",
+  "videoRecorded": "వీడియో రికార్డ్ చేయబడింది!",
+  "view": "చూడండి",
+  "viewAll": "అన్నీ వీక్షించండి",
+  "viewBiodata": "బయోడేటా చూడు",
+  "viewBiodataPdf": "View Biodata PDF",
+  "viewDetails": "వివరాలను వీక్షించండి",
+  "viewLabel": "వీక్షణ",
+  "viewPremiumPlansButton": "View Premium Plans ➔",
+  "viewProfile": "ప్రొఫైల్ చూడు",
+  "viewVenue": "వేదికను చూడండి",
+  "viewYourBookmarkedProfiles": "మీరు బుక్‌మార్క్ చేసిన ప్రొఫైల్‌లను వీక్షించండి",
+  "viewsLabel": "వీక్షణలు",
+  "village": "గ్రామం",
+  "villageTanda": "గ్రామం / తాండా",
+  "villageTandaExampleHint": "e.g. Pohradevi Tanda, Sevadas Nagar...",
   "vipFeatures": "VIP ఫీచర్లు",
+  "vipFiftyPercentOff": "50% OFF VIP",
   "vipMatchmaker": "VIP మ్యాచ్ మేకర్",
+  "vipNote": "VIP NOTE 👑",
   "vipPlanDesc": "ప్రయారిటీ సపోర్ట్ తో ఉత్తమ అనుభవం",
   "vipPlanName": "VIP",
-  "weeklyCheckIn": "వారపు చెక్-ఇన్",
-  "women": "మహిళలు",
-  "youSave": "మీరు ₹{amount} పొదుపు చేస్తారు",
-  "extraViewsUnlocked": "{count} అదనపు వీక్షణలు అన్‌లాక్ చేయబడ్డాయి!",
-  "signInRequired": "సైన్ ఇన్ అవసరం",
-  "signInRequiredContent": "ఈ ఫీచర్‌ని ఉపయోగించడానికి దయచేసి సైన్ ఇన్ చేయండి లేదా ఖాతాను సృష్టించండి.",
+  "vipPropertyAssets": "VIP PROPERTY & ASSET HOLDINGS",
+  "vipRoyal": "👑 VIP Royal",
+  "vipSpotlightElitePool": "VIP Spotlight & Elite Pool",
+  "vipSpotlightElitePoolSubtitle": "Top-tier prominent Banjara families with premium background checks",
+  "visibleToAllProfiles": "అన్ని ప్రొఫైల్‌లకు కనిపిస్తుంది",
+  "visibleToCloseMatchesOnly": "మ్యాచ్‌లను మూసివేయడానికి మాత్రమే కనిపిస్తుంది",
+  "vouchBadgeRequirementNotice": "\"కమ్యూనిటీ విశ్వసనీయ\" బ్యాడ్జ్ పొందడానికి ధృవీకరించబడిన సభ్యుల నుండి 5 ధృవీకరణలను పొందండి.",
   "watchAdToUnlock": "అన్‌లాక్ చేయడానికి ప్రకటన చూడండి",
   "watchAdToUnlockAll": "అన్నింటినీ అన్‌లాక్ చేయడానికి ప్రకటన చూడండి",
-  "goProAdFree": "ప్రకటన రహిత అనుభవం కోసం ప్రో అవ్వండి",
-  "adNotReady": "ప్రకటన ఇంకా సిద్ధంగా లేదు. దయచేసి కాసేపటి తర్వాత మళ్లీ ప్రయత్నించండి.",
-  "upgradeToUnlockPremiumFeatures": "అన్ని ప్రకటనలను తీసివేయడానికి మరియు ప్రీమియం బయోడేటా ఫీచర్‌లను అన్లాక్ చేయడానికి అప్‌గ్రేడ్ చేయండి.",
-  "couldNotLaunchWhatsApp": "వాట్సాప్ ప్రారంభించబడలేదు",
-  "couldNotLaunchDialer": "ఫోన్ డయలర్ ప్రారంభించబడలేదు",
-  "searchLeads": "లీడ్స్ వెతకండి...",
-  "workspace": "వర్క్‌స్పేస్",
-  "customMessage": "అనుకూల సందేశం",
-  "logCallOutcome": "కాల్ ఫలితాన్ని నమోదు చేయండి",
-  "apply": "వర్తించు",
-  "registrationFee": "రిజిస్ట్రేషన్ ఫీజు",
-  "unverified": "ధృవీకరించబడలేదు",
-  "signIn": "సైన్ ఇన్ చేయండి",
-  "unlockMoreVisitors": "మరో {count} మంది సందర్శకులను అన్‌లాక్ చేయండి!",
-  "dailyLimitReached": "రోజువారీ పరిమితి ముగిసింది",
-  "dailyLimitViewsReached": "మీరు మీ రోజువారీ ప్రొఫైల్ వీక్షణలన్నింటినీ ఉపయోగించారు.",
-  "unlockMoreViewsAd": "ఈ రోజు కోసం మరో 5 వీక్షణలను అన్లాక్ చేయడానికి ఒక చిన్న ప్రకటనను చూడండి!",
-  "directMessage": "నేరుగా మెసేజ్",
-  "directMessagingPremium": "నేరుగా మెసేజ్ పంపడం ఒక ప్రీమియం ఫీచర్.",
-  "unlockDirectMessageAd": "1 నేరుగా మెసేజ్‌ను ఉచితంగా అన్లాక్ చేయడానికి 3 ప్రకటనలను చూడండి!",
-  "premiumAccess": "ప్రీమియం యాక్సెస్",
-  "premiumGateSupport": "శీఘ్ర ప్రకటనను చూడటం ద్వారా మా కమ్యూనిటీకి మద్దతు ఇవ్వండి,\nలేదా ప్రకటన రహిత అనుభవం కోసం ప్రోకి అప్‌గ్రేడ్ చేయండి.",
-  "unblockAllProFeatures": "అన్ని ప్రో ఫీచర్లను అన్‌లాక్ చేయండి",
-  "monthly": "నెలవారీ",
-  "annual": "వార్షిక",
   "watchQuickAd": "శీఘ్ర ప్రకటనను చూడండి",
-  "continueBlockedUntilAdEnds": "ప్రకటన ముగిసే వరకు యాప్ బ్లాక్ చేయబడింది",
-  "adCompletedSuccessfully": "ప్రకటన విజయవంతంగా పూర్తయింది",
-  "continueToApp": "యాప్‌కి కొనసాగండి",
-  "preparingAdExperience": "ప్రకటన అనుభవాన్ని సిద్ధం చేస్తోంది...",
-  "adTemporarilyUnavailable": "ప్రకటన తాత్కాలికంగా అందుబాటులో లేదు",
-  "callAdmin": "అడ్మిన్ కు కాల్ చేయండి",
-  "banjaraBioPro": "బంజారాబయో ప్రో",
-  "claimMarriageGift": "వివాహ బహుమతిని క్లెయిమ్ చేయండి",
-  "tellUsYourStory": "మీ కథను మాకు చెప్పండి",
-  "partnerName": "భాగస్వామి పేరు",
-  "yourSuccessStory": "మీ విజయ కథ",
-  "howDidYouMeet": "మీరు ఎలా కలుసుకున్నారు? మీకు వారి గురించి ఏమి ఇష్టం?",
-  "proofOfMarriage": "వివాహ ధృవీకరణ",
-  "instagramLink": "ఇన్‌స్టాగ్రామ్ రీల్/స్టోరీ లింక్",
-  "pasteUrlHere": "ఇక్కడ URL ని పేస్ట్ చేయండి",
+  "weEncounteredAnUnexpectedErrorWhileProce": "మీ అభ్యర్థనను ప్రాసెస్ చేస్తున్నప్పుడు మేము ఊహించని లోపాన్ని ఎదుర్కొన్నాము.",
+  "weWillSendAVerificationRequestToTheirMob": "మేము వారి మొబైల్ నంబర్‌కు ధృవీకరణ అభ్యర్థనను పంపుతాము. వారు ఆమోదించిన తర్వాత, మీరు +10 పాయింట్లను పొందుతారు.",
+  "weWillVerifyYourCommunityDetailsShortly1": "మేము మీ సంఘం వివరాలను త్వరలో ధృవీకరిస్తాము. +15 పాయింట్లు పెండింగ్‌లో ఉన్నాయి.",
   "weddingDate": "వివాహ తేదీ",
-  "estimatedRefund": "అంచనా వేసిన రీఫండ్",
-  "submitForReview": "సమీక్ష కోసం సమర్పించండి",
-  "selectRewardType": "బహుమతి రకాన్ని ఎంచుకోండి",
-  "digital": "డిజిటల్",
-  "refund25": "25% రీఫండ్",
-  "teamVisit": "టీమ్ విజిట్",
-  "refund35": "35% రీఫండ్",
-  "successSubmission": "విజయం! మీ అభ్యర్థన సమీక్ష కోసం సమర్పించబడింది.",
-  "melavas": "మేళావాలు",
-  "upcomingMelavas": "రాబోయే మేళావాలు",
-  "callOrganizer": "నిర్వాహకుడికి కాల్ చేయండి",
-  "viewVenue": "వేదికను చూడండి",
-  "organizer": "నిర్వాహకుడు",
-  "venue": "వేదిక",
-  "eventDetails": "కార్యక్రమ వివరాలు",
-  "browseMatchesTitle": "🔍 సంబంధం వెతకండి (Browse Matches)",
-  "browseMatchesDesc": "కొడుకు, కూతురు, బంధువుల కోసం తగిన సంబంధం వెతకండి.",
-  "browseMatchesSubtitle": "కొన్ని ప్రశ్నలకు సమాధానం ఇవ్వండి మరియు తగిన సంబంధాలు చూడండి",
-  "forWhomSearching": "ఎవరి కోసం సంబంధం వెతుకుతున్నారు?",
-  "lookingForGender": "వరుడు కావాలా లేదా వధువు?",
-  "groomBoy": "👦 వరుడు (Groom)",
-  "brideGirl": "👧 వధువు (Bride)",
-  "selectDistrict": "జిల్లాను ఎంచుకోండి",
-  "proceedToLogin": "ముందుకు → లాగిన్ చేయండి",
-  "sibling": "తోబుట్టువు"
+  "weeklyCheckIn": "వారపు చెక్-ఇన్",
+  "welcomeBackAccountFound": "స్వాగతం! మీ ఖాతా కనుగొనబడింది.",
+  "welcomeToBanjaraBio": "బంజారా బయోకు స్వాగతం",
+  "whatDoYouLookFor": "మీరు జీవిత భాగస్వామిలో ఏమి వెతుకుతున్నారు?",
+  "whatsApp": "WhatsApp",
+  "whatsAppContact": "వాట్సాప్ కాంటాక్ట్",
+  "whatsAppRishtaCardSubtitle": "Share premium biodata image card with QR code on WhatsApp",
+  "whatsAppRishtaCardTitle": "🚩 WhatsApp Rishta Card (Image + QR)",
+  "whatsAppStatusCardPremium": "WhatsApp Status Card (Premium)",
+  "whatsappHelp": "WhatsApp Help",
+  "whatsappShareSubtitle": "{name} వివరాలను కుటుంబం లేదా స్నేహితులతో పంచుకోండి",
+  "whatsappSupport": "WhatsApp మద్దతు",
+  "wheatish": "గోధుమ రంగు",
+  "whereDoYouWork": "మీరు ఎక్కడ పని చేస్తున్నారు?",
+  "whoIsThisForQuestion": "Who are you searching for?",
+  "whoViewedMe": "నన్ను ఎవరు చూసారు",
+  "whyBanjaraBio": "బంజారా బయో ఎందుకు?",
+  "widowed": "విధవలు/విధురులు",
+  "women": "మహిళలు",
+  "working": "Working",
+  "workspace": "వర్క్‌స్పేస్",
+  "writeAboutYourself": "మీ గురించి ఏదైనా రాయండి...",
+  "writeCustomBlessing": "Write Custom Blessing / Deity Name",
+  "writeCustomBlessingSubtitle": "Type any family Kuldevi, Guru, or personalized deity mantra",
+  "writeYourOwnGenuineMessage": "Write your own genuine message or edit the selected template above:",
+  "year": "సంవత్సరం",
+  "yearsLabel": "{count, plural, =1{సంవత్సరం} other{సంవత్సరాలు}}",
+  "yearsOld": "{age} సంవత్సరాలు",
+  "yes": "అవును",
+  "yesInterest": "అవును, ఆసక్తి ఉంది",
+  "yesterday": "నిన్న",
+  "youNeedAProfileToShareIt": "షేర్ చేయడానికి మీకు ప్రొఫైల్ అవసరం.",
+  "youSave": "మీరు ₹{amount} పొదుపు చేస్తారు",
+  "youWillNoLongerSeeThisProfile": "మీరు ఇకపై ఈ ప్రొఫైల్‌ను చూడలేరు",
+  "youngerBrother": "తమ్ముడు",
+  "youngerSister": "చెల్లెలు",
+  "your": "మీ",
+  "yourDailyMatches": "మీ రోజువారీ మ్యాచ్‌లు",
+  "yourDocumentsAreEncrypted": "మీ పత్రాలు ఎన్‌క్రిప్ట్ చేయబడ్డాయి మరియు ఇతర వినియోగదారులకు ఎప్పుడూ చూపబడవు. బ్యాజ్ మాత్రమే కనిపిస్తుంది.",
+  "yourDocumentsHaveBeenSubmittedSecurelyWe": "మీ పత్రాలు సురక్షితంగా సమర్పించబడ్డాయి. ధృవీకరించబడిన తర్వాత మేము మీకు తెలియజేస్తాము.",
+  "yourIntroVideoIsUnderReview10PointsPendi": "మీ పరిచయ వీడియో సమీక్షలో ఉంది. +10 పాయింట్లు ఆమోదం పెండింగ్‌లో ఉన్నాయి.",
+  "yourMatchesWillAppearHereOnceYouBothExpr": "మీరిద్దరూ ఆసక్తిని వ్యక్తం చేసిన తర్వాత మీ మ్యాచ్‌లు ఇక్కడ కనిపిస్తాయి. మీ ఖచ్చితమైన సరిపోలికను కనుగొనడానికి ప్రొఫైల్‌లను భాగస్వామ్యం చేస్తూ ఉండండి!",
+  "yourPersonalInviteLink": "మీ వ్యక్తిగత ఆహ్వాన లింక్",
+  "yourReferralCode": "మీ రెఫరల్ కోడ్",
+  "yourSelfieHasBeenSubmittedOurTeamWillVer": "మీ సెల్ఫీ సమర్పించబడింది. మా బృందం దీన్ని మీ ప్రొఫైల్ ఫోటోతో ధృవీకరిస్తుంది.",
+  "yourSuccessStory": "మీ విజయ కథ",
+  "yourTrustScore": "మీ ట్రస్ట్ స్కోర్",
+  "yrs": "{count} సంవత్సరాలు",
+  "zeroPercentCommission": "💰 0% Commission"
 }

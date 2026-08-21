@@ -11,7 +11,6 @@ import 'package:banjarabio/widgets/glassmorphism_container.dart';
 import 'package:banjarabio/widgets/staggered_list_animation.dart';
 import 'package:banjarabio/presentation/admin_screen/admin_helpers.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
-import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// Review tab handling Verifications and References with
 /// detailed review dialog, proof viewing, and admin actions.
@@ -168,7 +167,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                                       ? 'Unknown User'
                                       : '${profile?['full_name'] ?? ''} ${profile?['surname'] ?? ''}'.trim(),
                                   style: theme.textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: AppTypography.bold,
                                   ),
                                 ),
                                 if (reference['user_id'] != null)
@@ -176,7 +175,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                                     'ID: ${reference['user_id']}',
                                     style: theme.textTheme.bodySmall?.copyWith(
                                       color: theme.hintColor,
-                                      fontSize: 10,
+                                      fontSize: AppTypography.labelSmall,
                                     ),
                                   ),
                               ],
@@ -377,7 +376,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                         children: [
                           Text(
                             'Thoroughly Review Data',
-                            style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                            style: theme.textTheme.headlineSmall?.copyWith(fontWeight: AppTypography.bold),
                           ),
                           Text(
                             'You must open/watch all items below before taking action.',
@@ -411,10 +410,10 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                                                   '${profile?['full_name'] ?? ''} ${profile?['surname'] ?? ''}'.trim().isEmpty
                                                       ? 'Unknown User'
                                                       : '${profile?['full_name'] ?? ''} ${profile?['surname'] ?? ''}'.trim(),
-                                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                                  style: const TextStyle(fontWeight: AppTypography.bold),
                                                 ),
-                                                if (request['user_id'] != null)
-                                                  Text('ID: ${request['user_id']}', style: theme.textTheme.bodySmall?.copyWith(fontSize: 10, color: theme.hintColor)),
+                                                 if (request['user_id'] != null)
+                                                   Text('ID: ${request['user_id']}', style: theme.textTheme.bodySmall?.copyWith(fontSize: AppTypography.labelSmall, color: theme.hintColor)),
                                                 Text(profile?['email'] ?? '', style: theme.textTheme.bodySmall),
                                               ],
                                             ),
@@ -455,7 +454,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                           SizedBox(height: 3.h),
                           
                           // Request Details
-                          Text('Details', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                          Text('Details', style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold)),
                           SizedBox(height: 1.5.h),
                           _buildDetailRow('Type', type.replaceAll('_', ' ').toUpperCase()),
                           if (type == 'govt_id') ...[
@@ -472,7 +471,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                           
                           // Proofs Section with checkmarks
                           Text('Proof Evidence (${viewedMedia.length}/${proofPaths.length})', 
-                            style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                            style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold)),
                           SizedBox(height: 1.5.h),
                           _buildTrackedProofSection(payload, theme, viewedMedia, (path) {
                             setModalState(() => viewedMedia.add(path));
@@ -481,7 +480,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                           
                           if (allViewed) ...[
                             // Action Selection
-                            Text('Action', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                            Text('Action', style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold)),
                             SizedBox(height: 2.h),
                             Row(
                               children: [
@@ -495,7 +494,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                             SizedBox(height: 3.h),
                             
                             if (action == 'rejected') ...[
-                              Text('Rejection Reason', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                              Text('Rejection Reason', style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold)),
                               SizedBox(height: 1.5.h),
                               Container(
                                 padding: EdgeInsets.symmetric(horizontal: 4.w),
@@ -517,7 +516,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                               SizedBox(height: 3.h),
                             ],
                             
-                            Text('Admin Notes (Internal)', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                            Text('Admin Notes (Internal)', style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold)),
                             SizedBox(height: 1.5.h),
                             TextField(
                               key: const ValueKey('admin_notes_field'),
@@ -638,7 +637,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
             textAlign: TextAlign.center,
             style: TextStyle(
               color: isSelected ? Colors.white : color,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTypography.bold,
               fontSize: AppTypography.labelMedium,
             ),
           ),
@@ -718,7 +717,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                                       ? AppLocalizations.of(context)?.unknownUser ?? 'Unknown User'
                                       : '${profileMap?['full_name'] ?? ''} ${profileMap?['surname'] ?? ''}'.trim(),
                                   style: theme.textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: AppTypography.bold,
                                   ),
                                 ),
                                 if (userId.isNotEmpty)
@@ -726,7 +725,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                                     'ID: $userId',
                                     style: theme.textTheme.bodySmall?.copyWith(
                                       color: theme.hintColor,
-                                      fontSize: 10,
+                                      fontSize: AppTypography.labelSmall,
                                     ),
                                   ),
                                 if (profileMap?['email'] != null)
@@ -777,7 +776,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                               '${userRequests.length} ${userRequests.length == 1 ? "Request" : "Requests"}',
                               style: theme.textTheme.labelSmall?.copyWith(
                                 color: theme.colorScheme.primary,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: AppTypography.bold,
                               ),
                             ),
                           ),
@@ -896,7 +895,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                 : type.toUpperCase().replaceAll('_', ' '),
         style: theme.textTheme.labelSmall?.copyWith(
           color: theme.colorScheme.primary,
-          fontWeight: FontWeight.bold,
+          fontWeight: AppTypography.bold,
           fontSize: AppTypography.labelSmall,
         ),
       ),
@@ -914,7 +913,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
         label,
         style: theme.textTheme.labelSmall?.copyWith(
           color: color,
-          fontWeight: FontWeight.bold,
+          fontWeight: AppTypography.bold,
           fontSize: AppTypography.labelSmall,
         ),
       ),
@@ -936,7 +935,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
             child: Text(
               value?.toString() ?? 'N/A',
               style: theme.textTheme.labelMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTypography.bold,
               ),
             ),
           ),
@@ -962,7 +961,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
       children: [
         Text(
           'Identity Verification',
-          style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold),
         ),
         SizedBox(height: 1.5.h),
         Row(
@@ -1003,7 +1002,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
           label,
           style: theme.textTheme.bodySmall?.copyWith(
             color: theme.hintColor,
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTypography.bold,
           ),
         ),
         SizedBox(height: 1.h),
@@ -1135,7 +1134,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                             Text(
                               response != null && !response.isSuccess ? 'Video Missing' : 'Watch Video Proof', 
                               style: TextStyle(
-                                fontWeight: FontWeight.bold, 
+                                fontWeight: AppTypography.bold, 
                                 color: response != null && !response.isSuccess ? Colors.red : theme.colorScheme.primary
                               )
                             ),
@@ -1236,7 +1235,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                                   children: [
                                     const Icon(Icons.broken_image, color: Colors.red, size: 24),
                                     SizedBox(height: 0.5.h),
-                                    Text('404', style: TextStyle(color: Colors.red, fontSize: AppTypography.labelSmall, fontWeight: FontWeight.bold)),
+                                    Text('404', style: TextStyle(color: Colors.red, fontSize: AppTypography.labelSmall, fontWeight: AppTypography.bold)),
                                   ],
                                 ),
                               ),

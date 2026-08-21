@@ -1,5 +1,7 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:banjarabio/core/services/ad_reward_service.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 
 /// [RewardedAdDialog]
@@ -26,23 +28,27 @@ class _RewardedAdDialogState extends State<RewardedAdDialog> {
 
   void _handleWatchAd() async {
     setState(() => _isLoadingAd = true);
+    AppLogger.debug('RewardedAdDialog', '📢 [RewardedDialog:STEP 1/3:TAP] User tapped Watch Ad button for ${widget.rewardType.name}.');
     
     if (!_adService.isAdReady) {
+      AppLogger.debug('RewardedAdDialog', '📢 [RewardedDialog:STEP 2/3:PRELOAD] Rewarded ad not ready. Triggering load and waiting 2s...');
       _adService.loadRewardedAd();
-      // Give it a moment to load
       await Future.delayed(const Duration(seconds: 2));
     }
-    //
+    
     if (!mounted) return;
     
     if (_adService.isAdReady) {
+      AppLogger.debug('RewardedAdDialog', '📢 [RewardedDialog:STEP 3/3:SHOW] Presenting rewarded ad to user...');
       await _adService.showRewardedAd(
         onRewardEarned: (reward) {
+          AppLogger.debug('RewardedAdDialog', '🎉 [RewardedDialog:SUCCESS] Reward granted to user: ${widget.rewardType.name}');
           widget.onRewardGranted();
           if (mounted) Navigator.of(context).pop();
         },
       );
     } else {
+      AppLogger.debug('RewardedAdDialog', '❌ [RewardedDialog:NOT_READY] Ad could not be fetched in time. Showing snackbar.');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -101,7 +107,7 @@ class _RewardedAdDialogState extends State<RewardedAdDialog> {
             Text(
               title,
               style: theme.textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTypography.bold,
               ),
               textAlign: TextAlign.center,
             ),
@@ -122,7 +128,7 @@ class _RewardedAdDialogState extends State<RewardedAdDialog> {
               child: Text(
                 rewardText,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTypography.bold,
                   color: accentColor,
                 ),
                 textAlign: TextAlign.center,

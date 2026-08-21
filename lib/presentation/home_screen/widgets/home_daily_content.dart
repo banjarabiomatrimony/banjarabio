@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/daily_match_widget.dart';
 
@@ -27,8 +27,8 @@ class HomeDailyContent {
             child: Text(
               '. . .',
               style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+                fontSize: AppTypography.headingLarge,
+                fontWeight: AppTypography.bold,
                 color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
               ),
             ),

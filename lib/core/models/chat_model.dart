@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:banjarabio/core/session_manager.dart';
 
 @immutable
 class ConversationModel extends Equatable {
@@ -30,6 +31,11 @@ class ConversationModel extends Equatable {
     this.otherParticipantName,
     this.otherParticipantImageUrl,
   });
+
+  String get otherParticipantId {
+    final myId = SessionManager.instance.profileId;
+    return participantOneId == myId ? participantTwoId : participantOneId;
+  }
 
   factory ConversationModel.fromJson(Map<String, dynamic> json) {
     DateTime parseOrNow(dynamic v) =>

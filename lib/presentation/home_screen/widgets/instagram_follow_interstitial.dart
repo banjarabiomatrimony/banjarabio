@@ -77,7 +77,7 @@ class InstagramFollowInterstitial extends StatelessWidget {
                         AppLocalizations.of(context)?.increaseBiodataScore ?? 'Increase Biodata Score!',
                         style: theme.textTheme.headlineMedium?.copyWith(
                           color: Colors.black,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: AppTypography.extraBold,
                           fontSize: AppTypography.headingLarge,
                         ),
                         textAlign: TextAlign.center,
@@ -120,7 +120,7 @@ class InstagramFollowInterstitial extends StatelessWidget {
                             AppLocalizations.of(context)?.followAndGetFivePercent ?? 'Follow & Get +5%',
                             style: theme.textTheme.titleMedium?.copyWith(
                               color: Colors.white,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: AppTypography.bold,
                               fontSize: AppTypography.headingSmall,
                             ),
                           ),
@@ -135,7 +135,7 @@ class InstagramFollowInterstitial extends StatelessWidget {
                           AppLocalizations.of(context)?.maybeLater ?? 'Maybe Later',
                           style: theme.textTheme.titleMedium?.copyWith(
                             color: Colors.grey[400],
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTypography.semiBold,
                           ),
                         ),
                       ),

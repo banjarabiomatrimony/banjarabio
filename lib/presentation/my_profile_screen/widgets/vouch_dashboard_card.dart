@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sizer/sizer.dart';
+import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/theme/app_theme.dart';
 import 'package:banjarabio/widgets/glassmorphism_container.dart';
@@ -39,7 +40,7 @@ class VouchDashboardCard extends StatelessWidget {
                   Text(
                     'Social Proof',
                     style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTypography.bold,
                       color: AppTheme.primaryLight,
                     ),
                   ),
@@ -64,7 +65,7 @@ class VouchDashboardCard extends StatelessWidget {
                     'Pending Trust',
                     style: TextStyle(
                       fontSize: AppTypography.labelMedium,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTypography.semiBold,
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
                   ),
@@ -89,17 +90,36 @@ class VouchDashboardCard extends StatelessWidget {
               ),
             ],
           ),
+          SizedBox(height: 1.5.h),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: LinearProgressIndicator(
+              value: (profile.vouchCount / 5).clamp(0.0, 1.0),
+              minHeight: 8,
+              backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
+              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF22C55E)),
+            ),
+          ),
           SizedBox(height: 2.h),
           SizedBox(
             width: double.infinity,
+            height: 5.5.h,
             child: ElevatedButton.icon(
               onPressed: onInviteTap,
               icon: const Icon(FontAwesomeIcons.whatsapp, size: 18),
-              label: const Text('Invite Relatives to Vouch'),
+              label: Text(
+                AppLocalizations.of(context)?.inviteRelativesToVouch ?? 'Invite Relatives to Vouch',
+                style: TextStyle(
+                  fontWeight: AppTypography.extraBold,
+                  fontSize: AppTypography.headingSmall,
+                  letterSpacing: 0.3,
+                ),
+              ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.primaryLight,
+                backgroundColor: const Color(0xFF25D366),
                 foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(vertical: 1.5.h),
+                elevation: 3,
+                shadowColor: const Color(0xFF25D366).withValues(alpha: 0.4),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -109,7 +129,8 @@ class VouchDashboardCard extends StatelessWidget {
           if (!profile.isCommunityTrusted) ...[
             SizedBox(height: 1.5.h),
             Text(
-              'Get 5 vouches from verified members to earn the "Community Trusted" badge.',
+              AppLocalizations.of(context)?.vouchBadgeRequirementNotice ??
+                  'Get 5 vouches from verified members to earn the "Community Trusted" badge.',
               style: TextStyle(
                 fontSize: AppTypography.labelMedium,
                 color: theme.colorScheme.onSurfaceVariant,
@@ -147,7 +168,7 @@ class VouchDashboardCard extends StatelessWidget {
             Text(
               count,
               style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTypography.bold,
               ),
             ),
             Text(

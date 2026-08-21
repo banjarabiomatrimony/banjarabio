@@ -7,6 +7,16 @@
       }
     }
   },
+  "@ageAndSurnameSubtitle": {
+    "placeholders": {
+      "age": {
+        "type": "String"
+      },
+      "surname": {
+        "type": "String"
+      }
+    }
+  },
   "@allInDistrict": {
     "placeholders": {
       "district": {
@@ -21,8 +31,6 @@
       }
     }
   },
-  "genderSelectHeading": "Your Gender is",
-  "replacePhoto": "Replace Photo",
   "@allPhotosCount": {
     "placeholders": {
       "count": {
@@ -33,6 +41,13 @@
       }
     }
   },
+  "@anErrorOccurred": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "@areYouSureDeleteSelectedPhotos": {
     "placeholders": {
       "count": {
@@ -40,7 +55,41 @@
       }
     }
   },
+  "@bookmarkLimitReached": {
+    "description": "Title when user hits bookmark limit"
+  },
   "@bookmarksCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@brothersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@bulkDiscount": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "@clanExogamyPillarSubtitle": {
+    "placeholders": {
+      "gotra": {
+        "type": "String"
+      },
+      "maternalGotra": {
+        "type": "String"
+      }
+    }
+  },
+  "@contactUnlocks": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -54,6 +103,20 @@
       }
     }
   },
+  "@countProfileViews": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@criticalFailure": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "@curatedProfilesJustForYou": {
     "placeholders": {
       "count": {
@@ -61,9 +124,54 @@
       }
     }
   },
+  "@dailyRewardClaimedSuccess": {
+    "placeholders": {
+      "rewardName": {
+        "type": "String"
+      }
+    }
+  },
   "@daysAgo": {
     "placeholders": {
       "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@daysLeft": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "@daysRemaining": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "@deleteCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@deleteSelectedSharesQuery": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@discountPercentage": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      },
+      "score": {
         "type": "int"
       }
     }
@@ -103,14 +211,6 @@
       }
     }
   },
-  "errorLoadingAdminStats": "Unable to load dashboard statistics. Please try refreshing.",
-  "errorLoadingAdminUsers": "Could not fetch user list. Please check your connection.",
-  "errorLoadingAdminPayments": "Failed to load payment history. Please try again.",
-  "errorLoadingAdminVerifications": "Could not load verification requests. Please try again.",
-  "errorLoadingAdminReferences": "Unable to fetch pending references. Please refresh.",
-  "errorLoadingAdminCoupons": "Failed to load coupon offers. Please try again.",
-  "errorLoadingAdminCreators": "Could not fetch creator list. Please check your network.",
-  "errorAdminActionFailed": "The requested action could not be completed. Please try again later.",
   "@errorLoadingRequests": {
     "placeholders": {
       "error": {
@@ -132,6 +232,22 @@
       }
     }
   },
+  "@errorWithLabel": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@exitGuestMode": {},
+  "@exploreAsGuest": {},
+  "@extraViewsUnlocked": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "@failedLoadProfile": {
     "placeholders": {
       "error": {
@@ -146,6 +262,20 @@
       }
     }
   },
+  "@failedToBlockUser": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToDeleteAccount": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "@failedToDeletePhotoError": {
     "placeholders": {
       "error": {
@@ -153,7 +283,21 @@
       }
     }
   },
+  "@failedToLoadBookmarks": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "@failedToLoadPhotosError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToLoadProfileError": {
     "placeholders": {
       "error": {
         "type": "String"
@@ -188,10 +332,10 @@
       }
     }
   },
-  "@deleteSelectedSharesQuery": {
+  "@failedToSaveProfile": {
     "placeholders": {
-      "count": {
-        "type": "int"
+      "error": {
+        "type": "String"
       }
     }
   },
@@ -202,35 +346,21 @@
       }
     }
   },
-  "@uploadFailed": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@updateFailed": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@errorWithLabel": {
-    "placeholders": {
-      "label": {
-        "type": "String"
-      }
-    }
-  },
-  "@failedToSaveProfile": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
   "@failedToStartChat": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToSubmitReport": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@failedToUpdateBookmark": {
     "placeholders": {
       "error": {
         "type": "String"
@@ -272,6 +402,37 @@
       }
     }
   },
+  "@forMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@fromContact": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@gunasMatchedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
+  "@handpickedMatches": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "@hoursAgo": {
     "placeholders": {
       "count": {
@@ -282,6 +443,27 @@
   "@idLabel": {
     "placeholders": {
       "id": {
+        "type": "String"
+      }
+    }
+  },
+  "@interestConfirmationDesc": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@interestConfirmationMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@interestShared": {
+    "placeholders": {
+      "name": {
         "type": "String"
       }
     }
@@ -300,6 +482,16 @@
       }
     }
   },
+  "@mamakulAndTandaSubtitle": {
+    "placeholders": {
+      "mamakul": {
+        "type": "String"
+      },
+      "tanda": {
+        "type": "String"
+      }
+    }
+  },
   "@matchNOfTotal": {
     "placeholders": {
       "current": {
@@ -310,9 +502,26 @@
       }
     }
   },
+  "@melavaEventCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@messagingLimitReached": {
+    "description": "Title when user hits messaging limit"
+  },
   "@minutesAgo": {
     "placeholders": {
       "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@mrpPrice": {
+    "placeholders": {
+      "price": {
         "type": "int"
       }
     }
@@ -328,6 +537,13 @@
     "placeholders": {
       "query": {
         "type": "String"
+      }
+    }
+  },
+  "@onePhotoLockedTeaser": {
+    "placeholders": {
+      "count": {
+        "type": "int"
       }
     }
   },
@@ -363,6 +579,34 @@
     "placeholders": {
       "percentage": {
         "type": "int"
+      }
+    }
+  },
+  "@percentCompleteBadge": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "@percentMatchBadge": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "@percentTrustBadge": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "@permissionRequiredMessage": {
+    "placeholders": {
+      "type": {
+        "type": "String"
       }
     }
   },
@@ -408,10 +652,27 @@
       }
     }
   },
+  "@pricePerMonth": {
+    "placeholders": {
+      "price": {
+        "type": "int"
+      }
+    }
+  },
   "@profileBoostPerMonth": {
     "placeholders": {
       "count": {
         "type": "int"
+      }
+    }
+  },
+  "@profileSharedVia": {
+    "placeholders": {
+      "profileName": {
+        "type": "String"
+      },
+      "title": {
+        "type": "String"
       }
     }
   },
@@ -422,48 +683,31 @@
       }
     }
   },
-  "@interestConfirmationDesc": {
+  "@profileStrengthLabel": {
     "placeholders": {
-      "name": {
+      "strength": {
         "type": "String"
       }
     }
   },
-  "expressInterest": "Express Interest?",
-  "interestConfirmationDesc": "Do you want to share your profile with {name} to show your interest?",
-  "yesInterest": "Yes, Interest",
-  "interest": "Interest",
-  "revenueToday": "Revenue Today (₹)",
-  "premiumMen": "Premium Men",
-  "premiumWomen": "Premium Women",
-  "financialPerformance": "Financial Performance",
-  "demographicsAndPremium": "Demographics & Premium",
-  "revenueTotal": "Total Revenue (₹)",
-  "monthlyRevenue": "Monthly Revenue (₹)",
-  "pdfRevenue": "PDF Revenue (₹)",
-  "userEngagement": "User Engagement",
-  "dailyActiveUsers": "Daily Active Users",
-  "profileViews": "Profile Views",
-  "totalMessages": "Total Messages",
-  "safetyAndHealth": "Safety & Health",
-  "pendingReports": "Pending Reports",
-  "totalBlocks": "Total Blocks",
-  "pendingReferences": "Pending References",
-  "totalUsers": "Total Users",
-  "profiles": "Profiles",
-  "appGrowth": "App Growth",
-  "completedReferrals": "Completed Referrals",
-  "activeCreators": "Active Creators",
-  "totalFemales": "Total Females",
-  "totalMales": "Total Males",
-  "men": "Men",
-  "women": "Women",
-  "sharingProfiles": "Sharing Profiles",
-  "sharingProfile": "Sharing profile...",
   "@profileViewsPerDay": {
     "placeholders": {
       "count": {
         "type": "int"
+      }
+    }
+  },
+  "@referenceWithNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "@referralInviteMessage": {
+    "placeholders": {
+      "link": {
+        "type": "String"
       }
     }
   },
@@ -481,8 +725,16 @@
       }
     }
   },
-  "referenceVerified": "Reference Verified",
-  "referenceRejected": "Reference Rejected",
+  "@selfAndMamakulSubtitle": {
+    "placeholders": {
+      "self": {
+        "type": "String"
+      },
+      "mamakul": {
+        "type": "String"
+      }
+    }
+  },
   "@shareFailed": {
     "placeholders": {
       "error": {
@@ -494,6 +746,15 @@
     "placeholders": {
       "name": {
         "type": "String"
+      }
+    }
+  },
+  "@sharedProfilesWithEachOther": {
+    "description": "Text shown when two users share profiles with each other",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Someone"
       }
     }
   },
@@ -510,6 +771,30 @@
   "@sharesPerMonth": {
     "placeholders": {
       "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@siblingsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@sistersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@stepCounterFormat": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
         "type": "int"
       }
     }
@@ -531,6 +816,20 @@
       },
       "state": {
         "type": "String"
+      }
+    }
+  },
+  "@toContact": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@totalSavings": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
       }
     }
   },
@@ -558,6 +857,41 @@
       }
     }
   },
+  "@unlockMoreVisitors": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@unsavedDraftBodyWithName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@updateFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@uploadFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@verifiedCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "@verifyLabel": {
     "placeholders": {
       "label": {
@@ -572,6 +906,13 @@
       }
     }
   },
+  "@yearsLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "@yearsOld": {
     "placeholders": {
       "age": {
@@ -579,15 +920,38 @@
       }
     }
   },
+  "@youSave": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "@yrs": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ableBodied": "Able-Bodied",
+  "aboutFamily": "About Family",
   "aboutSelf": "About Self",
   "aboutYourself": "About Yourself",
   "abusiveBehavior": "Abusive Behavior",
+  "acceptAndConnect": "ACCEPT & CONNECT 💖",
   "account": "Account",
   "accountAndAllDataDeletedSuccessfully": "Account and all data deleted successfully.",
   "accountDeletion": "Account Deletion",
+  "acres": "Acres",
   "actionIsIrreversible": "This action is irreversible.",
+  "activeCreators": "Active Creators",
   "activeSubscriptionCancelledNoRefund": "Your active subscription will be cancelled without refund.",
+  "activity": "Activity",
+  "adCompletedSuccessfully": "AD COMPLETED SUCCESSFULLY",
   "adFreeExperience": "Ad-free experience",
+  "adNotReady": "Ad not ready yet. Please try again in a moment.",
+  "adTemporarilyUnavailable": "AD TEMPORARILY UNAVAILABLE",
   "addClearPhotos": "Add clear photos ({max} max)",
   "addPhoto": "Add Photo",
   "addPhotosToYourBiodataProfileToIncreaseV": "Add photos to your biodata profile to increase visibility and trust",
@@ -607,31 +971,45 @@
   "advancedFilters": "Advanced filters",
   "affluent": "Affluent",
   "age": "Age",
+  "ageAndSurnameSubtitle": "{age} Yrs • {surname}",
+  "ageLabel": "Age",
   "ageRange": "Age Range",
+  "ageRangeYears": "{min} - {max} yrs",
   "aiBio": "AI Bio",
+  "algorithmInsightsDescription": "Our matchmaking algorithm evaluates authentic Banjara exogamy rules (checking self gotra & maternal gotra separation), Vedic astrological Guna Milan, verified education & income parameters, and mutual partner preferences.",
+  "alignedExpectations": "Aligned Expectations",
+  "all": "All",
   "allInDistrict": "All in {district}",
   "allInSelectedDistrict": "All in selected District",
   "allInSelectedState": "All in selected State",
   "allInState": "All in {state}",
   "allIndia": "All India",
   "allPhotosCount": "All Photos ({count}/{max})",
+  "allProfiles": "All Profiles",
   "allYourProfileDataPermanentlyRemoved": "All your profile data will be permanently removed.",
   "almostDone": "Almost Done!",
   "almostDoneReview": "Review all sections and click \"Save Biodata\" to complete your profile. Your biodata will be visible to other community members based on your privacy settings.",
+  "alreadyHaveProfileLogin": "Already have a profile? Login",
+  "alternateRelativeContactNumberOptional": "Alternate / Relative Contact Number (Optional)",
   "anErrorOccurred": "An error occurred: {error}",
-  "@anErrorOccurred": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
+  "ancestralLand": "Ancestral Land",
+  "ancestralLandHoldingsAcres": "Ancestral Land Holdings (Acres)",
+  "ancestralLandSubtitle": "Filter candidates by family agricultural land ownership",
   "and": " and ",
+  "annual": "Annual",
   "annualIncome": "Individual Annual Income",
   "annualIncomeHint": "Total yearly earnings from salary or business. (NOT family savings)",
+  "annualIncomeLabel": "Annual Income",
+  "annualIncomeSalary": "Annual Income / Salary",
+  "annualIncomeSubtitle": "Select candidate yearly income expectations",
   "annulled": "Annulled",
+  "appGrowth": "App Growth",
   "appName": "BanjaraBio",
+  "apply": "Apply",
+  "applyAllFilters": "Apply All Filters",
   "applyFilters": "Apply Filters",
+  "applyFiltersCount": "Apply Filters ({count} Active)",
+  "applyLocation": "Apply Location",
   "approve": "Approve",
   "areYouReadyForDiscussions": "Are you ready for discussions?",
   "areYouSureDeleteSelectedPhotos": "Are you sure you want to delete {count} photo(s)?",
@@ -641,173 +1019,244 @@
   "areYouSureYouWantToDeleteThisPhoto": "Are you sure you want to delete this photo?",
   "areYouSureYouWantToDeleteYourAccount": "Are you sure you want to delete your account?",
   "askFamilySuggestionsTip": "Ask family members for photo suggestions",
+  "astro36GunaMilanScore": "Astro 36 Guna Milan Score",
+  "astro36GunaSubtitle": "Filter matches by minimum astrological compatibility threshold",
   "atLeastOnePhotoRequired": "At least one photo is required",
   "awaitingDivorce": "Awaiting Divorce",
   "bachelorsDegree": "Bachelor's Degree",
   "back": "Back",
   "backSide": "Back Side",
   "backToGoogleSignIn": "Back to Google Sign In",
+  "banjaraBioPro": "BanjaraBio Pro",
+  "banjaraClanRoots": "BANJARA CLAN ROOTS",
+  "banjaraGotraClan": "Banjara Gotra (Clan)",
+  "banjaraGotraCustoms": "Banjara Gotra Customs (गोत्र व मोसळ)",
+  "banjaraGotraSelfClan": "Banjara Gotra (Self Clan)",
   "banjaraMember": "Banjara Member",
+  "banjaraVirasatSangh": "Banjara Virasat Sangh",
   "banjarabio": "BanjaraBio",
+  "basicInformation": "Basic Information",
+  "basicPlanDesc": "Essential features for your search",
+  "basicPlanName": "Basic",
+  "benefitPdfBiodata": "Create Beautiful PDF Biodata in 2 Mins",
+  "benefitShareWhatsApp": "Share Directly on WhatsApp",
+  "benefitVerifiedProfiles": "100% Verified Community Profiles",
+  "bestTimeToContact": "Best Time to Contact",
+  "bestValue": "BEST VALUE",
+  "biodata": "Biodata",
   "biodataDraftRestored": "Biodata draft restored!",
   "biodataDraftRestoredSuccess": "Biodata draft restored successfully!",
   "biodataPdf": "Biodata PDF",
+  "biodataPremiumIncluded": "Biodata Premium Included",
+  "biodataRequired": "Biodata Required",
   "biodataSavedSuccessfully": "Biodata saved successfully!",
   "biodataUnlockPlanDesc": "Unlock professional premium templates",
   "biodataUnlockPlanName": "Biodata Premium",
   "birthDetails": "Additional Birth Details",
   "birthPlace": "Birth Place",
   "birthPlaceAndTime": "Birth Place & Time",
+  "birthPlaceLabel": "Birth Place",
   "birthTime": "Birth Time",
+  "birthTimeLabel": "Birth Time",
+  "birthTimeVisibleOnPdf": "Birth time & birth place visible on PDF",
   "block": "Block",
   "blockUser": "Block User",
   "bloodGroup": "Blood Group",
+  "bloodGroupLabel": "Blood Group",
   "blurryLowQualityImages": "Blurry, dark, or low-quality images",
   "bookmarkLimitReached": "Bookmark Limit Reached",
-  "@bookmarkLimitReached": {
-    "description": "Title when user hits bookmark limit"
-  },
-  "messagingLimitReached": "Messaging Limit Reached",
-  "@messagingLimitReached": {
-    "description": "Title when user hits messaging limit"
-  },
   "bookmarksCount": "{count} bookmarks",
+  "bride": "Bride",
+  "brideGirl": "👧 Bride (Girl)",
+  "brideOption": "👧 Bride (Girl)",
   "bronze": "Bronze",
   "brother": "Brother",
   "brotherCount": "Brothers",
+  "brothersCount": "{count, plural, =1{1 brother} other{{count} brothers}}",
+  "browseMatchesDesc": "Search suitable matches for son, daughter, relative.",
+  "browseMatchesSubtitle": "Answer a few questions and see suitable matches",
+  "browseMatchesTitle": "Search Matches (Browse)",
   "browseProfiles": "Browse Profiles",
+  "bulkDiscount": "{percent}% OFF",
   "business": "Business",
   "businessOwner": "Business Owner",
+  "bvsAnnualPlanLabel": "Annual Plan",
+  "bvsAnnualPrice": "₹200 / Year",
+  "bvsCardSelected": "Card Selected",
+  "bvsConceptSubtitle": "Initiative: Hon. Shri Sanjaybhau Rathod\nMinister, Govt. of Maharashtra",
+  "bvsCopyMessageToast": "🚩 BVS invite message copied!",
+  "bvsHeritageEmblemDesc": "Pohradevi & 12+ Crore community pride",
+  "bvsHeritageEmblemTitle": "Heritage Seal",
+  "bvsHowToJoinTitle": "How to Join BVS & Unlock Discounts?",
+  "bvsJoinCardSubtitle": "⚡ Register on BVS portal to get ₹200/year discount",
+  "bvsJoinNowButton": "Join BVS Today (Join Now)",
+  "bvsMember": "🏛️ BVS Member",
+  "bvsMemberId": "BVS Member ID No (e.g. 405812)",
+  "bvsMembershipCard": "BVS Membership Card",
+  "bvsMonthlyPlanLabel": "Monthly Plan",
+  "bvsMonthlyPrice": "₹20 / Month",
+  "bvsMovementDesc": "A historic movement to strengthen the unity and future of the Banjara community.",
+  "bvsNotRegisteredYet": "Not a BVS member yet? Register here »",
+  "bvsOfficialEmblems": "Official BVS Emblems",
+  "bvsShareOnWhatsApp": "Share on WhatsApp",
+  "bvsSpecialDiscountBanner": "Are you a Banjara Virasat Sangh member? Upload your BVS card to unlock the Annual Plan at just ₹200!",
+  "bvsStep1Desc": "Enter your details on the official BVS portal.",
+  "bvsStep1Title": "Register Online",
+  "bvsStep2Desc": "Receive your official digital ID card and Member ID.",
+  "bvsStep2Title": "Get Membership Card",
+  "bvsStep3Desc": "Upload BVS card to activate ₹200/yr subsidized plan.",
+  "bvsStep3Title": "Upload Card on BanjaraBio",
+  "bvsSubsidyCardSubtitle": "Huge savings on BanjaraBio Matrimony Subscriptions!",
+  "bvsSubsidyCardTitle": "Special Discount for BVS Members!",
+  "bvsTitle": "Banjara Virasat Sangh",
+  "bvsUnityEmblemDesc": "Hands linked in unity & traditional embroidery",
+  "bvsUnityEmblemTitle": "Unity Emblem",
+  "bvsUploadCardButton": "Upload BVS Card (Get Discount)",
+  "bvsUploadCardPromptSubtitle": "Upload photo of BVS Membership Card",
+  "bvsVerifiedActiveBadge": "👑 BVS Verified Member Discount Active!",
+  "bvsVerifiedActiveDesc": "Monthly plan at ₹20 and Annual plan at ₹200 are active for you.",
+  "bvsVerifiedSpecialPlan": "BVS Member Special Plan",
+  "bvsWhatsAppInviteTitle": "WhatsApp Automation Invite",
   "byContAcceptTerms": "By continuing, you agree to our ",
+  "callAdmin": "Call Admin",
+  "callOrganizer": "Call Organizer",
   "camera": "Camera",
   "cancel": "Cancel",
   "cancelAnytime": "Cancel anytime",
+  "candidatesMeet": "Candidates Meet",
+  "careerPillarSubtitle": "Graduate / Professional background & steady income",
+  "careerSocioeconomicPillar": "Career & Socioeconomic Level",
+  "careerWealthHoldings": "Career & Wealth Holdings",
+  "changeCriteriaOrExitPrompt": "Do you want to change your search options or exit the app?",
   "changeLanguage": "Change Language",
+  "changeOptionsCta": "Change Options ✏️",
   "chat": "Chat",
+  "chatConversationArchived": "Chat conversation archived",
   "checkBackSoonForNewMatchesnpullDownToRef": "Check back soon for new matches.\\nPull down to refresh.",
   "checkInbox": "Check Inbox",
   "checkInternet": "Please check your internet connection and try again.",
   "checkWhoIsLookingAtYourProfile": "Check who is looking at your profile",
+  "chipFreeAccess": "⭐ 100% Free Access",
+  "chipNoAccount": "⚡ No Account Needed",
+  "chipQuickFilter": "🔍 1-Min Search",
   "chooseFromGallery": "Choose from Gallery",
+  "chooseHowToStart": "Choose how you want to start",
+  "chooseQuickIntroTemplate": "CHOOSE A QUICK INTRO TEMPLATE",
   "chooseTemplate": "Choose Template",
+  "claimMarriageGift": "Claim Marriage Gift",
+  "clanExogamyPillar": "Clan Exogamy (गोत्र व मोसळ)",
+  "clanExogamyPillarSubtitle": "Different paternal Gotra ({gotra}) & Mamakul ({maternalGotra})",
   "clear": "Clear",
   "clearAllFilters": "Clear All Filters",
+  "clearSearch": "Clear search",
+  "clearText": "Clear text",
   "clearWellLitPhotos": "Clear, well-lit photos showing your face clearly",
   "close": "Close",
+  "closePreview": "Close Preview",
+  "collegeInstitute": "College / Institute",
   "comeBackTomorrowFornnewCuratedMatches": "Come back tomorrow for\\nnew curated matches!",
-  "bvsMembershipCard": "BVS Membership Card",
-  "bvsMemberId": "BVS Member ID No (e.g. 405812)",
-  "uploadBvsCardPrompt": "Upload your Banjara Virasat Sangh (BVS) Membership Card",
-  "bvsSpecialDiscountBanner": "Are you a Banjara Virasat Sangh member? Upload your BVS card to unlock the Annual Plan at just ₹200!",
-  "joinBvsNow": "Join BVS (Register Here)",
-  "bvsVerifiedSpecialPlan": "BVS Member Special Plan",
-  "bvsTitle": "Banjara Virasat Sangh",
-  "bvsConceptSubtitle": "Initiative: Hon. Shri Sanjaybhau Rathod\nMinister, Govt. of Maharashtra",
-  "bvsMovementDesc": "A historic movement to strengthen the unity and future of the Banjara community.",
-  "bvsOfficialEmblems": "Official BVS Emblems",
-  "bvsUnityEmblemTitle": "Unity Emblem",
-  "bvsUnityEmblemDesc": "Hands linked in unity & traditional embroidery",
-  "bvsHeritageEmblemTitle": "Heritage Seal",
-  "bvsHeritageEmblemDesc": "Pohradevi & 12+ Crore community pride",
-  "bvsSubsidyCardTitle": "Special Discount for BVS Members!",
-  "bvsSubsidyCardSubtitle": "Huge savings on BanjaraBio Matrimony Subscriptions!",
-  "bvsAnnualPlanLabel": "Annual Plan",
-  "bvsMonthlyPlanLabel": "Monthly Plan",
-  "bvsAnnualPrice": "₹200 / Year",
-  "bvsMonthlyPrice": "₹20 / Month",
-  "bvsVerifiedActiveBadge": "👑 BVS Verified Member Discount Active!",
-  "bvsVerifiedActiveDesc": "Monthly plan at ₹20 and Annual plan at ₹200 are active for you.",
-  "bvsHowToJoinTitle": "How to Join BVS & Unlock Discounts?",
-  "bvsStep1Title": "Register Online",
-  "bvsStep1Desc": "Enter your details on the official BVS portal.",
-  "bvsStep2Title": "Get Membership Card",
-  "bvsStep2Desc": "Receive your official digital ID card and Member ID.",
-  "bvsStep3Title": "Upload Card on BanjaraBio",
-  "bvsStep3Desc": "Upload BVS card to activate ₹200/yr subsidized plan.",
-  "bvsWhatsAppInviteTitle": "WhatsApp Automation Invite",
-  "bvsShareOnWhatsApp": "Share on WhatsApp",
-  "bvsCopyMessageToast": "🚩 BVS invite message copied!",
-  "bvsJoinNowButton": "Join BVS Today (Join Now)",
-  "bvsJoinCardSubtitle": "⚡ Register on BVS portal to get ₹200/year discount",
-  "bvsUploadCardButton": "Upload BVS Card (Get Discount)",
-  "bvsUploadCardPromptSubtitle": "Upload photo of BVS Membership Card",
-  "bvsCardSelected": "Card Selected",
-  "bvsNotRegisteredYet": "Not a BVS member yet? Register here »",
+  "communityFiltersSubtitle": "Gotra, Mamakul, Origin, Height, Income & Lineage",
+  "communityFiltersTitle": "Community Filters (BVS)",
   "communityId": "Community ID",
   "communityIdSubmitted": "Community ID Submitted",
   "communityIdVerification": "Community ID",
   "communityMember": "Community Member",
+  "communityTrustedProfiles": "Community Trusted Profiles",
+  "communityTrustedProfilesSubtitle": "Vouched Banjara profiles with Community Trust Score > 75%",
   "communityVerification": "Community Verification",
+  "company": "Company",
   "companyName": "Company Name",
+  "companyOrg": "Company / Org",
+  "compareAllPlanFeatures": "Compare All Plan Features",
+  "compatibleRoots": "Compatible Roots",
   "completeVerificationToUnlockPremium": "Complete verification to unlock 'Premium' status.",
   "completeYourProfileToGetNoticed": "Complete your profile to get noticed!",
+  "completedReferrals": "Completed Referrals",
   "completion": "COMPLETION",
   "complexion": "Complexion",
   "compressingUnder500Kb": "Compressing under 500KB...",
+  "confidentialMatchmaking": "Confidential & Private Matchmaking",
+  "confidentialMatchmakingSubtitle": "High-profile biodatas viewable exclusively with mutual RM consent",
   "confirm": "Confirm",
   "connectInApp": "CONNECT IN-APP",
   "connectWithCommunity": "Connect with your Banjara community",
+  "connectionAcceptedToast": "Connection Accepted! You can now chat directly 🎉",
   "contact": "Contact",
+  "contactLabel": "Contact",
+  "contactPersonLabel": "Contact Person",
   "contactPreferences": "Contact Preferences",
+  "contactUnlocks": "{count} Contact Unlocks/month",
   "contactUs": "Contact Us",
   "contactUsTitle": "Contact Us",
+  "continueAsGuestCta": "Continue as Guest 🚀",
+  "continueBlockedUntilAdEnds": "CONTINUE TO APP BLOCKED UNTIL AD ENDS",
+  "continueToApp": "CONTINUE TO APP",
   "continueWithFreeAccount": "Continue with Free Account",
   "continueWithGoogle": "Continue with Google",
+  "continueWithStandardFilters": "Continue with Standard Filters",
+  "conversationPinnedToTop": "Conversation pinned to top 📌",
+  "conversationUnpinned": "Conversation unpinned",
   "conversations": "Conversations",
+  "copiedToClipboard": "Copied to clipboard",
   "copyLink": "Copy Link",
   "copyLinkSubtitle": "Copy a link to {name} profile",
+  "copyMessage": "Copy Message",
+  "couldNotLaunchDialer": "Could not launch phone dialer",
+  "couldNotLaunchUrl": "Could not launch URL",
+  "couldNotLaunchWhatsApp": "Could not launch WhatsApp",
   "couldNotLoadProfile": "We couldn't load your profile. Please try again.",
+  "couldNotTriggerSharing": "Could not trigger sharing",
+  "countProfileViews": "{count, plural, =1{1 profile view} other{{count} profile views}}",
+  "countryLabel": "Country",
+  "couponDiscountApplied": "Coupon Discount Applied",
   "createBiodata": "Create Biodata",
+  "createBiodataCta": "Create Biodata ✨",
+  "createBiodataDesc": "Fill out your profile and start connecting instantly.",
+  "createBiodataForSelfOrCandidateSubtitle": "Create an attractive marriage biodata in 2 minutes, download PDF, share on WhatsApp, and receive matches directly.",
+  "createBiodataForSelfOrCandidateTitle": "Create Biodata for Self / Candidate",
+  "createFreeProfile100PercentFree": "✨ Create Free Profile (100% Free)",
+  "createMyBiodata": "Create My Biodata",
+  "createNow": "Create Now",
   "createProfile": "Create Profile",
   "criticalFailure": "Critical failure: {error}",
-  "@criticalFailure": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
   "cropPhoto": "Crop Photo",
   "cropRotate": "Crop & Rotate",
+  "culturallyVerified": "CULTURALLY VERIFIED",
   "curatedProfilesJustForYou": "{count} curated profiles just for you",
+  "currentCity": "Current City",
   "currentLocation": "Current Location",
+  "currentNativeRegion": "CURRENT & NATIVE REGION",
   "currentPlan": "Current Plan",
+  "currentResidence": "Current Residence",
   "currentResidenceState": "Current Residence State",
+  "currentState": "Current State",
   "currentVillageHint": "Current village",
+  "customMessage": "Custom Message",
+  "customize": "Customize",
   "customizeBiodata": "Customize Biodata",
   "daily": "Daily",
+  "dailyActiveUsers": "Daily Active Users",
+  "dailyLimitReached": "Daily Limit Reached",
+  "dailyLimitViewsReached": "You have used all your daily profile views.",
   "dailyMatch": "Daily Match",
+  "dailyMatchPicks": "Daily Match Picks",
+  "dailyMessageLimitReached": "Daily message limit reached.",
+  "dailyRewardClaimedSuccess": "🎉 Success! {rewardName}",
+  "dailyViewLimitReached": "Daily view limit reached.",
   "dark": "Dark",
   "dateOfBirth": "Date of Birth",
+  "dateOfBirthLabel": "Date of Birth",
   "daughter": "Daughter",
   "daysAgo": "{count}d ago",
   "daysLeft": "{days} days left",
-  "@daysLeft": {
-    "placeholders": {
-      "days": {
-        "type": "int"
-      }
-    }
-  },
   "daysRemaining": "{days} days remaining",
-  "@daysRemaining": {
-    "placeholders": {
-      "days": {
-        "type": "int"
-      }
-    }
-  },
+  "decline": "DECLINE",
+  "dedicatedManager": "Dedicated Relationship Manager",
+  "degreeField": "Degree / Field",
   "delete": "Delete",
   "deleteAccount": "Delete Account",
   "deleteAccountWarning": "This action is permanent and cannot be undone.",
   "deleteCount": "Delete ({count})",
-  "@deleteCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
   "deleteMyAccount": "Delete My Account",
   "deletePhoto": "Delete Photo",
   "deletePhotos": "Delete Photos",
@@ -815,28 +1264,34 @@
   "deleteShares": "Delete Shares",
   "deletingYourAccountWillResultIn": "Deleting your account will result in:",
   "demo": "Demo",
+  "demographicsAndPremium": "Demographics & Premium",
   "describeYourselfInterestsHobbies": "Describe yourself, interests, hobbies...",
   "details": "Details",
+  "diamond": "Diamond",
+  "dietHabits": "Diet / Food Habits",
   "differentSettingsTip": "Include photos in different settings (formal, casual)",
+  "differentlyAbled": "Diff. Abled",
+  "digital": "Digital",
   "diploma": "Diploma",
+  "directAdminSupport": "Direct Admin Support",
+  "directContactAccess": "Direct Contact Access",
+  "directContactUnlocked": "Direct Contact Unlocked Profiles",
+  "directContactUnlockedSubtitle": "Direct Phone Number & WhatsApp verified access",
+  "directMessage": "Direct Message",
+  "directMessages": "Direct Messages",
+  "directMessagesSubtitle": "Stay responsive when your match sends you a message.",
   "directMessaging": "Direct messaging",
+  "directMessagingPremium": "Direct messaging is a Premium feature.",
+  "directNoteSentToast": "Direct Note sent with high priority! 💌",
+  "directWhatsAppLeads": "📱 Direct WhatsApp Leads",
   "disabledHint": "Optional field for physically challenged individuals",
   "disabledTagLabel": "Disabled",
   "discard": "Discard",
   "discardChanges": "Discard Changes?",
   "discardChangesBody": "Are you sure you want to go back? Your progress is saved as a draft.",
   "discountPercentage": "{percentage}% OFF (Trust Score {score})",
-  "@discountPercentage": {
-    "placeholders": {
-      "percentage": {
-        "type": "int"
-      },
-      "score": {
-        "type": "int"
-      }
-    }
-  },
   "discoverProfilesFromYourCommunityNsmartM": "Discover profiles from your community.\\nSmart matchmaking powered by compatibility scores.",
+  "displayLayoutLabel": "Display Layout",
   "district": "District",
   "districtInState": "District in {state}",
   "districtInStateLabel": "District in State",
@@ -847,13 +1302,19 @@
   "documentView": "Document View",
   "done": "Done",
   "downloadBtn": "Download",
+  "downloadWatermarkFreeBiodataDesc": "Download watermark-free high definition 2-Page Biodata in all formats.",
+  "drinkingHabits": "Drinking Habits",
   "dusky": "Dusky",
   "easiest": "Easiest",
   "edit": "Edit",
+  "editBiodataInfoPhotos": "Edit Biodata Info & Photos",
+  "editBiodataInfoPhotosDesc": "Edit Education, Gotra, Family, Native Tanda & Photo in your master profile.",
   "editProfile": "Edit Profile",
   "education": "Education",
   "educationAndProfession": "Education & Profession",
   "educationDetails": "Education Details",
+  "educationFieldStream": "Education Field / Stream",
+  "educationFieldSubtitle": "Filter by specialized degree stream & career path",
   "educationLabel": "Education",
   "educationProfession": "Education & Profession",
   "educationProfessionDetails": "Education & Career",
@@ -864,77 +1325,85 @@
   "egTime": "e.g. 10:30 AM",
   "elderBrother": "Elder Brother",
   "elderSister": "Elder Sister",
+  "elitePlanDesc": "Handpicked matches with VIP access",
+  "elitePlanName": "Elite",
   "email": "Email",
   "emailAddress": "Email Address",
   "emailLabel": "Email",
+  "emailNotifications": "Email Notifications",
   "emailSupport": "Email Support",
   "emailVerification": "Email Verification",
   "emailVerificationTip": "Tip: Check your spam folder if you don't see the email.",
   "emailVerifiedSuccessfully10Points": "Email Verified Successfully! +10 Points",
+  "employmentSector": "Employment Sector",
   "emptyStr": "₹",
+  "enableNotifications": "Enable Notifications",
   "english": "English",
   "enterBasicInfo": "Enter your basic information as it appears in official documents",
   "enterCityVillage": "Enter city/village",
+  "enterDistrictExample": "Enter District (e.g. Nanded, Yavatmal, Nizamabad)",
   "enterEducationDetails": "Enter your education details",
   "enterFullName": "Enter your full name",
   "enterMobileNumber": "Enter mobile number",
   "enterProfessionDetails": "Enter your profession details",
+  "enterVillageHint": "Enter Village or Tanda name...",
+  "enterVillageManually": "Enter Village/Other Name",
   "enterYourBasicInformationAsItAppearsInOf": "Enter your basic information as it appears in official documents",
   "enterYourEducationDetails": "Enter your education details",
   "enterYourEmail": "Enter your email",
   "enterYourPassword": "Enter your password",
   "enterYourProfessionDetails": "Enter your profession details",
   "error": "Error",
+  "errorAdminActionFailed": "The requested action could not be completed. Please try again later.",
   "errorCheckingShareLimits": "Error checking share limits: {error}",
   "errorCheckingStatus": "Error checking status: {error}",
   "errorCheckingViewLimits": "Error checking view limits: {error}",
+  "errorLaunchingLink": "Error launching link",
+  "errorLoadingAdminCoupons": "Failed to load coupon offers. Please try again.",
+  "errorLoadingAdminCreators": "Could not fetch creator list. Please check your network.",
   "errorLoadingAdminData": "Error loading admin data: {error}",
+  "errorLoadingAdminPayments": "Failed to load payment history. Please try again.",
+  "errorLoadingAdminReferences": "Unable to fetch pending references. Please refresh.",
+  "errorLoadingAdminStats": "Unable to load dashboard statistics. Please try refreshing.",
+  "errorLoadingAdminUsers": "Could not fetch user list. Please check your connection.",
+  "errorLoadingAdminVerifications": "Could not load verification requests. Please try again.",
   "errorLoadingRequests": "Error loading requests: {error}",
   "errorOccurred": "An error occurred: {error}",
   "errorPrefix": "Error: {error}",
+  "errorWithLabel": "Error: {label}",
+  "estimatedRefund": "Estimated Refund",
+  "eternalElitePlanDesc": "Focus on your career, we find your partner",
+  "eternalElitePlanName": "Eternal Elite",
+  "eternalPlanDesc": "Never worry about expiry again",
+  "eternalPlanName": "Eternal - Till U Marry",
+  "eventDetails": "Event Details",
   "everyProfileIsVerifiedWithIdSelfieRefere": "Every profile is verified with ID, selfie & references.\\nTrust Score ensures genuine connections.",
+  "exactBirthTimeAndKundali": "Exact Birth Time & Kundali",
+  "excellentMatch": "EXCELLENT MATCH",
   "exit": "Exit",
   "exitApp": "Exit App",
+  "exitGuestMode": "Exit Guest Mode",
+  "exogamous": "EXOGAMOUS",
+  "exogamyCompliant": "EXOGAMY COMPLIANT",
+  "exogamyRuleDescription": "In traditional Banjara (Gor) culture, marriages follow strict Clan Exogamy (गोत्र बहिर्विवाह):",
+  "exploreAsGuest": "Explore as Guest",
+  "exploreMatchmakerPlans": "Explore Matchmaker Plans",
+  "exploreMatchmakerPlansButton": "Explore Matchmaker Plans ➔",
+  "explorePremiumPlans": "Explore Premium Plans",
   "exportBiodataPdf": "Export Biodata PDF",
+  "expressInterest": "Express Interest?",
   "expressInterestDesc": "Express your interest by sharing your biodata directly",
+  "extraViewsUnlocked": "{count} Extra Views Unlocked!",
   "failedLoadProfile": "Failed to load profile context: {error}",
   "failedSignInGoogle": "Failed to sign in with Google: {error}",
   "failedSignInGoogleRetry": "Failed to sign in with Google. Please try again.",
   "failedToBlockUser": "Failed to block user: {error}",
-  "@failedToBlockUser": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
   "failedToDeleteAccount": "Failed to delete account: {error}",
-  "@failedToDeleteAccount": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
   "failedToDeletePhotoError": "Failed to delete photo: {error}",
   "failedToGeneratePdfPreview": "Failed to generate PDF preview",
   "failedToLoadBookmarks": "Failed to load bookmarks: {error}",
-  "@failedToLoadBookmarks": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
   "failedToLoadPhotosError": "Failed to load photos: {error}",
   "failedToLoadProfileError": "Failed to load profile: {error}",
-  "@failedToLoadProfileError": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
   "failedToLoadProfileInformation": "Failed to load profile information",
   "failedToLoadProfiles": "Failed to load profiles",
   "failedToLoadReferralData": "Failed to load referral data",
@@ -946,37 +1415,33 @@
   "failedToSave": "Failed to save: {error}",
   "failedToSavePdf": "Failed to save PDF: {error}",
   "failedToSaveProfile": "Failed to save profile: {error}",
+  "failedToSendMessage": "Failed to send message: {error}",
+  "failedToSendNote": "Failed to send note: {error}",
   "failedToSharePdf": "Failed to share PDF",
   "failedToStartChat": "Failed to start chat: {error}",
   "failedToSubmitReport": "Failed to submit report: {error}",
-  "@failedToSubmitReport": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
   "failedToUpdateBookmark": "Failed to update bookmark: {error}",
-  "@failedToUpdateBookmark": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
   "failedToUpdatePremiumStatus": "Failed to update premium status: {error}",
   "failedToUpdatePrimaryPhotoError": "Failed to update primary photo: {error}",
   "failedToUpdateProfile": "Failed to update profile",
   "failedToUploadPhoto": "Failed to upload photo {index}",
   "failedToVerify": "Failed to verify: {error}",
+  "failedWithError": "Failed: {error}",
   "fair": "Fair",
   "fakeProfile": "Fake Profile",
   "familyBackground": "Family Background",
   "familyDetails": "Family Details",
   "familyFirstValues": "Family-First Values",
   "familyOnly": "Family Only",
+  "familyReputationVetted": "Family Background & Reputation Vetted",
+  "familyReputationVettedSubtitle": "Clean background check conducted by field relationship managers",
   "familyStatus": "Family Status",
+  "familyStatusSubtitle": "Select socioeconomic family status requirement",
+  "familyStructure": "Family Structure",
+  "familyStructureSubtitle": "Select nuclear or joint family preferences",
   "familyType": "Family Type",
+  "familyValues": "Family Values",
+  "familyValuesSubtitle": "Filter by cultural and social outlook",
   "faqA1": "Go to the Profile tab and click on \"Create Biodata\" or edit your existing profile. Follow the multi-step form to fill in your personal, family, and professional details.",
   "faqA2": "Yes, we take privacy seriously. Your contact details are only shown to verified users and respect our community safety guidelines.",
   "faqA3": "On the home screen, use the \"Filters\" button to narrow down profiles by age, location, education, and profession.",
@@ -992,33 +1457,51 @@
   "farmer": "Farmer",
   "fatherName": "Father's Name",
   "fatherOccupation": "Father's Occupation",
+  "featuredBadge": "Elite Verified Badge",
+  "featuresIncluded": "Features included:",
   "feet": "feet",
   "female": "Female",
   "fieldRequired": "{field} is required",
   "fifteenToTwentyLakh": "₹15 Lakh - ₹20 Lakh",
+  "fiftyPercentOffVipUpgrade": "🔥 50% OFF VIP Upgrade",
+  "filterAstrologicalCompatibility": "Filter candidate astrological horoscope compatibility",
+  "filterCandidateHomeState": "Filter candidate home state or current residing district",
+  "filterProfiles": "Filter profiles",
   "filtered": "(filtered)",
+  "filters": "Filters",
+  "filtersResetToDefault": "Filters reset to default",
+  "financialPerformance": "Financial Performance",
   "findYourPerfectMatch": "Find Your Perfect Match",
   "fiveToSevenHalfLakh": "₹5 Lakh - ₹7.5 Lakh",
+  "focusOnCareer": "Focus on your career, while we find your life partner",
   "followAndGetFivePercent": "Follow & Get +5%",
+  "followDailyMatchUpdates": "Follow Daily Match Updates",
   "followUsOnInstagramBonus": "Follow us on Instagram to get a 5% biodata completion bonus and stay updated with the latest matches.",
+  "forLifetime": "for Lifetime",
   "forMonths": "for {count} months",
-  "@forMonths": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "forMyDaughter": "👧 For My Daughter",
+  "forMyRelative": "👨‍👩‍👧 For My Relative",
+  "forMySibling": "👫 For My Sibling",
+  "forMySon": "👦 For My Son",
+  "forMyself": "👤 For Myself",
+  "forOther": "✨ For Someone Else",
+  "forWhomSearching": "Who are you searching a match for?",
+  "foundYourPartner": "Found your Partner?",
   "free": "Free",
   "free1PhotonpremiumUpTo6Photos": "Free: 1 photo\\nPremium: Up to 6 photos",
+  "freePlan": "Free Plan",
   "freePlanDesc": "Try basic features",
   "freeUserLimitInfo": "Free user limit reached. Upgrade to continue.",
   "freeUsersCanUpload1PhotoUpgradeToUploadU": "Free users can upload 1 photo. Upgrade to upload up to 5 photos.",
   "friend": "Friend",
+  "fromContact": "From: {name}",
   "frontSide": "Front Side",
+  "fullAddress": "Full Address",
+  "fullKundaliAvailableOnMutual": "Full Kundali chart available on mutual match interest.",
   "fullName": "Full Name",
   "gallery": "Gallery",
   "gender": "Gender",
+  "genderSelectHeading": "Your Gender is",
   "generateBio": "Generate Bio",
   "generatingPreview": "Generating preview...",
   "getAProfessionalWellformattedPdfWithoutW": "Get a professional, well-formatted PDF without watermarks and with all details visible.",
@@ -1027,10 +1510,14 @@
   "getStartedLabel": "Get Started",
   "go": "Go",
   "goBack": "Go Back",
+  "goProAdFree": "Go Pro for Ad-Free Experience",
   "gold": "Gold",
+  "goldMember": "⭐ Gold Member",
   "goldPlanDesc": "Most popular - Best value",
   "goldPlanName": "Gold",
   "goldVerified": "Gold Verified",
+  "goodMatch": "GOOD MATCH",
+  "gorBanjara": "Gor / Banjara",
   "gotIt": "Got It",
   "gotra": "Gotra",
   "governmentEmployee": "Government Employee",
@@ -1040,58 +1527,93 @@
   "governmentJob": "Government Job",
   "govtId": "Govt ID",
   "govtIdVerification": "Government ID",
+  "govtIdVerified": "Govt ID / Aadhaar Verified",
+  "govtIdVerifiedSubtitle": "Only show candidates with 100% verified Govt ID badge",
   "graduate": "Graduate",
   "great": "Great!",
   "grid": "Grid",
+  "groom": "Groom",
+  "groomBoy": "👦 Groom (Boy)",
+  "groomOption": "👦 Groom (Boy)",
   "groupPhotosNotVisible": "Group photos where you are not clearly visible",
+  "growYourWeddingBusiness": "Grow Your Wedding Business",
   "growth": "Growth",
+  "guestModeDesc": "Take a guided tour of the app before creating your profile.",
+  "guestModeInstantBrowseSubtitle": "Explore BanjaraBio instantly without an account to see features and available profiles.",
+  "guestModeInstantBrowseTitle": "Guest Mode (Instant Browse)",
+  "guestRestrictedContent": "To view all details, save profiles, and communicate with matches, please create your biodata or change your search options.",
+  "guestRestrictionMessage": "To interact with profiles, express interest, or send messages, you need to create your own biodata first.",
+  "gunaMilanScore": "Guna Milan (36 Points)",
+  "gunasMatchedCount": "{count} / 36 Gunas Matched ({percentage}%)",
+  "gunasMatchedStatus": "28 / 36 Gunas Matched",
+  "habitatNativeOrigin": "Habitat / Native Origin",
+  "habitatPillarSubtitle": "Shared cultural values & open relocation preferences",
+  "habitatSubtitle": "Filter candidate living environment & origin type",
+  "habitatTandaPillar": "Habitat, Tanda & Lifestyle",
+  "handpickedMatches": "{count} Handpicked Matches/week",
   "haveQuestionsOrNeedAssistanceOurTeamIsHe": "Have questions or need assistance? Our team is here to help you find your perfect match.",
+  "headerBlessingSubtitle": "Select which divine blessing is engraved at the top of your PDF",
+  "headerBlessingTitle": "🪔 Header Blessing / Deity Mantra",
   "heavilyFilteredEdited": "Heavily filtered or edited photos",
   "height": "Height",
+  "heightLabel": "Height",
   "helpOurCommunityGrowAndUnlockPremiumRewa": "Help our community grow and unlock Premium rewards for yourself.",
+  "hideAlgorithmInsights": "Hide Algorithm Insights",
+  "highMatch": "HIGH MATCH",
   "highSchool": "High School",
   "hindi": "हिंदी",
   "home": "Home",
   "homemaker": "Homemaker",
+  "horoscopeChartVerified": "Horoscope chart verified & matched.",
+  "horoscopeKundali": "Horoscope & Kundali (कुंडली)",
+  "horoscopeKundaliAttached": "Horoscope / Kundali Attached",
   "hoursAgo": "{count}h ago",
+  "houseOwnership": "House Ownership",
+  "howDidYouMeet": "How did you meet? What do you like about them?",
+  "howIsScoreCalculated": "How is this score calculated?",
   "howItWorks": "How it works",
   "iUnderstandThatThisActionCannotBeUndone": "I understand that this action cannot be undone.",
   "idLabel": "ID: {id}",
   "idNumber": "ID Number",
   "idType": "ID Type",
+  "identityDetails": "Identity Details",
   "inappropriateBackgrounds": "Photos with inappropriate backgrounds",
   "inappropriateContentOrFakeProfile": "Inappropriate content or fake profile",
   "inappropriatePhotos": "Inappropriate Photos",
   "inches": "inches",
+  "incognitoMode": "Private Profile Browsing",
+  "incomeHiddenFromPdf": "Hidden from shared PDF for privacy",
+  "incomeSalaryVerified": "Income / Salary Verified",
+  "incomeSalaryVerifiedSubtitle": "Candidates with verified salary slip or ITR documentation",
+  "incomeVisibleOnPdf": "Package & income details visible on PDF",
   "increaseBiodataScore": "Increase Biodata Score!",
   "increaseYourTrustScoreToConfirmYourIdent": "Increase your Trust Score to confirm your identity and unlock exclusive discounts.",
-  "interestSent": "Interest Sent",
-  "interestConfirmationTitle": "Express Interest?",
+  "india": "India",
+  "instagramLink": "Instagram Reel/Story Link",
+  "instagramStories": "Instagram Stories",
+  "instantAlert": "Instant Alert",
+  "instantMatchAlerts": "Instant Match Alerts",
+  "instantMatchAlertsSubtitle": "Get notified immediately when mutual interest is accepted.",
+  "interest": "Interest",
+  "interestConfirmationDesc": "Do you want to share your profile with {name} to show your interest?",
   "interestConfirmationMessage": "This will share your profile with {name} and allow them to connect with you. Are you sure?",
-  "@interestConfirmationMessage": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
+  "interestConfirmationTitle": "Express Interest?",
+  "interestDeclinedToast": "Interest declined",
+  "interestSent": "INTEREST SENT",
   "interestShared": "Interest shared with {name}!",
-  "@interestShared": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "introduceYourselfIn30SecondsTalkAboutYou": "Introduce yourself in 30 seconds. Talk about your family, profession, and expectations.",
   "invalidEmailOrPassword": "Invalid email or password",
   "inviteARelative": "Invite a Relative",
   "inviteFriendsRewards": "Invite friends and unlock premium rewards!",
+  "inviteRelativesToVouch": "Invite Relatives to Vouch",
   "inviteStep1": "Step 1",
   "inviteStep2": "Step 2",
   "inviteStep3": "Step 3",
   "isDisabledPerson": "Are you a disabled person?",
+  "itSAMatch": "IT'S A MATCH!",
+  "job": "Job",
   "jobDetails": "Job Details",
+  "joinBvsNow": "Join BVS (Register Here)",
   "joinMeOnBanjarabio": "Join me on BanjaraBio",
   "joinOurCommunity": "Join our 10K+ community!",
   "jointFamily": "Joint Family",
@@ -1099,73 +1621,120 @@
   "kannada": "ಕನ್ನಡ",
   "keepBrowsing": "Keep Browsing",
   "keywordSearch": "Keyword Search",
+  "kundaliGunasPillar": "Kundali & Gunas (अष्टकूट जुळणी)",
+  "kundaliHoroscopeAttached": "Kundali / Horoscope Attached",
+  "kundaliHoroscopeAttachedSubtitle": "Only show profiles with uploaded Janam Kundali chart",
+  "kundaliOnRequest": "Kundali Available on Request",
+  "kundaliPillarSubtitle": "No severe Manglik Dosha; high compatibility score",
   "language": "Language",
   "languageChanged": "Language changed to {language}",
+  "languageSwitcherLabel": "Language",
   "lastUpdatedJanuary2026": "Last updated: January 2026",
   "legalAndInformation": "Legal & Information",
+  "lifetime": "Lifetime",
+  "limitReached": "Limit Reached",
+  "linkRequiredForRefund": "Link required for refund",
   "linkShare": "Link Share",
   "linkedInIntegration": "LinkedIn Integration",
   "linkedInIntegrationSubtitle": "Connect your professional profile to build more trust.",
   "liveSelfie": "Live Selfie",
   "liveSelfieVerification": "Live Selfie Verification",
+  "liveSync": "LIVE SYNC",
   "livenessCheck": "Liveness Check",
   "loading": "Loading...",
   "loadingAssets": "Loading assets...",
   "loadingProfile": "Loading your profile...",
   "loadingViews": "Loading views...",
   "location": "Location",
+  "locationAndState": "Location & Native State",
   "locationDetails": "Location Details",
   "locationPreferences": "Location & Preferences",
   "locationPreview": "Location Preview",
+  "logCallOutcome": "Log Call Outcome",
   "login": "Login",
+  "loginAndCreateBiodataCta": "Login & Create Biodata ✨",
   "loginFailed": "Login failed: {error}",
   "loginFailedRetry": "Login failed. Please try again.",
   "logout": "Logout",
+  "lookingForGender": "Looking For (Gender)",
   "loseMatchesAndSavedProfiles": "You will lose all your matches and saved profiles.",
   "main": "Main",
   "male": "Male",
+  "mamakulAndTandaSubtitle": "Mamakul: {mamakul} • Tanda: {tanda}",
+  "mamakulLabel": "Mamakul (मोसळ)",
+  "mamakulRule": "Maternal Gotras are verified to ensure complete cultural harmony and lineage respect.",
+  "mamakulTitle": "2. Mamakul / Mosam (मोसळ):",
   "managePhotos": "Manage Photos",
   "managenphotos": "Manage\\nPhotos",
+  "manglikDosha": "Manglik / Kuja Dosha",
   "manualSelection": "MANUAL SELECTION",
   "marathi": "मराठी",
   "maritalStatus": "Marital Status",
   "maritalStatusLabel": "Marital Status",
   "marriageReadiness": "Marriage Readiness",
+  "marriageRewardSubtitle": "Share marriage proof & get up to 35% Refund!",
   "married": "Married",
   "maskFamilySuggestionsTip": "Ask family members for photo suggestions",
   "mastersDegree": "Master's Degree",
+  "matchCompatibility": "Match Compatibility",
   "matchNOfTotal": "Match {current} of {total}",
   "matched": "Matched",
-  "sent": "Sent",
-  "received": "Received",
+  "matchedBadge": "MATCHED",
+  "matchesCategoryLabel": "Matches Category",
   "matchmakerConsultation": "Matchmaker consultation",
+  "matchmakerFiltersSubtitle": "Direct Contact, RM Handpicked, 36 Guna Score & Land Holdings",
+  "matchmakerFiltersTitle": "Matchmaker Filters",
+  "matchmakerPlansSubtitle": "Elite • Royal • Eternal Elite",
+  "maternalGotraMamakul": "Maternal Gotra (Mamakul / मोसळ)",
+  "maternalGotraSubtitle": "Exclude or specify maternal lineage to avoid customary gotra clash",
   "matrimonyFor": "MATRIMONY FOR",
   "maxAge": "Max Age",
   "maybeLater": "Maybe Later",
+  "melavaBannerSubtitle": "Discover regional matrimonial get-togethers across India. Reach organizers directly to participate.",
+  "melavaBannerTitle": "Banjara Parichay Melavas",
+  "melavaEventCount": "{count} events",
+  "melavas": "Melavas",
+  "men": "Men",
   "menu": "Menu",
   "message": "Message",
   "messageUsOnWhatsapp": "Message us on WhatsApp",
   "messages": "MESSAGES",
+  "messagingLimitReached": "Messaging Limit Reached",
   "middleClass": "Middle Class",
   "minAge": "Min Age",
+  "minimumHeight": "Minimum Height",
+  "minimumHeightSubtitle": "Select minimum height requirement for matches",
   "minutesAgo": "{count}m ago",
   "mobileNumber": "Mobile Number",
   "mobileVerification": "Mobile Verification",
   "mobileVerifiedSuccessfully10Points": "Mobile Verified Successfully! +10 Points",
   "month": "/month",
+  "monthly": "Monthly",
+  "monthlyCheckIn": "Monthly Check-in",
+  "monthlyRevenue": "Monthly Revenue (₹)",
   "months": "Months",
   "moreAboutYourStudiesAndWork": "More about your studies and work",
+  "moreInvitesToUnlockTier": "{count} more invites to unlock {tier} tier ({reward})",
   "moreOptions": "More options",
   "mostPopular": "MOST POPULAR",
   "motherName": "Mother's Name",
   "motherOccupation": "Mother's Occupation",
+  "mrpPrice": "MRP ₹{price}",
+  "mustHavePhoto": "Must Have Photo",
+  "mutualMatch": "Mutual Match",
+  "mutualMatchesDesc": "Mutual matches will appear here when both users share interest in each other",
   "myProfile": "My Profile",
+  "nakshatraStar": "Nakshatra (Star)",
   "name": "Name",
+  "nativeDistrict": "Native District",
   "nativePlace": "Native Place",
   "naturalPosesRespectful": "Natural poses with respectful expressions",
+  "needHelpContactAdmin": "Need help? Contact Admin",
   "needProfileToShareToast": "You need to create a profile before sharing it.",
   "neverMarried": "Never Married",
+  "neverMissVerifiedMatch": "Never miss a verified match, instant message, or profile update.",
   "newLabel": "New",
+  "newMatchAlerts": "New Match Alerts",
   "newMatches": "New Matches",
   "next": "Next",
   "nextLabel": "Next",
@@ -1177,6 +1746,7 @@
   "noIncome": "No Income",
   "noInternetConnection": "No internet connection",
   "noLocationsFoundForQuery": "No locations found for \"{query}\"",
+  "noMatchesYet": "No Matches Yet",
   "noPendingRequests": "No pending requests",
   "noPendingVerifications": "No pending verifications",
   "noPhotosAdded": "No photos added",
@@ -1184,16 +1754,23 @@
   "noProfileFound": "No profile found",
   "noProfilesFound": "No profiles found",
   "noProfilesMatchYourFilters": "No profiles match your filters",
+  "noProfilesReceived": "No Profiles Received",
+  "noProfilesSharedYet": "No Profiles Shared Yet",
   "noResultsMessage": "Try adjusting your filters or check back later for new profiles.",
   "noSiblingsAddedYet": "No siblings added yet",
   "noTalukasAvailable": "No talukas available",
   "noViewsYet": "No views yet",
+  "none": "None",
+  "normalFit": "Normal / Fit",
   "notAvailable": "N/A",
   "notEntered": "Not Entered",
+  "notMatchedCannotMessage": "You are not matched with this profile, so you can't direct message them.",
   "notMatchedCantMessage": "You are not matched with this profile, so you cant direct message them.",
   "notReadyYet": "Not ready yet",
   "notRepresentAppearance": "Photos that do not represent your current appearance",
+  "notSpecified": "Not Specified",
   "notVerifiedYetPleaseClickTheLinkInYourEm": "Not verified yet. Please click the link in your email.",
+  "notWorking": "Not Working",
   "notYetVerifiedBadge": "NOT YET VERIFIED",
   "nuclearFamily": "Nuclear Family",
   "num100": "/ 100",
@@ -1201,44 +1778,73 @@
   "num15PointsPending": "+15 Points Pending",
   "num499": "499",
   "num919876543210": "+91 98765 43210",
+  "occupationLabel": "Occupation",
   "officeAddress": "Office Address",
+  "officialBiodataPdfShared": "Official Biodata PDF Shared 📄",
   "ok": "OK",
   "onHold": "On Hold",
   "onboardingTitle1": "Find Your Perfect Match",
   "onboardingTitle2": "Trusted Community",
   "onboardingTitle3": "Secure & Private",
+  "oneFreeNote": "1 FREE 💌",
+  "oneHundredPercentCompliant": "100% Compliant",
+  "oneHundredPercentPrivate": "100% Private",
+  "oneMessageUnlocked": "1 Message Unlocked!",
+  "oneMonthFree": "1 Month Free",
+  "onePhotoLockedTeaser": "📸 1 Photo (🔒 +{count})",
+  "oneTapSelect": "1-Tap Select",
   "oneTime": "One Time",
+  "oneYearVip": "1 Year VIP",
   "online": "Online",
+  "onlyDobShownOnPdf": "Only Date of Birth shown on PDF",
+  "onlyShowProfilesWithPhoto": "Only show profiles with verified photo albums",
   "openCamera": "Open Camera",
   "openProfileToShare": "Open profile to share",
   "openSettings": "Open Settings",
+  "openToRelocate": "Open to Relocate",
   "openingConversation": "Opening conversation...",
   "openingConversationToast": "Opening conversation...",
+  "option1Badge": "OPTION 1 • NO LOGIN NEEDED",
+  "option2Badge": "OPTION 2 • MOST POPULAR • 100% FREE",
+  "option3Badge": "OPTION 3 • GUEST MODE",
+  "optional": "Optional",
+  "orCustomizeYourNote": "OR CUSTOMIZE YOUR NOTE",
+  "organizer": "Organizer",
   "originalVillageHint": "Original village",
   "other": "Other",
+  "ownHouseVilla": "Own House / Villa",
+  "ownResidentialHouseVilla": "Own Residential House / Villa",
+  "ownResidentialHouseVillaSubtitle": "Family owns self-acquired or independent residential house",
   "partnerExpectations": "Partner Expectations",
   "partnerExpectationsHint": "Describe what you are looking for...",
+  "partnerName": "Partner's Name",
   "partnerPreferences": "Partner Preferences",
   "password": "Password",
+  "pasteUrlHere": "Paste the URL here",
   "pay199ToUnlockFullPdf": "Pay ₹199 to Unlock Full PDF",
+  "payInstantUnlock": "Pay ₹{price} Instant Unlock",
   "paymentFailed": "Payment failed: {error}",
   "paymentFailedError": "Payment failed: {error}",
   "paymentSuccessful": "Payment successful! Templates unlocked.",
+  "paymentSuccessfulPdfUnlocked": "Payment Successful! PDF Unlocked.",
   "paymentSuccessfulWelcome": "Payment successful! Welcome to {plan}",
+  "pdfDisplayStudio": "PDF Display Studio",
+  "pdfDisplayStudioDesc": "Customize header deity blessings and toggle confidential fields on your shareable PDF.",
+  "pdfRevenue": "PDF Revenue (₹)",
   "pdfSavedToDownloads": "PDF Saved to Downloads: {path}",
   "pending": "Pending",
+  "pendingReferences": "Pending References",
+  "pendingReports": "Pending Reports",
   "pendingVerifications": "Pending Verifications",
+  "perMonth": "/month",
   "percentComplete": "{percentage}% Complete",
+  "percentCompleteBadge": "{score}% Complete",
+  "percentMatchBadge": "{score}% Match",
+  "percentTrustBadge": "{score}% Trust",
   "permissionDeniedSettings": "Permission denied. Please enable in settings.",
   "permissionRequired": "Permission Required",
   "permissionRequiredMessage": "{type} permission is required to upload photos. Please enable it in app settings.",
-  "@permissionRequiredMessage": {
-    "placeholders": {
-      "type": {
-        "type": "String"
-      }
-    }
-  },
+  "personalConcierge": "Personal Concierge",
   "personalDetails": "Personal Details",
   "phoneLabel": "Phone",
   "phoneSupport": "Phone Support",
@@ -1258,10 +1864,17 @@
   "photosReflectPersonality": "Photos that reflect your personality and values",
   "photosSelectedCount": "{count} selected",
   "photosToAvoid": "Photos to Avoid",
+  "physicalHealthStatus": "Physical Health Status",
+  "physicalHealthStatusSubtitle": "Select physical disability match preferences",
   "physicalSocialAttributes": "Physical & Social Attributes",
   "physicalStatus": "Physical Status",
+  "physicallyChallenged": "Physically Challenged",
+  "pickNote": "Pick Note",
+  "pinCodeLabel": "Pin Code",
+  "planetaryLagnaAlignment": "Planetary Lagna & Ashtakoot Alignment",
   "platinumPlanDesc": "Ultimate experience with all features",
   "platinumPlanName": "Platinum",
+  "pleaseAcceptVendorPartnerTerms": "Please accept the vendor partner terms",
   "pleaseComplete": "Please complete: {fields}",
   "pleaseCompleteRequiredFields": "Please complete all required fields in {section}",
   "pleaseEnter6DigitOtp": "Please enter 6-digit OTP",
@@ -1270,8 +1883,10 @@
   "pleaseEnterBothEmailPassword": "Please enter both email and password",
   "pleaseEnterFull6DigitOtp": "Please enter full 6-digit OTP",
   "pleaseFillAllFields": "Please fill all fields",
+  "pleaseFillAllRequiredFields": "Please fill all required fields",
   "pleaseSelectAnnualIncome": "Please select your annual income",
   "pleaseSelectEducationLevel": "Please select your education level",
+  "pleaseSelectOrWriteShortNote": "Please select or write a short intro note",
   "pleaseSelectProfession": "Please select your profession",
   "pleaseSelectYourGotra": "Please select your gotra",
   "pleaseSelectYourSurname": "Please select your surname",
@@ -1282,26 +1897,38 @@
   "pointsCount": "+{points} Points",
   "postGraduate": "Post Graduate",
   "premium": "Premium",
+  "premiumAccess": "PREMIUM ACCESS",
+  "premiumBadge": "PREMIUM",
   "premiumFeature": "This is a premium feature",
+  "premiumFiltersSubtitle": "ID Verification, Trust Score, Horoscope, Lifestyle & Activity",
+  "premiumFiltersTitle": "Premium Filters",
+  "premiumGateSupport": "Support our community by watching a quick ad,\nor upgrade to Pro for an ad-free experience.",
   "premiumMembership": "Premium Membership",
+  "premiumMen": "Premium Men",
+  "premiumPlanDesc": "Advanced features and better visibility",
+  "premiumPlanName": "Premium",
+  "premiumPlansSubtitle": "Standard • Silver • Gold • Platinum • Eternal",
+  "premiumPriceFiltersInactive": "Premium price filters are currently inactive.",
   "premiumTemplate": "Premium Template",
   "premiumUsers": "Premium Users",
+  "premiumWomen": "Premium Women",
+  "preparingAdExperience": "PREPARING AD EXPERIENCE...",
   "preparingBiodata": "Preparing your biodata...",
+  "preview": "Preview",
+  "previewCustomizedBiodata": "Preview Customized Biodata",
   "previewGenerationFailed": "Preview generation failed. Please try again.",
   "previous": "Previous",
   "pricePerMonth": "₹{price}/month",
-  "@pricePerMonth": {
-    "placeholders": {
-      "price": {
-        "type": "int"
-      }
-    }
-  },
   "primary": "Primary",
+  "primaryContactHiddenOnPdf": "Hidden for privacy",
+  "primaryContactNumber": "Primary Contact Number",
+  "primaryContactVisibleOnPdf": "Registered calling number visible on PDF",
   "primaryPhoto": "Primary Photo",
   "primaryPhotoUpdated": "Primary photo updated",
   "printBtn": "Print",
   "prioritySupport": "Priority support",
+  "privacyAndContentSwitches": "🔒 Privacy & Content Switches",
+  "privacyAndContentSwitchesSubtitle": "Toggle visibility of sensitive fields on your shared PDF",
   "privacyPolicy": "Privacy Policy",
   "privacyS1Content": "• Personal Data: Name, age, gender, caste, education, profession, family details.\\n• Contact Data: Phone number, email address.\\n• Media: Photos uploaded to your profile.\\n• Device Data: Device ID, IP address (for security & analytics).\\n• Location Data: Approximate location (City/District) to suggest nearby matches.",
   "privacyS1Title": "1. Information We Collect",
@@ -1322,6 +1949,7 @@
   "privateSectorEmployee": "Private Sector Employee",
   "pro": "PRO",
   "proTips": "Pro Tips",
+  "proceedToLogin": "Proceed → Login",
   "processingImage": "Processing Image",
   "processingStatusCompressing": "Compressing...",
   "processingStatusPreparing": "Preparing...",
@@ -1339,28 +1967,33 @@
   "profileDataNotFound": "Profile data not found",
   "profileInsights": "Profile Insights",
   "profileLinkCopied": "Profile link copied to clipboard!",
+  "profileMakeover": "Professional Profile Makeover",
+  "profileManagedBy": "Profile Managed By",
+  "profileManagedBySubtitle": "Select who created and manages the candidate biodata",
   "profileNotFound": "Profile not found",
   "profilePhotos": "Profile Photos",
   "profileRemovedFromSaved": "Profile removed from saved",
   "profileSaved": "Profile saved!",
+  "profileSharedVia": "Shared {profileName} via {title}",
   "profileSharedWith": "Profile shared with {name}",
   "profileStrengthLabel": "Profile Strength: {strength}",
-  "@profileStrengthLabel": {
-    "placeholders": {
-      "strength": {
-        "type": "String"
-      }
-    }
-  },
   "profileViewLimitReached": "Profile View Limit Reached",
+  "profileViews": "Profile Views",
   "profileViewsPerDay": "{count} profile views/day",
+  "profiles": "Profiles",
+  "profilesSharedWithYouDesc": "Profiles shared with you by family and friends will appear here",
   "profilesYouSaveWillAppearHere": "Profiles you save will appear here",
+  "proofOfMarriage": "Proof of Marriage",
   "provideDetailsAboutYourGotraAndVillageTo": "Provide details about your Gotra and Village to get the Community Verified badge.",
   "provideInformationAboutYourFamilyBackgro": "Provide information about your family background",
   "public": "Public",
   "quick": "Quick",
+  "quickOneTapSuggestions": "Quick 1-Tap Suggestions:",
+  "rashiMoonSign": "Rashi (Moon Sign)",
+  "readAll": "Read All",
   "ready": "Ready",
   "readyForMarriage": "Ready for marriage",
+  "received": "Received",
   "recentConversations": "Recent Conversations",
   "recentPhotosSixMonths": "Recent photos taken within the last 6 months",
   "recentSearches": "Recent Searches",
@@ -1371,30 +2004,35 @@
   "recordAShortIntro": "Record a Short Intro",
   "refer3FriendsGet1MonthFree": "Refer 3 Friends, Get 1 Month Free!",
   "referAndEarn": "Refer & Earn",
+  "referenceRejected": "Reference Rejected",
   "referenceVerification": "Reference Verification",
+  "referenceVerified": "Reference Verified",
+  "referenceWithNumber": "Reference {number}",
   "references": "References",
   "referralInvite": "Referral Invite",
   "referralInviteMessage": "Join BanjaraBio, the most trusted matrimonial app for our community! Use my link to get started: {link}",
-  "@referralInviteMessage": {
-    "placeholders": {
-      "link": {
-        "type": "String"
-      }
-    }
-  },
   "referralInviteSubject": "Invitation to Join BanjaraBio",
   "referralLinkCopiedToClipboard": "Referral link copied to clipboard!",
+  "referralRewardsTiers": "Referral Rewards Tiers 👑",
   "referralShareMessage": "Join BanjaraBio, the most trusted matrimonial app for our community! Use my link to get started: {link}",
   "referralShareSubject": "Invitation to Join BanjaraBio",
   "referrals": "Referrals",
   "referralsLabel": "Referrals",
   "refresh": "Refresh",
+  "refund25": "25% Refund",
+  "refund35": "35% Refund",
+  "registrationFee": "Registration Fee",
+  "registrationSubmitted": "Registration Submitted!",
   "reject": "Reject",
   "rejected": "Rejected",
+  "relationLabel": "Relation",
+  "relationSubtitle": "Select Relationship",
   "relative": "Relative",
+  "relocationPreference": "Relocation Preference",
   "remainingToday": "Remaining Today",
   "remove": "REMOVE",
   "removePhoto": "Remove",
+  "replacePhoto": "Replace Photo",
   "report": "Report",
   "reportSubmittedReview": "Report submitted. Our team will review it within 24 hours.",
   "reportUser": "Report User",
@@ -1404,15 +2042,25 @@
   "requestsSentSuccessfully": "Requests sent successfully!",
   "rerecord": "Re-record",
   "reset": "Reset",
+  "resetAllFilters": "Reset All Filters",
   "reshare": "RESHARE",
+  "resumeDraftCta": "Resume Draft Now 👉",
   "retake": "Retake",
   "retry": "Retry",
+  "revenueToday": "Revenue Today (₹)",
+  "revenueTotal": "Total Revenue (₹)",
   "reviewDetails": "Review Details",
   "reviewVideoManuallyInStorageForNow": "Review video manually in Storage for now",
   "rewards": "Rewards",
   "rewardsLabel": "Rewards",
   "rich": "Rich",
+  "rmHandpickedMatches": "RM Handpicked Matches",
+  "rmHandpickedMatchesSubtitle": "Profiles curated and vetted by your Personal Relationship Manager",
+  "royalBanjaraTemplatesWithCount": "{count} Royal Banjara Templates",
+  "royalPlanDesc": "Dedicated manager finds your match",
+  "royalPlanName": "Royal",
   "rupeeSymbol": "₹",
+  "safetyAndHealth": "Safety & Health",
   "save": "Save",
   "saveBiodata": "Save Biodata",
   "saved": "Saved",
@@ -1420,6 +2068,10 @@
   "sayHelloLabel": "Say hello!",
   "search": "Search",
   "searchByNameJobEducation": "Search by name, job, education...",
+  "searchLeads": "Search leads...",
+  "searchMatchesForRelativesCta": "Find Matches for Relatives 👉",
+  "searchMatchesForRelativesSubtitle": "Search thousands of verified profiles for son, daughter, brother or sister directly without creating a profile.",
+  "searchMatchesForRelativesTitle": "Find Matches for Relatives",
   "searchProfiles": "Search profiles...",
   "searchResults": "SEARCH RESULTS",
   "searchSharedProfiles": "Search shared profiles...",
@@ -1427,15 +2079,24 @@
   "searchUserName": "Search user name...",
   "secure": "Secure",
   "seeAll": "See All",
+  "seenAllProfiles": "You've seen all profiles!",
   "selectAnnualIncome": "Select yearly income range",
   "selectAnnualIncomeRange": "Select annual income range",
+  "selectAppLanguageTitle": "Select App Language",
+  "selectBiodataLanguage": "Select Biodata Language",
+  "selectBudgetRange": "Select Budget Range",
   "selectDate": "Select Date",
+  "selectDistrict": "Select District",
   "selectDistrictFirst": "Select District first",
   "selectDocumentType": "Select Document Type",
   "selectEducationLevel": "Select your education level",
   "selectFromYourPhotos": "Select from your photos",
   "selectLanguage": "Select Language",
   "selectLocation": "Select Location",
+  "selectMaritalStatus": "Select marital status requirement",
+  "selectMatchPreference": "Select match preference for groom or bride search",
+  "selectPaternalGotra": "Select candidate paternal Gotra customary clan",
+  "selectRewardType": "Select Reward Type",
   "selectState": "Select State",
   "selectStateFirst": "Select State first",
   "selectTalukaOptional": "Select Taluka (Optional)",
@@ -1446,13 +2107,20 @@
   "selectYourSurname": "Select your search surname",
   "selectedPhotos": "Selected Photos",
   "self": "Self",
+  "selfAndMamakulSubtitle": "Self: {self} • Mamakul: {mamakul}",
+  "selfClanRule": "Bride & Groom must not share the same paternal Gotra (e.g. Rathod, Pawar, Chavan, Jadhav).",
+  "selfClanTitle": "1. Self Clan (गोत्र):",
   "selfEmployed": "Self Employed",
+  "selfServicePlans": "Self-Service",
   "selfieSubmitted": "Selfie Submitted",
   "send": "Send",
+  "sendHeartInterested": "Send a heart to show you're interested.",
   "sendInterest": "Send Interest",
   "sendMessage": "SEND MESSAGE",
+  "sendToCandidateWhatsApp": "Send to Bride/Groom on WhatsApp 🚩",
   "sendVerification": "Send Verification",
   "sendVerificationRequests": "Send Verification Requests",
+  "sent": "Sent",
   "setAsPrimary": "Set as Primary",
   "settings": "Settings",
   "settingsAndMenu": "Settings & Menu",
@@ -1474,49 +2142,111 @@
   "shareYourProfileProfessionally": "Share your profile professionally",
   "shared": "Matches",
   "sharedProfiles": "Shared Profiles",
+  "sharedProfilesWithEachOther": "You and {name} have shared profiles with each other.",
   "sharedVia": "Shared {name} via {method}",
   "sharesPerMonth": "{count} shares/month",
   "sharingBiodataPdf": "Sharing Biodata PDF",
+  "sharingProfile": "Sharing profile...",
+  "sharingProfiles": "Sharing Profiles",
+  "sibling": "Sibling",
+  "siblingsCount": "{count, plural, =1{1 sibling} other{{count} siblings}}",
+  "siblingsLabel": "Siblings",
+  "signIn": "Sign in",
+  "signInRequired": "Sign in Required",
+  "signInRequiredContent": "Please sign in or create an account to access this feature.",
   "silver": "Silver",
   "silverPlanDesc": "Perfect for getting started",
   "silverPlanName": "Silver",
+  "similarMatches": "Similar Matches",
   "sister": "Sister",
   "sisterCount": "Sisters",
+  "sistersCount": "{count, plural, =1{1 sister} other{{count} sisters}}",
+  "sixMonthsFree": "6 Months Free",
   "skip": "Skip",
+  "skipAndSelectLevel": "Skip & Select Taluka/District",
+  "skipAndUseDistrict": "Skip & Use District",
+  "smartRecommendations": "Smart Recommendations",
+  "smartRecommendationsSubtitle": "Receive curated bio recommendations tailored for you.",
   "smileNaturallyTip": "Smile naturally to appear approachable",
+  "smokingHabits": "Smoking Habits",
   "socialMediaTextOverlays": "Photos from social media with text overlays",
   "solicitingMoney": "Soliciting Money",
   "someone": "Someone",
   "somethingWentWrong": "Something went wrong",
   "son": "Son",
+  "sortServicesBy": "Sort Services By",
+  "specificLocation": "SPECIFIC LOCATION",
+  "specified": "Specified",
   "specifyEducation": "Specify Education",
   "specifyProfession": "Specify Profession",
+  "standardFilters": "Standard Filters",
+  "standardFiltersSubtitle": "Basic demographic criteria for all registered members",
+  "standardPlanDesc": "Try premium features for a month",
+  "standardPlanName": "Standard",
   "standardProfile": "Standard Profile",
   "start": "Start",
   "startAConversation": "Start a conversation",
+  "startChatting": "START CHATTING 💬",
   "startConversation": "Start a conversation",
   "startRecording": "Start Recording",
+  "startSharingProfilesDesc": "Start sharing profiles with family and friends to help find the perfect match",
   "state": "State",
+  "stateInIndia": "State in India",
   "statusWaitingForApproval": "Status: Waiting for approval",
   "stay": "Stay",
+  "stayConnectedOnBanjaraBio": "Stay Connected on BanjaraBio",
+  "step1SelectCategory": "1. Select Your Service Category",
+  "step1SelectCategorySubtitle": "Choose the primary wedding service you provide",
+  "step2BusinessContact": "2. Business & Contact Information",
+  "step2BusinessContactSubtitle": "Enter authentic details for community clients",
+  "step3ServiceSpecs": "3. Dynamic Service Specifications",
+  "step3ServiceSpecsSubtitle": "Specific details tailored for {category}",
+  "step4PricingExperience": "4. Pricing & Experience",
+  "step4PricingExperienceSubtitle": "Help families understand your package range",
+  "stepCounterFormat": "Step {current} of {total}",
+  "stepLabelDetails": "Details",
+  "stepLabelGoal": "Goal",
+  "stepLabelSignIn": "Sign In",
+  "stepLabelType": "Type",
+  "stepLabelWelcome": "Welcome",
   "stepNOfTotal": "Step {current} of {total}",
+  "strictPrivacyNotificationNote": "100% Strict Privacy: Bookmarks & profile views are completely private and never triggered as notifications.",
+  "strongBanjaraClanAlignment": "Strong Banjara Clan & Astro Alignment",
   "student": "Student",
+  "subCaste": "Sub-Caste",
+  "subCasteJatiVariant": "Sub-Caste / Jati Variant",
+  "subCasteSubtitle": "Filter by regional Banjara cultural designation",
   "submit": "Submit",
+  "submitForReview": "SUBMIT FOR REVIEW",
   "submitForVerification": "Submit for Verification",
+  "submitVendorRegistration": "Submit Vendor Registration",
   "submittedForReview": "Submitted for Review",
   "subscription": "Subscription",
+  "subsidizedPricePill": "Subsidized: ₹20 / month  •  ₹200 / year",
+  "successSubmission": "Success! Your request has been submitted for review.",
   "supportAndHelp": "Support & Help",
   "supportBanjarabioApp": "support@banjarabio.com",
   "surname": "Surname",
+  "surnameLabel": "Surname",
   "swipe": "Swipe",
   "takePhoto": "Take Photo",
   "taluka": "Taluka",
   "talukaInDistrictState": "Taluka in {district}, {state}",
   "talukaOptional": "Taluka (Optional)",
+  "tapAgainToChat": "Tap again to Chat ➔",
+  "tapAgainToJoin": "Tap again to Join ➔",
+  "tapAgainToOpen": "Tap again to Open ➔",
+  "tapAgainToView": "Tap again to View ➔",
+  "tapAnyThemeToApply": "Tap any theme to instantly apply it to your biodata.",
   "tapTheButtonToAddAPhoto": "Tap the + button to add a photo",
   "tapToAddPhoto": "Tap to add photo",
+  "tapToPreviewKundali": "Tap to preview Kundali chart & planetary alignments",
   "tapToReveal": "✨ Tap to Reveal",
+  "targetBiodataQuestion": "Which biodata are you looking for?",
+  "targetGenderSubtitle": "Select Gender (Bride / Groom)",
   "teacherProfessor": "Teacher/Professor",
+  "teamVisit": "Team Visit",
+  "tellUsYourStory": "Tell us your Story",
   "telugu": "తెలుగు",
   "template": "Template",
   "tenToFifteenLakh": "₹10 Lakh - ₹15 Lakh",
@@ -1540,16 +2270,78 @@
   "termsS7Title": "7. Governing Law",
   "termsTitle": "Terms & Conditions",
   "textSuper": "Super",
+  "themesCount": "Themes ({count})",
   "thisFieldIsRequired": "This field is required",
+  "threeXReplies": "3x Replies",
+  "tier4Vip": "TIER 4 VIP",
+  "tillUMarry": "Till U Marry",
+  "tipPersonalizedNotes": "Tip: Personalized notes get 3x replies",
+  "toContact": "To: {name}",
+  "topDelivery": "Top Delivery",
+  "totalBlocks": "Total Blocks",
   "totalCount": "Total:",
+  "totalFemales": "Total Females",
+  "totalMales": "Total Males",
+  "totalMessages": "Total Messages",
   "totalProfiles": "Total Profiles",
+  "totalSavings": "Total Savings: ₹{amount}",
+  "totalUsers": "Total Users",
+  "tourBookmarkDesc": "Found a profile you like? Bookmark it to view it later in your Saved list.",
+  "tourBookmarkTitle": "Save for later",
+  "tourBottomHome": "Home Feed",
+  "tourBottomHomeDesc": "Scroll through thousands of verified profiles.",
+  "tourBottomProfile": "Your Profile",
+  "tourBottomProfileDesc": "Manage your own biodata and photos here.",
+  "tourBottomSettings": "App Settings",
+  "tourBottomSettingsDesc": "Change language, notification settings, or contact support.",
+  "tourBottomShared": "Shared Profiles",
+  "tourBottomSharedDesc": "See profiles you've shared or received via WhatsApp/Link.",
+  "tourChatDesc": "View your conversations and incoming interests here.",
+  "tourChatTitle": "Messages & Chat",
+  "tourFilterDesc": "Narrow down by Age, Education, or Profession to see only who you want.",
+  "tourFilterTitle": "Advanced Filters",
+  "tourInstagramDesc": "See daily new profiles and success stories on Instagram.",
+  "tourInstagramTitle": "Follow Us",
+  "tourInterestDesc": "Send a heart to let them know you're interested in their biodata.",
+  "tourInterestTitle": "Express Interest",
+  "tourLocationDesc": "Filter profiles by State, District, or Taluka to find matches near you.",
+  "tourLocationTitle": "Select Location",
+  "tourMatchesMatchedDesc": "Mutual matches where both you and the other person expressed interest!",
+  "tourMatchesMatchedTitle": "Matched Profiles",
+  "tourMatchesReceivedDesc": "Profiles others have shared with you via WhatsApp or Link.",
+  "tourMatchesReceivedTitle": "Received Profiles",
+  "tourMatchesSearchDesc": "Quickly find profiles shared with you or by you using name or education.",
+  "tourMatchesSearchTitle": "Search Shared Profiles",
+  "tourMatchesSentDesc": "All the profiles you have shared with family and friends appear here.",
+  "tourMatchesSentTitle": "Sent Profiles",
+  "tourProfileEditDesc": "Update your personal details, photos, and preferences anytime.",
+  "tourProfileEditTitle": "Edit Profile",
+  "tourProfilePdfDesc": "Generate a professional PDF of your biodata to share with family members.",
+  "tourProfilePdfTitle": "Export Biodata PDF",
+  "tourProfilePhotosDesc": "Upload, reorder, or delete your profile photos to make a great first impression.",
+  "tourProfilePhotosTitle": "Manage Photos",
+  "tourProfileSavedDesc": "View all the profiles you have bookmarked for later review.",
+  "tourProfileSavedTitle": "Saved Profiles",
+  "tourProfileTrustDesc": "Your credibility score. Verify your ID, selfie, and community to increase it.",
+  "tourProfileTrustTitle": "Trust Score",
+  "tourSearchDesc": "Looking for someone specific? Type their name or education here.",
+  "tourSearchTitle": "Search Profiles",
+  "tourShareDesc": "Easily share profiles via WhatsApp with your parents or relatives for their opinion.",
+  "tourShareTitle": "Share with family",
+  "tourWhatsappDesc": "Direct contact with our admin for help or profile changes.",
+  "tourWhatsappTitle": "WhatsApp Support",
   "traditionalFormalAttire": "Traditional or formal attire (saree, salwar kameez, kurta)",
+  "translatesWholePdfDesc": "Translates whole PDF (keys & profile info)",
+  "trustAllianceBadge": "✦ TRUST ALLIANCE",
+  "trustDiscountApplied": "Trust Score Discount Applied",
+  "trustLevel": "TRUST LEVEL",
   "trustScore": "Trust Score",
   "trustScoreBeyondBeauty": "TRUST SCORE BEYOND BEAUTY",
   "trustScoreDiscounts": "Trust Score & Discounts",
   "trustScoreShareMessage": "I just verified my profile on BanjaraBio with a Trust Score of {score}! Check out my profile and join our community: {url}",
   "trustVerification": "Trust & Verification",
   "trusted": "Trusted",
+  "trustedCommunityBadge": "100% Trusted Community",
   "trustedMember": "Trusted Member",
   "trustedProfile": "Trusted Profile",
   "tryAdjustingYourFilterCriteria": "Try adjusting your filter criteria",
@@ -1558,37 +2350,63 @@
   "trySearchingForADifferentCity": "Try searching for a different city",
   "trySearchingForDifferentCity": "Try searching for a different city",
   "twentyLakhPlus": "₹20 Lakh+",
+  "twoMonthsFree": "2 Months Free",
   "twoToFiveLakh": "₹2 Lakh - ₹5 Lakh",
   "typeAMessage": "Type a message...",
+  "typeCustomIntroNoteHint": "Type your custom matrimonial intro note here...\n(e.g., family background, career aspirations, shared values)",
   "typeMessage": "Type a message...",
   "unauthorizedAccessAdminsOnly": "Unauthorized access. Admins only.",
+  "unblockAllProFeatures": "UNBLOCK ALL PRO FEATURES",
   "under2Lakh": "Under ₹2 Lakh",
   "undo": "Undo",
   "unexpectedError": "An unexpected error occurred: {error}",
   "unexpectedErrorOccurred": "An unexpected error occurred: {error}",
   "unknownUser": "Unknown User",
   "unlimitedBookmarks": "Unlimited bookmarks",
+  "unlimitedContactUnlocks": "Unlimited Contact Unlocks",
+  "unlimitedHandpickedMatches": "Daily On-Demand Matches",
   "unlimitedProfileViews": "Unlimited profile views",
   "unlimitedSharing": "Unlimited sharing",
   "unlockAdvancedFilters": "Unlock Advanced Filters",
+  "unlockCommunityFiltersDesc": "Filter Gotra, Maternal Gotra (मोसळ), Sub-Caste, Tanda/Origin, Height, Income & Lineage for just ₹20/mo or ₹200/yr.",
+  "unlockCommunityFiltersTitle": "Unlock Community Filters (BVS)",
+  "unlockDirectMessageAd": "Watch 3 ads to unlock 1 direct message for FREE!",
+  "unlockForPriceButton": "Unlock for ₹20/mo or ₹200/yr ➔",
+  "unlockMatchmakerFiltersDesc": "Direct contact numbers, 36 Guna Score, Ancestral Land Holdings & RM Curation available on VIP Matchmaker plans.",
+  "unlockMatchmakerFiltersTitle": "Unlock Matchmaker Filters",
+  "unlockMoreViewsAd": "Watch a quick ad to unlock 5 MORE views for today!",
+  "unlockMoreVisitors": "Unlock {count} more visitors!",
   "unlockNow": "Unlock now",
   "unlockPremiumBiodata": "Unlock Premium Biodata",
   "unlockPremiumFeaturesToEnhanceYourBiodat": "Unlock premium features to enhance your biodata profile",
+  "unlockPremiumFiltersDesc": "Access Govt ID Verified, Kundali Dosha, Diet, Sector, and Active Responder filters with Premium self-service plans.",
+  "unlockPremiumFiltersTitle": "Unlock Premium Filters",
   "unlockToDownload": "Unlock to download and share this template in 5+ languages.",
   "unmarried": "Unmarried",
   "unsave": "Unsave",
+  "unsavedDraftBodyGeneric": "Your entered information is saved safely. Tap to resume.",
+  "unsavedDraftBodyWithName": "{name}'s biodata draft is saved. Resume from where you left.",
+  "unsavedDraftTitle": "📝 Unsaved Biodata Draft Found!",
+  "unverified": "Unverified",
+  "upcomingMelavas": "Upcoming Melavas",
   "update": "Update",
+  "updateFailed": "Update failed: {error}",
   "updateProfile": "Update Profile",
   "upgrade": "Upgrade",
   "upgradeNow": "Upgrade Now",
   "upgradePlan": "Upgrade Plan",
   "upgradePremiumFilters": "Upgrade to Premium to access granular filters for profession, location, and more.",
   "upgradeRequired": "Upgrade Required",
+  "upgradeToCommunityButton": "Upgrade to Community (₹20/mo or ₹200/yr)",
   "upgradeToPremium": "Upgrade to Premium",
   "upgradeToPremiumFor6PhotosAdvancedFilter": "Upgrade to Premium for 6 photos & advanced filters",
   "upgradeToPremiumToAccessGranularFiltersF": "Upgrade to Premium to access granular filters",
+  "upgradeToShareMore": "You have reached your free sharing limit. Upgrade to continue sharing profiles.",
   "upgradeToUnlockAllFeatures": "Upgrade to unlock all features",
+  "upgradeToUnlockPremiumFeatures": "Upgrade to remove all ads and unlock premium biodata features.",
+  "uploadBvsCardPrompt": "Upload your Banjara Virasat Sangh (BVS) Membership Card",
   "uploadCommunityCertificateLetter": "Upload Community Certificate / Letter",
+  "uploadFailed": "Upload failed: {error}",
   "uploadYourPhotos": "Upload your best photos",
   "uploadedSuccessfully": "Uploaded Successfully",
   "upperMiddleClass": "Upper Middle Class",
@@ -1596,13 +2414,22 @@
   "useCurrentLocation": "Use Current Location",
   "useEmailPassword": "Use Email / Password",
   "useNaturalLightingTip": "Use natural lighting for best results",
+  "userBlockRequestSubmitted": "User block request submitted",
   "userBlockedSuccessfully": "User blocked successfully",
+  "userEngagement": "User Engagement",
   "userIdNotFound": "User ID not found",
   "userIdNotFoundToast": "User ID not found",
   "userLabel": "User",
   "userNotUploadedPhoto": "User not uploaded photo",
   "users": "Users",
   "usingGps": "Using GPS",
+  "vadhuVarSuchakInitiative": "Vadhu Var Suchak Initiative",
+  "vendorNetworkEffectDesc": "Self-register your services to receive direct 1-click WhatsApp inquiries from thousands of Banjara families.",
+  "vendorRegistration": "Vendor Registration",
+  "vendorRegistrationSubmittedCongrats": "Congratulations! {name} has been submitted for verified vendor listing on the BanjaraBio Network.",
+  "vendorTermsAgreement": "I agree to provide authentic, verified wedding services to Banjara community families with 100% transparency.",
+  "vendorVerificationDeskNote": "Our vendor verification desk will verify and activate your listing within 2-4 hours.",
+  "venue": "Venue",
   "verificationBadge": "Verification badge",
   "verificationCodeSent": "Verification code sent!",
   "verificationFailed": "Verification failed",
@@ -1611,10 +2438,14 @@
   "verifications": "Verifications",
   "verified": "Verified",
   "verified10PointsAddedToTrustScore": "Verified! +10 Points added to Trust Score",
+  "verifiedBiodata": "Verified Biodata",
   "verifiedCommunityMember": "Verified Community Member",
+  "verifiedCountBadge": "{count} Verified",
+  "verifiedHoroscopeOnMutual": "Verified horoscope chart on mutual match interest",
   "verifiedProfile": "Verified Profile",
   "verifiedProfileBadge": "VERIFIED PROFILE",
   "verifiedProfilesGet5xMoreResponses": "Verified profiles get 5x more responses and appear higher in search results.",
+  "verifiedSalary": "VERIFIED SALARY",
   "verifiedTrusted": "Verified & Trusted",
   "verify": "Verify",
   "verifyEmailAddressHeading": "Verify Email Address",
@@ -1626,6 +2457,7 @@
   "verifyYourEmailAddressToAddTrustAndReach": "Verify your email address to add trust and reach more profiles.",
   "verifyYourMobileNumberToAddTrustAndReach": "Verify your mobile number to add trust and reach more profiles.",
   "veryFair": "Very Fair",
+  "vettedFamily": "VETTED FAMILY",
   "videoBioIntro": "Video Bio / Intro",
   "videoIntro": "Video Introduction",
   "videoIntroUploaded": "Video Intro Uploaded",
@@ -1633,35 +2465,70 @@
   "view": "VIEW",
   "viewAll": "View All",
   "viewBiodata": "View Biodata",
+  "viewBiodataPdf": "View Biodata PDF",
   "viewDetails": "View Details",
   "viewLabel": "view",
+  "viewPremiumPlansButton": "View Premium Plans ➔",
   "viewProfile": "View Profile",
+  "viewVenue": "View Venue",
   "viewYourBookmarkedProfiles": "View your bookmarked profiles",
   "viewsLabel": "views",
   "village": "Village",
+  "villageTanda": "Village / Tanda",
+  "villageTandaExampleHint": "e.g. Pohradevi Tanda, Sevadas Nagar...",
+  "vipFeatures": "VIP Features",
+  "vipFiftyPercentOff": "50% OFF VIP",
+  "vipMatchmaker": "VIP Matchmaker",
+  "vipNote": "VIP NOTE 👑",
+  "vipPlanDesc": "Ultimate experience with priority support",
+  "vipPlanName": "VIP",
+  "vipPropertyAssets": "VIP PROPERTY & ASSET HOLDINGS",
+  "vipRoyal": "👑 VIP Royal",
+  "vipSpotlightElitePool": "VIP Spotlight & Elite Pool",
+  "vipSpotlightElitePoolSubtitle": "Top-tier prominent Banjara families with premium background checks",
   "visibleToAllProfiles": "Visible to all profiles",
   "visibleToCloseMatchesOnly": "Visible to close matches only",
+  "vouchBadgeRequirementNotice": "Get 5 vouches from verified members to earn the \"Community Trusted\" badge.",
+  "watchAdToUnlock": "WATCH AD TO UNLOCK",
+  "watchAdToUnlockAll": "WATCH AD TO UNLOCK ALL",
+  "watchQuickAd": "WATCH QUICK AD",
   "weEncounteredAnUnexpectedErrorWhileProce": "We encountered an unexpected error while processing your request.",
   "weWillSendAVerificationRequestToTheirMob": "We will send a verification request to their mobile number. Once they approve, you get +10 Points.",
   "weWillVerifyYourCommunityDetailsShortly1": "We will verify your community details shortly. +15 Points Pending.",
+  "weddingDate": "Wedding Date",
+  "weeklyCheckIn": "Weekly Check-in",
+  "welcomeBackAccountFound": "Welcome back! Your account has been found.",
   "welcomeToBanjaraBio": "Welcome to BanjaraBio",
   "whatDoYouLookFor": "What do you look for in a partner?",
   "whatsApp": "WhatsApp",
   "whatsAppContact": "WhatsApp Contact",
+  "whatsAppRishtaCardSubtitle": "Share premium biodata image card with QR code on WhatsApp",
+  "whatsAppRishtaCardTitle": "🚩 WhatsApp Rishta Card (Image + QR)",
+  "whatsAppStatusCardPremium": "WhatsApp Status Card (Premium)",
+  "whatsappHelp": "WhatsApp Help",
   "whatsappShareSubtitle": "Share {name} details with family or friends",
   "whatsappSupport": "WhatsApp Support",
   "wheatish": "Wheatish",
   "whereDoYouWork": "Where do you work?",
+  "whoIsThisForQuestion": "Who are you searching for?",
   "whoViewedMe": "Who Viewed Me",
   "whyBanjaraBio": "Why BanjaraBio?",
   "widowed": "Widowed",
+  "women": "Women",
+  "working": "Working",
+  "workspace": "Workspace",
   "writeAboutYourself": "Write something about yourself...",
+  "writeCustomBlessing": "Write Custom Blessing / Deity Name",
+  "writeCustomBlessingSubtitle": "Type any family Kuldevi, Guru, or personalized deity mantra",
+  "writeYourOwnGenuineMessage": "Write your own genuine message or edit the selected template above:",
   "year": "Year",
+  "yearsLabel": "{count, plural, =1{Year} other{Years}}",
   "yearsOld": "{age} Years",
-  "upgradeToShareMore": "You have reached your free sharing limit. Upgrade to continue sharing profiles.",
   "yes": "Yes",
+  "yesInterest": "Yes, Interest",
   "yesterday": "Yesterday",
   "youNeedAProfileToShareIt": "You need a profile to share it.",
+  "youSave": "You Save ₹{amount}",
   "youWillNoLongerSeeThisProfile": "You will no longer see this profile",
   "youngerBrother": "Younger Brother",
   "youngerSister": "Younger Sister",
@@ -1674,374 +2541,8 @@
   "yourPersonalInviteLink": "Your Personal Invite Link",
   "yourReferralCode": "Your Referral Code",
   "yourSelfieHasBeenSubmittedOurTeamWillVer": "Your selfie has been submitted. Our team will verify it against your profile photo.",
+  "yourSuccessStory": "Your Success Story",
   "yourTrustScore": "Your Trust Score",
   "yrs": "{count} Yrs",
-  "@yrs": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "itSAMatch": "IT'S A MATCH!",
-  "sharedProfilesWithEachOther": "You and {name} have shared profiles with each other.",
-  "@sharedProfilesWithEachOther": {
-    "description": "Text shown when two users share profiles with each other",
-    "placeholders": {
-      "name": {
-        "type": "String",
-        "example": "Someone"
-      }
-    }
-  },
-  "mutualMatch": "Mutual Match",
-  "toContact": "To: {name}",
-  "@toContact": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "fromContact": "From: {name}",
-  "@fromContact": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "countProfileViews": "{count, plural, =1{1 profile view} other{{count} profile views}}",
-  "@countProfileViews": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "matchedBadge": "MATCHED",
-  "premiumBadge": "PREMIUM",
-  "contactLabel": "Contact",
-  "profileSharedVia": "Shared {profileName} via {title}",
-  "@profileSharedVia": {
-    "placeholders": {
-      "profileName": {
-        "type": "String"
-      },
-      "title": {
-        "type": "String"
-      }
-    }
-  },
-  "failedToSendMessage": "Failed to send message: {error}",
-  "uploadFailed": "Upload failed: {error}",
-  "updateFailed": "Update failed: {error}",
-  "errorWithLabel": "Error: {label}",
-  "referenceWithNumber": "Reference {number}",
-  "villageTanda": "Village / Tanda",
-  "ageLabel": "Age",
-  "heightLabel": "Height",
-  "surnameLabel": "Surname",
-  "dateOfBirthLabel": "Date of Birth",
-  "birthTimeLabel": "Birth Time",
-  "birthPlaceLabel": "Birth Place",
-  "bloodGroupLabel": "Blood Group",
-  "occupationLabel": "Occupation",
-  "annualIncomeLabel": "Annual Income",
-  "currentResidence": "Current Residence",
-  "contactPersonLabel": "Contact Person",
-  "bestTimeToContact": "Best Time to Contact",
-  "limitReached": "Limit Reached",
-  "relationLabel": "Relation",
-  "none": "None",
-  "yearsLabel": "{count, plural, =1{Year} other{Years}}",
-  "brothersCount": "{count, plural, =1{1 brother} other{{count} brothers}}",
-  "sistersCount": "{count, plural, =1{1 sister} other{{count} sisters}}",
-  "siblingsLabel": "Siblings",
-  "siblingsCount": "{count, plural, =1{1 sibling} other{{count} siblings}}",
-  "@referenceWithNumber": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
-  "@yearsLabel": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "@brothersCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "@sistersCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "@siblingsCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "company": "Company",
-  "job": "Job",
-  "biodataRequired": "Biodata Required",
-  "guestRestrictionMessage": "To interact with profiles, express interest, or send messages, you need to create your own biodata first.",
-  "createNow": "Create Now",
-  "tourLocationTitle": "Select Location",
-  "tourLocationDesc": "Filter profiles by State, District, or Taluka to find matches near you.",
-  "tourSearchTitle": "Search Profiles",
-  "tourSearchDesc": "Looking for someone specific? Type their name or education here.",
-  "tourFilterTitle": "Advanced Filters",
-  "tourFilterDesc": "Narrow down by Age, Education, or Profession to see only who you want.",
-  "tourChatTitle": "Messages & Chat",
-  "tourChatDesc": "View your conversations and incoming interests here.",
-  "tourBottomHome": "Home Feed",
-  "tourBottomHomeDesc": "Scroll through thousands of verified profiles.",
-  "tourBottomShared": "Shared Profiles",
-  "tourBottomSharedDesc": "See profiles you've shared or received via WhatsApp/Link.",
-  "tourBottomProfile": "Your Profile",
-  "tourBottomProfileDesc": "Manage your own biodata and photos here.",
-  "tourBottomSettings": "App Settings",
-  "tourBottomSettingsDesc": "Change language, notification settings, or contact support.",
-  "tourWhatsappTitle": "WhatsApp Support",
-  "tourWhatsappDesc": "Direct contact with our admin for help or profile changes.",
-  "tourInstagramTitle": "Follow Us",
-  "tourInstagramDesc": "See daily new profiles and success stories on Instagram.",
-  "tourBookmarkTitle": "Save for later",
-  "tourBookmarkDesc": "Found a profile you like? Bookmark it to view it later in your Saved list.",
-  "tourInterestTitle": "Express Interest",
-  "tourInterestDesc": "Send a heart to let them know you're interested in their biodata.",
-  "tourShareTitle": "Share with family",
-  "tourShareDesc": "Easily share profiles via WhatsApp with your parents or relatives for their opinion.",
-  "chooseHowToStart": "Choose how you want to start",
-  "exploreAsGuest": "Explore as Guest",
-  "@exploreAsGuest": {},
-  "exitGuestMode": "Exit Guest Mode",
-  "@exitGuestMode": {},
-  "guestModeDesc": "Take a guided tour of the app before creating your profile.",
-  "createMyBiodata": "Create My Biodata",
-  "createBiodataDesc": "Fill out your profile and start connecting instantly.",
-  "needHelpContactAdmin": "Need help? Contact Admin",
-  "noMatchesYet": "No Matches Yet",
-  "noProfilesSharedYet": "No Profiles Shared Yet",
-  "noProfilesReceived": "No Profiles Received",
-  "mutualMatchesDesc": "Mutual matches will appear here when both users share interest in each other",
-  "startSharingProfilesDesc": "Start sharing profiles with family and friends to help find the perfect match",
-  "profilesSharedWithYouDesc": "Profiles shared with you by family and friends will appear here",
-  "enterVillageManually": "Enter Village/Other Name",
-  "enterVillageHint": "Enter Village or Tanda name...",
-  "specificLocation": "SPECIFIC LOCATION",
-  "skipAndSelectLevel": "Skip & Select Taluka/District",
-  "optional": "Optional",
-  "tourMatchesSearchTitle": "Search Shared Profiles",
-  "tourMatchesSearchDesc": "Quickly find profiles shared with you or by you using name or education.",
-  "tourMatchesSentTitle": "Sent Profiles",
-  "tourMatchesSentDesc": "All the profiles you have shared with family and friends appear here.",
-  "tourMatchesReceivedTitle": "Received Profiles",
-  "tourMatchesReceivedDesc": "Profiles others have shared with you via WhatsApp or Link.",
-  "tourMatchesMatchedTitle": "Matched Profiles",
-  "tourMatchesMatchedDesc": "Mutual matches where both you and the other person expressed interest!",
-  "tourProfilePhotosTitle": "Manage Photos",
-  "tourProfilePhotosDesc": "Upload, reorder, or delete your profile photos to make a great first impression.",
-  "tourProfileTrustTitle": "Trust Score",
-  "tourProfileTrustDesc": "Your credibility score. Verify your ID, selfie, and community to increase it.",
-  "tourProfilePdfTitle": "Export Biodata PDF",
-  "tourProfilePdfDesc": "Generate a professional PDF of your biodata to share with family members.",
-  "tourProfileSavedTitle": "Saved Profiles",
-  "tourProfileSavedDesc": "View all the profiles you have bookmarked for later review.",
-  "tourProfileEditTitle": "Edit Profile",
-  "tourProfileEditDesc": "Update your personal details, photos, and preferences anytime.",
-  "basicPlanName": "Basic",
-  "premiumPlanName": "Premium",
-  "vipPlanName": "VIP",
-  "basicPlanDesc": "Essential features for your search",
-  "premiumPlanDesc": "Advanced features and better visibility",
-  "vipPlanDesc": "Ultimate experience with priority support",
-  "paymentSuccessfulPdfUnlocked": "Payment Successful! PDF Unlocked.",
-  "standardPlanName": "Standard",
-  "standardPlanDesc": "Try premium features for a month",
-  "eternalPlanName": "Eternal - Till U Marry",
-  "eternalPlanDesc": "Never worry about expiry again",
-  "elitePlanName": "Elite",
-  "elitePlanDesc": "Handpicked matches with VIP access",
-  "royalPlanName": "Royal",
-  "royalPlanDesc": "Dedicated manager finds your match",
-  "eternalElitePlanName": "Eternal Elite",
-  "eternalElitePlanDesc": "Focus on your career, we find your partner",
-  "selfServicePlans": "Self-Service",
-  "vipMatchmaker": "VIP Matchmaker",
-  "tillUMarry": "Till U Marry",
-  "lifetime": "Lifetime",
-  "mrpPrice": "MRP ₹{price}",
-  "@mrpPrice": {
-    "placeholders": {
-      "price": {
-        "type": "int"
-      }
-    }
-  },
-  "bulkDiscount": "{percent}% OFF",
-  "@bulkDiscount": {
-    "placeholders": {
-      "percent": {
-        "type": "int"
-      }
-    }
-  },
-  "youSave": "You Save ₹{amount}",
-  "@youSave": {
-    "placeholders": {
-      "amount": {
-        "type": "int"
-      }
-    }
-  },
-  "totalSavings": "Total Savings: ₹{amount}",
-  "@totalSavings": {
-    "placeholders": {
-      "amount": {
-        "type": "int"
-      }
-    }
-  },
-  "trustDiscountApplied": "Trust Score Discount Applied",
-  "couponDiscountApplied": "Coupon Discount Applied",
-  "contactUnlocks": "{count} Contact Unlocks/month",
-  "@contactUnlocks": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "handpickedMatches": "{count} Handpicked Matches/week",
-  "@handpickedMatches": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "dedicatedManager": "Dedicated Relationship Manager",
-  "profileMakeover": "Professional Profile Makeover",
-  "featuredBadge": "Elite Verified Badge",
-  "featuresIncluded": "Features included:",
-  "incognitoMode": "Private Profile Browsing",
-  "biodataPremiumIncluded": "Biodata Premium Included",
-  "unlimitedContactUnlocks": "Unlimited Contact Unlocks",
-  "unlimitedHandpickedMatches": "Daily On-Demand Matches",
-  "weeklyCheckIn": "Weekly Check-in",
-  "monthlyCheckIn": "Monthly Check-in",
-  "bestValue": "BEST VALUE",
-  "personalConcierge": "Personal Concierge",
-  "vipFeatures": "VIP Features",
-  "directContactAccess": "Direct Contact Access",
-  "focusOnCareer": "Focus on your career, while we find your life partner",
-  "perMonth": "/month",
-  "forLifetime": "for Lifetime",
-  "emailNotifications": "Email Notifications",
-  "dailyMatchPicks": "Daily Match Picks",
-  "newMatchAlerts": "New Match Alerts",
-  "extraViewsUnlocked": "{count} Extra Views Unlocked!",
-  "@extraViewsUnlocked": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "sendHeartInterested": "Send a heart to show you're interested.",
-  "notMatchedCannotMessage": "You are not matched with this profile, so you can't direct message them.",
-  "oneMessageUnlocked": "1 Message Unlocked!",
-  "seenAllProfiles": "You've seen all profiles!",
-  "signInRequired": "Sign in Required",
-  "signInRequiredContent": "Please sign in or create an account to access this feature.",
-  "watchAdToUnlock": "WATCH AD TO UNLOCK",
-  "watchAdToUnlockAll": "WATCH AD TO UNLOCK ALL",
-  "goProAdFree": "Go Pro for Ad-Free Experience",
-  "adNotReady": "Ad not ready yet. Please try again in a moment.",
-  "upgradeToUnlockPremiumFeatures": "Upgrade to remove all ads and unlock premium biodata features.",
-  "couldNotLaunchWhatsApp": "Could not launch WhatsApp",
-  "couldNotLaunchDialer": "Could not launch Phone Dialer",
-  "searchLeads": "Search leads...",
-  "workspace": "Workspace",
-  "customMessage": "Custom Message",
-  "logCallOutcome": "Log Call Outcome",
-  "apply": "Apply",
-  "registrationFee": "Registration Fee",
-  "unverified": "Unverified",
-  "signIn": "Sign in",
-  "unlockMoreVisitors": "Unlock {count} more visitors!",
-  "@unlockMoreVisitors": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "dailyLimitReached": "Daily Limit Reached",
-  "dailyLimitViewsReached": "You have used all your daily profile views.",
-  "unlockMoreViewsAd": "Watch a quick ad to unlock 5 MORE views for today!",
-  "directMessage": "Direct Message",
-  "directMessagingPremium": "Direct messaging is a Premium feature.",
-  "unlockDirectMessageAd": "Watch 3 ads to unlock 1 direct message for FREE!",
-  "premiumAccess": "PREMIUM ACCESS",
-  "premiumGateSupport": "Support our community by watching a quick ad,\nor upgrade to Pro for an ad-free experience.",
-  "unblockAllProFeatures": "UNBLOCK ALL PRO FEATURES",
-  "monthly": "Monthly",
-  "annual": "Annual",
-  "watchQuickAd": "WATCH QUICK AD",
-  "continueBlockedUntilAdEnds": "CONTINUE TO APP BLOCKED UNTIL AD ENDS",
-  "adCompletedSuccessfully": "AD COMPLETED SUCCESSFULLY",
-  "continueToApp": "CONTINUE TO APP",
-  "preparingAdExperience": "PREPARING AD EXPERIENCE...",
-  "adTemporarilyUnavailable": "AD TEMPORARILY UNAVAILABLE",
-  "callAdmin": "Call Admin",
-  "banjaraBioPro": "BanjaraBio Pro",
-  "claimMarriageGift": "Claim Marriage Gift",
-  "tellUsYourStory": "Tell us your Story",
-  "partnerName": "Partner's Name",
-  "yourSuccessStory": "Your Success Story",
-  "howDidYouMeet": "How did you meet? What do you like about them?",
-  "proofOfMarriage": "Proof of Marriage",
-  "instagramLink": "Instagram Reel/Story Link",
-  "pasteUrlHere": "Paste the URL here",
-  "weddingDate": "Wedding Date",
-  "estimatedRefund": "Estimated Refund",
-  "submitForReview": "SUBMIT FOR REVIEW",
-  "selectRewardType": "Select Reward Type",
-  "digital": "Digital",
-  "refund25": "25% Refund",
-  "teamVisit": "Team Visit",
-  "refund35": "35% Refund",
-  "successSubmission": "Success! Your request has been submitted for review.",
-  "melavas": "Melavas",
-  "upcomingMelavas": "Upcoming Melavas",
-  "callOrganizer": "Call Organizer",
-  "viewVenue": "View Venue",
-  "organizer": "Organizer",
-  "venue": "Venue",
-  "eventDetails": "Event Details",
-  "browseMatchesTitle": "Search Matches (Browse)",
-  "browseMatchesDesc": "Search suitable matches for son, daughter, relative.",
-  "browseMatchesSubtitle": "Answer a few questions and see suitable matches",
-  "forWhomSearching": "Who are you searching a match for?",
-  "lookingForGender": "Looking for groom or bride?",
-  "groomBoy": "👦 Groom (Boy)",
-  "brideGirl": "👧 Bride (Girl)",
-  "selectDistrict": "Select District",
-  "proceedToLogin": "Proceed → Login",
-  "sibling": "Sibling"
+  "zeroPercentCommission": "💰 0% Commission"
 }

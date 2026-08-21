@@ -1,15 +1,21 @@
 import 'package:flutter/foundation.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
+import 'package:banjarabio/core/providers/home_tab_provider.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/features/bookmarks/providers/bookmark_notifier.dart';
+import 'package:banjarabio/widgets/custom_app_bar.dart';
+import 'package:banjarabio/widgets/tactile/tactile_back_button.dart';
+import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 import 'package:banjarabio/widgets/shimmer_widget.dart';
 import 'package:banjarabio/widgets/branded_refresh_indicator.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/profile_card_widget.dart';
+import 'package:banjarabio/presentation/match_profile_screen/widgets/direct_note_bottom_sheet.dart';
 import 'package:banjarabio/widgets/branded_empty_state.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 
@@ -186,8 +192,29 @@ class _SavedProfilesScreenState extends ConsumerState<SavedProfilesScreen> {
     _openProfileDetail(profile);
   }
 
+  void _handleMessage(ProfileModel profile) {
+    if (profile.isMatched) {
+      _openProfileDetail(profile);
+    } else {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (ctx) => DirectNoteBottomSheet(
+          profile: profile.toDisplayMap(),
+          onSuccess: () => _openProfileDetail(profile),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context);
+    final count = _bookmarkedProfiles.length;
+
     ref.listen<Map<String, bool>>(
       bookmarkNotifierProvider,
       (previous, next) {
@@ -195,63 +222,250 @@ class _SavedProfilesScreenState extends ConsumerState<SavedProfilesScreen> {
         _syncBookmarkState(next);
       },
     );
+
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)?.savedProfiles ?? 'Saved Profiles'), centerTitle: true),
-      body: _isLoading
-          ? ListView.separated(
-              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-              itemCount: 3,
-              separatorBuilder: (context, index) => SizedBox(height: 2.h),
-              itemBuilder: (context, index) => const ProfileCardSkeleton(),
-            )
-          : _errorMessage != null
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.error_outline, size: 48, color: Colors.red),
-                  SizedBox(height: 2.h),
-                  Text(_errorMessage!),
-                  SizedBox(height: 2.h),
-                  ElevatedButton(
-                    onPressed: _loadBookmarks,
-                    child: Text(AppLocalizations.of(context)?.retry ?? 'Retry'),
+      backgroundColor: theme.scaffoldBackgroundColor,
+      appBar: CustomAppBar(
+        leading: const TactileBackButton(),
+        title: l10n?.savedProfiles ?? 'Saved Profiles',
+        actions: [
+          if (!_isLoading && _errorMessage == null && count > 0)
+            Container(
+              margin: EdgeInsets.only(right: 3.w),
+              padding: EdgeInsets.symmetric(horizontal: 2.8.w, vertical: 0.5.h),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFE53935), Color(0xFFC62828)],
+                ),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFE53935).withValues(alpha: 0.3),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
                   ),
                 ],
               ),
-            )
-          : _bookmarkedProfiles.isEmpty
-          ? BrandedEmptyState(
-              icon: Icons.bookmark_border_rounded,
-              title: AppLocalizations.of(context)?.noBookmarkedProfilesYet ?? 'No bookmarked profiles yet',
-              description: AppLocalizations.of(context)?.profilesYouSaveWillAppearHere ?? 'Profiles you save will appear here',
-              ctaText: AppLocalizations.of(context)?.browseProfiles ?? 'Browse Profiles',
-            )
-          : BrandedRefreshIndicator(
-              onRefresh: _handleRefresh,
-              child: ListView.separated(
-                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-                itemCount: _bookmarkedProfiles.length,
-                separatorBuilder: (context, index) => SizedBox(height: 2.h),
-                itemBuilder: (context, index) {
-                  final profile = _bookmarkedProfiles[index];
-                  final profileId = profile.id;
-                  // The ProfileModel already contains the isBookmarked status,
-                  // which is kept in sync by _syncBookmarkState and Riverpod.
-                  // No need to override it here.
-
-                  return RepaintBoundary(
-                    child: ProfileCardWidget(
-                      profile: profile,
-                      onTap: () => _openProfileDetail(profile),
-                      onBookmark: () => _toggleBookmark(profileId, true),
-                      onInterest: (profile) => _handleInterest(profile),
-                      onShare: (profile) => _handleShare(profile),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.bookmark_rounded, size: 14, color: Colors.white),
+                  SizedBox(width: 1.w),
+                  Text(
+                    '$count',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: AppTypography.bold,
+                      fontSize: AppTypography.bodySmall,
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
             ),
+        ],
+      ),
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        child: _isLoading
+            ? ListView.separated(
+                key: const ValueKey('loading'),
+                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+                itemCount: 3,
+                separatorBuilder: (context, index) => SizedBox(height: 2.h),
+                itemBuilder: (context, index) => const ProfileCardSkeleton(),
+              )
+            : _errorMessage != null
+                ? _buildErrorState(theme, isDark, l10n)
+                : _bookmarkedProfiles.isEmpty
+                    ? BrandedEmptyState(
+                        key: const ValueKey('empty'),
+                        icon: Icons.bookmark_border_rounded,
+                        title: l10n?.noBookmarkedProfilesYet ?? 'No bookmarked profiles yet',
+                        description: l10n?.profilesYouSaveWillAppearHere ??
+                            'Profiles you save will appear here for easy access.',
+                        ctaText: l10n?.browseProfiles ?? 'Browse Profiles',
+                        onCtaPressed: () {
+                          HapticFeedback.lightImpact();
+                          if (Navigator.canPop(context)) {
+                            Navigator.pop(context);
+                          } else {
+                            ref.read(homeTabProvider.notifier).state = 0;
+                          }
+                        },
+                      )
+                    : BrandedRefreshIndicator(
+                        key: const ValueKey('list'),
+                        onRefresh: _handleRefresh,
+                        child: ListView.separated(
+                          physics: const AlwaysScrollableScrollPhysics(
+                            parent: BouncingScrollPhysics(),
+                          ),
+                          padding: EdgeInsets.fromLTRB(4.w, 1.5.h, 4.w, 4.h),
+                          itemCount: _bookmarkedProfiles.length + 1,
+                          separatorBuilder: (context, index) => SizedBox(height: 2.h),
+                          itemBuilder: (context, index) {
+                            if (index == 0) {
+                              return _buildHeaderInfoBanner(theme, isDark, count);
+                            }
+                            final profile = _bookmarkedProfiles[index - 1];
+                            final profileId = profile.id;
+
+                            return RepaintBoundary(
+                              child: ProfileCardWidget(
+                                profile: profile,
+                                onTap: () => _openProfileDetail(profile),
+                                onBookmark: () => _toggleBookmark(profileId, true),
+                                onInterest: (profile) => _handleInterest(profile),
+                                onMessage: (profile) => _handleMessage(profile),
+                                onShare: (profile) => _handleShare(profile),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderInfoBanner(ThemeData theme, bool isDark, int count) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.4.h),
+      decoration: BoxDecoration(
+        color: isDark
+            ? theme.colorScheme.surfaceContainerHigh
+            : theme.colorScheme.primaryContainer.withValues(alpha: 0.4),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isDark
+              ? theme.colorScheme.outlineVariant.withValues(alpha: 0.3)
+              : theme.colorScheme.primary.withValues(alpha: 0.15),
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: const Color(0xFFE53935).withValues(alpha: isDark ? 0.2 : 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.bookmark_added_rounded,
+              size: 18,
+              color: Color(0xFFE53935),
+            ),
+          ),
+          SizedBox(width: 3.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '$count ${count == 1 ? "Saved Profile" : "Saved Profiles"}',
+                  style: TextStyle(
+                    fontWeight: AppTypography.bold,
+                    fontSize: AppTypography.bodyMedium,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'Shortlisted for quick review and direct connection',
+                  style: TextStyle(
+                    fontSize: AppTypography.labelSmall,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildErrorState(ThemeData theme, bool isDark, AppLocalizations? l10n) {
+    return Center(
+      key: const ValueKey('error'),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 6.w),
+        child: Container(
+          padding: EdgeInsets.all(6.w),
+          decoration: BoxDecoration(
+            color: theme.cardColor,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: Colors.red.withValues(alpha: 0.2),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.04),
+                blurRadius: 16,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.red.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.error_outline_rounded, size: 40, color: Colors.red),
+              ),
+              SizedBox(height: 2.h),
+              Text(
+                _errorMessage ?? 'An error occurred',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: AppTypography.bodyMedium,
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
+              SizedBox(height: 2.5.h),
+              TactilePressable(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  _loadBookmarks();
+                },
+                pressedScale: 0.95,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 1.2.h),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
+                    borderRadius: BorderRadius.circular(14),
+                    boxShadow: [
+                      BoxShadow(
+                        color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.refresh_rounded, size: 18, color: Colors.white),
+                      SizedBox(width: 2.w),
+                      Text(
+                        l10n?.retry ?? 'Retry',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: AppTypography.bold,
+                          fontSize: AppTypography.bodyMedium,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -468,25 +468,34 @@ class UsageRepository {
     }
   }
 
-  /// Grant reward after watching an ad
-  Future<BackendResponse<void>> grantAdReward(AdRewardType type) async {
-    /*
+  /// Consume 1 bonus direct message credit (e.g. for Priority Intro Note)
+  Future<BackendResponse<bool>> consumeBonusMessage() async {
     try {
-      final metric = type == AdRewardType.profileViews 
-          ? 'bonus_views_today' 
-          : 'bonus_messages_today';
-      final increment = type == AdRewardType.profileViews ? 5 : 1;
+      final userId = app_supabase.AppSupabaseClient.currentUserId;
+      if (userId == null) return BackendResponse.failure('User not authenticated');
 
-      final response = await _supabase.rpc(
-        'fn_track_usage',
-        params: {'metric': metric, 'increment': increment},
-      );
-      return BackendResponse.fromRpc(response);
+      final today = DateTime.now().toIso8601String().substring(0, 10);
+      final usage = await _getTodayUsage();
+      final currentBonus = usage['bonus_messages_today'] as int? ?? 0;
+
+      if (currentBonus > 0) {
+        await _supabase
+            .from('usage_tracking')
+            .update({'bonus_messages_today': currentBonus - 1})
+            .eq('user_id', userId)
+            .eq('date', today);
+        return BackendResponse.success(true);
+      }
+      return BackendResponse.success(false);
     } catch (e) {
-      AppLogger.error('UsageRepository', 'UsageRepository.grantAdReward via RPC error: $e');
+      AppLogger.error('UsageRepository', 'consumeBonusMessage error: $e');
       return BackendResponse.failure(e.toString());
     }
-    */
+  }
+
+  /// Grant reward after watching an ad
+  Future<BackendResponse<void>> grantAdReward(AdRewardType type) async {
     return BackendResponse.success(null);
   }
 }
+

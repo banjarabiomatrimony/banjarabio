@@ -8,19 +8,40 @@ import 'package:flutter/services.dart';
 class SystemChromeConfig {
   SystemChromeConfig._();
 
-  /// Configure edge-to-edge display, transparent system bars, and portrait lock.
+  /// Configure modern edge-to-edge display (Android 15+ compliant) without
+  /// deprecated setStatusBarColor / setNavigationBarColor APIs.
   static void configure() {
     // Modern edge-to-edge display (Android 15+)
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarDividerColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+        systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
 
-    // Portrait-only orientation (non-blocking)
+    // Initial safe portrait orientation for smartphones
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
+
+  /// Adapt screen orientations conditionally:
+  /// - Smartphones (shortestSide < 600dp): Strictly locked to portraitUp.
+  /// - Tablets / Large Screens / Foldables (shortestSide >= 600dp): Allow rotation.
+  static void adaptOrientationForScreen(BuildContext context) {
+    final double shortestSide = MediaQuery.of(context).size.shortestSide;
+    if (shortestSide >= 600) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+    } else {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+      ]);
+    }
+  }
 }
+

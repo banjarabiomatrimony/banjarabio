@@ -430,7 +430,7 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
                         AppLocalizations.of(context)?.customizeBiodata ?? 'Customize Biodata',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onPrimary,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTypography.semiBold,
                           fontSize: AppTypography.bodyLarge,
                         ),
                       ),
@@ -469,11 +469,11 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
                             labelColor: BiodataTheme.royalGold,
                             unselectedLabelColor: BiodataTheme.deepCharcoal.withValues(alpha: 0.6),
                             labelStyle: TextStyle(
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTypography.semiBold,
                               fontSize: AppTypography.bodySmall,
                             ),
                             unselectedLabelStyle: TextStyle(
-                              fontWeight: FontWeight.w500,
+                              fontWeight: AppTypography.medium,
                               fontSize: AppTypography.bodySmall,
                             ),
                             tabs: [

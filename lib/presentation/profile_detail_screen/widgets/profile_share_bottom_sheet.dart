@@ -52,7 +52,7 @@ class ProfileShareBottomSheet {
               AppLocalizations.of(context)?.shareProfile ?? 'Share Profile',
               style: theme.textTheme.headlineSmall?.copyWith(
                 color: theme.colorScheme.onSurface,
-                fontWeight: FontWeight.w900,
+                fontWeight: AppTypography.black,
                 letterSpacing: -0.5,
               ),
             ),
@@ -61,14 +61,14 @@ class ProfileShareBottomSheet {
               AppLocalizations.of(context)?.recommendToOthers ?? 'RECOMMEND TO OTHERS',
               style: theme.textTheme.labelMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
-                fontWeight: FontWeight.w800,
+                fontWeight: AppTypography.extraBold,
                 letterSpacing: 1.2,
               ),
             ),
             SizedBox(height: 1.h),
             _ShareOptionTile(
-              title: '🚩 WhatsApp Rishta Card (Image + QR)',
-              subtitle: 'Share premium biodata image card with QR code on WhatsApp',
+              title: AppLocalizations.of(context)?.whatsAppRishtaCardTitle ?? '🚩 WhatsApp Rishta Card (Image + QR)',
+              subtitle: AppLocalizations.of(context)?.whatsAppRishtaCardSubtitle ?? 'Share premium biodata image card with QR code on WhatsApp',
               iconName: 'share',
               onTap: () async {
                 Navigator.pop(ctx);
@@ -184,7 +184,7 @@ class _ShareOptionTile extends StatelessWidget {
                   Text(
                     title,
                     style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
+                      fontWeight: AppTypography.extraBold,
                       color: theme.colorScheme.onSurface,
                     ),
                   ),
@@ -193,7 +193,7 @@ class _ShareOptionTile extends StatelessWidget {
                     subtitle,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTypography.medium,
                     ),
                   ),
                 ],

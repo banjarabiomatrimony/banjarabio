@@ -7,7 +7,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/education_profession_card_widget.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/family_background_card_widget.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/location_details_card_widget.dart';
-import 'package:banjarabio/presentation/profile_detail_screen/widgets/contact_preferences_card_widget.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/profile_header_widget.dart';
 
 Widget wrapWithSizer(Widget child) => Sizer(
@@ -100,21 +99,6 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(LocationDetailsCardWidget), findsOneWidget);
-    });
-  });
-
-  group('ContactPreferencesCardWidget', () {
-    testWidgets('renders with contact data', (tester) async {
-      tester.view.physicalSize = const Size(1080, 1920);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(() => tester.view.resetPhysicalSize());
-
-      await tester.pumpWidget(wrapWithSizer(
-        ContactPreferencesCardWidget(profileData: sampleData),
-      ));
-      await tester.pumpAndSettle();
-
-      expect(find.byType(ContactPreferencesCardWidget), findsOneWidget);
     });
   });
 

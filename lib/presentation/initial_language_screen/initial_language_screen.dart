@@ -118,7 +118,7 @@ class _InitialLanguageScreenState extends ConsumerState<InitialLanguageScreen>
                     'Select App Language\nतुमची भाषा निवडा',
                     textAlign: TextAlign.center,
                     style: theme.textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
+                      fontWeight: AppTypography.extraBold,
                       color: theme.colorScheme.onSurface,
                     ),
                   ),
@@ -196,7 +196,7 @@ class _InitialLanguageScreenState extends ConsumerState<InitialLanguageScreen>
                         _getContinueText(activeCode),
                         style: TextStyle(
                           fontSize: AppTypography.headingSmall,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTypography.bold,
                           letterSpacing: 1,
                         ),
                       ),
@@ -259,7 +259,7 @@ class _InitialLanguageScreenState extends ConsumerState<InitialLanguageScreen>
               Text(
                 '${lang['native']} (${lang['label']})',
                 style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+                  fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
                   fontSize: AppTypography.bodyLarge,
                   color: isSelected ? theme.colorScheme.onPrimary : theme.colorScheme.onSurface,
                 ),

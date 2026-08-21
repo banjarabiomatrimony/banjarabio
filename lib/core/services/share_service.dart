@@ -6,6 +6,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/profile_share_card.dart';
+import 'package:banjarabio/presentation/my_profile_screen/widgets/vouch_share_card.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Service to handle premium image generation and sharing.
@@ -109,6 +110,47 @@ class ShareService {
       if (context.mounted && Navigator.of(context).canPop()) {
         Navigator.of(context).pop();
       }
+    }
+  }
+
+  /// Captures a premium 9:16 Vouch Invitation graphic card and shares it
+  /// on WhatsApp Status or directly to relatives.
+  Future<void> shareVouchInvitation(
+    BuildContext context,
+    ProfileModel profile, {
+    String? customCaption,
+    String? referrerCode,
+  }) async {
+    try {
+      // 1. Render the off-screen high-res VouchShareCard
+      final image = await _screenshotController.captureFromWidget(
+        VouchShareCard(profile: profile, referrerCode: referrerCode),
+        delay: const Duration(milliseconds: 300),
+        pixelRatio: 2.7, // 400x711 * 2.7 = 1080x1920 Full HD WhatsApp Status
+        context: context,
+      );
+
+      // 2. Save to temporary directory
+      final tempDir = await getTemporaryDirectory();
+      final String fileName = 'BanjaraBio_Vouch_${profile.fullName.replaceAll(' ', '_')}.png';
+      final file = await File('${tempDir.path}/$fileName').create();
+      await file.writeAsBytes(image);
+
+      final String refSuffix = (referrerCode != null && referrerCode.isNotEmpty) ? '_ref_$referrerCode' : '';
+      final String deepLinkUrl = 'https://play.google.com/store/apps/details?id=com.avishio.banjarabio&referrer=vouch_${profile.id}$refSuffix';
+
+      final String caption = customCaption ??
+          'जय सेवालाल! 🚩\n'
+          'कृपया BanjaraBio ॲपवर माझ्या प्रोफाईलला खात्री (Vouch) देऊन "समाज विश्वासार्ह" बॅज मिळवण्यास मदत करा! 🙏💍\n\n'
+          '📲 *खात्री देण्यासाठी लिंक:*\n$deepLinkUrl';
+
+      await Share.shareXFiles(
+        [XFile(file.path)],
+        text: caption,
+        subject: 'बंजाराबायो समाज खात्री आमंत्रण',
+      );
+    } catch (e) {
+      AppLogger.error('ShareService', 'Error sharing vouch invitation card: $e');
     }
   }
 

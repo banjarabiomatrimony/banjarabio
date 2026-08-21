@@ -179,7 +179,10 @@ void main() {
       await tester.pumpWidget(buildTestApp(
         home: Builder(builder: (context) {
           return ElevatedButton(
-            onPressed: () => StartupWorkflow.navigateBasedOnStatus(context),
+            onPressed: () => StartupWorkflow.navigateBasedOnStatus(
+              context,
+              targetRouteOnNoProfile: '/biodata-creation-screen',
+            ),
             child: const Text('Navigate'),
           );
         }),

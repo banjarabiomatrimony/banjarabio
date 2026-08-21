@@ -89,7 +89,7 @@ class _SimilarProfilesCarouselState extends State<SimilarProfilesCarousel> {
               Text(
                 '✨ Similar Profiles (समान रिश्ते)',
                 style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w900,
+                  fontWeight: AppTypography.black,
                   fontSize: AppTypography.bodyLarge,
                   color: theme.colorScheme.onSurface,
                 ),
@@ -99,7 +99,7 @@ class _SimilarProfilesCarouselState extends State<SimilarProfilesCarousel> {
                 '${_similarProfiles.length} profiles',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTypography.bold,
                 ),
               ),
             ],
@@ -197,7 +197,7 @@ class _SimilarProfileCard extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTypography.bold,
                           fontSize: AppTypography.labelMedium,
                           color: theme.colorScheme.onSurface,
                         ),
@@ -209,7 +209,7 @@ class _SimilarProfileCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: AppTypography.labelSmall,
                           color: theme.colorScheme.onSurfaceVariant,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTypography.semiBold,
                         ),
                       ),
                       Container(
@@ -226,7 +226,7 @@ class _SimilarProfileCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: AppTypography.labelSmall - 1,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTypography.bold,
                             color: theme.colorScheme.primary,
                           ),
                         ),

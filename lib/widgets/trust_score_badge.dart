@@ -60,14 +60,9 @@ class _TrustScoreBadgeState extends State<TrustScoreBadge>
   @override
   Widget build(BuildContext context) {
     final diameter = widget.size ?? 5.h;
-    final levelName = TrustScoreConfig.getLevelName(widget.score);
+    final levelName = TrustScoreConfig.getLevelName(widget.score) ?? 'Basic';
     final levelColor = TrustScoreConfig.getLevelColor(widget.score);
-    final progress = widget.score / TrustScoreConfig.maxScore;
-
-    // Don't render anything for very low scores
-    if (widget.score < TrustScoreConfig.level2Threshold) {
-      return const SizedBox.shrink();
-    }
+    final progress = (widget.score / TrustScoreConfig.maxScore).clamp(0.0, 1.0);
 
     final Widget badge = SizedBox(
       width: diameter,
@@ -123,7 +118,7 @@ class _TrustScoreBadgeState extends State<TrustScoreBadge>
       ),
     );
 
-    final Widget result = (widget.showLabel && levelName != null)
+    final Widget result = widget.showLabel
         ? Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -140,7 +135,7 @@ class _TrustScoreBadgeState extends State<TrustScoreBadge>
                   style: TextStyle(
                     color: levelColor,
                     fontSize: AppTypography.labelSmall,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: AppTypography.bold,
                     letterSpacing: 0.5,
                   ),
                 ),

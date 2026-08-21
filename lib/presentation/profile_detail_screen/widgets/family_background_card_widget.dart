@@ -2,209 +2,213 @@ import 'package:flutter/material.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
 
-import 'package:banjarabio/core/app_export.dart';
-import 'package:banjarabio/widgets/custom_icon_widget.dart';
-import 'package:banjarabio/presentation/profile_detail_screen/widgets/profile_detail_chip_widget.dart';
-import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_category_theme.dart';
+import 'package:banjarabio/widgets/tactile/tactile_category_card.dart';
+import 'package:banjarabio/widgets/tactile/tactile_detail_chip.dart';
+import 'package:banjarabio/widgets/tactile/tactile_quote_card.dart';
+import 'package:banjarabio/presentation/profile_detail_screen/widgets/staggered_fade_slide_widget.dart';
 
-/// Family background card displaying detailed family information
-/// Critical for arranged marriage evaluation in Banjara community
+/// 👨👩👧 Family Background Card displaying detailed family information.
+/// Consumes centralized AppCategoryTheme and shared Tactile components.
 class FamilyBackgroundCardWidget extends StatelessWidget {
   final Map<String, dynamic> profileData;
   final EdgeInsets? margin;
+  final VoidCallback? onEdit;
 
   const FamilyBackgroundCardWidget({
     super.key,
     required this.profileData,
     this.margin,
+    this.onEdit,
   });
 
   /// Returns AppLocalizations.of(context).notEntered for null or empty values, otherwise the value string.
   String _displayValue(BuildContext context, dynamic value) {
-    if (value == null) return AppLocalizations.of(context)?.notEntered ?? 'Not Entered';
+    if (value == null) {
+      return AppLocalizations.of(context)?.notEntered ?? 'Not Entered';
+    }
     final str = value.toString().trim();
-    return str.isEmpty ? AppLocalizations.of(context)?.notEntered ?? 'Not Entered' : str;
+    return str.isEmpty
+        ? AppLocalizations.of(context)?.notEntered ?? 'Not Entered'
+        : str;
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final primary = theme.colorScheme.primary;
-    final secondary = theme.colorScheme.secondary;
-    final tertiary = theme.colorScheme.tertiary;
+    final catTheme = AppCategoryTheme.of(context).family;
+    const emeraldTeal = Color(0xFF10B981);
 
-    return Container(
-      margin: margin ?? EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.2.h),
-      padding: EdgeInsets.symmetric(horizontal: 3.2.w, vertical: 1.5.h),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: tertiary.withValues(alpha: 0.05),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-        border: Border.all(
-          color: tertiary.withValues(alpha: 0.45),
-          width: 1.2,
-        ),
-      ),
+    return TactileCategoryCard(
+      categoryType: CategoryType.family,
+      title: AppLocalizations.of(context)?.familyBackground ??
+          'Family Background',
+      icon: Icons.family_restroom_rounded,
+      onEdit: onEdit,
+      margin: margin,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(0.8.h),
-                decoration: BoxDecoration(
-                  color: tertiary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: CustomIconWidget(
-                  iconName: 'family_restroom',
-                  color: tertiary,
-                  size: 22,
-                ),
-              ),
-              SizedBox(width: 2.w),
-              Expanded(
-                child: Text(AppLocalizations.of(context)?.familyBackground ?? 'Family Background',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: theme.colorScheme.onSurface,
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: 0.4,
-                    fontSize: AppTypography.headingSmall,
+          // Row 0: Father Name & Father Occupation
+          StaggeredFadeSlideWidget(
+            index: 0,
+            child: Row(
+              children: [
+                Expanded(
+                  child: TactileDetailChip(
+                    iconName: 'person',
+                    label: AppLocalizations.of(context)?.fatherName ??
+                        'Father\'s Name',
+                    value: _displayValue(context, profileData['fatherName']),
+                    tintColor: catTheme.primary,
                   ),
-                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 1.5.h),
-          
-          Wrap(
-            spacing: 2.w,
-            runSpacing: 2.w,
-            children: [
-              ProfileDetailChipWidget(
-                iconName: 'person',
-                label: AppLocalizations.of(context)?.fatherName ?? 'Father\'s Name',
-                value: _displayValue(context, profileData['fatherName']),
-                tintColor: primary,
-                fullWidth: true,
-              ),
-              ProfileDetailChipWidget(
-                iconName: 'work',
-                label: AppLocalizations.of(context)?.fatherOccupation ?? 'Father\'s Job',
-                value: _displayValue(context, profileData['fatherOccupation']),
-                tintColor: secondary,
-                fullWidth: true,
-              ),
-              ProfileDetailChipWidget(
-                iconName: 'person',
-                label: AppLocalizations.of(context)?.motherName ?? 'Mother\'s Name',
-                value: _displayValue(context, profileData['motherName']),
-                tintColor: primary,
-                fullWidth: true,
-              ),
-              ProfileDetailChipWidget(
-                iconName: 'work_outline',
-                label: AppLocalizations.of(context)?.motherOccupation ?? 'Mother\'s Job',
-                value: _displayValue(context, profileData['motherOccupation']),
-                tintColor: tertiary,
-                fullWidth: true,
-              ),
-              ProfileDetailChipWidget(
-                iconName: 'groups',
-                label: AppLocalizations.of(context)?.familyType ?? 'Family Type',
-                value: _displayValue(context, profileData['familyType']),
-                tintColor: secondary,
-              ),
-              ProfileDetailChipWidget(
-                iconName: 'home',
-                label: AppLocalizations.of(context)?.familyStatus ?? 'Family Status',
-                value: _displayValue(context, profileData['familyStatus']),
-                tintColor: primary,
-              ),
-              ProfileDetailChipWidget(
-                iconName: 'location_on',
-                label: AppLocalizations.of(context)?.nativePlace ?? 'Native Place',
-                value: _displayValue(context, profileData['nativePlace']),
-                tintColor: tertiary,
-                fullWidth: true,
-              ),
-              ProfileDetailChipWidget(
-                iconName: 'group_add',
-                label: AppLocalizations.of(context)?.siblingsLabel ?? 'Siblings',
-                value: _getSiblingsSummary(context, profileData),
-                tintColor: secondary,
-                fullWidth: true,
-              ),
-            ],
-          ),
-          
-          if (profileData['about'] != null &&
-              profileData['about'].toString().isNotEmpty) ...[
-            SizedBox(height: 3.h),
-            Text(AppLocalizations.of(context)?.aboutSelf ?? 'About Self',
-              style: theme.textTheme.titleSmall?.copyWith(
-                color: theme.colorScheme.primary,
-                fontWeight: FontWeight.w900,
-              ),
+                SizedBox(width: 2.2.w),
+                Expanded(
+                  child: TactileDetailChip(
+                    iconName: 'work_outline',
+                    label: AppLocalizations.of(context)?.fatherOccupation ??
+                        'Father\'s Occupation',
+                    value:
+                        _displayValue(context, profileData['fatherOccupation']),
+                    tintColor: catTheme.secondary,
+                  ),
+                ),
+              ],
             ),
-            SizedBox(height: 1.h),
-            Container(
-              padding: EdgeInsets.all(4.w),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: primary.withValues(alpha: 0.05),
-                borderRadius: BorderRadius.circular(16),
-                border: Border(
-                  left: BorderSide(
-                    color: primary.withValues(alpha: 0.6),
-                    width: 4,
+          ),
+          SizedBox(height: 0.9.h),
+
+          // Row 1: Mother Name & Mother Occupation
+          StaggeredFadeSlideWidget(
+            index: 1,
+            child: Row(
+              children: [
+                Expanded(
+                  child: TactileDetailChip(
+                    iconName: 'person_outline',
+                    label: AppLocalizations.of(context)?.motherName ??
+                        'Mother\'s Name',
+                    value: _displayValue(context, profileData['motherName']),
+                    tintColor: catTheme.secondary,
                   ),
                 ),
-              ),
-              child: Text(
-                profileData['about'].toString(),
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.9),
-                  height: 1.5,
-                  fontWeight: FontWeight.w600,
+                SizedBox(width: 2.2.w),
+                Expanded(
+                  child: TactileDetailChip(
+                    iconName: 'home_work',
+                    label: AppLocalizations.of(context)?.motherOccupation ??
+                        'Mother\'s Occupation',
+                    value:
+                        _displayValue(context, profileData['motherOccupation']),
+                    tintColor: catTheme.tertiary,
+                  ),
                 ),
+              ],
+            ),
+          ),
+          SizedBox(height: 0.9.h),
+
+          // Row 2: Gotra & Maternal Gotra (Mosam)
+          StaggeredFadeSlideWidget(
+            index: 2,
+            child: Row(
+              children: [
+                Expanded(
+                  child: TactileDetailChip(
+                    iconName: 'diversity_3',
+                    label: AppLocalizations.of(context)?.gotra ?? 'Gotra',
+                    value: _displayValue(context, profileData['gotra']),
+                    tintColor: catTheme.primary,
+                  ),
+                ),
+                SizedBox(width: 2.2.w),
+                Expanded(
+                  child: TactileDetailChip(
+                    iconName: 'diversity_1',
+                    label: 'Maternal Gotra (Mosam)',
+                    value: _displayValue(
+                        context,
+                        profileData['maternalGotra'] ??
+                            profileData['mosamGotra']),
+                    tintColor: emeraldTeal,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 0.9.h),
+
+          // Row 3: Brothers & Sisters
+          StaggeredFadeSlideWidget(
+            index: 3,
+            child: Row(
+              children: [
+                Expanded(
+                  child: TactileDetailChip(
+                    iconName: 'groups',
+                    label: 'Brothers',
+                    value: _displayValue(context,
+                        profileData['brothers'] ?? profileData['brotherCount']),
+                    tintColor: catTheme.tertiary,
+                  ),
+                ),
+                SizedBox(width: 2.2.w),
+                Expanded(
+                  child: TactileDetailChip(
+                    iconName: 'groups_2',
+                    label: 'Sisters',
+                    value: _displayValue(context,
+                        profileData['sisters'] ?? profileData['sisterCount']),
+                    tintColor: catTheme.secondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 0.9.h),
+
+          // Row 4: Family Type & Family Values
+          StaggeredFadeSlideWidget(
+            index: 4,
+            child: Row(
+              children: [
+                Expanded(
+                  child: TactileDetailChip(
+                    iconName: 'apartment',
+                    label: 'Family Type',
+                    value: _displayValue(context, profileData['familyType']),
+                    tintColor: catTheme.primary,
+                  ),
+                ),
+                SizedBox(width: 2.2.w),
+                Expanded(
+                  child: TactileDetailChip(
+                    iconName: 'psychology',
+                    label: 'Family Values',
+                    value: _displayValue(context, profileData['familyValues']),
+                    tintColor: emeraldTeal,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // About Family / Bio Container
+          if (profileData['aboutFamily'] != null &&
+              profileData['aboutFamily'].toString().isNotEmpty) ...[
+            SizedBox(height: 1.8.h),
+            StaggeredFadeSlideWidget(
+              index: 5,
+              child: TactileQuoteCard(
+                title: AppLocalizations.of(context)?.aboutFamily ?? 'About Family',
+                content: profileData['aboutFamily'].toString(),
+                color: catTheme.primary,
+                icon: Icons.family_restroom_rounded,
               ),
             ),
           ],
         ],
       ),
     );
-  }
-
-  String _getSiblingsSummary(BuildContext context, Map<String, dynamic> data) {
-    final l10n = AppLocalizations.of(context);
-    final count = int.tryParse(data['siblingsCount']?.toString() ?? '0') ?? 0;
-    if (count == 0) return l10n?.none ?? 'None';
-
-    final sisters = int.tryParse(data['sisterCount']?.toString() ?? '0') ?? 0;
-    final brothers = int.tryParse(data['brotherCount']?.toString() ?? '0') ?? 0;
-
-    String summary = l10n?.siblingsCount(count) ?? '$count siblings';
-
-    final List<String> breakdown = [];
-    if (brothers > 0) {
-      breakdown.add(l10n?.brothersCount(brothers) ?? '$brothers brothers');
-    }
-    if (sisters > 0) {
-      breakdown.add(l10n?.sistersCount(sisters) ?? '$sisters sisters');
-    }
-
-    if (breakdown.isNotEmpty) {
-      summary += ' (${breakdown.join(', ')})';
-    }
-
-    return summary;
   }
 }

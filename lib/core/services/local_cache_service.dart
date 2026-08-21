@@ -102,6 +102,23 @@ class LocalCacheService {
     return DateTime.tryParse(dateStr);
   }
 
+  /// -------- Theme Mode --------
+
+  Future<void> saveThemeMode(String themeMode) async {
+    final box = _getBox(boxAppMetadata);
+    await box.put('theme_mode', themeMode);
+  }
+
+  String? getThemeMode() {
+    final box = _getBox(boxAppMetadata);
+    return box.get('theme_mode') as String?;
+  }
+
+  Future<void> clearThemeMode() async {
+    final box = _getBox(boxAppMetadata);
+    await box.delete('theme_mode');
+  }
+
   /// -------- Own Profile --------
 
   Future<void> saveOwnProfile(Map<String, dynamic> profileJson) async {

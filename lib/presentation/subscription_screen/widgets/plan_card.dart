@@ -6,7 +6,11 @@ import 'package:banjarabio/core/models/subscription_model.dart';
 import 'package:banjarabio/core/models/coupon_model.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/presentation/subscription_screen/widgets/feature_comparison_sheet.dart';
+import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 
+/// Highly attractive, easy-to-understand, state-of-the-art PlanCard.
+/// Features distinct jewel gradients, clear pricing scannability,
+/// highlighted superpower chips, and rotating sweep animations.
 class PlanCard extends StatelessWidget {
   final PlanType planType;
   final PlanFeatures features;
@@ -31,51 +35,342 @@ class PlanCard extends StatelessWidget {
     required this.shimmerAnimation,
   });
 
+  _TierTheme _getTierTheme(ThemeData theme, bool isDark) {
+    switch (planType) {
+      case PlanType.gold:
+        return const _TierTheme(
+          title: 'Gold Membership',
+          iconEmoji: '🥇',
+          iconData: Icons.workspace_premium_rounded,
+          tagline: 'Most chosen by verified matches',
+          durationLabel: '6 Months',
+          ribbonLabel: '🔥 MOST POPULAR',
+          primaryColor: Color(0xFFD97706),
+          secondaryColor: Color(0xFFB45309),
+          accentColor: Color(0xFFF59E0B),
+          lightBgGradient: [Color(0xFFFFFBEB), Color(0xFFFEF3C7)],
+          darkBgGradient: [Color(0xFF2C1905), Color(0xFF190E02)],
+          borderColors: [
+            Color(0xFFFFD700),
+            Color(0xFFFFA000),
+            Color(0xFFFFD700),
+          ],
+        );
+
+      case PlanType.platinum:
+        return const _TierTheme(
+          title: 'Platinum Membership',
+          iconEmoji: '💎',
+          iconData: Icons.diamond_rounded,
+          tagline: 'Best long-term value for serious seekers',
+          durationLabel: '1 Year',
+          ribbonLabel: '✨ BEST VALUE • 1 YEAR',
+          primaryColor: Color(0xFF7C3AED),
+          secondaryColor: Color(0xFF5B21B6),
+          accentColor: Color(0xFF8B5CF6),
+          lightBgGradient: [Color(0xFFFAF5FF), Color(0xFFF3E8FF)],
+          darkBgGradient: [Color(0xFF1E0E38), Color(0xFF100720)],
+          borderColors: [
+            Color(0xFF9C27B0),
+            Color(0xFF7C4DFF),
+            Color(0xFF9C27B0),
+          ],
+        );
+
+      case PlanType.eternal:
+        return const _TierTheme(
+          title: 'Eternal Lifetime',
+          iconEmoji: '👑',
+          iconData: Icons.all_inclusive_rounded,
+          tagline: 'Pay once, enjoy till you find your match',
+          durationLabel: 'Lifetime',
+          ribbonLabel: '👑 TILL U MARRY • BEST VALUE',
+          primaryColor: Color(0xFFEA580C),
+          secondaryColor: Color(0xFFC2410C),
+          accentColor: Color(0xFFFB923C),
+          lightBgGradient: [Color(0xFFFFF7ED), Color(0xFFFFEDD5)],
+          darkBgGradient: [Color(0xFF331405), Color(0xFF1C0902)],
+          borderColors: [
+            Color(0xFFFFB300),
+            Color(0xFFFF6F00),
+            Color(0xFFFFB300),
+          ],
+        );
+
+      case PlanType.silver:
+        return const _TierTheme(
+          title: 'Silver Membership',
+          iconEmoji: '🥈',
+          iconData: Icons.shield_outlined,
+          tagline: 'Fast-track search with direct contacts',
+          durationLabel: '3 Months',
+          ribbonLabel: '⚡ STARTER PACK',
+          primaryColor: Color(0xFF475569),
+          secondaryColor: Color(0xFF334155),
+          accentColor: Color(0xFF64748B),
+          lightBgGradient: [Color(0xFFF8FAFC), Color(0xFFF1F5F9)],
+          darkBgGradient: [Color(0xFF1E293B), Color(0xFF0F172A)],
+          borderColors: [
+            Color(0xFF94A3B8),
+            Color(0xFF64748B),
+            Color(0xFF94A3B8),
+          ],
+        );
+
+      case PlanType.elite:
+      case PlanType.royal:
+      case PlanType.eternal_elite:
+        return _TierTheme(
+          title: 'VIP Concierge',
+          iconEmoji: '💎',
+          iconData: Icons.stars_rounded,
+          tagline: 'Dedicated Matchmaker & Relationship Manager',
+          durationLabel: features.isLifetime ? 'Lifetime' : '${features.duration} Mo',
+          ribbonLabel: '💎 VIP CONCIERGE',
+          primaryColor: const Color(0xFF8E2DE2),
+          secondaryColor: const Color(0xFF4A00E0),
+          accentColor: const Color(0xFFA855F7),
+          lightBgGradient: const [Color(0xFFF5F3FF), Color(0xFFEDE9FE)],
+          darkBgGradient: const [Color(0xFF200E3D), Color(0xFF110722)],
+          borderColors: const [
+            Color(0xFF8E2DE2),
+            Color(0xFFFFD700),
+            Color(0xFF8E2DE2),
+          ],
+        );
+
+      case PlanType.free:
+      default:
+        return _TierTheme(
+          title: 'Starter Free Plan',
+          iconEmoji: '🌱',
+          iconData: Icons.eco_outlined,
+          tagline: 'Standard browsing & profile creation',
+          durationLabel: 'Forever',
+          ribbonLabel: null,
+          primaryColor: theme.colorScheme.primary,
+          secondaryColor: theme.colorScheme.primary,
+          accentColor: theme.colorScheme.primary,
+          lightBgGradient: [theme.cardColor, theme.cardColor],
+          darkBgGradient: [theme.cardColor, theme.cardColor],
+          borderColors: const [],
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final tier = _getTierTheme(theme, isDark);
+
     final isRecommended = planType == PlanType.gold;
     final isBestValue = planType == PlanType.eternal;
+    final isPlatinum = planType == PlanType.platinum;
+    final isVip = tier.ribbonLabel?.contains('VIP') ?? false;
+    final hasAnimatedBorder = isRecommended || isBestValue || isPlatinum || isVip;
 
     final discountedPrice = features.getDiscountedPrice(trustScore);
     final couponPercent = appliedCoupon?.discountPercentage ?? 0;
     final finalPrice = features.getFinalPrice(trustScore, couponPercent: couponPercent);
     final totalSavings = features.getTotalSavings(trustScore, couponPercent: couponPercent);
 
-    Widget card = Container(
+    Widget cardContent = Container(
       decoration: BoxDecoration(
         color: theme.cardColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: isRecommended || isBestValue ? Colors.transparent : theme.dividerColor,
-          width: isRecommended || isBestValue ? 0 : 1,
+          color: hasAnimatedBorder
+              ? Colors.transparent
+              : isDark
+                  ? Colors.white.withValues(alpha: 0.08)
+                  : Colors.black.withValues(alpha: 0.07),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: tier.primaryColor.withValues(alpha: isDark ? 0.2 : 0.06),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Header rendering with pricing
-          _buildHeader(context, theme, isRecommended, isBestValue, discountedPrice, finalPrice, totalSavings),
-          // Features
-          _buildFeatures(context, theme),
-          // CTA
-          _buildCTA(context, theme, isRecommended, isBestValue),
+          // ── 1. Top Ribbon & Header ──
+          _buildHeader(context, theme, tier, isDark),
+
+          // ── 2. Pricing & Savings Display Card ──
+          _buildPricingSection(context, theme, tier, isDark, discountedPrice, finalPrice, totalSavings),
+
+          // ── 3. Superpower Features Highlights ──
+          _buildFeaturePillars(context, theme, tier, isDark),
+
+          // ── 4. CTA Button ──
+          _buildCTAButton(context, theme, tier, isDark),
         ],
       ),
     );
 
-    if (isRecommended || isBestValue) {
-      card = _buildAnimatedBorder(theme, card, isRecommended);
+    if (hasAnimatedBorder) {
+      cardContent = _buildAnimatedSweepBorder(tier, cardContent);
     }
 
-    return card;
+    return cardContent;
   }
 
-  Widget _buildHeader(
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 1. HEADER SECTION
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  Widget _buildHeader(BuildContext context, ThemeData theme, _TierTheme tier, bool isDark) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(4.w, 3.5.w, 4.w, 2.5.w),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: isDark ? tier.darkBgGradient : tier.lightBgGradient,
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Ribbon Banner if available
+          if (tier.ribbonLabel != null) ...[
+            Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 2.8.w, vertical: 0.4.h),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [tier.primaryColor, tier.secondaryColor],
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: tier.primaryColor.withValues(alpha: 0.35),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    tier.ribbonLabel!,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: AppTypography.bold,
+                      fontSize: AppTypography.labelTiny,
+                      letterSpacing: 0.4,
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                // Validity Pill
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.35.h),
+                  decoration: BoxDecoration(
+                    color: tier.primaryColor.withValues(alpha: isDark ? 0.25 : 0.12),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: tier.primaryColor.withValues(alpha: 0.35),
+                    ),
+                  ),
+                  child: Text(
+                    tier.durationLabel,
+                    style: TextStyle(
+                      color: isDark ? Colors.white : tier.primaryColor,
+                      fontWeight: AppTypography.bold,
+                      fontSize: AppTypography.labelSmall,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 1.2.h),
+          ],
+
+          // Title Row with Icon Emblem
+          Row(
+            children: [
+              Container(
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  color: tier.primaryColor.withValues(alpha: isDark ? 0.25 : 0.12),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: tier.primaryColor.withValues(alpha: 0.4),
+                    width: 1.2,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    tier.iconEmoji,
+                    style: TextStyle(fontSize: AppTypography.titleLarge),
+                  ),
+                ),
+              ),
+              SizedBox(width: 3.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      SubscriptionConfig.getDisplayName(planType, AppLocalizations.of(context)),
+                      style: TextStyle(
+                        fontSize: AppTypography.headingSmall,
+                        fontWeight: AppTypography.bold,
+                        letterSpacing: 0.1,
+                        color: isDark ? Colors.white : theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    SizedBox(height: 0.2.h),
+                    Text(
+                      tier.tagline,
+                      style: TextStyle(
+                        fontSize: AppTypography.labelSmall,
+                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.85),
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+              if (tier.ribbonLabel == null)
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.35.h),
+                  decoration: BoxDecoration(
+                    color: tier.primaryColor.withValues(alpha: isDark ? 0.2 : 0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    tier.durationLabel,
+                    style: TextStyle(
+                      color: tier.primaryColor,
+                      fontWeight: AppTypography.bold,
+                      fontSize: AppTypography.labelSmall,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 2. PRICING & SAVINGS SECTION
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  Widget _buildPricingSection(
     BuildContext context,
     ThemeData theme,
-    bool isRecommended,
-    bool isBestValue,
+    _TierTheme tier,
+    bool isDark,
     int discountedPrice,
     int finalPrice,
     int totalSavings,
@@ -87,215 +382,297 @@ class PlanCard extends StatelessWidget {
     final hasSavings = totalSavings > 0;
     final discountPercent = hasSavings ? (totalSavings / features.mrp * 100).round() : 0;
 
-    return Container(
-      padding: EdgeInsets.fromLTRB(4.w, 4.w, 4.w, 3.w),
-      decoration: BoxDecoration(
-        gradient: isRecommended
-            ? LinearGradient(
-                colors: [
-                  theme.colorScheme.primary.withValues(alpha: 0.12),
-                  theme.colorScheme.primary.withValues(alpha: 0.02),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              )
-            : isBestValue
-                ? LinearGradient(
-                    colors: [
-                      Colors.amber.withValues(alpha: 0.12),
-                      Colors.amber.withValues(alpha: 0.02),
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  )
-                : null,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      child: Column(
-        children: [
-          if (isRecommended || isBestValue) ...[
-            _buildAnimatedBadge(
-              theme,
-              isRecommended
-                  ? AppLocalizations.of(context)!.mostPopular.toUpperCase()
-                  : AppLocalizations.of(context)!.bestValue.toUpperCase(),
-              isRecommended ? theme.colorScheme.primary : Colors.amber.shade700,
-            ),
-            SizedBox(height: 1.5.h),
-          ],
-          Text(
-            SubscriptionConfig.getDisplayName(planType, AppLocalizations.of(context)),
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              letterSpacing: 0.1,
+    if (planType == PlanType.free) {
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+        child: Container(
+          padding: EdgeInsets.all(3.w),
+          decoration: BoxDecoration(
+            color: isDark ? Colors.white.withValues(alpha: 0.04) : Colors.black.withValues(alpha: 0.02),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: isDark ? Colors.white12 : Colors.black12,
             ),
           ),
-          SizedBox(height: 0.5.h),
-          Text(
-            SubscriptionConfig.getDescription(planType, AppLocalizations.of(context)),
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
-            ),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 2.h),
-
-          // ── Pricing Section ──
-          if (planType == PlanType.free) ...[
-            Text(
-              'Free',
-              style: theme.textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.primary,
-              ),
-            ),
-            SizedBox(height: 0.5.h),
-            Text(
-              'Basic standard access',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
-              ),
-            ),
-          ] else ...[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.baseline,
-              textBaseline: TextBaseline.alphabetic,
-              children: [
-                if (!isLifetime && durationMonths > 1 && mrpPerMonth > finalPricePerMonth) ...[
-                  Text(
-                    '₹$mrpPerMonth',
-                    style: TextStyle(
-                      fontSize: AppTypography.bodyMedium + 1,
-                      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
-                      decoration: TextDecoration.lineThrough,
-                    ),
-                  ),
-                  SizedBox(width: 2.w),
-                ],
-                Text(
-                  '₹${!isLifetime ? finalPricePerMonth : finalPrice}',
-                  style: TextStyle(
-                    fontSize: AppTypography.headingMedium + 4,
-                    fontWeight: FontWeight.bold,
-                    color: isRecommended
-                        ? theme.colorScheme.primary
-                        : isBestValue
-                            ? Colors.amber.shade800
-                            : theme.colorScheme.onSurface,
-                  ),
-                ),
-                Text(
-                  !isLifetime ? ' / month' : ' one-time',
-                  style: TextStyle(
-                    fontSize: AppTypography.bodySmall,
-                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 0.5.h),
-            if (!isLifetime && durationMonths > 1) ...[
-              Text(
-                'Billed as ₹$finalPrice for $durationMonths months',
-                style: TextStyle(
-                  fontSize: AppTypography.labelMedium,
-                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              SizedBox(height: 1.h),
-            ],
-            if (hasSavings) ...[
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.6.h),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: isRecommended
-                        ? [theme.colorScheme.primary, theme.colorScheme.primary.withValues(alpha: 0.8)]
-                        : isBestValue
-                            ? [Colors.amber.shade700, Colors.amber.shade900]
-                            : [Colors.green.shade600, Colors.green.shade800],
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: (isRecommended
-                              ? theme.colorScheme.primary
-                              : isBestValue
-                                  ? Colors.amber
-                                  : Colors.green)
-                          .withValues(alpha: 0.25),
-                      blurRadius: 6,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Text(
-                  'Save ₹$totalSavings ($discountPercent% OFF)',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: AppTypography.bodySmall,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 0.2,
-                  ),
-                ),
-              ),
-            ],
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFeatures(BuildContext context, ThemeData theme) {
-    final featuresList = _getPlanFeaturesList(context);
-    final displayedFeatures = featuresList.take(4).toList();
-    final remainingCount = featuresList.length - displayedFeatures.length;
-    
-    return Padding(
-      padding: EdgeInsets.all(4.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+          child: Row(
             children: [
-              Icon(Icons.star_border, color: theme.colorScheme.primary, size: 18),
-              SizedBox(width: 1.5.w),
               Text(
-                AppLocalizations.of(context)!.featuresIncluded.toUpperCase(),
-                style: theme.textTheme.labelMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 0.5,
+                '₹0',
+                style: TextStyle(
+                  fontSize: AppTypography.headingLarge,
+                  fontWeight: AppTypography.bold,
                   color: theme.colorScheme.primary,
                 ),
               ),
+              SizedBox(width: 2.w),
+              Text(
+                'Free standard access forever',
+                style: TextStyle(
+                  fontSize: AppTypography.bodySmall,
+                  color: theme.colorScheme.onSurfaceVariant,
+                  fontWeight: AppTypography.medium,
+                ),
+              ),
             ],
           ),
-          SizedBox(height: 1.5.h),
-          ...displayedFeatures.map((item) => _buildFeatureItem(theme, item.icon, item.text)),
-          if (remainingCount > 0) ...[
-            SizedBox(height: 1.h),
-            InkWell(
-              onTap: () => FeatureComparisonSheet.show(context),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 0.5.h),
+        ),
+      );
+    }
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(4.w, 1.2.h, 4.w, 0),
+      child: Container(
+        padding: EdgeInsets.all(3.5.w),
+        decoration: BoxDecoration(
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.04)
+              : tier.primaryColor.withValues(alpha: 0.03),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: tier.primaryColor.withValues(alpha: isDark ? 0.25 : 0.15),
+          ),
+        ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Rupee symbol and price
+                      Text(
+                        '₹',
+                        style: TextStyle(
+                          fontSize: AppTypography.headingMedium,
+                          fontWeight: AppTypography.bold,
+                          color: isDark ? Colors.white : tier.primaryColor,
+                        ),
+                      ),
+                      Text(
+                        '${!isLifetime ? finalPricePerMonth : finalPrice}',
+                        style: TextStyle(
+                          fontSize: AppTypography.headingLarge,
+                          fontWeight: AppTypography.black,
+                          color: isDark ? Colors.white : tier.primaryColor,
+                          letterSpacing: -0.5,
+                        ),
+                      ),
+                      Flexible(
+                        child: Text(
+                          !isLifetime ? ' / mo' : ' one-time',
+                          style: TextStyle(
+                            fontSize: AppTypography.bodySmall,
+                            color: theme.colorScheme.onSurfaceVariant,
+                            fontWeight: AppTypography.semiBold,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Savings Pill
+                if (hasSavings)
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.4.h),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [tier.primaryColor, tier.secondaryColor],
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: tier.primaryColor.withValues(alpha: 0.3),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      '🔥 $discountPercent% OFF',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: AppTypography.bold,
+                        fontSize: AppTypography.labelSmall,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+
+            SizedBox(height: 0.8.h),
+
+            // Billing breakdown & MRP Comparison
+            Row(
+              children: [
+                Expanded(
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 1.5.w,
+                    runSpacing: 2,
+                    children: [
+                      if (!isLifetime &&
+                          durationMonths > 1 &&
+                          mrpPerMonth > finalPricePerMonth)
+                        Text(
+                          'MRP ₹${features.mrp}',
+                          style: TextStyle(
+                            fontSize: AppTypography.labelSmall,
+                            color: theme.colorScheme.onSurfaceVariant
+                                .withValues(alpha: 0.55),
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                      Text(
+                        !isLifetime
+                            ? 'Billed: ₹$finalPrice ($durationMonths mo)'
+                            : 'Lifetime Access (Never expires)',
+                        style: TextStyle(
+                          fontSize: AppTypography.labelSmall,
+                          fontWeight: AppTypography.semiBold,
+                          color: theme.colorScheme.onSurfaceVariant
+                              .withValues(alpha: 0.9),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (hasSavings) ...[
+                  SizedBox(width: 1.5.w),
+                  Text(
+                    'Save ₹$totalSavings',
+                    style: TextStyle(
+                      fontSize: AppTypography.labelSmall,
+                      fontWeight: AppTypography.bold,
+                      color:
+                          isDark ? Colors.greenAccent : Colors.green.shade700,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+
+            // Applied Trust / Coupon perks banner
+            if (trustScore > 0 || appliedCoupon != null) ...[
+              SizedBox(height: 0.8.h),
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.4.h),
+                decoration: BoxDecoration(
+                  color: Colors.green.withValues(alpha: isDark ? 0.15 : 0.08),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(
+                    color: Colors.green.withValues(alpha: 0.3),
+                  ),
+                ),
                 child: Row(
                   children: [
-                    Icon(Icons.add_circle_outline, color: theme.colorScheme.primary, size: 16),
-                    SizedBox(width: 2.w),
-                    Text(
-                      'plus $remainingCount more benefits (Tap to Compare)',
-                      style: TextStyle(
-                        fontSize: AppTypography.labelMedium,
-                        fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.primary,
+                    const Icon(Icons.check_circle_outline_rounded, color: Colors.green, size: 13),
+                    SizedBox(width: 1.5.w),
+                    Expanded(
+                      child: Text(
+                        appliedCoupon != null
+                            ? 'Special ${appliedCoupon!.code} + Trust Discount applied!'
+                            : 'Trust Score Verified Discount applied!',
+                        style: TextStyle(
+                          fontSize: AppTypography.labelTiny,
+                          fontWeight: AppTypography.semiBold,
+                          color: isDark ? Colors.greenAccent : Colors.green.shade800,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 3. FEATURES HIGHLIGHT PILLARS
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  Widget _buildFeaturePillars(BuildContext context, ThemeData theme, _TierTheme tier, bool isDark) {
+    final featuresList = _getPlanFeaturesList(context);
+    final displayedFeatures = featuresList.take(4).toList();
+    final remainingCount = featuresList.length - displayedFeatures.length;
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(4.w, 1.4.h, 4.w, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Superpower perks list
+          ...displayedFeatures.map((item) => Padding(
+                padding: EdgeInsets.symmetric(vertical: 0.35.h),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(3.5),
+                      decoration: BoxDecoration(
+                        color: tier.primaryColor.withValues(alpha: isDark ? 0.2 : 0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        item.icon,
+                        color: tier.primaryColor,
+                        size: 13,
+                      ),
+                    ),
+                    SizedBox(width: 2.5.w),
+                    Expanded(
+                      child: Text(
+                        item.text,
+                        style: TextStyle(
+                          fontSize: AppTypography.bodySmall,
+                          fontWeight: AppTypography.medium,
+                          color: theme.colorScheme.onSurface,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )),
+
+          // View full comparison trigger
+          if (remainingCount > 0) ...[
+            SizedBox(height: 0.6.h),
+            TactilePressable(
+              onTap: () => FeatureComparisonSheet.show(context),
+              pressedScale: 0.97,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 0.4.h),
+                child: Row(
+                  children: [
+                    Icon(Icons.add_circle_outline_rounded,
+                        color: tier.primaryColor, size: 14),
+                    SizedBox(width: 1.5.w),
+                    Expanded(
+                      child: Text(
+                        'plus $remainingCount more benefits (Tap to Compare)',
+                        style: TextStyle(
+                          fontSize: AppTypography.labelSmall,
+                          fontWeight: AppTypography.bold,
+                          color: tier.primaryColor,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    SizedBox(width: 1.w),
+                    Icon(Icons.arrow_forward_ios_rounded,
+                        color: tier.primaryColor, size: 11),
+                  ],
+                ),
+              ),
             ),
           ],
         ],
@@ -303,101 +680,127 @@ class PlanCard extends StatelessWidget {
     );
   }
 
-  Widget _buildFeatureItem(ThemeData theme, IconData icon, String text) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 0.6.h),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: theme.colorScheme.primary, size: 18),
-          SizedBox(width: 2.5.w),
-          Expanded(
-            child: Text(
-              text,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                height: 1.25,
-                fontWeight: FontWeight.w500,
-              ),
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 4. CTA UPGRADE BUTTON
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  Widget _buildCTAButton(BuildContext context, ThemeData theme, _TierTheme tier, bool isDark) {
+    if (isSufficientPlan) {
+      return Padding(
+        padding: EdgeInsets.all(3.5.w),
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 1.2.h),
+          decoration: BoxDecoration(
+            color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.03),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: isDark ? Colors.white12 : Colors.black12,
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCTA(BuildContext context, ThemeData theme, bool isRecommended, bool isBestValue) {
-    return Padding(
-      padding: EdgeInsets.all(4.w),
-      child: ElevatedButton(
-        onPressed: isSufficientPlan || isProcessingPayment ? null : onUpgrade,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: isRecommended
-              ? theme.colorScheme.primary
-              : isBestValue
-                  ? Colors.amber.shade700
-                  : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.1),
-          foregroundColor: isRecommended || isBestValue ? Colors.white : theme.colorScheme.onSurface,
-          padding: EdgeInsets.symmetric(vertical: 1.8.h),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        ),
-        child: isProcessingPayment
-            ? const CircularProgressIndicator(color: Colors.white)
-            : Text(
-                isCurrentPlan
-                    ? AppLocalizations.of(context)!.currentPlan
-                    : AppLocalizations.of(context)!.upgradeNow,
-                style: TextStyle(fontSize: AppTypography.bodyMedium, fontWeight: FontWeight.bold),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.check_circle_rounded, color: Colors.green, size: 16),
+              SizedBox(width: 2.w),
+              Text(
+                isCurrentPlan ? '✓ Current Active Plan' : '✓ Included in Current Plan',
+                style: TextStyle(
+                  fontSize: AppTypography.bodySmall,
+                  fontWeight: AppTypography.bold,
+                  color: isCurrentPlan ? Colors.green : theme.colorScheme.onSurfaceVariant,
+                ),
               ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return Padding(
+      padding: EdgeInsets.all(3.5.w),
+      child: TactilePressable(
+        onTap: isProcessingPayment ? null : onUpgrade,
+        pressedScale: 0.96,
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 1.4.h),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [tier.primaryColor, tier.secondaryColor],
+            ),
+            borderRadius: BorderRadius.circular(14),
+            boxShadow: [
+              BoxShadow(
+                color: tier.primaryColor.withValues(alpha: 0.35),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Center(
+            child: isProcessingPayment
+                ? const SizedBox(
+                    height: 18,
+                    width: 18,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        isCurrentPlan
+                            ? AppLocalizations.of(context)!.currentPlan
+                            : planType == PlanType.free
+                                ? 'Continue with Free'
+                                : 'UPGRADE TO ${SubscriptionConfig.getDisplayName(planType, AppLocalizations.of(context)).toUpperCase()}',
+                        style: TextStyle(
+                          fontSize: AppTypography.bodySmall,
+                          fontWeight: AppTypography.bold,
+                          letterSpacing: 0.4,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(width: 1.5.w),
+                      const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 15),
+                    ],
+                  ),
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildAnimatedBadge(ThemeData theme, String label, Color baseColor) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.6.h),
-      decoration: BoxDecoration(
-        color: baseColor,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: AppTypography.bodySmall),
-      ),
-    );
-  }
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 5. ANIMATED SWEEP ROTATING BORDER
+  // ═══════════════════════════════════════════════════════════════════════════
 
-  Widget _buildAnimatedBorder(ThemeData theme, Widget child, bool isPrimary) {
+  Widget _buildAnimatedSweepBorder(_TierTheme tier, Widget child) {
     return AnimatedBuilder(
       animation: shimmerAnimation,
       builder: (context, _) {
         final value = shimmerAnimation.value;
         return Container(
-          padding: const EdgeInsets.all(2.0),
+          padding: const EdgeInsets.all(1.5),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(21),
             gradient: SweepGradient(
-              colors: isPrimary
-                  ? [
-                      theme.colorScheme.primary,
-                      theme.colorScheme.primary.withValues(alpha: 0.3),
-                      theme.colorScheme.secondary,
-                      theme.colorScheme.primary,
-                    ]
-                  : [
-                      Colors.amber.shade700,
-                      Colors.amber.shade200,
-                      Colors.orange.shade600,
-                      Colors.amber.shade700,
-                    ],
-              stops: const [0.0, 0.25, 0.75, 1.0],
+              colors: [
+                tier.borderColors[0],
+                tier.borderColors[1],
+                tier.borderColors[0].withValues(alpha: 0.25),
+                tier.borderColors[0],
+              ],
+              stops: const [0.0, 0.3, 0.7, 1.0],
               transform: GradientRotation(value * 2 * 3.14159),
             ),
             boxShadow: [
               BoxShadow(
-                color: (isPrimary ? theme.colorScheme.primary : Colors.amber).withValues(alpha: 0.25),
-                blurRadius: 15,
-                spreadRadius: 1,
-                offset: const Offset(0, 4),
+                color: tier.primaryColor.withValues(alpha: 0.22),
+                blurRadius: 14,
+                spreadRadius: 0.5,
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -410,86 +813,90 @@ class PlanCard extends StatelessWidget {
   List<_FeatureItem> _getPlanFeaturesList(BuildContext context) {
     final list = <_FeatureItem>[];
 
-    if (features.profileViewsPerDay >= 999) {
-      list.add(const _FeatureItem(Icons.visibility, 'Unlimited Profile Views'));
-    } else if (features.profileViewsPerDay > 0) {
-      list.add(_FeatureItem(Icons.visibility, '${features.profileViewsPerDay} Profile Views per day'));
-    }
-
-    if (features.photosLimit > 0) {
-      list.add(_FeatureItem(Icons.photo_library, 'Upload up to ${features.photosLimit} Photos'));
-    }
-
-    if (features.sharesPerMonth >= 999) {
-      list.add(const _FeatureItem(Icons.share, 'Unlimited Biodata Shares'));
-    } else if (features.sharesPerMonth > 0) {
-      list.add(_FeatureItem(Icons.share, '${features.sharesPerMonth} Biodata Shares / month'));
+    if (features.contactUnlocksPerMonth >= 999) {
+      list.add(const _FeatureItem(Icons.phone_iphone_rounded, 'Unlimited Direct Contacts'));
+    } else if (features.contactUnlocksPerMonth > 0) {
+      list.add(_FeatureItem(Icons.phone_iphone_rounded, '${features.contactUnlocksPerMonth} Verified Contacts / month'));
     }
 
     if (features.messaging) {
       if (features.newChatsPerWeek >= 999) {
-        list.add(const _FeatureItem(Icons.chat_bubble, 'Unlimited Direct Messaging'));
+        list.add(const _FeatureItem(Icons.chat_bubble_rounded, 'Unlimited Direct Chats & Replies'));
       } else if (features.newChatsPerWeek > 0) {
-        list.add(_FeatureItem(Icons.chat_bubble, '${features.newChatsPerWeek} New Chats / week + Unlimited Replies'));
+        list.add(_FeatureItem(Icons.chat_bubble_rounded, '${features.newChatsPerWeek} New Chats / week + Unlimited Replies'));
       } else {
-        list.add(const _FeatureItem(Icons.chat_bubble, 'Direct Chat & Messaging'));
+        list.add(const _FeatureItem(Icons.chat_bubble_rounded, 'Direct Chat & Messaging'));
       }
     }
 
-    if (features.advancedFilters) {
-      list.add(const _FeatureItem(Icons.filter_list, 'Advanced Partner Filters'));
-    }
-
-    if (features.profileBoostPerMonth >= 999) {
-      list.add(const _FeatureItem(Icons.bolt, 'Unlimited Monthly Profile Boosts'));
-    } else if (features.profileBoostPerMonth > 0) {
-      list.add(_FeatureItem(Icons.bolt, '${features.profileBoostPerMonth} Profile Boosts / month'));
+    if (features.profileViewsPerDay >= 999) {
+      list.add(const _FeatureItem(Icons.visibility_rounded, 'Unlimited Daily Profile Views'));
+    } else if (features.profileViewsPerDay > 0) {
+      list.add(_FeatureItem(Icons.visibility_rounded, '${features.profileViewsPerDay} Profile Views per day'));
     }
 
     if (features.verificationBadge) {
-      list.add(const _FeatureItem(Icons.verified, 'Verified Profile Badge'));
+      list.add(const _FeatureItem(Icons.verified_rounded, 'Official Verified Profile Badge'));
     }
 
-    if (features.adFree) {
-      list.add(const _FeatureItem(Icons.block, 'Ad-Free Premium Experience'));
+    if (features.profileBoostPerMonth >= 999) {
+      list.add(const _FeatureItem(Icons.bolt_rounded, 'Unlimited Monthly Profile Boosts'));
+    } else if (features.profileBoostPerMonth > 0) {
+      list.add(_FeatureItem(Icons.bolt_rounded, '${features.profileBoostPerMonth} Profile Boosts / month (3x Views)'));
     }
 
-    if (features.prioritySupport) {
-      list.add(const _FeatureItem(Icons.support_agent, 'Priority 24/7 Support'));
-    }
-
-    if (features.hasPersonalManager) {
-      list.add(const _FeatureItem(Icons.contact_phone_sharp, 'Dedicated Relationship Manager'));
-    }
-
-    if (features.handpickedMatchesPerWeek > 0) {
-      list.add(_FeatureItem(Icons.auto_awesome, '${features.handpickedMatchesPerWeek} Curated Match Recommendations / week'));
-    }
-
-    if (features.contactUnlocksPerMonth >= 999) {
-      list.add(const _FeatureItem(Icons.phone_iphone, 'Unlimited Direct Contact Unlocks'));
-    } else if (features.contactUnlocksPerMonth > 0) {
-      list.add(_FeatureItem(Icons.phone_iphone, 'Unlock ${features.contactUnlocksPerMonth} Contacts / month'));
-    }
-
-    if (features.hasProfileMakeover) {
-      list.add(const _FeatureItem(Icons.brush, 'Professional Profile Makeover'));
-    }
-
-    if (features.hasFeaturedBadge) {
-      list.add(const _FeatureItem(Icons.stars, 'Elite Featured Spotlight Badge'));
-    }
-
-    if (features.hasIncognitoMode) {
-      list.add(const _FeatureItem(Icons.visibility_off, 'Browse Profiles Incognito'));
+    if (features.photosLimit > 0) {
+      list.add(_FeatureItem(Icons.photo_library_rounded, 'Upload up to ${features.photosLimit} Photos'));
     }
 
     if (features.hasBiodataPremium) {
-      list.add(const _FeatureItem(Icons.description, 'Premium PDF Biodata Templates (Free)'));
+      list.add(const _FeatureItem(Icons.description_rounded, 'Premium PDF Biodata Templates (Free)'));
+    }
+
+    if (features.matchmakerSupport) {
+      list.add(const _FeatureItem(Icons.support_agent_rounded, 'Matchmaker Assisted Guidance'));
+    }
+
+    if (features.adFree) {
+      list.add(const _FeatureItem(Icons.block_rounded, '100% Ad-Free Premium Experience'));
+    }
+
+    if (features.prioritySupport) {
+      list.add(const _FeatureItem(Icons.verified_user_rounded, '24/7 Priority Support'));
     }
 
     return list;
   }
+}
+
+class _TierTheme {
+  final String title;
+  final String iconEmoji;
+  final IconData iconData;
+  final String tagline;
+  final String durationLabel;
+  final String? ribbonLabel;
+  final Color primaryColor;
+  final Color secondaryColor;
+  final Color accentColor;
+  final List<Color> lightBgGradient;
+  final List<Color> darkBgGradient;
+  final List<Color> borderColors;
+
+  const _TierTheme({
+    required this.title,
+    required this.iconEmoji,
+    required this.iconData,
+    required this.tagline,
+    required this.durationLabel,
+    required this.ribbonLabel,
+    required this.primaryColor,
+    required this.secondaryColor,
+    required this.accentColor,
+    required this.lightBgGradient,
+    required this.darkBgGradient,
+    required this.borderColors,
+  });
 }
 
 class _FeatureItem {

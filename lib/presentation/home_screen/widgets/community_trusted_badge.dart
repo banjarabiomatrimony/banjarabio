@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/theme/app_theme.dart';
 
 class CommunityTrustedBadge extends StatelessWidget {
@@ -50,8 +51,8 @@ class CommunityTrustedBadge extends StatelessWidget {
               'Community Trusted',
               style: TextStyle(
                 color: AppTheme.onSecondaryLight,
-                fontSize: isLarge ? 12 : 10,
-                fontWeight: FontWeight.bold,
+                fontSize: isLarge ? AppTypography.bodyMedium : AppTypography.bodySmall,
+                fontWeight: AppTypography.bold,
                 letterSpacing: 0.5,
               ),
             ),

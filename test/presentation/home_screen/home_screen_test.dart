@@ -23,17 +23,15 @@ void main() {
       const HomeScreen(),
     ));
 
-    // Pump a few frames to let async initState and inner Navigator settle
-    await tester.pump(const Duration(milliseconds: 500));
+    // Pump frames to let async initState, timers, and inner Navigator settle
+    await tester.pump(const Duration(seconds: 5));
 
     // The Scaffold and CustomBottomBar should be rendered
     expect(find.byType(Scaffold), findsWidgets);
     expect(find.byType(CustomBottomBar), findsOneWidget);
 
     // Replace the widget tree with an empty Container to trigger dispose()
-    // on all child widgets (including _CountdownTimerRow's periodic Timer).
-    // This prevents the "A Timer is still pending" assertion from the framework.
     await tester.pumpWidget(const SizedBox.shrink());
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
   });
 }

@@ -14,9 +14,9 @@ class BiodataFontManager {
     bool bold = false,
   }) {
     pw.Font fromKey(String key) {
-      final bytes = fontBytes[key];
+      final bytes = fontBytes[key] ?? fontBytes[BiodataFontPreloader.poppinsRegular];
       if (bytes == null || bytes.isEmpty) {
-        throw StateError('Font not loaded: $key');
+        return pw.Font.helvetica();
       }
       return pw.Font.ttf(bytes.buffer.asByteData(
         bytes.offsetInBytes,

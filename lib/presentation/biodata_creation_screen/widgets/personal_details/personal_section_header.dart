@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -17,8 +18,9 @@ class PersonalSectionHeader extends StatelessWidget {
       children: [
         Text(
           AppLocalizations.of(context)?.personalDetails ?? 'Personal Details',
-          style: theme.textTheme.headlineMedium?.copyWith(
-            fontWeight: FontWeight.w900,
+          style: theme.textTheme.headlineSmall?.copyWith(
+            fontWeight: AppTypography.extraBold,
+            letterSpacing: -0.5,
             color: theme.colorScheme.primary,
           ),
         ),

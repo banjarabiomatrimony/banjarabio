@@ -6,7 +6,7 @@ import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/empty_state_widget.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/profile_card_widget.dart';
-import 'package:banjarabio/presentation/home_screen/widgets/swipeable_card_deck.dart';
+// import 'package:banjarabio/presentation/home_screen/widgets/swipeable_card_deck.dart';
 import 'package:banjarabio/widgets/shimmer_widget.dart';
 import 'package:banjarabio/widgets/ads/banner_ad_widget.dart';
 
@@ -34,6 +34,7 @@ class HomeRecommendedContent {
     required void Function(ProfileModel) onOpenProfileDetail,
     required void Function(ProfileModel) onShowSharingOptions,
     required void Function(ProfileModel) onHandleInterest,
+    void Function(ProfileModel)? onMessage,
     required void Function(String, bool) onToggleBookmark,
     required void Function(ProfileModel) onEnrichProfileLazy,
     required VoidCallback onLoadMoreProfiles,
@@ -92,8 +93,8 @@ class HomeRecommendedContent {
                         Text(
                           '$requestedDistrict जिल्ह्यातील प्रोफाइल लवकरच उपलब्ध होतील! ⏳',
                           style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 11.sp,
+                            fontWeight: AppTypography.extraBold,
+                            fontSize: AppTypography.bodySmall,
                             color: theme.colorScheme.onSurface,
                           ),
                         ),
@@ -102,7 +103,7 @@ class HomeRecommendedContent {
                           '${(selectedState != null && selectedState.isNotEmpty) ? selectedState : "महाराष्ट्र"} राज्यातील इतर सर्व प्रोफाइल आपोआप दाखवले जात आहेत. नवीन प्रोफाईलसाठी कृपया दररोज तपासत राहा.',
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant,
-                            fontSize: 9.5.sp,
+                            fontSize: AppTypography.labelMedium,
                             height: 1.3,
                           ),
                         ),
@@ -122,7 +123,7 @@ class HomeRecommendedContent {
               maxCrossAxisExtent: 500,
               mainAxisSpacing: 8,
               crossAxisSpacing: 8,
-              mainAxisExtent: 64.h,
+              mainAxisExtent: 60.h,
             ),
             delegate: SliverChildBuilderDelegate(
               (context, index) => const ProfileCardSkeleton(),
@@ -200,31 +201,31 @@ class HomeRecommendedContent {
                   onAdjustFilters: onOpenFilterSheet,
                 ),
         )
-      else if (isSwipeMode)
-        // ── Swipe Mode ──
-        SliverFillRemaining(
-          hasScrollBody: false,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 80.h),
-            child: SwipeableCardDeck(
-              profiles: profiles,
-              onTap: onOpenProfileDetail,
-              onInterest: (profile) => onShowSharingOptions(profile),
-              onSkip: (profile) {
-                final nextIdx = profiles.indexWhere((p) => p.id == profile.id) + 3;
-                if (nextIdx < profiles.length) {
-                  onEnrichProfileLazy(profiles[nextIdx]);
-                }
-              },
-              onSuperLike: (profile) => onShowSharingOptions(profile),
-              onShare: (profile) => onShowSharingOptions(profile),
-              onBookmark: (profile) => onToggleBookmark(profile.id, profile.isBookmarked),
-              onLoadMore: onLoadMoreProfiles,
-            ),
-          ),
-        )
+      // ── COMMENTED OUT: Swipe Mode ──
+      // else if (isSwipeMode)
+      //   SliverFillRemaining(
+      //     hasScrollBody: false,
+      //     child: Padding(
+      //       padding: EdgeInsets.only(bottom: 1.0.h),
+      //       child: SwipeableCardDeck(
+      //         profiles: profiles,
+      //         onTap: onOpenProfileDetail,
+      //         onInterest: (profile) => onShowSharingOptions(profile),
+      //         onSkip: (profile) {
+      //           final nextIdx = profiles.indexWhere((p) => p.id == profile.id) + 3;
+      //           if (nextIdx < profiles.length) {
+      //             onEnrichProfileLazy(profiles[nextIdx]);
+      //           }
+      //         },
+      //         onSuperLike: (profile) => onShowSharingOptions(profile),
+      //         onShare: (profile) => onShowSharingOptions(profile),
+      //         onBookmark: (profile) => onToggleBookmark(profile.id, profile.isBookmarked),
+      //         onLoadMore: onLoadMoreProfiles,
+      //       ),
+      //     ),
+      //   )
       else
-        // ── Grid Mode ──
+        // ── Grid Mode (Standard Feed) ──
         SliverPadding(
           padding: const EdgeInsets.all(8.0),
           sliver: SliverGrid(
@@ -232,7 +233,7 @@ class HomeRecommendedContent {
               maxCrossAxisExtent: 600,
               mainAxisSpacing: 8,
               crossAxisSpacing: 8,
-              mainAxisExtent: 68.h,
+              mainAxisExtent: 60.h,
             ),
             delegate: SliverChildBuilderDelegate((context, index) {
               final isPremium = SessionManager.instance.isPremium;
@@ -259,6 +260,7 @@ class HomeRecommendedContent {
                   onBookmark: () => onToggleBookmark(profile.id, profile.isBookmarked),
                   onShare: (profile) => onShowSharingOptions(profile),
                   onInterest: (profile) => onHandleInterest(profile),
+                  onMessage: onMessage != null ? (profile) => onMessage(profile) : null,
                 ),
               );
             },
@@ -275,8 +277,8 @@ class HomeRecommendedContent {
               child: Text(
                 '. . .',
                 style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+                  fontSize: AppTypography.headingLarge,
+                  fontWeight: AppTypography.bold,
                   color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
                 ),
               ),

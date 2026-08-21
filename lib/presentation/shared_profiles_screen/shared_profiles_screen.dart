@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -12,28 +11,38 @@ import 'package:banjarabio/core/repositories/share_repository.dart';
 import 'package:banjarabio/core/services/guest_guided_tour_service.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/core/utils/tour_keys.dart';
-import 'package:banjarabio/widgets/shimmer_widget.dart';
+import 'package:banjarabio/widgets/skeleton_loaders.dart';
 import 'package:banjarabio/widgets/branded_refresh_indicator.dart';
-import 'package:banjarabio/presentation/shared_profiles_screen/widgets/empty_state_widget.dart';
 import 'package:banjarabio/presentation/shared_profiles_screen/widgets/shared_profile_card_widget.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
-import 'package:banjarabio/core/providers/home_tab_provider.dart';
-import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+
+enum SharedProfileTabFilter { sent, received, matched }
 
 /// Shared Profiles Screen - Tracks biodata sharing history with comprehensive management
 /// Accessed via bottom tab navigation (tab bar navigation structure)
 class SharedProfilesScreen extends ConsumerStatefulWidget {
-  const SharedProfilesScreen({super.key});
+  final bool isEmbedded;
+  final SharedProfileTabFilter? fixedFilter;
+  const SharedProfilesScreen({
+    super.key,
+    this.isEmbedded = false,
+    this.fixedFilter,
+  });
 
   @override
   ConsumerState<SharedProfilesScreen> createState() => _SharedProfilesScreenState();
 }
 
 class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  late VoidCallback _tabListener;
+    with TickerProviderStateMixin {
+  bool get _isMatchesTourActive {
+    final cache = LocalCacheService();
+    return cache.isGuestMode() && !cache.isTourStageCompleted(TourStage.matchesScreen.name);
+  }
+
+  TabController? _tabController;
+  VoidCallback? _tabListener;
   final ShareRepository _shareRepository = ShareRepository();
   bool _isLoading = true;
   String? _errorMessage;
@@ -49,21 +58,32 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-    _tabListener = () {
-      if (_tabController.indexIsChanging) {
-        setState(() {
-          _selectedItems.clear();
-          _isSelectionMode = false;
-        });
-      }
-    };
-    _tabController.addListener(_tabListener);
+    if (widget.fixedFilter == null) {
+      _tabController = TabController(length: 3, vsync: this);
+      _tabListener = () {
+        if (_tabController?.indexIsChanging ?? false) {
+          setState(() {
+            _selectedItems.clear();
+            _isSelectionMode = false;
+          });
+        }
+      };
+      _tabController!.addListener(_tabListener!);
+    }
     _loadShares();
     // Start tour after UI settles
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkAndStartTour();
     });
+  }
+
+  @override
+  void dispose() {
+    if (_tabListener != null && _tabController != null) {
+      _tabController!.removeListener(_tabListener!);
+      _tabController!.dispose();
+    }
+    super.dispose();
   }
 
   void _checkAndStartTour() {
@@ -88,7 +108,7 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
                   children: [
                     Text(
                       AppLocalizations.of(context)?.tourMatchesSentTitle ?? 'Sent Profiles',
-                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
+                      style: TextStyle(fontWeight: AppTypography.bold, color: Colors.white, fontSize: AppTypography.headingLarge),
                     ),
                     const SizedBox(height: 10),
                     Text(
@@ -111,7 +131,7 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
                   children: [
                     Text(
                       AppLocalizations.of(context)?.tourMatchesReceivedTitle ?? 'Received Profiles',
-                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
+                      style: TextStyle(fontWeight: AppTypography.bold, color: Colors.white, fontSize: AppTypography.headingLarge),
                     ),
                     const SizedBox(height: 10),
                     Text(
@@ -134,7 +154,7 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
                   children: [
                     Text(
                       AppLocalizations.of(context)?.tourMatchesMatchedTitle ?? 'Matched Profiles',
-                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
+                      style: TextStyle(fontWeight: AppTypography.bold, color: Colors.white, fontSize: AppTypography.headingLarge),
                     ),
                     const SizedBox(height: 10),
                     Text(
@@ -155,13 +175,6 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
         },
       );
     });
-  }
-
-  @override
-  void dispose() {
-    _tabController.removeListener(_tabListener);
-    _tabController.dispose();
-    super.dispose();
   }
 
   Future<void> _loadShares() async {
@@ -302,137 +315,205 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Column(
-      children: [
-        // Custom Header with Gradient (Premium, Glassmorphic & Compact)
-        Container(
-          padding: EdgeInsets.fromLTRB(4.w, 0, 4.w, 0.4.h),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                theme.colorScheme.primary,
-                theme.colorScheme.primary.withValues(alpha: 0.8),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: const BorderRadius.vertical(bottom: Radius.circular(32)),
-            boxShadow: [
-              BoxShadow(
-                color: theme.colorScheme.primary.withValues(alpha: 0.2),
-                blurRadius: 15,
-                offset: const Offset(0, 5),
+
+    // Direct single-tab rendering when embedded in ConnectScreen 4-tab bar
+    if (widget.fixedFilter != null) {
+      if (_isLoading) {
+        final skeletonType = widget.fixedFilter == SharedProfileTabFilter.sent
+            ? SharedProfileSkeletonType.sent
+            : (widget.fixedFilter == SharedProfileTabFilter.matched
+                ? SharedProfileSkeletonType.matched
+                : SharedProfileSkeletonType.received);
+        return SharedProfilesScreenSkeleton(type: skeletonType);
+      }
+      if (_errorMessage != null) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.error_outline, color: theme.colorScheme.error, size: 48),
+              SizedBox(height: 2.h),
+              Text(_errorMessage!),
+              SizedBox(height: 2.h),
+              ElevatedButton(
+                onPressed: _loadShares,
+                child: Text(AppLocalizations.of(context)?.retry ?? 'Retry'),
               ),
             ],
           ),
-          child: SafeArea(
-            bottom: false,
-            child: SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
-              child: Column(
-                children: [
-                   SizedBox(
-                    height: 4.h,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 1.w),
-                            child: AppLogoImage(
-                              height: 3.0.h,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          AppLocalizations.of(context)?.shareHub ?? 'Share Hub',
-                          style: theme.appBarTheme.titleTextStyle?.copyWith(
-                            color: Colors.white,
-                            fontSize: AppTypography.headingMedium,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        if (_isSelectionMode)
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.delete_outline,
-                                    color: Colors.white,
-                                    size: 26,
-                                  ),
-                                  onPressed: _handleBulkDelete,
-                                ),
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.close,
-                                    color: Colors.white,
-                                    size: 26,
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      _selectedItems.clear();
-                                      _isSelectionMode = false;
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
+        );
+      }
+      final bool? isSharedByMe = widget.fixedFilter == SharedProfileTabFilter.sent
+          ? true
+          : (widget.fixedFilter == SharedProfileTabFilter.received ? false : null);
+      return _buildProfileList(isSharedByMe);
+    }
 
+    return Column(
+      children: [
+        if (!widget.isEmbedded)
+          // Custom Header with Gradient (Premium, Glassmorphic & Compact)
+          Container(
+            padding: EdgeInsets.fromLTRB(4.w, 0, 4.w, 0.4.h),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  theme.colorScheme.primary,
+                  theme.colorScheme.primary.withValues(alpha: 0.8),
                 ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: const BorderRadius.vertical(bottom: Radius.circular(32)),
+              boxShadow: [
+                BoxShadow(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                  blurRadius: 15,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: SafeArea(
+              bottom: false,
+              child: SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(),
+                child: Column(
+                  children: [
+                     SizedBox(
+                      height: 4.h,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 1.w),
+                              child: AppLogoImage(
+                                height: 3.0.h,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            AppLocalizations.of(context)?.shareHub ?? 'Share Hub',
+                            style: theme.appBarTheme.titleTextStyle?.copyWith(
+                              color: Colors.white,
+                              fontSize: AppTypography.headingMedium,
+                              fontWeight: AppTypography.bold,
+                            ),
+                          ),
+                          if (_isSelectionMode)
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.delete_outline,
+                                      color: Colors.white,
+                                      size: 26,
+                                    ),
+                                    onPressed: _handleBulkDelete,
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.close,
+                                      color: Colors.white,
+                                      size: 26,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _selectedItems.clear();
+                                        _isSelectionMode = false;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+
+                  ],
+                ),
               ),
             ),
           ),
-        ),
         SizedBox(height: 1.h),
         // Tab bar
         Container(
+          margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.5.h),
           decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(color: theme.dividerColor),
+            color: theme.brightness == Brightness.dark
+                ? const Color(0xFF1B1B24)
+                : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: theme.brightness == Brightness.dark
+                  ? Colors.white.withValues(alpha: 0.08)
+                  : theme.colorScheme.outlineVariant.withValues(alpha: 0.3),
             ),
           ),
           child: TabBar(
             controller: _tabController,
-            labelColor: theme.colorScheme.primary,
-            unselectedLabelColor: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-            labelStyle: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.bold,
+            labelColor: Colors.white,
+            unselectedLabelColor: theme.brightness == Brightness.dark
+                ? Colors.white60
+                : const Color(0xFF475569),
+            labelStyle: TextStyle(
+              fontSize: AppTypography.labelMedium,
+              fontWeight: AppTypography.black,
+              letterSpacing: 0.2,
             ),
-            unselectedLabelStyle: theme.textTheme.titleSmall,
-            indicatorColor: theme.colorScheme.primary,
-            indicatorWeight: 3,
-            indicatorSize: TabBarIndicatorSize.label,
-            padding: EdgeInsets.zero,
-            labelPadding: EdgeInsets.symmetric(vertical: 0.5.h),
+            unselectedLabelStyle: TextStyle(
+              fontSize: AppTypography.labelMedium,
+              fontWeight: AppTypography.semiBold,
+            ),
+            indicator: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFFBE123C), Color(0xFF9F1239)],
+              ),
+              borderRadius: BorderRadius.circular(13),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFBE123C).withValues(alpha: 0.35),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            indicatorSize: TabBarIndicatorSize.tab,
+            padding: const EdgeInsets.all(3),
+            dividerColor: Colors.transparent,
             tabs: [
-              Tab(key: TourKeys.matchesSentTabKey, text: '${AppLocalizations.of(context)?.sent ?? 'Sent'} (${_sharedByMe.length})'),
-              Tab(key: TourKeys.matchesReceivedTabKey, text: '${AppLocalizations.of(context)?.received ?? 'Received'} (${_sharedWithMe.length})'),
-              Tab(key: TourKeys.matchesMatchedTabKey, text: '${AppLocalizations.of(context)?.matched ?? 'Matched'} (${_matchedProfiles.length})'),
+              Tab(
+                key: _isMatchesTourActive ? TourKeys.matchesSentTabKey : null,
+                height: 34,
+                text: '${AppLocalizations.of(context)?.sent ?? 'Sent'} (${_sharedByMe.length})',
+              ),
+              Tab(
+                key: _isMatchesTourActive ? TourKeys.matchesReceivedTabKey : null,
+                height: 34,
+                text: '${AppLocalizations.of(context)?.received ?? 'Received'} (${_sharedWithMe.length})',
+              ),
+              Tab(
+                key: _isMatchesTourActive ? TourKeys.matchesMatchedTabKey : null,
+                height: 34,
+                text: '${AppLocalizations.of(context)?.matched ?? 'Matched'} (${_matchedProfiles.length})',
+              ),
             ],
           ),
         ),
         // Tab content
         Expanded(
           child: _isLoading
-              ? ListView.separated(
-                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-                  itemCount: 5,
-                  separatorBuilder: (context, index) => SizedBox(height: 2.h),
-                  itemBuilder: (context, index) => ShimmerWidget.rectangular(
-                    height: 12.h,
-                    shapeBorder: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
+              ? SharedProfilesScreenSkeleton(
+                  type: (_tabController?.index ?? 0) == 0
+                      ? SharedProfileSkeletonType.sent
+                      : ((_tabController?.index ?? 0) == 1
+                          ? SharedProfileSkeletonType.received
+                          : SharedProfileSkeletonType.matched),
                 )
               : _errorMessage != null
               ? Center(
@@ -514,23 +595,27 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
     });
 
     if (displayProfiles.isEmpty) {
-      return EmptyStateWidget(
-        isSharedByMe: isSharedByMe ?? true,
-        isMatched: isSharedByMe == null,
-        onStartSharing: () {
-          ref.read(homeTabProvider.notifier).state = 0;
-        },
-      );
+      final skeletonType = isSharedByMe == true
+          ? SharedProfileSkeletonType.sent
+          : (isSharedByMe == false
+              ? SharedProfileSkeletonType.received
+              : SharedProfileSkeletonType.matched);
+      return SharedProfilesScreenSkeleton(type: skeletonType);
     }
 
     return BrandedRefreshIndicator(
       onRefresh: _handleRefresh,
-      child: ListView.separated(
-        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-        itemCount: displayProfiles.length,
-        separatorBuilder: (context, index) => SizedBox(height: 2.h),
+      child: ListView.builder(
+        physics: const BouncingScrollPhysics(),
+        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+        itemCount: displayProfiles.length + 1,
         itemBuilder: (context, index) {
-          final profile = displayProfiles[index];
+          // Top 0: Hero Highlights Banner
+          if (index == 0) {
+            return _buildHeroHighlightsBanner(context, isSharedByMe, displayProfiles.length);
+          }
+
+          final profile = displayProfiles[index - 1];
           final shareId = profile['id']?.toString() ?? '';
           final allShareIds =
               (profile['allShareIds'] as List<dynamic>?)
@@ -541,47 +626,60 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
             (id) => _selectedItems.contains(id),
           );
 
-          return RepaintBoundary(
-            child: SharedProfileCardWidget(
-              profile: profile,
-              isSharedByMe: isSharedByMe ?? true,
-              isSelected: isSelected,
-              isSelectionMode: _isSelectionMode,
-              onTap: () async {
-                if (_isSelectionMode) {
-                  for (var id in allShareIds) {
-                    _toggleSelection(id);
-                  }
-                } else {
-                  // Mark all as viewed if it's a share with me
-                  if (isSharedByMe == false) {
+          return TweenAnimationBuilder<double>(
+            tween: Tween(begin: 0.0, end: 1.0),
+            duration: Duration(milliseconds: 200 + ((index - 1).clamp(0, 8) * 50)),
+            curve: Curves.easeOutCubic,
+            builder: (context, val, child) {
+              return Transform.translate(
+                offset: Offset(0, 16 * (1 - val)),
+                child: Opacity(
+                  opacity: val.clamp(0.0, 1.0),
+                  child: child,
+                ),
+              );
+            },
+            child: RepaintBoundary(
+              child: SharedProfileCardWidget(
+                profile: profile,
+                isSharedByMe: isSharedByMe ?? true,
+                isSelected: isSelected,
+                isSelectionMode: _isSelectionMode,
+                onTap: () async {
+                  if (_isSelectionMode) {
                     for (var id in allShareIds) {
-                      final markRes = await _shareRepository.markAsViewed(id);
-                      await markRes.fold(
-                        onSuccess: (_) async {
-                          AppLogger.debug('SharedProfilesScreen', 'Marked share $id as viewed');
-                        },
-                        onFailure: (err) async {
-                          AppLogger.error('SharedProfilesScreen', 'Failed to mark share $id: $err');
-                        },
+                      _toggleSelection(id);
+                    }
+                  } else {
+                    // Mark all as viewed if it's a share with me
+                    if (isSharedByMe == false) {
+                      for (var id in allShareIds) {
+                        final markRes = await _shareRepository.markAsViewed(id);
+                        await markRes.fold(
+                          onSuccess: (_) async {
+                            AppLogger.debug('SharedProfilesScreen', 'Marked share $id as viewed');
+                          },
+                          onFailure: (err) async {
+                            AppLogger.error('SharedProfilesScreen', 'Failed to mark share $id: $err');
+                          },
+                        );
+                      }
+                    }
+                    // Navigate to profile detail using ID for full data loading
+                    if (context.mounted) {
+                      Navigator.of(context, rootNavigator: true).pushNamed(
+                        AppRoutes.profileDetail,
+                        arguments: profile['sharedProfileId'] ?? profile['id'],
                       );
                     }
                   }
-                  // Navigate to profile detail using ID for full data loading
-                  if (context.mounted) {
-                    Navigator.of(context, rootNavigator: true).pushNamed(
-                      AppRoutes.profileDetail,
-                      arguments: profile['sharedProfileId'] ?? profile['id'],
-                    );
+                },
+                onLongPress: () {
+                  for (var id in allShareIds) {
+                    _toggleSelection(id);
                   }
-                }
-              },
-              onLongPress: () {
-                for (var id in allShareIds) {
-                  _toggleSelection(id);
-                }
-              },
-              onReshare: () async {
+                },
+                onReshare: () async {
                 try {
                   // Get original method (unformatted)
                   final sharesList = isSharedByMe == null
@@ -665,10 +763,115 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
                   }
                 }
               },
+              ),
             ),
           );
         },
       ),
     );
   }
+
+  Widget _buildHeroHighlightsBanner(BuildContext context, bool? isSharedByMe, int count) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final Color primaryColor;
+    final List<Color> gradientColors;
+    final IconData iconData;
+    final String title;
+    final String subtitle;
+
+    if (isSharedByMe == null) {
+      primaryColor = const Color(0xFFF59E0B);
+      gradientColors = isDark
+          ? const [Color(0xFF3B1E05), Color(0xFF1E1002)]
+          : const [Color(0xFFFFFBEB), Color(0xFFFEF3C7)];
+      iconData = Icons.favorite_rounded;
+      title = '$count Mutual Matches 💍';
+      subtitle = 'Both families showed mutual interest! Ready to start chatting.';
+    } else if (isSharedByMe == false) {
+      primaryColor = const Color(0xFF2563EB);
+      gradientColors = isDark
+          ? const [Color(0xFF172554), Color(0xFF0F172A)]
+          : const [Color(0xFFEFF6FF), Color(0xFFDBEAFE)];
+      iconData = Icons.inbox_rounded;
+      title = '$count Connection Requests 📥';
+      subtitle = 'Profiles shared with you. Review biodatas and respond.';
+    } else {
+      primaryColor = const Color(0xFF7C3AED);
+      gradientColors = isDark
+          ? const [Color(0xFF2E1065), Color(0xFF1E1B4B)]
+          : const [Color(0xFFFAF5FF), Color(0xFFF3E8FF)];
+      iconData = Icons.send_rounded;
+      title = '$count Shared Profiles 📤';
+      subtitle = "Track profiles you've shared with family and friends.";
+    }
+
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.8.h),
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.2.h),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: gradientColors,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: primaryColor.withValues(alpha: isDark ? 0.35 : 0.2),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: primaryColor.withValues(alpha: isDark ? 0.15 : 0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: primaryColor.withValues(alpha: isDark ? 0.25 : 0.12),
+            ),
+            child: Icon(
+              iconData,
+              color: primaryColor,
+              size: 18,
+            ),
+          ),
+          SizedBox(width: 3.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: AppTypography.bodySmall,
+                    fontWeight: AppTypography.black,
+                    color: isDark ? Colors.white : const Color(0xFF0F172A),
+                    letterSpacing: 0.2,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: AppTypography.labelSmall,
+                    fontWeight: AppTypography.medium,
+                    color: isDark ? Colors.white60 : const Color(0xFF475569),
+                    height: 1.2,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
+

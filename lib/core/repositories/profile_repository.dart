@@ -167,7 +167,15 @@ class ProfileRepository extends IsolateFirstRepository {
           .select()
           .single();
 
-      final profile = ProfileModel.fromJson(response);
+      var profile = ProfileModel.fromJson(response);
+      
+      // Preserve and attach photos
+      final photosRes = await _photoRepository.getPhotos(profile.id);
+      photosRes.fold(
+        onSuccess: (photos) => profile = profile.copyWith(photos: photos),
+        onFailure: (_) {},
+      );
+
       _updateMemoryCache(profile);
 
       // Update local storage to keep offline data in sync

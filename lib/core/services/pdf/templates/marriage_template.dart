@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:banjarabio/core/services/pdf/templates/biodata_template_base.dart';
@@ -21,6 +22,7 @@ class MarriageTemplate extends BiodataTemplateBase {
   final double marginTop;
   final double marginRight;
   final double marginBottom;
+  final String? headerMantra;
 
   MarriageTemplate({
     required super.content,
@@ -37,6 +39,7 @@ class MarriageTemplate extends BiodataTemplateBase {
     this.marginTop = 90,
     this.marginRight = 60,
     this.marginBottom = 80,
+    this.headerMantra,
   });
 
   // ──────────────────────────────────────────────────────────────────────
@@ -129,7 +132,7 @@ class MarriageTemplate extends BiodataTemplateBase {
               pw.SizedBox(height: 10),
               _buildSection(
                 label('Partner Expectations'),
-                {'': content.partnerExpectations},
+                {'': label(content.partnerExpectations)},
                 isLongText: true,
               ),
             ],
@@ -139,7 +142,7 @@ class MarriageTemplate extends BiodataTemplateBase {
               pw.SizedBox(height: 10),
               _buildSection(
                 label('About Me'),
-                {'': content.aboutMe},
+                {'': label(content.aboutMe)},
                 isLongText: true,
               ),
             ],
@@ -276,16 +279,19 @@ class MarriageTemplate extends BiodataTemplateBase {
   //  Content builders
   // ──────────────────────────────────────────────────────────────────────
 
-  /// ॥ जय सेवालाल ॥   ॥ श्री गणेशाय नमः ॥
+  /// Header Blessing / Mantra
   pw.Widget _buildMantra() {
+    final mantraText = headerMantra != null && headerMantra!.trim().isNotEmpty
+        ? headerMantra!.trim()
+        : '॥ जय सेवालाल ॥   ॥ श्री गणेशाय नमः ॥';
+
     return pw.Center(
       child: pw.Text(
-        '॥ जय सेवालाल ॥   ॥ श्री गणेशाय नमः ॥',
+        mantraText,
         style: pw.TextStyle(
           font: mantraFont,
-          fontSize: 13,
+          fontSize: AppTypography.bodySmallFixed,
           color: accentColor,
-          letterSpacing: 2,
         ),
       ),
     );
@@ -300,9 +306,9 @@ class MarriageTemplate extends BiodataTemplateBase {
             label('Biodata').toUpperCase(),
             style: pw.TextStyle(
               font: boldFont,
-              fontSize: 20,
+              fontSize: AppTypography.headingMediumFixed,
               color: accentColor,
-              letterSpacing: 4,
+              letterSpacing: language == 'English' ? 3.5 : 0.5,
             ),
           ),
         ),
@@ -385,29 +391,29 @@ class MarriageTemplate extends BiodataTemplateBase {
               children: [
                 // Name
                 pw.Text(
-                  name,
+                  label(name),
                   style: pw.TextStyle(
                     font: boldFont,
-                    fontSize: 14,
+                    fontSize: AppTypography.bodyMediumFixed,
                     color: accentColor,
                   ),
                 ),
                 if (surname.isNotEmpty)
                   pw.Text(
-                    surname,
+                    label(surname),
                     style: pw.TextStyle(
                       font: font,
-                      fontSize: 10,
+                      fontSize: AppTypography.labelTinyFixed,
                       color: PdfColors.black,
                     ),
                   ),
                 pw.SizedBox(height: 6),
                 pw.Divider(color: _accentMedium, thickness: 0.4),
                 pw.SizedBox(height: 4),
-                _headerRow(label('Age'), age),
-                _headerRow(label('Height'), height),
-                _headerRow(label('Date of Birth'), dob),
-                _headerRow(label('Marital Status'), maritalStatus),
+                _headerRow(label('Age'), label(age)),
+                _headerRow(label('Height'), label(height)),
+                _headerRow(label('Date of Birth'), label(dob)),
+                _headerRow(label('Marital Status'), label(maritalStatus)),
               ],
             ),
           ),
@@ -423,11 +429,11 @@ class MarriageTemplate extends BiodataTemplateBase {
         children: [
           pw.SizedBox(
             width: 85,
-            child: pw.Text(key, style: pw.TextStyle(font: boldFont, fontSize: 9, color: PdfColors.black)),
+            child: pw.Text(key, style: pw.TextStyle(font: boldFont, fontSize: AppTypography.labelTinyFixed, color: PdfColors.black)),
           ),
-          pw.Text(':  ', style: pw.TextStyle(font: font, fontSize: 9, color: PdfColors.black)),
+          pw.Text(':  ', style: pw.TextStyle(font: font, fontSize: AppTypography.labelTinyFixed, color: PdfColors.black)),
           pw.Expanded(
-            child: pw.Text(value, style: pw.TextStyle(font: font, fontSize: 9.5, color: PdfColors.black)),
+            child: pw.Text(value, style: pw.TextStyle(font: font, fontSize: AppTypography.labelTinyFixed, color: PdfColors.black)),
           ),
         ],
       ),
@@ -459,7 +465,7 @@ class MarriageTemplate extends BiodataTemplateBase {
             title.toUpperCase(),
             style: pw.TextStyle(
               font: boldFont,
-              fontSize: 9.5,
+              fontSize: AppTypography.labelTinyFixed,
               color: PdfColors.black,
               letterSpacing: 1,
             ),
@@ -478,8 +484,8 @@ class MarriageTemplate extends BiodataTemplateBase {
                   const pw.BorderRadius.all(pw.Radius.circular(3)),
             ),
             child: pw.Text(
-              details.values.first,
-              style: pw.TextStyle(font: font, fontSize: 9.5, lineSpacing: 2),
+              label(details.values.first),
+              style: pw.TextStyle(font: font, fontSize: AppTypography.labelTinyFixed, lineSpacing: 2),
             ),
           )
         else
@@ -514,7 +520,7 @@ class MarriageTemplate extends BiodataTemplateBase {
                 label(key),
                 style: pw.TextStyle(
                   font: boldFont,
-                  fontSize: 9,
+                  fontSize: AppTypography.labelTinyFixed,
                   color: PdfColors.black,
                 ),
               ),
@@ -523,8 +529,8 @@ class MarriageTemplate extends BiodataTemplateBase {
               padding: const pw.EdgeInsets.symmetric(
                   vertical: 3, horizontal: 6),
               child: pw.Text(
-                displayValue,
-                style: pw.TextStyle(font: font, fontSize: 9.5, color: PdfColors.black),
+                label(displayValue),
+                style: pw.TextStyle(font: font, fontSize: AppTypography.labelTinyFixed, color: PdfColors.black),
               ),
             ),
           ],
@@ -587,7 +593,7 @@ class MarriageTemplate extends BiodataTemplateBase {
                 'BANJARA BIO MATRIMONY',
                 style: pw.TextStyle(
                   font: boldFont,
-                  fontSize: 10,
+                  fontSize: AppTypography.labelTinyFixed,
                   color: accentColor,
                   letterSpacing: 1.5,
                 ),
@@ -599,7 +605,7 @@ class MarriageTemplate extends BiodataTemplateBase {
             label('Download App Line'),
             style: pw.TextStyle(
               font: font,
-              fontSize: 8,
+              fontSize: AppTypography.labelTinyFixed,
               color: PdfColors.grey700,
             ),
           ),
@@ -608,7 +614,7 @@ class MarriageTemplate extends BiodataTemplateBase {
             'https://play.google.com/store/apps/details?id=com.avishio.banjarabio',
             style: pw.TextStyle(
               font: boldFont,
-              fontSize: 7,
+              fontSize: AppTypography.labelTinyFixed,
               color: accentColor,
             ),
           ),

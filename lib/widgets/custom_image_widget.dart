@@ -329,6 +329,9 @@ class _CustomImageWidgetState extends State<CustomImageWidget> {
       cacheKey: PersistentCacheManager.stableKeyFor(optimizedUrl),
       memCacheWidth: widget.cacheWidth ?? _calculateOptimalCache(context, widget.width),
       memCacheHeight: widget.cacheHeight ?? _calculateOptimalCache(context, widget.height),
+      placeholderFadeInDuration: Duration.zero,
+      fadeOutDuration: Duration.zero,
+      fadeInDuration: const Duration(milliseconds: 80),
       // 🚨 SIGNAL 3 FIX: Removed LQIP (dual-image) placeholder.
       // Previously each card loaded BOTH a 50px thumbnail AND the full image
       // simultaneously, causing 40+ concurrent gralloc4 allocations with 20 cards.
@@ -404,7 +407,7 @@ class _CustomImageWidgetState extends State<CustomImageWidget> {
                   style: TextStyle(
                     color: Colors.grey.shade500,
                     fontSize: AppTypography.labelSmall,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTypography.medium,
                   ),
                 ),
               ),

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:banjarabio/l10n/app_localizations.dart';
+
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_category_theme.dart';
+import 'package:banjarabio/widgets/tactile/tactile_category_card.dart';
 
 class ReferralTierItem {
   final int requiredReferrals;
+  final String key;
   final String title;
   final String reward;
   final String emoji;
@@ -11,6 +16,7 @@ class ReferralTierItem {
 
   const ReferralTierItem({
     required this.requiredReferrals,
+    required this.key,
     required this.title,
     required this.reward,
     required this.emoji,
@@ -18,12 +24,14 @@ class ReferralTierItem {
   });
 }
 
+/// 👑 Referral Tier Milestone Card with glowing progress and VIP badges
 class ReferralTierCard extends StatelessWidget {
   final int currentReferrals;
 
   static const List<ReferralTierItem> tiers = [
     ReferralTierItem(
       requiredReferrals: 3,
+      key: 'bronze',
       title: 'Bronze',
       reward: '1 Month Free',
       emoji: '🥉',
@@ -31,13 +39,15 @@ class ReferralTierCard extends StatelessWidget {
     ),
     ReferralTierItem(
       requiredReferrals: 5,
+      key: 'silver',
       title: 'Silver',
       reward: '2 Months Free',
       emoji: '🥈',
-      color: Color(0xFFC0C0C0),
+      color: Color(0xFF78909C),
     ),
     ReferralTierItem(
       requiredReferrals: 10,
+      key: 'gold',
       title: 'Gold',
       reward: '6 Months Free',
       emoji: '🥇',
@@ -45,6 +55,7 @@ class ReferralTierCard extends StatelessWidget {
     ),
     ReferralTierItem(
       requiredReferrals: 25,
+      key: 'diamond',
       title: 'Diamond',
       reward: '1 Year VIP',
       emoji: '💎',
@@ -57,9 +68,43 @@ class ReferralTierCard extends StatelessWidget {
     required this.currentReferrals,
   });
 
+  String _getTierTitle(String key, BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    switch (key) {
+      case 'bronze':
+        return l10n?.bronze ?? 'Bronze';
+      case 'silver':
+        return l10n?.silver ?? 'Silver';
+      case 'gold':
+        return l10n?.gold ?? 'Gold';
+      case 'diamond':
+        return l10n?.diamond ?? 'Diamond';
+      default:
+        return key;
+    }
+  }
+
+  String _getTierReward(String key, BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    switch (key) {
+      case 'bronze':
+        return l10n?.oneMonthFree ?? '1 Month Free';
+      case 'silver':
+        return l10n?.twoMonthsFree ?? '2 Months Free';
+      case 'gold':
+        return l10n?.sixMonthsFree ?? '6 Months Free';
+      case 'diamond':
+        return l10n?.oneYearVip ?? '1 Year VIP';
+      default:
+        return key;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context);
 
     // Find next unreached tier
     ReferralTierItem? nextTier;
@@ -70,110 +115,146 @@ class ReferralTierCard extends StatelessWidget {
       }
     }
 
-    return Container(
-      padding: EdgeInsets.all(16.sp),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(16.sp),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
+    return TactileCategoryCard(
+      categoryType: CategoryType.vip,
+      title: l10n?.referralRewardsTiers ?? 'Referral Rewards Tiers 👑',
+      icon: Icons.military_tech_rounded,
+      margin: EdgeInsets.zero,
+      padding: EdgeInsets.all(3.8.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Referral Rewards Tiers 👑',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.onSurface,
+          if (nextTier != null)
+            Container(
+              margin: const EdgeInsets.only(bottom: 14),
+              padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 0.8.h),
+              decoration: BoxDecoration(
+                color: nextTier.color.withValues(alpha: isDark ? 0.18 : 0.12),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: nextTier.color.withValues(alpha: 0.4),
                 ),
               ),
-              if (nextTier != null)
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 4.sp),
-                  decoration: BoxDecoration(
-                    color: nextTier.color.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(12),
+              child: Row(
+                children: [
+                  Text(
+                    nextTier.emoji,
+                    style: TextStyle(fontSize: AppTypography.headingSmall),
                   ),
-                  child: Text(
-                    '${nextTier.requiredReferrals - currentReferrals} more for ${nextTier.title} ${nextTier.emoji}',
-                    style: TextStyle(
-                      fontSize: AppTypography.labelSmall,
-                      fontWeight: FontWeight.bold,
-                      color: nextTier.color,
+                  SizedBox(width: 2.w),
+                  Expanded(
+                    child: Text(
+                      l10n?.moreInvitesToUnlockTier(
+                            nextTier.requiredReferrals - currentReferrals,
+                            _getTierTitle(nextTier.key, context),
+                            _getTierReward(nextTier.key, context),
+                          ) ??
+                          '${nextTier.requiredReferrals - currentReferrals} more invites to unlock ${_getTierTitle(nextTier.key, context)} tier (${_getTierReward(nextTier.key, context)})',
+                      style: TextStyle(
+                        fontSize: AppTypography.labelSmall,
+                        fontWeight: AppTypography.bold,
+                        color: isDark ? Colors.white : nextTier.color,
+                      ),
                     ),
                   ),
-                ),
-            ],
-          ),
-          SizedBox(height: 16.sp),
-          // Tier milestone timeline
+                ],
+              ),
+            ),
+
+          // ── Tier Milestone Timeline ──
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: tiers.map((tier) {
               final isUnlocked = currentReferrals >= tier.requiredReferrals;
               return Expanded(
-                child: Column(
-                  children: [
-                    // Emoji / Icon node
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      width: 32.sp,
-                      height: 32.sp,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: isUnlocked
-                            ? tier.color.withValues(alpha: 0.15)
-                            : theme.colorScheme.surfaceContainerHighest,
-                        border: Border.all(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 2),
+                  child: Column(
+                    children: [
+                      // Emoji / Icon node
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
                           color: isUnlocked
-                              ? tier.color
-                              : Colors.grey.withValues(alpha: 0.3),
-                          width: isUnlocked ? 2 : 1,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          tier.emoji,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            color: isUnlocked ? null : Colors.grey,
+                              ? tier.color.withValues(alpha: 0.2)
+                              : (isDark
+                                  ? Colors.white.withValues(alpha: 0.05)
+                                  : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5)),
+                          border: Border.all(
+                            color: isUnlocked
+                                ? tier.color
+                                : theme.colorScheme.outlineVariant.withValues(alpha: 0.3),
+                            width: isUnlocked ? 2.2 : 1,
                           ),
+                          boxShadow: isUnlocked
+                              ? [
+                                  BoxShadow(
+                                    color: tier.color.withValues(alpha: 0.3),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ]
+                              : null,
+                        ),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Text(
+                              tier.emoji,
+                              style: TextStyle(
+                                fontSize: AppTypography.titleLarge,
+                                color: isUnlocked ? null : Colors.grey,
+                              ),
+                            ),
+                            if (isUnlocked)
+                              Positioned(
+                                right: 0,
+                                bottom: 0,
+                                child: Container(
+                                  padding: const EdgeInsets.all(2),
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xFF10B981),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.check,
+                                    size: 10,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                       ),
-                    ),
-                    SizedBox(height: 6.sp),
-                    Text(
-                      tier.title,
-                      style: TextStyle(
-                        fontSize: AppTypography.labelSmall,
-                        fontWeight:
-                            isUnlocked ? FontWeight.bold : FontWeight.normal,
-                        color: isUnlocked
-                            ? tier.color
-                            : theme.colorScheme.onSurfaceVariant,
+                      SizedBox(height: 0.8.h),
+                      Text(
+                        _getTierTitle(tier.key, context),
+                        style: TextStyle(
+                          fontSize: AppTypography.labelSmall,
+                          fontWeight:
+                              isUnlocked ? AppTypography.extraBold : AppTypography.semiBold,
+                          color: isUnlocked
+                              ? (isDark ? Colors.white : tier.color)
+                              : theme.colorScheme.onSurfaceVariant,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 2.sp),
-                    Text(
-                      tier.reward,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: AppTypography.labelSmall - 2,
-                        fontWeight: FontWeight.w600,
-                        color: isUnlocked
-                            ? theme.colorScheme.primary
-                            : Colors.grey,
+                      const SizedBox(height: 2),
+                      Text(
+                        _getTierReward(tier.key, context),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: AppTypography.labelTiny,
+                          fontWeight: AppTypography.bold,
+                          color: isUnlocked
+                              ? const Color(0xFF059669)
+                              : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             }).toList(),

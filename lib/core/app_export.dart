@@ -8,3 +8,4 @@ export '../widgets/custom_image_widget.dart';
 export 'session_manager.dart';
 export 'models/backend_response.dart';
 export 'utils/onboarding_validator.dart';
+export 'constants/app_typography.dart';

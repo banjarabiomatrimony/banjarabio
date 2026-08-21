@@ -104,263 +104,17 @@ abstract class AppLocalizations {
     Locale('te'),
   ];
 
-  /// No description provided for @genderSelectHeading.
+  /// No description provided for @ableBodied.
   ///
   /// In en, this message translates to:
-  /// **'Your Gender is'**
-  String get genderSelectHeading;
+  /// **'Able-Bodied'**
+  String get ableBodied;
 
-  /// No description provided for @replacePhoto.
+  /// No description provided for @aboutFamily.
   ///
   /// In en, this message translates to:
-  /// **'Replace Photo'**
-  String get replacePhoto;
-
-  /// No description provided for @errorLoadingAdminStats.
-  ///
-  /// In en, this message translates to:
-  /// **'Unable to load dashboard statistics. Please try refreshing.'**
-  String get errorLoadingAdminStats;
-
-  /// No description provided for @errorLoadingAdminUsers.
-  ///
-  /// In en, this message translates to:
-  /// **'Could not fetch user list. Please check your connection.'**
-  String get errorLoadingAdminUsers;
-
-  /// No description provided for @errorLoadingAdminPayments.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to load payment history. Please try again.'**
-  String get errorLoadingAdminPayments;
-
-  /// No description provided for @errorLoadingAdminVerifications.
-  ///
-  /// In en, this message translates to:
-  /// **'Could not load verification requests. Please try again.'**
-  String get errorLoadingAdminVerifications;
-
-  /// No description provided for @errorLoadingAdminReferences.
-  ///
-  /// In en, this message translates to:
-  /// **'Unable to fetch pending references. Please refresh.'**
-  String get errorLoadingAdminReferences;
-
-  /// No description provided for @errorLoadingAdminCoupons.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to load coupon offers. Please try again.'**
-  String get errorLoadingAdminCoupons;
-
-  /// No description provided for @errorLoadingAdminCreators.
-  ///
-  /// In en, this message translates to:
-  /// **'Could not fetch creator list. Please check your network.'**
-  String get errorLoadingAdminCreators;
-
-  /// No description provided for @errorAdminActionFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'The requested action could not be completed. Please try again later.'**
-  String get errorAdminActionFailed;
-
-  /// No description provided for @expressInterest.
-  ///
-  /// In en, this message translates to:
-  /// **'Express Interest?'**
-  String get expressInterest;
-
-  /// No description provided for @interestConfirmationDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Do you want to share your profile with {name} to show your interest?'**
-  String interestConfirmationDesc(String name);
-
-  /// No description provided for @yesInterest.
-  ///
-  /// In en, this message translates to:
-  /// **'Yes, Interest'**
-  String get yesInterest;
-
-  /// No description provided for @interest.
-  ///
-  /// In en, this message translates to:
-  /// **'Interest'**
-  String get interest;
-
-  /// No description provided for @revenueToday.
-  ///
-  /// In en, this message translates to:
-  /// **'Revenue Today (₹)'**
-  String get revenueToday;
-
-  /// No description provided for @premiumMen.
-  ///
-  /// In en, this message translates to:
-  /// **'Premium Men'**
-  String get premiumMen;
-
-  /// No description provided for @premiumWomen.
-  ///
-  /// In en, this message translates to:
-  /// **'Premium Women'**
-  String get premiumWomen;
-
-  /// No description provided for @financialPerformance.
-  ///
-  /// In en, this message translates to:
-  /// **'Financial Performance'**
-  String get financialPerformance;
-
-  /// No description provided for @demographicsAndPremium.
-  ///
-  /// In en, this message translates to:
-  /// **'Demographics & Premium'**
-  String get demographicsAndPremium;
-
-  /// No description provided for @revenueTotal.
-  ///
-  /// In en, this message translates to:
-  /// **'Total Revenue (₹)'**
-  String get revenueTotal;
-
-  /// No description provided for @monthlyRevenue.
-  ///
-  /// In en, this message translates to:
-  /// **'Monthly Revenue (₹)'**
-  String get monthlyRevenue;
-
-  /// No description provided for @pdfRevenue.
-  ///
-  /// In en, this message translates to:
-  /// **'PDF Revenue (₹)'**
-  String get pdfRevenue;
-
-  /// No description provided for @userEngagement.
-  ///
-  /// In en, this message translates to:
-  /// **'User Engagement'**
-  String get userEngagement;
-
-  /// No description provided for @dailyActiveUsers.
-  ///
-  /// In en, this message translates to:
-  /// **'Daily Active Users'**
-  String get dailyActiveUsers;
-
-  /// No description provided for @profileViews.
-  ///
-  /// In en, this message translates to:
-  /// **'Profile Views'**
-  String get profileViews;
-
-  /// No description provided for @totalMessages.
-  ///
-  /// In en, this message translates to:
-  /// **'Total Messages'**
-  String get totalMessages;
-
-  /// No description provided for @safetyAndHealth.
-  ///
-  /// In en, this message translates to:
-  /// **'Safety & Health'**
-  String get safetyAndHealth;
-
-  /// No description provided for @pendingReports.
-  ///
-  /// In en, this message translates to:
-  /// **'Pending Reports'**
-  String get pendingReports;
-
-  /// No description provided for @totalBlocks.
-  ///
-  /// In en, this message translates to:
-  /// **'Total Blocks'**
-  String get totalBlocks;
-
-  /// No description provided for @pendingReferences.
-  ///
-  /// In en, this message translates to:
-  /// **'Pending References'**
-  String get pendingReferences;
-
-  /// No description provided for @totalUsers.
-  ///
-  /// In en, this message translates to:
-  /// **'Total Users'**
-  String get totalUsers;
-
-  /// No description provided for @profiles.
-  ///
-  /// In en, this message translates to:
-  /// **'Profiles'**
-  String get profiles;
-
-  /// No description provided for @appGrowth.
-  ///
-  /// In en, this message translates to:
-  /// **'App Growth'**
-  String get appGrowth;
-
-  /// No description provided for @completedReferrals.
-  ///
-  /// In en, this message translates to:
-  /// **'Completed Referrals'**
-  String get completedReferrals;
-
-  /// No description provided for @activeCreators.
-  ///
-  /// In en, this message translates to:
-  /// **'Active Creators'**
-  String get activeCreators;
-
-  /// No description provided for @totalFemales.
-  ///
-  /// In en, this message translates to:
-  /// **'Total Females'**
-  String get totalFemales;
-
-  /// No description provided for @totalMales.
-  ///
-  /// In en, this message translates to:
-  /// **'Total Males'**
-  String get totalMales;
-
-  /// No description provided for @men.
-  ///
-  /// In en, this message translates to:
-  /// **'Men'**
-  String get men;
-
-  /// No description provided for @women.
-  ///
-  /// In en, this message translates to:
-  /// **'Women'**
-  String get women;
-
-  /// No description provided for @sharingProfiles.
-  ///
-  /// In en, this message translates to:
-  /// **'Sharing Profiles'**
-  String get sharingProfiles;
-
-  /// No description provided for @sharingProfile.
-  ///
-  /// In en, this message translates to:
-  /// **'Sharing profile...'**
-  String get sharingProfile;
-
-  /// No description provided for @referenceVerified.
-  ///
-  /// In en, this message translates to:
-  /// **'Reference Verified'**
-  String get referenceVerified;
-
-  /// No description provided for @referenceRejected.
-  ///
-  /// In en, this message translates to:
-  /// **'Reference Rejected'**
-  String get referenceRejected;
+  /// **'About Family'**
+  String get aboutFamily;
 
   /// No description provided for @aboutSelf.
   ///
@@ -380,6 +134,12 @@ abstract class AppLocalizations {
   /// **'Abusive Behavior'**
   String get abusiveBehavior;
 
+  /// No description provided for @acceptAndConnect.
+  ///
+  /// In en, this message translates to:
+  /// **'ACCEPT & CONNECT 💖'**
+  String get acceptAndConnect;
+
   /// No description provided for @account.
   ///
   /// In en, this message translates to:
@@ -398,11 +158,23 @@ abstract class AppLocalizations {
   /// **'Account Deletion'**
   String get accountDeletion;
 
+  /// No description provided for @acres.
+  ///
+  /// In en, this message translates to:
+  /// **'Acres'**
+  String get acres;
+
   /// No description provided for @actionIsIrreversible.
   ///
   /// In en, this message translates to:
   /// **'This action is irreversible.'**
   String get actionIsIrreversible;
+
+  /// No description provided for @activeCreators.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Creators'**
+  String get activeCreators;
 
   /// No description provided for @activeSubscriptionCancelledNoRefund.
   ///
@@ -410,11 +182,35 @@ abstract class AppLocalizations {
   /// **'Your active subscription will be cancelled without refund.'**
   String get activeSubscriptionCancelledNoRefund;
 
+  /// No description provided for @activity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get activity;
+
+  /// No description provided for @adCompletedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'AD COMPLETED SUCCESSFULLY'**
+  String get adCompletedSuccessfully;
+
   /// No description provided for @adFreeExperience.
   ///
   /// In en, this message translates to:
   /// **'Ad-free experience'**
   String get adFreeExperience;
+
+  /// No description provided for @adNotReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ad not ready yet. Please try again in a moment.'**
+  String get adNotReady;
+
+  /// No description provided for @adTemporarilyUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'AD TEMPORARILY UNAVAILABLE'**
+  String get adTemporarilyUnavailable;
 
   /// No description provided for @addClearPhotos.
   ///
@@ -530,17 +326,53 @@ abstract class AppLocalizations {
   /// **'Age'**
   String get age;
 
+  /// No description provided for @ageAndSurnameSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{age} Yrs • {surname}'**
+  String ageAndSurnameSubtitle(String age, String surname);
+
+  /// No description provided for @ageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Age'**
+  String get ageLabel;
+
   /// No description provided for @ageRange.
   ///
   /// In en, this message translates to:
   /// **'Age Range'**
   String get ageRange;
 
+  /// No description provided for @ageRangeYears.
+  ///
+  /// In en, this message translates to:
+  /// **'{min} - {max} yrs'**
+  String ageRangeYears(Object max, Object min);
+
   /// No description provided for @aiBio.
   ///
   /// In en, this message translates to:
   /// **'AI Bio'**
   String get aiBio;
+
+  /// No description provided for @algorithmInsightsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Our matchmaking algorithm evaluates authentic Banjara exogamy rules (checking self gotra & maternal gotra separation), Vedic astrological Guna Milan, verified education & income parameters, and mutual partner preferences.'**
+  String get algorithmInsightsDescription;
+
+  /// No description provided for @alignedExpectations.
+  ///
+  /// In en, this message translates to:
+  /// **'Aligned Expectations'**
+  String get alignedExpectations;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
 
   /// No description provided for @allInDistrict.
   ///
@@ -578,6 +410,12 @@ abstract class AppLocalizations {
   /// **'All Photos ({count}/{max})'**
   String allPhotosCount(int count, int max);
 
+  /// No description provided for @allProfiles.
+  ///
+  /// In en, this message translates to:
+  /// **'All Profiles'**
+  String get allProfiles;
+
   /// No description provided for @allYourProfileDataPermanentlyRemoved.
   ///
   /// In en, this message translates to:
@@ -596,17 +434,53 @@ abstract class AppLocalizations {
   /// **'Review all sections and click \"Save Biodata\" to complete your profile. Your biodata will be visible to other community members based on your privacy settings.'**
   String get almostDoneReview;
 
+  /// No description provided for @alreadyHaveProfileLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have a profile? Login'**
+  String get alreadyHaveProfileLogin;
+
+  /// No description provided for @alternateRelativeContactNumberOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Alternate / Relative Contact Number (Optional)'**
+  String get alternateRelativeContactNumberOptional;
+
   /// No description provided for @anErrorOccurred.
   ///
   /// In en, this message translates to:
   /// **'An error occurred: {error}'**
   String anErrorOccurred(String error);
 
+  /// No description provided for @ancestralLand.
+  ///
+  /// In en, this message translates to:
+  /// **'Ancestral Land'**
+  String get ancestralLand;
+
+  /// No description provided for @ancestralLandHoldingsAcres.
+  ///
+  /// In en, this message translates to:
+  /// **'Ancestral Land Holdings (Acres)'**
+  String get ancestralLandHoldingsAcres;
+
+  /// No description provided for @ancestralLandSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter candidates by family agricultural land ownership'**
+  String get ancestralLandSubtitle;
+
   /// No description provided for @and.
   ///
   /// In en, this message translates to:
   /// **' and '**
   String get and;
+
+  /// No description provided for @annual.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual'**
+  String get annual;
 
   /// No description provided for @annualIncome.
   ///
@@ -620,11 +494,35 @@ abstract class AppLocalizations {
   /// **'Total yearly earnings from salary or business. (NOT family savings)'**
   String get annualIncomeHint;
 
+  /// No description provided for @annualIncomeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual Income'**
+  String get annualIncomeLabel;
+
+  /// No description provided for @annualIncomeSalary.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual Income / Salary'**
+  String get annualIncomeSalary;
+
+  /// No description provided for @annualIncomeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select candidate yearly income expectations'**
+  String get annualIncomeSubtitle;
+
   /// No description provided for @annulled.
   ///
   /// In en, this message translates to:
   /// **'Annulled'**
   String get annulled;
+
+  /// No description provided for @appGrowth.
+  ///
+  /// In en, this message translates to:
+  /// **'App Growth'**
+  String get appGrowth;
 
   /// No description provided for @appName.
   ///
@@ -632,11 +530,35 @@ abstract class AppLocalizations {
   /// **'BanjaraBio'**
   String get appName;
 
+  /// No description provided for @apply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get apply;
+
+  /// No description provided for @applyAllFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply All Filters'**
+  String get applyAllFilters;
+
   /// No description provided for @applyFilters.
   ///
   /// In en, this message translates to:
   /// **'Apply Filters'**
   String get applyFilters;
+
+  /// No description provided for @applyFiltersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Filters ({count} Active)'**
+  String applyFiltersCount(Object count);
+
+  /// No description provided for @applyLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Location'**
+  String get applyLocation;
 
   /// No description provided for @approve.
   ///
@@ -692,6 +614,18 @@ abstract class AppLocalizations {
   /// **'Ask family members for photo suggestions'**
   String get askFamilySuggestionsTip;
 
+  /// No description provided for @astro36GunaMilanScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Astro 36 Guna Milan Score'**
+  String get astro36GunaMilanScore;
+
+  /// No description provided for @astro36GunaSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter matches by minimum astrological compatibility threshold'**
+  String get astro36GunaSubtitle;
+
   /// No description provided for @atLeastOnePhotoRequired.
   ///
   /// In en, this message translates to:
@@ -728,17 +662,107 @@ abstract class AppLocalizations {
   /// **'Back to Google Sign In'**
   String get backToGoogleSignIn;
 
+  /// No description provided for @banjaraBioPro.
+  ///
+  /// In en, this message translates to:
+  /// **'BanjaraBio Pro'**
+  String get banjaraBioPro;
+
+  /// No description provided for @banjaraClanRoots.
+  ///
+  /// In en, this message translates to:
+  /// **'BANJARA CLAN ROOTS'**
+  String get banjaraClanRoots;
+
+  /// No description provided for @banjaraGotraClan.
+  ///
+  /// In en, this message translates to:
+  /// **'Banjara Gotra (Clan)'**
+  String get banjaraGotraClan;
+
+  /// No description provided for @banjaraGotraCustoms.
+  ///
+  /// In en, this message translates to:
+  /// **'Banjara Gotra Customs (गोत्र व मोसळ)'**
+  String get banjaraGotraCustoms;
+
+  /// No description provided for @banjaraGotraSelfClan.
+  ///
+  /// In en, this message translates to:
+  /// **'Banjara Gotra (Self Clan)'**
+  String get banjaraGotraSelfClan;
+
   /// No description provided for @banjaraMember.
   ///
   /// In en, this message translates to:
   /// **'Banjara Member'**
   String get banjaraMember;
 
+  /// No description provided for @banjaraVirasatSangh.
+  ///
+  /// In en, this message translates to:
+  /// **'Banjara Virasat Sangh'**
+  String get banjaraVirasatSangh;
+
   /// No description provided for @banjarabio.
   ///
   /// In en, this message translates to:
   /// **'BanjaraBio'**
   String get banjarabio;
+
+  /// No description provided for @basicInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic Information'**
+  String get basicInformation;
+
+  /// No description provided for @basicPlanDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Essential features for your search'**
+  String get basicPlanDesc;
+
+  /// No description provided for @basicPlanName.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic'**
+  String get basicPlanName;
+
+  /// No description provided for @benefitPdfBiodata.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Beautiful PDF Biodata in 2 Mins'**
+  String get benefitPdfBiodata;
+
+  /// No description provided for @benefitShareWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Directly on WhatsApp'**
+  String get benefitShareWhatsApp;
+
+  /// No description provided for @benefitVerifiedProfiles.
+  ///
+  /// In en, this message translates to:
+  /// **'100% Verified Community Profiles'**
+  String get benefitVerifiedProfiles;
+
+  /// No description provided for @bestTimeToContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Best Time to Contact'**
+  String get bestTimeToContact;
+
+  /// No description provided for @bestValue.
+  ///
+  /// In en, this message translates to:
+  /// **'BEST VALUE'**
+  String get bestValue;
+
+  /// No description provided for @biodata.
+  ///
+  /// In en, this message translates to:
+  /// **'Biodata'**
+  String get biodata;
 
   /// No description provided for @biodataDraftRestored.
   ///
@@ -757,6 +781,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Biodata PDF'**
   String get biodataPdf;
+
+  /// No description provided for @biodataPremiumIncluded.
+  ///
+  /// In en, this message translates to:
+  /// **'Biodata Premium Included'**
+  String get biodataPremiumIncluded;
+
+  /// No description provided for @biodataRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Biodata Required'**
+  String get biodataRequired;
 
   /// No description provided for @biodataSavedSuccessfully.
   ///
@@ -794,11 +830,29 @@ abstract class AppLocalizations {
   /// **'Birth Place & Time'**
   String get birthPlaceAndTime;
 
+  /// No description provided for @birthPlaceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Place'**
+  String get birthPlaceLabel;
+
   /// No description provided for @birthTime.
   ///
   /// In en, this message translates to:
   /// **'Birth Time'**
   String get birthTime;
+
+  /// No description provided for @birthTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Time'**
+  String get birthTimeLabel;
+
+  /// No description provided for @birthTimeVisibleOnPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth time & birth place visible on PDF'**
+  String get birthTimeVisibleOnPdf;
 
   /// No description provided for @block.
   ///
@@ -818,6 +872,12 @@ abstract class AppLocalizations {
   /// **'Blood Group'**
   String get bloodGroup;
 
+  /// No description provided for @bloodGroupLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Blood Group'**
+  String get bloodGroupLabel;
+
   /// No description provided for @blurryLowQualityImages.
   ///
   /// In en, this message translates to:
@@ -830,17 +890,29 @@ abstract class AppLocalizations {
   /// **'Bookmark Limit Reached'**
   String get bookmarkLimitReached;
 
-  /// Title when user hits messaging limit
-  ///
-  /// In en, this message translates to:
-  /// **'Messaging Limit Reached'**
-  String get messagingLimitReached;
-
   /// No description provided for @bookmarksCount.
   ///
   /// In en, this message translates to:
   /// **'{count} bookmarks'**
   String bookmarksCount(int count);
+
+  /// No description provided for @bride.
+  ///
+  /// In en, this message translates to:
+  /// **'Bride'**
+  String get bride;
+
+  /// No description provided for @brideGirl.
+  ///
+  /// In en, this message translates to:
+  /// **'👧 Bride (Girl)'**
+  String get brideGirl;
+
+  /// No description provided for @brideOption.
+  ///
+  /// In en, this message translates to:
+  /// **'👧 Bride (Girl)'**
+  String get brideOption;
 
   /// No description provided for @bronze.
   ///
@@ -860,11 +932,41 @@ abstract class AppLocalizations {
   /// **'Brothers'**
   String get brotherCount;
 
+  /// No description provided for @brothersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 brother} other{{count} brothers}}'**
+  String brothersCount(int count);
+
+  /// No description provided for @browseMatchesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Search suitable matches for son, daughter, relative.'**
+  String get browseMatchesDesc;
+
+  /// No description provided for @browseMatchesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer a few questions and see suitable matches'**
+  String get browseMatchesSubtitle;
+
+  /// No description provided for @browseMatchesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Matches (Browse)'**
+  String get browseMatchesTitle;
+
   /// No description provided for @browseProfiles.
   ///
   /// In en, this message translates to:
   /// **'Browse Profiles'**
   String get browseProfiles;
+
+  /// No description provided for @bulkDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% OFF'**
+  String bulkDiscount(int percent);
 
   /// No description provided for @business.
   ///
@@ -878,11 +980,245 @@ abstract class AppLocalizations {
   /// **'Business Owner'**
   String get businessOwner;
 
+  /// No description provided for @bvsAnnualPlanLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual Plan'**
+  String get bvsAnnualPlanLabel;
+
+  /// No description provided for @bvsAnnualPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'₹200 / Year'**
+  String get bvsAnnualPrice;
+
+  /// No description provided for @bvsCardSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Card Selected'**
+  String get bvsCardSelected;
+
+  /// No description provided for @bvsConceptSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Initiative: Hon. Shri Sanjaybhau Rathod\nMinister, Govt. of Maharashtra'**
+  String get bvsConceptSubtitle;
+
+  /// No description provided for @bvsCopyMessageToast.
+  ///
+  /// In en, this message translates to:
+  /// **'🚩 BVS invite message copied!'**
+  String get bvsCopyMessageToast;
+
+  /// No description provided for @bvsHeritageEmblemDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Pohradevi & 12+ Crore community pride'**
+  String get bvsHeritageEmblemDesc;
+
+  /// No description provided for @bvsHeritageEmblemTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Heritage Seal'**
+  String get bvsHeritageEmblemTitle;
+
+  /// No description provided for @bvsHowToJoinTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How to Join BVS & Unlock Discounts?'**
+  String get bvsHowToJoinTitle;
+
+  /// No description provided for @bvsJoinCardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'⚡ Register on BVS portal to get ₹200/year discount'**
+  String get bvsJoinCardSubtitle;
+
+  /// No description provided for @bvsJoinNowButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Join BVS Today (Join Now)'**
+  String get bvsJoinNowButton;
+
+  /// No description provided for @bvsMember.
+  ///
+  /// In en, this message translates to:
+  /// **'🏛️ BVS Member'**
+  String get bvsMember;
+
+  /// No description provided for @bvsMemberId.
+  ///
+  /// In en, this message translates to:
+  /// **'BVS Member ID No (e.g. 405812)'**
+  String get bvsMemberId;
+
+  /// No description provided for @bvsMembershipCard.
+  ///
+  /// In en, this message translates to:
+  /// **'BVS Membership Card'**
+  String get bvsMembershipCard;
+
+  /// No description provided for @bvsMonthlyPlanLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Plan'**
+  String get bvsMonthlyPlanLabel;
+
+  /// No description provided for @bvsMonthlyPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'₹20 / Month'**
+  String get bvsMonthlyPrice;
+
+  /// No description provided for @bvsMovementDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'A historic movement to strengthen the unity and future of the Banjara community.'**
+  String get bvsMovementDesc;
+
+  /// No description provided for @bvsNotRegisteredYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a BVS member yet? Register here »'**
+  String get bvsNotRegisteredYet;
+
+  /// No description provided for @bvsOfficialEmblems.
+  ///
+  /// In en, this message translates to:
+  /// **'Official BVS Emblems'**
+  String get bvsOfficialEmblems;
+
+  /// No description provided for @bvsShareOnWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Share on WhatsApp'**
+  String get bvsShareOnWhatsApp;
+
+  /// No description provided for @bvsSpecialDiscountBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you a Banjara Virasat Sangh member? Upload your BVS card to unlock the Annual Plan at just ₹200!'**
+  String get bvsSpecialDiscountBanner;
+
+  /// No description provided for @bvsStep1Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your details on the official BVS portal.'**
+  String get bvsStep1Desc;
+
+  /// No description provided for @bvsStep1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Register Online'**
+  String get bvsStep1Title;
+
+  /// No description provided for @bvsStep2Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive your official digital ID card and Member ID.'**
+  String get bvsStep2Desc;
+
+  /// No description provided for @bvsStep2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Membership Card'**
+  String get bvsStep2Title;
+
+  /// No description provided for @bvsStep3Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload BVS card to activate ₹200/yr subsidized plan.'**
+  String get bvsStep3Desc;
+
+  /// No description provided for @bvsStep3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Card on BanjaraBio'**
+  String get bvsStep3Title;
+
+  /// No description provided for @bvsSubsidyCardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Huge savings on BanjaraBio Matrimony Subscriptions!'**
+  String get bvsSubsidyCardSubtitle;
+
+  /// No description provided for @bvsSubsidyCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Special Discount for BVS Members!'**
+  String get bvsSubsidyCardTitle;
+
+  /// No description provided for @bvsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Banjara Virasat Sangh'**
+  String get bvsTitle;
+
+  /// No description provided for @bvsUnityEmblemDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Hands linked in unity & traditional embroidery'**
+  String get bvsUnityEmblemDesc;
+
+  /// No description provided for @bvsUnityEmblemTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unity Emblem'**
+  String get bvsUnityEmblemTitle;
+
+  /// No description provided for @bvsUploadCardButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload BVS Card (Get Discount)'**
+  String get bvsUploadCardButton;
+
+  /// No description provided for @bvsUploadCardPromptSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload photo of BVS Membership Card'**
+  String get bvsUploadCardPromptSubtitle;
+
+  /// No description provided for @bvsVerifiedActiveBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'👑 BVS Verified Member Discount Active!'**
+  String get bvsVerifiedActiveBadge;
+
+  /// No description provided for @bvsVerifiedActiveDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly plan at ₹20 and Annual plan at ₹200 are active for you.'**
+  String get bvsVerifiedActiveDesc;
+
+  /// No description provided for @bvsVerifiedSpecialPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'BVS Member Special Plan'**
+  String get bvsVerifiedSpecialPlan;
+
+  /// No description provided for @bvsWhatsAppInviteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp Automation Invite'**
+  String get bvsWhatsAppInviteTitle;
+
   /// No description provided for @byContAcceptTerms.
   ///
   /// In en, this message translates to:
   /// **'By continuing, you agree to our '**
   String get byContAcceptTerms;
+
+  /// No description provided for @callAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Admin'**
+  String get callAdmin;
+
+  /// No description provided for @callOrganizer.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Organizer'**
+  String get callOrganizer;
 
   /// No description provided for @camera.
   ///
@@ -902,17 +1238,59 @@ abstract class AppLocalizations {
   /// **'Cancel anytime'**
   String get cancelAnytime;
 
+  /// No description provided for @candidatesMeet.
+  ///
+  /// In en, this message translates to:
+  /// **'Candidates Meet'**
+  String get candidatesMeet;
+
+  /// No description provided for @careerPillarSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Graduate / Professional background & steady income'**
+  String get careerPillarSubtitle;
+
+  /// No description provided for @careerSocioeconomicPillar.
+  ///
+  /// In en, this message translates to:
+  /// **'Career & Socioeconomic Level'**
+  String get careerSocioeconomicPillar;
+
+  /// No description provided for @careerWealthHoldings.
+  ///
+  /// In en, this message translates to:
+  /// **'Career & Wealth Holdings'**
+  String get careerWealthHoldings;
+
+  /// No description provided for @changeCriteriaOrExitPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to change your search options or exit the app?'**
+  String get changeCriteriaOrExitPrompt;
+
   /// No description provided for @changeLanguage.
   ///
   /// In en, this message translates to:
   /// **'Change Language'**
   String get changeLanguage;
 
+  /// No description provided for @changeOptionsCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Options ✏️'**
+  String get changeOptionsCta;
+
   /// No description provided for @chat.
   ///
   /// In en, this message translates to:
   /// **'Chat'**
   String get chat;
+
+  /// No description provided for @chatConversationArchived.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat conversation archived'**
+  String get chatConversationArchived;
 
   /// No description provided for @checkBackSoonForNewMatchesnpullDownToRef.
   ///
@@ -938,17 +1316,65 @@ abstract class AppLocalizations {
   /// **'Check who is looking at your profile'**
   String get checkWhoIsLookingAtYourProfile;
 
+  /// No description provided for @chipFreeAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'⭐ 100% Free Access'**
+  String get chipFreeAccess;
+
+  /// No description provided for @chipNoAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'⚡ No Account Needed'**
+  String get chipNoAccount;
+
+  /// No description provided for @chipQuickFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'🔍 1-Min Search'**
+  String get chipQuickFilter;
+
   /// No description provided for @chooseFromGallery.
   ///
   /// In en, this message translates to:
   /// **'Choose from Gallery'**
   String get chooseFromGallery;
 
+  /// No description provided for @chooseHowToStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how you want to start'**
+  String get chooseHowToStart;
+
+  /// No description provided for @chooseQuickIntroTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'CHOOSE A QUICK INTRO TEMPLATE'**
+  String get chooseQuickIntroTemplate;
+
   /// No description provided for @chooseTemplate.
   ///
   /// In en, this message translates to:
   /// **'Choose Template'**
   String get chooseTemplate;
+
+  /// No description provided for @claimMarriageGift.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim Marriage Gift'**
+  String get claimMarriageGift;
+
+  /// No description provided for @clanExogamyPillar.
+  ///
+  /// In en, this message translates to:
+  /// **'Clan Exogamy (गोत्र व मोसळ)'**
+  String get clanExogamyPillar;
+
+  /// No description provided for @clanExogamyPillarSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Different paternal Gotra ({gotra}) & Mamakul ({maternalGotra})'**
+  String clanExogamyPillarSubtitle(String gotra, String maternalGotra);
 
   /// No description provided for @clear.
   ///
@@ -962,6 +1388,18 @@ abstract class AppLocalizations {
   /// **'Clear All Filters'**
   String get clearAllFilters;
 
+  /// No description provided for @clearSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get clearSearch;
+
+  /// No description provided for @clearText.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear text'**
+  String get clearText;
+
   /// No description provided for @clearWellLitPhotos.
   ///
   /// In en, this message translates to:
@@ -974,239 +1412,35 @@ abstract class AppLocalizations {
   /// **'Close'**
   String get close;
 
+  /// No description provided for @closePreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Close Preview'**
+  String get closePreview;
+
+  /// No description provided for @collegeInstitute.
+  ///
+  /// In en, this message translates to:
+  /// **'College / Institute'**
+  String get collegeInstitute;
+
   /// No description provided for @comeBackTomorrowFornnewCuratedMatches.
   ///
   /// In en, this message translates to:
   /// **'Come back tomorrow for\\nnew curated matches!'**
   String get comeBackTomorrowFornnewCuratedMatches;
 
-  /// No description provided for @bvsMembershipCard.
+  /// No description provided for @communityFiltersSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'BVS Membership Card'**
-  String get bvsMembershipCard;
+  /// **'Gotra, Mamakul, Origin, Height, Income & Lineage'**
+  String get communityFiltersSubtitle;
 
-  /// No description provided for @bvsMemberId.
+  /// No description provided for @communityFiltersTitle.
   ///
   /// In en, this message translates to:
-  /// **'BVS Member ID No (e.g. 405812)'**
-  String get bvsMemberId;
-
-  /// No description provided for @uploadBvsCardPrompt.
-  ///
-  /// In en, this message translates to:
-  /// **'Upload your Banjara Virasat Sangh (BVS) Membership Card'**
-  String get uploadBvsCardPrompt;
-
-  /// No description provided for @bvsSpecialDiscountBanner.
-  ///
-  /// In en, this message translates to:
-  /// **'Are you a Banjara Virasat Sangh member? Upload your BVS card to unlock the Annual Plan at just ₹200!'**
-  String get bvsSpecialDiscountBanner;
-
-  /// No description provided for @joinBvsNow.
-  ///
-  /// In en, this message translates to:
-  /// **'Join BVS (Register Here)'**
-  String get joinBvsNow;
-
-  /// No description provided for @bvsVerifiedSpecialPlan.
-  ///
-  /// In en, this message translates to:
-  /// **'BVS Member Special Plan'**
-  String get bvsVerifiedSpecialPlan;
-
-  /// No description provided for @bvsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Banjara Virasat Sangh'**
-  String get bvsTitle;
-
-  /// No description provided for @bvsConceptSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Initiative: Hon. Shri Sanjaybhau Rathod\nMinister, Govt. of Maharashtra'**
-  String get bvsConceptSubtitle;
-
-  /// No description provided for @bvsMovementDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'A historic movement to strengthen the unity and future of the Banjara community.'**
-  String get bvsMovementDesc;
-
-  /// No description provided for @bvsOfficialEmblems.
-  ///
-  /// In en, this message translates to:
-  /// **'Official BVS Emblems'**
-  String get bvsOfficialEmblems;
-
-  /// No description provided for @bvsUnityEmblemTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Unity Emblem'**
-  String get bvsUnityEmblemTitle;
-
-  /// No description provided for @bvsUnityEmblemDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Hands linked in unity & traditional embroidery'**
-  String get bvsUnityEmblemDesc;
-
-  /// No description provided for @bvsHeritageEmblemTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Heritage Seal'**
-  String get bvsHeritageEmblemTitle;
-
-  /// No description provided for @bvsHeritageEmblemDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Pohradevi & 12+ Crore community pride'**
-  String get bvsHeritageEmblemDesc;
-
-  /// No description provided for @bvsSubsidyCardTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Special Discount for BVS Members!'**
-  String get bvsSubsidyCardTitle;
-
-  /// No description provided for @bvsSubsidyCardSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Huge savings on BanjaraBio Matrimony Subscriptions!'**
-  String get bvsSubsidyCardSubtitle;
-
-  /// No description provided for @bvsAnnualPlanLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Annual Plan'**
-  String get bvsAnnualPlanLabel;
-
-  /// No description provided for @bvsMonthlyPlanLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Monthly Plan'**
-  String get bvsMonthlyPlanLabel;
-
-  /// No description provided for @bvsAnnualPrice.
-  ///
-  /// In en, this message translates to:
-  /// **'₹200 / Year'**
-  String get bvsAnnualPrice;
-
-  /// No description provided for @bvsMonthlyPrice.
-  ///
-  /// In en, this message translates to:
-  /// **'₹20 / Month'**
-  String get bvsMonthlyPrice;
-
-  /// No description provided for @bvsVerifiedActiveBadge.
-  ///
-  /// In en, this message translates to:
-  /// **'👑 BVS Verified Member Discount Active!'**
-  String get bvsVerifiedActiveBadge;
-
-  /// No description provided for @bvsVerifiedActiveDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Monthly plan at ₹20 and Annual plan at ₹200 are active for you.'**
-  String get bvsVerifiedActiveDesc;
-
-  /// No description provided for @bvsHowToJoinTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'How to Join BVS & Unlock Discounts?'**
-  String get bvsHowToJoinTitle;
-
-  /// No description provided for @bvsStep1Title.
-  ///
-  /// In en, this message translates to:
-  /// **'Register Online'**
-  String get bvsStep1Title;
-
-  /// No description provided for @bvsStep1Desc.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your details on the official BVS portal.'**
-  String get bvsStep1Desc;
-
-  /// No description provided for @bvsStep2Title.
-  ///
-  /// In en, this message translates to:
-  /// **'Get Membership Card'**
-  String get bvsStep2Title;
-
-  /// No description provided for @bvsStep2Desc.
-  ///
-  /// In en, this message translates to:
-  /// **'Receive your official digital ID card and Member ID.'**
-  String get bvsStep2Desc;
-
-  /// No description provided for @bvsStep3Title.
-  ///
-  /// In en, this message translates to:
-  /// **'Upload Card on BanjaraBio'**
-  String get bvsStep3Title;
-
-  /// No description provided for @bvsStep3Desc.
-  ///
-  /// In en, this message translates to:
-  /// **'Upload BVS card to activate ₹200/yr subsidized plan.'**
-  String get bvsStep3Desc;
-
-  /// No description provided for @bvsWhatsAppInviteTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'WhatsApp Automation Invite'**
-  String get bvsWhatsAppInviteTitle;
-
-  /// No description provided for @bvsShareOnWhatsApp.
-  ///
-  /// In en, this message translates to:
-  /// **'Share on WhatsApp'**
-  String get bvsShareOnWhatsApp;
-
-  /// No description provided for @bvsCopyMessageToast.
-  ///
-  /// In en, this message translates to:
-  /// **'🚩 BVS invite message copied!'**
-  String get bvsCopyMessageToast;
-
-  /// No description provided for @bvsJoinNowButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Join BVS Today (Join Now)'**
-  String get bvsJoinNowButton;
-
-  /// No description provided for @bvsJoinCardSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'⚡ Register on BVS portal to get ₹200/year discount'**
-  String get bvsJoinCardSubtitle;
-
-  /// No description provided for @bvsUploadCardButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Upload BVS Card (Get Discount)'**
-  String get bvsUploadCardButton;
-
-  /// No description provided for @bvsUploadCardPromptSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Upload photo of BVS Membership Card'**
-  String get bvsUploadCardPromptSubtitle;
-
-  /// No description provided for @bvsCardSelected.
-  ///
-  /// In en, this message translates to:
-  /// **'Card Selected'**
-  String get bvsCardSelected;
-
-  /// No description provided for @bvsNotRegisteredYet.
-  ///
-  /// In en, this message translates to:
-  /// **'Not a BVS member yet? Register here »'**
-  String get bvsNotRegisteredYet;
+  /// **'Community Filters (BVS)'**
+  String get communityFiltersTitle;
 
   /// No description provided for @communityId.
   ///
@@ -1232,17 +1466,53 @@ abstract class AppLocalizations {
   /// **'Community Member'**
   String get communityMember;
 
+  /// No description provided for @communityTrustedProfiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Community Trusted Profiles'**
+  String get communityTrustedProfiles;
+
+  /// No description provided for @communityTrustedProfilesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vouched Banjara profiles with Community Trust Score > 75%'**
+  String get communityTrustedProfilesSubtitle;
+
   /// No description provided for @communityVerification.
   ///
   /// In en, this message translates to:
   /// **'Community Verification'**
   String get communityVerification;
 
+  /// No description provided for @company.
+  ///
+  /// In en, this message translates to:
+  /// **'Company'**
+  String get company;
+
   /// No description provided for @companyName.
   ///
   /// In en, this message translates to:
   /// **'Company Name'**
   String get companyName;
+
+  /// No description provided for @companyOrg.
+  ///
+  /// In en, this message translates to:
+  /// **'Company / Org'**
+  String get companyOrg;
+
+  /// No description provided for @compareAllPlanFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare All Plan Features'**
+  String get compareAllPlanFeatures;
+
+  /// No description provided for @compatibleRoots.
+  ///
+  /// In en, this message translates to:
+  /// **'Compatible Roots'**
+  String get compatibleRoots;
 
   /// No description provided for @completeVerificationToUnlockPremium.
   ///
@@ -1255,6 +1525,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Complete your profile to get noticed!'**
   String get completeYourProfileToGetNoticed;
+
+  /// No description provided for @completedReferrals.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed Referrals'**
+  String get completedReferrals;
 
   /// No description provided for @completion.
   ///
@@ -1274,6 +1550,18 @@ abstract class AppLocalizations {
   /// **'Compressing under 500KB...'**
   String get compressingUnder500Kb;
 
+  /// No description provided for @confidentialMatchmaking.
+  ///
+  /// In en, this message translates to:
+  /// **'Confidential & Private Matchmaking'**
+  String get confidentialMatchmaking;
+
+  /// No description provided for @confidentialMatchmakingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'High-profile biodatas viewable exclusively with mutual RM consent'**
+  String get confidentialMatchmakingSubtitle;
+
   /// No description provided for @confirm.
   ///
   /// In en, this message translates to:
@@ -1292,17 +1580,41 @@ abstract class AppLocalizations {
   /// **'Connect with your Banjara community'**
   String get connectWithCommunity;
 
+  /// No description provided for @connectionAcceptedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection Accepted! You can now chat directly 🎉'**
+  String get connectionAcceptedToast;
+
   /// No description provided for @contact.
   ///
   /// In en, this message translates to:
   /// **'Contact'**
   String get contact;
 
+  /// No description provided for @contactLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get contactLabel;
+
+  /// No description provided for @contactPersonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Person'**
+  String get contactPersonLabel;
+
   /// No description provided for @contactPreferences.
   ///
   /// In en, this message translates to:
   /// **'Contact Preferences'**
   String get contactPreferences;
+
+  /// No description provided for @contactUnlocks.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Contact Unlocks/month'**
+  String contactUnlocks(int count);
 
   /// No description provided for @contactUs.
   ///
@@ -1316,6 +1628,24 @@ abstract class AppLocalizations {
   /// **'Contact Us'**
   String get contactUsTitle;
 
+  /// No description provided for @continueAsGuestCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue as Guest 🚀'**
+  String get continueAsGuestCta;
+
+  /// No description provided for @continueBlockedUntilAdEnds.
+  ///
+  /// In en, this message translates to:
+  /// **'CONTINUE TO APP BLOCKED UNTIL AD ENDS'**
+  String get continueBlockedUntilAdEnds;
+
+  /// No description provided for @continueToApp.
+  ///
+  /// In en, this message translates to:
+  /// **'CONTINUE TO APP'**
+  String get continueToApp;
+
   /// No description provided for @continueWithFreeAccount.
   ///
   /// In en, this message translates to:
@@ -1328,11 +1658,35 @@ abstract class AppLocalizations {
   /// **'Continue with Google'**
   String get continueWithGoogle;
 
+  /// No description provided for @continueWithStandardFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Standard Filters'**
+  String get continueWithStandardFilters;
+
+  /// No description provided for @conversationPinnedToTop.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation pinned to top 📌'**
+  String get conversationPinnedToTop;
+
+  /// No description provided for @conversationUnpinned.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation unpinned'**
+  String get conversationUnpinned;
+
   /// No description provided for @conversations.
   ///
   /// In en, this message translates to:
   /// **'Conversations'**
   String get conversations;
+
+  /// No description provided for @copiedToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied to clipboard'**
+  String get copiedToClipboard;
 
   /// No description provided for @copyLink.
   ///
@@ -1346,17 +1700,107 @@ abstract class AppLocalizations {
   /// **'Copy a link to {name} profile'**
   String copyLinkSubtitle(String name);
 
+  /// No description provided for @copyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Message'**
+  String get copyMessage;
+
+  /// No description provided for @couldNotLaunchDialer.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not launch phone dialer'**
+  String get couldNotLaunchDialer;
+
+  /// No description provided for @couldNotLaunchUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not launch URL'**
+  String get couldNotLaunchUrl;
+
+  /// No description provided for @couldNotLaunchWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not launch WhatsApp'**
+  String get couldNotLaunchWhatsApp;
+
   /// No description provided for @couldNotLoadProfile.
   ///
   /// In en, this message translates to:
   /// **'We couldn\'t load your profile. Please try again.'**
   String get couldNotLoadProfile;
 
+  /// No description provided for @couldNotTriggerSharing.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not trigger sharing'**
+  String get couldNotTriggerSharing;
+
+  /// No description provided for @countProfileViews.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 profile view} other{{count} profile views}}'**
+  String countProfileViews(int count);
+
+  /// No description provided for @countryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get countryLabel;
+
+  /// No description provided for @couponDiscountApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'Coupon Discount Applied'**
+  String get couponDiscountApplied;
+
   /// No description provided for @createBiodata.
   ///
   /// In en, this message translates to:
   /// **'Create Biodata'**
   String get createBiodata;
+
+  /// No description provided for @createBiodataCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Biodata ✨'**
+  String get createBiodataCta;
+
+  /// No description provided for @createBiodataDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill out your profile and start connecting instantly.'**
+  String get createBiodataDesc;
+
+  /// No description provided for @createBiodataForSelfOrCandidateSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an attractive marriage biodata in 2 minutes, download PDF, share on WhatsApp, and receive matches directly.'**
+  String get createBiodataForSelfOrCandidateSubtitle;
+
+  /// No description provided for @createBiodataForSelfOrCandidateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Biodata for Self / Candidate'**
+  String get createBiodataForSelfOrCandidateTitle;
+
+  /// No description provided for @createFreeProfile100PercentFree.
+  ///
+  /// In en, this message translates to:
+  /// **'✨ Create Free Profile (100% Free)'**
+  String get createFreeProfile100PercentFree;
+
+  /// No description provided for @createMyBiodata.
+  ///
+  /// In en, this message translates to:
+  /// **'Create My Biodata'**
+  String get createMyBiodata;
+
+  /// No description provided for @createNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Now'**
+  String get createNow;
 
   /// No description provided for @createProfile.
   ///
@@ -1382,11 +1826,23 @@ abstract class AppLocalizations {
   /// **'Crop & Rotate'**
   String get cropRotate;
 
+  /// No description provided for @culturallyVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'CULTURALLY VERIFIED'**
+  String get culturallyVerified;
+
   /// No description provided for @curatedProfilesJustForYou.
   ///
   /// In en, this message translates to:
   /// **'{count} curated profiles just for you'**
   String curatedProfilesJustForYou(int count);
+
+  /// No description provided for @currentCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Current City'**
+  String get currentCity;
 
   /// No description provided for @currentLocation.
   ///
@@ -1394,11 +1850,23 @@ abstract class AppLocalizations {
   /// **'Current Location'**
   String get currentLocation;
 
+  /// No description provided for @currentNativeRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'CURRENT & NATIVE REGION'**
+  String get currentNativeRegion;
+
   /// No description provided for @currentPlan.
   ///
   /// In en, this message translates to:
   /// **'Current Plan'**
   String get currentPlan;
+
+  /// No description provided for @currentResidence.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Residence'**
+  String get currentResidence;
 
   /// No description provided for @currentResidenceState.
   ///
@@ -1406,11 +1874,29 @@ abstract class AppLocalizations {
   /// **'Current Residence State'**
   String get currentResidenceState;
 
+  /// No description provided for @currentState.
+  ///
+  /// In en, this message translates to:
+  /// **'Current State'**
+  String get currentState;
+
   /// No description provided for @currentVillageHint.
   ///
   /// In en, this message translates to:
   /// **'Current village'**
   String get currentVillageHint;
+
+  /// No description provided for @customMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Message'**
+  String get customMessage;
+
+  /// No description provided for @customize.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize'**
+  String get customize;
 
   /// No description provided for @customizeBiodata.
   ///
@@ -1424,11 +1910,53 @@ abstract class AppLocalizations {
   /// **'Daily'**
   String get daily;
 
+  /// No description provided for @dailyActiveUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Active Users'**
+  String get dailyActiveUsers;
+
+  /// No description provided for @dailyLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Limit Reached'**
+  String get dailyLimitReached;
+
+  /// No description provided for @dailyLimitViewsReached.
+  ///
+  /// In en, this message translates to:
+  /// **'You have used all your daily profile views.'**
+  String get dailyLimitViewsReached;
+
   /// No description provided for @dailyMatch.
   ///
   /// In en, this message translates to:
   /// **'Daily Match'**
   String get dailyMatch;
+
+  /// No description provided for @dailyMatchPicks.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Match Picks'**
+  String get dailyMatchPicks;
+
+  /// No description provided for @dailyMessageLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily message limit reached.'**
+  String get dailyMessageLimitReached;
+
+  /// No description provided for @dailyRewardClaimedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'🎉 Success! {rewardName}'**
+  String dailyRewardClaimedSuccess(String rewardName);
+
+  /// No description provided for @dailyViewLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily view limit reached.'**
+  String get dailyViewLimitReached;
 
   /// No description provided for @dark.
   ///
@@ -1441,6 +1969,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Date of Birth'**
   String get dateOfBirth;
+
+  /// No description provided for @dateOfBirthLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of Birth'**
+  String get dateOfBirthLabel;
 
   /// No description provided for @daughter.
   ///
@@ -1465,6 +1999,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{days} days remaining'**
   String daysRemaining(int days);
+
+  /// No description provided for @decline.
+  ///
+  /// In en, this message translates to:
+  /// **'DECLINE'**
+  String get decline;
+
+  /// No description provided for @dedicatedManager.
+  ///
+  /// In en, this message translates to:
+  /// **'Dedicated Relationship Manager'**
+  String get dedicatedManager;
+
+  /// No description provided for @degreeField.
+  ///
+  /// In en, this message translates to:
+  /// **'Degree / Field'**
+  String get degreeField;
 
   /// No description provided for @delete.
   ///
@@ -1532,6 +2084,12 @@ abstract class AppLocalizations {
   /// **'Demo'**
   String get demo;
 
+  /// No description provided for @demographicsAndPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Demographics & Premium'**
+  String get demographicsAndPremium;
+
   /// No description provided for @describeYourselfInterestsHobbies.
   ///
   /// In en, this message translates to:
@@ -1544,11 +2102,35 @@ abstract class AppLocalizations {
   /// **'Details'**
   String get details;
 
+  /// No description provided for @diamond.
+  ///
+  /// In en, this message translates to:
+  /// **'Diamond'**
+  String get diamond;
+
+  /// No description provided for @dietHabits.
+  ///
+  /// In en, this message translates to:
+  /// **'Diet / Food Habits'**
+  String get dietHabits;
+
   /// No description provided for @differentSettingsTip.
   ///
   /// In en, this message translates to:
   /// **'Include photos in different settings (formal, casual)'**
   String get differentSettingsTip;
+
+  /// No description provided for @differentlyAbled.
+  ///
+  /// In en, this message translates to:
+  /// **'Diff. Abled'**
+  String get differentlyAbled;
+
+  /// No description provided for @digital.
+  ///
+  /// In en, this message translates to:
+  /// **'Digital'**
+  String get digital;
 
   /// No description provided for @diploma.
   ///
@@ -1556,11 +2138,71 @@ abstract class AppLocalizations {
   /// **'Diploma'**
   String get diploma;
 
+  /// No description provided for @directAdminSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct Admin Support'**
+  String get directAdminSupport;
+
+  /// No description provided for @directContactAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct Contact Access'**
+  String get directContactAccess;
+
+  /// No description provided for @directContactUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct Contact Unlocked Profiles'**
+  String get directContactUnlocked;
+
+  /// No description provided for @directContactUnlockedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct Phone Number & WhatsApp verified access'**
+  String get directContactUnlockedSubtitle;
+
+  /// No description provided for @directMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct Message'**
+  String get directMessage;
+
+  /// No description provided for @directMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct Messages'**
+  String get directMessages;
+
+  /// No description provided for @directMessagesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay responsive when your match sends you a message.'**
+  String get directMessagesSubtitle;
+
   /// No description provided for @directMessaging.
   ///
   /// In en, this message translates to:
   /// **'Direct messaging'**
   String get directMessaging;
+
+  /// No description provided for @directMessagingPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct messaging is a Premium feature.'**
+  String get directMessagingPremium;
+
+  /// No description provided for @directNoteSentToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct Note sent with high priority! 💌'**
+  String get directNoteSentToast;
+
+  /// No description provided for @directWhatsAppLeads.
+  ///
+  /// In en, this message translates to:
+  /// **'📱 Direct WhatsApp Leads'**
+  String get directWhatsAppLeads;
 
   /// No description provided for @disabledHint.
   ///
@@ -1603,6 +2245,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Discover profiles from your community.\\nSmart matchmaking powered by compatibility scores.'**
   String get discoverProfilesFromYourCommunityNsmartM;
+
+  /// No description provided for @displayLayoutLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Display Layout'**
+  String get displayLayoutLabel;
 
   /// No description provided for @district.
   ///
@@ -1664,6 +2312,18 @@ abstract class AppLocalizations {
   /// **'Download'**
   String get downloadBtn;
 
+  /// No description provided for @downloadWatermarkFreeBiodataDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Download watermark-free high definition 2-Page Biodata in all formats.'**
+  String get downloadWatermarkFreeBiodataDesc;
+
+  /// No description provided for @drinkingHabits.
+  ///
+  /// In en, this message translates to:
+  /// **'Drinking Habits'**
+  String get drinkingHabits;
+
   /// No description provided for @dusky.
   ///
   /// In en, this message translates to:
@@ -1681,6 +2341,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit'**
   String get edit;
+
+  /// No description provided for @editBiodataInfoPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Biodata Info & Photos'**
+  String get editBiodataInfoPhotos;
+
+  /// No description provided for @editBiodataInfoPhotosDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Education, Gotra, Family, Native Tanda & Photo in your master profile.'**
+  String get editBiodataInfoPhotosDesc;
 
   /// No description provided for @editProfile.
   ///
@@ -1705,6 +2377,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Education Details'**
   String get educationDetails;
+
+  /// No description provided for @educationFieldStream.
+  ///
+  /// In en, this message translates to:
+  /// **'Education Field / Stream'**
+  String get educationFieldStream;
+
+  /// No description provided for @educationFieldSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by specialized degree stream & career path'**
+  String get educationFieldSubtitle;
 
   /// No description provided for @educationLabel.
   ///
@@ -1766,6 +2450,18 @@ abstract class AppLocalizations {
   /// **'Elder Sister'**
   String get elderSister;
 
+  /// No description provided for @elitePlanDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Handpicked matches with VIP access'**
+  String get elitePlanDesc;
+
+  /// No description provided for @elitePlanName.
+  ///
+  /// In en, this message translates to:
+  /// **'Elite'**
+  String get elitePlanName;
+
   /// No description provided for @email.
   ///
   /// In en, this message translates to:
@@ -1783,6 +2479,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Email'**
   String get emailLabel;
+
+  /// No description provided for @emailNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Notifications'**
+  String get emailNotifications;
 
   /// No description provided for @emailSupport.
   ///
@@ -1808,11 +2510,23 @@ abstract class AppLocalizations {
   /// **'Email Verified Successfully! +10 Points'**
   String get emailVerifiedSuccessfully10Points;
 
+  /// No description provided for @employmentSector.
+  ///
+  /// In en, this message translates to:
+  /// **'Employment Sector'**
+  String get employmentSector;
+
   /// No description provided for @emptyStr.
   ///
   /// In en, this message translates to:
   /// **'₹'**
   String get emptyStr;
+
+  /// No description provided for @enableNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Notifications'**
+  String get enableNotifications;
 
   /// No description provided for @english.
   ///
@@ -1831,6 +2545,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter city/village'**
   String get enterCityVillage;
+
+  /// No description provided for @enterDistrictExample.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter District (e.g. Nanded, Yavatmal, Nizamabad)'**
+  String get enterDistrictExample;
 
   /// No description provided for @enterEducationDetails.
   ///
@@ -1855,6 +2575,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter your profession details'**
   String get enterProfessionDetails;
+
+  /// No description provided for @enterVillageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Village or Tanda name...'**
+  String get enterVillageHint;
+
+  /// No description provided for @enterVillageManually.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Village/Other Name'**
+  String get enterVillageManually;
 
   /// No description provided for @enterYourBasicInformationAsItAppearsInOf.
   ///
@@ -1892,6 +2624,12 @@ abstract class AppLocalizations {
   /// **'Error'**
   String get error;
 
+  /// No description provided for @errorAdminActionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The requested action could not be completed. Please try again later.'**
+  String get errorAdminActionFailed;
+
   /// No description provided for @errorCheckingShareLimits.
   ///
   /// In en, this message translates to:
@@ -1910,11 +2648,59 @@ abstract class AppLocalizations {
   /// **'Error checking view limits: {error}'**
   String errorCheckingViewLimits(String error);
 
+  /// No description provided for @errorLaunchingLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Error launching link'**
+  String get errorLaunchingLink;
+
+  /// No description provided for @errorLoadingAdminCoupons.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load coupon offers. Please try again.'**
+  String get errorLoadingAdminCoupons;
+
+  /// No description provided for @errorLoadingAdminCreators.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not fetch creator list. Please check your network.'**
+  String get errorLoadingAdminCreators;
+
   /// No description provided for @errorLoadingAdminData.
   ///
   /// In en, this message translates to:
   /// **'Error loading admin data: {error}'**
   String errorLoadingAdminData(String error);
+
+  /// No description provided for @errorLoadingAdminPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load payment history. Please try again.'**
+  String get errorLoadingAdminPayments;
+
+  /// No description provided for @errorLoadingAdminReferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to fetch pending references. Please refresh.'**
+  String get errorLoadingAdminReferences;
+
+  /// No description provided for @errorLoadingAdminStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load dashboard statistics. Please try refreshing.'**
+  String get errorLoadingAdminStats;
+
+  /// No description provided for @errorLoadingAdminUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not fetch user list. Please check your connection.'**
+  String get errorLoadingAdminUsers;
+
+  /// No description provided for @errorLoadingAdminVerifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load verification requests. Please try again.'**
+  String get errorLoadingAdminVerifications;
 
   /// No description provided for @errorLoadingRequests.
   ///
@@ -1934,11 +2720,65 @@ abstract class AppLocalizations {
   /// **'Error: {error}'**
   String errorPrefix(String error);
 
+  /// No description provided for @errorWithLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {label}'**
+  String errorWithLabel(String label);
+
+  /// No description provided for @estimatedRefund.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated Refund'**
+  String get estimatedRefund;
+
+  /// No description provided for @eternalElitePlanDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on your career, we find your partner'**
+  String get eternalElitePlanDesc;
+
+  /// No description provided for @eternalElitePlanName.
+  ///
+  /// In en, this message translates to:
+  /// **'Eternal Elite'**
+  String get eternalElitePlanName;
+
+  /// No description provided for @eternalPlanDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Never worry about expiry again'**
+  String get eternalPlanDesc;
+
+  /// No description provided for @eternalPlanName.
+  ///
+  /// In en, this message translates to:
+  /// **'Eternal - Till U Marry'**
+  String get eternalPlanName;
+
+  /// No description provided for @eventDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Event Details'**
+  String get eventDetails;
+
   /// No description provided for @everyProfileIsVerifiedWithIdSelfieRefere.
   ///
   /// In en, this message translates to:
   /// **'Every profile is verified with ID, selfie & references.\\nTrust Score ensures genuine connections.'**
   String get everyProfileIsVerifiedWithIdSelfieRefere;
+
+  /// No description provided for @exactBirthTimeAndKundali.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact Birth Time & Kundali'**
+  String get exactBirthTimeAndKundali;
+
+  /// No description provided for @excellentMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'EXCELLENT MATCH'**
+  String get excellentMatch;
 
   /// No description provided for @exit.
   ///
@@ -1952,17 +2792,77 @@ abstract class AppLocalizations {
   /// **'Exit App'**
   String get exitApp;
 
+  /// No description provided for @exitGuestMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit Guest Mode'**
+  String get exitGuestMode;
+
+  /// No description provided for @exogamous.
+  ///
+  /// In en, this message translates to:
+  /// **'EXOGAMOUS'**
+  String get exogamous;
+
+  /// No description provided for @exogamyCompliant.
+  ///
+  /// In en, this message translates to:
+  /// **'EXOGAMY COMPLIANT'**
+  String get exogamyCompliant;
+
+  /// No description provided for @exogamyRuleDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'In traditional Banjara (Gor) culture, marriages follow strict Clan Exogamy (गोत्र बहिर्विवाह):'**
+  String get exogamyRuleDescription;
+
+  /// No description provided for @exploreAsGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore as Guest'**
+  String get exploreAsGuest;
+
+  /// No description provided for @exploreMatchmakerPlans.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Matchmaker Plans'**
+  String get exploreMatchmakerPlans;
+
+  /// No description provided for @exploreMatchmakerPlansButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Matchmaker Plans ➔'**
+  String get exploreMatchmakerPlansButton;
+
+  /// No description provided for @explorePremiumPlans.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Premium Plans'**
+  String get explorePremiumPlans;
+
   /// No description provided for @exportBiodataPdf.
   ///
   /// In en, this message translates to:
   /// **'Export Biodata PDF'**
   String get exportBiodataPdf;
 
+  /// No description provided for @expressInterest.
+  ///
+  /// In en, this message translates to:
+  /// **'Express Interest?'**
+  String get expressInterest;
+
   /// No description provided for @expressInterestDesc.
   ///
   /// In en, this message translates to:
   /// **'Express your interest by sharing your biodata directly'**
   String get expressInterestDesc;
+
+  /// No description provided for @extraViewsUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Extra Views Unlocked!'**
+  String extraViewsUnlocked(int count);
 
   /// No description provided for @failedLoadProfile.
   ///
@@ -2090,6 +2990,18 @@ abstract class AppLocalizations {
   /// **'Failed to save profile: {error}'**
   String failedToSaveProfile(String error);
 
+  /// No description provided for @failedToSendMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send message: {error}'**
+  String failedToSendMessage(String error);
+
+  /// No description provided for @failedToSendNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send note: {error}'**
+  String failedToSendNote(Object error);
+
   /// No description provided for @failedToSharePdf.
   ///
   /// In en, this message translates to:
@@ -2144,6 +3056,12 @@ abstract class AppLocalizations {
   /// **'Failed to verify: {error}'**
   String failedToVerify(String error);
 
+  /// No description provided for @failedWithError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed: {error}'**
+  String failedWithError(Object error);
+
   /// No description provided for @fair.
   ///
   /// In en, this message translates to:
@@ -2180,17 +3098,59 @@ abstract class AppLocalizations {
   /// **'Family Only'**
   String get familyOnly;
 
+  /// No description provided for @familyReputationVetted.
+  ///
+  /// In en, this message translates to:
+  /// **'Family Background & Reputation Vetted'**
+  String get familyReputationVetted;
+
+  /// No description provided for @familyReputationVettedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Clean background check conducted by field relationship managers'**
+  String get familyReputationVettedSubtitle;
+
   /// No description provided for @familyStatus.
   ///
   /// In en, this message translates to:
   /// **'Family Status'**
   String get familyStatus;
 
+  /// No description provided for @familyStatusSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select socioeconomic family status requirement'**
+  String get familyStatusSubtitle;
+
+  /// No description provided for @familyStructure.
+  ///
+  /// In en, this message translates to:
+  /// **'Family Structure'**
+  String get familyStructure;
+
+  /// No description provided for @familyStructureSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select nuclear or joint family preferences'**
+  String get familyStructureSubtitle;
+
   /// No description provided for @familyType.
   ///
   /// In en, this message translates to:
   /// **'Family Type'**
   String get familyType;
+
+  /// No description provided for @familyValues.
+  ///
+  /// In en, this message translates to:
+  /// **'Family Values'**
+  String get familyValues;
+
+  /// No description provided for @familyValuesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by cultural and social outlook'**
+  String get familyValuesSubtitle;
 
   /// No description provided for @faqA1.
   ///
@@ -2282,6 +3242,18 @@ abstract class AppLocalizations {
   /// **'Father\'s Occupation'**
   String get fatherOccupation;
 
+  /// No description provided for @featuredBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Elite Verified Badge'**
+  String get featuredBadge;
+
+  /// No description provided for @featuresIncluded.
+  ///
+  /// In en, this message translates to:
+  /// **'Features included:'**
+  String get featuresIncluded;
+
   /// No description provided for @feet.
   ///
   /// In en, this message translates to:
@@ -2306,11 +3278,53 @@ abstract class AppLocalizations {
   /// **'₹15 Lakh - ₹20 Lakh'**
   String get fifteenToTwentyLakh;
 
+  /// No description provided for @fiftyPercentOffVipUpgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'🔥 50% OFF VIP Upgrade'**
+  String get fiftyPercentOffVipUpgrade;
+
+  /// No description provided for @filterAstrologicalCompatibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter candidate astrological horoscope compatibility'**
+  String get filterAstrologicalCompatibility;
+
+  /// No description provided for @filterCandidateHomeState.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter candidate home state or current residing district'**
+  String get filterCandidateHomeState;
+
+  /// No description provided for @filterProfiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter profiles'**
+  String get filterProfiles;
+
   /// No description provided for @filtered.
   ///
   /// In en, this message translates to:
   /// **'(filtered)'**
   String get filtered;
+
+  /// No description provided for @filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get filters;
+
+  /// No description provided for @filtersResetToDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters reset to default'**
+  String get filtersResetToDefault;
+
+  /// No description provided for @financialPerformance.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial Performance'**
+  String get financialPerformance;
 
   /// No description provided for @findYourPerfectMatch.
   ///
@@ -2324,11 +3338,23 @@ abstract class AppLocalizations {
   /// **'₹5 Lakh - ₹7.5 Lakh'**
   String get fiveToSevenHalfLakh;
 
+  /// No description provided for @focusOnCareer.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on your career, while we find your life partner'**
+  String get focusOnCareer;
+
   /// No description provided for @followAndGetFivePercent.
   ///
   /// In en, this message translates to:
   /// **'Follow & Get +5%'**
   String get followAndGetFivePercent;
+
+  /// No description provided for @followDailyMatchUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow Daily Match Updates'**
+  String get followDailyMatchUpdates;
 
   /// No description provided for @followUsOnInstagramBonus.
   ///
@@ -2336,11 +3362,65 @@ abstract class AppLocalizations {
   /// **'Follow us on Instagram to get a 5% biodata completion bonus and stay updated with the latest matches.'**
   String get followUsOnInstagramBonus;
 
+  /// No description provided for @forLifetime.
+  ///
+  /// In en, this message translates to:
+  /// **'for Lifetime'**
+  String get forLifetime;
+
   /// No description provided for @forMonths.
   ///
   /// In en, this message translates to:
   /// **'for {count} months'**
   String forMonths(int count);
+
+  /// No description provided for @forMyDaughter.
+  ///
+  /// In en, this message translates to:
+  /// **'👧 For My Daughter'**
+  String get forMyDaughter;
+
+  /// No description provided for @forMyRelative.
+  ///
+  /// In en, this message translates to:
+  /// **'👨‍👩‍👧 For My Relative'**
+  String get forMyRelative;
+
+  /// No description provided for @forMySibling.
+  ///
+  /// In en, this message translates to:
+  /// **'👫 For My Sibling'**
+  String get forMySibling;
+
+  /// No description provided for @forMySon.
+  ///
+  /// In en, this message translates to:
+  /// **'👦 For My Son'**
+  String get forMySon;
+
+  /// No description provided for @forMyself.
+  ///
+  /// In en, this message translates to:
+  /// **'👤 For Myself'**
+  String get forMyself;
+
+  /// No description provided for @forOther.
+  ///
+  /// In en, this message translates to:
+  /// **'✨ For Someone Else'**
+  String get forOther;
+
+  /// No description provided for @forWhomSearching.
+  ///
+  /// In en, this message translates to:
+  /// **'Who are you searching a match for?'**
+  String get forWhomSearching;
+
+  /// No description provided for @foundYourPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'Found your Partner?'**
+  String get foundYourPartner;
 
   /// No description provided for @free.
   ///
@@ -2353,6 +3433,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Free: 1 photo\\nPremium: Up to 6 photos'**
   String get free1PhotonpremiumUpTo6Photos;
+
+  /// No description provided for @freePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Free Plan'**
+  String get freePlan;
 
   /// No description provided for @freePlanDesc.
   ///
@@ -2378,11 +3464,29 @@ abstract class AppLocalizations {
   /// **'Friend'**
   String get friend;
 
+  /// No description provided for @fromContact.
+  ///
+  /// In en, this message translates to:
+  /// **'From: {name}'**
+  String fromContact(String name);
+
   /// No description provided for @frontSide.
   ///
   /// In en, this message translates to:
   /// **'Front Side'**
   String get frontSide;
+
+  /// No description provided for @fullAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Address'**
+  String get fullAddress;
+
+  /// No description provided for @fullKundaliAvailableOnMutual.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Kundali chart available on mutual match interest.'**
+  String get fullKundaliAvailableOnMutual;
 
   /// No description provided for @fullName.
   ///
@@ -2401,6 +3505,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Gender'**
   String get gender;
+
+  /// No description provided for @genderSelectHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Gender is'**
+  String get genderSelectHeading;
 
   /// No description provided for @generateBio.
   ///
@@ -2450,11 +3560,23 @@ abstract class AppLocalizations {
   /// **'Go Back'**
   String get goBack;
 
+  /// No description provided for @goProAdFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Go Pro for Ad-Free Experience'**
+  String get goProAdFree;
+
   /// No description provided for @gold.
   ///
   /// In en, this message translates to:
   /// **'Gold'**
   String get gold;
+
+  /// No description provided for @goldMember.
+  ///
+  /// In en, this message translates to:
+  /// **'⭐ Gold Member'**
+  String get goldMember;
 
   /// No description provided for @goldPlanDesc.
   ///
@@ -2473,6 +3595,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Gold Verified'**
   String get goldVerified;
+
+  /// No description provided for @goodMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'GOOD MATCH'**
+  String get goodMatch;
+
+  /// No description provided for @gorBanjara.
+  ///
+  /// In en, this message translates to:
+  /// **'Gor / Banjara'**
+  String get gorBanjara;
 
   /// No description provided for @gotIt.
   ///
@@ -2528,6 +3662,18 @@ abstract class AppLocalizations {
   /// **'Government ID'**
   String get govtIdVerification;
 
+  /// No description provided for @govtIdVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Govt ID / Aadhaar Verified'**
+  String get govtIdVerified;
+
+  /// No description provided for @govtIdVerifiedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Only show candidates with 100% verified Govt ID badge'**
+  String get govtIdVerifiedSubtitle;
+
   /// No description provided for @graduate.
   ///
   /// In en, this message translates to:
@@ -2546,11 +3692,35 @@ abstract class AppLocalizations {
   /// **'Grid'**
   String get grid;
 
+  /// No description provided for @groom.
+  ///
+  /// In en, this message translates to:
+  /// **'Groom'**
+  String get groom;
+
+  /// No description provided for @groomBoy.
+  ///
+  /// In en, this message translates to:
+  /// **'👦 Groom (Boy)'**
+  String get groomBoy;
+
+  /// No description provided for @groomOption.
+  ///
+  /// In en, this message translates to:
+  /// **'👦 Groom (Boy)'**
+  String get groomOption;
+
   /// No description provided for @groupPhotosNotVisible.
   ///
   /// In en, this message translates to:
   /// **'Group photos where you are not clearly visible'**
   String get groupPhotosNotVisible;
+
+  /// No description provided for @growYourWeddingBusiness.
+  ///
+  /// In en, this message translates to:
+  /// **'Grow Your Wedding Business'**
+  String get growYourWeddingBusiness;
 
   /// No description provided for @growth.
   ///
@@ -2558,11 +3728,101 @@ abstract class AppLocalizations {
   /// **'Growth'**
   String get growth;
 
+  /// No description provided for @guestModeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a guided tour of the app before creating your profile.'**
+  String get guestModeDesc;
+
+  /// No description provided for @guestModeInstantBrowseSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore BanjaraBio instantly without an account to see features and available profiles.'**
+  String get guestModeInstantBrowseSubtitle;
+
+  /// No description provided for @guestModeInstantBrowseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest Mode (Instant Browse)'**
+  String get guestModeInstantBrowseTitle;
+
+  /// No description provided for @guestRestrictedContent.
+  ///
+  /// In en, this message translates to:
+  /// **'To view all details, save profiles, and communicate with matches, please create your biodata or change your search options.'**
+  String get guestRestrictedContent;
+
+  /// No description provided for @guestRestrictionMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'To interact with profiles, express interest, or send messages, you need to create your own biodata first.'**
+  String get guestRestrictionMessage;
+
+  /// No description provided for @gunaMilanScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Guna Milan (36 Points)'**
+  String get gunaMilanScore;
+
+  /// No description provided for @gunasMatchedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} / 36 Gunas Matched ({percentage}%)'**
+  String gunasMatchedCount(int count, int percentage);
+
+  /// No description provided for @gunasMatchedStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'28 / 36 Gunas Matched'**
+  String get gunasMatchedStatus;
+
+  /// No description provided for @habitatNativeOrigin.
+  ///
+  /// In en, this message translates to:
+  /// **'Habitat / Native Origin'**
+  String get habitatNativeOrigin;
+
+  /// No description provided for @habitatPillarSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared cultural values & open relocation preferences'**
+  String get habitatPillarSubtitle;
+
+  /// No description provided for @habitatSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter candidate living environment & origin type'**
+  String get habitatSubtitle;
+
+  /// No description provided for @habitatTandaPillar.
+  ///
+  /// In en, this message translates to:
+  /// **'Habitat, Tanda & Lifestyle'**
+  String get habitatTandaPillar;
+
+  /// No description provided for @handpickedMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Handpicked Matches/week'**
+  String handpickedMatches(int count);
+
   /// No description provided for @haveQuestionsOrNeedAssistanceOurTeamIsHe.
   ///
   /// In en, this message translates to:
   /// **'Have questions or need assistance? Our team is here to help you find your perfect match.'**
   String get haveQuestionsOrNeedAssistanceOurTeamIsHe;
+
+  /// No description provided for @headerBlessingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select which divine blessing is engraved at the top of your PDF'**
+  String get headerBlessingSubtitle;
+
+  /// No description provided for @headerBlessingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'🪔 Header Blessing / Deity Mantra'**
+  String get headerBlessingTitle;
 
   /// No description provided for @heavilyFilteredEdited.
   ///
@@ -2576,11 +3836,29 @@ abstract class AppLocalizations {
   /// **'Height'**
   String get height;
 
+  /// No description provided for @heightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Height'**
+  String get heightLabel;
+
   /// No description provided for @helpOurCommunityGrowAndUnlockPremiumRewa.
   ///
   /// In en, this message translates to:
   /// **'Help our community grow and unlock Premium rewards for yourself.'**
   String get helpOurCommunityGrowAndUnlockPremiumRewa;
+
+  /// No description provided for @hideAlgorithmInsights.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide Algorithm Insights'**
+  String get hideAlgorithmInsights;
+
+  /// No description provided for @highMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'HIGH MATCH'**
+  String get highMatch;
 
   /// No description provided for @highSchool.
   ///
@@ -2606,11 +3884,47 @@ abstract class AppLocalizations {
   /// **'Homemaker'**
   String get homemaker;
 
+  /// No description provided for @horoscopeChartVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Horoscope chart verified & matched.'**
+  String get horoscopeChartVerified;
+
+  /// No description provided for @horoscopeKundali.
+  ///
+  /// In en, this message translates to:
+  /// **'Horoscope & Kundali (कुंडली)'**
+  String get horoscopeKundali;
+
+  /// No description provided for @horoscopeKundaliAttached.
+  ///
+  /// In en, this message translates to:
+  /// **'Horoscope / Kundali Attached'**
+  String get horoscopeKundaliAttached;
+
   /// No description provided for @hoursAgo.
   ///
   /// In en, this message translates to:
   /// **'{count}h ago'**
   String hoursAgo(int count);
+
+  /// No description provided for @houseOwnership.
+  ///
+  /// In en, this message translates to:
+  /// **'House Ownership'**
+  String get houseOwnership;
+
+  /// No description provided for @howDidYouMeet.
+  ///
+  /// In en, this message translates to:
+  /// **'How did you meet? What do you like about them?'**
+  String get howDidYouMeet;
+
+  /// No description provided for @howIsScoreCalculated.
+  ///
+  /// In en, this message translates to:
+  /// **'How is this score calculated?'**
+  String get howIsScoreCalculated;
 
   /// No description provided for @howItWorks.
   ///
@@ -2642,6 +3956,12 @@ abstract class AppLocalizations {
   /// **'ID Type'**
   String get idType;
 
+  /// No description provided for @identityDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Identity Details'**
+  String get identityDetails;
+
   /// No description provided for @inappropriateBackgrounds.
   ///
   /// In en, this message translates to:
@@ -2666,6 +3986,36 @@ abstract class AppLocalizations {
   /// **'inches'**
   String get inches;
 
+  /// No description provided for @incognitoMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Private Profile Browsing'**
+  String get incognitoMode;
+
+  /// No description provided for @incomeHiddenFromPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden from shared PDF for privacy'**
+  String get incomeHiddenFromPdf;
+
+  /// No description provided for @incomeSalaryVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Income / Salary Verified'**
+  String get incomeSalaryVerified;
+
+  /// No description provided for @incomeSalaryVerifiedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Candidates with verified salary slip or ITR documentation'**
+  String get incomeSalaryVerifiedSubtitle;
+
+  /// No description provided for @incomeVisibleOnPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Package & income details visible on PDF'**
+  String get incomeVisibleOnPdf;
+
   /// No description provided for @increaseBiodataScore.
   ///
   /// In en, this message translates to:
@@ -2678,11 +4028,59 @@ abstract class AppLocalizations {
   /// **'Increase your Trust Score to confirm your identity and unlock exclusive discounts.'**
   String get increaseYourTrustScoreToConfirmYourIdent;
 
-  /// No description provided for @interestSent.
+  /// No description provided for @india.
   ///
   /// In en, this message translates to:
-  /// **'Interest Sent'**
-  String get interestSent;
+  /// **'India'**
+  String get india;
+
+  /// No description provided for @instagramLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Instagram Reel/Story Link'**
+  String get instagramLink;
+
+  /// No description provided for @instagramStories.
+  ///
+  /// In en, this message translates to:
+  /// **'Instagram Stories'**
+  String get instagramStories;
+
+  /// No description provided for @instantAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant Alert'**
+  String get instantAlert;
+
+  /// No description provided for @instantMatchAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant Match Alerts'**
+  String get instantMatchAlerts;
+
+  /// No description provided for @instantMatchAlertsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get notified immediately when mutual interest is accepted.'**
+  String get instantMatchAlertsSubtitle;
+
+  /// No description provided for @interest.
+  ///
+  /// In en, this message translates to:
+  /// **'Interest'**
+  String get interest;
+
+  /// No description provided for @interestConfirmationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to share your profile with {name} to show your interest?'**
+  String interestConfirmationDesc(String name);
+
+  /// No description provided for @interestConfirmationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This will share your profile with {name} and allow them to connect with you. Are you sure?'**
+  String interestConfirmationMessage(String name);
 
   /// No description provided for @interestConfirmationTitle.
   ///
@@ -2690,11 +4088,17 @@ abstract class AppLocalizations {
   /// **'Express Interest?'**
   String get interestConfirmationTitle;
 
-  /// No description provided for @interestConfirmationMessage.
+  /// No description provided for @interestDeclinedToast.
   ///
   /// In en, this message translates to:
-  /// **'This will share your profile with {name} and allow them to connect with you. Are you sure?'**
-  String interestConfirmationMessage(String name);
+  /// **'Interest declined'**
+  String get interestDeclinedToast;
+
+  /// No description provided for @interestSent.
+  ///
+  /// In en, this message translates to:
+  /// **'INTEREST SENT'**
+  String get interestSent;
 
   /// No description provided for @interestShared.
   ///
@@ -2726,6 +4130,12 @@ abstract class AppLocalizations {
   /// **'Invite friends and unlock premium rewards!'**
   String get inviteFriendsRewards;
 
+  /// No description provided for @inviteRelativesToVouch.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite Relatives to Vouch'**
+  String get inviteRelativesToVouch;
+
   /// No description provided for @inviteStep1.
   ///
   /// In en, this message translates to:
@@ -2750,11 +4160,29 @@ abstract class AppLocalizations {
   /// **'Are you a disabled person?'**
   String get isDisabledPerson;
 
+  /// No description provided for @itSAMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'IT\'S A MATCH!'**
+  String get itSAMatch;
+
+  /// No description provided for @job.
+  ///
+  /// In en, this message translates to:
+  /// **'Job'**
+  String get job;
+
   /// No description provided for @jobDetails.
   ///
   /// In en, this message translates to:
   /// **'Job Details'**
   String get jobDetails;
+
+  /// No description provided for @joinBvsNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Join BVS (Register Here)'**
+  String get joinBvsNow;
 
   /// No description provided for @joinMeOnBanjarabio.
   ///
@@ -2798,6 +4226,36 @@ abstract class AppLocalizations {
   /// **'Keyword Search'**
   String get keywordSearch;
 
+  /// No description provided for @kundaliGunasPillar.
+  ///
+  /// In en, this message translates to:
+  /// **'Kundali & Gunas (अष्टकूट जुळणी)'**
+  String get kundaliGunasPillar;
+
+  /// No description provided for @kundaliHoroscopeAttached.
+  ///
+  /// In en, this message translates to:
+  /// **'Kundali / Horoscope Attached'**
+  String get kundaliHoroscopeAttached;
+
+  /// No description provided for @kundaliHoroscopeAttachedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Only show profiles with uploaded Janam Kundali chart'**
+  String get kundaliHoroscopeAttachedSubtitle;
+
+  /// No description provided for @kundaliOnRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Kundali Available on Request'**
+  String get kundaliOnRequest;
+
+  /// No description provided for @kundaliPillarSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No severe Manglik Dosha; high compatibility score'**
+  String get kundaliPillarSubtitle;
+
   /// No description provided for @language.
   ///
   /// In en, this message translates to:
@@ -2810,6 +4268,12 @@ abstract class AppLocalizations {
   /// **'Language changed to {language}'**
   String languageChanged(String language);
 
+  /// No description provided for @languageSwitcherLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageSwitcherLabel;
+
   /// No description provided for @lastUpdatedJanuary2026.
   ///
   /// In en, this message translates to:
@@ -2821,6 +4285,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Legal & Information'**
   String get legalAndInformation;
+
+  /// No description provided for @lifetime.
+  ///
+  /// In en, this message translates to:
+  /// **'Lifetime'**
+  String get lifetime;
+
+  /// No description provided for @limitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Limit Reached'**
+  String get limitReached;
+
+  /// No description provided for @linkRequiredForRefund.
+  ///
+  /// In en, this message translates to:
+  /// **'Link required for refund'**
+  String get linkRequiredForRefund;
 
   /// No description provided for @linkShare.
   ///
@@ -2851,6 +4333,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Live Selfie Verification'**
   String get liveSelfieVerification;
+
+  /// No description provided for @liveSync.
+  ///
+  /// In en, this message translates to:
+  /// **'LIVE SYNC'**
+  String get liveSync;
 
   /// No description provided for @livenessCheck.
   ///
@@ -2888,6 +4376,12 @@ abstract class AppLocalizations {
   /// **'Location'**
   String get location;
 
+  /// No description provided for @locationAndState.
+  ///
+  /// In en, this message translates to:
+  /// **'Location & Native State'**
+  String get locationAndState;
+
   /// No description provided for @locationDetails.
   ///
   /// In en, this message translates to:
@@ -2906,11 +4400,23 @@ abstract class AppLocalizations {
   /// **'Location Preview'**
   String get locationPreview;
 
+  /// No description provided for @logCallOutcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Call Outcome'**
+  String get logCallOutcome;
+
   /// No description provided for @login.
   ///
   /// In en, this message translates to:
   /// **'Login'**
   String get login;
+
+  /// No description provided for @loginAndCreateBiodataCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Login & Create Biodata ✨'**
+  String get loginAndCreateBiodataCta;
 
   /// No description provided for @loginFailed.
   ///
@@ -2930,6 +4436,12 @@ abstract class AppLocalizations {
   /// **'Logout'**
   String get logout;
 
+  /// No description provided for @lookingForGender.
+  ///
+  /// In en, this message translates to:
+  /// **'Looking For (Gender)'**
+  String get lookingForGender;
+
   /// No description provided for @loseMatchesAndSavedProfiles.
   ///
   /// In en, this message translates to:
@@ -2948,6 +4460,30 @@ abstract class AppLocalizations {
   /// **'Male'**
   String get male;
 
+  /// No description provided for @mamakulAndTandaSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mamakul: {mamakul} • Tanda: {tanda}'**
+  String mamakulAndTandaSubtitle(String mamakul, String tanda);
+
+  /// No description provided for @mamakulLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Mamakul (मोसळ)'**
+  String get mamakulLabel;
+
+  /// No description provided for @mamakulRule.
+  ///
+  /// In en, this message translates to:
+  /// **'Maternal Gotras are verified to ensure complete cultural harmony and lineage respect.'**
+  String get mamakulRule;
+
+  /// No description provided for @mamakulTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Mamakul / Mosam (मोसळ):'**
+  String get mamakulTitle;
+
   /// No description provided for @managePhotos.
   ///
   /// In en, this message translates to:
@@ -2959,6 +4495,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Manage\\nPhotos'**
   String get managenphotos;
+
+  /// No description provided for @manglikDosha.
+  ///
+  /// In en, this message translates to:
+  /// **'Manglik / Kuja Dosha'**
+  String get manglikDosha;
 
   /// No description provided for @manualSelection.
   ///
@@ -2990,6 +4532,12 @@ abstract class AppLocalizations {
   /// **'Marriage Readiness'**
   String get marriageReadiness;
 
+  /// No description provided for @marriageRewardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share marriage proof & get up to 35% Refund!'**
+  String get marriageRewardSubtitle;
+
   /// No description provided for @married.
   ///
   /// In en, this message translates to:
@@ -3008,6 +4556,12 @@ abstract class AppLocalizations {
   /// **'Master\'s Degree'**
   String get mastersDegree;
 
+  /// No description provided for @matchCompatibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Match Compatibility'**
+  String get matchCompatibility;
+
   /// No description provided for @matchNOfTotal.
   ///
   /// In en, this message translates to:
@@ -3020,23 +4574,53 @@ abstract class AppLocalizations {
   /// **'Matched'**
   String get matched;
 
-  /// No description provided for @sent.
+  /// No description provided for @matchedBadge.
   ///
   /// In en, this message translates to:
-  /// **'Sent'**
-  String get sent;
+  /// **'MATCHED'**
+  String get matchedBadge;
 
-  /// No description provided for @received.
+  /// No description provided for @matchesCategoryLabel.
   ///
   /// In en, this message translates to:
-  /// **'Received'**
-  String get received;
+  /// **'Matches Category'**
+  String get matchesCategoryLabel;
 
   /// No description provided for @matchmakerConsultation.
   ///
   /// In en, this message translates to:
   /// **'Matchmaker consultation'**
   String get matchmakerConsultation;
+
+  /// No description provided for @matchmakerFiltersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct Contact, RM Handpicked, 36 Guna Score & Land Holdings'**
+  String get matchmakerFiltersSubtitle;
+
+  /// No description provided for @matchmakerFiltersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Matchmaker Filters'**
+  String get matchmakerFiltersTitle;
+
+  /// No description provided for @matchmakerPlansSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Elite • Royal • Eternal Elite'**
+  String get matchmakerPlansSubtitle;
+
+  /// No description provided for @maternalGotraMamakul.
+  ///
+  /// In en, this message translates to:
+  /// **'Maternal Gotra (Mamakul / मोसळ)'**
+  String get maternalGotraMamakul;
+
+  /// No description provided for @maternalGotraSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Exclude or specify maternal lineage to avoid customary gotra clash'**
+  String get maternalGotraSubtitle;
 
   /// No description provided for @matrimonyFor.
   ///
@@ -3055,6 +4639,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Maybe Later'**
   String get maybeLater;
+
+  /// No description provided for @melavaBannerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover regional matrimonial get-togethers across India. Reach organizers directly to participate.'**
+  String get melavaBannerSubtitle;
+
+  /// No description provided for @melavaBannerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Banjara Parichay Melavas'**
+  String get melavaBannerTitle;
+
+  /// No description provided for @melavaEventCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} events'**
+  String melavaEventCount(int count);
+
+  /// No description provided for @melavas.
+  ///
+  /// In en, this message translates to:
+  /// **'Melavas'**
+  String get melavas;
+
+  /// No description provided for @men.
+  ///
+  /// In en, this message translates to:
+  /// **'Men'**
+  String get men;
 
   /// No description provided for @menu.
   ///
@@ -3080,6 +4694,12 @@ abstract class AppLocalizations {
   /// **'MESSAGES'**
   String get messages;
 
+  /// Title when user hits messaging limit
+  ///
+  /// In en, this message translates to:
+  /// **'Messaging Limit Reached'**
+  String get messagingLimitReached;
+
   /// No description provided for @middleClass.
   ///
   /// In en, this message translates to:
@@ -3091,6 +4711,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Min Age'**
   String get minAge;
+
+  /// No description provided for @minimumHeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum Height'**
+  String get minimumHeight;
+
+  /// No description provided for @minimumHeightSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select minimum height requirement for matches'**
+  String get minimumHeightSubtitle;
 
   /// No description provided for @minutesAgo.
   ///
@@ -3122,6 +4754,24 @@ abstract class AppLocalizations {
   /// **'/month'**
   String get month;
 
+  /// No description provided for @monthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get monthly;
+
+  /// No description provided for @monthlyCheckIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Check-in'**
+  String get monthlyCheckIn;
+
+  /// No description provided for @monthlyRevenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Revenue (₹)'**
+  String get monthlyRevenue;
+
   /// No description provided for @months.
   ///
   /// In en, this message translates to:
@@ -3133,6 +4783,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'More about your studies and work'**
   String get moreAboutYourStudiesAndWork;
+
+  /// No description provided for @moreInvitesToUnlockTier.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} more invites to unlock {tier} tier ({reward})'**
+  String moreInvitesToUnlockTier(Object count, Object reward, Object tier);
 
   /// No description provided for @moreOptions.
   ///
@@ -3158,17 +4814,53 @@ abstract class AppLocalizations {
   /// **'Mother\'s Occupation'**
   String get motherOccupation;
 
+  /// No description provided for @mrpPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'MRP ₹{price}'**
+  String mrpPrice(int price);
+
+  /// No description provided for @mustHavePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Must Have Photo'**
+  String get mustHavePhoto;
+
+  /// No description provided for @mutualMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Mutual Match'**
+  String get mutualMatch;
+
+  /// No description provided for @mutualMatchesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Mutual matches will appear here when both users share interest in each other'**
+  String get mutualMatchesDesc;
+
   /// No description provided for @myProfile.
   ///
   /// In en, this message translates to:
   /// **'My Profile'**
   String get myProfile;
 
+  /// No description provided for @nakshatraStar.
+  ///
+  /// In en, this message translates to:
+  /// **'Nakshatra (Star)'**
+  String get nakshatraStar;
+
   /// No description provided for @name.
   ///
   /// In en, this message translates to:
   /// **'Name'**
   String get name;
+
+  /// No description provided for @nativeDistrict.
+  ///
+  /// In en, this message translates to:
+  /// **'Native District'**
+  String get nativeDistrict;
 
   /// No description provided for @nativePlace.
   ///
@@ -3182,6 +4874,12 @@ abstract class AppLocalizations {
   /// **'Natural poses with respectful expressions'**
   String get naturalPosesRespectful;
 
+  /// No description provided for @needHelpContactAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Need help? Contact Admin'**
+  String get needHelpContactAdmin;
+
   /// No description provided for @needProfileToShareToast.
   ///
   /// In en, this message translates to:
@@ -3194,11 +4892,23 @@ abstract class AppLocalizations {
   /// **'Never Married'**
   String get neverMarried;
 
+  /// No description provided for @neverMissVerifiedMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Never miss a verified match, instant message, or profile update.'**
+  String get neverMissVerifiedMatch;
+
   /// No description provided for @newLabel.
   ///
   /// In en, this message translates to:
   /// **'New'**
   String get newLabel;
+
+  /// No description provided for @newMatchAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'New Match Alerts'**
+  String get newMatchAlerts;
 
   /// No description provided for @newMatches.
   ///
@@ -3266,6 +4976,12 @@ abstract class AppLocalizations {
   /// **'No locations found for \"{query}\"'**
   String noLocationsFoundForQuery(String query);
 
+  /// No description provided for @noMatchesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Matches Yet'**
+  String get noMatchesYet;
+
   /// No description provided for @noPendingRequests.
   ///
   /// In en, this message translates to:
@@ -3308,6 +5024,18 @@ abstract class AppLocalizations {
   /// **'No profiles match your filters'**
   String get noProfilesMatchYourFilters;
 
+  /// No description provided for @noProfilesReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'No Profiles Received'**
+  String get noProfilesReceived;
+
+  /// No description provided for @noProfilesSharedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Profiles Shared Yet'**
+  String get noProfilesSharedYet;
+
   /// No description provided for @noResultsMessage.
   ///
   /// In en, this message translates to:
@@ -3332,6 +5060,18 @@ abstract class AppLocalizations {
   /// **'No views yet'**
   String get noViewsYet;
 
+  /// No description provided for @none.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get none;
+
+  /// No description provided for @normalFit.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal / Fit'**
+  String get normalFit;
+
   /// No description provided for @notAvailable.
   ///
   /// In en, this message translates to:
@@ -3343,6 +5083,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not Entered'**
   String get notEntered;
+
+  /// No description provided for @notMatchedCannotMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not matched with this profile, so you can\'t direct message them.'**
+  String get notMatchedCannotMessage;
 
   /// No description provided for @notMatchedCantMessage.
   ///
@@ -3362,11 +5108,23 @@ abstract class AppLocalizations {
   /// **'Photos that do not represent your current appearance'**
   String get notRepresentAppearance;
 
+  /// No description provided for @notSpecified.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Specified'**
+  String get notSpecified;
+
   /// No description provided for @notVerifiedYetPleaseClickTheLinkInYourEm.
   ///
   /// In en, this message translates to:
   /// **'Not verified yet. Please click the link in your email.'**
   String get notVerifiedYetPleaseClickTheLinkInYourEm;
+
+  /// No description provided for @notWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Working'**
+  String get notWorking;
 
   /// No description provided for @notYetVerifiedBadge.
   ///
@@ -3410,11 +5168,23 @@ abstract class AppLocalizations {
   /// **'+91 98765 43210'**
   String get num919876543210;
 
+  /// No description provided for @occupationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Occupation'**
+  String get occupationLabel;
+
   /// No description provided for @officeAddress.
   ///
   /// In en, this message translates to:
   /// **'Office Address'**
   String get officeAddress;
+
+  /// No description provided for @officialBiodataPdfShared.
+  ///
+  /// In en, this message translates to:
+  /// **'Official Biodata PDF Shared 📄'**
+  String get officialBiodataPdfShared;
 
   /// No description provided for @ok.
   ///
@@ -3446,17 +5216,77 @@ abstract class AppLocalizations {
   /// **'Secure & Private'**
   String get onboardingTitle3;
 
+  /// No description provided for @oneFreeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'1 FREE 💌'**
+  String get oneFreeNote;
+
+  /// No description provided for @oneHundredPercentCompliant.
+  ///
+  /// In en, this message translates to:
+  /// **'100% Compliant'**
+  String get oneHundredPercentCompliant;
+
+  /// No description provided for @oneHundredPercentPrivate.
+  ///
+  /// In en, this message translates to:
+  /// **'100% Private'**
+  String get oneHundredPercentPrivate;
+
+  /// No description provided for @oneMessageUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'1 Message Unlocked!'**
+  String get oneMessageUnlocked;
+
+  /// No description provided for @oneMonthFree.
+  ///
+  /// In en, this message translates to:
+  /// **'1 Month Free'**
+  String get oneMonthFree;
+
+  /// No description provided for @onePhotoLockedTeaser.
+  ///
+  /// In en, this message translates to:
+  /// **'📸 1 Photo (🔒 +{count})'**
+  String onePhotoLockedTeaser(int count);
+
+  /// No description provided for @oneTapSelect.
+  ///
+  /// In en, this message translates to:
+  /// **'1-Tap Select'**
+  String get oneTapSelect;
+
   /// No description provided for @oneTime.
   ///
   /// In en, this message translates to:
   /// **'One Time'**
   String get oneTime;
 
+  /// No description provided for @oneYearVip.
+  ///
+  /// In en, this message translates to:
+  /// **'1 Year VIP'**
+  String get oneYearVip;
+
   /// No description provided for @online.
   ///
   /// In en, this message translates to:
   /// **'Online'**
   String get online;
+
+  /// No description provided for @onlyDobShownOnPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Only Date of Birth shown on PDF'**
+  String get onlyDobShownOnPdf;
+
+  /// No description provided for @onlyShowProfilesWithPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Only show profiles with verified photo albums'**
+  String get onlyShowProfilesWithPhoto;
 
   /// No description provided for @openCamera.
   ///
@@ -3476,6 +5306,12 @@ abstract class AppLocalizations {
   /// **'Open Settings'**
   String get openSettings;
 
+  /// No description provided for @openToRelocate.
+  ///
+  /// In en, this message translates to:
+  /// **'Open to Relocate'**
+  String get openToRelocate;
+
   /// No description provided for @openingConversation.
   ///
   /// In en, this message translates to:
@@ -3487,6 +5323,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Opening conversation...'**
   String get openingConversationToast;
+
+  /// No description provided for @option1Badge.
+  ///
+  /// In en, this message translates to:
+  /// **'OPTION 1 • NO LOGIN NEEDED'**
+  String get option1Badge;
+
+  /// No description provided for @option2Badge.
+  ///
+  /// In en, this message translates to:
+  /// **'OPTION 2 • MOST POPULAR • 100% FREE'**
+  String get option2Badge;
+
+  /// No description provided for @option3Badge.
+  ///
+  /// In en, this message translates to:
+  /// **'OPTION 3 • GUEST MODE'**
+  String get option3Badge;
+
+  /// No description provided for @optional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get optional;
+
+  /// No description provided for @orCustomizeYourNote.
+  ///
+  /// In en, this message translates to:
+  /// **'OR CUSTOMIZE YOUR NOTE'**
+  String get orCustomizeYourNote;
+
+  /// No description provided for @organizer.
+  ///
+  /// In en, this message translates to:
+  /// **'Organizer'**
+  String get organizer;
 
   /// No description provided for @originalVillageHint.
   ///
@@ -3500,6 +5372,24 @@ abstract class AppLocalizations {
   /// **'Other'**
   String get other;
 
+  /// No description provided for @ownHouseVilla.
+  ///
+  /// In en, this message translates to:
+  /// **'Own House / Villa'**
+  String get ownHouseVilla;
+
+  /// No description provided for @ownResidentialHouseVilla.
+  ///
+  /// In en, this message translates to:
+  /// **'Own Residential House / Villa'**
+  String get ownResidentialHouseVilla;
+
+  /// No description provided for @ownResidentialHouseVillaSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Family owns self-acquired or independent residential house'**
+  String get ownResidentialHouseVillaSubtitle;
+
   /// No description provided for @partnerExpectations.
   ///
   /// In en, this message translates to:
@@ -3511,6 +5401,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Describe what you are looking for...'**
   String get partnerExpectationsHint;
+
+  /// No description provided for @partnerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner\'s Name'**
+  String get partnerName;
 
   /// No description provided for @partnerPreferences.
   ///
@@ -3524,11 +5420,23 @@ abstract class AppLocalizations {
   /// **'Password'**
   String get password;
 
+  /// No description provided for @pasteUrlHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste the URL here'**
+  String get pasteUrlHere;
+
   /// No description provided for @pay199ToUnlockFullPdf.
   ///
   /// In en, this message translates to:
   /// **'Pay ₹199 to Unlock Full PDF'**
   String get pay199ToUnlockFullPdf;
+
+  /// No description provided for @payInstantUnlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay ₹{price} Instant Unlock'**
+  String payInstantUnlock(Object price);
 
   /// No description provided for @paymentFailed.
   ///
@@ -3548,11 +5456,35 @@ abstract class AppLocalizations {
   /// **'Payment successful! Templates unlocked.'**
   String get paymentSuccessful;
 
+  /// No description provided for @paymentSuccessfulPdfUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Successful! PDF Unlocked.'**
+  String get paymentSuccessfulPdfUnlocked;
+
   /// No description provided for @paymentSuccessfulWelcome.
   ///
   /// In en, this message translates to:
   /// **'Payment successful! Welcome to {plan}'**
   String paymentSuccessfulWelcome(String plan);
+
+  /// No description provided for @pdfDisplayStudio.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF Display Studio'**
+  String get pdfDisplayStudio;
+
+  /// No description provided for @pdfDisplayStudioDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize header deity blessings and toggle confidential fields on your shareable PDF.'**
+  String get pdfDisplayStudioDesc;
+
+  /// No description provided for @pdfRevenue.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF Revenue (₹)'**
+  String get pdfRevenue;
 
   /// No description provided for @pdfSavedToDownloads.
   ///
@@ -3566,17 +5498,53 @@ abstract class AppLocalizations {
   /// **'Pending'**
   String get pending;
 
+  /// No description provided for @pendingReferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending References'**
+  String get pendingReferences;
+
+  /// No description provided for @pendingReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Reports'**
+  String get pendingReports;
+
   /// No description provided for @pendingVerifications.
   ///
   /// In en, this message translates to:
   /// **'Pending Verifications'**
   String get pendingVerifications;
 
+  /// No description provided for @perMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'/month'**
+  String get perMonth;
+
   /// No description provided for @percentComplete.
   ///
   /// In en, this message translates to:
   /// **'{percentage}% Complete'**
   String percentComplete(int percentage);
+
+  /// No description provided for @percentCompleteBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'{score}% Complete'**
+  String percentCompleteBadge(int score);
+
+  /// No description provided for @percentMatchBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'{score}% Match'**
+  String percentMatchBadge(int score);
+
+  /// No description provided for @percentTrustBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'{score}% Trust'**
+  String percentTrustBadge(int score);
 
   /// No description provided for @permissionDeniedSettings.
   ///
@@ -3595,6 +5563,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{type} permission is required to upload photos. Please enable it in app settings.'**
   String permissionRequiredMessage(String type);
+
+  /// No description provided for @personalConcierge.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Concierge'**
+  String get personalConcierge;
 
   /// No description provided for @personalDetails.
   ///
@@ -3710,6 +5684,18 @@ abstract class AppLocalizations {
   /// **'Photos to Avoid'**
   String get photosToAvoid;
 
+  /// No description provided for @physicalHealthStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Physical Health Status'**
+  String get physicalHealthStatus;
+
+  /// No description provided for @physicalHealthStatusSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select physical disability match preferences'**
+  String get physicalHealthStatusSubtitle;
+
   /// No description provided for @physicalSocialAttributes.
   ///
   /// In en, this message translates to:
@@ -3722,6 +5708,30 @@ abstract class AppLocalizations {
   /// **'Physical Status'**
   String get physicalStatus;
 
+  /// No description provided for @physicallyChallenged.
+  ///
+  /// In en, this message translates to:
+  /// **'Physically Challenged'**
+  String get physicallyChallenged;
+
+  /// No description provided for @pickNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick Note'**
+  String get pickNote;
+
+  /// No description provided for @pinCodeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin Code'**
+  String get pinCodeLabel;
+
+  /// No description provided for @planetaryLagnaAlignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Planetary Lagna & Ashtakoot Alignment'**
+  String get planetaryLagnaAlignment;
+
   /// No description provided for @platinumPlanDesc.
   ///
   /// In en, this message translates to:
@@ -3733,6 +5743,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Platinum'**
   String get platinumPlanName;
+
+  /// No description provided for @pleaseAcceptVendorPartnerTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Please accept the vendor partner terms'**
+  String get pleaseAcceptVendorPartnerTerms;
 
   /// No description provided for @pleaseComplete.
   ///
@@ -3782,6 +5798,12 @@ abstract class AppLocalizations {
   /// **'Please fill all fields'**
   String get pleaseFillAllFields;
 
+  /// No description provided for @pleaseFillAllRequiredFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill all required fields'**
+  String get pleaseFillAllRequiredFields;
+
   /// No description provided for @pleaseSelectAnnualIncome.
   ///
   /// In en, this message translates to:
@@ -3793,6 +5815,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please select your education level'**
   String get pleaseSelectEducationLevel;
+
+  /// No description provided for @pleaseSelectOrWriteShortNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select or write a short intro note'**
+  String get pleaseSelectOrWriteShortNote;
 
   /// No description provided for @pleaseSelectProfession.
   ///
@@ -3854,17 +5882,77 @@ abstract class AppLocalizations {
   /// **'Premium'**
   String get premium;
 
+  /// No description provided for @premiumAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'PREMIUM ACCESS'**
+  String get premiumAccess;
+
+  /// No description provided for @premiumBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'PREMIUM'**
+  String get premiumBadge;
+
   /// No description provided for @premiumFeature.
   ///
   /// In en, this message translates to:
   /// **'This is a premium feature'**
   String get premiumFeature;
 
+  /// No description provided for @premiumFiltersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ID Verification, Trust Score, Horoscope, Lifestyle & Activity'**
+  String get premiumFiltersSubtitle;
+
+  /// No description provided for @premiumFiltersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Filters'**
+  String get premiumFiltersTitle;
+
+  /// No description provided for @premiumGateSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Support our community by watching a quick ad,\nor upgrade to Pro for an ad-free experience.'**
+  String get premiumGateSupport;
+
   /// No description provided for @premiumMembership.
   ///
   /// In en, this message translates to:
   /// **'Premium Membership'**
   String get premiumMembership;
+
+  /// No description provided for @premiumMen.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Men'**
+  String get premiumMen;
+
+  /// No description provided for @premiumPlanDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced features and better visibility'**
+  String get premiumPlanDesc;
+
+  /// No description provided for @premiumPlanName.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium'**
+  String get premiumPlanName;
+
+  /// No description provided for @premiumPlansSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard • Silver • Gold • Platinum • Eternal'**
+  String get premiumPlansSubtitle;
+
+  /// No description provided for @premiumPriceFiltersInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium price filters are currently inactive.'**
+  String get premiumPriceFiltersInactive;
 
   /// No description provided for @premiumTemplate.
   ///
@@ -3878,11 +5966,35 @@ abstract class AppLocalizations {
   /// **'Premium Users'**
   String get premiumUsers;
 
+  /// No description provided for @premiumWomen.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Women'**
+  String get premiumWomen;
+
+  /// No description provided for @preparingAdExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'PREPARING AD EXPERIENCE...'**
+  String get preparingAdExperience;
+
   /// No description provided for @preparingBiodata.
   ///
   /// In en, this message translates to:
   /// **'Preparing your biodata...'**
   String get preparingBiodata;
+
+  /// No description provided for @preview.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get preview;
+
+  /// No description provided for @previewCustomizedBiodata.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview Customized Biodata'**
+  String get previewCustomizedBiodata;
 
   /// No description provided for @previewGenerationFailed.
   ///
@@ -3908,6 +6020,24 @@ abstract class AppLocalizations {
   /// **'Primary'**
   String get primary;
 
+  /// No description provided for @primaryContactHiddenOnPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden for privacy'**
+  String get primaryContactHiddenOnPdf;
+
+  /// No description provided for @primaryContactNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary Contact Number'**
+  String get primaryContactNumber;
+
+  /// No description provided for @primaryContactVisibleOnPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Registered calling number visible on PDF'**
+  String get primaryContactVisibleOnPdf;
+
   /// No description provided for @primaryPhoto.
   ///
   /// In en, this message translates to:
@@ -3931,6 +6061,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Priority support'**
   String get prioritySupport;
+
+  /// No description provided for @privacyAndContentSwitches.
+  ///
+  /// In en, this message translates to:
+  /// **'🔒 Privacy & Content Switches'**
+  String get privacyAndContentSwitches;
+
+  /// No description provided for @privacyAndContentSwitchesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle visibility of sensitive fields on your shared PDF'**
+  String get privacyAndContentSwitchesSubtitle;
 
   /// No description provided for @privacyPolicy.
   ///
@@ -4052,6 +6194,12 @@ abstract class AppLocalizations {
   /// **'Pro Tips'**
   String get proTips;
 
+  /// No description provided for @proceedToLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Proceed → Login'**
+  String get proceedToLogin;
+
   /// No description provided for @processingImage.
   ///
   /// In en, this message translates to:
@@ -4154,6 +6302,24 @@ abstract class AppLocalizations {
   /// **'Profile link copied to clipboard!'**
   String get profileLinkCopied;
 
+  /// No description provided for @profileMakeover.
+  ///
+  /// In en, this message translates to:
+  /// **'Professional Profile Makeover'**
+  String get profileMakeover;
+
+  /// No description provided for @profileManagedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile Managed By'**
+  String get profileManagedBy;
+
+  /// No description provided for @profileManagedBySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select who created and manages the candidate biodata'**
+  String get profileManagedBySubtitle;
+
   /// No description provided for @profileNotFound.
   ///
   /// In en, this message translates to:
@@ -4178,6 +6344,12 @@ abstract class AppLocalizations {
   /// **'Profile saved!'**
   String get profileSaved;
 
+  /// No description provided for @profileSharedVia.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared {profileName} via {title}'**
+  String profileSharedVia(String profileName, String title);
+
   /// No description provided for @profileSharedWith.
   ///
   /// In en, this message translates to:
@@ -4196,17 +6368,41 @@ abstract class AppLocalizations {
   /// **'Profile View Limit Reached'**
   String get profileViewLimitReached;
 
+  /// No description provided for @profileViews.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile Views'**
+  String get profileViews;
+
   /// No description provided for @profileViewsPerDay.
   ///
   /// In en, this message translates to:
   /// **'{count} profile views/day'**
   String profileViewsPerDay(int count);
 
+  /// No description provided for @profiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Profiles'**
+  String get profiles;
+
+  /// No description provided for @profilesSharedWithYouDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Profiles shared with you by family and friends will appear here'**
+  String get profilesSharedWithYouDesc;
+
   /// No description provided for @profilesYouSaveWillAppearHere.
   ///
   /// In en, this message translates to:
   /// **'Profiles you save will appear here'**
   String get profilesYouSaveWillAppearHere;
+
+  /// No description provided for @proofOfMarriage.
+  ///
+  /// In en, this message translates to:
+  /// **'Proof of Marriage'**
+  String get proofOfMarriage;
 
   /// No description provided for @provideDetailsAboutYourGotraAndVillageTo.
   ///
@@ -4232,6 +6428,24 @@ abstract class AppLocalizations {
   /// **'Quick'**
   String get quick;
 
+  /// No description provided for @quickOneTapSuggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick 1-Tap Suggestions:'**
+  String get quickOneTapSuggestions;
+
+  /// No description provided for @rashiMoonSign.
+  ///
+  /// In en, this message translates to:
+  /// **'Rashi (Moon Sign)'**
+  String get rashiMoonSign;
+
+  /// No description provided for @readAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Read All'**
+  String get readAll;
+
   /// No description provided for @ready.
   ///
   /// In en, this message translates to:
@@ -4243,6 +6457,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ready for marriage'**
   String get readyForMarriage;
+
+  /// No description provided for @received.
+  ///
+  /// In en, this message translates to:
+  /// **'Received'**
+  String get received;
 
   /// No description provided for @recentConversations.
   ///
@@ -4304,11 +6524,29 @@ abstract class AppLocalizations {
   /// **'Refer & Earn'**
   String get referAndEarn;
 
+  /// No description provided for @referenceRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference Rejected'**
+  String get referenceRejected;
+
   /// No description provided for @referenceVerification.
   ///
   /// In en, this message translates to:
   /// **'Reference Verification'**
   String get referenceVerification;
+
+  /// No description provided for @referenceVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference Verified'**
+  String get referenceVerified;
+
+  /// No description provided for @referenceWithNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference {number}'**
+  String referenceWithNumber(int number);
 
   /// No description provided for @references.
   ///
@@ -4340,6 +6578,12 @@ abstract class AppLocalizations {
   /// **'Referral link copied to clipboard!'**
   String get referralLinkCopiedToClipboard;
 
+  /// No description provided for @referralRewardsTiers.
+  ///
+  /// In en, this message translates to:
+  /// **'Referral Rewards Tiers 👑'**
+  String get referralRewardsTiers;
+
   /// No description provided for @referralShareMessage.
   ///
   /// In en, this message translates to:
@@ -4370,6 +6614,30 @@ abstract class AppLocalizations {
   /// **'Refresh'**
   String get refresh;
 
+  /// No description provided for @refund25.
+  ///
+  /// In en, this message translates to:
+  /// **'25% Refund'**
+  String get refund25;
+
+  /// No description provided for @refund35.
+  ///
+  /// In en, this message translates to:
+  /// **'35% Refund'**
+  String get refund35;
+
+  /// No description provided for @registrationFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration Fee'**
+  String get registrationFee;
+
+  /// No description provided for @registrationSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration Submitted!'**
+  String get registrationSubmitted;
+
   /// No description provided for @reject.
   ///
   /// In en, this message translates to:
@@ -4382,11 +6650,29 @@ abstract class AppLocalizations {
   /// **'Rejected'**
   String get rejected;
 
+  /// No description provided for @relationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Relation'**
+  String get relationLabel;
+
+  /// No description provided for @relationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Relationship'**
+  String get relationSubtitle;
+
   /// No description provided for @relative.
   ///
   /// In en, this message translates to:
   /// **'Relative'**
   String get relative;
+
+  /// No description provided for @relocationPreference.
+  ///
+  /// In en, this message translates to:
+  /// **'Relocation Preference'**
+  String get relocationPreference;
 
   /// No description provided for @remainingToday.
   ///
@@ -4405,6 +6691,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove'**
   String get removePhoto;
+
+  /// No description provided for @replacePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace Photo'**
+  String get replacePhoto;
 
   /// No description provided for @report.
   ///
@@ -4460,11 +6752,23 @@ abstract class AppLocalizations {
   /// **'Reset'**
   String get reset;
 
+  /// No description provided for @resetAllFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset All Filters'**
+  String get resetAllFilters;
+
   /// No description provided for @reshare.
   ///
   /// In en, this message translates to:
   /// **'RESHARE'**
   String get reshare;
+
+  /// No description provided for @resumeDraftCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume Draft Now 👉'**
+  String get resumeDraftCta;
 
   /// No description provided for @retake.
   ///
@@ -4477,6 +6781,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Retry'**
   String get retry;
+
+  /// No description provided for @revenueToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Revenue Today (₹)'**
+  String get revenueToday;
+
+  /// No description provided for @revenueTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Revenue (₹)'**
+  String get revenueTotal;
 
   /// No description provided for @reviewDetails.
   ///
@@ -4508,11 +6824,47 @@ abstract class AppLocalizations {
   /// **'Rich'**
   String get rich;
 
+  /// No description provided for @rmHandpickedMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'RM Handpicked Matches'**
+  String get rmHandpickedMatches;
+
+  /// No description provided for @rmHandpickedMatchesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profiles curated and vetted by your Personal Relationship Manager'**
+  String get rmHandpickedMatchesSubtitle;
+
+  /// No description provided for @royalBanjaraTemplatesWithCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Royal Banjara Templates'**
+  String royalBanjaraTemplatesWithCount(Object count);
+
+  /// No description provided for @royalPlanDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Dedicated manager finds your match'**
+  String get royalPlanDesc;
+
+  /// No description provided for @royalPlanName.
+  ///
+  /// In en, this message translates to:
+  /// **'Royal'**
+  String get royalPlanName;
+
   /// No description provided for @rupeeSymbol.
   ///
   /// In en, this message translates to:
   /// **'₹'**
   String get rupeeSymbol;
+
+  /// No description provided for @safetyAndHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Safety & Health'**
+  String get safetyAndHealth;
 
   /// No description provided for @save.
   ///
@@ -4556,6 +6908,30 @@ abstract class AppLocalizations {
   /// **'Search by name, job, education...'**
   String get searchByNameJobEducation;
 
+  /// No description provided for @searchLeads.
+  ///
+  /// In en, this message translates to:
+  /// **'Search leads...'**
+  String get searchLeads;
+
+  /// No description provided for @searchMatchesForRelativesCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Matches for Relatives 👉'**
+  String get searchMatchesForRelativesCta;
+
+  /// No description provided for @searchMatchesForRelativesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search thousands of verified profiles for son, daughter, brother or sister directly without creating a profile.'**
+  String get searchMatchesForRelativesSubtitle;
+
+  /// No description provided for @searchMatchesForRelativesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Matches for Relatives'**
+  String get searchMatchesForRelativesTitle;
+
   /// No description provided for @searchProfiles.
   ///
   /// In en, this message translates to:
@@ -4598,6 +6974,12 @@ abstract class AppLocalizations {
   /// **'See All'**
   String get seeAll;
 
+  /// No description provided for @seenAllProfiles.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve seen all profiles!'**
+  String get seenAllProfiles;
+
   /// No description provided for @selectAnnualIncome.
   ///
   /// In en, this message translates to:
@@ -4610,11 +6992,35 @@ abstract class AppLocalizations {
   /// **'Select annual income range'**
   String get selectAnnualIncomeRange;
 
+  /// No description provided for @selectAppLanguageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select App Language'**
+  String get selectAppLanguageTitle;
+
+  /// No description provided for @selectBiodataLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Biodata Language'**
+  String get selectBiodataLanguage;
+
+  /// No description provided for @selectBudgetRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Budget Range'**
+  String get selectBudgetRange;
+
   /// No description provided for @selectDate.
   ///
   /// In en, this message translates to:
   /// **'Select Date'**
   String get selectDate;
+
+  /// No description provided for @selectDistrict.
+  ///
+  /// In en, this message translates to:
+  /// **'Select District'**
+  String get selectDistrict;
 
   /// No description provided for @selectDistrictFirst.
   ///
@@ -4651,6 +7057,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select Location'**
   String get selectLocation;
+
+  /// No description provided for @selectMaritalStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Select marital status requirement'**
+  String get selectMaritalStatus;
+
+  /// No description provided for @selectMatchPreference.
+  ///
+  /// In en, this message translates to:
+  /// **'Select match preference for groom or bride search'**
+  String get selectMatchPreference;
+
+  /// No description provided for @selectPaternalGotra.
+  ///
+  /// In en, this message translates to:
+  /// **'Select candidate paternal Gotra customary clan'**
+  String get selectPaternalGotra;
+
+  /// No description provided for @selectRewardType.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Reward Type'**
+  String get selectRewardType;
 
   /// No description provided for @selectState.
   ///
@@ -4712,11 +7142,35 @@ abstract class AppLocalizations {
   /// **'Self'**
   String get self;
 
+  /// No description provided for @selfAndMamakulSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Self: {self} • Mamakul: {mamakul}'**
+  String selfAndMamakulSubtitle(String self, String mamakul);
+
+  /// No description provided for @selfClanRule.
+  ///
+  /// In en, this message translates to:
+  /// **'Bride & Groom must not share the same paternal Gotra (e.g. Rathod, Pawar, Chavan, Jadhav).'**
+  String get selfClanRule;
+
+  /// No description provided for @selfClanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Self Clan (गोत्र):'**
+  String get selfClanTitle;
+
   /// No description provided for @selfEmployed.
   ///
   /// In en, this message translates to:
   /// **'Self Employed'**
   String get selfEmployed;
+
+  /// No description provided for @selfServicePlans.
+  ///
+  /// In en, this message translates to:
+  /// **'Self-Service'**
+  String get selfServicePlans;
 
   /// No description provided for @selfieSubmitted.
   ///
@@ -4730,6 +7184,12 @@ abstract class AppLocalizations {
   /// **'Send'**
   String get send;
 
+  /// No description provided for @sendHeartInterested.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a heart to show you\'re interested.'**
+  String get sendHeartInterested;
+
   /// No description provided for @sendInterest.
   ///
   /// In en, this message translates to:
@@ -4742,6 +7202,12 @@ abstract class AppLocalizations {
   /// **'SEND MESSAGE'**
   String get sendMessage;
 
+  /// No description provided for @sendToCandidateWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to Bride/Groom on WhatsApp 🚩'**
+  String get sendToCandidateWhatsApp;
+
   /// No description provided for @sendVerification.
   ///
   /// In en, this message translates to:
@@ -4753,6 +7219,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Send Verification Requests'**
   String get sendVerificationRequests;
+
+  /// No description provided for @sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent'**
+  String get sent;
 
   /// No description provided for @setAsPrimary.
   ///
@@ -4880,6 +7352,12 @@ abstract class AppLocalizations {
   /// **'Shared Profiles'**
   String get sharedProfiles;
 
+  /// Text shown when two users share profiles with each other
+  ///
+  /// In en, this message translates to:
+  /// **'You and {name} have shared profiles with each other.'**
+  String sharedProfilesWithEachOther(String name);
+
   /// No description provided for @sharedVia.
   ///
   /// In en, this message translates to:
@@ -4897,6 +7375,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sharing Biodata PDF'**
   String get sharingBiodataPdf;
+
+  /// No description provided for @sharingProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Sharing profile...'**
+  String get sharingProfile;
+
+  /// No description provided for @sharingProfiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Sharing Profiles'**
+  String get sharingProfiles;
+
+  /// No description provided for @sibling.
+  ///
+  /// In en, this message translates to:
+  /// **'Sibling'**
+  String get sibling;
+
+  /// No description provided for @siblingsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 sibling} other{{count} siblings}}'**
+  String siblingsCount(int count);
+
+  /// No description provided for @siblingsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Siblings'**
+  String get siblingsLabel;
+
+  /// No description provided for @signIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get signIn;
+
+  /// No description provided for @signInRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in Required'**
+  String get signInRequired;
+
+  /// No description provided for @signInRequiredContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Please sign in or create an account to access this feature.'**
+  String get signInRequiredContent;
 
   /// No description provided for @silver.
   ///
@@ -4916,6 +7442,12 @@ abstract class AppLocalizations {
   /// **'Silver'**
   String get silverPlanName;
 
+  /// No description provided for @similarMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'Similar Matches'**
+  String get similarMatches;
+
   /// No description provided for @sister.
   ///
   /// In en, this message translates to:
@@ -4928,17 +7460,59 @@ abstract class AppLocalizations {
   /// **'Sisters'**
   String get sisterCount;
 
+  /// No description provided for @sistersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 sister} other{{count} sisters}}'**
+  String sistersCount(int count);
+
+  /// No description provided for @sixMonthsFree.
+  ///
+  /// In en, this message translates to:
+  /// **'6 Months Free'**
+  String get sixMonthsFree;
+
   /// No description provided for @skip.
   ///
   /// In en, this message translates to:
   /// **'Skip'**
   String get skip;
 
+  /// No description provided for @skipAndSelectLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip & Select Taluka/District'**
+  String get skipAndSelectLevel;
+
+  /// No description provided for @skipAndUseDistrict.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip & Use District'**
+  String get skipAndUseDistrict;
+
+  /// No description provided for @smartRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Recommendations'**
+  String get smartRecommendations;
+
+  /// No description provided for @smartRecommendationsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive curated bio recommendations tailored for you.'**
+  String get smartRecommendationsSubtitle;
+
   /// No description provided for @smileNaturallyTip.
   ///
   /// In en, this message translates to:
   /// **'Smile naturally to appear approachable'**
   String get smileNaturallyTip;
+
+  /// No description provided for @smokingHabits.
+  ///
+  /// In en, this message translates to:
+  /// **'Smoking Habits'**
+  String get smokingHabits;
 
   /// No description provided for @socialMediaTextOverlays.
   ///
@@ -4970,6 +7544,24 @@ abstract class AppLocalizations {
   /// **'Son'**
   String get son;
 
+  /// No description provided for @sortServicesBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort Services By'**
+  String get sortServicesBy;
+
+  /// No description provided for @specificLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'SPECIFIC LOCATION'**
+  String get specificLocation;
+
+  /// No description provided for @specified.
+  ///
+  /// In en, this message translates to:
+  /// **'Specified'**
+  String get specified;
+
   /// No description provided for @specifyEducation.
   ///
   /// In en, this message translates to:
@@ -4981,6 +7573,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Specify Profession'**
   String get specifyProfession;
+
+  /// No description provided for @standardFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard Filters'**
+  String get standardFilters;
+
+  /// No description provided for @standardFiltersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic demographic criteria for all registered members'**
+  String get standardFiltersSubtitle;
+
+  /// No description provided for @standardPlanDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Try premium features for a month'**
+  String get standardPlanDesc;
+
+  /// No description provided for @standardPlanName.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard'**
+  String get standardPlanName;
 
   /// No description provided for @standardProfile.
   ///
@@ -5000,6 +7616,12 @@ abstract class AppLocalizations {
   /// **'Start a conversation'**
   String get startAConversation;
 
+  /// No description provided for @startChatting.
+  ///
+  /// In en, this message translates to:
+  /// **'START CHATTING 💬'**
+  String get startChatting;
+
   /// No description provided for @startConversation.
   ///
   /// In en, this message translates to:
@@ -5012,11 +7634,23 @@ abstract class AppLocalizations {
   /// **'Start Recording'**
   String get startRecording;
 
+  /// No description provided for @startSharingProfilesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Start sharing profiles with family and friends to help find the perfect match'**
+  String get startSharingProfilesDesc;
+
   /// No description provided for @state.
   ///
   /// In en, this message translates to:
   /// **'State'**
   String get state;
+
+  /// No description provided for @stateInIndia.
+  ///
+  /// In en, this message translates to:
+  /// **'State in India'**
+  String get stateInIndia;
 
   /// No description provided for @statusWaitingForApproval.
   ///
@@ -5030,11 +7664,113 @@ abstract class AppLocalizations {
   /// **'Stay'**
   String get stay;
 
+  /// No description provided for @stayConnectedOnBanjaraBio.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay Connected on BanjaraBio'**
+  String get stayConnectedOnBanjaraBio;
+
+  /// No description provided for @step1SelectCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Select Your Service Category'**
+  String get step1SelectCategory;
+
+  /// No description provided for @step1SelectCategorySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the primary wedding service you provide'**
+  String get step1SelectCategorySubtitle;
+
+  /// No description provided for @step2BusinessContact.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Business & Contact Information'**
+  String get step2BusinessContact;
+
+  /// No description provided for @step2BusinessContactSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter authentic details for community clients'**
+  String get step2BusinessContactSubtitle;
+
+  /// No description provided for @step3ServiceSpecs.
+  ///
+  /// In en, this message translates to:
+  /// **'3. Dynamic Service Specifications'**
+  String get step3ServiceSpecs;
+
+  /// No description provided for @step3ServiceSpecsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Specific details tailored for {category}'**
+  String step3ServiceSpecsSubtitle(Object category);
+
+  /// No description provided for @step4PricingExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'4. Pricing & Experience'**
+  String get step4PricingExperience;
+
+  /// No description provided for @step4PricingExperienceSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Help families understand your package range'**
+  String get step4PricingExperienceSubtitle;
+
+  /// No description provided for @stepCounterFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total}'**
+  String stepCounterFormat(int current, int total);
+
+  /// No description provided for @stepLabelDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get stepLabelDetails;
+
+  /// No description provided for @stepLabelGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal'**
+  String get stepLabelGoal;
+
+  /// No description provided for @stepLabelSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get stepLabelSignIn;
+
+  /// No description provided for @stepLabelType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get stepLabelType;
+
+  /// No description provided for @stepLabelWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get stepLabelWelcome;
+
   /// No description provided for @stepNOfTotal.
   ///
   /// In en, this message translates to:
   /// **'Step {current} of {total}'**
   String stepNOfTotal(String current, String total);
+
+  /// No description provided for @strictPrivacyNotificationNote.
+  ///
+  /// In en, this message translates to:
+  /// **'100% Strict Privacy: Bookmarks & profile views are completely private and never triggered as notifications.'**
+  String get strictPrivacyNotificationNote;
+
+  /// No description provided for @strongBanjaraClanAlignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Strong Banjara Clan & Astro Alignment'**
+  String get strongBanjaraClanAlignment;
 
   /// No description provided for @student.
   ///
@@ -5042,17 +7778,47 @@ abstract class AppLocalizations {
   /// **'Student'**
   String get student;
 
+  /// No description provided for @subCaste.
+  ///
+  /// In en, this message translates to:
+  /// **'Sub-Caste'**
+  String get subCaste;
+
+  /// No description provided for @subCasteJatiVariant.
+  ///
+  /// In en, this message translates to:
+  /// **'Sub-Caste / Jati Variant'**
+  String get subCasteJatiVariant;
+
+  /// No description provided for @subCasteSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by regional Banjara cultural designation'**
+  String get subCasteSubtitle;
+
   /// No description provided for @submit.
   ///
   /// In en, this message translates to:
   /// **'Submit'**
   String get submit;
 
+  /// No description provided for @submitForReview.
+  ///
+  /// In en, this message translates to:
+  /// **'SUBMIT FOR REVIEW'**
+  String get submitForReview;
+
   /// No description provided for @submitForVerification.
   ///
   /// In en, this message translates to:
   /// **'Submit for Verification'**
   String get submitForVerification;
+
+  /// No description provided for @submitVendorRegistration.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Vendor Registration'**
+  String get submitVendorRegistration;
 
   /// No description provided for @submittedForReview.
   ///
@@ -5065,6 +7831,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Subscription'**
   String get subscription;
+
+  /// No description provided for @subsidizedPricePill.
+  ///
+  /// In en, this message translates to:
+  /// **'Subsidized: ₹20 / month  •  ₹200 / year'**
+  String get subsidizedPricePill;
+
+  /// No description provided for @successSubmission.
+  ///
+  /// In en, this message translates to:
+  /// **'Success! Your request has been submitted for review.'**
+  String get successSubmission;
 
   /// No description provided for @supportAndHelp.
   ///
@@ -5083,6 +7861,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Surname'**
   String get surname;
+
+  /// No description provided for @surnameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Surname'**
+  String get surnameLabel;
 
   /// No description provided for @swipe.
   ///
@@ -5114,6 +7898,36 @@ abstract class AppLocalizations {
   /// **'Taluka (Optional)'**
   String get talukaOptional;
 
+  /// No description provided for @tapAgainToChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap again to Chat ➔'**
+  String get tapAgainToChat;
+
+  /// No description provided for @tapAgainToJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap again to Join ➔'**
+  String get tapAgainToJoin;
+
+  /// No description provided for @tapAgainToOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap again to Open ➔'**
+  String get tapAgainToOpen;
+
+  /// No description provided for @tapAgainToView.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap again to View ➔'**
+  String get tapAgainToView;
+
+  /// No description provided for @tapAnyThemeToApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap any theme to instantly apply it to your biodata.'**
+  String get tapAnyThemeToApply;
+
   /// No description provided for @tapTheButtonToAddAPhoto.
   ///
   /// In en, this message translates to:
@@ -5126,17 +7940,47 @@ abstract class AppLocalizations {
   /// **'Tap to add photo'**
   String get tapToAddPhoto;
 
+  /// No description provided for @tapToPreviewKundali.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to preview Kundali chart & planetary alignments'**
+  String get tapToPreviewKundali;
+
   /// No description provided for @tapToReveal.
   ///
   /// In en, this message translates to:
   /// **'✨ Tap to Reveal'**
   String get tapToReveal;
 
+  /// No description provided for @targetBiodataQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Which biodata are you looking for?'**
+  String get targetBiodataQuestion;
+
+  /// No description provided for @targetGenderSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Gender (Bride / Groom)'**
+  String get targetGenderSubtitle;
+
   /// No description provided for @teacherProfessor.
   ///
   /// In en, this message translates to:
   /// **'Teacher/Professor'**
   String get teacherProfessor;
+
+  /// No description provided for @teamVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'Team Visit'**
+  String get teamVisit;
+
+  /// No description provided for @tellUsYourStory.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us your Story'**
+  String get tellUsYourStory;
 
   /// No description provided for @telugu.
   ///
@@ -5276,11 +8120,59 @@ abstract class AppLocalizations {
   /// **'Super'**
   String get textSuper;
 
+  /// No description provided for @themesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Themes ({count})'**
+  String themesCount(Object count);
+
   /// No description provided for @thisFieldIsRequired.
   ///
   /// In en, this message translates to:
   /// **'This field is required'**
   String get thisFieldIsRequired;
+
+  /// No description provided for @threeXReplies.
+  ///
+  /// In en, this message translates to:
+  /// **'3x Replies'**
+  String get threeXReplies;
+
+  /// No description provided for @tier4Vip.
+  ///
+  /// In en, this message translates to:
+  /// **'TIER 4 VIP'**
+  String get tier4Vip;
+
+  /// No description provided for @tillUMarry.
+  ///
+  /// In en, this message translates to:
+  /// **'Till U Marry'**
+  String get tillUMarry;
+
+  /// No description provided for @tipPersonalizedNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: Personalized notes get 3x replies'**
+  String get tipPersonalizedNotes;
+
+  /// No description provided for @toContact.
+  ///
+  /// In en, this message translates to:
+  /// **'To: {name}'**
+  String toContact(String name);
+
+  /// No description provided for @topDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Delivery'**
+  String get topDelivery;
+
+  /// No description provided for @totalBlocks.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Blocks'**
+  String get totalBlocks;
 
   /// No description provided for @totalCount.
   ///
@@ -5288,17 +8180,335 @@ abstract class AppLocalizations {
   /// **'Total:'**
   String get totalCount;
 
+  /// No description provided for @totalFemales.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Females'**
+  String get totalFemales;
+
+  /// No description provided for @totalMales.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Males'**
+  String get totalMales;
+
+  /// No description provided for @totalMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Messages'**
+  String get totalMessages;
+
   /// No description provided for @totalProfiles.
   ///
   /// In en, this message translates to:
   /// **'Total Profiles'**
   String get totalProfiles;
 
+  /// No description provided for @totalSavings.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Savings: ₹{amount}'**
+  String totalSavings(int amount);
+
+  /// No description provided for @totalUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Users'**
+  String get totalUsers;
+
+  /// No description provided for @tourBookmarkDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Found a profile you like? Bookmark it to view it later in your Saved list.'**
+  String get tourBookmarkDesc;
+
+  /// No description provided for @tourBookmarkTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save for later'**
+  String get tourBookmarkTitle;
+
+  /// No description provided for @tourBottomHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home Feed'**
+  String get tourBottomHome;
+
+  /// No description provided for @tourBottomHomeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Scroll through thousands of verified profiles.'**
+  String get tourBottomHomeDesc;
+
+  /// No description provided for @tourBottomProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Profile'**
+  String get tourBottomProfile;
+
+  /// No description provided for @tourBottomProfileDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your own biodata and photos here.'**
+  String get tourBottomProfileDesc;
+
+  /// No description provided for @tourBottomSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'App Settings'**
+  String get tourBottomSettings;
+
+  /// No description provided for @tourBottomSettingsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Change language, notification settings, or contact support.'**
+  String get tourBottomSettingsDesc;
+
+  /// No description provided for @tourBottomShared.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared Profiles'**
+  String get tourBottomShared;
+
+  /// No description provided for @tourBottomSharedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See profiles you\'ve shared or received via WhatsApp/Link.'**
+  String get tourBottomSharedDesc;
+
+  /// No description provided for @tourChatDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View your conversations and incoming interests here.'**
+  String get tourChatDesc;
+
+  /// No description provided for @tourChatTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages & Chat'**
+  String get tourChatTitle;
+
+  /// No description provided for @tourFilterDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Narrow down by Age, Education, or Profession to see only who you want.'**
+  String get tourFilterDesc;
+
+  /// No description provided for @tourFilterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced Filters'**
+  String get tourFilterTitle;
+
+  /// No description provided for @tourInstagramDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See daily new profiles and success stories on Instagram.'**
+  String get tourInstagramDesc;
+
+  /// No description provided for @tourInstagramTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow Us'**
+  String get tourInstagramTitle;
+
+  /// No description provided for @tourInterestDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a heart to let them know you\'re interested in their biodata.'**
+  String get tourInterestDesc;
+
+  /// No description provided for @tourInterestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Express Interest'**
+  String get tourInterestTitle;
+
+  /// No description provided for @tourLocationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter profiles by State, District, or Taluka to find matches near you.'**
+  String get tourLocationDesc;
+
+  /// No description provided for @tourLocationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Location'**
+  String get tourLocationTitle;
+
+  /// No description provided for @tourMatchesMatchedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Mutual matches where both you and the other person expressed interest!'**
+  String get tourMatchesMatchedDesc;
+
+  /// No description provided for @tourMatchesMatchedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Matched Profiles'**
+  String get tourMatchesMatchedTitle;
+
+  /// No description provided for @tourMatchesReceivedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Profiles others have shared with you via WhatsApp or Link.'**
+  String get tourMatchesReceivedDesc;
+
+  /// No description provided for @tourMatchesReceivedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Received Profiles'**
+  String get tourMatchesReceivedTitle;
+
+  /// No description provided for @tourMatchesSearchDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Quickly find profiles shared with you or by you using name or education.'**
+  String get tourMatchesSearchDesc;
+
+  /// No description provided for @tourMatchesSearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Shared Profiles'**
+  String get tourMatchesSearchTitle;
+
+  /// No description provided for @tourMatchesSentDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'All the profiles you have shared with family and friends appear here.'**
+  String get tourMatchesSentDesc;
+
+  /// No description provided for @tourMatchesSentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent Profiles'**
+  String get tourMatchesSentTitle;
+
+  /// No description provided for @tourProfileEditDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Update your personal details, photos, and preferences anytime.'**
+  String get tourProfileEditDesc;
+
+  /// No description provided for @tourProfileEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get tourProfileEditTitle;
+
+  /// No description provided for @tourProfilePdfDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate a professional PDF of your biodata to share with family members.'**
+  String get tourProfilePdfDesc;
+
+  /// No description provided for @tourProfilePdfTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Biodata PDF'**
+  String get tourProfilePdfTitle;
+
+  /// No description provided for @tourProfilePhotosDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload, reorder, or delete your profile photos to make a great first impression.'**
+  String get tourProfilePhotosDesc;
+
+  /// No description provided for @tourProfilePhotosTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Photos'**
+  String get tourProfilePhotosTitle;
+
+  /// No description provided for @tourProfileSavedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View all the profiles you have bookmarked for later review.'**
+  String get tourProfileSavedDesc;
+
+  /// No description provided for @tourProfileSavedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved Profiles'**
+  String get tourProfileSavedTitle;
+
+  /// No description provided for @tourProfileTrustDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Your credibility score. Verify your ID, selfie, and community to increase it.'**
+  String get tourProfileTrustDesc;
+
+  /// No description provided for @tourProfileTrustTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Trust Score'**
+  String get tourProfileTrustTitle;
+
+  /// No description provided for @tourSearchDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Looking for someone specific? Type their name or education here.'**
+  String get tourSearchDesc;
+
+  /// No description provided for @tourSearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Profiles'**
+  String get tourSearchTitle;
+
+  /// No description provided for @tourShareDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Easily share profiles via WhatsApp with your parents or relatives for their opinion.'**
+  String get tourShareDesc;
+
+  /// No description provided for @tourShareTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share with family'**
+  String get tourShareTitle;
+
+  /// No description provided for @tourWhatsappDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct contact with our admin for help or profile changes.'**
+  String get tourWhatsappDesc;
+
+  /// No description provided for @tourWhatsappTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp Support'**
+  String get tourWhatsappTitle;
+
   /// No description provided for @traditionalFormalAttire.
   ///
   /// In en, this message translates to:
   /// **'Traditional or formal attire (saree, salwar kameez, kurta)'**
   String get traditionalFormalAttire;
+
+  /// No description provided for @translatesWholePdfDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Translates whole PDF (keys & profile info)'**
+  String get translatesWholePdfDesc;
+
+  /// No description provided for @trustAllianceBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'✦ TRUST ALLIANCE'**
+  String get trustAllianceBadge;
+
+  /// No description provided for @trustDiscountApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'Trust Score Discount Applied'**
+  String get trustDiscountApplied;
+
+  /// No description provided for @trustLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'TRUST LEVEL'**
+  String get trustLevel;
 
   /// No description provided for @trustScore.
   ///
@@ -5335,6 +8545,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Trusted'**
   String get trusted;
+
+  /// No description provided for @trustedCommunityBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'100% Trusted Community'**
+  String get trustedCommunityBadge;
 
   /// No description provided for @trustedMember.
   ///
@@ -5384,6 +8600,12 @@ abstract class AppLocalizations {
   /// **'₹20 Lakh+'**
   String get twentyLakhPlus;
 
+  /// No description provided for @twoMonthsFree.
+  ///
+  /// In en, this message translates to:
+  /// **'2 Months Free'**
+  String get twoMonthsFree;
+
   /// No description provided for @twoToFiveLakh.
   ///
   /// In en, this message translates to:
@@ -5396,6 +8618,12 @@ abstract class AppLocalizations {
   /// **'Type a message...'**
   String get typeAMessage;
 
+  /// No description provided for @typeCustomIntroNoteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type your custom matrimonial intro note here...\n(e.g., family background, career aspirations, shared values)'**
+  String get typeCustomIntroNoteHint;
+
   /// No description provided for @typeMessage.
   ///
   /// In en, this message translates to:
@@ -5407,6 +8635,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unauthorized access. Admins only.'**
   String get unauthorizedAccessAdminsOnly;
+
+  /// No description provided for @unblockAllProFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'UNBLOCK ALL PRO FEATURES'**
+  String get unblockAllProFeatures;
 
   /// No description provided for @under2Lakh.
   ///
@@ -5444,6 +8678,18 @@ abstract class AppLocalizations {
   /// **'Unlimited bookmarks'**
   String get unlimitedBookmarks;
 
+  /// No description provided for @unlimitedContactUnlocks.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited Contact Unlocks'**
+  String get unlimitedContactUnlocks;
+
+  /// No description provided for @unlimitedHandpickedMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily On-Demand Matches'**
+  String get unlimitedHandpickedMatches;
+
   /// No description provided for @unlimitedProfileViews.
   ///
   /// In en, this message translates to:
@@ -5461,6 +8707,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unlock Advanced Filters'**
   String get unlockAdvancedFilters;
+
+  /// No description provided for @unlockCommunityFiltersDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter Gotra, Maternal Gotra (मोसळ), Sub-Caste, Tanda/Origin, Height, Income & Lineage for just ₹20/mo or ₹200/yr.'**
+  String get unlockCommunityFiltersDesc;
+
+  /// No description provided for @unlockCommunityFiltersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock Community Filters (BVS)'**
+  String get unlockCommunityFiltersTitle;
+
+  /// No description provided for @unlockDirectMessageAd.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch 3 ads to unlock 1 direct message for FREE!'**
+  String get unlockDirectMessageAd;
+
+  /// No description provided for @unlockForPriceButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock for ₹20/mo or ₹200/yr ➔'**
+  String get unlockForPriceButton;
+
+  /// No description provided for @unlockMatchmakerFiltersDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct contact numbers, 36 Guna Score, Ancestral Land Holdings & RM Curation available on VIP Matchmaker plans.'**
+  String get unlockMatchmakerFiltersDesc;
+
+  /// No description provided for @unlockMatchmakerFiltersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock Matchmaker Filters'**
+  String get unlockMatchmakerFiltersTitle;
+
+  /// No description provided for @unlockMoreViewsAd.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch a quick ad to unlock 5 MORE views for today!'**
+  String get unlockMoreViewsAd;
+
+  /// No description provided for @unlockMoreVisitors.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock {count} more visitors!'**
+  String unlockMoreVisitors(int count);
 
   /// No description provided for @unlockNow.
   ///
@@ -5480,6 +8774,18 @@ abstract class AppLocalizations {
   /// **'Unlock premium features to enhance your biodata profile'**
   String get unlockPremiumFeaturesToEnhanceYourBiodat;
 
+  /// No description provided for @unlockPremiumFiltersDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Access Govt ID Verified, Kundali Dosha, Diet, Sector, and Active Responder filters with Premium self-service plans.'**
+  String get unlockPremiumFiltersDesc;
+
+  /// No description provided for @unlockPremiumFiltersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock Premium Filters'**
+  String get unlockPremiumFiltersTitle;
+
   /// No description provided for @unlockToDownload.
   ///
   /// In en, this message translates to:
@@ -5498,11 +8804,47 @@ abstract class AppLocalizations {
   /// **'Unsave'**
   String get unsave;
 
+  /// No description provided for @unsavedDraftBodyGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Your entered information is saved safely. Tap to resume.'**
+  String get unsavedDraftBodyGeneric;
+
+  /// No description provided for @unsavedDraftBodyWithName.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'s biodata draft is saved. Resume from where you left.'**
+  String unsavedDraftBodyWithName(String name);
+
+  /// No description provided for @unsavedDraftTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'📝 Unsaved Biodata Draft Found!'**
+  String get unsavedDraftTitle;
+
+  /// No description provided for @unverified.
+  ///
+  /// In en, this message translates to:
+  /// **'Unverified'**
+  String get unverified;
+
+  /// No description provided for @upcomingMelavas.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming Melavas'**
+  String get upcomingMelavas;
+
   /// No description provided for @update.
   ///
   /// In en, this message translates to:
   /// **'Update'**
   String get update;
+
+  /// No description provided for @updateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Update failed: {error}'**
+  String updateFailed(String error);
 
   /// No description provided for @updateProfile.
   ///
@@ -5540,6 +8882,12 @@ abstract class AppLocalizations {
   /// **'Upgrade Required'**
   String get upgradeRequired;
 
+  /// No description provided for @upgradeToCommunityButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Community (₹20/mo or ₹200/yr)'**
+  String get upgradeToCommunityButton;
+
   /// No description provided for @upgradeToPremium.
   ///
   /// In en, this message translates to:
@@ -5558,17 +8906,41 @@ abstract class AppLocalizations {
   /// **'Upgrade to Premium to access granular filters'**
   String get upgradeToPremiumToAccessGranularFiltersF;
 
+  /// No description provided for @upgradeToShareMore.
+  ///
+  /// In en, this message translates to:
+  /// **'You have reached your free sharing limit. Upgrade to continue sharing profiles.'**
+  String get upgradeToShareMore;
+
   /// No description provided for @upgradeToUnlockAllFeatures.
   ///
   /// In en, this message translates to:
   /// **'Upgrade to unlock all features'**
   String get upgradeToUnlockAllFeatures;
 
+  /// No description provided for @upgradeToUnlockPremiumFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to remove all ads and unlock premium biodata features.'**
+  String get upgradeToUnlockPremiumFeatures;
+
+  /// No description provided for @uploadBvsCardPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload your Banjara Virasat Sangh (BVS) Membership Card'**
+  String get uploadBvsCardPrompt;
+
   /// No description provided for @uploadCommunityCertificateLetter.
   ///
   /// In en, this message translates to:
   /// **'Upload Community Certificate / Letter'**
   String get uploadCommunityCertificateLetter;
+
+  /// No description provided for @uploadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload failed: {error}'**
+  String uploadFailed(String error);
 
   /// No description provided for @uploadYourPhotos.
   ///
@@ -5612,11 +8984,23 @@ abstract class AppLocalizations {
   /// **'Use natural lighting for best results'**
   String get useNaturalLightingTip;
 
+  /// No description provided for @userBlockRequestSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'User block request submitted'**
+  String get userBlockRequestSubmitted;
+
   /// No description provided for @userBlockedSuccessfully.
   ///
   /// In en, this message translates to:
   /// **'User blocked successfully'**
   String get userBlockedSuccessfully;
+
+  /// No description provided for @userEngagement.
+  ///
+  /// In en, this message translates to:
+  /// **'User Engagement'**
+  String get userEngagement;
 
   /// No description provided for @userIdNotFound.
   ///
@@ -5653,6 +9037,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Using GPS'**
   String get usingGps;
+
+  /// No description provided for @vadhuVarSuchakInitiative.
+  ///
+  /// In en, this message translates to:
+  /// **'Vadhu Var Suchak Initiative'**
+  String get vadhuVarSuchakInitiative;
+
+  /// No description provided for @vendorNetworkEffectDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Self-register your services to receive direct 1-click WhatsApp inquiries from thousands of Banjara families.'**
+  String get vendorNetworkEffectDesc;
+
+  /// No description provided for @vendorRegistration.
+  ///
+  /// In en, this message translates to:
+  /// **'Vendor Registration'**
+  String get vendorRegistration;
+
+  /// No description provided for @vendorRegistrationSubmittedCongrats.
+  ///
+  /// In en, this message translates to:
+  /// **'Congratulations! {name} has been submitted for verified vendor listing on the BanjaraBio Network.'**
+  String vendorRegistrationSubmittedCongrats(Object name);
+
+  /// No description provided for @vendorTermsAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree to provide authentic, verified wedding services to Banjara community families with 100% transparency.'**
+  String get vendorTermsAgreement;
+
+  /// No description provided for @vendorVerificationDeskNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Our vendor verification desk will verify and activate your listing within 2-4 hours.'**
+  String get vendorVerificationDeskNote;
+
+  /// No description provided for @venue.
+  ///
+  /// In en, this message translates to:
+  /// **'Venue'**
+  String get venue;
 
   /// No description provided for @verificationBadge.
   ///
@@ -5702,11 +9128,29 @@ abstract class AppLocalizations {
   /// **'Verified! +10 Points added to Trust Score'**
   String get verified10PointsAddedToTrustScore;
 
+  /// No description provided for @verifiedBiodata.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified Biodata'**
+  String get verifiedBiodata;
+
   /// No description provided for @verifiedCommunityMember.
   ///
   /// In en, this message translates to:
   /// **'Verified Community Member'**
   String get verifiedCommunityMember;
+
+  /// No description provided for @verifiedCountBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Verified'**
+  String verifiedCountBadge(int count);
+
+  /// No description provided for @verifiedHoroscopeOnMutual.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified horoscope chart on mutual match interest'**
+  String get verifiedHoroscopeOnMutual;
 
   /// No description provided for @verifiedProfile.
   ///
@@ -5725,6 +9169,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Verified profiles get 5x more responses and appear higher in search results.'**
   String get verifiedProfilesGet5xMoreResponses;
+
+  /// No description provided for @verifiedSalary.
+  ///
+  /// In en, this message translates to:
+  /// **'VERIFIED SALARY'**
+  String get verifiedSalary;
 
   /// No description provided for @verifiedTrusted.
   ///
@@ -5792,6 +9242,12 @@ abstract class AppLocalizations {
   /// **'Very Fair'**
   String get veryFair;
 
+  /// No description provided for @vettedFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'VETTED FAMILY'**
+  String get vettedFamily;
+
   /// No description provided for @videoBioIntro.
   ///
   /// In en, this message translates to:
@@ -5834,6 +9290,12 @@ abstract class AppLocalizations {
   /// **'View Biodata'**
   String get viewBiodata;
 
+  /// No description provided for @viewBiodataPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'View Biodata PDF'**
+  String get viewBiodataPdf;
+
   /// No description provided for @viewDetails.
   ///
   /// In en, this message translates to:
@@ -5846,11 +9308,23 @@ abstract class AppLocalizations {
   /// **'view'**
   String get viewLabel;
 
+  /// No description provided for @viewPremiumPlansButton.
+  ///
+  /// In en, this message translates to:
+  /// **'View Premium Plans ➔'**
+  String get viewPremiumPlansButton;
+
   /// No description provided for @viewProfile.
   ///
   /// In en, this message translates to:
   /// **'View Profile'**
   String get viewProfile;
+
+  /// No description provided for @viewVenue.
+  ///
+  /// In en, this message translates to:
+  /// **'View Venue'**
+  String get viewVenue;
 
   /// No description provided for @viewYourBookmarkedProfiles.
   ///
@@ -5870,6 +9344,78 @@ abstract class AppLocalizations {
   /// **'Village'**
   String get village;
 
+  /// No description provided for @villageTanda.
+  ///
+  /// In en, this message translates to:
+  /// **'Village / Tanda'**
+  String get villageTanda;
+
+  /// No description provided for @villageTandaExampleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Pohradevi Tanda, Sevadas Nagar...'**
+  String get villageTandaExampleHint;
+
+  /// No description provided for @vipFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP Features'**
+  String get vipFeatures;
+
+  /// No description provided for @vipFiftyPercentOff.
+  ///
+  /// In en, this message translates to:
+  /// **'50% OFF VIP'**
+  String get vipFiftyPercentOff;
+
+  /// No description provided for @vipMatchmaker.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP Matchmaker'**
+  String get vipMatchmaker;
+
+  /// No description provided for @vipNote.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP NOTE 👑'**
+  String get vipNote;
+
+  /// No description provided for @vipPlanDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Ultimate experience with priority support'**
+  String get vipPlanDesc;
+
+  /// No description provided for @vipPlanName.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP'**
+  String get vipPlanName;
+
+  /// No description provided for @vipPropertyAssets.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP PROPERTY & ASSET HOLDINGS'**
+  String get vipPropertyAssets;
+
+  /// No description provided for @vipRoyal.
+  ///
+  /// In en, this message translates to:
+  /// **'👑 VIP Royal'**
+  String get vipRoyal;
+
+  /// No description provided for @vipSpotlightElitePool.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP Spotlight & Elite Pool'**
+  String get vipSpotlightElitePool;
+
+  /// No description provided for @vipSpotlightElitePoolSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Top-tier prominent Banjara families with premium background checks'**
+  String get vipSpotlightElitePoolSubtitle;
+
   /// No description provided for @visibleToAllProfiles.
   ///
   /// In en, this message translates to:
@@ -5881,6 +9427,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Visible to close matches only'**
   String get visibleToCloseMatchesOnly;
+
+  /// No description provided for @vouchBadgeRequirementNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Get 5 vouches from verified members to earn the \"Community Trusted\" badge.'**
+  String get vouchBadgeRequirementNotice;
+
+  /// No description provided for @watchAdToUnlock.
+  ///
+  /// In en, this message translates to:
+  /// **'WATCH AD TO UNLOCK'**
+  String get watchAdToUnlock;
+
+  /// No description provided for @watchAdToUnlockAll.
+  ///
+  /// In en, this message translates to:
+  /// **'WATCH AD TO UNLOCK ALL'**
+  String get watchAdToUnlockAll;
+
+  /// No description provided for @watchQuickAd.
+  ///
+  /// In en, this message translates to:
+  /// **'WATCH QUICK AD'**
+  String get watchQuickAd;
 
   /// No description provided for @weEncounteredAnUnexpectedErrorWhileProce.
   ///
@@ -5899,6 +9469,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'We will verify your community details shortly. +15 Points Pending.'**
   String get weWillVerifyYourCommunityDetailsShortly1;
+
+  /// No description provided for @weddingDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Wedding Date'**
+  String get weddingDate;
+
+  /// No description provided for @weeklyCheckIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Check-in'**
+  String get weeklyCheckIn;
+
+  /// No description provided for @welcomeBackAccountFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back! Your account has been found.'**
+  String get welcomeBackAccountFound;
 
   /// No description provided for @welcomeToBanjaraBio.
   ///
@@ -5924,6 +9512,30 @@ abstract class AppLocalizations {
   /// **'WhatsApp Contact'**
   String get whatsAppContact;
 
+  /// No description provided for @whatsAppRishtaCardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share premium biodata image card with QR code on WhatsApp'**
+  String get whatsAppRishtaCardSubtitle;
+
+  /// No description provided for @whatsAppRishtaCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'🚩 WhatsApp Rishta Card (Image + QR)'**
+  String get whatsAppRishtaCardTitle;
+
+  /// No description provided for @whatsAppStatusCardPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp Status Card (Premium)'**
+  String get whatsAppStatusCardPremium;
+
+  /// No description provided for @whatsappHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp Help'**
+  String get whatsappHelp;
+
   /// No description provided for @whatsappShareSubtitle.
   ///
   /// In en, this message translates to:
@@ -5948,6 +9560,12 @@ abstract class AppLocalizations {
   /// **'Where do you work?'**
   String get whereDoYouWork;
 
+  /// No description provided for @whoIsThisForQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Who are you searching for?'**
+  String get whoIsThisForQuestion;
+
   /// No description provided for @whoViewedMe.
   ///
   /// In en, this message translates to:
@@ -5966,11 +9584,47 @@ abstract class AppLocalizations {
   /// **'Widowed'**
   String get widowed;
 
+  /// No description provided for @women.
+  ///
+  /// In en, this message translates to:
+  /// **'Women'**
+  String get women;
+
+  /// No description provided for @working.
+  ///
+  /// In en, this message translates to:
+  /// **'Working'**
+  String get working;
+
+  /// No description provided for @workspace.
+  ///
+  /// In en, this message translates to:
+  /// **'Workspace'**
+  String get workspace;
+
   /// No description provided for @writeAboutYourself.
   ///
   /// In en, this message translates to:
   /// **'Write something about yourself...'**
   String get writeAboutYourself;
+
+  /// No description provided for @writeCustomBlessing.
+  ///
+  /// In en, this message translates to:
+  /// **'Write Custom Blessing / Deity Name'**
+  String get writeCustomBlessing;
+
+  /// No description provided for @writeCustomBlessingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Type any family Kuldevi, Guru, or personalized deity mantra'**
+  String get writeCustomBlessingSubtitle;
+
+  /// No description provided for @writeYourOwnGenuineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your own genuine message or edit the selected template above:'**
+  String get writeYourOwnGenuineMessage;
 
   /// No description provided for @year.
   ///
@@ -5978,23 +9632,29 @@ abstract class AppLocalizations {
   /// **'Year'**
   String get year;
 
+  /// No description provided for @yearsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Year} other{Years}}'**
+  String yearsLabel(int count);
+
   /// No description provided for @yearsOld.
   ///
   /// In en, this message translates to:
   /// **'{age} Years'**
   String yearsOld(String age);
 
-  /// No description provided for @upgradeToShareMore.
-  ///
-  /// In en, this message translates to:
-  /// **'You have reached your free sharing limit. Upgrade to continue sharing profiles.'**
-  String get upgradeToShareMore;
-
   /// No description provided for @yes.
   ///
   /// In en, this message translates to:
   /// **'Yes'**
   String get yes;
+
+  /// No description provided for @yesInterest.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, Interest'**
+  String get yesInterest;
 
   /// No description provided for @yesterday.
   ///
@@ -6007,6 +9667,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You need a profile to share it.'**
   String get youNeedAProfileToShareIt;
+
+  /// No description provided for @youSave.
+  ///
+  /// In en, this message translates to:
+  /// **'You Save ₹{amount}'**
+  String youSave(int amount);
 
   /// No description provided for @youWillNoLongerSeeThisProfile.
   ///
@@ -6080,6 +9746,12 @@ abstract class AppLocalizations {
   /// **'Your selfie has been submitted. Our team will verify it against your profile photo.'**
   String get yourSelfieHasBeenSubmittedOurTeamWillVer;
 
+  /// No description provided for @yourSuccessStory.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Success Story'**
+  String get yourSuccessStory;
+
   /// No description provided for @yourTrustScore.
   ///
   /// In en, this message translates to:
@@ -6092,1373 +9764,11 @@ abstract class AppLocalizations {
   /// **'{count} Yrs'**
   String yrs(int count);
 
-  /// No description provided for @itSAMatch.
+  /// No description provided for @zeroPercentCommission.
   ///
   /// In en, this message translates to:
-  /// **'IT\'S A MATCH!'**
-  String get itSAMatch;
-
-  /// Text shown when two users share profiles with each other
-  ///
-  /// In en, this message translates to:
-  /// **'You and {name} have shared profiles with each other.'**
-  String sharedProfilesWithEachOther(String name);
-
-  /// No description provided for @mutualMatch.
-  ///
-  /// In en, this message translates to:
-  /// **'Mutual Match'**
-  String get mutualMatch;
-
-  /// No description provided for @toContact.
-  ///
-  /// In en, this message translates to:
-  /// **'To: {name}'**
-  String toContact(String name);
-
-  /// No description provided for @fromContact.
-  ///
-  /// In en, this message translates to:
-  /// **'From: {name}'**
-  String fromContact(String name);
-
-  /// No description provided for @countProfileViews.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{1 profile view} other{{count} profile views}}'**
-  String countProfileViews(int count);
-
-  /// No description provided for @matchedBadge.
-  ///
-  /// In en, this message translates to:
-  /// **'MATCHED'**
-  String get matchedBadge;
-
-  /// No description provided for @premiumBadge.
-  ///
-  /// In en, this message translates to:
-  /// **'PREMIUM'**
-  String get premiumBadge;
-
-  /// No description provided for @contactLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Contact'**
-  String get contactLabel;
-
-  /// No description provided for @profileSharedVia.
-  ///
-  /// In en, this message translates to:
-  /// **'Shared {profileName} via {title}'**
-  String profileSharedVia(String profileName, String title);
-
-  /// No description provided for @failedToSendMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to send message: {error}'**
-  String failedToSendMessage(String error);
-
-  /// No description provided for @uploadFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Upload failed: {error}'**
-  String uploadFailed(String error);
-
-  /// No description provided for @updateFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Update failed: {error}'**
-  String updateFailed(String error);
-
-  /// No description provided for @errorWithLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Error: {label}'**
-  String errorWithLabel(String label);
-
-  /// No description provided for @referenceWithNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'Reference {number}'**
-  String referenceWithNumber(int number);
-
-  /// No description provided for @villageTanda.
-  ///
-  /// In en, this message translates to:
-  /// **'Village / Tanda'**
-  String get villageTanda;
-
-  /// No description provided for @ageLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Age'**
-  String get ageLabel;
-
-  /// No description provided for @heightLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Height'**
-  String get heightLabel;
-
-  /// No description provided for @surnameLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Surname'**
-  String get surnameLabel;
-
-  /// No description provided for @dateOfBirthLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Date of Birth'**
-  String get dateOfBirthLabel;
-
-  /// No description provided for @birthTimeLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Birth Time'**
-  String get birthTimeLabel;
-
-  /// No description provided for @birthPlaceLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Birth Place'**
-  String get birthPlaceLabel;
-
-  /// No description provided for @bloodGroupLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Blood Group'**
-  String get bloodGroupLabel;
-
-  /// No description provided for @occupationLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Occupation'**
-  String get occupationLabel;
-
-  /// No description provided for @annualIncomeLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Annual Income'**
-  String get annualIncomeLabel;
-
-  /// No description provided for @currentResidence.
-  ///
-  /// In en, this message translates to:
-  /// **'Current Residence'**
-  String get currentResidence;
-
-  /// No description provided for @contactPersonLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Contact Person'**
-  String get contactPersonLabel;
-
-  /// No description provided for @bestTimeToContact.
-  ///
-  /// In en, this message translates to:
-  /// **'Best Time to Contact'**
-  String get bestTimeToContact;
-
-  /// No description provided for @limitReached.
-  ///
-  /// In en, this message translates to:
-  /// **'Limit Reached'**
-  String get limitReached;
-
-  /// No description provided for @relationLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Relation'**
-  String get relationLabel;
-
-  /// No description provided for @none.
-  ///
-  /// In en, this message translates to:
-  /// **'None'**
-  String get none;
-
-  /// No description provided for @yearsLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{Year} other{Years}}'**
-  String yearsLabel(int count);
-
-  /// No description provided for @brothersCount.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{1 brother} other{{count} brothers}}'**
-  String brothersCount(int count);
-
-  /// No description provided for @sistersCount.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{1 sister} other{{count} sisters}}'**
-  String sistersCount(int count);
-
-  /// No description provided for @siblingsLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Siblings'**
-  String get siblingsLabel;
-
-  /// No description provided for @siblingsCount.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{1 sibling} other{{count} siblings}}'**
-  String siblingsCount(int count);
-
-  /// No description provided for @company.
-  ///
-  /// In en, this message translates to:
-  /// **'Company'**
-  String get company;
-
-  /// No description provided for @job.
-  ///
-  /// In en, this message translates to:
-  /// **'Job'**
-  String get job;
-
-  /// No description provided for @biodataRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'Biodata Required'**
-  String get biodataRequired;
-
-  /// No description provided for @guestRestrictionMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'To interact with profiles, express interest, or send messages, you need to create your own biodata first.'**
-  String get guestRestrictionMessage;
-
-  /// No description provided for @createNow.
-  ///
-  /// In en, this message translates to:
-  /// **'Create Now'**
-  String get createNow;
-
-  /// No description provided for @tourLocationTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Select Location'**
-  String get tourLocationTitle;
-
-  /// No description provided for @tourLocationDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Filter profiles by State, District, or Taluka to find matches near you.'**
-  String get tourLocationDesc;
-
-  /// No description provided for @tourSearchTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Search Profiles'**
-  String get tourSearchTitle;
-
-  /// No description provided for @tourSearchDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Looking for someone specific? Type their name or education here.'**
-  String get tourSearchDesc;
-
-  /// No description provided for @tourFilterTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Advanced Filters'**
-  String get tourFilterTitle;
-
-  /// No description provided for @tourFilterDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Narrow down by Age, Education, or Profession to see only who you want.'**
-  String get tourFilterDesc;
-
-  /// No description provided for @tourChatTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Messages & Chat'**
-  String get tourChatTitle;
-
-  /// No description provided for @tourChatDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'View your conversations and incoming interests here.'**
-  String get tourChatDesc;
-
-  /// No description provided for @tourBottomHome.
-  ///
-  /// In en, this message translates to:
-  /// **'Home Feed'**
-  String get tourBottomHome;
-
-  /// No description provided for @tourBottomHomeDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Scroll through thousands of verified profiles.'**
-  String get tourBottomHomeDesc;
-
-  /// No description provided for @tourBottomShared.
-  ///
-  /// In en, this message translates to:
-  /// **'Shared Profiles'**
-  String get tourBottomShared;
-
-  /// No description provided for @tourBottomSharedDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'See profiles you\'ve shared or received via WhatsApp/Link.'**
-  String get tourBottomSharedDesc;
-
-  /// No description provided for @tourBottomProfile.
-  ///
-  /// In en, this message translates to:
-  /// **'Your Profile'**
-  String get tourBottomProfile;
-
-  /// No description provided for @tourBottomProfileDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Manage your own biodata and photos here.'**
-  String get tourBottomProfileDesc;
-
-  /// No description provided for @tourBottomSettings.
-  ///
-  /// In en, this message translates to:
-  /// **'App Settings'**
-  String get tourBottomSettings;
-
-  /// No description provided for @tourBottomSettingsDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Change language, notification settings, or contact support.'**
-  String get tourBottomSettingsDesc;
-
-  /// No description provided for @tourWhatsappTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'WhatsApp Support'**
-  String get tourWhatsappTitle;
-
-  /// No description provided for @tourWhatsappDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Direct contact with our admin for help or profile changes.'**
-  String get tourWhatsappDesc;
-
-  /// No description provided for @tourInstagramTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Follow Us'**
-  String get tourInstagramTitle;
-
-  /// No description provided for @tourInstagramDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'See daily new profiles and success stories on Instagram.'**
-  String get tourInstagramDesc;
-
-  /// No description provided for @tourBookmarkTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Save for later'**
-  String get tourBookmarkTitle;
-
-  /// No description provided for @tourBookmarkDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Found a profile you like? Bookmark it to view it later in your Saved list.'**
-  String get tourBookmarkDesc;
-
-  /// No description provided for @tourInterestTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Express Interest'**
-  String get tourInterestTitle;
-
-  /// No description provided for @tourInterestDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Send a heart to let them know you\'re interested in their biodata.'**
-  String get tourInterestDesc;
-
-  /// No description provided for @tourShareTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Share with family'**
-  String get tourShareTitle;
-
-  /// No description provided for @tourShareDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Easily share profiles via WhatsApp with your parents or relatives for their opinion.'**
-  String get tourShareDesc;
-
-  /// No description provided for @chooseHowToStart.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose how you want to start'**
-  String get chooseHowToStart;
-
-  /// No description provided for @exploreAsGuest.
-  ///
-  /// In en, this message translates to:
-  /// **'Explore as Guest'**
-  String get exploreAsGuest;
-
-  /// No description provided for @exitGuestMode.
-  ///
-  /// In en, this message translates to:
-  /// **'Exit Guest Mode'**
-  String get exitGuestMode;
-
-  /// No description provided for @guestModeDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Take a guided tour of the app before creating your profile.'**
-  String get guestModeDesc;
-
-  /// No description provided for @createMyBiodata.
-  ///
-  /// In en, this message translates to:
-  /// **'Create My Biodata'**
-  String get createMyBiodata;
-
-  /// No description provided for @createBiodataDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Fill out your profile and start connecting instantly.'**
-  String get createBiodataDesc;
-
-  /// No description provided for @needHelpContactAdmin.
-  ///
-  /// In en, this message translates to:
-  /// **'Need help? Contact Admin'**
-  String get needHelpContactAdmin;
-
-  /// No description provided for @noMatchesYet.
-  ///
-  /// In en, this message translates to:
-  /// **'No Matches Yet'**
-  String get noMatchesYet;
-
-  /// No description provided for @noProfilesSharedYet.
-  ///
-  /// In en, this message translates to:
-  /// **'No Profiles Shared Yet'**
-  String get noProfilesSharedYet;
-
-  /// No description provided for @noProfilesReceived.
-  ///
-  /// In en, this message translates to:
-  /// **'No Profiles Received'**
-  String get noProfilesReceived;
-
-  /// No description provided for @mutualMatchesDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Mutual matches will appear here when both users share interest in each other'**
-  String get mutualMatchesDesc;
-
-  /// No description provided for @startSharingProfilesDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Start sharing profiles with family and friends to help find the perfect match'**
-  String get startSharingProfilesDesc;
-
-  /// No description provided for @profilesSharedWithYouDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Profiles shared with you by family and friends will appear here'**
-  String get profilesSharedWithYouDesc;
-
-  /// No description provided for @enterVillageManually.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter Village/Other Name'**
-  String get enterVillageManually;
-
-  /// No description provided for @enterVillageHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter Village or Tanda name...'**
-  String get enterVillageHint;
-
-  /// No description provided for @specificLocation.
-  ///
-  /// In en, this message translates to:
-  /// **'SPECIFIC LOCATION'**
-  String get specificLocation;
-
-  /// No description provided for @skipAndSelectLevel.
-  ///
-  /// In en, this message translates to:
-  /// **'Skip & Select Taluka/District'**
-  String get skipAndSelectLevel;
-
-  /// No description provided for @optional.
-  ///
-  /// In en, this message translates to:
-  /// **'Optional'**
-  String get optional;
-
-  /// No description provided for @tourMatchesSearchTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Search Shared Profiles'**
-  String get tourMatchesSearchTitle;
-
-  /// No description provided for @tourMatchesSearchDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Quickly find profiles shared with you or by you using name or education.'**
-  String get tourMatchesSearchDesc;
-
-  /// No description provided for @tourMatchesSentTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Sent Profiles'**
-  String get tourMatchesSentTitle;
-
-  /// No description provided for @tourMatchesSentDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'All the profiles you have shared with family and friends appear here.'**
-  String get tourMatchesSentDesc;
-
-  /// No description provided for @tourMatchesReceivedTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Received Profiles'**
-  String get tourMatchesReceivedTitle;
-
-  /// No description provided for @tourMatchesReceivedDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Profiles others have shared with you via WhatsApp or Link.'**
-  String get tourMatchesReceivedDesc;
-
-  /// No description provided for @tourMatchesMatchedTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Matched Profiles'**
-  String get tourMatchesMatchedTitle;
-
-  /// No description provided for @tourMatchesMatchedDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Mutual matches where both you and the other person expressed interest!'**
-  String get tourMatchesMatchedDesc;
-
-  /// No description provided for @tourProfilePhotosTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Manage Photos'**
-  String get tourProfilePhotosTitle;
-
-  /// No description provided for @tourProfilePhotosDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Upload, reorder, or delete your profile photos to make a great first impression.'**
-  String get tourProfilePhotosDesc;
-
-  /// No description provided for @tourProfileTrustTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Trust Score'**
-  String get tourProfileTrustTitle;
-
-  /// No description provided for @tourProfileTrustDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Your credibility score. Verify your ID, selfie, and community to increase it.'**
-  String get tourProfileTrustDesc;
-
-  /// No description provided for @tourProfilePdfTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Export Biodata PDF'**
-  String get tourProfilePdfTitle;
-
-  /// No description provided for @tourProfilePdfDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Generate a professional PDF of your biodata to share with family members.'**
-  String get tourProfilePdfDesc;
-
-  /// No description provided for @tourProfileSavedTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Saved Profiles'**
-  String get tourProfileSavedTitle;
-
-  /// No description provided for @tourProfileSavedDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'View all the profiles you have bookmarked for later review.'**
-  String get tourProfileSavedDesc;
-
-  /// No description provided for @tourProfileEditTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Edit Profile'**
-  String get tourProfileEditTitle;
-
-  /// No description provided for @tourProfileEditDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Update your personal details, photos, and preferences anytime.'**
-  String get tourProfileEditDesc;
-
-  /// No description provided for @basicPlanName.
-  ///
-  /// In en, this message translates to:
-  /// **'Basic'**
-  String get basicPlanName;
-
-  /// No description provided for @premiumPlanName.
-  ///
-  /// In en, this message translates to:
-  /// **'Premium'**
-  String get premiumPlanName;
-
-  /// No description provided for @vipPlanName.
-  ///
-  /// In en, this message translates to:
-  /// **'VIP'**
-  String get vipPlanName;
-
-  /// No description provided for @basicPlanDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Essential features for your search'**
-  String get basicPlanDesc;
-
-  /// No description provided for @premiumPlanDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Advanced features and better visibility'**
-  String get premiumPlanDesc;
-
-  /// No description provided for @vipPlanDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Ultimate experience with priority support'**
-  String get vipPlanDesc;
-
-  /// No description provided for @paymentSuccessfulPdfUnlocked.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment Successful! PDF Unlocked.'**
-  String get paymentSuccessfulPdfUnlocked;
-
-  /// No description provided for @standardPlanName.
-  ///
-  /// In en, this message translates to:
-  /// **'Standard'**
-  String get standardPlanName;
-
-  /// No description provided for @standardPlanDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Try premium features for a month'**
-  String get standardPlanDesc;
-
-  /// No description provided for @eternalPlanName.
-  ///
-  /// In en, this message translates to:
-  /// **'Eternal - Till U Marry'**
-  String get eternalPlanName;
-
-  /// No description provided for @eternalPlanDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Never worry about expiry again'**
-  String get eternalPlanDesc;
-
-  /// No description provided for @elitePlanName.
-  ///
-  /// In en, this message translates to:
-  /// **'Elite'**
-  String get elitePlanName;
-
-  /// No description provided for @elitePlanDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Handpicked matches with VIP access'**
-  String get elitePlanDesc;
-
-  /// No description provided for @royalPlanName.
-  ///
-  /// In en, this message translates to:
-  /// **'Royal'**
-  String get royalPlanName;
-
-  /// No description provided for @royalPlanDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Dedicated manager finds your match'**
-  String get royalPlanDesc;
-
-  /// No description provided for @eternalElitePlanName.
-  ///
-  /// In en, this message translates to:
-  /// **'Eternal Elite'**
-  String get eternalElitePlanName;
-
-  /// No description provided for @eternalElitePlanDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Focus on your career, we find your partner'**
-  String get eternalElitePlanDesc;
-
-  /// No description provided for @selfServicePlans.
-  ///
-  /// In en, this message translates to:
-  /// **'Self-Service'**
-  String get selfServicePlans;
-
-  /// No description provided for @vipMatchmaker.
-  ///
-  /// In en, this message translates to:
-  /// **'VIP Matchmaker'**
-  String get vipMatchmaker;
-
-  /// No description provided for @tillUMarry.
-  ///
-  /// In en, this message translates to:
-  /// **'Till U Marry'**
-  String get tillUMarry;
-
-  /// No description provided for @lifetime.
-  ///
-  /// In en, this message translates to:
-  /// **'Lifetime'**
-  String get lifetime;
-
-  /// No description provided for @mrpPrice.
-  ///
-  /// In en, this message translates to:
-  /// **'MRP ₹{price}'**
-  String mrpPrice(int price);
-
-  /// No description provided for @bulkDiscount.
-  ///
-  /// In en, this message translates to:
-  /// **'{percent}% OFF'**
-  String bulkDiscount(int percent);
-
-  /// No description provided for @youSave.
-  ///
-  /// In en, this message translates to:
-  /// **'You Save ₹{amount}'**
-  String youSave(int amount);
-
-  /// No description provided for @totalSavings.
-  ///
-  /// In en, this message translates to:
-  /// **'Total Savings: ₹{amount}'**
-  String totalSavings(int amount);
-
-  /// No description provided for @trustDiscountApplied.
-  ///
-  /// In en, this message translates to:
-  /// **'Trust Score Discount Applied'**
-  String get trustDiscountApplied;
-
-  /// No description provided for @couponDiscountApplied.
-  ///
-  /// In en, this message translates to:
-  /// **'Coupon Discount Applied'**
-  String get couponDiscountApplied;
-
-  /// No description provided for @contactUnlocks.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} Contact Unlocks/month'**
-  String contactUnlocks(int count);
-
-  /// No description provided for @handpickedMatches.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} Handpicked Matches/week'**
-  String handpickedMatches(int count);
-
-  /// No description provided for @dedicatedManager.
-  ///
-  /// In en, this message translates to:
-  /// **'Dedicated Relationship Manager'**
-  String get dedicatedManager;
-
-  /// No description provided for @profileMakeover.
-  ///
-  /// In en, this message translates to:
-  /// **'Professional Profile Makeover'**
-  String get profileMakeover;
-
-  /// No description provided for @featuredBadge.
-  ///
-  /// In en, this message translates to:
-  /// **'Elite Verified Badge'**
-  String get featuredBadge;
-
-  /// No description provided for @featuresIncluded.
-  ///
-  /// In en, this message translates to:
-  /// **'Features included:'**
-  String get featuresIncluded;
-
-  /// No description provided for @incognitoMode.
-  ///
-  /// In en, this message translates to:
-  /// **'Private Profile Browsing'**
-  String get incognitoMode;
-
-  /// No description provided for @biodataPremiumIncluded.
-  ///
-  /// In en, this message translates to:
-  /// **'Biodata Premium Included'**
-  String get biodataPremiumIncluded;
-
-  /// No description provided for @unlimitedContactUnlocks.
-  ///
-  /// In en, this message translates to:
-  /// **'Unlimited Contact Unlocks'**
-  String get unlimitedContactUnlocks;
-
-  /// No description provided for @unlimitedHandpickedMatches.
-  ///
-  /// In en, this message translates to:
-  /// **'Daily On-Demand Matches'**
-  String get unlimitedHandpickedMatches;
-
-  /// No description provided for @weeklyCheckIn.
-  ///
-  /// In en, this message translates to:
-  /// **'Weekly Check-in'**
-  String get weeklyCheckIn;
-
-  /// No description provided for @monthlyCheckIn.
-  ///
-  /// In en, this message translates to:
-  /// **'Monthly Check-in'**
-  String get monthlyCheckIn;
-
-  /// No description provided for @bestValue.
-  ///
-  /// In en, this message translates to:
-  /// **'BEST VALUE'**
-  String get bestValue;
-
-  /// No description provided for @personalConcierge.
-  ///
-  /// In en, this message translates to:
-  /// **'Personal Concierge'**
-  String get personalConcierge;
-
-  /// No description provided for @vipFeatures.
-  ///
-  /// In en, this message translates to:
-  /// **'VIP Features'**
-  String get vipFeatures;
-
-  /// No description provided for @directContactAccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Direct Contact Access'**
-  String get directContactAccess;
-
-  /// No description provided for @focusOnCareer.
-  ///
-  /// In en, this message translates to:
-  /// **'Focus on your career, while we find your life partner'**
-  String get focusOnCareer;
-
-  /// No description provided for @perMonth.
-  ///
-  /// In en, this message translates to:
-  /// **'/month'**
-  String get perMonth;
-
-  /// No description provided for @forLifetime.
-  ///
-  /// In en, this message translates to:
-  /// **'for Lifetime'**
-  String get forLifetime;
-
-  /// No description provided for @emailNotifications.
-  ///
-  /// In en, this message translates to:
-  /// **'Email Notifications'**
-  String get emailNotifications;
-
-  /// No description provided for @dailyMatchPicks.
-  ///
-  /// In en, this message translates to:
-  /// **'Daily Match Picks'**
-  String get dailyMatchPicks;
-
-  /// No description provided for @newMatchAlerts.
-  ///
-  /// In en, this message translates to:
-  /// **'New Match Alerts'**
-  String get newMatchAlerts;
-
-  /// No description provided for @extraViewsUnlocked.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} Extra Views Unlocked!'**
-  String extraViewsUnlocked(int count);
-
-  /// No description provided for @sendHeartInterested.
-  ///
-  /// In en, this message translates to:
-  /// **'Send a heart to show you\'re interested.'**
-  String get sendHeartInterested;
-
-  /// No description provided for @notMatchedCannotMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'You are not matched with this profile, so you can\'t direct message them.'**
-  String get notMatchedCannotMessage;
-
-  /// No description provided for @oneMessageUnlocked.
-  ///
-  /// In en, this message translates to:
-  /// **'1 Message Unlocked!'**
-  String get oneMessageUnlocked;
-
-  /// No description provided for @seenAllProfiles.
-  ///
-  /// In en, this message translates to:
-  /// **'You\'ve seen all profiles!'**
-  String get seenAllProfiles;
-
-  /// No description provided for @signInRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign in Required'**
-  String get signInRequired;
-
-  /// No description provided for @signInRequiredContent.
-  ///
-  /// In en, this message translates to:
-  /// **'Please sign in or create an account to access this feature.'**
-  String get signInRequiredContent;
-
-  /// No description provided for @watchAdToUnlock.
-  ///
-  /// In en, this message translates to:
-  /// **'WATCH AD TO UNLOCK'**
-  String get watchAdToUnlock;
-
-  /// No description provided for @watchAdToUnlockAll.
-  ///
-  /// In en, this message translates to:
-  /// **'WATCH AD TO UNLOCK ALL'**
-  String get watchAdToUnlockAll;
-
-  /// No description provided for @goProAdFree.
-  ///
-  /// In en, this message translates to:
-  /// **'Go Pro for Ad-Free Experience'**
-  String get goProAdFree;
-
-  /// No description provided for @adNotReady.
-  ///
-  /// In en, this message translates to:
-  /// **'Ad not ready yet. Please try again in a moment.'**
-  String get adNotReady;
-
-  /// No description provided for @upgradeToUnlockPremiumFeatures.
-  ///
-  /// In en, this message translates to:
-  /// **'Upgrade to remove all ads and unlock premium biodata features.'**
-  String get upgradeToUnlockPremiumFeatures;
-
-  /// No description provided for @couldNotLaunchWhatsApp.
-  ///
-  /// In en, this message translates to:
-  /// **'Could not launch WhatsApp'**
-  String get couldNotLaunchWhatsApp;
-
-  /// No description provided for @couldNotLaunchDialer.
-  ///
-  /// In en, this message translates to:
-  /// **'Could not launch Phone Dialer'**
-  String get couldNotLaunchDialer;
-
-  /// No description provided for @searchLeads.
-  ///
-  /// In en, this message translates to:
-  /// **'Search leads...'**
-  String get searchLeads;
-
-  /// No description provided for @workspace.
-  ///
-  /// In en, this message translates to:
-  /// **'Workspace'**
-  String get workspace;
-
-  /// No description provided for @customMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Custom Message'**
-  String get customMessage;
-
-  /// No description provided for @logCallOutcome.
-  ///
-  /// In en, this message translates to:
-  /// **'Log Call Outcome'**
-  String get logCallOutcome;
-
-  /// No description provided for @apply.
-  ///
-  /// In en, this message translates to:
-  /// **'Apply'**
-  String get apply;
-
-  /// No description provided for @registrationFee.
-  ///
-  /// In en, this message translates to:
-  /// **'Registration Fee'**
-  String get registrationFee;
-
-  /// No description provided for @unverified.
-  ///
-  /// In en, this message translates to:
-  /// **'Unverified'**
-  String get unverified;
-
-  /// No description provided for @signIn.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign in'**
-  String get signIn;
-
-  /// No description provided for @unlockMoreVisitors.
-  ///
-  /// In en, this message translates to:
-  /// **'Unlock {count} more visitors!'**
-  String unlockMoreVisitors(int count);
-
-  /// No description provided for @dailyLimitReached.
-  ///
-  /// In en, this message translates to:
-  /// **'Daily Limit Reached'**
-  String get dailyLimitReached;
-
-  /// No description provided for @dailyLimitViewsReached.
-  ///
-  /// In en, this message translates to:
-  /// **'You have used all your daily profile views.'**
-  String get dailyLimitViewsReached;
-
-  /// No description provided for @unlockMoreViewsAd.
-  ///
-  /// In en, this message translates to:
-  /// **'Watch a quick ad to unlock 5 MORE views for today!'**
-  String get unlockMoreViewsAd;
-
-  /// No description provided for @directMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Direct Message'**
-  String get directMessage;
-
-  /// No description provided for @directMessagingPremium.
-  ///
-  /// In en, this message translates to:
-  /// **'Direct messaging is a Premium feature.'**
-  String get directMessagingPremium;
-
-  /// No description provided for @unlockDirectMessageAd.
-  ///
-  /// In en, this message translates to:
-  /// **'Watch 3 ads to unlock 1 direct message for FREE!'**
-  String get unlockDirectMessageAd;
-
-  /// No description provided for @premiumAccess.
-  ///
-  /// In en, this message translates to:
-  /// **'PREMIUM ACCESS'**
-  String get premiumAccess;
-
-  /// No description provided for @premiumGateSupport.
-  ///
-  /// In en, this message translates to:
-  /// **'Support our community by watching a quick ad,\nor upgrade to Pro for an ad-free experience.'**
-  String get premiumGateSupport;
-
-  /// No description provided for @unblockAllProFeatures.
-  ///
-  /// In en, this message translates to:
-  /// **'UNBLOCK ALL PRO FEATURES'**
-  String get unblockAllProFeatures;
-
-  /// No description provided for @monthly.
-  ///
-  /// In en, this message translates to:
-  /// **'Monthly'**
-  String get monthly;
-
-  /// No description provided for @annual.
-  ///
-  /// In en, this message translates to:
-  /// **'Annual'**
-  String get annual;
-
-  /// No description provided for @watchQuickAd.
-  ///
-  /// In en, this message translates to:
-  /// **'WATCH QUICK AD'**
-  String get watchQuickAd;
-
-  /// No description provided for @continueBlockedUntilAdEnds.
-  ///
-  /// In en, this message translates to:
-  /// **'CONTINUE TO APP BLOCKED UNTIL AD ENDS'**
-  String get continueBlockedUntilAdEnds;
-
-  /// No description provided for @adCompletedSuccessfully.
-  ///
-  /// In en, this message translates to:
-  /// **'AD COMPLETED SUCCESSFULLY'**
-  String get adCompletedSuccessfully;
-
-  /// No description provided for @continueToApp.
-  ///
-  /// In en, this message translates to:
-  /// **'CONTINUE TO APP'**
-  String get continueToApp;
-
-  /// No description provided for @preparingAdExperience.
-  ///
-  /// In en, this message translates to:
-  /// **'PREPARING AD EXPERIENCE...'**
-  String get preparingAdExperience;
-
-  /// No description provided for @adTemporarilyUnavailable.
-  ///
-  /// In en, this message translates to:
-  /// **'AD TEMPORARILY UNAVAILABLE'**
-  String get adTemporarilyUnavailable;
-
-  /// No description provided for @callAdmin.
-  ///
-  /// In en, this message translates to:
-  /// **'Call Admin'**
-  String get callAdmin;
-
-  /// No description provided for @banjaraBioPro.
-  ///
-  /// In en, this message translates to:
-  /// **'BanjaraBio Pro'**
-  String get banjaraBioPro;
-
-  /// No description provided for @claimMarriageGift.
-  ///
-  /// In en, this message translates to:
-  /// **'Claim Marriage Gift'**
-  String get claimMarriageGift;
-
-  /// No description provided for @tellUsYourStory.
-  ///
-  /// In en, this message translates to:
-  /// **'Tell us your Story'**
-  String get tellUsYourStory;
-
-  /// No description provided for @partnerName.
-  ///
-  /// In en, this message translates to:
-  /// **'Partner\'s Name'**
-  String get partnerName;
-
-  /// No description provided for @yourSuccessStory.
-  ///
-  /// In en, this message translates to:
-  /// **'Your Success Story'**
-  String get yourSuccessStory;
-
-  /// No description provided for @howDidYouMeet.
-  ///
-  /// In en, this message translates to:
-  /// **'How did you meet? What do you like about them?'**
-  String get howDidYouMeet;
-
-  /// No description provided for @proofOfMarriage.
-  ///
-  /// In en, this message translates to:
-  /// **'Proof of Marriage'**
-  String get proofOfMarriage;
-
-  /// No description provided for @instagramLink.
-  ///
-  /// In en, this message translates to:
-  /// **'Instagram Reel/Story Link'**
-  String get instagramLink;
-
-  /// No description provided for @pasteUrlHere.
-  ///
-  /// In en, this message translates to:
-  /// **'Paste the URL here'**
-  String get pasteUrlHere;
-
-  /// No description provided for @weddingDate.
-  ///
-  /// In en, this message translates to:
-  /// **'Wedding Date'**
-  String get weddingDate;
-
-  /// No description provided for @estimatedRefund.
-  ///
-  /// In en, this message translates to:
-  /// **'Estimated Refund'**
-  String get estimatedRefund;
-
-  /// No description provided for @submitForReview.
-  ///
-  /// In en, this message translates to:
-  /// **'SUBMIT FOR REVIEW'**
-  String get submitForReview;
-
-  /// No description provided for @selectRewardType.
-  ///
-  /// In en, this message translates to:
-  /// **'Select Reward Type'**
-  String get selectRewardType;
-
-  /// No description provided for @digital.
-  ///
-  /// In en, this message translates to:
-  /// **'Digital'**
-  String get digital;
-
-  /// No description provided for @refund25.
-  ///
-  /// In en, this message translates to:
-  /// **'25% Refund'**
-  String get refund25;
-
-  /// No description provided for @teamVisit.
-  ///
-  /// In en, this message translates to:
-  /// **'Team Visit'**
-  String get teamVisit;
-
-  /// No description provided for @refund35.
-  ///
-  /// In en, this message translates to:
-  /// **'35% Refund'**
-  String get refund35;
-
-  /// No description provided for @successSubmission.
-  ///
-  /// In en, this message translates to:
-  /// **'Success! Your request has been submitted for review.'**
-  String get successSubmission;
-
-  /// No description provided for @melavas.
-  ///
-  /// In en, this message translates to:
-  /// **'Melavas'**
-  String get melavas;
-
-  /// No description provided for @upcomingMelavas.
-  ///
-  /// In en, this message translates to:
-  /// **'Upcoming Melavas'**
-  String get upcomingMelavas;
-
-  /// No description provided for @callOrganizer.
-  ///
-  /// In en, this message translates to:
-  /// **'Call Organizer'**
-  String get callOrganizer;
-
-  /// No description provided for @viewVenue.
-  ///
-  /// In en, this message translates to:
-  /// **'View Venue'**
-  String get viewVenue;
-
-  /// No description provided for @organizer.
-  ///
-  /// In en, this message translates to:
-  /// **'Organizer'**
-  String get organizer;
-
-  /// No description provided for @venue.
-  ///
-  /// In en, this message translates to:
-  /// **'Venue'**
-  String get venue;
-
-  /// No description provided for @eventDetails.
-  ///
-  /// In en, this message translates to:
-  /// **'Event Details'**
-  String get eventDetails;
-
-  /// No description provided for @browseMatchesTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Search Matches (Browse)'**
-  String get browseMatchesTitle;
-
-  /// No description provided for @browseMatchesDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Search suitable matches for son, daughter, relative.'**
-  String get browseMatchesDesc;
-
-  /// No description provided for @browseMatchesSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Answer a few questions and see suitable matches'**
-  String get browseMatchesSubtitle;
-
-  /// No description provided for @forWhomSearching.
-  ///
-  /// In en, this message translates to:
-  /// **'Who are you searching a match for?'**
-  String get forWhomSearching;
-
-  /// No description provided for @lookingForGender.
-  ///
-  /// In en, this message translates to:
-  /// **'Looking for groom or bride?'**
-  String get lookingForGender;
-
-  /// No description provided for @groomBoy.
-  ///
-  /// In en, this message translates to:
-  /// **'👦 Groom (Boy)'**
-  String get groomBoy;
-
-  /// No description provided for @brideGirl.
-  ///
-  /// In en, this message translates to:
-  /// **'👧 Bride (Girl)'**
-  String get brideGirl;
-
-  /// No description provided for @selectDistrict.
-  ///
-  /// In en, this message translates to:
-  /// **'Select District'**
-  String get selectDistrict;
-
-  /// No description provided for @proceedToLogin.
-  ///
-  /// In en, this message translates to:
-  /// **'Proceed → Login'**
-  String get proceedToLogin;
-
-  /// No description provided for @sibling.
-  ///
-  /// In en, this message translates to:
-  /// **'Sibling'**
-  String get sibling;
+  /// **'💰 0% Commission'**
+  String get zeroPercentCommission;
 }
 
 class _AppLocalizationsDelegate

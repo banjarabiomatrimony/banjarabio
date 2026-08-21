@@ -6,14 +6,15 @@ import 'package:banjarabio/presentation/biodata_creation_screen/biodata_creation
 import 'package:banjarabio/presentation/biodata_pdf_screen/biodata_pdf_screen.dart';
 import 'package:banjarabio/presentation/filter_screen/filter_screen.dart';
 import 'package:banjarabio/presentation/home_screen/home_screen.dart';
-import 'package:banjarabio/presentation/my_profile_screen/my_profile_screen.dart';
+import 'package:banjarabio/presentation/self_profile_screen/self_profile_screen.dart';
 import 'package:banjarabio/presentation/photo_management_screen/widgets/photo_management_screen.dart';
-import 'package:banjarabio/presentation/profile_detail_screen/profile_detail_screen.dart';
+import 'package:banjarabio/presentation/match_profile_screen/match_profile_screen.dart';
 import 'package:banjarabio/presentation/shared_profiles_screen/shared_profiles_screen.dart';
 import 'package:banjarabio/presentation/splash_screen/splash_screen.dart';
 import 'package:banjarabio/presentation/biodata_editor_screen/biodata_editor_screen.dart';
 import 'package:banjarabio/presentation/subscription_screen/subscription_screen.dart';
 import 'package:banjarabio/presentation/settings_screen/settings_screen.dart';
+import 'package:banjarabio/presentation/settings_screen/app_preferences_screen.dart';
 import 'package:banjarabio/presentation/ads/premium_gate_screen.dart';
 import 'package:banjarabio/presentation/saved_profiles_screen/saved_profiles_screen.dart';
 import 'package:banjarabio/presentation/chat/conversation_list_screen.dart';
@@ -45,6 +46,9 @@ import 'package:banjarabio/presentation/user_type_selection_screen/user_type_sel
 import 'package:banjarabio/notification/widgets/activity_hub_screen.dart';
 import 'package:banjarabio/presentation/bvs_gateway_screen/bvs_gateway_screen.dart';
 import 'package:banjarabio/presentation/bvs_gateway_screen/bvs_web_view_screen.dart';
+import 'package:banjarabio/presentation/services_hub_screen/services_hub_screen.dart';
+import 'package:banjarabio/presentation/connect_screen/connect_screen.dart';
+import 'package:banjarabio/presentation/vendor_registration_screen/vendor_registration_screen.dart';
 
 class AppRoutes {
   static const String initial = '/';
@@ -52,12 +56,14 @@ class AppRoutes {
   static const String userTypeSelection = '/user-type-selection';
   static const String bvsGateway = '/bvs-gateway';
   static const String bvsWebView = '/bvs-web-view';
+  static const String matchProfile = '/match-profile-screen';
   static const String profileDetail = '/profile-detail-screen';
   static const String sharedProfiles = '/shared-profiles-screen';
   static const String authentication = '/authentication-screen';
   static const String biodataCreation = '/biodata-creation-screen';
   static const String home = '/home-screen';
   static const String photoManagement = '/photo-management-screen';
+  static const String selfProfile = '/self-profile-screen';
   static const String myProfile = '/my-profile-screen';
   static const String filter = '/filter-screen';
   static const String subscription = '/subscription';
@@ -91,16 +97,22 @@ class AppRoutes {
   static const String staffDashboard = '/staff-dashboard';
   static const String premiumGate = '/premium-gate';
   static const String relativeIntake = '/relative-intake';
+  static const String servicesHub = '/services-hub';
+  static const String vendorRegistration = '/vendor-registration';
+  static const String connect = '/connect-screen';
+  static const String appPreferences = '/app-preferences-screen';
 
-  static Map<String, WidgetBuilder> routes = {
+  static Map<String, WidgetBuilder> get routes => {
     initial: (context) => const SplashScreen(),
-    profileDetail: (context) => const ProfileDetailScreen(),
+    matchProfile: (context) => const MatchProfileScreen(),
+    profileDetail: (context) => const MatchProfileScreen(),
     sharedProfiles: (context) => const SharedProfilesScreen(),
     authentication: (context) => const AuthenticationScreen(),
     biodataCreation: (context) => const BiodataCreationScreen(),
     home: (context) => const HomeScreen(),
     photoManagement: (context) => const PhotoManagementScreen(),
-    myProfile: (context) => const MyProfileScreen(),
+    selfProfile: (context) => const SelfProfileScreen(),
+    myProfile: (context) => const SelfProfileScreen(),
     filter: (context) => const FilterScreen(),
     subscription: (context) => const SubscriptionScreen(),
     savedProfiles: (context) => const SavedProfilesScreen(),
@@ -149,6 +161,10 @@ class AppRoutes {
       final url = ModalRoute.of(context)?.settings.arguments as String?;
       return BvsWebViewScreen(initialUrl: url);
     },
+    servicesHub: (context) => const ServicesHubScreen(),
+    vendorRegistration: (context) => const VendorRegistrationScreen(),
+    connect: (context) => const ConnectScreen(),
+    appPreferences: (context) => const AppPreferencesScreen(),
   };
 
   /// Generates premium animated routes for named navigation.
@@ -158,7 +174,25 @@ class AppRoutes {
   /// ```
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     final builder = routes[settings.name];
-    if (builder == null) return null;
-    return buildPremiumRoute(builder, settings);
+    if (builder != null) {
+      return buildPremiumRoute(builder, settings);
+    }
+    // Fallback for legacy or rewritten path variations
+    if (settings.name == '/vendor-registration' ||
+        settings.name == vendorRegistration) {
+      return buildPremiumRoute(
+          (context) => const VendorRegistrationScreen(), settings);
+    }
+    if (settings.name == '/match-profile-screen' ||
+        settings.name == '/profile-detail-screen' ||
+        settings.name == '/profile-detail') {
+      return buildPremiumRoute((context) => const MatchProfileScreen(), settings);
+    }
+    if (settings.name == '/self-profile-screen' ||
+        settings.name == '/my-profile-screen' ||
+        settings.name == '/my-profile') {
+      return buildPremiumRoute((context) => const SelfProfileScreen(), settings);
+    }
+    return null;
   }
 }

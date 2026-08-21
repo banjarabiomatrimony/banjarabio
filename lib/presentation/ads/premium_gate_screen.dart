@@ -8,6 +8,8 @@ import 'package:banjarabio/services/ads/ad_service.dart';
 import 'package:flutter/services.dart';
 import 'package:banjarabio/theme/app_theme.dart';
 import 'package:banjarabio/core/session_manager.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 
 class PremiumGateScreen extends StatefulWidget {
@@ -75,17 +77,27 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
     _loadRewardedAd();
   }
 
-  void _loadRewardedAd() {
-    if (!AdMobService.isHealthy) {
+  Future<void> _loadRewardedAd() async {
+    AppLogger.debug('PremiumGate', '📢 [PremiumGate:STEP 1/4:WAIT_SDK] Awaiting AdMob initialization...');
+    await AdMobService.ensureInitialized();
+    if (!mounted) return;
+
+    final unitId = AdMobService.rewardedAdUnitId;
+    AppLogger.debug('PremiumGate', '📢 [PremiumGate:STEP 2/4:REQUEST] Requesting RewardedAd for Unit: $unitId');
+
+    if (unitId == null || unitId.isEmpty) {
+      AppLogger.error('PremiumGate', '❌ [PremiumGate:ERROR] No valid Rewarded Ad Unit ID configured.');
+      _timeoutTimer?.cancel();
       if (mounted) setState(() => _adLoadFailed = true);
       return;
     }
 
     RewardedAd.load(
-      adUnitId: AdMobService.rewardedAdUnitId!,
+      adUnitId: unitId,
       request: const AdRequest(),
       rewardedAdLoadCallback: RewardedAdLoadCallback(
         onAdLoaded: (ad) {
+          AppLogger.debug('PremiumGate', '✅ [PremiumGate:STEP 3/4:LOADED] RewardedAd loaded and ready! Unit: ${ad.adUnitId}');
           _timeoutTimer?.cancel();
           if (mounted) {
             setState(() {
@@ -95,6 +107,10 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
           }
         },
         onAdFailedToLoad: (error) {
+          final diagnostic = AdMobService.describeAdError(error.code, error.message);
+          AppLogger.error('PremiumGate', '❌ [PremiumGate:FAILED] RewardedAd failed to load.');
+          AppLogger.error('PremiumGate', '❌ [PremiumGate:DIAGNOSTIC] $diagnostic');
+          AppLogger.error('PremiumGate', '❌ [PremiumGate:DETAILS] Code: ${error.code} | Message: ${error.message} | Domain: ${error.domain}');
           _timeoutTimer?.cancel();
           if (mounted) {
             setState(() => _adLoadFailed = true);
@@ -106,12 +122,15 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
 
   void _showRewardedAd() {
     if (_rewardedAd != null) {
+      AppLogger.debug('PremiumGate', '📢 [PremiumGate:STEP 4/4:DISPLAY] Showing RewardedAd to unlock premium feature.');
       _rewardedAd!.fullScreenContentCallback = FullScreenContentCallback(
         onAdDismissedFullScreenContent: (ad) {
+          AppLogger.debug('PremiumGate', '📢 [PremiumGate:DISMISSED] RewardedAd dismissed.');
           Future.microtask(() => ad.dispose());
           _loadRewardedAd();
         },
         onAdFailedToShowFullScreenContent: (ad, error) {
+          AppLogger.error('PremiumGate', '❌ [PremiumGate:DISPLAY_FAILED] RewardedAd failed to show: $error');
           Future.microtask(() => ad.dispose());
           _loadRewardedAd();
         },
@@ -119,6 +138,7 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
 
       _rewardedAd!.show(
         onUserEarnedReward: (ad, reward) {
+          AppLogger.debug('PremiumGate', '🎉 [PremiumGate:REWARD_EARNED] User earned reward: ${reward.amount} ${reward.type}');
           HapticFeedback.mediumImpact();
           if (mounted) {
             setState(() => _adCompleted = true);
@@ -208,8 +228,8 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
                         Text(
                           l10n?.premiumAccess ?? 'PREMIUM ACCESS',
                           style: GoogleFonts.inter(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w900,
+                            fontSize: AppTypography.bodySmall,
+                            fontWeight: AppTypography.black,
                             letterSpacing: 4,
                             color: AppTheme.primaryLight,
                           ),
@@ -220,8 +240,8 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
                         Text(
                           'BanjaraBio',
                           style: GoogleFonts.outfit(
-                            fontSize: 36,
-                            fontWeight: FontWeight.w900,
+                            fontSize: AppTypography.displayLarge,
+                            fontWeight: AppTypography.black,
                             color: Colors.white,
                             letterSpacing: 1,
                           ),
@@ -233,7 +253,7 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
                           l10n?.premiumGateSupport ?? 'Support our community by watching a quick ad,\nor upgrade to Pro for an ad-free experience.',
                           textAlign: TextAlign.center,
                           style: GoogleFonts.inter(
-                            fontSize: 13,
+                            fontSize: AppTypography.bodyLarge,
                             color: Colors.white.withValues(alpha: 0.5),
                             height: 1.5,
                           ),
@@ -265,8 +285,8 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
                       Text(
                         l10n?.unblockAllProFeatures ?? 'UNBLOCK ALL PRO FEATURES',
                         style: GoogleFonts.inter(
-                          fontSize: 10, 
-                          fontWeight: FontWeight.w900, 
+                          fontSize: AppTypography.bodySmall, 
+                          fontWeight: AppTypography.black, 
                           color: AppTheme.primaryLight,
                           letterSpacing: 2,
                         ),
@@ -334,7 +354,7 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
               const SizedBox(width: 12),
               Text(
                 l10n?.watchQuickAd ?? 'WATCH QUICK AD',
-                style: GoogleFonts.outfit(fontWeight: FontWeight.w900, fontSize: 16),
+                style: GoogleFonts.outfit(fontWeight: AppTypography.black, fontSize: AppTypography.headingSmall),
               ),
             ],
           ),
@@ -343,8 +363,8 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
         Text(
           l10n?.continueBlockedUntilAdEnds ?? 'CONTINUE TO APP BLOCKED UNTIL AD ENDS',
           style: GoogleFonts.inter(
-            fontSize: 9, 
-            fontWeight: FontWeight.bold, 
+            fontSize: AppTypography.labelMedium, 
+            fontWeight: AppTypography.bold, 
             color: Colors.white24,
             letterSpacing: 1,
           ),
@@ -370,7 +390,7 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
               const SizedBox(width: 10),
               Text(
                 l10n?.adCompletedSuccessfully ?? 'AD COMPLETED SUCCESSFULLY',
-                style: GoogleFonts.inter(color: AppTheme.successLight, fontWeight: FontWeight.bold, fontSize: 12),
+                style: GoogleFonts.inter(color: AppTheme.successLight, fontWeight: AppTypography.bold, fontSize: AppTypography.bodyMedium),
               ),
             ],
           ),
@@ -392,7 +412,7 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
               children: [
                 Text(
                   l10n?.continueToApp ?? 'CONTINUE TO APP',
-                  style: GoogleFonts.outfit(fontWeight: FontWeight.w900, fontSize: 17, letterSpacing: 1),
+                  style: GoogleFonts.outfit(fontWeight: AppTypography.black, fontSize: AppTypography.headingMedium, letterSpacing: 1),
                 ),
                 const SizedBox(width: 12),
                 const Icon(Icons.arrow_forward_rounded, size: 22),
@@ -419,7 +439,7 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
           const SizedBox(height: 16),
           Text(
             l10n?.preparingAdExperience ?? 'PREPARING AD EXPERIENCE...',
-            style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white24, letterSpacing: 2),
+            style: GoogleFonts.inter(fontSize: AppTypography.bodySmall, fontWeight: AppTypography.bold, color: Colors.white24, letterSpacing: 2),
           ),
         ],
         if (_adLoadFailed) ...[
@@ -438,7 +458,7 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
                 Flexible(
                   child: Text(
                     l10n?.adTemporarilyUnavailable ?? 'AD TEMPORARILY UNAVAILABLE',
-                    style: GoogleFonts.inter(color: Colors.orange, fontWeight: FontWeight.bold, fontSize: 11),
+                    style: GoogleFonts.inter(color: Colors.orange, fontWeight: AppTypography.bold, fontSize: AppTypography.bodySmall),
                   ),
                 ),
               ],
@@ -461,7 +481,7 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
                 children: [
                   Text(
                     l10n?.continueToApp ?? 'CONTINUE TO APP',
-                    style: GoogleFonts.outfit(fontWeight: FontWeight.w800, fontSize: 15, letterSpacing: 1),
+                    style: GoogleFonts.outfit(fontWeight: AppTypography.extraBold, fontSize: AppTypography.headingSmall, letterSpacing: 1),
                   ),
                   const SizedBox(width: 10),
                   const Icon(Icons.arrow_forward_rounded, size: 20),
@@ -488,13 +508,13 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
           children: [
             Text(
               title, 
-              style: GoogleFonts.inter(color: isAccent ? Colors.white : Colors.white70, fontSize: 11, fontWeight: FontWeight.bold),
+              style: GoogleFonts.inter(color: isAccent ? Colors.white : Colors.white70, fontSize: AppTypography.bodySmall, fontWeight: AppTypography.bold),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 6),
             Text(
               price, 
-              style: GoogleFonts.outfit(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900),
+              style: GoogleFonts.outfit(color: Colors.white, fontSize: AppTypography.headingMedium, fontWeight: AppTypography.black),
               textAlign: TextAlign.center,
             ),
           ],
@@ -510,7 +530,7 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF1A1A1A),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: Colors.white12)),
-        title: Text(l10n?.banjaraBioPro ?? 'BanjaraBio Pro', style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: Text(l10n?.banjaraBioPro ?? 'BanjaraBio Pro', style: GoogleFonts.outfit(color: Colors.white, fontWeight: AppTypography.bold)),
         content: Text(
           l10n?.upgradeToUnlockPremiumFeatures ?? 'Upgrade to remove all ads and unlock premium biodata features.',
           style: GoogleFonts.inter(color: Colors.white70),

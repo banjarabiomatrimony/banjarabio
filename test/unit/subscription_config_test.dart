@@ -159,11 +159,11 @@ void main() {
 
   group('SubscriptionConfig plan lists', () {
     test('getSelfServicePlans returns active plans', () {
-      expect(SubscriptionConfig.getSelfServicePlans(), hasLength(2));
+      expect(SubscriptionConfig.getSelfServicePlans(), hasLength(5));
     });
 
     test('getVipPlans returns active VIP plans', () {
-      expect(SubscriptionConfig.getVipPlans(), hasLength(0));
+      expect(SubscriptionConfig.getVipPlans(), hasLength(3));
     });
   });
 }

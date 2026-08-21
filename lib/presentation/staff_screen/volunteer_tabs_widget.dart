@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/core/repositories/volunteer_repository.dart';
 import 'package:banjarabio/core/data/location_data.dart';
@@ -326,7 +327,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
       appBar: AppBar(
         backgroundColor: kBgDark,
         foregroundColor: Colors.white,
-        title: const Text('Volunteer Dashboard', style: TextStyle(fontWeight: FontWeight.w600)),
+        title: const Text('Volunteer Dashboard', style: TextStyle(fontWeight: AppTypography.semiBold)),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -377,7 +378,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
         icon: const Icon(Icons.bolt_rounded, color: Colors.white),
         label: const Text(
           '⚡ मेळावा Onboarding',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: AppTypography.bold),
         ),
       ),
     );
@@ -486,8 +487,8 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                   label,
                   style: theme.textTheme.labelMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 11,
+                    fontWeight: AppTypography.semiBold,
+                    fontSize: AppTypography.bodySmall,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -503,17 +504,17 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
               Text(
                 '$actual',
                 style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTypography.bold,
                   color: theme.colorScheme.onSurface,
-                  fontSize: 18,
+                  fontSize: AppTypography.headingMedium,
                 ),
               ),
               Text(
                 ' / $target',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
-                  fontWeight: FontWeight.w500,
-                  fontSize: 10,
+                  fontWeight: AppTypography.medium,
+                  fontSize: AppTypography.bodySmall,
                 ),
               ),
             ],
@@ -536,8 +537,8 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                 '${(percent * 100).toInt()}%',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: isTargetMet ? Colors.green : color,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 9,
+                  fontWeight: AppTypography.bold,
+                  fontSize: AppTypography.labelMedium,
                 ),
               ),
               if (isTargetMet)
@@ -656,8 +657,8 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
         displayStatus,
         style: TextStyle(
           color: badgeColor,
-          fontSize: 10,
-          fontWeight: FontWeight.bold,
+          fontSize: AppTypography.bodySmall,
+          fontWeight: AppTypography.bold,
         ),
       ),
     );
@@ -711,7 +712,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                     Text(
                       'Log Follow-up Call',
                       style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTypography.bold,
                         color: theme.colorScheme.onSurface,
                       ),
                     ),
@@ -726,7 +727,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                     Text(
                       'Call Outcome',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTypography.semiBold,
                         color: theme.colorScheme.onSurface,
                       ),
                     ),
@@ -748,7 +749,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                           checkmarkColor: theme.primaryColor,
                           labelStyle: TextStyle(
                             color: isSelected ? theme.primaryColor : theme.colorScheme.onSurface,
-                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            fontWeight: isSelected ? AppTypography.bold : FontWeight.normal,
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -763,7 +764,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                     Text(
                       'Notes',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTypography.semiBold,
                         color: theme.colorScheme.onSurface,
                       ),
                     ),
@@ -905,8 +906,8 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                 initials,
                 style: TextStyle(
                   color: avatarColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontWeight: AppTypography.bold,
+                  fontSize: AppTypography.headingMedium,
                 ),
               ),
             ),
@@ -918,7 +919,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                   Text(
                     p.fullName,
                     style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTypography.bold,
                       color: theme.colorScheme.onSurface,
                     ),
                   ),
@@ -934,7 +935,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                         child: Text(
                           '${p.age} Yrs · ${p.gender}',
                           style: theme.textTheme.bodySmall?.copyWith(
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTypography.semiBold,
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
                         ),
@@ -959,7 +960,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                           p.phoneNumber!,
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.primaryColor,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTypography.bold,
                             letterSpacing: 0.5,
                           ),
                         ),
@@ -1309,7 +1310,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                   'Editing: ${_editingProfile!.fullName}',
                   style: theme.textTheme.titleMedium?.copyWith(
                     color: theme.primaryColor,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTypography.bold,
                   ),
                 ),
               ),
@@ -1552,7 +1553,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
           title: Text(
             title,
             style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTypography.bold,
               color: theme.colorScheme.onSurface,
             ),
           ),
@@ -1584,7 +1585,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
               Text(
                 label,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTypography.semiBold,
                   color: theme.colorScheme.onSurface,
                 ),
               ),
@@ -1594,7 +1595,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                   '*',
                   style: TextStyle(
                     color: theme.colorScheme.error,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTypography.bold,
                   ),
                 ),
               ],
@@ -1676,7 +1677,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
               Text(
                 label,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTypography.semiBold,
                   color: theme.colorScheme.onSurface,
                 ),
               ),
@@ -1686,7 +1687,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                   '*',
                   style: TextStyle(
                     color: theme.colorScheme.error,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTypography.bold,
                   ),
                 ),
               ],
@@ -1853,7 +1854,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
             'LIFETIME PERFORMANCE',
             style: theme.textTheme.labelSmall?.copyWith(
               color: theme.primaryColor,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTypography.bold,
               letterSpacing: 1.2,
             ),
           ),
@@ -1914,7 +1915,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
               label,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
-                fontSize: 11,
+                fontSize: AppTypography.bodySmall,
               ),
             ),
           ],
@@ -1923,7 +1924,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
         Text(
           value,
           style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTypography.bold,
             color: theme.colorScheme.onSurface,
           ),
         ),
@@ -1972,8 +1973,8 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                         'Calls History (${_recentCalls.length})',
                         style: TextStyle(
                           color: isCalls ? Colors.white : theme.colorScheme.onSurface,
-                          fontWeight: isCalls ? FontWeight.bold : FontWeight.normal,
-                          fontSize: 13,
+                          fontWeight: isCalls ? AppTypography.bold : FontWeight.normal,
+                          fontSize: AppTypography.bodyLarge,
                         ),
                       ),
                     ],
@@ -2005,8 +2006,8 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                         'Registrations (${_recentRegistrations.length})',
                         style: TextStyle(
                           color: !isCalls ? Colors.white : theme.colorScheme.onSurface,
-                          fontWeight: !isCalls ? FontWeight.bold : FontWeight.normal,
-                          fontSize: 13,
+                          fontWeight: !isCalls ? AppTypography.bold : FontWeight.normal,
+                          fontSize: AppTypography.bodyLarge,
                         ),
                       ),
                     ],
@@ -2040,7 +2041,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
               Text(
                 isCalls ? 'No calls logged today' : 'No registrations logged today',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTypography.bold,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
@@ -2048,7 +2049,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
               Text(
                 'Pull down to refresh and fetch latest activity',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: AppTypography.bodyMedium,
                   color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
                 ),
               ),
@@ -2103,7 +2104,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                       Text(
                         name.isEmpty ? 'Unknown Candidate' : name,
                         style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTypography.bold,
                           color: theme.colorScheme.onSurface,
                         ),
                       ),
@@ -2127,7 +2128,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                     outcome,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: _getOutcomeColor(outcome),
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTypography.bold,
                     ),
                   ),
                 ),
@@ -2217,7 +2218,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                   Text(
                     name.isEmpty ? 'Unknown Candidate' : name,
                     style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTypography.bold,
                       color: theme.colorScheme.onSurface,
                     ),
                   ),
@@ -2227,7 +2228,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                       phone,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTypography.medium,
                       ),
                     ),
                   ],
@@ -2259,7 +2260,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                     'Registered $timeStr',
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.primaryColor.withValues(alpha: 0.7),
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTypography.medium,
                     ),
                   ),
                 ],

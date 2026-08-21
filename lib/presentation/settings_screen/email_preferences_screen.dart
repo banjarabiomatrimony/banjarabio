@@ -138,7 +138,7 @@ class _EmailPreferencesScreenState extends State<EmailPreferencesScreen> {
       child: Text(
         title.toUpperCase(),
         style: theme.textTheme.titleSmall?.copyWith(
-          fontWeight: FontWeight.bold,
+          fontWeight: AppTypography.bold,
           color: theme.colorScheme.primary,
           letterSpacing: 1.2,
           fontSize: AppTypography.bodySmall,
@@ -161,7 +161,7 @@ class _EmailPreferencesScreenState extends State<EmailPreferencesScreen> {
         ),
         title: Text(
           title,
-          style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: theme.textTheme.bodyLarge?.copyWith(fontWeight: AppTypography.bold),
         ),
         subtitle: Text(
           subtitle,

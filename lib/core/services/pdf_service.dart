@@ -3,10 +3,13 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:printing/printing.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/core/models/biodata_content.dart';
 import 'package:banjarabio/core/constants/biodata_templates.dart';
 import 'package:banjarabio/core/services/pdf/templates/marriage_template.dart';
+import 'package:banjarabio/core/services/pdf/biodata_font_manager.dart';
+import 'package:banjarabio/core/services/pdf/biodata_font_preloader.dart';
 
 class PdfService {
   /// Generate Biodata PDF in a background isolate using [compute]
@@ -22,7 +25,16 @@ class PdfService {
     double marginTop = 70,
     double marginRight = 60,
     double marginBottom = 70,
+    String? headerMantra,
+    bool showAnnualIncome = true,
+    bool showBirthTime = true,
+    bool showPhoneNumber = true,
+    String? alternatePhoneNumber,
+    Map<String, Uint8List>? fontBytes,
   }) async {
+    // Preload font bytes in main isolate if not supplied
+    final fonts = fontBytes ?? await BiodataFontPreloader.loadAll();
+
     final params = _PdfParams(
       profile: profile,
       isLocked: isLocked,
@@ -35,6 +47,12 @@ class PdfService {
       marginTop: marginTop,
       marginRight: marginRight,
       marginBottom: marginBottom,
+      headerMantra: headerMantra,
+      showAnnualIncome: showAnnualIncome,
+      showBirthTime: showBirthTime,
+      showPhoneNumber: showPhoneNumber,
+      alternatePhoneNumber: alternatePhoneNumber,
+      fontBytes: fonts,
     );
 
     // In a test environment, skip actual generation to avoid complex asset/isolate issues.
@@ -63,6 +81,12 @@ class PdfService {
       marginTop: params.marginTop,
       marginRight: params.marginRight,
       marginBottom: params.marginBottom,
+      headerMantra: params.headerMantra,
+      showAnnualIncome: params.showAnnualIncome,
+      showBirthTime: params.showBirthTime,
+      showPhoneNumber: params.showPhoneNumber,
+      alternatePhoneNumber: params.alternatePhoneNumber,
+      fontBytes: params.fontBytes,
     );
   }
 
@@ -79,31 +103,53 @@ class PdfService {
     double marginTop = 70,
     double marginRight = 60,
     double marginBottom = 70,
+    String? headerMantra,
+    bool showAnnualIncome = true,
+    bool showBirthTime = true,
+    bool showPhoneNumber = true,
+    String? alternatePhoneNumber,
+    Map<String, Uint8List>? fontBytes,
   }) async {
-    // 1. Load fonts
+    // 1. Load fonts for current language & Devanagari mantra
     pw.Font font;
     pw.Font boldFont;
     pw.Font mantraFont;
 
-    try {
-      final fontData = await rootBundle.load('assets/fonts/Inter-Regular.ttf');
-      font = pw.Font.ttf(fontData);
-    } catch (e) {
-      font = pw.Font.helvetica();
-    }
+    if (fontBytes != null && fontBytes.isNotEmpty) {
+      try {
+        font = BiodataFontManager.getFontForLanguageFromBytes(
+          fontBytes,
+          language,
+        );
+        boldFont = BiodataFontManager.getFontForLanguageFromBytes(
+          fontBytes,
+          language,
+          bold: true,
+        );
+        mantraFont = BiodataFontManager.getMantraFontFromBytes(fontBytes);
+      } catch (_) {
+        font = await BiodataFontManager.getFontForLanguage(language);
+        boldFont = await BiodataFontManager.getFontForLanguage(language, bold: true);
+        mantraFont = await BiodataFontManager.getMantraFont();
+      }
+    } else {
+      try {
+        font = await BiodataFontManager.getFontForLanguage(language);
+      } catch (_) {
+        font = await PdfGoogleFonts.poppinsRegular();
+      }
 
-    try {
-      final boldFontData = await rootBundle.load('assets/fonts/Inter-Bold.ttf');
-      boldFont = pw.Font.ttf(boldFontData);
-    } catch (e) {
-      boldFont = pw.Font.helveticaBold();
-    }
+      try {
+        boldFont = await BiodataFontManager.getFontForLanguage(language, bold: true);
+      } catch (_) {
+        boldFont = await PdfGoogleFonts.poppinsBold();
+      }
 
-    try {
-      final mantraFontData = await rootBundle.load('assets/fonts/NotoSerif-Italic.ttf');
-      mantraFont = pw.Font.ttf(mantraFontData);
-    } catch (e) {
-      mantraFont = pw.Font.helveticaOblique();
+      try {
+        mantraFont = await BiodataFontManager.getMantraFont();
+      } catch (_) {
+        mantraFont = boldFont;
+      }
     }
 
     // 2. Prepare images
@@ -111,8 +157,15 @@ class PdfService {
     final profileImage = profilePhotoBytes != null ? pw.MemoryImage(profilePhotoBytes) : null;
     final templateImage = templateImageBytes != null ? pw.MemoryImage(templateImageBytes) : null;
 
-    // 3. Prepare content
-    final content = BiodataContent.fromProfile(profile);
+    // 3. Prepare content with privacy toggles
+    final content = BiodataContent.fromProfile(
+      profile,
+      language: language,
+      showAnnualIncome: showAnnualIncome,
+      showBirthTime: showBirthTime,
+      showPhoneNumber: showPhoneNumber,
+      alternatePhoneNumber: alternatePhoneNumber,
+    );
 
     // 4. Create and generate template
     final template = MarriageTemplate(
@@ -130,6 +183,7 @@ class PdfService {
       marginTop: marginTop,
       marginRight: marginRight,
       marginBottom: marginBottom,
+      headerMantra: headerMantra,
     );
 
     final pdf = await template.generate();
@@ -150,6 +204,12 @@ class _PdfParams {
   final double marginTop;
   final double marginRight;
   final double marginBottom;
+  final String? headerMantra;
+  final bool showAnnualIncome;
+  final bool showBirthTime;
+  final bool showPhoneNumber;
+  final String? alternatePhoneNumber;
+  final Map<String, Uint8List>? fontBytes;
 
   _PdfParams({
     required this.profile,
@@ -163,5 +223,11 @@ class _PdfParams {
     required this.marginTop,
     required this.marginRight,
     required this.marginBottom,
+    this.headerMantra,
+    this.showAnnualIncome = true,
+    this.showBirthTime = true,
+    this.showPhoneNumber = true,
+    this.alternatePhoneNumber,
+    this.fontBytes,
   });
 }

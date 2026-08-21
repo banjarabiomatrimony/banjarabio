@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:banjarabio/core/services/pdf/templates/biodata_template_base.dart';
@@ -130,7 +131,7 @@ class TraditionalTemplate extends BiodataTemplateBase {
                     label('biodata').toUpperCase(),
                     style: pw.TextStyle(
                       font: boldFont,
-                      fontSize: 26,
+                      fontSize: AppTypography.displaySmallFixed,
                       color: PdfColors.black,
                       letterSpacing: 4,
                     ),
@@ -220,29 +221,41 @@ class TraditionalTemplate extends BiodataTemplateBase {
         _buildSectionHeader(title, color, gold),
         pw.Padding(
           padding: const pw.EdgeInsets.symmetric(horizontal: 15),
-          child: pw.Table(
-            columnWidths: {
-              0: const pw.FixedColumnWidth(140),
-              1: const pw.FlexColumnWidth(),
-            },
+          child: pw.Column(
             children: data.entries.map((e) {
-              return pw.TableRow(
-                children: [
-                  pw.Padding(
-                    padding: const pw.EdgeInsets.symmetric(vertical: 6),
-                    child: pw.Text(
-                      '${e.key} :',
-                      style: labelStyle().copyWith(color: color, fontSize: 11),
+              return pw.Padding(
+                padding: const pw.EdgeInsets.symmetric(vertical: 4),
+                child: pw.Row(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.SizedBox(
+                      width: 140,
+                      child: pw.Text(
+                        e.key,
+                        style: labelStyle().copyWith(
+                          color: color,
+                          fontSize: AppTypography.bodyExtraSmallFixed,
+                        ),
+                      ),
                     ),
-                  ),
-                  pw.Padding(
-                    padding: const pw.EdgeInsets.symmetric(vertical: 6),
-                    child: pw.Text(
-                      e.value,
-                      style: valueStyle().copyWith(fontSize: 11),
+                    pw.Text(
+                      ': ',
+                      style: pw.TextStyle(
+                        font: boldFont,
+                        color: color,
+                        fontSize: AppTypography.bodyExtraSmallFixed,
+                      ),
                     ),
-                  ),
-                ],
+                    pw.Expanded(
+                      child: pw.Text(
+                        e.value,
+                        style: valueStyle().copyWith(
+                          fontSize: AppTypography.bodyExtraSmallFixed,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               );
             }).toList(),
           ),

@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:banjarabio/l10n/app_localizations.dart';
 
 /// Custom app bar for Banjara matrimonial app
 /// Implements cultural minimalism with clean typography and respectful design
 /// Supports various configurations for different screen contexts
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// Title text to display
-  final String title;
+  final String? title;
+
+  /// Custom title widget (takes precedence over title if provided)
+  final Widget? titleWidget;
 
   /// Optional subtitle for additional context
   final String? subtitle;
 
   /// Leading widget (typically back button or menu icon)
   final Widget? leading;
+
+  /// Custom leading width
+  final double? leadingWidth;
 
   /// Action widgets displayed on the right side
   final List<Widget>? actions;
@@ -22,6 +29,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   /// Whether to center the title
   final bool centerTitle;
+
+  /// Custom title spacing
+  final double? titleSpacing;
 
   /// Custom background color (defaults to theme color)
   final Color? backgroundColor;
@@ -37,9 +47,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   const CustomAppBar({
     super.key,
-    required this.title,
+    this.title,
+    this.titleWidget,
     this.subtitle,
     this.leading,
+    this.leadingWidth,
+    this.titleSpacing,
     this.actions,
     this.automaticallyImplyLeading = true,
     this.centerTitle = true,
@@ -47,7 +60,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.foregroundColor,
     this.elevation = 1.0,
     this.bottom,
-  });
+  }) : assert(title != null || titleWidget != null, 'Either title or titleWidget must be provided');
 
   @override
   Widget build(BuildContext context) {
@@ -55,30 +68,33 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     final appBarTheme = theme.appBarTheme;
 
     return AppBar(
-      title: subtitle != null
-          ? Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: centerTitle
-                  ? CrossAxisAlignment.center
-                  : CrossAxisAlignment.start,
-              children: [
-                Text(title, style: appBarTheme.titleTextStyle),
-                const SizedBox(height: 2),
-                Text(
-                  subtitle!,
-                  style: theme.textTheme.bodySmall?.copyWith(
+      titleSpacing: titleSpacing,
+      title: titleWidget ??
+          (subtitle != null
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: centerTitle
+                      ? CrossAxisAlignment.center
+                      : CrossAxisAlignment.start,
+                  children: [
+                    Text(title ?? '', style: appBarTheme.titleTextStyle),
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle!,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: foregroundColor ?? appBarTheme.foregroundColor,
+                      ),
+                    ),
+                  ],
+                )
+              : Text(
+                  title ?? '',
+                  style: appBarTheme.titleTextStyle?.copyWith(
                     color: foregroundColor ?? appBarTheme.foregroundColor,
                   ),
-                ),
-              ],
-            )
-          : Text(
-              title,
-              style: appBarTheme.titleTextStyle?.copyWith(
-                color: foregroundColor ?? appBarTheme.foregroundColor,
-              ),
-            ),
+                )),
       leading: leading,
+      leadingWidth: leadingWidth,
       actions: actions,
       automaticallyImplyLeading: automaticallyImplyLeading,
       centerTitle: centerTitle,
@@ -87,7 +103,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: elevation,
       bottom: bottom,
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
         statusBarIconBrightness: theme.brightness == Brightness.light
             ? Brightness.dark
             : Brightness.light,
@@ -150,7 +165,6 @@ class CustomProfileAppBar extends StatelessWidget
       backgroundColor: backgroundColor ?? theme.appBarTheme.backgroundColor,
       elevation: 0,
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
         statusBarIconBrightness: theme.brightness == Brightness.light
             ? Brightness.dark
             : Brightness.light,
@@ -219,7 +233,7 @@ class CustomSearchAppBar extends StatelessWidget
               ? IconButton(
                   icon: const Icon(Icons.clear, size: 20),
                   onPressed: () => onQueryChanged?.call(''),
-                  tooltip: 'Clear search',
+                  tooltip: AppLocalizations.of(context)?.clearSearch ?? 'Clear search',
                 )
               : null,
         ),
@@ -229,14 +243,13 @@ class CustomSearchAppBar extends StatelessWidget
               IconButton(
                 icon: const Icon(Icons.filter_list, size: 24),
                 onPressed: onFilterTap,
-                tooltip: 'Filter profiles',
+                tooltip: AppLocalizations.of(context)?.filterProfiles ?? 'Filter profiles',
               ),
             ]
           : null,
       backgroundColor: theme.appBarTheme.backgroundColor,
       elevation: 0,
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
         statusBarIconBrightness: theme.brightness == Brightness.light
             ? Brightness.dark
             : Brightness.light,

@@ -120,4 +120,31 @@ void main() {
       verify(() => mockSearchHistoryBox.delete('history')).called(1);
     });
   });
+
+  group('Theme Mode', () {
+    test('saveThemeMode puts theme_mode into boxAppMetadata', () async {
+      when(() => mockAppMetadataBox.put(any(), any())).thenAnswer((_) async => {});
+
+      await localCacheService.saveThemeMode('dark');
+
+      verify(() => mockAppMetadataBox.put('theme_mode', 'dark')).called(1);
+    });
+
+    test('getThemeMode returns theme_mode string from boxAppMetadata', () {
+      when(() => mockAppMetadataBox.get('theme_mode')).thenReturn('dark');
+
+      final result = localCacheService.getThemeMode();
+
+      expect(result, 'dark');
+    });
+
+    test('clearThemeMode deletes theme_mode from boxAppMetadata', () async {
+      when(() => mockAppMetadataBox.delete(any())).thenAnswer((_) async => {});
+
+      await localCacheService.clearThemeMode();
+
+      verify(() => mockAppMetadataBox.delete('theme_mode')).called(1);
+    });
+  });
 }
+

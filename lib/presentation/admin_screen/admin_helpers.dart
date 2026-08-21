@@ -66,7 +66,7 @@ Widget buildAdminContactAction({
             style: TextStyle(
               fontSize: AppTypography.labelMedium,
               color: color,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTypography.bold,
             ),
           ),
         ],

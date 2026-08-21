@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
@@ -40,14 +41,14 @@ class BiodataTextField extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text(label, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+            Text(label, style: theme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.bold)),
             if (required && !isAdminEdit) ...[
               SizedBox(width: 1.w),
               Text(
                 '*',
                 style: theme.textTheme.titleSmall?.copyWith(
                   color: theme.colorScheme.error,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTypography.bold,
                 ),
               ),
             ],

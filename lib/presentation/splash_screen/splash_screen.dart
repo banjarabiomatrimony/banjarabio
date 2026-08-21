@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:sizer/sizer.dart';
-import 'package:banjarabio/core/constants/app_typography.dart';
 
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/utils/startup_workflow.dart';
@@ -151,10 +150,9 @@ class _SplashScreenState extends State<SplashScreen> {
                   // ── App name ──
                   Text(
                     AppLocalizations.of(context)?.banjarabio ?? 'BanjaraBio',
-                    style: TextStyle(
-                      fontFamily: AppTheme.headingFontFamily,
+                    style: AppTypography.headingStyle(
                       fontSize: AppTypography.headingLarge,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTypography.bold,
                       color: Colors.white,
                       letterSpacing: 1.2,
                     ),
@@ -165,10 +163,9 @@ class _SplashScreenState extends State<SplashScreen> {
                   // ── Tagline ──
                   Text(
                     'Connect with your community',
-                    style: TextStyle(
-                      fontFamily: AppTheme.headingFontFamily,
+                    style: AppTypography.headingStyle(
                       fontSize: AppTypography.bodyMedium,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: AppTypography.regular,
                       color: Colors.white.withValues(alpha: 0.9),
                     ),
                   ),

@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter/material.dart';
+import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:banjarabio/notification/features/fcm_service.dart';
 import 'package:banjarabio/notification/features/local_notification_service.dart';
@@ -235,22 +237,19 @@ class NotificationBridge {
 
                   // Title & Tagline
                   Text(
-                    'Stay Connected on BanjaraBio',
+                    AppLocalizations.of(context)?.stayConnectedOnBanjaraBio ?? 'Stay Connected on BanjaraBio',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: 'Outfit',
-                      fontSize: 22,
-                      fontWeight: FontWeight.w800,
+                    style: AppTypography.headingStyle(
                       color: theme.colorScheme.onSurface,
                       letterSpacing: -0.4,
                     ),
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Never miss a verified match, instant message, or profile update.',
+                    AppLocalizations.of(context)?.neverMissVerifiedMatch ?? 'Never miss a verified match, instant message, or profile update.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 13.5,
+                      fontSize: AppTypography.bodyLarge,
                       color: theme.colorScheme.onSurfaceVariant,
                       height: 1.4,
                     ),
@@ -258,25 +257,25 @@ class NotificationBridge {
                   const SizedBox(height: 24),
 
                   // Feature Cards
-                  const _PermissionBenefitTile(
+                  _PermissionBenefitTile(
                     icon: Icons.favorite_rounded,
-                    iconColor: Color(0xFFE91E63),
-                    title: 'Instant Match Alerts',
-                    subtitle: 'Get notified immediately when mutual interest is accepted.',
+                    iconColor: const Color(0xFFE91E63),
+                    title: AppLocalizations.of(context)?.instantMatchAlerts ?? 'Instant Match Alerts',
+                    subtitle: AppLocalizations.of(context)?.instantMatchAlertsSubtitle ?? 'Get notified immediately when mutual interest is accepted.',
                   ),
                   const SizedBox(height: 12),
-                  const _PermissionBenefitTile(
+                  _PermissionBenefitTile(
                     icon: Icons.chat_bubble_rounded,
-                    iconColor: Color(0xFF009688),
-                    title: 'Direct Messages',
-                    subtitle: 'Stay responsive when your match sends you a message.',
+                    iconColor: const Color(0xFF009688),
+                    title: AppLocalizations.of(context)?.directMessages ?? 'Direct Messages',
+                    subtitle: AppLocalizations.of(context)?.directMessagesSubtitle ?? 'Stay responsive when your match sends you a message.',
                   ),
                   const SizedBox(height: 12),
-                  const _PermissionBenefitTile(
+                  _PermissionBenefitTile(
                     icon: Icons.auto_awesome_rounded,
-                    iconColor: Color(0xFFFF9800),
-                    title: 'Smart Recommendations',
-                    subtitle: 'Receive curated bio recommendations tailored for you.',
+                    iconColor: const Color(0xFFFF9800),
+                    title: AppLocalizations.of(context)?.smartRecommendations ?? 'Smart Recommendations',
+                    subtitle: AppLocalizations.of(context)?.smartRecommendationsSubtitle ?? 'Receive curated bio recommendations tailored for you.',
                   ),
                   const SizedBox(height: 18),
 
@@ -302,10 +301,10 @@ class NotificationBridge {
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
-                            '100% Strict Privacy: Bookmarks & profile views are completely private and never triggered as notifications.',
+                            AppLocalizations.of(context)?.strictPrivacyNotificationNote ?? '100% Strict Privacy: Bookmarks & profile views are completely private and never triggered as notifications.',
                             style: TextStyle(
-                              fontSize: 11.5,
-                              fontWeight: FontWeight.w500,
+                              fontSize: AppTypography.bodyMedium,
+                              fontWeight: AppTypography.medium,
                               color: theme.colorScheme.onSurfaceVariant,
                               height: 1.35,
                             ),
@@ -340,16 +339,16 @@ class NotificationBridge {
                           borderRadius: BorderRadius.circular(16),
                         ),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.notifications_active_rounded, color: Colors.white, size: 20),
-                          SizedBox(width: 8),
+                          const Icon(Icons.notifications_active_rounded, color: Colors.white, size: 20),
+                          const SizedBox(width: 8),
                           Text(
-                            'Enable Notifications',
+                            AppLocalizations.of(context)?.enableNotifications ?? 'Enable Notifications',
                             style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                              fontSize: AppTypography.headingSmall,
+                              fontWeight: AppTypography.bold,
                               color: Colors.white,
                             ),
                           ),
@@ -368,10 +367,10 @@ class NotificationBridge {
                       ),
                     ),
                     child: Text(
-                      'Maybe Later',
+                      AppLocalizations.of(context)?.maybeLater ?? 'Maybe Later',
                       style: TextStyle(
-                        fontSize: 14.5,
-                        fontWeight: FontWeight.w600,
+                        fontSize: AppTypography.bodyLarge,
+                        fontWeight: AppTypography.semiBold,
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
@@ -451,8 +450,8 @@ class _PermissionBenefitTile extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
+                    fontSize: AppTypography.bodyLarge,
+                    fontWeight: AppTypography.bold,
                     color: theme.colorScheme.onSurface,
                   ),
                 ),
@@ -460,7 +459,7 @@ class _PermissionBenefitTile extends StatelessWidget {
                 Text(
                   subtitle,
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: AppTypography.bodyMedium,
                     color: theme.colorScheme.onSurfaceVariant,
                     height: 1.3,
                   ),

@@ -117,7 +117,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                         Text(
                           'Create New Coupon',
                           style: widget.theme.textTheme.headlineSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTypography.bold,
                           ),
                         ),
                         SizedBox(height: 1.h),
@@ -133,7 +133,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                         Text(
                           'Live Preview',
                           style: widget.theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTypography.bold,
                           ),
                         ),
                         SizedBox(height: 1.5.h),
@@ -215,7 +215,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                                 Text(
                                   DateFormat('EEEE, MMM dd, yyyy').format(selectedDate),
                                   style: widget.theme.textTheme.bodyMedium?.copyWith(
-                                    fontWeight: FontWeight.w600,
+                                    fontWeight: AppTypography.semiBold,
                                   ),
                                 ),
                                 const Spacer(),
@@ -285,7 +285,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                         Text(
                           'Target Audience (Optional)',
                           style: widget.theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTypography.bold,
                           ),
                         ),
                         SizedBox(height: 1.h),
@@ -428,7 +428,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                             ),
                             child: isUploading 
                                 ? const CircularProgressIndicator(color: Colors.white)
-                                : const Text('Publish Coupon', style: TextStyle(fontWeight: FontWeight.bold)),
+                                : const Text('Publish Coupon', style: TextStyle(fontWeight: AppTypography.bold)),
                           ),
                         ),
                         SizedBox(height: 4.h),
@@ -454,7 +454,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
           Text(
             label,
             style: widget.theme.textTheme.labelMedium?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTypography.bold,
               color: widget.theme.hintColor,
             ),
           ),
@@ -505,14 +505,14 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                           fontSize: AppTypography.labelSmall,
                           letterSpacing: 2,
                           color: widget.theme.hintColor,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTypography.semiBold,
                         ),
                       ),
                       Text(
                         code,
                         style: TextStyle(
                           fontSize: AppTypography.headingMedium,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTypography.bold,
                           color: widget.theme.colorScheme.primary,
                         ),
                       ),
@@ -536,7 +536,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                 name.toUpperCase(),
                 style: TextStyle(
                   fontSize: AppTypography.bodySmall,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: AppTypography.extraBold,
                 ),
               ),
               SizedBox(height: 1.h),
@@ -557,7 +557,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                     '$discount% OFF',
                     style: TextStyle(
                       fontSize: AppTypography.bodyLarge,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: AppTypography.black,
                       color: Colors.green,
                     ),
                   ),
@@ -640,7 +640,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                               Text(
                                 coupon.code,
                                 style: widget.theme.textTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: AppTypography.bold,
                                   color: widget.theme.colorScheme.primary,
                                 ),
                               ),
@@ -658,8 +658,8 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                                 child: Text(
                                   isToday ? 'LIVE' : isExpired ? 'EXPIRED' : 'UPCOMING',
                                   style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
+                                    fontSize: AppTypography.bodySmall,
+                                    fontWeight: AppTypography.bold,
                                     color: isToday ? Colors.green : isExpired ? Colors.red : Colors.blue,
                                   ),
                                 ),
@@ -668,7 +668,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                           ),
                           Text(
                             coupon.offerName,
-                            style: widget.theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
+                            style: widget.theme.textTheme.bodyLarge?.copyWith(fontWeight: AppTypography.semiBold),
                           ),
                           if (coupon.description != null && coupon.description!.isNotEmpty)
                             Text(

@@ -301,6 +301,44 @@ void main() {
     });
   });
 
+  group('LocalCacheService - theme mode', () {
+    test('saveThemeMode calls box.put', () async {
+      final box = MockBox();
+      boxes[LocalCacheService.boxAppMetadata] = box;
+      stubBoxPut(box);
+
+      await cache.saveThemeMode('dark');
+
+      verify(() => box.put('theme_mode', 'dark')).called(1);
+    });
+
+    test('getThemeMode calls box.get', () {
+      final box = MockBox();
+      boxes[LocalCacheService.boxAppMetadata] = box;
+      stubBoxGet(box, 'theme_mode', 'system');
+
+      expect(cache.getThemeMode(), 'system');
+    });
+
+    test('getThemeMode returns null when not set', () {
+      final box = MockBox();
+      boxes[LocalCacheService.boxAppMetadata] = box;
+      stubBoxGet(box, 'theme_mode', null);
+
+      expect(cache.getThemeMode(), isNull);
+    });
+
+    test('clearThemeMode calls box.delete', () async {
+      final box = MockBox();
+      boxes[LocalCacheService.boxAppMetadata] = box;
+      stubBoxDelete(box);
+
+      await cache.clearThemeMode();
+
+      verify(() => box.delete('theme_mode')).called(1);
+    });
+  });
+
   group('LocalCacheService - reset', () {
     test('reset clears testBoxOpener', () {
       cache.reset();
@@ -311,3 +349,4 @@ void main() {
     });
   });
 }
+

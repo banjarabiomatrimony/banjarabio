@@ -30,7 +30,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           children: [
             Text(AppLocalizations.of(context)?.privacyPolicy ?? 'Privacy Policy',
               style: theme.textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTypography.bold,
               ),
             ),
             SizedBox(height: 1.h),
@@ -86,7 +86,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           Text(
             title,
             style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTypography.bold,
               color: theme.colorScheme.primary,
             ),
           ),

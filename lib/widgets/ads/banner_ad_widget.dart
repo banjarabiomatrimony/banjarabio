@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/services/ads/ad_service.dart';
 import 'package:banjarabio/core/session_manager.dart';
 import 'package:banjarabio/core/providers/home_tab_provider.dart';
@@ -29,18 +30,12 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
   @override
   void initState() {
     super.initState();
-    // 🚨 ANR FIX: Defer ad loading by 5 seconds to let profile rendering
-    // finish first. AdMob WebView init blocks the main thread and directly
-    // causes Signal 3 ANR on Vivo devices when competing with image decoding.
-    // 🧬 SIGNAL 3 FIX: Increased delay to 15 seconds.
-    // Allow the Home Feed images and grid generation to
-    // finish first. AdMob WebView init blocks the main thread and directly
-    // causes Signal 3 ANR on Vivo devices when competing with image decoding.
-    // Note: Since AdMobService init is now in IDLE phase (20s), this widget
-    // will actually wait until 20s to load.
-    _delayTimer = Timer(const Duration(seconds: 15), () {
+    AppLogger.debug('BannerAdWidget', '📢 [BannerAd:STEP 1/5:INIT] Widget created. User Premium status: ${SessionManager.instance.isPremium}');
+    
+    // Yield 1.5 seconds to let first frame and initial layout settle smoothly
+    _delayTimer = Timer(const Duration(milliseconds: 1500), () {
       if (!mounted) return;
-      AppLogger.debug('BannerAdWidget', 'Ads: [WIDGET] 15s delay passed. Ready to load.');
+      AppLogger.debug('BannerAdWidget', '📢 [BannerAd:STEP 2/5:TIMER] 1.5s yield completed. Starting ad pipeline...');
       setState(() => _startupDelayPassed = true);
       if (!_isAdLoaded && !_isAdFailed && !_isAdLoading && !SessionManager.instance.isPremium) {
         _loadBannerAd();
@@ -49,8 +44,13 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
   }
 
   Future<void> _loadBannerAd() async {
+    if (SessionManager.instance.isPremium) {
+      AppLogger.debug('BannerAdWidget', '📢 [BannerAd:ABORT] User is Premium. Suppressing banner.');
+      return;
+    }
+
     _isAdLoading = true;
-    // Wait for MobileAds to be ready
+    AppLogger.debug('BannerAdWidget', '📢 [BannerAd:STEP 3/5:WAIT_SDK] Awaiting AdMob initialization...');
     await AdMobService.ensureInitialized();
     if (!mounted) {
       _isAdLoading = false;
@@ -63,16 +63,26 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
       return;
     }
 
-    AppLogger.debug('BannerAdWidget', 'Ads: [WIDGET] Using Unit ID: ${AdMobService.bannerAdUnitId}');
-    AppLogger.debug('BannerAdWidget', 'Ads: [WIDGET] Requesting Banner with size: $adSize');
+    final unitId = AdMobService.bannerAdUnitId;
+    AppLogger.debug('BannerAdWidget', '📢 [BannerAd:STEP 4/5:REQUEST] Dispatching ad request to AdMob.');
+    AppLogger.debug('BannerAdWidget', '📢 [BannerAd:REQUEST_INFO] Unit ID: $unitId | Size: ${adSize.width}x${adSize.height}');
+
+    if (unitId == null || unitId.isEmpty) {
+      AppLogger.error('BannerAdWidget', '❌ [BannerAd:ERROR] No valid Ad Unit ID configured for this platform.');
+      setState(() {
+        _isAdFailed = true;
+        _isAdLoading = false;
+      });
+      return;
+    }
 
     _bannerAd = BannerAd(
-      adUnitId: AdMobService.bannerAdUnitId ?? '',
+      adUnitId: unitId,
       size: adSize,
       request: const AdRequest(),
       listener: BannerAdListener(
         onAdLoaded: (ad) {
-          AppLogger.debug('BannerAdWidget', 'Ads: [WIDGET] SUCCESS: ${ad.adUnitId}');
+          AppLogger.debug('BannerAdWidget', '✅ [BannerAd:STEP 5/5:LOADED] Banner ad loaded and ready for rendering! Unit: ${ad.adUnitId}');
           if (mounted) {
             setState(() {
               _isAdLoaded = true;
@@ -81,7 +91,10 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
           }
         },
         onAdFailedToLoad: (ad, error) {
-          AppLogger.error('BannerAdWidget', 'Ads: [WIDGET] FAILED: ${error.code} - ${error.message}');
+          final diagnostic = AdMobService.describeAdError(error.code, error.message);
+          AppLogger.error('BannerAdWidget', '❌ [BannerAd:FAILED] Ad failed to load.');
+          AppLogger.error('BannerAdWidget', '❌ [BannerAd:DIAGNOSTIC] $diagnostic');
+          AppLogger.error('BannerAdWidget', '❌ [BannerAd:DETAILS] Code: ${error.code} | Message: ${error.message} | Domain: ${error.domain}');
           ad.dispose();
           if (mounted) {
             setState(() {
@@ -90,6 +103,8 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
             });
           }
         },
+        onAdOpened: (ad) => AppLogger.debug('BannerAdWidget', '📢 [BannerAd:CLICKED] User tapped the banner ad.'),
+        onAdClosed: (ad) => AppLogger.debug('BannerAdWidget', '📢 [BannerAd:CLOSED] Banner ad overlay closed.'),
       ),
     );
 
@@ -123,8 +138,8 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
                 Text(
                   'Sponsored',
                   style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
+                    fontSize: AppTypography.bodyMedium,
+                    fontWeight: AppTypography.bold,
                     color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
                     letterSpacing: 0.5,
                   ),
@@ -146,9 +161,9 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
                 child: Text(
                   '. . .',
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: AppTypography.headingLarge,
                     color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTypography.bold,
                   ),
                 ),
               ),
@@ -169,8 +184,8 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
               'Loading Partner Network...',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
+                fontSize: AppTypography.bodyMedium,
+                fontWeight: AppTypography.medium,
                 color: Colors.grey[500],
               ),
             ),
@@ -183,6 +198,12 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+    // 🛡️ PREMIUM SUPPRESSION: Truly zero-footprint for premium subscribers.
+    if (SessionManager.instance.isPremium) {
+      return const SizedBox.shrink();
+    }
+
     final currentTab = ref.watch(homeTabProvider);
 
     // 🚨 FATAL RESOURCE ID CRASH FIX 🚨
@@ -197,9 +218,9 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
         _isAdLoaded = false;
         _isAdLoading = false;
       }
-      return _buildSkeleton(context);
+      return const SizedBox.shrink();
     } else {
-      if (_startupDelayPassed && _bannerAd == null && !_isAdLoading && !_isAdFailed && !SessionManager.instance.isPremium) {
+      if (_startupDelayPassed && _bannerAd == null && !_isAdLoading && !_isAdFailed) {
         // Safe asynchronous trigger — only AFTER startup delay has passed
         Future.microtask(() => _loadBannerAd());
       }
@@ -229,8 +250,8 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
             Text(
               'Premium Matches', 
               style: TextStyle(
-                fontWeight: FontWeight.bold, 
-                fontSize: 18,
+                fontWeight: AppTypography.bold, 
+                fontSize: AppTypography.headingMedium,
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
               ),
             ),
@@ -241,7 +262,7 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
                 'Upgrade your profile to see who liked you and get 3x more visibility.', 
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: AppTypography.bodyLarge,
                   color: Theme.of(context).colorScheme.onPrimaryContainer.withValues(alpha: 0.8),
                 ),
               ),
@@ -252,7 +273,7 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
     );
   }
     
-    if (!_isAdLoaded || _bannerAd == null || SessionManager.instance.isPremium) {
+    if (!_isAdLoaded || _bannerAd == null) {
       return _buildSkeleton(context);
     }
 
@@ -283,8 +304,8 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
                 Text(
                   'Sponsored',
                   style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
+                    fontSize: AppTypography.bodyMedium,
+                    fontWeight: AppTypography.bold,
                     color: Theme.of(context).colorScheme.primary,
                     letterSpacing: 0.5,
                   ),
@@ -321,8 +342,8 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
               'Supporting the Banjara Community',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
+                fontSize: AppTypography.bodyMedium,
+                fontWeight: AppTypography.medium,
                 color: Theme.of(context).colorScheme.primary,
               ),
             ),

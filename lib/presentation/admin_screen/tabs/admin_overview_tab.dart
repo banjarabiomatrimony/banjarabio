@@ -135,7 +135,7 @@ class _AdminOverviewTabState extends State<AdminOverviewTab> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Financial Performance', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+            Text('Financial Performance', style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold)),
             const Icon(Icons.trending_up, color: Colors.green, size: 20),
           ],
         ),
@@ -143,11 +143,11 @@ class _AdminOverviewTabState extends State<AdminOverviewTab> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('All Time Revenue', style: theme.textTheme.labelMedium?.copyWith(color: theme.hintColor, fontWeight: FontWeight.bold)),
+            Text('All Time Revenue', style: theme.textTheme.labelMedium?.copyWith(color: theme.hintColor, fontWeight: AppTypography.bold)),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(color: Colors.green.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)),
-              child: Text('EXCLUSIVE TESTER', style: TextStyle(color: Colors.green, fontSize: AppTypography.labelSmall, fontWeight: FontWeight.bold)),
+              child: Text('EXCLUSIVE TESTER', style: TextStyle(color: Colors.green, fontSize: AppTypography.labelSmall, fontWeight: AppTypography.bold)),
             ),
           ],
         ),
@@ -162,7 +162,7 @@ class _AdminOverviewTabState extends State<AdminOverviewTab> {
           ],
         ),
         SizedBox(height: 2.h),
-        Text('Last Month ($lastMonthName)', style: theme.textTheme.labelMedium?.copyWith(color: theme.hintColor, fontWeight: FontWeight.bold)),
+        Text('Last Month ($lastMonthName)', style: theme.textTheme.labelMedium?.copyWith(color: theme.hintColor, fontWeight: AppTypography.bold)),
         SizedBox(height: 1.h),
         GridView.count(
           crossAxisCount: 3, shrinkWrap: true, physics: const NeverScrollableScrollPhysics(),
@@ -183,7 +183,7 @@ class _AdminOverviewTabState extends State<AdminOverviewTab> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('User Engagement', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+        Text('User Engagement', style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold)),
         SizedBox(height: 2.h),
         Row(children: [
           _buildStatCard(theme, 'Daily Active Users', _stats['dau_today']?.toString() ?? '0', Icons.bolt, Colors.orange),
@@ -206,7 +206,7 @@ class _AdminOverviewTabState extends State<AdminOverviewTab> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Safety & Health', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+        Text('Safety & Health', style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold)),
         SizedBox(height: 2.h),
         Row(children: [
           _buildStatCard(theme, 'Pending Reports', _stats['pending_reports']?.toString() ?? '0', Icons.report_problem, Colors.red),
@@ -229,7 +229,7 @@ class _AdminOverviewTabState extends State<AdminOverviewTab> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Demographics & Premium', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+        Text('Demographics & Premium', style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold)),
         SizedBox(height: 2.h),
         Row(children: [
           _buildStatCard(theme, 'Total Users', _stats['total_auth_users']?.toString() ?? '0', Icons.people, Colors.deepPurple),
@@ -275,7 +275,7 @@ class _AdminOverviewTabState extends State<AdminOverviewTab> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(label, style: const TextStyle(fontWeight: AppTypography.bold)),
             Text('$count (${(pct * 100).toStringAsFixed(1)}%)', style: theme.textTheme.bodySmall),
           ],
         ),
@@ -297,7 +297,7 @@ class _AdminOverviewTabState extends State<AdminOverviewTab> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('App Growth', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+        Text('App Growth', style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold)),
         SizedBox(height: 2.h),
         Row(children: [
           _buildStatCard(theme, 'Completed Referrals', _stats['completed_referrals']?.toString() ?? '0', Icons.person_add_alt_1, Colors.pink),
@@ -319,7 +319,7 @@ class _AdminOverviewTabState extends State<AdminOverviewTab> {
           children: [
             Icon(icon, color: color, size: 20.sp),
             SizedBox(height: 1.h),
-            Text(value, style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+            Text(value, style: theme.textTheme.titleLarge?.copyWith(fontWeight: AppTypography.bold)),
             Text(label, style: theme.textTheme.bodySmall?.copyWith(color: theme.hintColor, fontSize: AppTypography.labelSmall), maxLines: 1, overflow: TextOverflow.ellipsis),
           ],
         ),
@@ -336,8 +336,8 @@ class _AdminOverviewTabState extends State<AdminOverviewTab> {
         children: [
           Icon(icon, color: color, size: 18.sp),
           SizedBox(height: 0.5.h),
-          Text(value, style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, fontSize: AppTypography.bodyLarge, color: theme.colorScheme.primary), maxLines: 1, overflow: TextOverflow.ellipsis),
-          Text(label, style: theme.textTheme.bodyMedium?.copyWith(color: theme.hintColor, fontSize: AppTypography.labelMedium, fontWeight: FontWeight.bold), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+          Text(value, style: theme.textTheme.headlineSmall?.copyWith(fontWeight: AppTypography.bold, fontSize: AppTypography.bodyLarge, color: theme.colorScheme.primary), maxLines: 1, overflow: TextOverflow.ellipsis),
+          Text(label, style: theme.textTheme.bodyMedium?.copyWith(color: theme.hintColor, fontSize: AppTypography.labelMedium, fontWeight: AppTypography.bold), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
         ],
       ),
     );

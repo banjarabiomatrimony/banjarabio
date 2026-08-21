@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/app_export.dart';
@@ -9,16 +10,22 @@ import 'package:banjarabio/core/theme/app_gradients.dart';
 import 'package:banjarabio/presentation/widgets/rewarded_ad_dialog.dart';
 import 'package:banjarabio/core/services/ad_reward_service.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
-import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/core/providers/home_tab_provider.dart';
+import 'package:banjarabio/widgets/custom_app_bar.dart';
+import 'package:banjarabio/widgets/tactile/tactile_back_button.dart';
+import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
+import 'package:banjarabio/widgets/branded_refresh_indicator.dart';
+import 'package:banjarabio/widgets/branded_empty_state.dart';
+import 'package:banjarabio/widgets/shimmer_widget.dart';
 
-class WhoViewedMeScreen extends StatefulWidget {
+class WhoViewedMeScreen extends ConsumerStatefulWidget {
   const WhoViewedMeScreen({super.key});
 
   @override
-  State<WhoViewedMeScreen> createState() => _WhoViewedMeScreenState();
+  ConsumerState<WhoViewedMeScreen> createState() => _WhoViewedMeScreenState();
 }
 
-class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
+class _WhoViewedMeScreenState extends ConsumerState<WhoViewedMeScreen> {
   final ChatRepository _chatRepository = ChatRepository();
   bool _isLoading = true;
   List<ProfileViewModel> _views = [];
@@ -53,47 +60,102 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)?.whoViewedMe ?? '',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.2,
-            fontSize: AppTypography.bodyLarge,
-          ),
-        ),
-        centerTitle: true,
+      backgroundColor: theme.scaffoldBackgroundColor,
+      appBar: CustomAppBar(
+        leading: const TactileBackButton(),
+        title: AppLocalizations.of(context)?.whoViewedMe ?? 'Who Viewed Me',
+        actions: [
+          if (_views.isNotEmpty)
+            Container(
+              margin: EdgeInsets.only(right: 3.w),
+              padding: EdgeInsets.symmetric(horizontal: 2.8.w, vertical: 0.5.h),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.25),
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.visibility_rounded,
+                    size: 14,
+                    color: theme.colorScheme.primary,
+                  ),
+                  SizedBox(width: 1.2.w),
+                  Text(
+                    '${_views.length}',
+                    style: TextStyle(
+                      color: theme.colorScheme.primary,
+                      fontWeight: AppTypography.extraBold,
+                      fontSize: AppTypography.labelMedium,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
       ),
       body: _isLoading
-          ? _buildLoadingState(theme)
+          ? _buildLoadingSkeleton(theme)
           : _views.isEmpty
               ? _buildEmptyState(theme)
-              : _buildTimelineList(theme),
+              : BrandedRefreshIndicator(
+                  onRefresh: _loadViews,
+                  child: _buildTimelineList(theme, isDark),
+                ),
       bottomNavigationBar: (!SessionManager.instance.isPremium && !_isUnlockedByAd && _views.length > 3)
-          ? _buildUnlockBanner(theme)
+          ? _buildUnlockBanner(theme, isDark)
           : null,
     );
   }
 
-  Widget _buildLoadingState(ThemeData theme) {
-    return Center(
+  Widget _buildLoadingSkeleton(ThemeData theme) {
+    return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            width: 40,
-            height: 40,
-            child: CircularProgressIndicator(
-              strokeWidth: 3,
-              color: theme.colorScheme.primary,
+          ShimmerWidget.rectangular(
+            height: 8.h,
+            shapeBorder: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
             ),
           ),
           SizedBox(height: 2.h),
-          Text(AppLocalizations.of(context)?.loadingViews ?? '',
-            style: TextStyle(
-              color: theme.colorScheme.onSurfaceVariant,
-              fontSize: AppTypography.bodySmall,
+          ...List.generate(
+            6,
+            (index) => Padding(
+              padding: EdgeInsets.only(bottom: 1.5.h),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 6.w,
+                    child: Column(
+                      children: [
+                        const ShimmerWidget.circular(width: 10, height: 10),
+                        SizedBox(height: 0.8.h),
+                        const ShimmerWidget.rectangular(height: 60, width: 2),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 2.w),
+                  Expanded(
+                    child: ShimmerWidget.rectangular(
+                      height: 9.h,
+                      shapeBorder: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -101,7 +163,7 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
     );
   }
 
-  Widget _buildTimelineList(ThemeData theme) {
+  Widget _buildTimelineList(ThemeData theme, bool isDark) {
     final bool isPremium = SessionManager.instance.isPremium;
     final bool isFullyUnlocked = isPremium || _isUnlockedByAd;
     // Show first 3 items clearly, then blurred tease cards
@@ -112,34 +174,42 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
         : clearCount + (blurredCount > 0 ? blurredCount + 1 : 0); // +1 for CTA card
 
     return ListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-      itemCount: totalItems,
+      physics: const AlwaysScrollableScrollPhysics(
+        parent: BouncingScrollPhysics(),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+      itemCount: totalItems + 1, // +1 for header info banner
       itemBuilder: (context, index) {
+        if (index == 0) {
+          return _buildHeaderInfoBanner(theme, isDark);
+        }
+
+        final itemIndex = index - 1;
+
         // Clear items
-        if (index < clearCount || isFullyUnlocked) {
-          final viewIndex = index;
-          if (viewIndex >= _views.length) return const SizedBox.shrink();
-          final view = _views[viewIndex];
+        if (itemIndex < clearCount || isFullyUnlocked) {
+          if (itemIndex >= _views.length) return const SizedBox.shrink();
+          final view = _views[itemIndex];
           return _AnimatedTimelineEntry(
-            index: index,
-            isLast: index == totalItems - 1,
-            child: _buildViewCard(theme, view),
+            index: itemIndex,
+            isLast: itemIndex == totalItems - 1,
+            child: _buildViewCard(theme, view, isDark),
           );
         }
 
         // CTA card inserted after blurred items
-        if (index == clearCount + blurredCount) {
-          return _buildPremiumTeaseCard(theme);
+        if (itemIndex == clearCount + blurredCount) {
+          return _buildPremiumTeaseCard(theme, isDark);
         }
 
         // Blurred tease cards
-        final blurIndex = clearCount + (index - clearCount);
+        final blurIndex = clearCount + (itemIndex - clearCount);
         if (blurIndex < _views.length) {
           final view = _views[blurIndex];
           return _AnimatedTimelineEntry(
-            index: index,
+            index: itemIndex,
             isLast: false,
-            child: _buildBlurredViewCard(theme, view),
+            child: _buildBlurredViewCard(theme, view, isDark),
           );
         }
         return const SizedBox.shrink();
@@ -147,16 +217,83 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
     );
   }
 
+  Widget _buildHeaderInfoBanner(ThemeData theme, bool isDark) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 2.h),
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.4.h),
+      decoration: BoxDecoration(
+        color: isDark ? theme.cardColor : theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: theme.colorScheme.primary.withValues(alpha: 0.15),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.03),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(9),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  theme.colorScheme.primary,
+                  theme.colorScheme.primary.withValues(alpha: 0.8),
+                ],
+              ),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.remove_red_eye_rounded,
+              color: Colors.white,
+              size: 20,
+            ),
+          ),
+          SizedBox(width: 3.5.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${_views.length} Profile ${_views.length == 1 ? "Visitor" : "Visitors"}',
+                  style: TextStyle(
+                    fontWeight: AppTypography.extraBold,
+                    fontSize: AppTypography.bodyMedium,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+                SizedBox(height: 0.2.h),
+                Text(
+                  'Members who recently viewed your biodata & details',
+                  style: TextStyle(
+                    fontSize: AppTypography.bodySmall,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   /// 🔒 Blurred tease card — shows profile with blur overlay + lock icon
-  Widget _buildBlurredViewCard(ThemeData theme, ProfileViewModel view) {
+  Widget _buildBlurredViewCard(ThemeData theme, ProfileViewModel view, bool isDark) {
     // Mask the name: show first 2 chars + asterisks
     final maskedName = (view.viewerName ?? 'Someone');
     final displayName = maskedName.length > 2
         ? '${maskedName.substring(0, 2)}${'•' * (maskedName.length - 2)}'
         : maskedName;
 
-    return GestureDetector(
+    return TactilePressable(
       onTap: () => _showUpgradePrompt(theme),
+      pressedScale: 0.97,
       child: Container(
         margin: EdgeInsets.only(bottom: 1.5.h),
         child: ClipRRect(
@@ -169,10 +306,12 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
                 child: Container(
                   padding: EdgeInsets.all(3.w),
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.surface,
+                    color: theme.cardColor,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: theme.colorScheme.outlineVariant.withValues(alpha: 0.2),
+                      color: isDark
+                          ? Colors.white.withValues(alpha: 0.08)
+                          : theme.colorScheme.outlineVariant.withValues(alpha: 0.2),
                     ),
                   ),
                   child: Row(
@@ -201,7 +340,7 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
                             Text(
                               displayName,
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: AppTypography.bold,
                                 fontSize: AppTypography.bodyMedium,
                                 color: theme.colorScheme.onSurface,
                               ),
@@ -236,7 +375,7 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    color: theme.colorScheme.surface.withValues(alpha: 0.3),
+                    color: theme.cardColor.withValues(alpha: 0.3),
                   ),
                   child: Center(
                     child: Container(
@@ -255,7 +394,7 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: AppTypography.labelMedium,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: AppTypography.bold,
                               letterSpacing: 0.5,
                             ),
                           ),
@@ -273,7 +412,7 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
   }
 
   /// 💎 Premium tease CTA card — compelling upgrade prompt between blurred items
-  Widget _buildPremiumTeaseCard(ThemeData theme) {
+  Widget _buildPremiumTeaseCard(ThemeData theme, bool isDark) {
     final hiddenCount = _views.length - 3;
     final l10n = AppLocalizations.of(context);
 
@@ -281,14 +420,7 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
       margin: EdgeInsets.symmetric(vertical: 2.h),
       padding: EdgeInsets.all(5.w),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            theme.colorScheme.primary.withValues(alpha: 0.12),
-            theme.colorScheme.primary.withValues(alpha: 0.04),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: isDark ? theme.cardColor : Colors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: theme.colorScheme.primary.withValues(alpha: 0.3),
@@ -330,7 +462,7 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: AppTypography.headingSmall,
-                  fontWeight: FontWeight.w900,
+                  fontWeight: AppTypography.black,
                 ),
               ),
             ),
@@ -340,7 +472,7 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
             '$hiddenCount more people viewed your profile',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontWeight: FontWeight.w700,
+              fontWeight: AppTypography.bold,
               fontSize: AppTypography.bodyLarge,
               color: theme.colorScheme.onSurface,
             ),
@@ -360,8 +492,8 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
             children: [
               // Watch Ad button
               Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () {
+                child: TactilePressable(
+                  onTap: () {
                     showDialog(
                       context: context,
                       builder: (context) => RewardedAdDialog(
@@ -374,20 +506,27 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
                       ),
                     );
                   },
-                  icon: const Icon(Icons.play_circle_fill_rounded, size: 18),
-                  label: Text(
-                    l10n?.watchAdToUnlockAll ?? 'Watch Ad',
-                    style: TextStyle(
-                      fontSize: AppTypography.bodySmall,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: theme.colorScheme.primary,
-                    side: BorderSide(color: theme.colorScheme.primary),
-                    padding: EdgeInsets.symmetric(vertical: 1.2.h),
-                    shape: RoundedRectangleBorder(
+                  pressedScale: 0.96,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 1.3.h),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: theme.colorScheme.primary),
                       borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.play_circle_fill_rounded, size: 18, color: theme.colorScheme.primary),
+                        SizedBox(width: 1.5.w),
+                        Text(
+                          l10n?.watchAdToUnlockAll ?? 'Watch Ad',
+                          style: TextStyle(
+                            fontSize: AppTypography.bodySmall,
+                            fontWeight: AppTypography.bold,
+                            color: theme.colorScheme.primary,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -395,26 +534,42 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
               SizedBox(width: 3.w),
               // Go Pro button
               Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: () =>
-                      Navigator.pushNamed(context, AppRoutes.subscription),
-                  icon: const Icon(Icons.star_rounded, size: 18),
-                  label: Text(
-                    'Go Pro',
-                    style: TextStyle(
-                      fontSize: AppTypography.bodySmall,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.colorScheme.primary,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 1.2.h),
-                    shape: RoundedRectangleBorder(
+                child: TactilePressable(
+                  onTap: () => Navigator.pushNamed(context, AppRoutes.subscription),
+                  pressedScale: 0.96,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 1.3.h),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          theme.colorScheme.primary,
+                          theme.colorScheme.primary.withValues(alpha: 0.85),
+                        ],
+                      ),
                       borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
-                    elevation: 4,
-                    shadowColor: theme.colorScheme.primary.withValues(alpha: 0.3),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.star_rounded, size: 18, color: Colors.white),
+                        SizedBox(width: 1.5.w),
+                        Text(
+                          'Go Pro',
+                          style: TextStyle(
+                            fontSize: AppTypography.bodySmall,
+                            fontWeight: AppTypography.extraBold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -434,7 +589,7 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
       builder: (context) => Container(
         padding: EdgeInsets.all(6.w),
         decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
+          color: theme.cardColor,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: Column(
@@ -459,7 +614,7 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
               'Someone viewed your profile!',
               style: TextStyle(
                 fontSize: AppTypography.headingSmall,
-                fontWeight: FontWeight.w800,
+                fontWeight: AppTypography.extraBold,
                 color: theme.colorScheme.onSurface,
               ),
             ),
@@ -475,8 +630,8 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
             SizedBox(height: 3.h),
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () {
+              child: TactilePressable(
+                onTap: () {
                   Navigator.pop(context);
                   showDialog(
                     context: context,
@@ -488,14 +643,34 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
                     ),
                   );
                 },
-                icon: const Icon(Icons.play_circle_fill_rounded),
-                label: Text(l10n?.watchAdToUnlockAll ?? 'Watch Ad to Unlock'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: theme.colorScheme.primary,
-                  foregroundColor: Colors.white,
+                pressedScale: 0.96,
+                child: Container(
                   padding: EdgeInsets.symmetric(vertical: 1.5.h),
-                  shape: RoundedRectangleBorder(
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
                     borderRadius: BorderRadius.circular(14),
+                    boxShadow: [
+                      BoxShadow(
+                        color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.play_circle_fill_rounded, color: Colors.white, size: 20),
+                      SizedBox(width: 2.w),
+                      Text(
+                        l10n?.watchAdToUnlockAll ?? 'Watch Ad to Unlock',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: AppTypography.bold,
+                          fontSize: AppTypography.bodyMedium,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -510,7 +685,8 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
                 l10n?.goProAdFree ?? 'Go Pro — Ad Free',
                 style: TextStyle(
                   color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: AppTypography.bold,
+                  fontSize: AppTypography.bodyMedium,
                 ),
               ),
             ),
@@ -521,16 +697,16 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
     );
   }
 
-  Widget _buildUnlockBanner(ThemeData theme) {
+  Widget _buildUnlockBanner(ThemeData theme, bool isDark) {
     final l10n = AppLocalizations.of(context);
     return Container(
       padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primaryContainer,
+        color: isDark ? theme.cardColor : theme.colorScheme.primaryContainer,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.08),
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),
@@ -540,18 +716,18 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            l10n?.unlockMoreVisitors(_views.length - 3) ?? '',
+            l10n?.unlockMoreVisitors(_views.length - 3) ?? 'Unlock more visitors',
             style: TextStyle(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTypography.bold,
               fontSize: AppTypography.bodyMedium,
-              color: theme.colorScheme.onPrimaryContainer,
+              color: isDark ? theme.colorScheme.onSurface : theme.colorScheme.onPrimaryContainer,
             ),
           ),
-          SizedBox(height: 1.h),
+          SizedBox(height: 1.2.h),
           SizedBox(
             width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: () {
+            child: TactilePressable(
+              onTap: () {
                 showDialog(
                   context: context,
                   builder: (context) => RewardedAdDialog(
@@ -564,29 +740,59 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
                   ),
                 );
               },
-              icon: const Icon(Icons.play_circle_fill),
-              label: Text(l10n?.watchAdToUnlockAll ?? ''),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: theme.colorScheme.primary,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(vertical: 1.5.h),
+              pressedScale: 0.96,
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 1.4.h),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.play_circle_fill, color: Colors.white, size: 20),
+                    SizedBox(width: 2.w),
+                    Text(
+                      l10n?.watchAdToUnlockAll ?? 'Watch Ad to Unlock All',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: AppTypography.bold,
+                        fontSize: AppTypography.bodyMedium,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
+          SizedBox(height: 0.5.h),
           TextButton(
-            onPressed: () =>
-                Navigator.pushNamed(context, AppRoutes.subscription),
-            child: Text(l10n?.goProAdFree ?? ''),
+            onPressed: () => Navigator.pushNamed(context, AppRoutes.subscription),
+            child: Text(
+              l10n?.goProAdFree ?? 'Go Pro — Ad Free',
+              style: TextStyle(
+                color: theme.colorScheme.primary,
+                fontWeight: AppTypography.bold,
+                fontSize: AppTypography.bodySmall,
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildViewCard(ThemeData theme, ProfileViewModel view) {
+  Widget _buildViewCard(ThemeData theme, ProfileViewModel view, bool isDark) {
     final relativeTime = _relativeTime(view.lastViewedAt);
 
-    return GestureDetector(
+    return TactilePressable(
       onTap: () {
         Navigator.pushNamed(
           context,
@@ -594,18 +800,21 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
           arguments: view.viewerId,
         );
       },
+      pressedScale: 0.97,
       child: Container(
         margin: EdgeInsets.only(bottom: 1.5.h),
         padding: EdgeInsets.all(3.w),
         decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
+          color: theme.cardColor,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.2),
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.08)
+                : theme.colorScheme.outlineVariant.withValues(alpha: 0.2),
           ),
           boxShadow: [
             BoxShadow(
-              color: theme.colorScheme.shadow.withValues(alpha: 0.05),
+              color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.03),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -640,7 +849,7 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
                   Text(
                     view.viewerName ?? AppLocalizations.of(context)?.someone ?? '',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTypography.bold,
                       fontSize: AppTypography.bodyMedium,
                       color: theme.colorScheme.onSurface,
                     ),
@@ -676,7 +885,7 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
                   style: TextStyle(
                     fontSize: AppTypography.labelSmall,
                     color: theme.colorScheme.onSurfaceVariant,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTypography.medium,
                   ),
                 ),
                 SizedBox(height: 0.5.h),
@@ -694,40 +903,17 @@ class _WhoViewedMeScreenState extends State<WhoViewedMeScreen> {
   }
 
   Widget _buildEmptyState(ThemeData theme) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 25.w,
-            height: 25.w,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: theme.colorScheme.primary.withValues(alpha: 0.08),
-            ),
-            child: Icon(
-              Icons.visibility_off_outlined,
-              size: 40.sp,
-              color: theme.colorScheme.primary.withValues(alpha: 0.4),
-            ),
-          ),
-          SizedBox(height: 3.h),
-          Text(AppLocalizations.of(context)?.noViewsYet ?? '',
-            style: TextStyle(
-              fontSize: AppTypography.bodyLarge,
-              color: theme.colorScheme.onSurface,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          SizedBox(height: 1.h),
-          Text(AppLocalizations.of(context)?.completeYourProfileToGetNoticed ?? '',
-            style: TextStyle(
-              fontSize: AppTypography.bodySmall,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ],
-      ),
+    final l10n = AppLocalizations.of(context);
+    return BrandedEmptyState(
+      icon: Icons.visibility_off_rounded,
+      title: l10n?.noViewsYet ?? 'No Profile Views Yet',
+      description: l10n?.completeYourProfileToGetNoticed ??
+          'Complete your biodata, add a verified photo, and boost your trust score to get noticed by potential matches!',
+      ctaText: 'Explore Matches',
+      onCtaPressed: () {
+        ref.read(homeTabProvider.notifier).state = 0;
+        Navigator.popUntil(context, (route) => route.isFirst);
+      },
     );
   }
 

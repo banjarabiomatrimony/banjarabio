@@ -93,7 +93,7 @@ class EditorLanguagePickerWidget extends StatelessWidget {
                             color: isSelected
                                 ? Colors.white
                                 : BiodataTheme.deepCharcoal,
-                            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                            fontWeight: isSelected ? AppTypography.semiBold : AppTypography.medium,
                             fontSize: AppTypography.bodyMedium,
                           ),
                         ),

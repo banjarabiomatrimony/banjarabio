@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/routes/app_routes.dart';
+import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 
 class BvsWebViewScreen extends StatefulWidget {
   final String? initialUrl;
@@ -133,6 +135,8 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final titleText = l10n?.bvsTitle ?? 'बणजारा विरासत संघ';
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return PopScope(
       canPop: false,
@@ -141,7 +145,7 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
         await _handleBackPress();
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: theme.scaffoldBackgroundColor,
         appBar: AppBar(
           titleSpacing: 0,
           title: Row(
@@ -178,24 +182,24 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
                       titleText,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15.5,
+                      style: TextStyle(
+                        fontWeight: AppTypography.bold,
+                        fontSize: AppTypography.headingSmall,
                         color: Colors.white,
                         letterSpacing: 0.3,
                       ),
                     ),
                     const SizedBox(height: 1),
-                    const Row(
+                    Row(
                       children: [
-                        Icon(Icons.lock_rounded, size: 10, color: Colors.greenAccent),
-                        SizedBox(width: 4),
+                        const Icon(Icons.lock_rounded, size: 10, color: Colors.greenAccent),
+                        const SizedBox(width: 4),
                         Text(
                           'banjaravirasat.org.in',
                           style: TextStyle(
-                            fontSize: 11,
+                            fontSize: AppTypography.bodySmall,
                             color: Colors.white70,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTypography.medium,
                           ),
                         ),
                       ],
@@ -269,33 +273,63 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
                         ),
                       ),
                       SizedBox(height: 2.h),
-                      const Text(
+                      Text(
                         'वेबपेज लोड करण्यात अडचण आली',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: AppTypography.headingSmall,
+                          fontWeight: AppTypography.bold,
+                          color: theme.colorScheme.onSurface,
+                        ),
                       ),
                       if (_errorMessage != null) ...[
                         SizedBox(height: 1.h),
                         Text(
                           _errorMessage!,
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                          style: TextStyle(
+                            fontSize: AppTypography.bodyMedium,
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
                         ),
                       ],
                       SizedBox(height: 2.5.h),
-                      ElevatedButton.icon(
-                        onPressed: () {
+                      TactilePressable(
+                        onTap: () {
                           HapticFeedback.lightImpact();
                           setState(() => _hasError = false);
                           _controller.reload();
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF8B1A2E),
-                          foregroundColor: Colors.white,
+                        pressedScale: 0.95,
+                        child: Container(
                           padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 1.4.h),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFF8B1A2E), Color(0xFF5A000F)],
+                            ),
+                            borderRadius: BorderRadius.circular(14),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF8B1A2E).withValues(alpha: 0.35),
+                                blurRadius: 8,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.refresh, size: 18, color: Colors.white),
+                              SizedBox(width: 8),
+                              Text(
+                                'पुन्हा प्रयत्न करा (Retry)',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: AppTypography.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        icon: const Icon(Icons.refresh, size: 18),
-                        label: const Text('पुन्हा प्रयत्न करा (Retry)'),
                       ),
                     ],
                   ),
@@ -308,7 +342,9 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
             if (_loadingProgress > 0 && _loadingProgress < 50 && !_hasError)
               Positioned.fill(
                 child: Container(
-                  color: Colors.white.withValues(alpha: 0.92),
+                  color: isDark
+                      ? theme.scaffoldBackgroundColor.withValues(alpha: 0.94)
+                      : Colors.white.withValues(alpha: 0.92),
                   child: Center(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -337,12 +373,12 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
                           ),
                         ),
                         SizedBox(height: 2.h),
-                        const Text(
+                        Text(
                           'अधिकृत BVS पोर्टल उघडत आहे...',
                           style: TextStyle(
-                            fontSize: 13.5,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF6B0E1E),
+                            fontSize: AppTypography.bodyLarge,
+                            fontWeight: AppTypography.bold,
+                            color: isDark ? const Color(0xFFFFD54F) : const Color(0xFF6B0E1E),
                           ),
                         ),
                       ],
@@ -357,17 +393,17 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.3.h),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: theme.cardColor,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.12),
+                  color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.12),
                   blurRadius: 14,
                   offset: const Offset(0, -4),
                 ),
               ],
               border: Border(
                 top: BorderSide(
-                  color: const Color(0xFFFFD700).withValues(alpha: 0.5),
+                  color: const Color(0xFFFFD700).withValues(alpha: isDark ? 0.3 : 0.5),
                   width: 1.5,
                 ),
               ),
@@ -378,13 +414,13 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFFF9C4),
+                      color: isDark ? const Color(0xFF3E2312) : const Color(0xFFFFF9C4),
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.amber, width: 1.2),
                     ),
                     child: const Icon(
                       Icons.card_membership_rounded,
-                      color: Color(0xFF5A000F),
+                      color: Color(0xFF8B1A2E),
                       size: 20,
                     ),
                   ),
@@ -396,10 +432,10 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
                       children: [
                         Text(
                           l10n?.bvsMembershipCard ?? 'BVS ओळखपत्र',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13,
-                            color: Color(0xFF6B0E1E),
+                          style: TextStyle(
+                            fontWeight: AppTypography.bold,
+                            fontSize: AppTypography.bodyLarge,
+                            color: isDark ? const Color(0xFFFF8A9E) : const Color(0xFF6B0E1E),
                           ),
                         ),
                         const SizedBox(height: 1),
@@ -408,9 +444,9 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            fontSize: 11,
-                            color: Colors.grey[700],
-                            fontWeight: FontWeight.w500,
+                            fontSize: AppTypography.bodySmall,
+                            color: theme.colorScheme.onSurfaceVariant,
+                            fontWeight: AppTypography.medium,
                           ),
                         ),
                       ],
@@ -419,29 +455,45 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
                   SizedBox(width: 2.w),
                   ScaleTransition(
                     scale: _pulseScale,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
+                    child: TactilePressable(
+                      onTap: () {
                         HapticFeedback.mediumImpact();
                         Navigator.pushReplacementNamed(
                           context,
                           AppRoutes.communityIdVerification,
                         );
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF8B1A2E),
-                        foregroundColor: Colors.white,
+                      child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.2.h),
-                        elevation: 3,
-                        shadowColor: const Color(0xFF8B1A2E).withValues(alpha: 0.5),
-                        shape: RoundedRectangleBorder(
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF8B1A2E), Color(0xFF5A000F)],
+                          ),
                           borderRadius: BorderRadius.circular(14),
-                          side: const BorderSide(color: Color(0xFFFFD700), width: 1.2),
+                          border: Border.all(color: const Color(0xFFFFD700), width: 1.2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF8B1A2E).withValues(alpha: 0.4),
+                              blurRadius: 8,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
                         ),
-                      ),
-                      icon: const Icon(Icons.upload_file_rounded, size: 16, color: Colors.amberAccent),
-                      label: const Text(
-                        'कार्ड अपलोड',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.5),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.upload_file_rounded, size: 16, color: Colors.amberAccent),
+                            const SizedBox(width: 5),
+                            Text(
+                              'कार्ड अपलोड',
+                              style: TextStyle(
+                                fontWeight: AppTypography.bold,
+                                fontSize: AppTypography.bodyMedium,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

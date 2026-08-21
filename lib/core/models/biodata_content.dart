@@ -23,49 +23,82 @@ class BiodataContent {
   factory BiodataContent.fromProfile(
     ProfileModel profile, {
     String language = 'English',
+    bool showAnnualIncome = true,
+    bool showBirthTime = true,
+    bool showPhoneNumber = true,
+    String? alternatePhoneNumber,
   }) {
-    // Initial content based on profile data
-    // Language specific labels will be handled by a mapper/translator service or the editor
+    final personalDetails = <String, String>{
+      'Full Name': profile.fullName,
+      'Surname': profile.surname,
+      'Age': profile.age.toString(),
+      'Height': profile.height,
+      'Gender': profile.gender,
+      'Date of Birth': profile.formattedDOB,
+    };
+    if (showBirthTime) {
+      personalDetails['Birth Time'] = profile.birthTime ?? '-';
+      personalDetails['Birth Place'] = profile.birthPlace ?? '-';
+    }
+    personalDetails['Marital Status'] = profile.maritalStatus;
+    personalDetails['Complexion'] = profile.complexion ?? '-';
+    personalDetails['Blood Group'] = profile.bloodGroup ?? '-';
+
+    final educationProfession = <String, String>{
+      'Education': profile.education,
+      'Edu. Details': profile.educationDetails ?? '-',
+      'Occupation': profile.profession,
+      'Job Details': profile.jobDetails ?? '-',
+      'Company': profile.company ?? '-',
+    };
+    if (showAnnualIncome) {
+      educationProfession['Annual Income'] =
+          profile.formattedAnnualIncome.isNotEmpty &&
+                  profile.formattedAnnualIncome != 'Not Entered'
+              ? profile.formattedAnnualIncome
+              : (profile.annualIncome ?? '-');
+    }
+
+    final familyDetails = <String, String>{
+      'Father Name': profile.fatherName ?? '-',
+      'Father Occup.': profile.fatherOccupation ?? '-',
+      'Mother Name': profile.motherName ?? '-',
+      'Mother Occup.': profile.motherOccupation ?? '-',
+      'Family Type': profile.familyType ?? '-',
+      'Family Status': profile.familyStatus ?? '-',
+      'Total Siblings': profile.siblingsCount.toString(),
+      'Brothers': profile.brotherCount.toString(),
+      'Sisters': profile.sisterCount.toString(),
+    };
+
+    final locationContact = <String, String>{
+      'Native Place': profile.nativePlace ?? '-',
+      'Current Location': profile.formattedLocation,
+    };
+    if (showPhoneNumber) {
+      locationContact['Contact No.'] = profile.phoneNumber ?? '-';
+    }
+    if (alternatePhoneNumber != null && alternatePhoneNumber.trim().isNotEmpty) {
+      locationContact['Alt. Contact'] = alternatePhoneNumber.trim();
+    }
+
+    final partnerExp = (profile.partnerExpectations != null && profile.partnerExpectations!.trim().isNotEmpty)
+        ? profile.partnerExpectations!.trim()
+        : (profile.expectation != null && profile.expectation!.trim().isNotEmpty
+            ? profile.expectation!.trim()
+            : '');
+
+    final aboutSelf = (profile.aboutSelf != null && profile.aboutSelf!.trim().isNotEmpty)
+        ? profile.aboutSelf!.trim()
+        : '';
+
     return BiodataContent(
-      personalDetails: {
-        'Full Name': profile.fullName,
-        'Surname': profile.surname,
-        'Age': profile.age.toString(),
-        'Height': profile.height,
-        'Gender': profile.gender,
-        'Date of Birth': profile.formattedDOB,
-        'Birth Time': profile.birthTime ?? '-',
-        'Birth Place': profile.birthPlace ?? '-',
-        'Marital Status': profile.maritalStatus,
-        'Complexion': profile.complexion ?? '-',
-        'Blood Group': profile.bloodGroup ?? '-',
-      },
-      educationProfession: {
-        'Education': profile.education,
-        'Edu. Details': profile.educationDetails ?? '-',
-        'Occupation': profile.profession,
-        'Job Details': profile.jobDetails ?? '-',
-        'Annual Income': profile.annualIncome ?? '-',
-        'Company': profile.company ?? '-',
-      },
-      familyDetails: {
-        'Father Name': profile.fatherName ?? '-',
-        'Father Occup.': profile.fatherOccupation ?? '-',
-        'Mother Name': profile.motherName ?? '-',
-        'Mother Occup.': profile.motherOccupation ?? '-',
-        'Family Type': profile.familyType ?? '-',
-        'Family Status': profile.familyStatus ?? '-',
-        'Total Siblings': profile.siblingsCount.toString(),
-        'Brothers': profile.brotherCount.toString(),
-        'Sisters': profile.sisterCount.toString(),
-      },
-      locationContact: {
-        'Native Place': profile.nativePlace ?? '-',
-        'Current Location': profile.formattedLocation,
-        'Contact No.': profile.phoneNumber ?? '-',
-      },
-      partnerExpectations: profile.partnerExpectations ?? '',
-      aboutMe: profile.aboutSelf ?? '',
+      personalDetails: personalDetails,
+      educationProfession: educationProfession,
+      familyDetails: familyDetails,
+      locationContact: locationContact,
+      partnerExpectations: partnerExp,
+      aboutMe: aboutSelf,
     );
   }
 

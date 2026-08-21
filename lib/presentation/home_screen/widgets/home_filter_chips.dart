@@ -4,7 +4,6 @@ import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/app_export.dart';
-import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// Horizontal scrollable list of active filter chips with
 /// "Adjust" and "Clear All" actions.
@@ -65,6 +64,7 @@ class HomeFilterChips extends StatelessWidget {
                   ],
                 ),
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     CustomIconWidget(iconName: 'edit', color: theme.colorScheme.onPrimary, size: 14),
                     SizedBox(width: 1.5.w),
@@ -72,8 +72,8 @@ class HomeFilterChips extends StatelessWidget {
                       AppLocalizations.of(context)?.adjust ?? 'Adjust',
                       style: theme.textTheme.labelMedium?.copyWith(
                         color: theme.colorScheme.onPrimary,
-                        fontWeight: FontWeight.w700,
-                        fontSize: AppTypography.bodySmall,
+                        fontWeight: AppTypography.bold,
+                        fontSize: AppTypography.labelMedium,
                       ),
                     ),
                   ],
@@ -100,7 +100,7 @@ class HomeFilterChips extends StatelessWidget {
                       '${entry.key}: ',
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTypography.semiBold,
                         fontSize: AppTypography.labelSmall,
                       ),
                     ),
@@ -108,7 +108,7 @@ class HomeFilterChips extends StatelessWidget {
                       entry.value,
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: theme.colorScheme.onSurface,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: AppTypography.bold,
                         fontSize: AppTypography.labelSmall,
                       ),
                     ),
@@ -150,6 +150,7 @@ class HomeFilterChips extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     CustomIconWidget(iconName: 'clear_all', color: theme.colorScheme.error, size: 14),
                     SizedBox(width: 1.5.w),
@@ -157,8 +158,8 @@ class HomeFilterChips extends StatelessWidget {
                       AppLocalizations.of(context)?.clear ?? 'Clear',
                       style: theme.textTheme.labelMedium?.copyWith(
                         color: theme.colorScheme.error,
-                        fontWeight: FontWeight.w700,
-                        fontSize: AppTypography.bodySmall,
+                        fontWeight: AppTypography.bold,
+                        fontSize: AppTypography.labelMedium,
                       ),
                     ),
                   ],

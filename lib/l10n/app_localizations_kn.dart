@@ -9,143 +9,10 @@ class AppLocalizationsKn extends AppLocalizations {
   AppLocalizationsKn([String locale = 'kn']) : super(locale);
 
   @override
-  String get genderSelectHeading => 'ನಿಮ್ಮ ಲಿಂಗ';
+  String get ableBodied => 'Able-Bodied';
 
   @override
-  String get replacePhoto => 'ಫೋಟೋ ಬದಲಾಯಿಸಿ';
-
-  @override
-  String get errorLoadingAdminStats =>
-      'ಡ್ಯಾಶ್‌ಬೋರ್ಡ್ ಅಂಕಿಅಂಶಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ರಿಫ್ರೆಶ್ ಮಾಡಲು ಪ್ರಯತ್ನಿಸಿ.';
-
-  @override
-  String get errorLoadingAdminUsers =>
-      'ಬಳಕೆದಾರರ ಪಟ್ಟಿಯನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ.';
-
-  @override
-  String get errorLoadingAdminPayments =>
-      'ಪಾವತಿ ಇತಿಹಾಸವನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.';
-
-  @override
-  String get errorLoadingAdminVerifications =>
-      'ಪರಿಶೀಲನೆ ವಿನಂತಿಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.';
-
-  @override
-  String get errorLoadingAdminReferences =>
-      'ಬಾಕಿ ಉಳಿದಿರುವ ಉಲ್ಲೇಖಗಳನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ರಿಫ್ರೆಶ್ ಮಾಡಿ.';
-
-  @override
-  String get errorLoadingAdminCoupons =>
-      'ಕೂಪನ್ ಕೊಡುಗೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.';
-
-  @override
-  String get errorLoadingAdminCreators =>
-      'ಕ್ರಿಯೇಟರ್ ಪಟ್ಟಿಯನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ನೆಟ್‌ವರ್ಕ್ ಪರಿಶೀಲಿಸಿ.';
-
-  @override
-  String get errorAdminActionFailed =>
-      'ವಿನಂತಿಸಿದ ಕ್ರಿಯೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.';
-
-  @override
-  String get expressInterest => 'ಆಸಕ್ತಿಯನ್ನು ವ್ಯಕ್ತಪಡಿಸಬೇಕೆ?';
-
-  @override
-  String interestConfirmationDesc(String name) {
-    return 'ನಿಮ್ಮ ಆಸಕ್ತಿಯನ್ನು ತೋರಿಸಲು ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಅನ್ನು $name ಅವರೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಲು ನೀವು ಬಯಸುವಿರಾ?';
-  }
-
-  @override
-  String get yesInterest => 'ಹೌದು, ಆಸಕ್ತಿ ಇದೆ';
-
-  @override
-  String get interest => 'ಆಸಕ್ತಿ';
-
-  @override
-  String get revenueToday => 'ಇಂದಿನ ಆದಾಯ (₹)';
-
-  @override
-  String get premiumMen => 'ಪ್ರೀಮಿಯಂ ಪುರುಷರು';
-
-  @override
-  String get premiumWomen => 'ಪ್ರೀಮಿಯಂ ಮಹಿಳೆಯರು';
-
-  @override
-  String get financialPerformance => 'ಹಣಕಾಸಿನ ಸಾಧನೆ';
-
-  @override
-  String get demographicsAndPremium => 'ಜನಸಂಖ್ಯಾಶಾಸ್ತ್ರ ಮತ್ತು ಪ್ರೀಮಿಯಂ';
-
-  @override
-  String get revenueTotal => 'ಒಟ್ಟು ಆದಾಯ (₹)';
-
-  @override
-  String get monthlyRevenue => 'ಮಾಸಿಕ ಆದಾಯ (₹)';
-
-  @override
-  String get pdfRevenue => 'PDF ಆದಾಯ (₹)';
-
-  @override
-  String get userEngagement => 'ಬಳಕೆದಾರರ ತೊಡಗಿಸಿಕೊಳ್ಳುವಿಕೆ';
-
-  @override
-  String get dailyActiveUsers => 'ದೈನಂದಿನ ಸಕ್ರಿಯ ಬಳಕೆದಾರರು';
-
-  @override
-  String get profileViews => 'ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಣೆಗಳು';
-
-  @override
-  String get totalMessages => 'ಒಟ್ಟು ಸಂದೇಶಗಳು';
-
-  @override
-  String get safetyAndHealth => 'ಸುರಕ್ಷತೆ ಮತ್ತು ಆರೋಗ್ಯ';
-
-  @override
-  String get pendingReports => 'ಬಾಕಿ ಉಳಿದಿರುವ ವರದಿಗಳು';
-
-  @override
-  String get totalBlocks => 'ಒಟ್ಟು ಬ್ಲಾಕ್‌ಗಳು';
-
-  @override
-  String get pendingReferences => 'ಬಾಕಿ ಉಳಿದಿರುವ ಉಲ್ಲೇಖಗಳು';
-
-  @override
-  String get totalUsers => 'ಒಟ್ಟು ಬಳಕೆದಾರರು';
-
-  @override
-  String get profiles => 'ಪ್ರೊಫೈಲ್‌ಗಳು';
-
-  @override
-  String get appGrowth => 'ಅಪ್ಲಿಕೇಶನ್ ಬೆಳವಣಿಗೆ';
-
-  @override
-  String get completedReferrals => 'ಪೂರ್ಣಗೊಂಡ ರೆಫರಲ್‌ಗಳು';
-
-  @override
-  String get activeCreators => 'ಸಕ್ರಿಯ ಕ್ರಿಯೇಟರ್‌ಗಳು';
-
-  @override
-  String get totalFemales => 'ಒಟ್ಟು ಮಹಿಳೆಯರು';
-
-  @override
-  String get totalMales => 'ಒಟ್ಟು ಪುರುಷರು';
-
-  @override
-  String get men => 'ಪುರುಷರು';
-
-  @override
-  String get women => 'ಮಹಿಳೆಯರು';
-
-  @override
-  String get sharingProfiles => 'ಪ್ರೊಫೈಲ್‌ಗಳ ಹಂಚಿಕೆ';
-
-  @override
-  String get sharingProfile => 'ಪ್ರೊಫೈಲ್ ಹಂಚಿಕೆಯಾಗುತ್ತಿದೆ...';
-
-  @override
-  String get referenceVerified => 'ಉಲ್ಲೇಖವನ್ನು ಪರಿಶೀಲಿಸಲಾಗಿದೆ';
-
-  @override
-  String get referenceRejected => 'ಉಲ್ಲೇಖವನ್ನು ತಿರಸ್ಕರಿಸಲಾಗಿದೆ';
+  String get aboutFamily => 'About Family';
 
   @override
   String get aboutSelf => 'ನನ್ನ ಬಗ್ಗೆ';
@@ -155,6 +22,9 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get abusiveBehavior => 'ಅಪಹಾಸ್ಯ ವರ್ತನೆ';
+
+  @override
+  String get acceptAndConnect => 'ACCEPT & CONNECT 💖';
 
   @override
   String get account => 'ಖಾತೆ';
@@ -167,14 +37,33 @@ class AppLocalizationsKn extends AppLocalizations {
   String get accountDeletion => 'ಖಾತೆ ಅಳಿಸುವಿಕೆ';
 
   @override
+  String get acres => 'Acres';
+
+  @override
   String get actionIsIrreversible => 'ಈ ಕ್ರಿಯೆಯು ಬದಲಾಯಿಸಲಾಗದು.';
+
+  @override
+  String get activeCreators => 'ಸಕ್ರಿಯ ಕ್ರಿಯೇಟರ್‌ಗಳು';
 
   @override
   String get activeSubscriptionCancelledNoRefund =>
       'ನಿಮ್ಮ ಸಕ್ರಿಯ ಚಂದಾದಾರಿಕೆಯನ್ನು ಯಾವುದೇ ಮರುಪಾವತಿ ಇಲ್ಲದೆ ರದ್ದುಗೊಳಿಸಲಾಗುತ್ತದೆ.';
 
   @override
+  String get activity => 'Activity';
+
+  @override
+  String get adCompletedSuccessfully => 'ಜಾಹೀರಾತು ಯಶಸ್ವಿಯಾಗಿ ಪೂರ್ಣಗೊಂಡಿದೆ';
+
+  @override
   String get adFreeExperience => 'ಜಾಹೀರಾತು ರಹಿತ ಅನುಭವ';
+
+  @override
+  String get adNotReady =>
+      'ಜಾಹೀರಾತು ಇನ್ನೂ ಸಿದ್ಧವಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.';
+
+  @override
+  String get adTemporarilyUnavailable => 'ಜಾಹೀರಾತು ತಾತ್ಕಾಲಿಕವಾಗಿ ಅಲಭ್ಯವಾಗಿದೆ';
 
   @override
   String addClearPhotos(int max) {
@@ -238,10 +127,33 @@ class AppLocalizationsKn extends AppLocalizations {
   String get age => 'ವಯಸ್ಸು';
 
   @override
+  String ageAndSurnameSubtitle(String age, String surname) {
+    return '$age Yrs • $surname';
+  }
+
+  @override
+  String get ageLabel => 'ವಯಸ್ಸು';
+
+  @override
   String get ageRange => 'ವಯಸ್ಸಿನ ವ್ಯಾಪ್ತಿ';
 
   @override
+  String ageRangeYears(Object max, Object min) {
+    return '$min - $max yrs';
+  }
+
+  @override
   String get aiBio => 'AI ಬಯೋ';
+
+  @override
+  String get algorithmInsightsDescription =>
+      'Our matchmaking algorithm evaluates authentic Banjara exogamy rules (checking self gotra & maternal gotra separation), Vedic astrological Guna Milan, verified education & income parameters, and mutual partner preferences.';
+
+  @override
+  String get alignedExpectations => 'Aligned Expectations';
+
+  @override
+  String get all => 'All';
 
   @override
   String allInDistrict(String district) {
@@ -268,6 +180,9 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
+  String get allProfiles => 'All Profiles';
+
+  @override
   String get allYourProfileDataPermanentlyRemoved =>
       'ನಿಮ್ಮ ಎಲ್ಲಾ ಪ್ರೊಫೈಲ್ ಡೇಟಾವನ್ನು ಶಾಶ್ವತವಾಗಿ ತೆಗೆದುಹಾಕಲಾಗುತ್ತದೆ.';
 
@@ -279,12 +194,32 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಎಲ್ಲಾ ವಿಭಾಗಗಳನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಪೂರ್ಣಗೊಳಿಸಲು \"ಬಯೋಡೇಟಾ ಉಳಿಸಿ\" ಕ್ಲಿಕ್ ಮಾಡಿ. ನಿಮ್ಮ ಗೌಪ್ಯತೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳ ಆಧಾರದ ಮೇಲೆ ನಿಮ್ಮ ಬಯೋಡೇಟಾ ಇತರ ಸಮುದಾಯದ ಸದಸ್ಯರಿಗೆ ಗೋಚರಿಸುತ್ತದೆ.';
 
   @override
+  String get alreadyHaveProfileLogin => 'ಖಾತೆ ಇದೆಯೇ? ಲಾಗಿನ್ ಮಾಡಿ';
+
+  @override
+  String get alternateRelativeContactNumberOptional =>
+      'Alternate / Relative Contact Number (Optional)';
+
+  @override
   String anErrorOccurred(String error) {
     return 'ದೋಷ ಸಂಭವಿಸಿದೆ: $error';
   }
 
   @override
+  String get ancestralLand => 'Ancestral Land';
+
+  @override
+  String get ancestralLandHoldingsAcres => 'Ancestral Land Holdings (Acres)';
+
+  @override
+  String get ancestralLandSubtitle =>
+      'Filter candidates by family agricultural land ownership';
+
+  @override
   String get and => ' ಮತ್ತು ';
+
+  @override
+  String get annual => 'ವಾರ್ಷಿಕ';
 
   @override
   String get annualIncome => 'ಸ್ವಂತ ವಾರ್ಷಿಕ ಆದಾಯ (Self Annual Income)';
@@ -294,13 +229,40 @@ class AppLocalizationsKn extends AppLocalizations {
       'ನಿಮ್ಮ ವಾರ್ಷಿಕ ಗಳಿಕೆ ಮಾತ್ರ (ಉದಾ. ಸಂಬಳ/ವ್ಯಾಪಾರ). ಮನೆಯ ಒಟ್ಟು ಉಳಿತಾಯ ಅಥವಾ ಬ್ಯಾಂಕ್ ಬ್ಯಾಲೆನ್ಸ್ ನಮೂದಿಸಬೇಡಿ.';
 
   @override
+  String get annualIncomeLabel => 'ವಾರ್ಷಿಕ ಆದಾಯ';
+
+  @override
+  String get annualIncomeSalary => 'Annual Income / Salary';
+
+  @override
+  String get annualIncomeSubtitle =>
+      'Select candidate yearly income expectations';
+
+  @override
   String get annulled => 'ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ';
+
+  @override
+  String get appGrowth => 'ಅಪ್ಲಿಕೇಶನ್ ಬೆಳವಣಿಗೆ';
 
   @override
   String get appName => 'ಬಂಜಾರ ಬಯೋ';
 
   @override
+  String get apply => 'ಅನ್ವಯಿಸು';
+
+  @override
+  String get applyAllFilters => 'Apply All Filters';
+
+  @override
   String get applyFilters => 'ಫಿಲ್ಟರ್‌ಗಳನ್ನು ಅನ್ವಯಿಸಿ';
+
+  @override
+  String applyFiltersCount(Object count) {
+    return 'Apply Filters ($count Active)';
+  }
+
+  @override
+  String get applyLocation => 'Apply Location';
 
   @override
   String get approve => 'ಅನುಮೋದಿಸಿ';
@@ -335,6 +297,13 @@ class AppLocalizationsKn extends AppLocalizations {
       'Ask family members for photo suggestions';
 
   @override
+  String get astro36GunaMilanScore => 'Astro 36 Guna Milan Score';
+
+  @override
+  String get astro36GunaSubtitle =>
+      'Filter matches by minimum astrological compatibility threshold';
+
+  @override
   String get atLeastOnePhotoRequired => 'ಕನಿಷ್ಠ ಒಂದು ಫೋಟೋ ಅಗತ್ಯವಿದೆ';
 
   @override
@@ -353,10 +322,55 @@ class AppLocalizationsKn extends AppLocalizations {
   String get backToGoogleSignIn => 'Google ಸೈನ್ ಇನ್‌ಗೆ ಹಿಂತಿರುಗಿ';
 
   @override
+  String get banjaraBioPro => 'ಬಂಜಾರಬಯೋ ಪ್ರೊ';
+
+  @override
+  String get banjaraClanRoots => 'BANJARA CLAN ROOTS';
+
+  @override
+  String get banjaraGotraClan => 'Banjara Gotra (Clan)';
+
+  @override
+  String get banjaraGotraCustoms => 'Banjara Gotra Customs (गोत्र व मोसळ)';
+
+  @override
+  String get banjaraGotraSelfClan => 'Banjara Gotra (Self Clan)';
+
+  @override
   String get banjaraMember => 'ಬಂಜಾರ ಸದಸ್ಯ';
 
   @override
+  String get banjaraVirasatSangh => 'Banjara Virasat Sangh';
+
+  @override
   String get banjarabio => 'BanjaraBio';
+
+  @override
+  String get basicInformation => 'Basic Information';
+
+  @override
+  String get basicPlanDesc => 'ನಿಮ್ಮ ಹುಡುಕಾಟಕ್ಕೆ ಅಗತ್ಯವಿರುವ ವೈಶಿಷ್ಟ್ಯಗಳು';
+
+  @override
+  String get basicPlanName => 'ಬೇಸಿಕ್';
+
+  @override
+  String get benefitPdfBiodata => '2 ನಿಮಿಷಗಳಲ್ಲಿ ಸುಂದರ PDF ಬಯೋಡೇಟಾ ರಚಿಸಿ';
+
+  @override
+  String get benefitShareWhatsApp => 'WhatsApp ನಲ್ಲಿ ನೇರವಾಗಿ ಹಂಚಿಕೊಳ್ಳಿ';
+
+  @override
+  String get benefitVerifiedProfiles => '100% ಪರಿಶೀಲಿಸಿದ ಪ್ರೊಫೈಲ್‌ಗಳು';
+
+  @override
+  String get bestTimeToContact => 'ಸಂಪರ್ಕಿಸಲು ಉತ್ತಮ ಸಮಯ';
+
+  @override
+  String get bestValue => 'ಅತ್ಯುತ್ತಮ ಮೌಲ್ಯ';
+
+  @override
+  String get biodata => 'Biodata';
 
   @override
   String get biodataDraftRestored => 'ಬಯೋಡೇಟಾ ಕರಡು ಮರುಸ್ಥಾಪಿಸಲಾಗಿದೆ!';
@@ -367,6 +381,12 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get biodataPdf => 'ಬಯೋಡೇಟಾ PDF';
+
+  @override
+  String get biodataPremiumIncluded => 'ಬಯೋಡೇಟಾ ಪ್ರೀಮಿಯಂ ಒಳಗೊಂಡಿದೆ';
+
+  @override
+  String get biodataRequired => 'Biodata Required';
 
   @override
   String get biodataSavedSuccessfully => 'ಬಯೋಡೇಟಾ ಯಶಸ್ವಿಯಾಗಿ ಉಳಿಸಲಾಗಿದೆ!';
@@ -388,7 +408,16 @@ class AppLocalizationsKn extends AppLocalizations {
   String get birthPlaceAndTime => 'ಜನ್ಮ ಸ್ಥಳ ಮತ್ತು ಸಮಯ';
 
   @override
+  String get birthPlaceLabel => 'ಹುಟ್ಟಿದ ಸ್ಥಳ';
+
+  @override
   String get birthTime => 'ಹುಟ್ಟಿದ ಸಮಯ';
+
+  @override
+  String get birthTimeLabel => 'ಹುಟ್ಟಿದ ಸಮಯ';
+
+  @override
+  String get birthTimeVisibleOnPdf => 'Birth time & birth place visible on PDF';
 
   @override
   String get block => 'ಬ್ಲಾಕ್ ಮಾಡಿ';
@@ -400,6 +429,9 @@ class AppLocalizationsKn extends AppLocalizations {
   String get bloodGroup => 'ರಕ್ತ ಗುಂಪು';
 
   @override
+  String get bloodGroupLabel => 'ರಕ್ತದ ಗುಂಪು';
+
+  @override
   String get blurryLowQualityImages =>
       'ಅಸ್ಪಷ್ಟ, ಕತ್ತಲೆ ಅಥವಾ ಕಡಿಮೆ ಗುಣಮಟ್ಟದ ಚಿತ್ರಗಳು';
 
@@ -407,12 +439,18 @@ class AppLocalizationsKn extends AppLocalizations {
   String get bookmarkLimitReached => 'ಬುಕ್‌ಮಾರ್ಕ್ ಮಿತಿ ಮೀರಿದೆ';
 
   @override
-  String get messagingLimitReached => 'ಸಂದೇಶ ಕಳುಹಿಸುವ ಮಿತಿ ಮೀರಿದೆ';
-
-  @override
   String bookmarksCount(int count) {
     return '$count ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳು';
   }
+
+  @override
+  String get bride => 'Bride';
+
+  @override
+  String get brideGirl => '👧 ವಧು (Bride)';
+
+  @override
+  String get brideOption => '👧 Bride (Girl)';
 
   @override
   String get bronze => 'ಕಂಚು';
@@ -424,7 +462,33 @@ class AppLocalizationsKn extends AppLocalizations {
   String get brotherCount => 'ಅಣ್ಣತಮ್ಮಂದಿರು';
 
   @override
+  String brothersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ಸಹೋದರರು',
+      one: '1 ಸಹೋದರ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get browseMatchesDesc => 'ಮಗ, ಮಗಳು, ಸಂಬಂಧಿಕರಿಗೆ ಸೂಕ್ತ ಸಂಬಂಧ ಹುಡುಕಿ.';
+
+  @override
+  String get browseMatchesSubtitle =>
+      'ಕೆಲವು ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಿ ಮತ್ತು ಸೂಕ್ತ ಸಂಬಂಧಗಳನ್ನು ನೋಡಿ';
+
+  @override
+  String get browseMatchesTitle => '🔍 ಸಂಬಂಧ ಹುಡುಕಿ (Browse Matches)';
+
+  @override
   String get browseProfiles => 'ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಬ್ರೌಸ್ ಮಾಡಿ';
+
+  @override
+  String bulkDiscount(int percent) {
+    return '$percent% ರಿಯಾಯಿತಿ';
+  }
 
   @override
   String get business => 'ವ್ಯಾಪಾರ';
@@ -433,7 +497,138 @@ class AppLocalizationsKn extends AppLocalizations {
   String get businessOwner => 'ಉದ್ಯಮಿ';
 
   @override
+  String get bvsAnnualPlanLabel => 'ವಾರ್ಷಿಕ ಯೋಜನೆ';
+
+  @override
+  String get bvsAnnualPrice => '₹200 / ವರ್ಷ';
+
+  @override
+  String get bvsCardSelected => 'ಕಾರ್ಡ್ ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ';
+
+  @override
+  String get bvsConceptSubtitle =>
+      'ಪರಿಕಲ್ಪನೆ: ಮಾನ್ಯ ಶ್ರೀ ಸಂಜಯಭಾವು ರಾಠೋಡ್\nಸಚಿವರು, ಮಹಾರಾಷ್ಟ್ರ ಸರ್ಕಾರ';
+
+  @override
+  String get bvsCopyMessageToast => '🚩 BVS ಆಹ್ವಾನ ಸಂದೇಶ ಕಾಪಿ ಮಾಡಲಾಗಿದೆ!';
+
+  @override
+  String get bvsHeritageEmblemDesc => 'ಪೋಹ್ರಾದೇವಿ & 12+ ಕೋಟಿ ಸಮಾಜದ ಹೆಮ್ಮೆ';
+
+  @override
+  String get bvsHeritageEmblemTitle => 'ಪರಂಪರೆ ಮುದ್ರೆ';
+
+  @override
+  String get bvsHowToJoinTitle =>
+      'BVS ಸದಸ್ಯರಾಗುವುದು ಮತ್ತು ರಿಯಾಯಿತಿ ಪಡೆಯುವುದು ಹೇಗೆ?';
+
+  @override
+  String get bvsJoinCardSubtitle =>
+      '⚡ BVS ಪೋರ್ಟಲ್‌ನಲ್ಲಿ ನೋಂದಾಯಿಸಿ ₹200/ವರ್ಷ ರಿಯಾಯಿತಿ ಪಡೆಯಿರಿ';
+
+  @override
+  String get bvsJoinNowButton => 'ಇಂದೇ BVS ಸದಸ್ಯರಾಗಿ (Join Now)';
+
+  @override
+  String get bvsMember => '🏛️ BVS Member';
+
+  @override
+  String get bvsMemberId => 'BVS ಸದಸ್ಯತ್ವ ಸಂಖ್ಯೆ (ಉದಾ: 405812)';
+
+  @override
+  String get bvsMembershipCard => 'ಬಂಜಾರಾ ವಿರಾಸತ್ ಸಂಘ ಗುರುತಿನ ಚೀಟಿ';
+
+  @override
+  String get bvsMonthlyPlanLabel => 'ಮಾಸಿಕ ಯೋಜನೆ';
+
+  @override
+  String get bvsMonthlyPrice => '₹20 / ತಿಂಗಳು';
+
+  @override
+  String get bvsMovementDesc =>
+      'ಬಂಜಾರಾ ಸಮಾಜದ ಐಕ್ಯತೆ ಮತ್ತು ಭವಿಷ್ಯವನ್ನು ಬಲಪಡಿಸುವ ಐತಿಹಾಸಿಕ ಚಳವಳಿ.';
+
+  @override
+  String get bvsNotRegisteredYet =>
+      'ಇನ್ನೂ BVS ಸದಸ್ಯರಾಗಿಲ್ಲವೇ? ಇಲ್ಲಿ ನೋಂದಾಯಿಸಿ »';
+
+  @override
+  String get bvsOfficialEmblems => 'ಅಧಿಕೃತ BVS ಲಾಂಛನಗಳು';
+
+  @override
+  String get bvsShareOnWhatsApp => 'WhatsApp ನಲ್ಲಿ ಹಂಚಿಕೊಳ್ಳಿ';
+
+  @override
+  String get bvsSpecialDiscountBanner =>
+      'ನೀವು ಬಂಜಾರಾ ವಿರಾಸತ್ ಸಂಘದ ಸದಸ್ಯರೇ? BVS ಕಾರ್ಡ್ ಪರಿಶೀಲಿಸಿ ಮತ್ತು ವಾರ್ಷಿಕ ಯೋಜನೆಯನ್ನು ಕೇವಲ ₹200 ಕ್ಕೆ ಪಡೆಯಿರಿ!';
+
+  @override
+  String get bvsStep1Desc =>
+      'ಅಧಿಕೃತ BVS ಪೋರ್ಟಲ್‌ನಲ್ಲಿ ನಿಮ್ಮ ವಿವರಗಳನ್ನು ನಮೂದಿಸಿ.';
+
+  @override
+  String get bvsStep1Title => 'ಆನ್‌ಲೈನ್‌ನಲ್ಲಿ ನೋಂದಾಯಿಸಿ';
+
+  @override
+  String get bvsStep2Desc =>
+      'ನಿಮ್ಮ ಅಧಿಕೃತ ಡಿಜಿಟಲ್ ಐಡಿ ಮತ್ತು ಸದಸ್ಯತ್ವ ಸಂಖ್ಯೆಯನ್ನು ಪಡೆಯಿರಿ.';
+
+  @override
+  String get bvsStep2Title => 'ಸದಸ್ಯತ್ವ ಕಾರ್ಡ್ ಪಡೆಯಿರಿ';
+
+  @override
+  String get bvsStep3Desc =>
+      'BVS ಕಾರ್ಡ್ ಸೇರಿಸಿ ₹200/ವರ್ಷದ ರಿಯಾಯಿತಿ ಯೋಜನೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ.';
+
+  @override
+  String get bvsStep3Title => 'BanjaraBio ನಲ್ಲಿ ಕಾರ್ಡ್ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ';
+
+  @override
+  String get bvsSubsidyCardSubtitle =>
+      'BanjaraBio ನಲ್ಲಿ ಮ್ಯಾಟ್ರಿಮೋನಿ ಚಂದಾದಾರಿಕೆಯಲ್ಲಿ ಭಾರಿ ಉಳಿತಾಯ!';
+
+  @override
+  String get bvsSubsidyCardTitle => 'BVS ಸದಸ್ಯರಿಗೆ ವಿಶೇಷ ರಿಯಾಯಿತಿ!';
+
+  @override
+  String get bvsTitle => 'ಬಂಜಾರಾ ವಿರಾಸತ್ ಸಂಘ';
+
+  @override
+  String get bvsUnityEmblemDesc => 'ಕೈಗಳ ಸರಪಳಿ & ಸಾಂಪ್ರದಾಯಿಕ ಕಸೂತಿ';
+
+  @override
+  String get bvsUnityEmblemTitle => 'ಐಕ್ಯತಾ ಮುದ್ರೆ';
+
+  @override
+  String get bvsUploadCardButton =>
+      'BVS ಕಾರ್ಡ್ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ (ರಿಯಾಯಿತಿ ಪಡೆಯಿರಿ)';
+
+  @override
+  String get bvsUploadCardPromptSubtitle =>
+      'BVS ಸದಸ್ಯತ್ವ ಕಾರ್ಡ್ ಫೋಟೋ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ';
+
+  @override
+  String get bvsVerifiedActiveBadge =>
+      '👑 BVS ಪ್ರಮಾಣೀಕೃತ ಸದಸ್ಯರ ರಿಯಾಯಿತಿ ಸಕ್ರಿಯವಾಗಿದೆ!';
+
+  @override
+  String get bvsVerifiedActiveDesc =>
+      'ನಿಮಗಾಗಿ ಮಾಸಿಕ ಯೋಜನೆ ₹20 ಮತ್ತು ವಾರ್ಷಿಕ ಚಂದಾದಾರಿಕೆ ಕೇವಲ ₹200 ರಲ್ಲಿ ಲಭ್ಯವಿದೆ.';
+
+  @override
+  String get bvsVerifiedSpecialPlan => 'BVS ಸದಸ್ಯರ ವಿಶೇಷ ಯೋಜನೆ';
+
+  @override
+  String get bvsWhatsAppInviteTitle => 'WhatsApp ಆಟೊಮೇಷನ್ ಆಹ್ವಾನ';
+
+  @override
   String get byContAcceptTerms => 'ಮುಂದುವರಿಸುವ ಮೂಲಕ, ನೀವು ನಮ್ಮ ';
+
+  @override
+  String get callAdmin => 'ಅಡ್ಮಿನ್ ಗೆ ಕರೆ ಮಾಡಿ';
+
+  @override
+  String get callOrganizer => 'ಆಯೋಜಕರಿಗೆ ಕರೆ ಮಾಡಿ';
 
   @override
   String get camera => 'ಕ್ಯಾಮರಾ';
@@ -445,10 +640,33 @@ class AppLocalizationsKn extends AppLocalizations {
   String get cancelAnytime => 'ಯಾವಾಗ ಬೇಕಾದರೂ ರದ್ದುಮಾಡಿ';
 
   @override
+  String get candidatesMeet => 'Candidates Meet';
+
+  @override
+  String get careerPillarSubtitle =>
+      'Graduate / Professional background & steady income';
+
+  @override
+  String get careerSocioeconomicPillar => 'Career & Socioeconomic Level';
+
+  @override
+  String get careerWealthHoldings => 'Career & Wealth Holdings';
+
+  @override
+  String get changeCriteriaOrExitPrompt =>
+      'ನಿಮ್ಮ ಹುಡುಕಾಟ ಆಯ್ಕೆಗಳನ್ನು ಬದಲಾಯಿಸಲು ಬಯಸುವಿರಾ ಅಥವಾ ಆಪ್‌ನಿಂದ ನಿರ್ಗಮಿಸಲು ಬಯಸುವಿರಾ?';
+
+  @override
   String get changeLanguage => 'ಭಾಷೆ ಬದಲಾಯಿಸಿ';
 
   @override
+  String get changeOptionsCta => 'ಆಯ್ಕೆಗಳನ್ನು ಬದಲಾಯಿಸಿ ✏️';
+
+  @override
   String get chat => 'ಚಾಟ್';
+
+  @override
+  String get chatConversationArchived => 'Chat conversation archived';
 
   @override
   String get checkBackSoonForNewMatchesnpullDownToRef =>
@@ -466,16 +684,49 @@ class AppLocalizationsKn extends AppLocalizations {
       'ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಯಾರು ವೀಕ್ಷಿಸುತ್ತಿದ್ದಾರೆ ಎಂದು ಪರಿಶೀಲಿಸಿ';
 
   @override
+  String get chipFreeAccess => '⭐ 100% ಉಚಿತ';
+
+  @override
+  String get chipNoAccount => '⚡ ಖಾತೆ ಅಗತ್ಯವಿಲ್ಲ';
+
+  @override
+  String get chipQuickFilter => '🔍 1 ನಿಮಿಷದಲ್ಲಿ ಫಿಲ್ಟರ್';
+
+  @override
   String get chooseFromGallery => 'ಗ್ಯಾಲರಿಯಿಂದ ಆಯ್ಕೆಮಾಡಿ';
 
   @override
+  String get chooseHowToStart =>
+      'ನೀವು ಹೇಗೆ ಪ್ರಾರಂಭಿಸಲು ಬಯಸುತ್ತೀರಿ ಎಂಬುದನ್ನು ಆಯ್ಕೆಮಾಡಿ';
+
+  @override
+  String get chooseQuickIntroTemplate => 'CHOOSE A QUICK INTRO TEMPLATE';
+
+  @override
   String get chooseTemplate => 'ಟೆಂಪ್ಲೇಟ್ ಆಯ್ಕೆ ಮಾಡಿ';
+
+  @override
+  String get claimMarriageGift => 'ಮದುವೆ ಉಡುಗೊರೆಯನ್ನು ಪಡೆಯಿರಿ';
+
+  @override
+  String get clanExogamyPillar => 'Clan Exogamy (गोत्र व मोसळ)';
+
+  @override
+  String clanExogamyPillarSubtitle(String gotra, String maternalGotra) {
+    return 'Different paternal Gotra ($gotra) & Mamakul ($maternalGotra)';
+  }
 
   @override
   String get clear => 'ತೆರವು ಮಾಡಿ';
 
   @override
   String get clearAllFilters => 'ಎಲ್ಲಾ ಫಿಲ್ಟರ್ ತೆರವುಗೊಳಿಸಿ';
+
+  @override
+  String get clearSearch => 'Clear search';
+
+  @override
+  String get clearText => 'Clear text';
 
   @override
   String get clearWellLitPhotos =>
@@ -485,137 +736,21 @@ class AppLocalizationsKn extends AppLocalizations {
   String get close => 'ಮುಚ್ಚಿ';
 
   @override
+  String get closePreview => 'Close Preview';
+
+  @override
+  String get collegeInstitute => 'College / Institute';
+
+  @override
   String get comeBackTomorrowFornnewCuratedMatches =>
       'ಹೊಸ ಪಂದ್ಯಗಳಿಗಾಗಿ\\nನಾಳೆ ಬನ್ನಿ!';
 
   @override
-  String get bvsMembershipCard => 'ಬಂಜಾರಾ ವಿರಾಸತ್ ಸಂಘ ಗುರುತಿನ ಚೀಟಿ';
+  String get communityFiltersSubtitle =>
+      'Gotra, Mamakul, Origin, Height, Income & Lineage';
 
   @override
-  String get bvsMemberId => 'BVS ಸದಸ್ಯತ್ವ ಸಂಖ್ಯೆ (ಉದಾ: 405812)';
-
-  @override
-  String get uploadBvsCardPrompt =>
-      'ನಿಮ್ಮ ಬಂಜಾರಾ ವಿರಾಸತ್ ಸಂಘ (BVS) ಗುರುತಿನ ಚೀಟಿ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ';
-
-  @override
-  String get bvsSpecialDiscountBanner =>
-      'ನೀವು ಬಂಜಾರಾ ವಿರಾಸತ್ ಸಂಘದ ಸದಸ್ಯರೇ? BVS ಕಾರ್ಡ್ ಪರಿಶೀಲಿಸಿ ಮತ್ತು ವಾರ್ಷಿಕ ಯೋಜನೆಯನ್ನು ಕೇವಲ ₹200 ಕ್ಕೆ ಪಡೆಯಿರಿ!';
-
-  @override
-  String get joinBvsNow => 'BVS ಗೆ ಸೇರಿ (ಇಲ್ಲಿ ನೋಂದಾಯಿಸಿ)';
-
-  @override
-  String get bvsVerifiedSpecialPlan => 'BVS ಸದಸ್ಯರ ವಿಶೇಷ ಯೋಜನೆ';
-
-  @override
-  String get bvsTitle => 'ಬಂಜಾರಾ ವಿರಾಸತ್ ಸಂಘ';
-
-  @override
-  String get bvsConceptSubtitle =>
-      'ಪರಿಕಲ್ಪನೆ: ಮಾನ್ಯ ಶ್ರೀ ಸಂಜಯಭಾವು ರಾಠೋಡ್\nಸಚಿವರು, ಮಹಾರಾಷ್ಟ್ರ ಸರ್ಕಾರ';
-
-  @override
-  String get bvsMovementDesc =>
-      'ಬಂಜಾರಾ ಸಮಾಜದ ಐಕ್ಯತೆ ಮತ್ತು ಭವಿಷ್ಯವನ್ನು ಬಲಪಡಿಸುವ ಐತಿಹಾಸಿಕ ಚಳವಳಿ.';
-
-  @override
-  String get bvsOfficialEmblems => 'ಅಧಿಕೃತ BVS ಲಾಂಛನಗಳು';
-
-  @override
-  String get bvsUnityEmblemTitle => 'ಐಕ್ಯತಾ ಮುದ್ರೆ';
-
-  @override
-  String get bvsUnityEmblemDesc => 'ಕೈಗಳ ಸರಪಳಿ & ಸಾಂಪ್ರದಾಯಿಕ ಕಸೂತಿ';
-
-  @override
-  String get bvsHeritageEmblemTitle => 'ಪರಂಪರೆ ಮುದ್ರೆ';
-
-  @override
-  String get bvsHeritageEmblemDesc => 'ಪೋಹ್ರಾದೇವಿ & 12+ ಕೋಟಿ ಸಮಾಜದ ಹೆಮ್ಮೆ';
-
-  @override
-  String get bvsSubsidyCardTitle => 'BVS ಸದಸ್ಯರಿಗೆ ವಿಶೇಷ ರಿಯಾಯಿತಿ!';
-
-  @override
-  String get bvsSubsidyCardSubtitle =>
-      'BanjaraBio ನಲ್ಲಿ ಮ್ಯಾಟ್ರಿಮೋನಿ ಚಂದಾದಾರಿಕೆಯಲ್ಲಿ ಭಾರಿ ಉಳಿತಾಯ!';
-
-  @override
-  String get bvsAnnualPlanLabel => 'ವಾರ್ಷಿಕ ಯೋಜನೆ';
-
-  @override
-  String get bvsMonthlyPlanLabel => 'ಮಾಸಿಕ ಯೋಜನೆ';
-
-  @override
-  String get bvsAnnualPrice => '₹200 / ವರ್ಷ';
-
-  @override
-  String get bvsMonthlyPrice => '₹20 / ತಿಂಗಳು';
-
-  @override
-  String get bvsVerifiedActiveBadge =>
-      '👑 BVS ಪ್ರಮಾಣೀಕೃತ ಸದಸ್ಯರ ರಿಯಾಯಿತಿ ಸಕ್ರಿಯವಾಗಿದೆ!';
-
-  @override
-  String get bvsVerifiedActiveDesc =>
-      'ನಿಮಗಾಗಿ ಮಾಸಿಕ ಯೋಜನೆ ₹20 ಮತ್ತು ವಾರ್ಷಿಕ ಚಂದಾದಾರಿಕೆ ಕೇವಲ ₹200 ರಲ್ಲಿ ಲಭ್ಯವಿದೆ.';
-
-  @override
-  String get bvsHowToJoinTitle =>
-      'BVS ಸದಸ್ಯರಾಗುವುದು ಮತ್ತು ರಿಯಾಯಿತಿ ಪಡೆಯುವುದು ಹೇಗೆ?';
-
-  @override
-  String get bvsStep1Title => 'ಆನ್‌ಲೈನ್‌ನಲ್ಲಿ ನೋಂದಾಯಿಸಿ';
-
-  @override
-  String get bvsStep1Desc =>
-      'ಅಧಿಕೃತ BVS ಪೋರ್ಟಲ್‌ನಲ್ಲಿ ನಿಮ್ಮ ವಿವರಗಳನ್ನು ನಮೂದಿಸಿ.';
-
-  @override
-  String get bvsStep2Title => 'ಸದಸ್ಯತ್ವ ಕಾರ್ಡ್ ಪಡೆಯಿರಿ';
-
-  @override
-  String get bvsStep2Desc =>
-      'ನಿಮ್ಮ ಅಧಿಕೃತ ಡಿಜಿಟಲ್ ಐಡಿ ಮತ್ತು ಸದಸ್ಯತ್ವ ಸಂಖ್ಯೆಯನ್ನು ಪಡೆಯಿರಿ.';
-
-  @override
-  String get bvsStep3Title => 'BanjaraBio ನಲ್ಲಿ ಕಾರ್ಡ್ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ';
-
-  @override
-  String get bvsStep3Desc =>
-      'BVS ಕಾರ್ಡ್ ಸೇರಿಸಿ ₹200/ವರ್ಷದ ರಿಯಾಯಿತಿ ಯೋಜನೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ.';
-
-  @override
-  String get bvsWhatsAppInviteTitle => 'WhatsApp ಆಟೊಮೇಷನ್ ಆಹ್ವಾನ';
-
-  @override
-  String get bvsShareOnWhatsApp => 'WhatsApp ನಲ್ಲಿ ಹಂಚಿಕೊಳ್ಳಿ';
-
-  @override
-  String get bvsCopyMessageToast => '🚩 BVS ಆಹ್ವಾನ ಸಂದೇಶ ಕಾಪಿ ಮಾಡಲಾಗಿದೆ!';
-
-  @override
-  String get bvsJoinNowButton => 'ಇಂದೇ BVS ಸದಸ್ಯರಾಗಿ (Join Now)';
-
-  @override
-  String get bvsJoinCardSubtitle =>
-      '⚡ BVS ಪೋರ್ಟಲ್‌ನಲ್ಲಿ ನೋಂದಾಯಿಸಿ ₹200/ವರ್ಷ ರಿಯಾಯಿತಿ ಪಡೆಯಿರಿ';
-
-  @override
-  String get bvsUploadCardButton =>
-      'BVS ಕಾರ್ಡ್ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ (ರಿಯಾಯಿತಿ ಪಡೆಯಿರಿ)';
-
-  @override
-  String get bvsUploadCardPromptSubtitle =>
-      'BVS ಸದಸ್ಯತ್ವ ಕಾರ್ಡ್ ಫೋಟೋ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ';
-
-  @override
-  String get bvsCardSelected => 'ಕಾರ್ಡ್ ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ';
-
-  @override
-  String get bvsNotRegisteredYet =>
-      'ಇನ್ನೂ BVS ಸದಸ್ಯರಾಗಿಲ್ಲವೇ? ಇಲ್ಲಿ ನೋಂದಾಯಿಸಿ »';
+  String get communityFiltersTitle => 'Community Filters (BVS)';
 
   @override
   String get communityId => 'Community ID';
@@ -630,10 +765,30 @@ class AppLocalizationsKn extends AppLocalizations {
   String get communityMember => 'Community Member';
 
   @override
+  String get communityTrustedProfiles => 'Community Trusted Profiles';
+
+  @override
+  String get communityTrustedProfilesSubtitle =>
+      'Vouched Banjara profiles with Community Trust Score > 75%';
+
+  @override
   String get communityVerification => 'ಸಮುದಾಯ ಪರಿಶೀಲನೆ';
 
   @override
+  String get company => 'ಕಂಪನಿ';
+
+  @override
   String get companyName => 'ಕಂಪನಿ ಹೆಸರು';
+
+  @override
+  String get companyOrg => 'Company / Org';
+
+  @override
+  String get compareAllPlanFeatures =>
+      'ಎಲ್ಲಾ ಪ್ಲಾನ್ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಹೋಲಿಕೆ ಮಾಡಿ';
+
+  @override
+  String get compatibleRoots => 'Compatible Roots';
 
   @override
   String get completeVerificationToUnlockPremium =>
@@ -642,6 +797,9 @@ class AppLocalizationsKn extends AppLocalizations {
   @override
   String get completeYourProfileToGetNoticed =>
       'ಗಮನ ಸೆಳೆಯಲು ಪ್ರೊಫೈಲ್ ಪೂರ್ಣಗೊಳಿಸಿ!';
+
+  @override
+  String get completedReferrals => 'ಪೂರ್ಣಗೊಂಡ ರೆಫರಲ್‌ಗಳು';
 
   @override
   String get completion => 'ಪೂರ್ಣಗೊಳಿಸುವಿಕೆ';
@@ -653,6 +811,13 @@ class AppLocalizationsKn extends AppLocalizations {
   String get compressingUnder500Kb => 'Compressing under 500KB...';
 
   @override
+  String get confidentialMatchmaking => 'Confidential & Private Matchmaking';
+
+  @override
+  String get confidentialMatchmakingSubtitle =>
+      'High-profile biodatas viewable exclusively with mutual RM consent';
+
+  @override
   String get confirm => 'ದೃಢಪಡಿಸಿ';
 
   @override
@@ -662,10 +827,25 @@ class AppLocalizationsKn extends AppLocalizations {
   String get connectWithCommunity => 'ನಿಮ್ಮ ಬಂಜಾರ ಸಮುದಾಯದೊಂದಿಗೆ ಸಂಪರ್ಕಿಸಿ';
 
   @override
+  String get connectionAcceptedToast =>
+      'Connection Accepted! You can now chat directly 🎉';
+
+  @override
   String get contact => 'ಸಂಪರ್ಕಿಸಿ';
 
   @override
+  String get contactLabel => 'ಸಂಪರ್ಕ';
+
+  @override
+  String get contactPersonLabel => 'ಸಂಪರ್ಕ ವ್ಯಕ್ತಿ';
+
+  @override
   String get contactPreferences => 'ಸಂಪರ್ಕ ಆದ್ಯತೆಗಳು';
+
+  @override
+  String contactUnlocks(int count) {
+    return '$count ಸಂಪರ್ಕ ಅನ್‌ಲಾಕ್‌ಗಳು/ತಿಂಗಳು';
+  }
 
   @override
   String get contactUs => 'ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ';
@@ -674,13 +854,35 @@ class AppLocalizationsKn extends AppLocalizations {
   String get contactUsTitle => 'ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ';
 
   @override
+  String get continueAsGuestCta => 'ಗೆಸ್ಟ್ ಆಗಿ ಮುಂದುವರಿಸಿ 🚀';
+
+  @override
+  String get continueBlockedUntilAdEnds =>
+      'ಜಾಹೀರಾತು ಮುಗಿಯುವವರೆಗೆ ಅಪ್ಲಿಕೇಶನ್ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ';
+
+  @override
+  String get continueToApp => 'ಅಪ್ಲಿಕೇಶನ್ ಮುಂದುವರಿಸಿ';
+
+  @override
   String get continueWithFreeAccount => 'ಉಚಿತ ಖಾತೆಯೊಂದಿಗೆ ಮುಂದುವರಿಯಿರಿ';
 
   @override
   String get continueWithGoogle => 'Googleನೊಂದಿಗೆ ಮುಂದುವರಿಸಿ';
 
   @override
+  String get continueWithStandardFilters => 'Continue with Standard Filters';
+
+  @override
+  String get conversationPinnedToTop => 'Conversation pinned to top 📌';
+
+  @override
+  String get conversationUnpinned => 'Conversation unpinned';
+
+  @override
   String get conversations => 'ಸಂಭಾಷಣೆಗಳು';
+
+  @override
+  String get copiedToClipboard => 'Copied to clipboard';
 
   @override
   String get copyLink => 'ಲಿಂಕ್ ನಕಲಿಸಿ';
@@ -691,11 +893,68 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
+  String get copyMessage => 'Copy Message';
+
+  @override
+  String get couldNotLaunchDialer => 'ಫೋನ್ ಡಯಲರ್ ತೆರೆಯಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ';
+
+  @override
+  String get couldNotLaunchUrl => 'Could not launch URL';
+
+  @override
+  String get couldNotLaunchWhatsApp => 'WhatsApp ತೆರೆಯಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ';
+
+  @override
   String get couldNotLoadProfile =>
       'ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.';
 
   @override
+  String get couldNotTriggerSharing => 'ಹಂಚಿಕೆ ಮಾಡಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ';
+
+  @override
+  String countProfileViews(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಣೆಗಳು',
+      one: '1 ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಣೆ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get countryLabel => 'Country';
+
+  @override
+  String get couponDiscountApplied => 'ಕೂಪನ್ ರಿಯಾಯಿತಿ ಅನ್ವಯಿಸಲಾಗಿದೆ';
+
+  @override
   String get createBiodata => 'ಬಯೋಡೇಟಾ ತಯಾರಿಸಿ';
+
+  @override
+  String get createBiodataCta => 'ಬಯೋಡೇಟಾ ರಚಿಸಿ ✨';
+
+  @override
+  String get createBiodataDesc =>
+      'ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಭರ್ತಿ ಮಾಡಿ ಮತ್ತು ತಕ್ಷಣ ಸಂಪರ್ಕಿಸಲು ಪ್ರಾರಂಭಿಸಿ.';
+
+  @override
+  String get createBiodataForSelfOrCandidateSubtitle =>
+      '2 ನಿಮಿಷಗಳಲ್ಲಿ ಆಕರ್ಷಕ ವಿವಾಹ ಬಯೋಡೇಟಾ ತಯಾರಿಸಿ, PDF ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ ಮತ್ತು ನೇರ ಸಂಬಂಧಗಳನ್ನು ಪಡೆಯಿರಿ.';
+
+  @override
+  String get createBiodataForSelfOrCandidateTitle =>
+      'ಸ್ವಂತ / ಅಭ್ಯರ್ಥಿಯ ಬಯೋಡೇಟಾ ರಚಿಸಿ';
+
+  @override
+  String get createFreeProfile100PercentFree =>
+      '✨ Create Free Profile (100% Free)';
+
+  @override
+  String get createMyBiodata => 'ನನ್ನ ಬಯೋಡೇಟಾವನ್ನು ರಚಿಸಿ';
+
+  @override
+  String get createNow => 'Create Now';
 
   @override
   String get createProfile => 'ಪ್ರೊಫೈಲ್ ರಚಿಸಿ';
@@ -712,21 +971,42 @@ class AppLocalizationsKn extends AppLocalizations {
   String get cropRotate => 'ಕ್ರಾಪ್ ಮತ್ತು ರೊಟೇಟ್';
 
   @override
+  String get culturallyVerified => 'CULTURALLY VERIFIED';
+
+  @override
   String curatedProfilesJustForYou(int count) {
     return '$count ನಿಮಗಾಗಿ ಆಯ್ದ ಪ್ರೊಫೈಲ್‌ಗಳು';
   }
 
   @override
+  String get currentCity => 'Current City';
+
+  @override
   String get currentLocation => 'ಪ್ರಸ್ತುತ ಸ್ಥಳ';
+
+  @override
+  String get currentNativeRegion => 'CURRENT & NATIVE REGION';
 
   @override
   String get currentPlan => 'ಪ್ರಸ್ತುತ ಯೋಜನೆ';
 
   @override
+  String get currentResidence => 'ಪ್ರಸ್ತುತ ನಿವಾಸ';
+
+  @override
   String get currentResidenceState => 'ಪ್ರಸ್ತುತ ವಾಸವಿರುವ ರಾಜ್ಯ';
 
   @override
+  String get currentState => 'Current State';
+
+  @override
   String get currentVillageHint => 'ಪ್ರಸ್ತುತ ಗ್ರಾಮ';
+
+  @override
+  String get customMessage => 'ಕಸ್ಟಮ್ ಸಂದೇಶ';
+
+  @override
+  String get customize => 'Customize';
 
   @override
   String get customizeBiodata => 'ಬಯೋಡೇಟಾವನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ';
@@ -735,13 +1015,40 @@ class AppLocalizationsKn extends AppLocalizations {
   String get daily => 'ದೈನಂದಿನ';
 
   @override
+  String get dailyActiveUsers => 'ದೈನಂದಿನ ಸಕ್ರಿಯ ಬಳಕೆದಾರರು';
+
+  @override
+  String get dailyLimitReached => 'ದೈನಂದಿನ ಮಿತಿ ಮೀರಿದೆ';
+
+  @override
+  String get dailyLimitViewsReached =>
+      'ನಿಮ್ಮ ಎಲ್ಲಾ ದೈನಂದಿನ ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಣೆಗಳನ್ನು ನೀವು ಬಳಸಿದ್ದೀರಿ.';
+
+  @override
   String get dailyMatch => 'ದೈನಂದಿನ ಪಂದ್ಯ';
+
+  @override
+  String get dailyMatchPicks => 'Daily Match Picks';
+
+  @override
+  String get dailyMessageLimitReached => 'Daily message limit reached.';
+
+  @override
+  String dailyRewardClaimedSuccess(String rewardName) {
+    return '🎉 ಅಭಿನಂದನೆಗಳು! $rewardName';
+  }
+
+  @override
+  String get dailyViewLimitReached => 'Daily view limit reached.';
 
   @override
   String get dark => 'ತುಂಬಾ ಕಪ್ಪು';
 
   @override
   String get dateOfBirth => 'ಹುಟ್ಟಿದ ದಿನಾಂಕ';
+
+  @override
+  String get dateOfBirthLabel => 'ಹುಟ್ಟಿದ ದಿನಾಂಕ';
 
   @override
   String get daughter => 'ಮಗಳು';
@@ -760,6 +1067,15 @@ class AppLocalizationsKn extends AppLocalizations {
   String daysRemaining(int days) {
     return '$days ದಿನಗಳು ಬಾಕಿ ಇವೆ';
   }
+
+  @override
+  String get decline => 'DECLINE';
+
+  @override
+  String get dedicatedManager => 'ಸಮರ್ಪಿತ ಸಂಬಂಧ ವ್ಯವಸ್ಥಾಪಕ';
+
+  @override
+  String get degreeField => 'Degree / Field';
 
   @override
   String get delete => 'ಅಳಿಸಿ';
@@ -805,20 +1121,68 @@ class AppLocalizationsKn extends AppLocalizations {
   String get demo => 'ಡೆಮೊ';
 
   @override
+  String get demographicsAndPremium => 'ಜನಸಂಖ್ಯಾಶಾಸ್ತ್ರ ಮತ್ತು ಪ್ರೀಮಿಯಂ';
+
+  @override
   String get describeYourselfInterestsHobbies => 'ನಿಮ್ಮ ಬಗ್ಗೆ ವಿವರಿಸಿ...';
 
   @override
   String get details => 'ವಿವರಗಳು';
 
   @override
+  String get diamond => 'Diamond';
+
+  @override
+  String get dietHabits => 'Diet / Food Habits';
+
+  @override
   String get differentSettingsTip =>
       'ವಿಭಿನ್ನ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ (ಔಪಚಾರಿಕ, ಕ್ಯಾಶುಯಲ್) ಫೋಟೋಗಳನ್ನು ಸೇರಿಸಿ';
+
+  @override
+  String get differentlyAbled => 'Diff. Abled';
+
+  @override
+  String get digital => 'ಡಿಜಿಟಲ್';
 
   @override
   String get diploma => 'ಡಿಪ್ಲೋಮಾ';
 
   @override
+  String get directAdminSupport => 'Direct Admin Support';
+
+  @override
+  String get directContactAccess => 'ನೇರ ಸಂಪರ್ಕ ಪ್ರವೇಶ';
+
+  @override
+  String get directContactUnlocked => 'Direct Contact Unlocked Profiles';
+
+  @override
+  String get directContactUnlockedSubtitle =>
+      'Direct Phone Number & WhatsApp verified access';
+
+  @override
+  String get directMessage => 'ನೇರ ಸಂದೇಶ';
+
+  @override
+  String get directMessages => 'Direct Messages';
+
+  @override
+  String get directMessagesSubtitle =>
+      'Stay responsive when your match sends you a message.';
+
+  @override
   String get directMessaging => 'ನೇರ ಸಂದೇಶ ಕಳುಹಿಸುವಿಕೆ';
+
+  @override
+  String get directMessagingPremium =>
+      'ನೇರ ಸಂದೇಶ ಕಳುಹಿಸುವುದು ಪ್ರೀಮಿಯಂ ವೈಶಿಷ್ಟ್ಯವಾಗಿದೆ.';
+
+  @override
+  String get directNoteSentToast => 'Direct Note sent with high priority! 💌';
+
+  @override
+  String get directWhatsAppLeads => '📱 Direct WhatsApp Leads';
 
   @override
   String get disabledHint => 'ವಿಕಲಚೇತನರಿಗೆ ಐಚ್ಛಿಕ ಮಾಹಿತಿ';
@@ -844,6 +1208,9 @@ class AppLocalizationsKn extends AppLocalizations {
   @override
   String get discoverProfilesFromYourCommunityNsmartM =>
       'ನಿಮ್ಮ ಸಮುದಾಯದ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಅನ್ವೇಷಿಸಿ.';
+
+  @override
+  String get displayLayoutLabel => 'ತೋರಿಸುವ ವಿಧಾನ';
 
   @override
   String get district => 'ಜಿಲ್ಲೆ';
@@ -878,6 +1245,13 @@ class AppLocalizationsKn extends AppLocalizations {
   String get downloadBtn => 'ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ';
 
   @override
+  String get downloadWatermarkFreeBiodataDesc =>
+      'Download watermark-free high definition 2-Page Biodata in all formats.';
+
+  @override
+  String get drinkingHabits => 'Drinking Habits';
+
+  @override
   String get dusky => 'ಕಪ್ಪು ಬಣ್ಣ';
 
   @override
@@ -885,6 +1259,13 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get edit => 'ಸಂಪಾದಿಸಿ';
+
+  @override
+  String get editBiodataInfoPhotos => 'Edit Biodata Info & Photos';
+
+  @override
+  String get editBiodataInfoPhotosDesc =>
+      'Edit Education, Gotra, Family, Native Tanda & Photo in your master profile.';
 
   @override
   String get editProfile => 'ಪ್ರೊಫೈಲ್ ಸಂಪಾದಿಸಿ';
@@ -897,6 +1278,13 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get educationDetails => 'ಶಿಕ್ಷಣ ವಿವರಗಳು';
+
+  @override
+  String get educationFieldStream => 'Education Field / Stream';
+
+  @override
+  String get educationFieldSubtitle =>
+      'Filter by specialized degree stream & career path';
 
   @override
   String get educationLabel => 'ಶಿಕ್ಷಣ';
@@ -929,6 +1317,12 @@ class AppLocalizationsKn extends AppLocalizations {
   String get elderSister => 'ಅಕ್ಕ';
 
   @override
+  String get elitePlanDesc => 'ವಿಐಪಿ ಪ್ರವೇಶದೊಂದಿಗೆ ಆಯ್ದ ಪಂದ್ಯಗಳು';
+
+  @override
+  String get elitePlanName => 'ಎಲೈಟ್';
+
+  @override
   String get email => 'ಇಮೇಲ್';
 
   @override
@@ -936,6 +1330,9 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get emailLabel => 'Email';
+
+  @override
+  String get emailNotifications => 'Email Notifications';
 
   @override
   String get emailSupport => 'ಇಮೇಲ್ ಬೆಂಬಲ';
@@ -952,7 +1349,13 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಇಮೇಲ್ ಯಶಸ್ವಿಯಾಗಿ ಪರಿಶೀಲಿಸಲಾಗಿದೆ! +10 ಅಂಕಗಳು';
 
   @override
+  String get employmentSector => 'Employment Sector';
+
+  @override
   String get emptyStr => '₹';
+
+  @override
+  String get enableNotifications => 'Enable Notifications';
 
   @override
   String get english => 'English';
@@ -965,6 +1368,10 @@ class AppLocalizationsKn extends AppLocalizations {
   String get enterCityVillage => 'ನಗರ/ಹಳ್ಳಿ ನಮೂದಿಸಿ';
 
   @override
+  String get enterDistrictExample =>
+      'Enter District (e.g. Nanded, Yavatmal, Nizamabad)';
+
+  @override
   String get enterEducationDetails => 'ನಿಮ್ಮ ಶಿಕ್ಷಣ ವಿವರಗಳನ್ನು ನಮೂದಿಸಿ';
 
   @override
@@ -975,6 +1382,12 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get enterProfessionDetails => 'ನಿಮ್ಮ ವೃತ್ತಿ ವಿವರಗಳನ್ನು ನಮೂದಿಸಿ';
+
+  @override
+  String get enterVillageHint => 'ಗ್ರಾಮ ಅಥವಾ ತಾಂಡಾ ಹೆಸರನ್ನು ನಮೂದಿಸಿ...';
+
+  @override
+  String get enterVillageManually => 'ಗ್ರಾಮ/ಇತರ ಹೆಸರನ್ನು ನಮೂದಿಸಿ';
 
   @override
   String get enterYourBasicInformationAsItAppearsInOf =>
@@ -996,6 +1409,10 @@ class AppLocalizationsKn extends AppLocalizations {
   String get error => 'ದೋಷ';
 
   @override
+  String get errorAdminActionFailed =>
+      'ವಿನಂತಿಸಿದ ಕ್ರಿಯೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.';
+
+  @override
   String errorCheckingShareLimits(String error) {
     return 'ಹಂಚಿಕೆ ಮಿತಿಗಳನ್ನು ಪರಿಶೀಲಿಸುವಲ್ಲಿ ದೋಷ: $error';
   }
@@ -1011,9 +1428,40 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
+  String get errorLaunchingLink => 'Error launching link';
+
+  @override
+  String get errorLoadingAdminCoupons =>
+      'ಕೂಪನ್ ಕೊಡುಗೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.';
+
+  @override
+  String get errorLoadingAdminCreators =>
+      'ಕ್ರಿಯೇಟರ್ ಪಟ್ಟಿಯನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ನೆಟ್‌ವರ್ಕ್ ಪರಿಶೀಲಿಸಿ.';
+
+  @override
   String errorLoadingAdminData(String error) {
     return 'ಅಡ್ಮಿನ್ ಡೇಟಾ ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ದೋಷ: $error';
   }
+
+  @override
+  String get errorLoadingAdminPayments =>
+      'ಪಾವತಿ ಇತಿಹಾಸವನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.';
+
+  @override
+  String get errorLoadingAdminReferences =>
+      'ಬಾಕಿ ಉಳಿದಿರುವ ಉಲ್ಲೇಖಗಳನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ರಿಫ್ರೆಶ್ ಮಾಡಿ.';
+
+  @override
+  String get errorLoadingAdminStats =>
+      'ಡ್ಯಾಶ್‌ಬೋರ್ಡ್ ಅಂಕಿಅಂಶಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ರಿಫ್ರೆಶ್ ಮಾಡಲು ಪ್ರಯತ್ನಿಸಿ.';
+
+  @override
+  String get errorLoadingAdminUsers =>
+      'ಬಳಕೆದಾರರ ಪಟ್ಟಿಯನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ.';
+
+  @override
+  String get errorLoadingAdminVerifications =>
+      'ಪರಿಶೀಲನೆ ವಿನಂತಿಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.';
 
   @override
   String errorLoadingRequests(String error) {
@@ -1031,8 +1479,38 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
+  String errorWithLabel(String label) {
+    return 'ದೋಷ: $label';
+  }
+
+  @override
+  String get estimatedRefund => 'ಅಂದಾಜು ಮರುಪಾವತಿ';
+
+  @override
+  String get eternalElitePlanDesc =>
+      'ನಿಮ್ಮ ವೃತ್ತಿಜೀವನದ ಮೇಲೆ ಗಮನ ಹರಿಸಿ, ನಾವು ನಿಮ್ಮ ಜೀವನ ಸಂಗಾತಿಯನ್ನು ಹುಡುಕುತ್ತೇವೆ';
+
+  @override
+  String get eternalElitePlanName => 'ಎಟರ್ನಲ್ ಎಲೈಟ್';
+
+  @override
+  String get eternalPlanDesc => 'ಅವಧಿ ಮುಗಿಯುವ ಬಗ್ಗೆ ಇನ್ನು ಮುಂದೆ ಚಿಂತಿಸಬೇಡಿ';
+
+  @override
+  String get eternalPlanName => 'ಎಟರ್ನಲ್ - ಮದುವೆಯಾಗುವವರೆಗೆ';
+
+  @override
+  String get eventDetails => 'ಕಾರ್ಯಕ್ರಮದ ವಿವರಗಳು';
+
+  @override
   String get everyProfileIsVerifiedWithIdSelfieRefere =>
       'ಪ್ರತಿ ಪ್ರೊಫೈಲ್ ಗುರುತಿನೊಂದಿಗೆ ಪರಿಶೀಲಿಸಲಾಗಿದೆ.';
+
+  @override
+  String get exactBirthTimeAndKundali => 'Exact Birth Time & Kundali';
+
+  @override
+  String get excellentMatch => 'EXCELLENT MATCH';
 
   @override
   String get exit => 'ನಿರ್ಗಮಿಸಿ';
@@ -1041,11 +1519,44 @@ class AppLocalizationsKn extends AppLocalizations {
   String get exitApp => 'ಅಪ್ಲಿಕೇಶನ್ ನಿರ್ಗಮಿಸಿ';
 
   @override
+  String get exitGuestMode => 'ಗೆಸ್ಟ್ ಮೋಡ್‌ನಿಂದ ನಿರ್ಗಮಿಸಿ';
+
+  @override
+  String get exogamous => 'EXOGAMOUS';
+
+  @override
+  String get exogamyCompliant => 'EXOGAMY COMPLIANT';
+
+  @override
+  String get exogamyRuleDescription =>
+      'In traditional Banjara (Gor) culture, marriages follow strict Clan Exogamy (गोत्र बहिर्विवाह):';
+
+  @override
+  String get exploreAsGuest => 'ಅತಿಥಿಯಾಗಿ ಅನ್ವೇಷಿಸಿ';
+
+  @override
+  String get exploreMatchmakerPlans => 'Explore Matchmaker Plans';
+
+  @override
+  String get exploreMatchmakerPlansButton => 'Explore Matchmaker Plans ➔';
+
+  @override
+  String get explorePremiumPlans => 'Explore Premium Plans';
+
+  @override
   String get exportBiodataPdf => 'ಬಯೋಡೇಟಾ PDF ರಫ್ತು ಮಾಡಿ';
+
+  @override
+  String get expressInterest => 'ಆಸಕ್ತಿಯನ್ನು ವ್ಯಕ್ತಪಡಿಸಬೇಕೆ?';
 
   @override
   String get expressInterestDesc =>
       'ನಿಮ್ಮ ಬಯೋಡೇಟಾವನ್ನು ನೇರವಾಗಿ ಹಂಚಿಕೊಳ್ಳುವ ಮೂಲಕ ನಿಮ್ಮ ಆಸಕ್ತಿಯನ್ನು ವ್ಯಕ್ತಪಡಿಸಿ';
+
+  @override
+  String extraViewsUnlocked(int count) {
+    return '$count ಹೆಚ್ಚುವರಿ ನೋಟಗಳನ್ನು ಅನ್ಲಾಕ್ ಮಾಡಲಾಗಿದೆ!';
+  }
 
   @override
   String failedLoadProfile(String error) {
@@ -1140,6 +1651,16 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
+  String failedToSendMessage(String error) {
+    return 'ಸಂದೇಶ ಕಳುಹಿಸಲು ವಿಫಲವಾಗಿದೆ: $error';
+  }
+
+  @override
+  String failedToSendNote(Object error) {
+    return 'Failed to send note: $error';
+  }
+
+  @override
   String get failedToSharePdf => 'PDF ಹಂಚಿಕೊಳ್ಳಲು ವಿಫಲವಾಗಿದೆ';
 
   @override
@@ -1181,6 +1702,11 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
+  String failedWithError(Object error) {
+    return 'Failed: $error';
+  }
+
+  @override
   String get fair => 'ಬಿಳಿ';
 
   @override
@@ -1199,10 +1725,34 @@ class AppLocalizationsKn extends AppLocalizations {
   String get familyOnly => 'ಕುಟುಂಬದವರಿಗೆ ಮಾತ್ರ';
 
   @override
+  String get familyReputationVetted => 'Family Background & Reputation Vetted';
+
+  @override
+  String get familyReputationVettedSubtitle =>
+      'Clean background check conducted by field relationship managers';
+
+  @override
   String get familyStatus => 'ಕುಟುಂಬ ಸ್ಥಿತಿ';
 
   @override
+  String get familyStatusSubtitle =>
+      'Select socioeconomic family status requirement';
+
+  @override
+  String get familyStructure => 'Family Structure';
+
+  @override
+  String get familyStructureSubtitle =>
+      'Select nuclear or joint family preferences';
+
+  @override
   String get familyType => 'ಕುಟುಂಬ ರೀತಿ';
+
+  @override
+  String get familyValues => 'Family Values';
+
+  @override
+  String get familyValuesSubtitle => 'Filter by cultural and social outlook';
 
   @override
   String get faqA1 =>
@@ -1255,6 +1805,12 @@ class AppLocalizationsKn extends AppLocalizations {
   String get fatherOccupation => 'ತಂದೆ ವೃತ್ತಿ';
 
   @override
+  String get featuredBadge => 'ಎಲೈಟ್ ವೆರಿಫೈಡ್ ಬ್ಯಾಡ್ಜ್';
+
+  @override
+  String get featuresIncluded => 'ಒಳಗೊಂಡಿರುವ ವೈಶಿಷ್ಟ್ಯಗಳು:';
+
+  @override
   String get feet => 'ಅಡಿ';
 
   @override
@@ -1269,7 +1825,30 @@ class AppLocalizationsKn extends AppLocalizations {
   String get fifteenToTwentyLakh => '15 - 20 ಲಕ್ಷ';
 
   @override
+  String get fiftyPercentOffVipUpgrade => '🔥 50% OFF VIP Upgrade';
+
+  @override
+  String get filterAstrologicalCompatibility =>
+      'Filter candidate astrological horoscope compatibility';
+
+  @override
+  String get filterCandidateHomeState =>
+      'Filter candidate home state or current residing district';
+
+  @override
+  String get filterProfiles => 'Filter profiles';
+
+  @override
   String get filtered => '(ಫಿಲ್ಟರ್ ಮಾಡಲಾಗಿದೆ)';
+
+  @override
+  String get filters => 'Filters';
+
+  @override
+  String get filtersResetToDefault => 'Filters reset to default';
+
+  @override
+  String get financialPerformance => 'ಹಣಕಾಸಿನ ಸಾಧನೆ';
 
   @override
   String get findYourPerfectMatch => 'ನಿಮ್ಮ ಪರಿಪೂರ್ಣ ಸಂಗಾತಿ ಹುಡುಕಿ';
@@ -1278,11 +1857,21 @@ class AppLocalizationsKn extends AppLocalizations {
   String get fiveToSevenHalfLakh => '5 - 7.5 ಲಕ್ಷ';
 
   @override
+  String get focusOnCareer =>
+      'ನಿಮ್ಮ ವೃತ್ತಿಜೀವನದ ಮೇಲೆ ಗಮನ ಹರಿಸಿ, ನಾವು ನಿಮ್ಮ ಜೀವನ ಸಂಗಾತಿಯನ್ನು ಹುಡುಕುತ್ತೇವೆ';
+
+  @override
   String get followAndGetFivePercent => 'ಅನುಸರಿಸಿ ಮತ್ತು +5% ಪಡೆಯಿರಿ';
+
+  @override
+  String get followDailyMatchUpdates => 'Follow Daily Match Updates';
 
   @override
   String get followUsOnInstagramBonus =>
       '5% ಬಯೋಡೇಟಾ ಪೂರ್ಣಗೊಳಿಸುವಿಕೆ ಬೋನಸ್ ಪಡೆಯಲು ಮತ್ತು ಇತ್ತೀಚಿನ ಪಂದ್ಯಗಳೊಂದಿಗೆ ನವೀಕೃತವಾಗಿರಲು ಇನ್‌ಸ್ಟಾಗ್ರಾಮ್‌ನಲ್ಲಿ ನಮ್ಮನ್ನು ಅನುಸರಿಸಿ.';
+
+  @override
+  String get forLifetime => 'ಜೀವಿತಾವಧಿಗೆ';
 
   @override
   String forMonths(int count) {
@@ -1290,11 +1879,38 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
+  String get forMyDaughter => '👧 For My Daughter';
+
+  @override
+  String get forMyRelative => '👨‍👩‍👧 For My Relative';
+
+  @override
+  String get forMySibling => '👫 For My Sibling';
+
+  @override
+  String get forMySon => '👦 For My Son';
+
+  @override
+  String get forMyself => '👤 For Myself';
+
+  @override
+  String get forOther => '✨ For Someone Else';
+
+  @override
+  String get forWhomSearching => 'ಯಾರಿಗಾಗಿ ಸಂಬಂಧ ಹುಡುಕುತ್ತಿದ್ದೀರಿ?';
+
+  @override
+  String get foundYourPartner => 'ಜೀವನ ಸಂಗಾತಿ ಸಿಕ್ಕಿದ್ದಾರೆಯೇ?';
+
+  @override
   String get free => 'ಉಚಿತ';
 
   @override
   String get free1PhotonpremiumUpTo6Photos =>
       'ಉಚಿತ: 1 ಫೋಟೋ\\nಪ್ರೀಮಿಯಂ: 6 ರವರೆಗೆ';
+
+  @override
+  String get freePlan => 'Free Plan';
 
   @override
   String get freePlanDesc => 'ಮೂಲ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಪ್ರಯತ್ನಿಸಿ';
@@ -1311,7 +1927,19 @@ class AppLocalizationsKn extends AppLocalizations {
   String get friend => 'ಸ್ನೇಹಿತ';
 
   @override
+  String fromContact(String name) {
+    return 'ಇವರಿಂದ: $name';
+  }
+
+  @override
   String get frontSide => 'ಮುಂಭಾಗದ ಭಾಗ';
+
+  @override
+  String get fullAddress => 'Full Address';
+
+  @override
+  String get fullKundaliAvailableOnMutual =>
+      'Full Kundali chart available on mutual match interest.';
 
   @override
   String get fullName => 'ಪೂರ್ಣ ಹೆಸರು';
@@ -1321,6 +1949,9 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get gender => 'ಲಿಂಗ';
+
+  @override
+  String get genderSelectHeading => 'ನಿಮ್ಮ ಲಿಂಗ';
 
   @override
   String get generateBio => 'ಬಯೋ ರಚಿಸಿ';
@@ -1348,7 +1979,13 @@ class AppLocalizationsKn extends AppLocalizations {
   String get goBack => 'ಹಿಂದೆ ಹೋಗಿ';
 
   @override
+  String get goProAdFree => 'ಜಾಹೀರಾತು ರಹಿತ ಅನುಭವಕ್ಕಾಗಿ ಪ್ರೊ ಆಗಿ';
+
+  @override
   String get gold => 'ಚಿನ್ನ';
+
+  @override
+  String get goldMember => '⭐ Gold Member';
 
   @override
   String get goldPlanDesc => 'ಅತ್ಯಂತ ಜನಪ್ರಿಯ - ಉತ್ತಮ ಮೌಲ್ಯ';
@@ -1358,6 +1995,12 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get goldVerified => 'Gold Verified';
+
+  @override
+  String get goodMatch => 'GOOD MATCH';
+
+  @override
+  String get gorBanjara => 'Gor / Banjara';
 
   @override
   String get gotIt => 'ಅರ್ಥವಾಯಿತು';
@@ -1388,6 +2031,13 @@ class AppLocalizationsKn extends AppLocalizations {
   String get govtIdVerification => 'ಸರ್ಕಾರಿ ಗುರುತಿನ ಚೀಟಿ';
 
   @override
+  String get govtIdVerified => 'Govt ID / Aadhaar Verified';
+
+  @override
+  String get govtIdVerifiedSubtitle =>
+      'Only show candidates with 100% verified Govt ID badge';
+
+  @override
   String get graduate => 'ಪದವೀಧರ';
 
   @override
@@ -1397,14 +2047,82 @@ class AppLocalizationsKn extends AppLocalizations {
   String get grid => 'ಗ್ರಿಡ್';
 
   @override
+  String get groom => 'Groom';
+
+  @override
+  String get groomBoy => '👦 ವರ (Groom)';
+
+  @override
+  String get groomOption => '👦 Groom (Boy)';
+
+  @override
   String get groupPhotosNotVisible => 'ನೀವು ಸ್ಪಷ್ಟವಾಗಿ ಕಾಣಿಸದ ಗುಂಪು ಫೋಟೋಗಳು';
+
+  @override
+  String get growYourWeddingBusiness => 'Grow Your Wedding Business';
 
   @override
   String get growth => 'Growth';
 
   @override
+  String get guestModeDesc =>
+      'ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ರಚಿಸುವ ಮೊದಲು ಅಪ್ಲಿಕೇಶನ್‌ನ ಮಾರ್ಗದರ್ಶಿ ಪ್ರವಾಸವನ್ನು ತೆಗೆದುಕೊಳ್ಳಿ.';
+
+  @override
+  String get guestModeInstantBrowseSubtitle =>
+      'ಖಾತೆ ಇಲ್ಲದೆ ನೇರವಾಗಿ BanjaraBio ವೈಶಿಷ್ಟ್ಯಗಳು ಮತ್ತು ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಅನ್ವೇಷಿಸಿ.';
+
+  @override
+  String get guestModeInstantBrowseTitle => 'ಗೆಸ್ಟ್ ಮೋಡ್ (ತಕ್ಷಣ ವೀಕ್ಷಿಸಿ)';
+
+  @override
+  String get guestRestrictedContent =>
+      'ಎಲ್ಲಾ ವಿವರಗಳನ್ನು ವೀಕ್ಷಿಸಲು, ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಉಳಿಸಲು ಮತ್ತು ಹೊಂದಾಣಿಕೆಗಳೊಂದಿಗೆ ಸಂವಹನ ನಡೆಸಲು ದಯವಿಟ್ಟು ನಿಮ್ಮ ಬಯೋಡೇಟಾ ರಚಿಸಿ ಅಥವಾ ನಿಮ್ಮ ಹುಡುಕಾಟ ಆಯ್ಕೆಗಳನ್ನು ಬದಲಾಯಿಸಿ.';
+
+  @override
+  String get guestRestrictionMessage =>
+      'To interact with profiles, express interest, or send messages, you need to create your own biodata first.';
+
+  @override
+  String get gunaMilanScore => 'Guna Milan (36 Points)';
+
+  @override
+  String gunasMatchedCount(int count, int percentage) {
+    return '$count / 36 Gunas Matched ($percentage%)';
+  }
+
+  @override
+  String get gunasMatchedStatus => '28 / 36 Gunas Matched';
+
+  @override
+  String get habitatNativeOrigin => 'Habitat / Native Origin';
+
+  @override
+  String get habitatPillarSubtitle =>
+      'Shared cultural values & open relocation preferences';
+
+  @override
+  String get habitatSubtitle =>
+      'Filter candidate living environment & origin type';
+
+  @override
+  String get habitatTandaPillar => 'Habitat, Tanda & Lifestyle';
+
+  @override
+  String handpickedMatches(int count) {
+    return '$count ಆಯ್ದ ಪಂದ್ಯಗಳು/ವಾರ';
+  }
+
+  @override
   String get haveQuestionsOrNeedAssistanceOurTeamIsHe =>
       'ಪ್ರಶ್ನೆಗಳಿವೆಯೇ ಅಥವಾ ಸಹಾಯ ಬೇಕೇ? ನಮ್ಮ ತಂಡ ಇಲ್ಲಿದೆ.';
+
+  @override
+  String get headerBlessingSubtitle =>
+      'Select which divine blessing is engraved at the top of your PDF';
+
+  @override
+  String get headerBlessingTitle => '🪔 Header Blessing / Deity Mantra';
 
   @override
   String get heavilyFilteredEdited =>
@@ -1414,8 +2132,17 @@ class AppLocalizationsKn extends AppLocalizations {
   String get height => 'ಎತ್ತರ';
 
   @override
+  String get heightLabel => 'ಎತ್ತರ';
+
+  @override
   String get helpOurCommunityGrowAndUnlockPremiumRewa =>
       'ನಮ್ಮ ಸಮುದಾಯ ಬೆಳೆಯಲು ಮತ್ತು ನಿಮಗಾಗಿ ಪ್ರೀಮಿಯಂ ಬಹುಮಾನಗಳನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಸಹಾಯ ಮಾಡಿ.';
+
+  @override
+  String get hideAlgorithmInsights => 'Hide Algorithm Insights';
+
+  @override
+  String get highMatch => 'HIGH MATCH';
 
   @override
   String get highSchool => 'ಪ್ರೌಢಶಾಲೆ';
@@ -1430,9 +2157,27 @@ class AppLocalizationsKn extends AppLocalizations {
   String get homemaker => 'ಗೃಹಿಣಿ';
 
   @override
+  String get horoscopeChartVerified => 'Horoscope chart verified & matched.';
+
+  @override
+  String get horoscopeKundali => 'Horoscope & Kundali (कुंडली)';
+
+  @override
+  String get horoscopeKundaliAttached => 'Horoscope / Kundali Attached';
+
+  @override
   String hoursAgo(int count) {
     return '$countಗಂಟೆಗಳ ಹಿಂದೆ';
   }
+
+  @override
+  String get houseOwnership => 'House Ownership';
+
+  @override
+  String get howDidYouMeet => 'ನೀವು ಹೇಗೆ ಭೇಟಿಯಾದಿರಿ? ಅವರಲ್ಲಿ ನಿಮಗೆ ಏನು ಇಷ್ಟ?';
+
+  @override
+  String get howIsScoreCalculated => 'How is this score calculated?';
 
   @override
   String get howItWorks => 'ಇದು ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ';
@@ -1453,6 +2198,9 @@ class AppLocalizationsKn extends AppLocalizations {
   String get idType => 'ID Type';
 
   @override
+  String get identityDetails => 'Identity Details';
+
+  @override
   String get inappropriateBackgrounds => 'ಅಸಮರ್ಪಕ ಹಿನ್ನೆಲೆ ಹೊಂದಿರುವ ಫೋಟೋಗಳು';
 
   @override
@@ -1466,6 +2214,22 @@ class AppLocalizationsKn extends AppLocalizations {
   String get inches => 'ಇಂಚು';
 
   @override
+  String get incognitoMode => 'ಖಾಸಗಿ ಪ್ರೊಫೈಲ್ ಬ್ರೌಸಿಂಗ್';
+
+  @override
+  String get incomeHiddenFromPdf => 'Hidden from shared PDF for privacy';
+
+  @override
+  String get incomeSalaryVerified => 'Income / Salary Verified';
+
+  @override
+  String get incomeSalaryVerifiedSubtitle =>
+      'Candidates with verified salary slip or ITR documentation';
+
+  @override
+  String get incomeVisibleOnPdf => 'Package & income details visible on PDF';
+
+  @override
   String get increaseBiodataScore => 'ಬಯೋಡೇಟಾ ಸ್ಕೋರ್ ಹೆಚ್ಚಿಸಿ!';
 
   @override
@@ -1473,15 +2237,45 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಗುರುತು ದೃಢಪಡಿಸಲು ನಿಮ್ಮ ಟ್ರಸ್ಟ್ ಸ್ಕೋರ್ ಹೆಚ್ಚಿಸಿ.';
 
   @override
-  String get interestSent => 'ಆಸಕ್ತಿ ಕಳುಹಿಸಲಾಗಿದೆ';
+  String get india => 'India';
 
   @override
-  String get interestConfirmationTitle => 'ಆಸಕ್ತಿಯನ್ನು ವ್ಯಕ್ತಪಡಿಸಬೇಕೆ?';
+  String get instagramLink => 'ಇನ್ಸ್ಟಾಗ್ರಾಮ್ ರೀಲ್/ಸ್ಟೋರಿ ಲಿಂಕ್';
+
+  @override
+  String get instagramStories => 'Instagram Stories';
+
+  @override
+  String get instantAlert => 'Instant Alert';
+
+  @override
+  String get instantMatchAlerts => 'Instant Match Alerts';
+
+  @override
+  String get instantMatchAlertsSubtitle =>
+      'Get notified immediately when mutual interest is accepted.';
+
+  @override
+  String get interest => 'ಆಸಕ್ತಿ';
+
+  @override
+  String interestConfirmationDesc(String name) {
+    return 'ನಿಮ್ಮ ಆಸಕ್ತಿಯನ್ನು ತೋರಿಸಲು ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಅನ್ನು $name ಅವರೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಲು ನೀವು ಬಯಸುವಿರಾ?';
+  }
 
   @override
   String interestConfirmationMessage(String name) {
     return 'ಇದು ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಅನ್ನು $name ಅವರೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳುತ್ತದೆ ಮತ್ತು ಅವರಿಗೆ ನಿಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಲು ಅನುಮತಿಸುತ್ತದೆ. ನಿಮಗೆ ಖಚಿತವೇ?';
   }
+
+  @override
+  String get interestConfirmationTitle => 'ಆಸಕ್ತಿಯನ್ನು ವ್ಯಕ್ತಪಡಿಸಬೇಕೆ?';
+
+  @override
+  String get interestDeclinedToast => 'Interest declined';
+
+  @override
+  String get interestSent => 'ಆಸಕ್ತಿ ಕಳುಹಿಸಲಾಗಿದೆ';
 
   @override
   String interestShared(String name) {
@@ -1503,6 +2297,9 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಸ್ನೇಹಿತರನ್ನು ಆಹ್ವಾನಿಸಿ ಮತ್ತು ಪ್ರೀಮಿಯಂ ಬಹುಮಾನಗಳನ್ನು ಪಡೆಯಿರಿ!';
 
   @override
+  String get inviteRelativesToVouch => 'ಖಚಿತಪಡಿಸಲು ಸಂಬಂಧಿಕರನ್ನು ಆಹ್ವಾನಿಸಿ';
+
+  @override
   String get inviteStep1 => 'Step 1';
 
   @override
@@ -1515,7 +2312,16 @@ class AppLocalizationsKn extends AppLocalizations {
   String get isDisabledPerson => 'ನೀವು ವಿಕಲಚೇತನರೇ?';
 
   @override
+  String get itSAMatch => 'ಹೊಂದಾಣಿಕೆಯಾಗಿದೆ!';
+
+  @override
+  String get job => 'ಕೆಲಸ / ಉದ್ಯೋಗ';
+
+  @override
   String get jobDetails => 'ಕೆಲಸದ ವಿವರಗಳು';
+
+  @override
+  String get joinBvsNow => 'BVS ಗೆ ಸೇರಿ (ಇಲ್ಲಿ ನೋಂದಾಯಿಸಿ)';
 
   @override
   String get joinMeOnBanjarabio => 'BanjaraBio ನಲ್ಲಿ ನನ್ನೊಂದಿಗೆ ಸೇರಿ';
@@ -1539,6 +2345,23 @@ class AppLocalizationsKn extends AppLocalizations {
   String get keywordSearch => 'ಕೀವರ್ಡ್ ಹುಡುಕಾಟ';
 
   @override
+  String get kundaliGunasPillar => 'Kundali & Gunas (अष्टकूट जुळणी)';
+
+  @override
+  String get kundaliHoroscopeAttached => 'Kundali / Horoscope Attached';
+
+  @override
+  String get kundaliHoroscopeAttachedSubtitle =>
+      'Only show profiles with uploaded Janam Kundali chart';
+
+  @override
+  String get kundaliOnRequest => 'Kundali Available on Request';
+
+  @override
+  String get kundaliPillarSubtitle =>
+      'No severe Manglik Dosha; high compatibility score';
+
+  @override
   String get language => 'ಭಾಷೆ';
 
   @override
@@ -1547,10 +2370,22 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
+  String get languageSwitcherLabel => 'ಭಾಷೆ';
+
+  @override
   String get lastUpdatedJanuary2026 => 'ಕೊನೆಯ ನವೀಕರಣ: ಜನವರಿ 2026';
 
   @override
   String get legalAndInformation => 'ಕಾನೂನು ಮತ್ತು ಮಾಹಿತಿ';
+
+  @override
+  String get lifetime => 'ಜೀವಿತಾವಧಿ';
+
+  @override
+  String get limitReached => 'ಮಿತಿ ಮೀರಿದೆ';
+
+  @override
+  String get linkRequiredForRefund => 'ಮರುಪಾವತಿಗಾಗಿ ಲಿಂಕ್ ಅಗತ್ಯವಿದೆ';
 
   @override
   String get linkShare => 'ಲಿಂಕ್ ಹಂಚಿಕೊಳ್ಳಿ';
@@ -1567,6 +2402,9 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get liveSelfieVerification => 'ಲೈವ್ ಸೆಲ್ಫಿ ಪರಿಶೀಲನೆ';
+
+  @override
+  String get liveSync => 'LIVE SYNC';
 
   @override
   String get livenessCheck => 'ಲೈವ್‌ನೆಸ್ ಪರಿಶೀಲನೆ';
@@ -1587,6 +2425,9 @@ class AppLocalizationsKn extends AppLocalizations {
   String get location => 'ಸ್ಥಳ';
 
   @override
+  String get locationAndState => 'Location & Native State';
+
+  @override
   String get locationDetails => 'ಸ್ಥಳದ ವಿವರಗಳು';
 
   @override
@@ -1596,7 +2437,13 @@ class AppLocalizationsKn extends AppLocalizations {
   String get locationPreview => 'ಸ್ಥಳದ ಪೂರ್ವವೀಕ್ಷಣೆ';
 
   @override
+  String get logCallOutcome => 'ಕರೆ ಫಲಿತಾಂಶವನ್ನು ದಾಖಲಿಸಿ';
+
+  @override
   String get login => 'ಲಾಗಿನ್';
+
+  @override
+  String get loginAndCreateBiodataCta => 'ಲಾಗಿನ್ ಆಗಿ ಬಯೋಡೇಟಾ ರಚಿಸಿ ✨';
 
   @override
   String loginFailed(String error) {
@@ -1610,6 +2457,9 @@ class AppLocalizationsKn extends AppLocalizations {
   String get logout => 'ಲಾಗ್‌ಔಟ್';
 
   @override
+  String get lookingForGender => 'ವರ ಬೇಕಾ ಅಥವಾ ವಧು?';
+
+  @override
   String get loseMatchesAndSavedProfiles =>
       'ನಿಮ್ಮ ಎಲ್ಲಾ ಪಂದ್ಯಗಳು ಮತ್ತು ಉಳಿಸಿದ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ನೀವು ಕಳೆದುಕೊಳ್ಳುತ್ತೀರಿ.';
 
@@ -1620,10 +2470,28 @@ class AppLocalizationsKn extends AppLocalizations {
   String get male => 'ಪುರುಷ';
 
   @override
+  String mamakulAndTandaSubtitle(String mamakul, String tanda) {
+    return 'Mamakul: $mamakul • Tanda: $tanda';
+  }
+
+  @override
+  String get mamakulLabel => 'Mamakul (मोसळ)';
+
+  @override
+  String get mamakulRule =>
+      'Maternal Gotras are verified to ensure complete cultural harmony and lineage respect.';
+
+  @override
+  String get mamakulTitle => '2. Mamakul / Mosam (मोसळ):';
+
+  @override
   String get managePhotos => 'ಫೋಟೋಗಳನ್ನು ನಿರ್ವಹಿಸಿ';
 
   @override
   String get managenphotos => 'ಫೋಟೋ\\nನಿರ್ವಹಣೆ';
+
+  @override
+  String get manglikDosha => 'Manglik / Kuja Dosha';
 
   @override
   String get manualSelection => 'ಹಸ್ತಚಾಲಿತ ಆಯ್ಕೆ';
@@ -1641,6 +2509,10 @@ class AppLocalizationsKn extends AppLocalizations {
   String get marriageReadiness => 'ಮದುವೆಗೆ ಸಿದ್ಧತೆ';
 
   @override
+  String get marriageRewardSubtitle =>
+      'ವಿವಾಹ ಪುರಾವೆ ಹಂಚಿಕೊಳ್ಳಿ ಮತ್ತು 35% ವರೆಗೆ ಮರುಪಾವತಿ ಪಡೆಯಿರಿ!';
+
+  @override
   String get married => 'ವಿವಾಹಿತ';
 
   @override
@@ -1651,6 +2523,9 @@ class AppLocalizationsKn extends AppLocalizations {
   String get mastersDegree => 'ಸ್ನಾತಕೋತ್ತರ ಪದವಿ';
 
   @override
+  String get matchCompatibility => 'Match Compatibility';
+
+  @override
   String matchNOfTotal(String current, String total) {
     return 'ಪಂದ್ಯ $current / $total';
   }
@@ -1659,13 +2534,30 @@ class AppLocalizationsKn extends AppLocalizations {
   String get matched => 'ಹೊಂದಿಕೆಯಾಗಿದೆ';
 
   @override
-  String get sent => 'ಕಳುಹಿಸಲಾಗಿದೆ';
+  String get matchedBadge => 'ಹೊಂದಿಕೆಯಾಗಿದೆ';
 
   @override
-  String get received => 'ಸ್ವೀಕರಿಸಲಾಗಿದೆ';
+  String get matchesCategoryLabel => 'ಪಂದ್ಯದ ಪ್ರಕಾರ';
 
   @override
   String get matchmakerConsultation => 'ಮ್ಯಾಚ್‌ಮೇಕರ್ ಸಮಾಲೋಚನೆ';
+
+  @override
+  String get matchmakerFiltersSubtitle =>
+      'Direct Contact, RM Handpicked, 36 Guna Score & Land Holdings';
+
+  @override
+  String get matchmakerFiltersTitle => 'Matchmaker Filters';
+
+  @override
+  String get matchmakerPlansSubtitle => 'Elite • Royal • Eternal Elite';
+
+  @override
+  String get maternalGotraMamakul => 'Maternal Gotra (Mamakul / मोसळ)';
+
+  @override
+  String get maternalGotraSubtitle =>
+      'Exclude or specify maternal lineage to avoid customary gotra clash';
 
   @override
   String get matrimonyFor => 'ಮ್ಯಾಟ್ರಿಮನಿ';
@@ -1675,6 +2567,24 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get maybeLater => 'ನಂತರ ನೋಡೋಣ';
+
+  @override
+  String get melavaBannerSubtitle =>
+      'ಭಾರತದಾದ್ಯಂತ ನಡೆಯುವ ವಧು-ವರ ಪರಿಚಯ ಮೇಳಗಳನ್ನು ಅನ್ವೇಷಿಸಿ. ನೇರವಾಗಿ ಆಯೋಜಕರನ್ನು ಸಂಪರ್ಕಿಸಿ.';
+
+  @override
+  String get melavaBannerTitle => 'ಬಂಜಾರಾ ಪರಿಚಯ ಮೇಳಗಳು';
+
+  @override
+  String melavaEventCount(int count) {
+    return '$count ಮೇಳಗಳು';
+  }
+
+  @override
+  String get melavas => 'ಮೇಳಗಳು';
+
+  @override
+  String get men => 'ಪುರುಷರು';
 
   @override
   String get menu => 'ಮೆನು';
@@ -1689,10 +2599,20 @@ class AppLocalizationsKn extends AppLocalizations {
   String get messages => 'ಸಂದೇಶಗಳು';
 
   @override
+  String get messagingLimitReached => 'ಸಂದೇಶ ಕಳುಹಿಸುವ ಮಿತಿ ಮೀರಿದೆ';
+
+  @override
   String get middleClass => 'ಮಧ್ಯಮ ವರ್ಗ';
 
   @override
   String get minAge => 'ಕನಿಷ್ಠ ವಯಸ್ಸು';
+
+  @override
+  String get minimumHeight => 'Minimum Height';
+
+  @override
+  String get minimumHeightSubtitle =>
+      'Select minimum height requirement for matches';
 
   @override
   String minutesAgo(int count) {
@@ -1713,11 +2633,25 @@ class AppLocalizationsKn extends AppLocalizations {
   String get month => '/ತಿಂಗಳು';
 
   @override
+  String get monthly => 'ಮಾಸಿಕ';
+
+  @override
+  String get monthlyCheckIn => 'ಮಾಸಿಕ ಚೆಕ್-ಇನ್';
+
+  @override
+  String get monthlyRevenue => 'ಮಾಸಿಕ ಆದಾಯ (₹)';
+
+  @override
   String get months => 'ತಿಂಗಳುಗಳು';
 
   @override
   String get moreAboutYourStudiesAndWork =>
       'ನಿಮ್ಮ ಅಧ್ಯಯನ ಮತ್ತು ಕೆಲಸದ ಬಗ್ಗೆ ಇನ್ನಷ್ಟು ತಿಳಿಸಿ';
+
+  @override
+  String moreInvitesToUnlockTier(Object count, Object reward, Object tier) {
+    return '$count more invites to unlock $tier tier ($reward)';
+  }
 
   @override
   String get moreOptions => 'ಹೆಚ್ಚಿನ ಆಯ್ಕೆಗಳು';
@@ -1732,10 +2666,31 @@ class AppLocalizationsKn extends AppLocalizations {
   String get motherOccupation => 'ತಾಯಿ ವೃತ್ತಿ';
 
   @override
+  String mrpPrice(int price) {
+    return 'MRP ₹$price';
+  }
+
+  @override
+  String get mustHavePhoto => 'Must Have Photo';
+
+  @override
+  String get mutualMatch => 'ಪರಸ್ಪರ ಹೊಂದಾಣಿಕೆ';
+
+  @override
+  String get mutualMatchesDesc =>
+      'ಇಬ್ಬರು ಬಳಕೆದಾರರು ಪರಸ್ಪರ ಆಸಕ್ತಿಯನ್ನು ಹಂಚಿಕೊಂಡಾಗ ಪರಸ್ಪರ ಮ್ಯಾಚ್‌ಗಳು ಇಲ್ಲಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತವೆ';
+
+  @override
   String get myProfile => 'ನನ್ನ ಪ್ರೊಫೈಲ್';
 
   @override
+  String get nakshatraStar => 'Nakshatra (Star)';
+
+  @override
   String get name => 'ಹೆಸರು';
+
+  @override
+  String get nativeDistrict => 'Native District';
 
   @override
   String get nativePlace => 'ಮೂಲ ಸ್ಥಳ';
@@ -1745,6 +2700,9 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಗೌರವಾನ್ವಿತ ಅಭಿವ್ಯಕ್ತಿಗಳೊಂದಿಗೆ ನೈಸರ್ಗಿಕ ಭಂಗಿಗಳು';
 
   @override
+  String get needHelpContactAdmin => 'ಸಹಾಯ ಬೇಕೇ? ನಿರ್ವಾಹಕರನ್ನು ಸಂಪರ್ಕಿಸಿ';
+
+  @override
   String get needProfileToShareToast =>
       'You need to create a profile before sharing it.';
 
@@ -1752,7 +2710,14 @@ class AppLocalizationsKn extends AppLocalizations {
   String get neverMarried => 'ಅವಿವಾಹಿತ';
 
   @override
+  String get neverMissVerifiedMatch =>
+      'Never miss a verified match, instant message, or profile update.';
+
+  @override
   String get newLabel => 'ಹೊಸ';
+
+  @override
+  String get newMatchAlerts => 'New Match Alerts';
 
   @override
   String get newMatches => 'ಹೊಸ ಹೊಂದಾಣಿಕೆಗಳು';
@@ -1793,6 +2758,9 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
+  String get noMatchesYet => 'ಇನ್ನೂ ಯಾವುದೇ ಮ್ಯಾಚ್‌ಗಳಿಲ್ಲ';
+
+  @override
   String get noPendingRequests => 'ಯಾವುದೇ ಬಾಕಿ ವಿನಂತಿಗಳಿಲ್ಲ';
 
   @override
@@ -1815,6 +2783,12 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಯಾವುದೇ ಪ್ರೊಫೈಲ್‌ಗಳು ಹೊಂದಿಕೆಯಾಗುತ್ತಿಲ್ಲ';
 
   @override
+  String get noProfilesReceived => 'ಯಾವುದೇ ಪ್ರೊಫೈಲ್ ಸ್ವೀಕರಿಸಿಲ್ಲ';
+
+  @override
+  String get noProfilesSharedYet => 'ಇನ್ನೂ ಯಾವುದೇ ಪ್ರೊಫೈಲ್ ಹಂಚಿಕೊಂಡಿಲ್ಲ';
+
+  @override
   String get noResultsMessage =>
       'ನಿಮ್ಮ ಫಿಲ್ಟರ್‌ಗಳನ್ನು ಸರಿಹೊಂದಿಸಿ ಅಥವಾ ನಂತರ ಪರಿಶೀಲಿಸಿ.';
 
@@ -1828,10 +2802,20 @@ class AppLocalizationsKn extends AppLocalizations {
   String get noViewsYet => 'ಇನ್ನೂ ಯಾವುದೇ ವೀಕ್ಷಣೆಗಳಿಲ್ಲ';
 
   @override
+  String get none => 'ಯಾವುದೂ ಇಲ್ಲ';
+
+  @override
+  String get normalFit => 'Normal / Fit';
+
+  @override
   String get notAvailable => 'ಲಭ್ಯವಿಲ್ಲ';
 
   @override
   String get notEntered => 'ನಮೂದಿಸಿಲ್ಲ';
+
+  @override
+  String get notMatchedCannotMessage =>
+      'ನೀವು ಈ ಪ್ರೊಫೈಲ್‌ನೊಂದಿಗೆ ಹೊಂದಿಕೆಯಾಗಿಲ್ಲ, ಆದ್ದರಿಂದ ನೇರ ಸಂದೇಶ ಕಳುಹಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.';
 
   @override
   String get notMatchedCantMessage =>
@@ -1845,8 +2829,14 @@ class AppLocalizationsKn extends AppLocalizations {
       'ನಿಮ್ಮ ಪ್ರಸ್ತುತ ನೋಟವನ್ನು ಪ್ರತಿಬಿಂಬಿಸದ ಫೋಟೋಗಳು';
 
   @override
+  String get notSpecified => 'Not Specified';
+
+  @override
   String get notVerifiedYetPleaseClickTheLinkInYourEm =>
       'ಇನ್ನೂ ಪರಿಶೀಲಿಸಿಲ್ಲ. ದಯವಿಟ್ಟು ಇಮೇಲ್‌ನಲ್ಲಿರುವ ಲಿಂಕ್ ಕ್ಲಿಕ್ ಮಾಡಿ.';
+
+  @override
+  String get notWorking => 'Not Working';
 
   @override
   String get notYetVerifiedBadge => 'ಇನ್ನೂ ಪರಿಶೀಲಿಸಲಾಗಿಲ್ಲ';
@@ -1871,7 +2861,13 @@ class AppLocalizationsKn extends AppLocalizations {
   String get num919876543210 => '+91 98765 43210';
 
   @override
+  String get occupationLabel => 'ವೃತ್ತಿ';
+
+  @override
   String get officeAddress => 'ಕಚೇರಿ ವಿಳಾಸ';
+
+  @override
+  String get officialBiodataPdfShared => 'Official Biodata PDF Shared 📄';
 
   @override
   String get ok => 'ಸರಿ';
@@ -1889,10 +2885,43 @@ class AppLocalizationsKn extends AppLocalizations {
   String get onboardingTitle3 => 'ಸುರಕ್ಷಿತ ಮತ್ತು ಖಾಸಗಿ';
 
   @override
+  String get oneFreeNote => '1 FREE 💌';
+
+  @override
+  String get oneHundredPercentCompliant => '100% Compliant';
+
+  @override
+  String get oneHundredPercentPrivate => '100% Private';
+
+  @override
+  String get oneMessageUnlocked => '1 ಸಂದೇಶ ಅನ್‌ಲಾಕ್ ಆಗಿದೆ!';
+
+  @override
+  String get oneMonthFree => '1 Month Free';
+
+  @override
+  String onePhotoLockedTeaser(int count) {
+    return '📸 1 Photo (🔒 +$count)';
+  }
+
+  @override
+  String get oneTapSelect => '1-Tap Select';
+
+  @override
   String get oneTime => 'ಒಂದು ಬಾರಿ';
 
   @override
+  String get oneYearVip => '1 Year VIP';
+
+  @override
   String get online => 'ಆನ್‌ಲೈನ್';
+
+  @override
+  String get onlyDobShownOnPdf => 'Only Date of Birth shown on PDF';
+
+  @override
+  String get onlyShowProfilesWithPhoto =>
+      'Only show profiles with verified photo albums';
 
   @override
   String get openCamera => 'ಕ್ಯಾಮರಾ ತೆರೆಯಿರಿ';
@@ -1904,16 +2933,47 @@ class AppLocalizationsKn extends AppLocalizations {
   String get openSettings => 'ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ';
 
   @override
+  String get openToRelocate => 'Open to Relocate';
+
+  @override
   String get openingConversation => 'ಸಂಭಾಷಣೆ ತೆರೆಯಲಾಗುತ್ತಿದೆ...';
 
   @override
   String get openingConversationToast => 'Opening conversation...';
 
   @override
+  String get option1Badge => 'ಆಯ್ಕೆ 1 • ಲಾಗಿನ್ ಅಗತ್ಯವಿಲ್ಲ';
+
+  @override
+  String get option2Badge => 'ಆಯ್ಕೆ 2 • ಅತ್ಯಂತ ಜನಪ್ರಿಯ • 100% ಉಚಿತ';
+
+  @override
+  String get option3Badge => 'ಆಯ್ಕೆ 3 • ಗೆಸ್ಟ್ ಮೋಡ್';
+
+  @override
+  String get optional => 'ಐಚ್ಛಿಕ';
+
+  @override
+  String get orCustomizeYourNote => 'OR CUSTOMIZE YOUR NOTE';
+
+  @override
+  String get organizer => 'ಆಯೋಜಕರು';
+
+  @override
   String get originalVillageHint => 'ಮೂಲ ಗ್ರಾಮ';
 
   @override
   String get other => 'ಇತರ';
+
+  @override
+  String get ownHouseVilla => 'Own House / Villa';
+
+  @override
+  String get ownResidentialHouseVilla => 'Own Residential House / Villa';
+
+  @override
+  String get ownResidentialHouseVillaSubtitle =>
+      'Family owns self-acquired or independent residential house';
 
   @override
   String get partnerExpectations => 'ಸಂಗಾತಿ ನಿರೀಕ್ಷೆಗಳು';
@@ -1923,13 +2983,24 @@ class AppLocalizationsKn extends AppLocalizations {
       'ನೀವು ಏನನ್ನು ಹುಡುಕುತ್ತಿದ್ದೀರಿ ಎಂದು ವಿವರಿಸಿ...';
 
   @override
+  String get partnerName => 'ಜೊತೆಗಾರನ ಹೆಸರು';
+
+  @override
   String get partnerPreferences => 'ಸಂಗಾತಿ ಆದ್ಯತೆಗಳು';
 
   @override
   String get password => 'ಪಾಸ್‌ವರ್ಡ್';
 
   @override
+  String get pasteUrlHere => 'ಇಲ್ಲಿ ಯುಆರ್ಎಲ್ ಪೇಸ್ಟ್ ಮಾಡಿ';
+
+  @override
   String get pay199ToUnlockFullPdf => 'ಪೂರ್ಣ PDF ಅನ್‌ಲಾಕ್ ಮಾಡಲು ₹199 ಪಾವತಿಸಿ';
+
+  @override
+  String payInstantUnlock(Object price) {
+    return 'Pay ₹$price Instant Unlock';
+  }
 
   @override
   String paymentFailed(String error) {
@@ -1946,9 +3017,23 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಪಾವತಿ ಯಶಸ್ವಿಯಾಗಿದೆ! ಟೆಂಪ್ಲೇಟ್‌ಗಳನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲಾಗಿದೆ.';
 
   @override
+  String get paymentSuccessfulPdfUnlocked =>
+      'ಪಾವತಿ ಯಶಸ್ವಿಯಾಗಿದೆ! PDF ಅನ್‌ಲಾಕ್ ಆಗಿದೆ.';
+
+  @override
   String paymentSuccessfulWelcome(String plan) {
     return 'ಪಾವತಿ ಯಶಸ್ವಿಯಾಗಿದೆ! $plan ಗೆ ಸ್ವಾಗತ';
   }
+
+  @override
+  String get pdfDisplayStudio => 'PDF Display Studio';
+
+  @override
+  String get pdfDisplayStudioDesc =>
+      'Customize header deity blessings and toggle confidential fields on your shareable PDF.';
+
+  @override
+  String get pdfRevenue => 'PDF ಆದಾಯ (₹)';
 
   @override
   String pdfSavedToDownloads(String path) {
@@ -1959,11 +3044,35 @@ class AppLocalizationsKn extends AppLocalizations {
   String get pending => 'ಬಾಕಿ ಉಳಿದಿದೆ';
 
   @override
+  String get pendingReferences => 'ಬಾಕಿ ಉಳಿದಿರುವ ಉಲ್ಲೇಖಗಳು';
+
+  @override
+  String get pendingReports => 'ಬಾಕಿ ಉಳಿದಿರುವ ವರದಿಗಳು';
+
+  @override
   String get pendingVerifications => 'Pending Verifications';
+
+  @override
+  String get perMonth => '/ತಿಂಗಳು';
 
   @override
   String percentComplete(int percentage) {
     return '$percentage% ಪೂರ್ಣ';
+  }
+
+  @override
+  String percentCompleteBadge(int score) {
+    return '$score% Complete';
+  }
+
+  @override
+  String percentMatchBadge(int score) {
+    return '$score% Match';
+  }
+
+  @override
+  String percentTrustBadge(int score) {
+    return '$score% Trust';
   }
 
   @override
@@ -1977,6 +3086,9 @@ class AppLocalizationsKn extends AppLocalizations {
   String permissionRequiredMessage(String type) {
     return 'ಫೋಟೋಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಲು $type ಅನುಮತಿ ಅಗತ್ಯವಿದೆ. ದಯವಿಟ್ಟು ಅಪ್ಲಿಕೇಶನ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಇದನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ.';
   }
+
+  @override
+  String get personalConcierge => 'ವೈಯಕ್ತಿಕ ಸಹಾಯಕಿ';
 
   @override
   String get personalDetails => 'ವ್ಯಕ್ತಿಗತ ವಿವರಗಳು';
@@ -2044,16 +3156,39 @@ class AppLocalizationsKn extends AppLocalizations {
   String get photosToAvoid => 'ತಪ್ಪಿಸಬೇಕಾದ ಫೋಟೋಗಳು';
 
   @override
+  String get physicalHealthStatus => 'Physical Health Status';
+
+  @override
+  String get physicalHealthStatusSubtitle =>
+      'Select physical disability match preferences';
+
+  @override
   String get physicalSocialAttributes => 'ದೈಹಿಕ ಮತ್ತು ಸಾಮಾಜಿಕ ವಿವರಗಳು';
 
   @override
   String get physicalStatus => 'ದೈಹಿಕ ಸ್ಥಿತಿ';
 
   @override
+  String get physicallyChallenged => 'Physically Challenged';
+
+  @override
+  String get pickNote => 'Pick Note';
+
+  @override
+  String get pinCodeLabel => 'Pin Code';
+
+  @override
+  String get planetaryLagnaAlignment => 'Planetary Lagna & Ashtakoot Alignment';
+
+  @override
   String get platinumPlanDesc => 'ಎಲ್ಲಾ ವೈಶಿಷ್ಟ್ಯಗಳೊಂದಿಗೆ ಅಂತಿಮ ಅನುಭವ';
 
   @override
   String get platinumPlanName => 'ಪ್ಲಾಟಿನಂ';
+
+  @override
+  String get pleaseAcceptVendorPartnerTerms =>
+      'Please accept the vendor partner terms';
 
   @override
   String pleaseComplete(String fields) {
@@ -2087,10 +3222,17 @@ class AppLocalizationsKn extends AppLocalizations {
   String get pleaseFillAllFields => 'ದಯವಿಟ್ಟು ಎಲ್ಲಾ ಕ್ಷೇತ್ರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ';
 
   @override
+  String get pleaseFillAllRequiredFields => 'Please fill all required fields';
+
+  @override
   String get pleaseSelectAnnualIncome => 'ನಿಮ್ಮ ವಾರ್ಷಿಕ ಆದಾಯ ಆಯ್ಕೆ ಮಾಡಿ';
 
   @override
   String get pleaseSelectEducationLevel => 'ನಿಮ್ಮ ಶಿಕ್ಷಣ ಮಟ್ಟ ಆಯ್ಕೆ ಮಾಡಿ';
+
+  @override
+  String get pleaseSelectOrWriteShortNote =>
+      'Please select or write a short intro note';
 
   @override
   String get pleaseSelectProfession => 'ನಿಮ್ಮ ವೃತ್ತಿ ಆಯ್ಕೆ ಮಾಡಿ';
@@ -2126,10 +3268,44 @@ class AppLocalizationsKn extends AppLocalizations {
   String get premium => 'ಪ್ರೀಮಿಯಂ';
 
   @override
+  String get premiumAccess => 'ಪ್ರೀಮಿಯಂ ಪ್ರವೇಶ';
+
+  @override
+  String get premiumBadge => 'ಪ್ರೀಮಿಯಂ';
+
+  @override
   String get premiumFeature => 'ಇದು ಪ್ರೀಮಿಯಂ ವೈಶಿಷ್ಟ್ಯವಾಗಿದೆ';
 
   @override
+  String get premiumFiltersSubtitle =>
+      'ID Verification, Trust Score, Horoscope, Lifestyle & Activity';
+
+  @override
+  String get premiumFiltersTitle => 'Premium Filters';
+
+  @override
+  String get premiumGateSupport =>
+      'ತ್ವರಿತ ಜಾಹೀರಾತನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ನಮ್ಮ ಸಮುದಾಯವನ್ನು ಬೆಂಬಲಿಸಿ,\nಅಥವಾ ಜಾಹೀರಾತು-ಮುಕ್ತ ಅನುಭವಕ್ಕಾಗಿ ಪ್ರೊಗೆ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ.';
+
+  @override
   String get premiumMembership => 'ಪ್ರೀಮಿಯಂ ಸದಸ್ಯತ್ವ';
+
+  @override
+  String get premiumMen => 'ಪ್ರೀಮಿಯಂ ಪುರುಷರು';
+
+  @override
+  String get premiumPlanDesc => 'ಸುಧಾರಿತ ವೈಶಿಷ್ಟ್ಯಗಳು ಮತ್ತು ಉತ್ತಮ ಗೋಚರತೆ';
+
+  @override
+  String get premiumPlanName => 'ಪ್ರೀಮಿಯಂ';
+
+  @override
+  String get premiumPlansSubtitle =>
+      'Standard • Silver • Gold • Platinum • Eternal';
+
+  @override
+  String get premiumPriceFiltersInactive =>
+      'ಪ್ರೀಮಿಯಂ ಬೆಲೆ ಫಿಲ್ಟರ್‌ಗಳು ಪ್ರಸ್ತುತ ನಿಷ್ಕ್ರಿಯವಾಗಿವೆ.';
 
   @override
   String get premiumTemplate => 'ಪ್ರೀಮಿಯಂ ಟೆಂಪ್ಲೇಟ್';
@@ -2138,7 +3314,20 @@ class AppLocalizationsKn extends AppLocalizations {
   String get premiumUsers => 'Premium Users';
 
   @override
+  String get premiumWomen => 'ಪ್ರೀಮಿಯಂ ಮಹಿಳೆಯರು';
+
+  @override
+  String get preparingAdExperience =>
+      'ಜಾಹೀರಾತು ಅನುಭವವನ್ನು ಸಿದ್ಧಪಡಿಸಲಾಗುತ್ತಿದೆ...';
+
+  @override
   String get preparingBiodata => 'ನಿಮ್ಮ ಬಯೋಡೇಟಾವನ್ನು ಸಿದ್ಧಪಡಿಸಲಾಗುತ್ತಿದೆ...';
+
+  @override
+  String get preview => 'Preview';
+
+  @override
+  String get previewCustomizedBiodata => 'Preview Customized Biodata';
 
   @override
   String get previewGenerationFailed =>
@@ -2156,6 +3345,16 @@ class AppLocalizationsKn extends AppLocalizations {
   String get primary => 'ಪ್ರಾಥಮಿಕ';
 
   @override
+  String get primaryContactHiddenOnPdf => 'Hidden for privacy';
+
+  @override
+  String get primaryContactNumber => 'Primary Contact Number';
+
+  @override
+  String get primaryContactVisibleOnPdf =>
+      'Registered calling number visible on PDF';
+
+  @override
   String get primaryPhoto => 'ಪ್ರಾಥಮಿಕ ಫೋಟೋ';
 
   @override
@@ -2166,6 +3365,13 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get prioritySupport => 'ಆದ್ಯತೆಯ ಬೆಂಬಲ';
+
+  @override
+  String get privacyAndContentSwitches => '🔒 Privacy & Content Switches';
+
+  @override
+  String get privacyAndContentSwitchesSubtitle =>
+      'Toggle visibility of sensitive fields on your shared PDF';
 
   @override
   String get privacyPolicy => 'ಗೌಪ್ಯತಾ ನೀತಿಗೆ';
@@ -2234,6 +3440,9 @@ class AppLocalizationsKn extends AppLocalizations {
   String get proTips => 'ಪ್ರೊ ಟಿಪ್ಸ್';
 
   @override
+  String get proceedToLogin => 'ಮುಂದುವರಿಯಿರಿ → ಲಾಗಿನ್ ಮಾಡಿ';
+
+  @override
   String get processingImage => 'ಚಿತ್ರವನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲಾಗುತ್ತಿದೆ';
 
   @override
@@ -2290,6 +3499,16 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಪ್ರೊಫೈಲ್ ಲಿಂಕ್ ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲಾಗಿದೆ!';
 
   @override
+  String get profileMakeover => 'ವೃತ್ತಿಪರ ಪ್ರೊಫೈಲ್ ಮೇಕ್ ಓವರ್';
+
+  @override
+  String get profileManagedBy => 'Profile Managed By';
+
+  @override
+  String get profileManagedBySubtitle =>
+      'Select who created and manages the candidate biodata';
+
+  @override
   String get profileNotFound => 'ಪ್ರೊಫೈಲ್ ಕಂಡುಬಂದಿಲ್ಲ';
 
   @override
@@ -2301,6 +3520,11 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get profileSaved => 'ಪ್ರೊಫೈಲ್ ಉಳಿಸಲಾಗಿದೆ!';
+
+  @override
+  String profileSharedVia(String profileName, String title) {
+    return '$title ಮೂಲಕ $profileName ಹಂಚಿಕೊಳ್ಳಲಾಗಿದೆ';
+  }
 
   @override
   String profileSharedWith(String name) {
@@ -2316,13 +3540,26 @@ class AppLocalizationsKn extends AppLocalizations {
   String get profileViewLimitReached => 'ವೀಕ್ಷಣೆ ಮಿತಿ ಮೀರಿದೆ';
 
   @override
+  String get profileViews => 'ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಣೆಗಳು';
+
+  @override
   String profileViewsPerDay(int count) {
     return '$count ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಣೆಗಳು/ದಿನ';
   }
 
   @override
+  String get profiles => 'ಪ್ರೊಫೈಲ್‌ಗಳು';
+
+  @override
+  String get profilesSharedWithYouDesc =>
+      'ನಿಮ್ಮ ಕುಟುಂಬ ಮತ್ತು ಸ್ನೇಹಿತರಿಂದ ನಿಮ್ಮೊಂದಿಗೆ ಹಂಚಿಕೊಂಡ ಪ್ರೊಫೈಲ್‌ಗಳು ಇಲ್ಲಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತವೆ';
+
+  @override
   String get profilesYouSaveWillAppearHere =>
       'ನೀವು ಉಳಿಸುವ ಪ್ರೊಫೈಲ್‌ಗಳು ಇಲ್ಲಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತವೆ';
+
+  @override
+  String get proofOfMarriage => 'ಮದುವೆಯ ಪುರಾವೆ';
 
   @override
   String get provideDetailsAboutYourGotraAndVillageTo =>
@@ -2339,10 +3576,22 @@ class AppLocalizationsKn extends AppLocalizations {
   String get quick => 'ವೇಗ';
 
   @override
+  String get quickOneTapSuggestions => 'Quick 1-Tap Suggestions:';
+
+  @override
+  String get rashiMoonSign => 'Rashi (Moon Sign)';
+
+  @override
+  String get readAll => 'Read All';
+
+  @override
   String get ready => 'ಸಿದ್ಧವಾಗಿದೆ';
 
   @override
   String get readyForMarriage => 'ಮದುವೆಗೆ ಸಿದ್ಧ';
+
+  @override
+  String get received => 'ಸ್ವೀಕರಿಸಲಾಗಿದೆ';
 
   @override
   String get recentConversations => 'ಇತ್ತೀಚಿನ ಸಂಭಾಷಣೆಗಳು';
@@ -2377,7 +3626,18 @@ class AppLocalizationsKn extends AppLocalizations {
   String get referAndEarn => 'ರೆಫರ್ ಮಾಡಿ ಮತ್ತು ಗಳಿಸಿ';
 
   @override
+  String get referenceRejected => 'ಉಲ್ಲೇಖವನ್ನು ತಿರಸ್ಕರಿಸಲಾಗಿದೆ';
+
+  @override
   String get referenceVerification => 'ಉಲ್ಲೇಖ ಪರಿಶೀಲನೆ';
+
+  @override
+  String get referenceVerified => 'ಉಲ್ಲೇಖವನ್ನು ಪರಿಶೀಲಿಸಲಾಗಿದೆ';
+
+  @override
+  String referenceWithNumber(int number) {
+    return 'ಉಲ್ಲೇಖ $number';
+  }
 
   @override
   String get references => 'ಉಲ್ಲೇಖಗಳು';
@@ -2398,6 +3658,9 @@ class AppLocalizationsKn extends AppLocalizations {
       'ರೆಫರಲ್ ಲಿಂಕ್ ಅನ್ನು ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲಾಗಿದೆ!';
 
   @override
+  String get referralRewardsTiers => 'Referral Rewards Tiers 👑';
+
+  @override
   String referralShareMessage(String link) {
     return 'ನಮ್ಮ ಸಮುದಾಯಕ್ಕಾಗಿ ಅತ್ಯಂತ ವಿಶ್ವಾಸಾರ್ಹ ವೈವಾಹಿಕ ಅಪ್ಲಿಕೇಶನ್ ಆದ ಬಂಜಾರಾಬಯೋ (BanjaraBio) ಗೆ ಸೇರಿ! ಪ್ರಾರಂಭಿಸಲು ನನ್ನ ಲಿಂಕ್ ಬಳಸಿ: $link';
   }
@@ -2415,13 +3678,34 @@ class AppLocalizationsKn extends AppLocalizations {
   String get refresh => 'ರಿಫ್ರೆಶ್';
 
   @override
+  String get refund25 => '25% ಮರುಪಾವತಿ';
+
+  @override
+  String get refund35 => '35% ಮರುಪಾವತಿ';
+
+  @override
+  String get registrationFee => 'ನೋಂದಣಿ ಶುಲ್ಕ';
+
+  @override
+  String get registrationSubmitted => 'Registration Submitted!';
+
+  @override
   String get reject => 'ತಿರಸ್ಕರಿಸಿ';
 
   @override
   String get rejected => 'ತಿರಸ್ಕರಿಸಲಾಗಿದೆ';
 
   @override
+  String get relationLabel => 'ಸಂಬಂಧ';
+
+  @override
+  String get relationSubtitle => 'Select Relationship';
+
+  @override
   String get relative => 'ಬಂಧು';
+
+  @override
+  String get relocationPreference => 'Relocation Preference';
 
   @override
   String get remainingToday => 'ಇಂದು ಬಾಕಿ ಇದೆ';
@@ -2431,6 +3715,9 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get removePhoto => 'ತೆಗೆದು ಹಾಕಿ';
+
+  @override
+  String get replacePhoto => 'ಫೋಟೋ ಬದಲಾಯಿಸಿ';
 
   @override
   String get report => 'ವರದಿ ಮಾಡಿ';
@@ -2464,13 +3751,25 @@ class AppLocalizationsKn extends AppLocalizations {
   String get reset => 'ರೀಸೆಟ್';
 
   @override
+  String get resetAllFilters => 'Reset All Filters';
+
+  @override
   String get reshare => 'ಮರುಹಂಚಿಕೆ';
+
+  @override
+  String get resumeDraftCta => 'ಡ್ರಾಫ್ಟ್ ಪೂರ್ಣಗೊಳಿಸಿ 👉';
 
   @override
   String get retake => 'ಮತ್ತೆ ತೆಗೆದುಕೊಳ್ಳಿ';
 
   @override
   String get retry => 'ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ';
+
+  @override
+  String get revenueToday => 'ಇಂದಿನ ಆದಾಯ (₹)';
+
+  @override
+  String get revenueTotal => 'ಒಟ್ಟು ಆದಾಯ (₹)';
 
   @override
   String get reviewDetails => 'ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಿ';
@@ -2489,7 +3788,29 @@ class AppLocalizationsKn extends AppLocalizations {
   String get rich => 'ಶ್ರೀಮಂತ';
 
   @override
+  String get rmHandpickedMatches => 'RM Handpicked Matches';
+
+  @override
+  String get rmHandpickedMatchesSubtitle =>
+      'Profiles curated and vetted by your Personal Relationship Manager';
+
+  @override
+  String royalBanjaraTemplatesWithCount(Object count) {
+    return '$count Royal Banjara Templates';
+  }
+
+  @override
+  String get royalPlanDesc =>
+      'ಸಮರ್ಪಿತ ವ್ಯವಸ್ಥಾಪಕರು ನಿಮ್ಮ ಸಂಗಾತಿಯನ್ನು ಹುಡುಕುತ್ತಾರೆ';
+
+  @override
+  String get royalPlanName => 'ರಾಯಲ್';
+
+  @override
   String get rupeeSymbol => '₹';
+
+  @override
+  String get safetyAndHealth => 'ಸುರಕ್ಷತೆ ಮತ್ತು ಆರೋಗ್ಯ';
 
   @override
   String get save => 'ಉಳಿಸಿ';
@@ -2513,6 +3834,19 @@ class AppLocalizationsKn extends AppLocalizations {
   String get searchByNameJobEducation => 'ಹೆಸರು, ಉದ್ಯೋಗ, ಶಿಕ್ಷಣದಿಂದ ಹುಡುಕಿ...';
 
   @override
+  String get searchLeads => 'ಲೀಡ್‌ಗಳನ್ನು ಹುಡುಕಿ...';
+
+  @override
+  String get searchMatchesForRelativesCta => 'ಸಂಬಂಧ ಹುಡುಕಿ 👉';
+
+  @override
+  String get searchMatchesForRelativesSubtitle =>
+      'ಮಗ, ಮಗಳು ಅಥವಾ ಸಂಬಂಧಿಕರಿಗಾಗಿ ಸಾವಿರಾರು ಪರಿಶೀಲಿಸಿದ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ನೇರವಾಗಿ ನೋಡಿ.';
+
+  @override
+  String get searchMatchesForRelativesTitle => 'ಸಂಬಂಧಿಕರಿಗಾಗಿ ಸಂಬಂಧ ಹುಡುಕಿ';
+
+  @override
   String get searchProfiles => 'ಪ್ರೊಫೈಲ್ ಹುಡುಕಿ...';
 
   @override
@@ -2534,13 +3868,28 @@ class AppLocalizationsKn extends AppLocalizations {
   String get seeAll => 'ಎಲ್ಲ ನೋಡಿ';
 
   @override
+  String get seenAllProfiles => 'ನೀವು ಎಲ್ಲಾ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ನೋಡಿದ್ದೀರಿ!';
+
+  @override
   String get selectAnnualIncome => 'ವಾರ್ಷಿಕ ಆದಾಯ ವ್ಯಾಪ್ತಿ ಆಯ್ಕೆ ಮಾಡಿ';
 
   @override
   String get selectAnnualIncomeRange => 'ವಾರ್ಷಿಕ ಆದಾಯ ಶ್ರೇಣಿ ಆರಿಸಿ';
 
   @override
+  String get selectAppLanguageTitle => 'ಆ್ಯಪ್ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ';
+
+  @override
+  String get selectBiodataLanguage => 'Select Biodata Language';
+
+  @override
+  String get selectBudgetRange => 'Select Budget Range';
+
+  @override
   String get selectDate => 'ದಿನಾಂಕ ಆಯ್ಕೆಮಾಡಿ';
+
+  @override
+  String get selectDistrict => 'ಜಿಲ್ಲೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ';
 
   @override
   String get selectDistrictFirst => 'ಮೊದಲು ಜಿಲ್ಲೆಯನ್ನು ಆರಿಸಿ';
@@ -2559,6 +3908,20 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get selectLocation => 'ಸ್ಥಳ ಆಯ್ಕೆ ಮಾಡಿ';
+
+  @override
+  String get selectMaritalStatus => 'Select marital status requirement';
+
+  @override
+  String get selectMatchPreference =>
+      'Select match preference for groom or bride search';
+
+  @override
+  String get selectPaternalGotra =>
+      'Select candidate paternal Gotra customary clan';
+
+  @override
+  String get selectRewardType => 'ಉಡುಗೊರೆ ಪ್ರಕಾರವನ್ನು ಆಯ್ಕೆಮಾಡಿ';
 
   @override
   String get selectState => 'ರಾಜ್ಯ ಆರಿಸಿ';
@@ -2591,7 +3954,22 @@ class AppLocalizationsKn extends AppLocalizations {
   String get self => 'Self';
 
   @override
+  String selfAndMamakulSubtitle(String self, String mamakul) {
+    return 'Self: $self • Mamakul: $mamakul';
+  }
+
+  @override
+  String get selfClanRule =>
+      'Bride & Groom must not share the same paternal Gotra (e.g. Rathod, Pawar, Chavan, Jadhav).';
+
+  @override
+  String get selfClanTitle => '1. Self Clan (गोत्र):';
+
+  @override
   String get selfEmployed => 'ಸ್ವಯಂ ಉದ್ಯೋಗಿ';
+
+  @override
+  String get selfServicePlans => 'ಸ್ವಯಂ ಸೇವೆ';
 
   @override
   String get selfieSubmitted => 'ಸೆಲ್ಫಿ ಸಲ್ಲಿಸಲಾಗಿದೆ';
@@ -2600,16 +3978,26 @@ class AppLocalizationsKn extends AppLocalizations {
   String get send => 'ಕಳುಹಿಸಿ';
 
   @override
+  String get sendHeartInterested =>
+      'ನಿಮಗೆ ಆಸಕ್ತಿಯಿದೆ ಎಂದು ತೋರಿಸಲು ಹಾರ್ಟ್ ಕಳುಹಿಸಿ.';
+
+  @override
   String get sendInterest => 'ಆಸಕ್ತಿ ಕಳುಹಿಸಿ';
 
   @override
   String get sendMessage => 'ಸಂದೇಶ ಕಳುಹಿಸಿ';
 
   @override
+  String get sendToCandidateWhatsApp => 'Send to Bride/Groom on WhatsApp 🚩';
+
+  @override
   String get sendVerification => 'ಪರಿಶೀಲನೆ ಕಳುಹಿಸಿ';
 
   @override
   String get sendVerificationRequests => 'ಪರಿಶೀಲನಾ ವಿನಂತಿ ಕಳುಹಿಸಿ';
+
+  @override
+  String get sent => 'ಕಳುಹಿಸಲಾಗಿದೆ';
 
   @override
   String get setAsPrimary => 'ಪ್ರಾಥಮಿಕವಾಗಿ ಹೊಂದಿಸಿ';
@@ -2684,6 +4072,11 @@ class AppLocalizationsKn extends AppLocalizations {
   String get sharedProfiles => 'ಹಂಚಿದ ಪ್ರೊಫೈಲ್‌ಗಳು';
 
   @override
+  String sharedProfilesWithEachOther(String name) {
+    return 'ನೀವು ಮತ್ತು $name ಪರಸ್ಪರ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಹಂಚಿಕೊಂಡಿದ್ದೀರಿ.';
+  }
+
+  @override
   String sharedVia(String name, String method) {
     return '$method ಮೂಲಕ $name ಹಂಚಿಕೊಳ್ಳಲಾಗಿದೆ';
   }
@@ -2697,6 +4090,39 @@ class AppLocalizationsKn extends AppLocalizations {
   String get sharingBiodataPdf => 'ಬಯೋಡೇಟಾ PDF ಹಂಚಿಕೊಳ್ಳಲಾಗುತ್ತಿದೆ';
 
   @override
+  String get sharingProfile => 'ಪ್ರೊಫೈಲ್ ಹಂಚಿಕೆಯಾಗುತ್ತಿದೆ...';
+
+  @override
+  String get sharingProfiles => 'ಪ್ರೊಫೈಲ್‌ಗಳ ಹಂಚಿಕೆ';
+
+  @override
+  String get sibling => 'ಸಹೋದರ/ಸಹೋದರಿ';
+
+  @override
+  String siblingsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ಒಡಹುಟ್ಟಿದವರು',
+      one: '1 ಒಡಹುಟ್ಟಿದವರು',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get siblingsLabel => 'ಸಹೋದರ-ಸಹೋದರಿಯರು';
+
+  @override
+  String get signIn => 'ಸೈನ್ ಇನ್ ಮಾಡಿ';
+
+  @override
+  String get signInRequired => 'ಸೈನ್ ಇನ್ ಅಗತ್ಯವಿದೆ';
+
+  @override
+  String get signInRequiredContent =>
+      'ಈ ವೈಶಿಷ್ಟ್ಯವನ್ನು ಬಳಸಲು ದಯವಿಟ್ಟು ಸೈನ್ ಇನ್ ಮಾಡಿ ಅಥವಾ ಖಾತೆಯನ್ನು ರಚಿಸಿ.';
+
+  @override
   String get silver => 'ಬೆಳ್ಳಿ';
 
   @override
@@ -2706,16 +4132,50 @@ class AppLocalizationsKn extends AppLocalizations {
   String get silverPlanName => 'ಸಿಲ್ವರ್';
 
   @override
+  String get similarMatches => 'Similar Matches';
+
+  @override
   String get sister => 'ಸಹೋದರಿ';
 
   @override
   String get sisterCount => 'ಅಕ್ಕತಂಗಿಯರು';
 
   @override
+  String sistersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ಸಹೋದರಿಯರು',
+      one: '1 ಸಹೋದರಿ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get sixMonthsFree => '6 Months Free';
+
+  @override
   String get skip => 'ಬಿಟ್ಟುಬಿಡಿ';
 
   @override
+  String get skipAndSelectLevel =>
+      'ಬಿಟ್ಟುಬಿಡಿ ಮತ್ತು ತಾಲ್ಲೂಕು/ಜಿಲ್ಲೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ';
+
+  @override
+  String get skipAndUseDistrict => 'Skip & Use District';
+
+  @override
+  String get smartRecommendations => 'Smart Recommendations';
+
+  @override
+  String get smartRecommendationsSubtitle =>
+      'Receive curated bio recommendations tailored for you.';
+
+  @override
   String get smileNaturallyTip => 'ಸ್ನೇಹಪರವಾಗಿ ಕಾಣಲು ನೈಸರ್ಗಿಕವಾಗಿ ಸ್ಮಿತವಾಗಿರಿ';
+
+  @override
+  String get smokingHabits => 'Smoking Habits';
 
   @override
   String get socialMediaTextOverlays =>
@@ -2734,10 +4194,33 @@ class AppLocalizationsKn extends AppLocalizations {
   String get son => 'ಮಗ';
 
   @override
+  String get sortServicesBy => 'Sort Services By';
+
+  @override
+  String get specificLocation => 'ನಿರ್ದಿಷ್ಟ ಸ್ಥಳ';
+
+  @override
+  String get specified => 'Specified';
+
+  @override
   String get specifyEducation => 'ಶಿಕ್ಷಣವನ್ನು ನಿರ್ದಿಷ್ಟಪಡಿಸಿ';
 
   @override
   String get specifyProfession => 'ವೃತ್ತಿಯನ್ನು ನಿರ್ದಿಷ್ಟಪಡಿಸಿ';
+
+  @override
+  String get standardFilters => 'Standard Filters';
+
+  @override
+  String get standardFiltersSubtitle =>
+      'Basic demographic criteria for all registered members';
+
+  @override
+  String get standardPlanDesc =>
+      'ಒಂದು ತಿಂಗಳವರೆಗೆ ಪ್ರೀಮಿಯಂ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಪ್ರಯತ್ನಿಸಿ';
+
+  @override
+  String get standardPlanName => 'ಸ್ಟ್ಯಾಂಡರ್ಡ್';
 
   @override
   String get standardProfile => 'ಸಾಮಾನ್ಯ ಪ್ರೊಫೈಲ್';
@@ -2749,13 +4232,23 @@ class AppLocalizationsKn extends AppLocalizations {
   String get startAConversation => 'Start a conversation';
 
   @override
+  String get startChatting => 'START CHATTING 💬';
+
+  @override
   String get startConversation => 'ಸಂಭಾಷಣೆ ಪ್ರಾರಂಭಿಸಿ';
 
   @override
   String get startRecording => 'ರೆಕಾರ್ಡಿಂಗ್ ಪ್ರಾರಂಭಿಸಿ';
 
   @override
+  String get startSharingProfilesDesc =>
+      'ಪರಿಪೂರ್ಣ ಮ್ಯಾಚ್ ಅನ್ನು ಹುಡುಕಲು ಸಹಾಯ ಮಾಡಲು ಕುಟುಂಬ ಮತ್ತು ಸ್ನೇಹಿತರೊಂದಿಗೆ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಲು ಪ್ರಾರಂಭಿಸಿ';
+
+  @override
   String get state => 'ರಾಜ್ಯ';
+
+  @override
+  String get stateInIndia => 'State in India';
 
   @override
   String get statusWaitingForApproval => 'ಸ್ಥಿತಿ: ಅನುಮೋದನೆಗಾಗಿ ಕಾಯಲಾಗುತ್ತಿದೆ';
@@ -2764,24 +4257,107 @@ class AppLocalizationsKn extends AppLocalizations {
   String get stay => 'ಇಲ್ಲಿಯೇ ಇರಿ';
 
   @override
+  String get stayConnectedOnBanjaraBio => 'Stay Connected on BanjaraBio';
+
+  @override
+  String get step1SelectCategory => '1. Select Your Service Category';
+
+  @override
+  String get step1SelectCategorySubtitle =>
+      'Choose the primary wedding service you provide';
+
+  @override
+  String get step2BusinessContact => '2. Business & Contact Information';
+
+  @override
+  String get step2BusinessContactSubtitle =>
+      'Enter authentic details for community clients';
+
+  @override
+  String get step3ServiceSpecs => '3. Dynamic Service Specifications';
+
+  @override
+  String step3ServiceSpecsSubtitle(Object category) {
+    return 'Specific details tailored for $category';
+  }
+
+  @override
+  String get step4PricingExperience => '4. Pricing & Experience';
+
+  @override
+  String get step4PricingExperienceSubtitle =>
+      'Help families understand your package range';
+
+  @override
+  String stepCounterFormat(int current, int total) {
+    return '$total ರಲ್ಲಿ $current ನೇ ಹಂತ';
+  }
+
+  @override
+  String get stepLabelDetails => 'ವಿವರಗಳು';
+
+  @override
+  String get stepLabelGoal => 'ಉದ್ದೇಶ';
+
+  @override
+  String get stepLabelSignIn => 'ಸೈನ್ ಇನ್';
+
+  @override
+  String get stepLabelType => 'ಪ್ರಕಾರ';
+
+  @override
+  String get stepLabelWelcome => 'ಸ್ವಾಗತ';
+
+  @override
   String stepNOfTotal(String current, String total) {
     return 'ಹಂತ $current / $total';
   }
 
   @override
+  String get strictPrivacyNotificationNote =>
+      '100% Strict Privacy: Bookmarks & profile views are completely private and never triggered as notifications.';
+
+  @override
+  String get strongBanjaraClanAlignment =>
+      'Strong Banjara Clan & Astro Alignment';
+
+  @override
   String get student => 'ವಿದ್ಯಾರ್ಥಿ';
+
+  @override
+  String get subCaste => 'Sub-Caste';
+
+  @override
+  String get subCasteJatiVariant => 'Sub-Caste / Jati Variant';
+
+  @override
+  String get subCasteSubtitle =>
+      'Filter by regional Banjara cultural designation';
 
   @override
   String get submit => 'ಸಲ್ಲಿಸಿ';
 
   @override
+  String get submitForReview => 'ಪರಿಶೀಲನೆಗಾಗಿ ಸಲ್ಲಿಸಿ';
+
+  @override
   String get submitForVerification => 'ಪರಿಶೀಲನೆಗಾಗಿ ಸಲ್ಲಿಸಿ';
+
+  @override
+  String get submitVendorRegistration => 'Submit Vendor Registration';
 
   @override
   String get submittedForReview => 'ಪರಿಶೀಲನೆಗಾಗಿ ಸಲ್ಲಿಸಲಾಗಿದೆ';
 
   @override
   String get subscription => 'ಸದಸ್ಯತ್ವ';
+
+  @override
+  String get subsidizedPricePill => 'Subsidized: ₹20 / month  •  ₹200 / year';
+
+  @override
+  String get successSubmission =>
+      'ಯಶಸ್ಸು! ನಿಮ್ಮ ವಿನಂತಿಯನ್ನು ಪರಿಶೀಲನೆಗಾಗಿ ಸಲ್ಲಿಸಲಾಗಿದೆ.';
 
   @override
   String get supportAndHelp => 'ಬೆಂಬಲ ಮತ್ತು ಸಹಾಯ';
@@ -2791,6 +4367,9 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get surname => 'ಉಪನಾಮ';
+
+  @override
+  String get surnameLabel => 'ಮನೆತನದ ಹೆಸರು';
 
   @override
   String get swipe => 'ಸ್ಪೈಪ್';
@@ -2810,16 +4389,48 @@ class AppLocalizationsKn extends AppLocalizations {
   String get talukaOptional => 'ತಾಲೂಕು (ಐಚ್ಛಿಕ)';
 
   @override
+  String get tapAgainToChat => 'Tap again to Chat ➔';
+
+  @override
+  String get tapAgainToJoin => 'Tap again to Join ➔';
+
+  @override
+  String get tapAgainToOpen => 'Tap again to Open ➔';
+
+  @override
+  String get tapAgainToView => 'Tap again to View ➔';
+
+  @override
+  String get tapAnyThemeToApply =>
+      'Tap any theme to instantly apply it to your biodata.';
+
+  @override
   String get tapTheButtonToAddAPhoto => 'ಫೋಟೋ ಸೇರಿಸಲು + ಬಟನ್ ಒತ್ತಿರಿ';
 
   @override
   String get tapToAddPhoto => 'Tap to add photo';
 
   @override
+  String get tapToPreviewKundali =>
+      'Tap to preview Kundali chart & planetary alignments';
+
+  @override
   String get tapToReveal => '✨ ನೋಡಲು ಟ್ಯಾಪ್ ಮಾಡಿ';
 
   @override
+  String get targetBiodataQuestion => 'Which biodata are you looking for?';
+
+  @override
+  String get targetGenderSubtitle => 'Select Gender (Bride / Groom)';
+
+  @override
   String get teacherProfessor => 'ಶಿಕ್ಷಕ/ಪ್ರಾಧ್ಯಾಪಕ';
+
+  @override
+  String get teamVisit => 'ತಂಡದ ಭೇಟಿ';
+
+  @override
+  String get tellUsYourStory => 'ನಿಮ್ಮ ಕಥೆಯನ್ನು ನಮಗೆ ತಿಳಿಸಿ';
 
   @override
   String get telugu => 'ತೆಲುಗು';
@@ -2898,17 +4509,229 @@ class AppLocalizationsKn extends AppLocalizations {
   String get textSuper => 'ಸೂಪರ್';
 
   @override
+  String themesCount(Object count) {
+    return 'Themes ($count)';
+  }
+
+  @override
   String get thisFieldIsRequired => 'ಈ ಕ್ಷೇತ್ರ ಅಗತ್ಯ';
+
+  @override
+  String get threeXReplies => '3x Replies';
+
+  @override
+  String get tier4Vip => 'TIER 4 VIP';
+
+  @override
+  String get tillUMarry => 'ಮದುವೆಯಾಗುವವರೆಗೆ';
+
+  @override
+  String get tipPersonalizedNotes => 'Tip: Personalized notes get 3x replies';
+
+  @override
+  String toContact(String name) {
+    return 'ಇವರಿಗೆ: $name';
+  }
+
+  @override
+  String get topDelivery => 'Top Delivery';
+
+  @override
+  String get totalBlocks => 'ಒಟ್ಟು ಬ್ಲಾಕ್‌ಗಳು';
 
   @override
   String get totalCount => 'ಒಟ್ಟು:';
 
   @override
+  String get totalFemales => 'ಒಟ್ಟು ಮಹಿಳೆಯರು';
+
+  @override
+  String get totalMales => 'ಒಟ್ಟು ಪುರುಷರು';
+
+  @override
+  String get totalMessages => 'ಒಟ್ಟು ಸಂದೇಶಗಳು';
+
+  @override
   String get totalProfiles => 'Total Profiles';
+
+  @override
+  String totalSavings(int amount) {
+    return 'ಒಟ್ಟು ಉಳಿತಾಯ: ₹$amount';
+  }
+
+  @override
+  String get totalUsers => 'ಒಟ್ಟು ಬಳಕೆದಾರರು';
+
+  @override
+  String get tourBookmarkDesc =>
+      'Found a profile you like? Bookmark it to view it later in your Saved list.';
+
+  @override
+  String get tourBookmarkTitle => 'Save for later';
+
+  @override
+  String get tourBottomHome => 'Home Feed';
+
+  @override
+  String get tourBottomHomeDesc =>
+      'Scroll through thousands of verified profiles.';
+
+  @override
+  String get tourBottomProfile => 'Your Profile';
+
+  @override
+  String get tourBottomProfileDesc =>
+      'Manage your own biodata and photos here.';
+
+  @override
+  String get tourBottomSettings => 'App Settings';
+
+  @override
+  String get tourBottomSettingsDesc =>
+      'Change language, notification settings, or contact support.';
+
+  @override
+  String get tourBottomShared => 'Shared Profiles';
+
+  @override
+  String get tourBottomSharedDesc =>
+      'See profiles you\'ve shared or received via WhatsApp/Link.';
+
+  @override
+  String get tourChatDesc =>
+      'View your conversations and incoming interests here.';
+
+  @override
+  String get tourChatTitle => 'Messages & Chat';
+
+  @override
+  String get tourFilterDesc =>
+      'Narrow down by Age, Education, or Profession to see only who you want.';
+
+  @override
+  String get tourFilterTitle => 'Advanced Filters';
+
+  @override
+  String get tourInstagramDesc =>
+      'See daily new profiles and success stories on Instagram.';
+
+  @override
+  String get tourInstagramTitle => 'Follow Us';
+
+  @override
+  String get tourInterestDesc =>
+      'Send a heart to let them know you\'re interested in their biodata.';
+
+  @override
+  String get tourInterestTitle => 'Express Interest';
+
+  @override
+  String get tourLocationDesc =>
+      'Filter profiles by State, District, or Taluka to find matches near you.';
+
+  @override
+  String get tourLocationTitle => 'Select Location';
+
+  @override
+  String get tourMatchesMatchedDesc =>
+      'ಇಬ್ಬರೂ ಪರಸ್ಪರ ಆಸಕ್ತಿ ವ್ಯಕ್ತಪಡಿಸಿದ ಪಂದ್ಯಗಳು!';
+
+  @override
+  String get tourMatchesMatchedTitle => 'ಹೊಂದಾಣಿಕೆಯಾದ ಪ್ರೊಫೈಲ್‌ಗಳು';
+
+  @override
+  String get tourMatchesReceivedDesc =>
+      'ವಾಟ್ಸಾಪ್ ಅಥವಾ ಲಿಂಕ್ ಮೂಲಕ ಇತರರು ನಿಮ್ಮೊಂದಿಗೆ ಹಂಚಿಕೊಂಡ ಪ್ರೊಫೈಲ್‌ಗಳು.';
+
+  @override
+  String get tourMatchesReceivedTitle => 'ಸ್ವೀಕರಿಸಿದ ಪ್ರೊಫೈಲ್‌ಗಳು';
+
+  @override
+  String get tourMatchesSearchDesc =>
+      'ಹೆಸರು ಅಥವಾ ಶಿಕ್ಷಣವನ್ನು ಬಳಸಿಕೊಂಡು ನಿಮ್ಮೊಂದಿಗೆ ಅಥವಾ ನೀವು ಹಂಚಿಕೊಂಡ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ತ್ವರಿತವಾಗಿ ಹುಡುಕಿ.';
+
+  @override
+  String get tourMatchesSearchTitle => 'ಹಂಚಿಕೊಂಡ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಹುಡುಕಿ';
+
+  @override
+  String get tourMatchesSentDesc =>
+      'ನೀವು ಕುಟುಂಬ ಮತ್ತು ಸ್ನೇಹಿತರೊಂದಿಗೆ ಹಂಚಿಕೊಂಡ ಎಲ್ಲಾ ಪ್ರೊಫೈಲ್‌ಗಳು ಇಲ್ಲಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತವೆ.';
+
+  @override
+  String get tourMatchesSentTitle => 'ಕಳುಹಿಸಿದ ಪ್ರೊಫೈಲ್‌ಗಳು';
+
+  @override
+  String get tourProfileEditDesc =>
+      'ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ವಿವರಗಳು, ಫೋಟೋಗಳು ಮತ್ತು ಆದ್ಯತೆಗಳನ್ನು ಯಾವಾಗ ಬೇಕಾದರೂ ಅಪ್‌ಡೇಟ್ ಮಾಡಿ.';
+
+  @override
+  String get tourProfileEditTitle => 'ಪ್ರೊಫೈಲ್ ಎಡಿಟ್ ಮಾಡಿ';
+
+  @override
+  String get tourProfilePdfDesc =>
+      'ನಿಮ್ಮ ಬಯೋಡೇಟಾದ ವೃತ್ತಿಪರ PDF ಅನ್ನು ರಚಿಸಿ ಮತ್ತು ಕುಟುಂಬದ ಸದಸ್ಯರೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಿ.';
+
+  @override
+  String get tourProfilePdfTitle => 'ಬಯೋಡೇಟಾ PDF ರಫ್ತು ಮಾಡಿ';
+
+  @override
+  String get tourProfilePhotosDesc =>
+      'ಉತ್ತಮ ಪ್ರಭಾವ ಬೀರಲು ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಫೋಟೋಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ, ಮರುಹೊಂದಿಸಿ ಅಥವಾ ಅಳಿಸಿ.';
+
+  @override
+  String get tourProfilePhotosTitle => 'ಫೋಟೋಗಳನ್ನು ನಿರ್ವಹಿಸಿ';
+
+  @override
+  String get tourProfileSavedDesc =>
+      'ನಂತರ ವೀಕ್ಷಿಸಲು ನೀವು ಬುಕ್‌ಮಾರ್ಕ್ ಮಾಡಿದ ಎಲ್ಲಾ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ನೋಡಿ.';
+
+  @override
+  String get tourProfileSavedTitle => 'ಉಳಿಸಿದ ಪ್ರೊಫೈಲ್‌ಗಳು';
+
+  @override
+  String get tourProfileTrustDesc =>
+      'ನಿಮ್ಮ ವಿಶ್ವಾಸಾರ್ಹತೆಯ ಸ್ಕೋರ್. ಇದನ್ನು ಹೆಚ್ಚಿಸಲು ನಿಮ್ಮ ಐಡಿ, ಸೆಲ್ಫಿ ಮತ್ತು ಸಮುದಾಯವನ್ನು ಪರಿಶೀಲಿಸಿ.';
+
+  @override
+  String get tourProfileTrustTitle => 'ಟ್ರಸ್ಟ್ ಸ್ಕೋರ್';
+
+  @override
+  String get tourSearchDesc =>
+      'Looking for someone specific? Type their name or education here.';
+
+  @override
+  String get tourSearchTitle => 'Search Profiles';
+
+  @override
+  String get tourShareDesc =>
+      'Easily share profiles via WhatsApp with your parents or relatives for their opinion.';
+
+  @override
+  String get tourShareTitle => 'Share with family';
+
+  @override
+  String get tourWhatsappDesc =>
+      'Direct contact with our admin for help or profile changes.';
+
+  @override
+  String get tourWhatsappTitle => 'WhatsApp Support';
 
   @override
   String get traditionalFormalAttire =>
       'ಸಾಂಪ್ರದಾಯಿಕ ಅಥವಾ ಔಪಚಾರಿಕ ಉಡುಗೆ (ಸೀರೆ, ಸಲ್ವಾರ್ ಕಮೀಜ್, ಕುರ್ತಾ)';
+
+  @override
+  String get translatesWholePdfDesc =>
+      'Translates whole PDF (keys & profile info)';
+
+  @override
+  String get trustAllianceBadge => '✦ ಅಧಿಕೃತ ಮೈತ್ರಿ';
+
+  @override
+  String get trustDiscountApplied => 'ಟ್ರಸ್ಟ್ ಸ್ಕೋರ್ ರಿಯಾಯಿತಿ ಅನ್ವಯಿಸಲಾಗಿದೆ';
+
+  @override
+  String get trustLevel => 'TRUST LEVEL';
 
   @override
   String get trustScore => 'ನಂಬಿಕೆ ಸ್ಕೋರ್';
@@ -2929,6 +4752,9 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get trusted => 'ವಿಶ್ವಾಸಾರ್ಹ';
+
+  @override
+  String get trustedCommunityBadge => '100% ವಿಶ್ವಾಸಾರ್ಹ ಸಮುದಾಯ';
 
   @override
   String get trustedMember => 'Trusted Member';
@@ -2957,10 +4783,17 @@ class AppLocalizationsKn extends AppLocalizations {
   String get twentyLakhPlus => '₹20 ಲಕ್ಷ+';
 
   @override
+  String get twoMonthsFree => '2 Months Free';
+
+  @override
   String get twoToFiveLakh => '₹2 - ₹5 ಲಕ್ಷ';
 
   @override
   String get typeAMessage => 'ಸಂದೇಶ ಬರೆಯಿರಿ...';
+
+  @override
+  String get typeCustomIntroNoteHint =>
+      'Type your custom matrimonial intro note here...\n(e.g., family background, career aspirations, shared values)';
 
   @override
   String get typeMessage => 'ಸಂದೇಶ ಟೈಪ್ ಮಾಡಿ...';
@@ -2968,6 +4801,9 @@ class AppLocalizationsKn extends AppLocalizations {
   @override
   String get unauthorizedAccessAdminsOnly =>
       'ಅನಧಿಕೃತ ಪ್ರವೇಶ. ಅಡ್ಮಿನ್‌ಗಳಿಗೆ ಮಾತ್ರ.';
+
+  @override
+  String get unblockAllProFeatures => 'ಎಲ್ಲಾ ಪ್ರೊ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಅನ್ಲಾక్ ಮಾಡಿ';
 
   @override
   String get under2Lakh => '₹2 ಲಕ್ಷಕ್ಕಿಂತ ಕಡಿಮೆ';
@@ -2992,6 +4828,12 @@ class AppLocalizationsKn extends AppLocalizations {
   String get unlimitedBookmarks => 'ಅನಿಯಮಿತ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳು';
 
   @override
+  String get unlimitedContactUnlocks => 'ಅನಿಯಮಿತ ಸಂಪರ್ಕ ಅನ್‌ಲಾಕ್‌ಗಳು';
+
+  @override
+  String get unlimitedHandpickedMatches => 'ದೈನಂದಿನ ಬೇಡಿಕೆಯ ಪಂದ್ಯಗಳು';
+
+  @override
   String get unlimitedProfileViews => 'ಅನಿಯಮಿತ ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಣೆಗಳು';
 
   @override
@@ -2999,6 +4841,36 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get unlockAdvancedFilters => 'ಸುಧಾರಿತ ಫಿಲ್ಟರ್‌ಗಳನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಿ';
+
+  @override
+  String get unlockCommunityFiltersDesc =>
+      'Filter Gotra, Maternal Gotra (मोसळ), Sub-Caste, Tanda/Origin, Height, Income & Lineage for just ₹20/mo or ₹200/yr.';
+
+  @override
+  String get unlockCommunityFiltersTitle => 'Unlock Community Filters (BVS)';
+
+  @override
+  String get unlockDirectMessageAd =>
+      '1 ನೇರ ಸಂದೇಶವನ್ನು ಉಚಿತವಾಗಿ ಅನ್‌ಲಾಕ್ ಮಾಡಲು 3 ಜಾಹೀರಾತುಗಳನ್ನು ನೋಡಿ!';
+
+  @override
+  String get unlockForPriceButton => 'Unlock for ₹20/mo or ₹200/yr ➔';
+
+  @override
+  String get unlockMatchmakerFiltersDesc =>
+      'Direct contact numbers, 36 Guna Score, Ancestral Land Holdings & RM Curation available on VIP Matchmaker plans.';
+
+  @override
+  String get unlockMatchmakerFiltersTitle => 'Unlock Matchmaker Filters';
+
+  @override
+  String get unlockMoreViewsAd =>
+      'ಇಂದಿನ 5 ಹೆಚ್ಚಿನ ವೀಕ್ಷಣೆಗಳನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು ತ್ವರಿತ ಜಾಹೀರಾತು ನೋಡಿ!';
+
+  @override
+  String unlockMoreVisitors(int count) {
+    return 'ಮತ್ತಷ್ಟು $count ಸಂದರ್ಶಕರನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಿ!';
+  }
 
   @override
   String get unlockNow => 'ಈಗ ಅನ್‌ಲಾಕ್ ಮಾಡಿ';
@@ -3011,6 +4883,13 @@ class AppLocalizationsKn extends AppLocalizations {
       'ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಸುಧಾರಿಸಲು ಪ್ರೀಮಿಯಂ ಬಳಸಿ';
 
   @override
+  String get unlockPremiumFiltersDesc =>
+      'Access Govt ID Verified, Kundali Dosha, Diet, Sector, and Active Responder filters with Premium self-service plans.';
+
+  @override
+  String get unlockPremiumFiltersTitle => 'Unlock Premium Filters';
+
+  @override
   String get unlockToDownload =>
       'ಈ ಟೆಂಪ್ಲೇಟ್ ಅನ್ನು 5+ ಭಾಷೆಗಳಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಮತ್ತು ಹಂಚಿಕೊಳ್ಳಲು ಅನ್‌ಲಾಕ್ ಮಾಡಿ.';
 
@@ -3021,7 +4900,30 @@ class AppLocalizationsKn extends AppLocalizations {
   String get unsave => 'ಅನ್‌ಸೇವ್';
 
   @override
+  String get unsavedDraftBodyGeneric =>
+      'ನೀವು ನಮೂದಿಸಿದ ಮಾಹಿತಿ ಸುರಕ್ಷಿತವಾಗಿದೆ. ಮುಂದುವರಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ.';
+
+  @override
+  String unsavedDraftBodyWithName(String name) {
+    return '$name ಅವರ ಬಯೋಡೇಟಾ ಡ್ರಾಫ್ಟ್ ಉಳಿಸಲಾಗಿದೆ. ಅಲ್ಲಿಂದಲೇ ಮುಂದುವರಿಸಿ.';
+  }
+
+  @override
+  String get unsavedDraftTitle => '📝 ಅಪೂರ್ಣ ಬಯೋಡೇಟಾ ಡ್ರಾಫ್ಟ್ ಲಭ್ಯವಿದೆ!';
+
+  @override
+  String get unverified => 'ಪರಿಶೀಲಿಸದ';
+
+  @override
+  String get upcomingMelavas => 'ಮುಂಬರುವ ಮೇಳಗಳು';
+
+  @override
   String get update => 'ನವೀಕರಿಸಿ';
+
+  @override
+  String updateFailed(String error) {
+    return 'ಅಪ್‌ಡೇಟ್ ವಿಫಲವಾಗಿದೆ: $error';
+  }
 
   @override
   String get updateProfile => 'ಪ್ರೊಫೈಲ್ ಅಪ್‌ಡೇಟ್ ಮಾಡಿ';
@@ -3043,6 +4945,10 @@ class AppLocalizationsKn extends AppLocalizations {
   String get upgradeRequired => 'ಅಪ್‌ಗ್ರೇಡ್ ಅಗತ್ಯವಿದೆ';
 
   @override
+  String get upgradeToCommunityButton =>
+      'Upgrade to Community (₹20/mo or ₹200/yr)';
+
+  @override
   String get upgradeToPremium => 'ಪ್ರೀಮಿಯಂಗೆ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ';
 
   @override
@@ -3054,12 +4960,28 @@ class AppLocalizationsKn extends AppLocalizations {
       'Upgrade to Premium to access granular filters';
 
   @override
+  String get upgradeToShareMore => 'ಹೆಚ್ಚು ಹಂಚಿಕೊಳ್ಳಲು ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ';
+
+  @override
   String get upgradeToUnlockAllFeatures =>
       'ಎಲ್ಲಾ ವೈಶಿಷ್ಟ್ಯ ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ';
 
   @override
+  String get upgradeToUnlockPremiumFeatures =>
+      'ಎಲ್ಲಾ ಜಾಹೀರಾತುಗಳನ್ನು ತೆಗೆದುಹಾಕಲು ಮತ್ತು ಪ್ರೀಮಿಯಂ ಬಯೋಡೇಟಾ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ.';
+
+  @override
+  String get uploadBvsCardPrompt =>
+      'ನಿಮ್ಮ ಬಂಜಾರಾ ವಿರಾಸತ್ ಸಂಘ (BVS) ಗುರುತಿನ ಚೀಟಿ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ';
+
+  @override
   String get uploadCommunityCertificateLetter =>
       'ಸಮುದಾಯ ಪ್ರಮಾಣಪತ್ರ / ಪತ್ರ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ';
+
+  @override
+  String uploadFailed(String error) {
+    return 'ಅಪ್‌ಲೋಡ್ ವಿಫಲವಾಗಿದೆ: $error';
+  }
 
   @override
   String get uploadYourPhotos => 'ನಿಮ್ಮ ಉತ್ತಮ ಫೋಟೋಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ';
@@ -3084,8 +5006,14 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಉತ್ತಮ ಫಲಿತಾಂಶಗಳಿಗಾಗಿ ನೈಸರ್ಗಿಕ ಬೆಳಕನ್ನು ಬಳಸಿ';
 
   @override
+  String get userBlockRequestSubmitted => 'User block request submitted';
+
+  @override
   String get userBlockedSuccessfully =>
       'ಬಳಕೆದಾರರನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ';
+
+  @override
+  String get userEngagement => 'ಬಳಕೆದಾರರ ತೊಡಗಿಸಿಕೊಳ್ಳುವಿಕೆ';
 
   @override
   String get userIdNotFound => 'ಬಳಕೆದಾರ ಐಡಿ ಕಂಡುಬಂದಿಲ್ಲ';
@@ -3104,6 +5032,32 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get usingGps => 'GPS ಬಳಸಲಾಗುತ್ತಿದೆ';
+
+  @override
+  String get vadhuVarSuchakInitiative => 'Vadhu Var Suchak Initiative';
+
+  @override
+  String get vendorNetworkEffectDesc =>
+      'Self-register your services to receive direct 1-click WhatsApp inquiries from thousands of Banjara families.';
+
+  @override
+  String get vendorRegistration => 'Vendor Registration';
+
+  @override
+  String vendorRegistrationSubmittedCongrats(Object name) {
+    return 'Congratulations! $name has been submitted for verified vendor listing on the BanjaraBio Network.';
+  }
+
+  @override
+  String get vendorTermsAgreement =>
+      'I agree to provide authentic, verified wedding services to Banjara community families with 100% transparency.';
+
+  @override
+  String get vendorVerificationDeskNote =>
+      'Our vendor verification desk will verify and activate your listing within 2-4 hours.';
+
+  @override
+  String get venue => 'ಸ್ಥಳ';
 
   @override
   String get verificationBadge => 'ಪರಿಶೀಲನಾ ಬ್ಯಾಡ್ಜ್';
@@ -3131,7 +5085,19 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಪರಿಶೀಲಿಸಲಾಗಿದೆ! ಟ್ರಸ್ಟ್ ಸ್ಕೋರ್‌ಗೆ +10 ಅಂಕಗಳನ್ನು ಸೇರಿಸಲಾಗಿದೆ';
 
   @override
+  String get verifiedBiodata => 'Verified Biodata';
+
+  @override
   String get verifiedCommunityMember => 'ಪರಿಶೀಲಿತ ಸಮುದಾಯ ಸದಸ್ಯ';
+
+  @override
+  String verifiedCountBadge(int count) {
+    return '$count Verified';
+  }
+
+  @override
+  String get verifiedHoroscopeOnMutual =>
+      'Verified horoscope chart on mutual match interest';
 
   @override
   String get verifiedProfile => 'ಪರಿಶೀಲಿಸಿದ ಪ್ರೊಫೈಲ್';
@@ -3142,6 +5108,9 @@ class AppLocalizationsKn extends AppLocalizations {
   @override
   String get verifiedProfilesGet5xMoreResponses =>
       'ಪರಿಶೀಲಿಸಿದ ಪ್ರೊಫೈಲ್‌ಗಳು 5 ಪಟ್ಟು ಹೆಚ್ಚು ಪ್ರತಿಕ್ರಿಯೆಗಳನ್ನು ಪಡೆಯುತ್ತವೆ ಮತ್ತು ಹುಡುಕಾಟ ಫಲಿತಾಂಶಗಳಲ್ಲಿ ಉನ್ನತವಾಗಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತವೆ.';
+
+  @override
+  String get verifiedSalary => 'VERIFIED SALARY';
 
   @override
   String get verifiedTrusted => 'ಪರಿಶೀಲಿಸಿದ ಮತ್ತು ವಿಶ್ವಾಸಾರ್ಹ';
@@ -3181,6 +5150,9 @@ class AppLocalizationsKn extends AppLocalizations {
   String get veryFair => 'ಬಹಳ ಬಿಳಿ';
 
   @override
+  String get vettedFamily => 'VETTED FAMILY';
+
+  @override
   String get videoBioIntro => 'ವೀಡಿಯೊ ಬಯೋ / ಪರಿಚಯ';
 
   @override
@@ -3202,13 +5174,22 @@ class AppLocalizationsKn extends AppLocalizations {
   String get viewBiodata => 'ಬಯೋಡೇಟಾ ವೀಕ್ಷಿಸಿ';
 
   @override
+  String get viewBiodataPdf => 'View Biodata PDF';
+
+  @override
   String get viewDetails => 'ವಿವರಗಳನ್ನು ವೀಕ್ಷಿಸಿ';
 
   @override
   String get viewLabel => 'ನೋಟ';
 
   @override
+  String get viewPremiumPlansButton => 'View Premium Plans ➔';
+
+  @override
   String get viewProfile => 'ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಿಸಿ';
+
+  @override
+  String get viewVenue => 'ಸ್ಥಳ ವೀಕ್ಷಿಸಿ';
 
   @override
   String get viewYourBookmarkedProfiles => 'ಬುಕ್‌ಮಾರ್ಕ್ ಮಾಡಿದ ಪ್ರೊಫೈಲ್ ನೋಡಿ';
@@ -3220,10 +5201,61 @@ class AppLocalizationsKn extends AppLocalizations {
   String get village => 'ಗ್ರಾಮ';
 
   @override
+  String get villageTanda => 'ಗ್ರಾಮ / ತಾಂಡಾ';
+
+  @override
+  String get villageTandaExampleHint =>
+      'e.g. Pohradevi Tanda, Sevadas Nagar...';
+
+  @override
+  String get vipFeatures => 'ವಿಐಪಿ ವೈಶಿಷ್ಟ್ಯಗಳು';
+
+  @override
+  String get vipFiftyPercentOff => '50% OFF VIP';
+
+  @override
+  String get vipMatchmaker => 'ವಿಐಪಿ ಮ್ಯಾಚ್ ಸೃಷ್ಟಿಕರ್ತ';
+
+  @override
+  String get vipNote => 'VIP NOTE 👑';
+
+  @override
+  String get vipPlanDesc => 'ಆದ್ಯತೆಯ ಬೆಂಬಲದೊಂದಿಗೆ ಅತ್ಯುತ್ತಮ ಅನುಭವ';
+
+  @override
+  String get vipPlanName => 'ವಿಐಪಿ';
+
+  @override
+  String get vipPropertyAssets => 'VIP PROPERTY & ASSET HOLDINGS';
+
+  @override
+  String get vipRoyal => '👑 VIP Royal';
+
+  @override
+  String get vipSpotlightElitePool => 'VIP Spotlight & Elite Pool';
+
+  @override
+  String get vipSpotlightElitePoolSubtitle =>
+      'Top-tier prominent Banjara families with premium background checks';
+
+  @override
   String get visibleToAllProfiles => 'ಎಲ್ಲರಿಗೂ ಕಾಣಿಸುತ್ತದೆ';
 
   @override
   String get visibleToCloseMatchesOnly => 'ಹತ್ತಿರದವರಿಗೆ ಮಾತ್ರ ಕಾಣಿಸುತ್ತದೆ';
+
+  @override
+  String get vouchBadgeRequirementNotice =>
+      '\"ಸಮುದಾಯ ವಿಶ್ವಾಸಾರ್ಹ\" ಬ್ಯಾಡ್ಜ್ ಪಡೆಯಲು ಪರಿಶೀಲಿಸಿದ ಸದಸ್ಯರಿಂದ 5 ದೃಢೀಕರಣಗಳನ್ನು ಪಡೆಯಿರಿ.';
+
+  @override
+  String get watchAdToUnlock => 'ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಜಾಹೀರಾತು ನೋಡಿ';
+
+  @override
+  String get watchAdToUnlockAll => 'ಎಲ್ಲವನ್ನೂ ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಜಾಹೀರಾತು ನೋಡಿ';
+
+  @override
+  String get watchQuickAd => 'ತ್ವರಿತ ಜಾಹೀರಾತನ್ನು ವೀಕ್ಷಿಸಿ';
 
   @override
   String get weEncounteredAnUnexpectedErrorWhileProce =>
@@ -3238,6 +5270,15 @@ class AppLocalizationsKn extends AppLocalizations {
       'ನಿಮ್ಮ ಸಮುದಾಯ ವಿವರಗಳನ್ನು ನಾವು ಶೀಘ್ರದಲ್ಲೇ ಪರಿಶೀಲಿಸುತ್ತೇವೆ. +15 ಅಂಕಗಳು ಬಾಕಿ ಇವೆ.';
 
   @override
+  String get weddingDate => 'ಮದುವೆಯ ದಿನಾಂಕ';
+
+  @override
+  String get weeklyCheckIn => 'ಸಾಪ್ತಾಹಿಕ ಚೆಕ್-ಇನ್';
+
+  @override
+  String get welcomeBackAccountFound => 'ಮರಳಿ ಸ್ವಾಗತ! ನಿಮ್ಮ ಖಾತೆ ಕಂಡುಬಂದಿದೆ.';
+
+  @override
   String get welcomeToBanjaraBio => 'ಬಂಜಾರ ಬಯೋಗೆ ಸ್ವಾಗತ';
 
   @override
@@ -3248,6 +5289,19 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get whatsAppContact => 'ವಾಟ್ಸಾಪ್ ಸಂಪರ್ಕ';
+
+  @override
+  String get whatsAppRishtaCardSubtitle =>
+      'Share premium biodata image card with QR code on WhatsApp';
+
+  @override
+  String get whatsAppRishtaCardTitle => '🚩 WhatsApp Rishta Card (Image + QR)';
+
+  @override
+  String get whatsAppStatusCardPremium => 'WhatsApp Status Card (Premium)';
+
+  @override
+  String get whatsappHelp => 'WhatsApp Help';
 
   @override
   String whatsappShareSubtitle(String name) {
@@ -3264,6 +5318,9 @@ class AppLocalizationsKn extends AppLocalizations {
   String get whereDoYouWork => 'ನೀವು ಎಲ್ಲಿ ಕೆಲಸ ಮಾಡುತ್ತೀರಿ?';
 
   @override
+  String get whoIsThisForQuestion => 'Who are you searching for?';
+
+  @override
   String get whoViewedMe => 'ನನ್ನನ್ನು ಯಾರು ನೋಡಿದರು';
 
   @override
@@ -3273,10 +5330,41 @@ class AppLocalizationsKn extends AppLocalizations {
   String get widowed => 'ವಿಧವೆ/ವಿಧುರ';
 
   @override
+  String get women => 'ಮಹಿಳೆಯರು';
+
+  @override
+  String get working => 'Working';
+
+  @override
+  String get workspace => 'ವರ್ಕ್‌ಸ್ಪೇಸ್';
+
+  @override
   String get writeAboutYourself => 'ನಿಮ್ಮ ಬಗ್ಗೆ ಏನಾದರೂ ಬರೆಯಿರಿ...';
 
   @override
+  String get writeCustomBlessing => 'Write Custom Blessing / Deity Name';
+
+  @override
+  String get writeCustomBlessingSubtitle =>
+      'Type any family Kuldevi, Guru, or personalized deity mantra';
+
+  @override
+  String get writeYourOwnGenuineMessage =>
+      'Write your own genuine message or edit the selected template above:';
+
+  @override
   String get year => 'ವರ್ಷ';
+
+  @override
+  String yearsLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'ವರ್ಷಗಳು',
+      one: 'ವರ್ಷ',
+    );
+    return '$_temp0';
+  }
 
   @override
   String yearsOld(String age) {
@@ -3284,10 +5372,10 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
-  String get upgradeToShareMore => 'ಹೆಚ್ಚು ಹಂಚಿಕೊಳ್ಳಲು ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ';
+  String get yes => 'ಹೌದು';
 
   @override
-  String get yes => 'ಹೌದು';
+  String get yesInterest => 'ಹೌದು, ಆಸಕ್ತಿ ಇದೆ';
 
   @override
   String get yesterday => 'ನಿನ್ನೆ';
@@ -3295,6 +5383,11 @@ class AppLocalizationsKn extends AppLocalizations {
   @override
   String get youNeedAProfileToShareIt =>
       'ಹಂಚಿಕೊಳ್ಳಲು ನಿಮಗೆ ಪ್ರೊಫೈಲ್ ಅಗತ್ಯವಿದೆ.';
+
+  @override
+  String youSave(int amount) {
+    return 'ನೀವು ₹$amount ಉಳಿಸುತ್ತೀರಿ';
+  }
 
   @override
   String get youWillNoLongerSeeThisProfile =>
@@ -3339,6 +5432,9 @@ class AppLocalizationsKn extends AppLocalizations {
       'ನಿಮ್ಮ ಸೆಲ್ಫಿ ಸಲ್ಲಿಸಲಾಗಿದೆ. ನಮ್ಮ ತಂಡವು ಅದನ್ನು ಪರಿಶೀಲಿಸುತ್ತದೆ.';
 
   @override
+  String get yourSuccessStory => 'ನಿಮ್ಮ ಯಶಸ್ಸಿನ ಕಥೆ';
+
+  @override
   String get yourTrustScore => 'ನಿಮ್ಮ ಟ್ರಸ್ಟ್ ಸ್ಕೋರ್';
 
   @override
@@ -3347,808 +5443,5 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
-  String get itSAMatch => 'ಹೊಂದಾಣಿಕೆಯಾಗಿದೆ!';
-
-  @override
-  String sharedProfilesWithEachOther(String name) {
-    return 'ನೀವು ಮತ್ತು $name ಪರಸ್ಪರ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಹಂಚಿಕೊಂಡಿದ್ದೀರಿ.';
-  }
-
-  @override
-  String get mutualMatch => 'ಪರಸ್ಪರ ಹೊಂದಾಣಿಕೆ';
-
-  @override
-  String toContact(String name) {
-    return 'ಇವರಿಗೆ: $name';
-  }
-
-  @override
-  String fromContact(String name) {
-    return 'ಇವರಿಂದ: $name';
-  }
-
-  @override
-  String countProfileViews(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಣೆಗಳು',
-      one: '1 ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಣೆ',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get matchedBadge => 'ಹೊಂದಿಕೆಯಾಗಿದೆ';
-
-  @override
-  String get premiumBadge => 'ಪ್ರೀಮಿಯಂ';
-
-  @override
-  String get contactLabel => 'ಸಂಪರ್ಕ';
-
-  @override
-  String profileSharedVia(String profileName, String title) {
-    return '$title ಮೂಲಕ $profileName ಹಂಚಿಕೊಳ್ಳಲಾಗಿದೆ';
-  }
-
-  @override
-  String failedToSendMessage(String error) {
-    return 'ಸಂದೇಶ ಕಳುಹಿಸಲು ವಿಫಲವಾಗಿದೆ: $error';
-  }
-
-  @override
-  String uploadFailed(String error) {
-    return 'ಅಪ್‌ಲೋಡ್ ವಿಫಲವಾಗಿದೆ: $error';
-  }
-
-  @override
-  String updateFailed(String error) {
-    return 'ಅಪ್‌ಡೇಟ್ ವಿಫಲವಾಗಿದೆ: $error';
-  }
-
-  @override
-  String errorWithLabel(String label) {
-    return 'ದೋಷ: $label';
-  }
-
-  @override
-  String referenceWithNumber(int number) {
-    return 'ಉಲ್ಲೇಖ $number';
-  }
-
-  @override
-  String get villageTanda => 'ಗ್ರಾಮ / ತಾಂಡಾ';
-
-  @override
-  String get ageLabel => 'ವಯಸ್ಸು';
-
-  @override
-  String get heightLabel => 'ಎತ್ತರ';
-
-  @override
-  String get surnameLabel => 'ಮನೆತನದ ಹೆಸರು';
-
-  @override
-  String get dateOfBirthLabel => 'ಹುಟ್ಟಿದ ದಿನಾಂಕ';
-
-  @override
-  String get birthTimeLabel => 'ಹುಟ್ಟಿದ ಸಮಯ';
-
-  @override
-  String get birthPlaceLabel => 'ಹುಟ್ಟಿದ ಸ್ಥಳ';
-
-  @override
-  String get bloodGroupLabel => 'ರಕ್ತದ ಗುಂಪು';
-
-  @override
-  String get occupationLabel => 'ವೃತ್ತಿ';
-
-  @override
-  String get annualIncomeLabel => 'ವಾರ್ಷಿಕ ಆದಾಯ';
-
-  @override
-  String get currentResidence => 'ಪ್ರಸ್ತುತ ನಿವಾಸ';
-
-  @override
-  String get contactPersonLabel => 'ಸಂಪರ್ಕ ವ್ಯಕ್ತಿ';
-
-  @override
-  String get bestTimeToContact => 'ಸಂಪರ್ಕಿಸಲು ಉತ್ತಮ ಸಮಯ';
-
-  @override
-  String get limitReached => 'ಮಿತಿ ಮೀರಿದೆ';
-
-  @override
-  String get relationLabel => 'ಸಂಬಂಧ';
-
-  @override
-  String get none => 'ಯಾವುದೂ ಇಲ್ಲ';
-
-  @override
-  String yearsLabel(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'ವರ್ಷಗಳು',
-      one: 'ವರ್ಷ',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String brothersCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count ಸಹೋದರರು',
-      one: '1 ಸಹೋದರ',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String sistersCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count ಸಹೋದರಿಯರು',
-      one: '1 ಸಹೋದರಿ',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get siblingsLabel => 'ಸಹೋದರ-ಸಹೋದರಿಯರು';
-
-  @override
-  String siblingsCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count ಒಡಹುಟ್ಟಿದವರು',
-      one: '1 ಒಡಹುಟ್ಟಿದವರು',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get company => 'ಕಂಪನಿ';
-
-  @override
-  String get job => 'ಕೆಲಸ / ಉದ್ಯೋಗ';
-
-  @override
-  String get biodataRequired => 'Biodata Required';
-
-  @override
-  String get guestRestrictionMessage =>
-      'To interact with profiles, express interest, or send messages, you need to create your own biodata first.';
-
-  @override
-  String get createNow => 'Create Now';
-
-  @override
-  String get tourLocationTitle => 'Select Location';
-
-  @override
-  String get tourLocationDesc =>
-      'Filter profiles by State, District, or Taluka to find matches near you.';
-
-  @override
-  String get tourSearchTitle => 'Search Profiles';
-
-  @override
-  String get tourSearchDesc =>
-      'Looking for someone specific? Type their name or education here.';
-
-  @override
-  String get tourFilterTitle => 'Advanced Filters';
-
-  @override
-  String get tourFilterDesc =>
-      'Narrow down by Age, Education, or Profession to see only who you want.';
-
-  @override
-  String get tourChatTitle => 'Messages & Chat';
-
-  @override
-  String get tourChatDesc =>
-      'View your conversations and incoming interests here.';
-
-  @override
-  String get tourBottomHome => 'Home Feed';
-
-  @override
-  String get tourBottomHomeDesc =>
-      'Scroll through thousands of verified profiles.';
-
-  @override
-  String get tourBottomShared => 'Shared Profiles';
-
-  @override
-  String get tourBottomSharedDesc =>
-      'See profiles you\'ve shared or received via WhatsApp/Link.';
-
-  @override
-  String get tourBottomProfile => 'Your Profile';
-
-  @override
-  String get tourBottomProfileDesc =>
-      'Manage your own biodata and photos here.';
-
-  @override
-  String get tourBottomSettings => 'App Settings';
-
-  @override
-  String get tourBottomSettingsDesc =>
-      'Change language, notification settings, or contact support.';
-
-  @override
-  String get tourWhatsappTitle => 'WhatsApp Support';
-
-  @override
-  String get tourWhatsappDesc =>
-      'Direct contact with our admin for help or profile changes.';
-
-  @override
-  String get tourInstagramTitle => 'Follow Us';
-
-  @override
-  String get tourInstagramDesc =>
-      'See daily new profiles and success stories on Instagram.';
-
-  @override
-  String get tourBookmarkTitle => 'Save for later';
-
-  @override
-  String get tourBookmarkDesc =>
-      'Found a profile you like? Bookmark it to view it later in your Saved list.';
-
-  @override
-  String get tourInterestTitle => 'Express Interest';
-
-  @override
-  String get tourInterestDesc =>
-      'Send a heart to let them know you\'re interested in their biodata.';
-
-  @override
-  String get tourShareTitle => 'Share with family';
-
-  @override
-  String get tourShareDesc =>
-      'Easily share profiles via WhatsApp with your parents or relatives for their opinion.';
-
-  @override
-  String get chooseHowToStart =>
-      'ನೀವು ಹೇಗೆ ಪ್ರಾರಂಭಿಸಲು ಬಯಸುತ್ತೀರಿ ಎಂಬುದನ್ನು ಆಯ್ಕೆಮಾಡಿ';
-
-  @override
-  String get exploreAsGuest => 'ಅತಿಥಿಯಾಗಿ ಅನ್ವೇಷಿಸಿ';
-
-  @override
-  String get exitGuestMode => 'ಗೆಸ್ಟ್ ಮೋಡ್‌ನಿಂದ ನಿರ್ಗಮಿಸಿ';
-
-  @override
-  String get guestModeDesc =>
-      'ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ರಚಿಸುವ ಮೊದಲು ಅಪ್ಲಿಕೇಶನ್‌ನ ಮಾರ್ಗದರ್ಶಿ ಪ್ರವಾಸವನ್ನು ತೆಗೆದುಕೊಳ್ಳಿ.';
-
-  @override
-  String get createMyBiodata => 'ನನ್ನ ಬಯೋಡೇಟಾವನ್ನು ರಚಿಸಿ';
-
-  @override
-  String get createBiodataDesc =>
-      'ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಭರ್ತಿ ಮಾಡಿ ಮತ್ತು ತಕ್ಷಣ ಸಂಪರ್ಕಿಸಲು ಪ್ರಾರಂಭಿಸಿ.';
-
-  @override
-  String get needHelpContactAdmin => 'ಸಹಾಯ ಬೇಕೇ? ನಿರ್ವಾಹಕರನ್ನು ಸಂಪರ್ಕಿಸಿ';
-
-  @override
-  String get noMatchesYet => 'ಇನ್ನೂ ಯಾವುದೇ ಮ್ಯಾಚ್‌ಗಳಿಲ್ಲ';
-
-  @override
-  String get noProfilesSharedYet => 'ಇನ್ನೂ ಯಾವುದೇ ಪ್ರೊಫೈಲ್ ಹಂಚಿಕೊಂಡಿಲ್ಲ';
-
-  @override
-  String get noProfilesReceived => 'ಯಾವುದೇ ಪ್ರೊಫೈಲ್ ಸ್ವೀಕರಿಸಿಲ್ಲ';
-
-  @override
-  String get mutualMatchesDesc =>
-      'ಇಬ್ಬರು ಬಳಕೆದಾರರು ಪರಸ್ಪರ ಆಸಕ್ತಿಯನ್ನು ಹಂಚಿಕೊಂಡಾಗ ಪರಸ್ಪರ ಮ್ಯಾಚ್‌ಗಳು ಇಲ್ಲಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತವೆ';
-
-  @override
-  String get startSharingProfilesDesc =>
-      'ಪರಿಪೂರ್ಣ ಮ್ಯಾಚ್ ಅನ್ನು ಹುಡುಕಲು ಸಹಾಯ ಮಾಡಲು ಕುಟುಂಬ ಮತ್ತು ಸ್ನೇಹಿತರೊಂದಿಗೆ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಲು ಪ್ರಾರಂಭಿಸಿ';
-
-  @override
-  String get profilesSharedWithYouDesc =>
-      'ನಿಮ್ಮ ಕುಟುಂಬ ಮತ್ತು ಸ್ನೇಹಿತರಿಂದ ನಿಮ್ಮೊಂದಿಗೆ ಹಂಚಿಕೊಂಡ ಪ್ರೊಫೈಲ್‌ಗಳು ಇಲ್ಲಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತವೆ';
-
-  @override
-  String get enterVillageManually => 'ಗ್ರಾಮ/ಇತರ ಹೆಸರನ್ನು ನಮೂದಿಸಿ';
-
-  @override
-  String get enterVillageHint => 'ಗ್ರಾಮ ಅಥವಾ ತಾಂಡಾ ಹೆಸರನ್ನು ನಮೂದಿಸಿ...';
-
-  @override
-  String get specificLocation => 'ನಿರ್ದಿಷ್ಟ ಸ್ಥಳ';
-
-  @override
-  String get skipAndSelectLevel =>
-      'ಬಿಟ್ಟುಬಿಡಿ ಮತ್ತು ತಾಲ್ಲೂಕು/ಜಿಲ್ಲೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ';
-
-  @override
-  String get optional => 'ಐಚ್ಛಿಕ';
-
-  @override
-  String get tourMatchesSearchTitle => 'ಹಂಚಿಕೊಂಡ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಹುಡುಕಿ';
-
-  @override
-  String get tourMatchesSearchDesc =>
-      'ಹೆಸರು ಅಥವಾ ಶಿಕ್ಷಣವನ್ನು ಬಳಸಿಕೊಂಡು ನಿಮ್ಮೊಂದಿಗೆ ಅಥವಾ ನೀವು ಹಂಚಿಕೊಂಡ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ತ್ವರಿತವಾಗಿ ಹುಡುಕಿ.';
-
-  @override
-  String get tourMatchesSentTitle => 'ಕಳುಹಿಸಿದ ಪ್ರೊಫೈಲ್‌ಗಳು';
-
-  @override
-  String get tourMatchesSentDesc =>
-      'ನೀವು ಕುಟುಂಬ ಮತ್ತು ಸ್ನೇಹಿತರೊಂದಿಗೆ ಹಂಚಿಕೊಂಡ ಎಲ್ಲಾ ಪ್ರೊಫೈಲ್‌ಗಳು ಇಲ್ಲಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತವೆ.';
-
-  @override
-  String get tourMatchesReceivedTitle => 'ಸ್ವೀಕರಿಸಿದ ಪ್ರೊಫೈಲ್‌ಗಳು';
-
-  @override
-  String get tourMatchesReceivedDesc =>
-      'ವಾಟ್ಸಾಪ್ ಅಥವಾ ಲಿಂಕ್ ಮೂಲಕ ಇತರರು ನಿಮ್ಮೊಂದಿಗೆ ಹಂಚಿಕೊಂಡ ಪ್ರೊಫೈಲ್‌ಗಳು.';
-
-  @override
-  String get tourMatchesMatchedTitle => 'ಹೊಂದಾಣಿಕೆಯಾದ ಪ್ರೊಫೈಲ್‌ಗಳು';
-
-  @override
-  String get tourMatchesMatchedDesc =>
-      'ಇಬ್ಬರೂ ಪರಸ್ಪರ ಆಸಕ್ತಿ ವ್ಯಕ್ತಪಡಿಸಿದ ಪಂದ್ಯಗಳು!';
-
-  @override
-  String get tourProfilePhotosTitle => 'ಫೋಟೋಗಳನ್ನು ನಿರ್ವಹಿಸಿ';
-
-  @override
-  String get tourProfilePhotosDesc =>
-      'ಉತ್ತಮ ಪ್ರಭಾವ ಬೀರಲು ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಫೋಟೋಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ, ಮರುಹೊಂದಿಸಿ ಅಥವಾ ಅಳಿಸಿ.';
-
-  @override
-  String get tourProfileTrustTitle => 'ಟ್ರಸ್ಟ್ ಸ್ಕೋರ್';
-
-  @override
-  String get tourProfileTrustDesc =>
-      'ನಿಮ್ಮ ವಿಶ್ವಾಸಾರ್ಹತೆಯ ಸ್ಕೋರ್. ಇದನ್ನು ಹೆಚ್ಚಿಸಲು ನಿಮ್ಮ ಐಡಿ, ಸೆಲ್ಫಿ ಮತ್ತು ಸಮುದಾಯವನ್ನು ಪರಿಶೀಲಿಸಿ.';
-
-  @override
-  String get tourProfilePdfTitle => 'ಬಯೋಡೇಟಾ PDF ರಫ್ತು ಮಾಡಿ';
-
-  @override
-  String get tourProfilePdfDesc =>
-      'ನಿಮ್ಮ ಬಯೋಡೇಟಾದ ವೃತ್ತಿಪರ PDF ಅನ್ನು ರಚಿಸಿ ಮತ್ತು ಕುಟುಂಬದ ಸದಸ್ಯರೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಿ.';
-
-  @override
-  String get tourProfileSavedTitle => 'ಉಳಿಸಿದ ಪ್ರೊಫೈಲ್‌ಗಳು';
-
-  @override
-  String get tourProfileSavedDesc =>
-      'ನಂತರ ವೀಕ್ಷಿಸಲು ನೀವು ಬುಕ್‌ಮಾರ್ಕ್ ಮಾಡಿದ ಎಲ್ಲಾ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ನೋಡಿ.';
-
-  @override
-  String get tourProfileEditTitle => 'ಪ್ರೊಫೈಲ್ ಎಡಿಟ್ ಮಾಡಿ';
-
-  @override
-  String get tourProfileEditDesc =>
-      'ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ವಿವರಗಳು, ಫೋಟೋಗಳು ಮತ್ತು ಆದ್ಯತೆಗಳನ್ನು ಯಾವಾಗ ಬೇಕಾದರೂ ಅಪ್‌ಡೇಟ್ ಮಾಡಿ.';
-
-  @override
-  String get basicPlanName => 'ಬೇಸಿಕ್';
-
-  @override
-  String get premiumPlanName => 'ಪ್ರೀಮಿಯಂ';
-
-  @override
-  String get vipPlanName => 'ವಿಐಪಿ';
-
-  @override
-  String get basicPlanDesc => 'ನಿಮ್ಮ ಹುಡುಕಾಟಕ್ಕೆ ಅಗತ್ಯವಿರುವ ವೈಶಿಷ್ಟ್ಯಗಳು';
-
-  @override
-  String get premiumPlanDesc => 'ಸುಧಾರಿತ ವೈಶಿಷ್ಟ್ಯಗಳು ಮತ್ತು ಉತ್ತಮ ಗೋಚರತೆ';
-
-  @override
-  String get vipPlanDesc => 'ಆದ್ಯತೆಯ ಬೆಂಬಲದೊಂದಿಗೆ ಅತ್ಯುತ್ತಮ ಅನುಭವ';
-
-  @override
-  String get paymentSuccessfulPdfUnlocked =>
-      'ಪಾವತಿ ಯಶಸ್ವಿಯಾಗಿದೆ! PDF ಅನ್‌ಲಾಕ್ ಆಗಿದೆ.';
-
-  @override
-  String get standardPlanName => 'ಸ್ಟ್ಯಾಂಡರ್ಡ್';
-
-  @override
-  String get standardPlanDesc =>
-      'ಒಂದು ತಿಂಗಳವರೆಗೆ ಪ್ರೀಮಿಯಂ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಪ್ರಯತ್ನಿಸಿ';
-
-  @override
-  String get eternalPlanName => 'ಎಟರ್ನಲ್ - ಮದುವೆಯಾಗುವವರೆಗೆ';
-
-  @override
-  String get eternalPlanDesc => 'ಅವಧಿ ಮುಗಿಯುವ ಬಗ್ಗೆ ಇನ್ನು ಮುಂದೆ ಚಿಂತಿಸಬೇಡಿ';
-
-  @override
-  String get elitePlanName => 'ಎಲೈಟ್';
-
-  @override
-  String get elitePlanDesc => 'ವಿಐಪಿ ಪ್ರವೇಶದೊಂದಿಗೆ ಆಯ್ದ ಪಂದ್ಯಗಳು';
-
-  @override
-  String get royalPlanName => 'ರಾಯಲ್';
-
-  @override
-  String get royalPlanDesc =>
-      'ಸಮರ್ಪಿತ ವ್ಯವಸ್ಥಾಪಕರು ನಿಮ್ಮ ಸಂಗಾತಿಯನ್ನು ಹುಡುಕುತ್ತಾರೆ';
-
-  @override
-  String get eternalElitePlanName => 'ಎಟರ್ನಲ್ ಎಲೈಟ್';
-
-  @override
-  String get eternalElitePlanDesc =>
-      'ನಿಮ್ಮ ವೃತ್ತಿಜೀವನದ ಮೇಲೆ ಗಮನ ಹರಿಸಿ, ನಾವು ನಿಮ್ಮ ಜೀವನ ಸಂಗಾತಿಯನ್ನು ಹುಡುಕುತ್ತೇವೆ';
-
-  @override
-  String get selfServicePlans => 'ಸ್ವಯಂ ಸೇವೆ';
-
-  @override
-  String get vipMatchmaker => 'ವಿಐಪಿ ಮ್ಯಾಚ್ ಸೃಷ್ಟಿಕರ್ತ';
-
-  @override
-  String get tillUMarry => 'ಮದುವೆಯಾಗುವವರೆಗೆ';
-
-  @override
-  String get lifetime => 'ಜೀವಿತಾವಧಿ';
-
-  @override
-  String mrpPrice(int price) {
-    return 'MRP ₹$price';
-  }
-
-  @override
-  String bulkDiscount(int percent) {
-    return '$percent% ರಿಯಾಯಿತಿ';
-  }
-
-  @override
-  String youSave(int amount) {
-    return 'ನೀವು ₹$amount ಉಳಿಸುತ್ತೀರಿ';
-  }
-
-  @override
-  String totalSavings(int amount) {
-    return 'ಒಟ್ಟು ಉಳಿತಾಯ: ₹$amount';
-  }
-
-  @override
-  String get trustDiscountApplied => 'ಟ್ರಸ್ಟ್ ಸ್ಕೋರ್ ರಿಯಾಯಿತಿ ಅನ್ವಯಿಸಲಾಗಿದೆ';
-
-  @override
-  String get couponDiscountApplied => 'ಕೂಪನ್ ರಿಯಾಯಿತಿ ಅನ್ವಯಿಸಲಾಗಿದೆ';
-
-  @override
-  String contactUnlocks(int count) {
-    return '$count ಸಂಪರ್ಕ ಅನ್‌ಲಾಕ್‌ಗಳು/ತಿಂಗಳು';
-  }
-
-  @override
-  String handpickedMatches(int count) {
-    return '$count ಆಯ್ದ ಪಂದ್ಯಗಳು/ವಾರ';
-  }
-
-  @override
-  String get dedicatedManager => 'ಸಮರ್ಪಿತ ಸಂಬಂಧ ವ್ಯವಸ್ಥಾಪಕ';
-
-  @override
-  String get profileMakeover => 'ವೃತ್ತಿಪರ ಪ್ರೊಫೈಲ್ ಮೇಕ್ ಓವರ್';
-
-  @override
-  String get featuredBadge => 'ಎಲೈಟ್ ವೆರಿಫೈಡ್ ಬ್ಯಾಡ್ಜ್';
-
-  @override
-  String get featuresIncluded => 'ಒಳಗೊಂಡಿರುವ ವೈಶಿಷ್ಟ್ಯಗಳು:';
-
-  @override
-  String get incognitoMode => 'ಖಾಸಗಿ ಪ್ರೊಫೈಲ್ ಬ್ರೌಸಿಂಗ್';
-
-  @override
-  String get biodataPremiumIncluded => 'ಬಯೋಡೇಟಾ ಪ್ರೀಮಿಯಂ ಒಳಗೊಂಡಿದೆ';
-
-  @override
-  String get unlimitedContactUnlocks => 'ಅನಿಯಮಿತ ಸಂಪರ್ಕ ಅನ್‌ಲಾಕ್‌ಗಳು';
-
-  @override
-  String get unlimitedHandpickedMatches => 'ದೈನಂದಿನ ಬೇಡಿಕೆಯ ಪಂದ್ಯಗಳು';
-
-  @override
-  String get weeklyCheckIn => 'ಸಾಪ್ತಾಹಿಕ ಚೆಕ್-ಇನ್';
-
-  @override
-  String get monthlyCheckIn => 'ಮಾಸಿಕ ಚೆಕ್-ಇನ್';
-
-  @override
-  String get bestValue => 'ಅತ್ಯುತ್ತಮ ಮೌಲ್ಯ';
-
-  @override
-  String get personalConcierge => 'ವೈಯಕ್ತಿಕ ಸಹಾಯಕಿ';
-
-  @override
-  String get vipFeatures => 'ವಿಐಪಿ ವೈಶಿಷ್ಟ್ಯಗಳು';
-
-  @override
-  String get directContactAccess => 'ನೇರ ಸಂಪರ್ಕ ಪ್ರವೇಶ';
-
-  @override
-  String get focusOnCareer =>
-      'ನಿಮ್ಮ ವೃತ್ತಿಜೀವನದ ಮೇಲೆ ಗಮನ ಹರಿಸಿ, ನಾವು ನಿಮ್ಮ ಜೀವನ ಸಂಗಾತಿಯನ್ನು ಹುಡುಕುತ್ತೇವೆ';
-
-  @override
-  String get perMonth => '/ತಿಂಗಳು';
-
-  @override
-  String get forLifetime => 'ಜೀವಿತಾವಧಿಗೆ';
-
-  @override
-  String get emailNotifications => 'Email Notifications';
-
-  @override
-  String get dailyMatchPicks => 'Daily Match Picks';
-
-  @override
-  String get newMatchAlerts => 'New Match Alerts';
-
-  @override
-  String extraViewsUnlocked(int count) {
-    return '$count ಹೆಚ್ಚುವರಿ ನೋಟಗಳನ್ನು ಅನ್ಲಾಕ್ ಮಾಡಲಾಗಿದೆ!';
-  }
-
-  @override
-  String get sendHeartInterested => 'Send a heart to show you\'re interested.';
-
-  @override
-  String get notMatchedCannotMessage =>
-      'You are not matched with this profile, so you can\'t direct message them.';
-
-  @override
-  String get oneMessageUnlocked => '1 Message Unlocked!';
-
-  @override
-  String get seenAllProfiles => 'You\'ve seen all profiles!';
-
-  @override
-  String get signInRequired => 'ಸೈನ್ ಇನ್ ಅಗತ್ಯವಿದೆ';
-
-  @override
-  String get signInRequiredContent =>
-      'ಈ ವೈಶಿಷ್ಟ್ಯವನ್ನು ಬಳಸಲು ದಯವಿಟ್ಟು ಸೈನ್ ಇನ್ ಮಾಡಿ ಅಥವಾ ಖಾತೆಯನ್ನು ರಚಿಸಿ.';
-
-  @override
-  String get watchAdToUnlock => 'ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಜಾಹೀರಾತು ನೋಡಿ';
-
-  @override
-  String get watchAdToUnlockAll => 'ಎಲ್ಲವನ್ನೂ ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಜಾಹೀರಾತು ನೋಡಿ';
-
-  @override
-  String get goProAdFree => 'ಜಾಹೀರಾತು ರಹಿತ ಅನುಭವಕ್ಕಾಗಿ ಪ್ರೊ ಆಗಿ';
-
-  @override
-  String get adNotReady =>
-      'ಜಾಹೀರಾತು ಇನ್ನೂ ಸಿದ್ಧವಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.';
-
-  @override
-  String get upgradeToUnlockPremiumFeatures =>
-      'ಎಲ್ಲಾ ಜಾಹೀರಾತುಗಳನ್ನು ತೆಗೆದುಹಾಕಲು ಮತ್ತು ಪ್ರೀಮಿಯಂ ಬಯೋಡೇಟಾ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ.';
-
-  @override
-  String get couldNotLaunchWhatsApp => 'ವಾಟ್ಸಾಪ್ ಪ್ರಾರಂಭಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ';
-
-  @override
-  String get couldNotLaunchDialer => 'ಫೋನ್ ಡಯಲರ್ ಪ್ರಾರಂಭಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ';
-
-  @override
-  String get searchLeads => 'ಲೀಡ್‌ಗಳನ್ನು ಹುಡುಕಿ...';
-
-  @override
-  String get workspace => 'ವರ್ಕ್‌ಸ್ಪೇಸ್';
-
-  @override
-  String get customMessage => 'ಕಸ್ಟಮ್ ಸಂದೇಶ';
-
-  @override
-  String get logCallOutcome => 'ಕರೆ ಫಲಿತಾಂಶವನ್ನು ದಾಖಲಿಸಿ';
-
-  @override
-  String get apply => 'ಅನ್ವಯಿಸು';
-
-  @override
-  String get registrationFee => 'ನೋಂದಣಿ ಶುಲ್ಕ';
-
-  @override
-  String get unverified => 'ಪರಿಶೀಲಿಸದ';
-
-  @override
-  String get signIn => 'ಸೈನ್ ಇನ್ ಮಾಡಿ';
-
-  @override
-  String unlockMoreVisitors(int count) {
-    return 'ಮತ್ತಷ್ಟು $count ಸಂದರ್ಶಕರನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಿ!';
-  }
-
-  @override
-  String get dailyLimitReached => 'ದೈನಂದಿನ ಮಿತಿ ಮೀರಿದೆ';
-
-  @override
-  String get dailyLimitViewsReached =>
-      'ನಿಮ್ಮ ಎಲ್ಲಾ ದೈನಂದಿನ ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಣೆಗಳನ್ನು ನೀವು ಬಳಸಿದ್ದೀರಿ.';
-
-  @override
-  String get unlockMoreViewsAd =>
-      'ಇಂದಿನ 5 ಹೆಚ್ಚಿನ ವೀಕ್ಷಣೆಗಳನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು ತ್ವರಿತ ಜಾಹೀರಾತು ನೋಡಿ!';
-
-  @override
-  String get directMessage => 'ನೇರ ಸಂದೇಶ';
-
-  @override
-  String get directMessagingPremium =>
-      'ನೇರ ಸಂದೇಶ ಕಳುಹಿಸುವುದು ಪ್ರೀಮಿಯಂ ವೈಶಿಷ್ಟ್ಯವಾಗಿದೆ.';
-
-  @override
-  String get unlockDirectMessageAd =>
-      '1 ನೇರ ಸಂದೇಶವನ್ನು ಉಚಿತವಾಗಿ ಅನ್‌ಲಾಕ್ ಮಾಡಲು 3 ಜಾಹೀರಾತುಗಳನ್ನು ನೋಡಿ!';
-
-  @override
-  String get premiumAccess => 'ಪ್ರೀಮಿಯಂ ಪ್ರವೇಶ';
-
-  @override
-  String get premiumGateSupport =>
-      'ತ್ವರಿತ ಜಾಹೀರಾತನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ನಮ್ಮ ಸಮುದಾಯವನ್ನು ಬೆಂಬಲಿಸಿ,\nಅಥವಾ ಜಾಹೀರಾತು-ಮುಕ್ತ ಅನುಭವಕ್ಕಾಗಿ ಪ್ರೊಗೆ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ.';
-
-  @override
-  String get unblockAllProFeatures => 'ಎಲ್ಲಾ ಪ್ರೊ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಅನ್ಲಾక్ ಮಾಡಿ';
-
-  @override
-  String get monthly => 'ಮಾಸಿಕ';
-
-  @override
-  String get annual => 'ವಾರ್ಷಿಕ';
-
-  @override
-  String get watchQuickAd => 'ತ್ವರಿತ ಜಾಹೀರಾತನ್ನು ವೀಕ್ಷಿಸಿ';
-
-  @override
-  String get continueBlockedUntilAdEnds =>
-      'ಜಾಹೀರಾತು ಮುಗಿಯುವವರೆಗೆ ಅಪ್ಲಿಕೇಶನ್ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ';
-
-  @override
-  String get adCompletedSuccessfully => 'ಜಾಹೀರಾತು ಯಶಸ್ವಿಯಾಗಿ ಪೂರ್ಣಗೊಂಡಿದೆ';
-
-  @override
-  String get continueToApp => 'ಅಪ್ಲಿಕೇಶನ್ ಮುಂದುವರಿಸಿ';
-
-  @override
-  String get preparingAdExperience =>
-      'ಜಾಹೀರಾತು ಅನುಭವವನ್ನು ಸಿದ್ಧಪಡಿಸಲಾಗುತ್ತಿದೆ...';
-
-  @override
-  String get adTemporarilyUnavailable => 'ಜಾಹೀರಾತು ತಾತ್ಕಾಲಿಕವಾಗಿ ಅಲಭ್ಯವಾಗಿದೆ';
-
-  @override
-  String get callAdmin => 'ಅಡ್ಮಿನ್ ಗೆ ಕರೆ ಮಾಡಿ';
-
-  @override
-  String get banjaraBioPro => 'ಬಂಜಾರಬಯೋ ಪ್ರೊ';
-
-  @override
-  String get claimMarriageGift => 'ಮದುವೆ ಉಡುಗೊರೆಯನ್ನು ಪಡೆಯಿರಿ';
-
-  @override
-  String get tellUsYourStory => 'ನಿಮ್ಮ ಕಥೆಯನ್ನು ನಮಗೆ ತಿಳಿಸಿ';
-
-  @override
-  String get partnerName => 'ಜೊತೆಗಾರನ ಹೆಸರು';
-
-  @override
-  String get yourSuccessStory => 'ನಿಮ್ಮ ಯಶಸ್ಸಿನ ಕಥೆ';
-
-  @override
-  String get howDidYouMeet => 'ನೀವು ಹೇಗೆ ಭೇಟಿಯಾದಿರಿ? ಅವರಲ್ಲಿ ನಿಮಗೆ ಏನು ಇಷ್ಟ?';
-
-  @override
-  String get proofOfMarriage => 'ಮದುವೆಯ ಪುರಾವೆ';
-
-  @override
-  String get instagramLink => 'ಇನ್ಸ್ಟಾಗ್ರಾಮ್ ರೀಲ್/ಸ್ಟೋರಿ ಲಿಂಕ್';
-
-  @override
-  String get pasteUrlHere => 'ಇಲ್ಲಿ ಯುಆರ್ಎಲ್ ಪೇಸ್ಟ್ ಮಾಡಿ';
-
-  @override
-  String get weddingDate => 'ಮದುವೆಯ ದಿನಾಂಕ';
-
-  @override
-  String get estimatedRefund => 'ಅಂದಾಜು ಮರುಪಾವತಿ';
-
-  @override
-  String get submitForReview => 'ಪರಿಶೀಲನೆಗಾಗಿ ಸಲ್ಲಿಸಿ';
-
-  @override
-  String get selectRewardType => 'ಉಡುಗೊರೆ ಪ್ರಕಾರವನ್ನು ಆಯ್ಕೆಮಾಡಿ';
-
-  @override
-  String get digital => 'ಡಿಜಿಟಲ್';
-
-  @override
-  String get refund25 => '25% ಮರುಪಾವತಿ';
-
-  @override
-  String get teamVisit => 'ತಂಡದ ಭೇಟಿ';
-
-  @override
-  String get refund35 => '35% ಮರುಪಾವತಿ';
-
-  @override
-  String get successSubmission =>
-      'ಯಶಸ್ಸು! ನಿಮ್ಮ ವಿನಂತಿಯನ್ನು ಪರಿಶೀಲನೆಗಾಗಿ ಸಲ್ಲಿಸಲಾಗಿದೆ.';
-
-  @override
-  String get melavas => 'ಮೇಳಗಳು';
-
-  @override
-  String get upcomingMelavas => 'ಮುಂಬರುವ ಮೇಳಗಳು';
-
-  @override
-  String get callOrganizer => 'ಆಯೋಜಕರಿಗೆ ಕರೆ ಮಾಡಿ';
-
-  @override
-  String get viewVenue => 'ಸ್ಥಳ ವೀಕ್ಷಿಸಿ';
-
-  @override
-  String get organizer => 'ಆಯೋಜಕರು';
-
-  @override
-  String get venue => 'ಸ್ಥಳ';
-
-  @override
-  String get eventDetails => 'ಕಾರ್ಯಕ್ರಮದ ವಿವರಗಳು';
-
-  @override
-  String get browseMatchesTitle => '🔍 ಸಂಬಂಧ ಹುಡುಕಿ (Browse Matches)';
-
-  @override
-  String get browseMatchesDesc => 'ಮಗ, ಮಗಳು, ಸಂಬಂಧಿಕರಿಗೆ ಸೂಕ್ತ ಸಂಬಂಧ ಹುಡುಕಿ.';
-
-  @override
-  String get browseMatchesSubtitle =>
-      'ಕೆಲವು ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಿ ಮತ್ತು ಸೂಕ್ತ ಸಂಬಂಧಗಳನ್ನು ನೋಡಿ';
-
-  @override
-  String get forWhomSearching => 'ಯಾರಿಗಾಗಿ ಸಂಬಂಧ ಹುಡುಕುತ್ತಿದ್ದೀರಿ?';
-
-  @override
-  String get lookingForGender => 'ವರ ಬೇಕಾ ಅಥವಾ ವಧು?';
-
-  @override
-  String get groomBoy => '👦 ವರ (Groom)';
-
-  @override
-  String get brideGirl => '👧 ವಧು (Bride)';
-
-  @override
-  String get selectDistrict => 'ಜಿಲ್ಲೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ';
-
-  @override
-  String get proceedToLogin => 'ಮುಂದುವರಿಯಿರಿ → ಲಾಗಿನ್ ಮಾಡಿ';
-
-  @override
-  String get sibling => 'ಸಹೋದರ/ಸಹೋದರಿ';
+  String get zeroPercentCommission => '💰 0% Commission';
 }

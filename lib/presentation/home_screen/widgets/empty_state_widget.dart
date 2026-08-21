@@ -76,7 +76,7 @@ class EmptyStateWidget extends StatelessWidget {
               Text(
                 AppLocalizations.of(context)?.noProfilesFound ?? 'कोणतेही प्रोफाइल सापडले नाहीत',
                 style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
+                  fontWeight: AppTypography.extraBold,
                   color: theme.colorScheme.onSurface,
                   letterSpacing: -0.2,
                 ),
@@ -139,7 +139,7 @@ class EmptyStateWidget extends StatelessWidget {
                           AppLocalizations.of(context)?.adjustFilters ?? 'फिल्टर्स बदला',
                           style: theme.textTheme.titleSmall?.copyWith(
                             color: theme.colorScheme.onPrimary,
-                            fontWeight: FontWeight.w700,
+                            fontWeight: AppTypography.bold,
                           ),
                         ),
                       ],

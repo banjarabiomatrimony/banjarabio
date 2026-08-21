@@ -113,26 +113,23 @@ class _EducationProfessionSectionState
   ];
 
   String _getLocalizedIncome(String key) {
-    final l10n = AppLocalizations.of(context);
-    if (l10n == null) return key;
-
     switch (key) {
       case 'noIncome':
-        return l10n.noIncome;
+        return '₹0 (No Income)';
       case 'under2Lakh':
-        return l10n.under2Lakh;
+        return '₹0 - ₹2,00,000 / Year';
       case 'twoToFiveLakh':
-        return l10n.twoToFiveLakh;
+        return '₹2,00,000 - ₹5,00,000 / Year';
       case 'fiveToSevenHalfLakh':
-        return l10n.fiveToSevenHalfLakh;
+        return '₹5,00,000 - ₹7,50,000 / Year';
       case 'sevenHalfToTenLakh':
-        return l10n.sevenHalfToTenLakh;
+        return '₹7,50,000 - ₹10,00,000 / Year';
       case 'tenToFifteenLakh':
-        return l10n.tenToFifteenLakh;
+        return '₹10,00,000 - ₹15,00,000 / Year';
       case 'fifteenToTwentyLakh':
-        return l10n.fifteenToTwentyLakh;
+        return '₹15,00,000 - ₹20,00,000 / Year';
       case 'twentyLakhPlus':
-        return l10n.twentyLakhPlus;
+        return '₹20,00,000+ / Year';
       default:
         return key;
     }
@@ -345,7 +342,7 @@ class _EducationProfessionSectionState
         Text(
           l10n?.educationProfession ?? 'Education & Profession',
           style: theme.textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.w800,
+            fontWeight: AppTypography.extraBold,
             letterSpacing: -0.5,
           ),
         ),
@@ -404,7 +401,7 @@ class _EducationProfessionSectionState
               Text(
                 title,
                 style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTypography.bold,
                   letterSpacing: -0.2,
                 ),
               ),
@@ -423,10 +420,10 @@ class _EducationProfessionSectionState
       children: [
         Row(
           children: [
-            Text(l10n?.annualIncome ?? 'Annual Income', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+            Text(l10n?.annualIncome ?? 'Annual Income', style: theme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.bold)),
             if (!widget.isAdminEdit) ...[
               SizedBox(width: 1.w),
-              Text('*', style: theme.textTheme.titleSmall?.copyWith(color: theme.colorScheme.error, fontWeight: FontWeight.bold)),
+              Text('*', style: theme.textTheme.titleSmall?.copyWith(color: theme.colorScheme.error, fontWeight: AppTypography.bold)),
             ],
           ],
         ),
@@ -443,7 +440,7 @@ class _EducationProfessionSectionState
             prefixIcon: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: CustomIconWidget(
-                iconName: 'attach_money',
+                iconName: 'currency_rupee',
                 color: theme.colorScheme.primary.withValues(alpha: 0.7),
                 size: 20,
               ),
@@ -512,12 +509,12 @@ class _EducationProfessionSectionState
         Row(
           children: [
             Text(AppLocalizations.of(context)?.educationalQualification ?? 'Educational Qualification',
-              style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.bold),
             ),
             if (!widget.isAdminEdit) ...[
               SizedBox(width: 1.w),
               Text(AppLocalizations.of(context)?.emptyStr ?? '*',
-                style: theme.textTheme.titleSmall?.copyWith(color: theme.colorScheme.error, fontWeight: FontWeight.bold),
+                style: theme.textTheme.titleSmall?.copyWith(color: theme.colorScheme.error, fontWeight: AppTypography.bold),
               ),
             ],
           ],
@@ -603,7 +600,7 @@ class _EducationProfessionSectionState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(l10n?.specifyEducation ?? 'Specify Education', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+        Text(l10n?.specifyEducation ?? 'Specify Education', style: theme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.bold)),
         SizedBox(height: 1.h),
         TextFormField(
           controller: _customEducationController,
@@ -658,11 +655,11 @@ class _EducationProfessionSectionState
       children: [
         Row(
           children: [
-            Text(AppLocalizations.of(context)?.profession ?? 'Profession', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+            Text(AppLocalizations.of(context)?.profession ?? 'Profession', style: theme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.bold)),
             if (!widget.isAdminEdit) ...[
               SizedBox(width: 1.w),
               Text(AppLocalizations.of(context)?.emptyStr ?? '*',
-                style: theme.textTheme.titleSmall?.copyWith(color: theme.colorScheme.error, fontWeight: FontWeight.bold),
+                style: theme.textTheme.titleSmall?.copyWith(color: theme.colorScheme.error, fontWeight: AppTypography.bold),
               ),
             ],
           ],
@@ -750,7 +747,7 @@ class _EducationProfessionSectionState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(AppLocalizations.of(context)?.specifyProfession ?? 'Specify Profession', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+        Text(AppLocalizations.of(context)?.specifyProfession ?? 'Specify Profession', style: theme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.bold)),
         SizedBox(height: 1.h),
         TextFormField(
           controller: _customProfessionController,
@@ -805,7 +802,7 @@ class _EducationProfessionSectionState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+        Text(label, style: theme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.bold)),
         SizedBox(height: 1.h),
         TextFormField(
           controller: controller,

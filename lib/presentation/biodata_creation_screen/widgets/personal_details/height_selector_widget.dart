@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -92,14 +93,14 @@ class _HeightSelectorWidgetState extends State<HeightSelectorWidget> {
                   SizedBox(width: 3.w),
                   Text(
                     AppLocalizations.of(context)?.height ?? 'Height',
-                    style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                    style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold),
                   ),
                   const Spacer(),
                   Text(
                     "$_heightFeet'$_heightInches\"",
                     style: theme.textTheme.titleLarge?.copyWith(
                       color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: AppTypography.black,
                     ),
                   ),
                 ],
@@ -114,7 +115,7 @@ class _HeightSelectorWidgetState extends State<HeightSelectorWidget> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(AppLocalizations.of(context)?.feet ?? 'Feet', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
+                            Text(AppLocalizations.of(context)?.feet ?? 'Feet', style: theme.textTheme.bodySmall?.copyWith(fontWeight: AppTypography.bold)),
                             SizedBox(
                               width: 12.w,
                               height: 4.h,
@@ -122,7 +123,7 @@ class _HeightSelectorWidgetState extends State<HeightSelectorWidget> {
                                 controller: _feetController,
                                 keyboardType: TextInputType.number,
                                 textAlign: TextAlign.center,
-                                style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                                style: theme.textTheme.bodyMedium?.copyWith(fontWeight: AppTypography.bold),
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.zero,
                                   filled: true,
@@ -165,7 +166,7 @@ class _HeightSelectorWidgetState extends State<HeightSelectorWidget> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(AppLocalizations.of(context)?.inches ?? 'Inches', style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
+                            Text(AppLocalizations.of(context)?.inches ?? 'Inches', style: theme.textTheme.bodySmall?.copyWith(fontWeight: AppTypography.bold)),
                             SizedBox(
                               width: 12.w,
                               height: 4.h,
@@ -173,7 +174,7 @@ class _HeightSelectorWidgetState extends State<HeightSelectorWidget> {
                                 controller: _inchesController,
                                 keyboardType: TextInputType.number,
                                 textAlign: TextAlign.center,
-                                style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                                style: theme.textTheme.bodyMedium?.copyWith(fontWeight: AppTypography.bold),
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.zero,
                                   filled: true,

@@ -58,13 +58,13 @@ class HomeSharingSheet {
               ),
               Text(
                 AppLocalizations.of(context)?.shareProfile ?? 'Share Profile',
-                style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                style: theme.textTheme.titleLarge?.copyWith(fontWeight: AppTypography.bold),
               ),
               SizedBox(height: 2.h),
               if (LocalCacheService().isRelativeBrowseMode()) ...[
                 _ShareOptionTile(
                   ctx: ctx,
-                  title: 'व्हॉट्सॲपवर वधू/वराला पाठवा 🚩',
+                  title: AppLocalizations.of(context)?.sendToCandidateWhatsApp ?? 'Send to Bride/Groom on WhatsApp 🚩',
                   icon: 'share',
                   profile: profile,
                   method: 'relative_candidate_whatsapp',
@@ -75,7 +75,7 @@ class HomeSharingSheet {
               ],
               _ShareOptionTile(
                 ctx: ctx,
-                title: 'WhatsApp Status Card (Premium)',
+                title: AppLocalizations.of(context)?.whatsAppStatusCardPremium ?? 'WhatsApp Status Card (Premium)',
                 icon: 'share',
                 profile: profile,
                 method: 'whatsapp_status_card',

@@ -5,7 +5,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/core/models/subscription_config.dart';
+import 'package:banjarabio/core/models/subscription_model.dart';
+import 'package:banjarabio/core/repositories/razorpay_repository.dart';
+import 'package:banjarabio/core/repositories/trust_score_repository.dart';
 import 'package:banjarabio/routes/app_routes.dart';
+import 'package:banjarabio/widgets/custom_app_bar.dart';
+import 'package:banjarabio/widgets/tactile/tactile_back_button.dart';
+import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 
 class BvsGatewayScreen extends StatefulWidget {
   const BvsGatewayScreen({super.key});
@@ -16,6 +24,12 @@ class BvsGatewayScreen extends StatefulWidget {
 
 class _BvsGatewayScreenState extends State<BvsGatewayScreen>
     with TickerProviderStateMixin {
+  final RazorpayRepository _razorpayRepository = RazorpayRepository();
+  final TrustScoreRepository _trustScoreRepository = TrustScoreRepository();
+
+  bool _isBvsVerified = false;
+  bool _isProcessingPayment = false;
+
   late AnimationController _entranceController;
   late AnimationController _pulseController;
   late AnimationController _glowController;
@@ -37,6 +51,7 @@ class _BvsGatewayScreenState extends State<BvsGatewayScreen>
   @override
   void initState() {
     super.initState();
+    _checkBvsVerificationStatus();
 
     _entranceController = AnimationController(
       vsync: this,
@@ -143,6 +158,181 @@ class _BvsGatewayScreenState extends State<BvsGatewayScreen>
     _borderRotateController.dispose();
     _sheenController.dispose();
     super.dispose();
+  }
+
+  Future<void> _checkBvsVerificationStatus() async {
+    try {
+      final statusRes = await _trustScoreRepository.getVerificationStatus();
+      if (mounted && statusRes.isSuccess) {
+        setState(() {
+          _isBvsVerified = statusRes.data['communityId'] ==
+              TrustScoreRepository.statusVerified;
+        });
+      }
+    } catch (_) {}
+  }
+
+  Future<void> _handleBvsPlanPurchase(PlanType planType) async {
+    if (_isProcessingPayment) return;
+
+    if (!_isBvsVerified) {
+      _showBvsVerificationRequiredSheet();
+      return;
+    }
+
+    setState(() => _isProcessingPayment = true);
+    try {
+      final response = await _razorpayRepository.startPayment(
+        planType: planType,
+        entryPoint: 'bvs_gateway',
+      );
+
+      if (mounted) {
+        if (response.isSuccess) {
+          Fluttertoast.showToast(
+            msg: AppLocalizations.of(context)?.paymentSuccessfulWelcome(
+                    SubscriptionConfig.getDisplayName(
+                        planType, AppLocalizations.of(context))) ??
+                'Payment successful! BVS Subsidized Plan Activated',
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+          );
+        } else {
+          Fluttertoast.showToast(
+            msg: response.errorMessage,
+            backgroundColor: Theme.of(context).colorScheme.error,
+            textColor: Colors.white,
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        Fluttertoast.showToast(
+          msg: 'Payment error: $e',
+          backgroundColor: Theme.of(context).colorScheme.error,
+          textColor: Colors.white,
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isProcessingPayment = false);
+      }
+    }
+  }
+
+  void _showBvsVerificationRequiredSheet() {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        padding: EdgeInsets.all(5.w),
+        decoration: BoxDecoration(
+          color: theme.cardColor,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: isDark ? 0.4 : 0.1),
+              blurRadius: 20,
+              offset: const Offset(0, -4),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            SizedBox(height: 2.5.h),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xFF8B1A2E).withValues(alpha: 0.12),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.badge_outlined,
+                size: 36,
+                color: Color(0xFF8B1A2E),
+              ),
+            ),
+            SizedBox(height: 1.5.h),
+            Text(
+              'BVS Member Card Required',
+              style: TextStyle(
+                fontSize: AppTypography.headingSmall,
+                fontWeight: AppTypography.bold,
+                color: theme.colorScheme.onSurface,
+              ),
+            ),
+            SizedBox(height: 1.h),
+            Text(
+              'Subsidized membership plans (₹200/yr & ₹20/mo) are exclusive to registered Banjara Virasat Sangh (BVS) members. Upload your BVS card to verify and unlock this pricing.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: AppTypography.bodySmall,
+                color: theme.colorScheme.onSurfaceVariant,
+                height: 1.35,
+              ),
+            ),
+            SizedBox(height: 2.5.h),
+            SizedBox(
+              width: double.infinity,
+              child: TactilePressable(
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, AppRoutes.communityIdVerification).then((_) {
+                    _checkBvsVerificationStatus();
+                  });
+                },
+                pressedScale: 0.96,
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 1.4.h),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF8B1A2E), Color(0xFFB71C1C)],
+                    ),
+                    borderRadius: BorderRadius.circular(14),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF8B1A2E).withValues(alpha: 0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.badge_outlined, color: Colors.white, size: 20),
+                      SizedBox(width: 2.w),
+                      Text(
+                        l10n?.bvsUploadCardButton ?? '🪪 Upload BVS Card Now',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: AppTypography.bold,
+                          fontSize: AppTypography.bodyMedium,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 1.h),
+          ],
+        ),
+      ),
+    );
   }
 
   String _getRegistrationUrl(BuildContext context) {
@@ -348,68 +538,42 @@ Banti Shankar Rathod (7020797849)''';
     final step3Desc = l10n?.bvsStep3Desc ?? 'BVS कार्ड जोडून ₹२००/वर्ष सवलत प्लॅन सक्रिय करा.';
     final whatsAppInviteTitle = l10n?.bvsWhatsAppInviteTitle ?? 'WhatsApp ऑटोमेशन आमंत्रण';
     final shareOnWhatsAppText = l10n?.bvsShareOnWhatsApp ?? 'WhatsApp वर शेअर करा';
-    final joinNowButtonText = l10n?.bvsJoinNowButton ?? 'आजच BVS चे सदस्य व्हा (Join Now)';
-    final uploadCardButtonText = l10n?.bvsUploadCardButton ?? 'BVS कार्ड अपलोड करा (सवलत मिळवा)';
+    final joinNowButtonText = 'आताच BVS सदस्य व्हा';
+    final uploadCardButtonText = 'BVS कार्ड अपलोड करा';
+
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F6F0),
-      appBar: AppBar(
-        titleSpacing: 0,
-        title: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.amberAccent, width: 1.5),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.2),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: ClipOval(
-                child: Image.asset(
-                  'assets/images/bvs_logo_gold.png',
-                  width: 32,
-                  height: 32,
-                  fit: BoxFit.cover,
+      backgroundColor: theme.scaffoldBackgroundColor,
+      appBar: CustomAppBar(
+        leading: const TactileBackButton(),
+        title: titleText,
+        actions: [
+          Container(
+            margin: EdgeInsets.only(right: 3.w),
+            padding: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(color: const Color(0xFFFFD700), width: 1.5),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.15),
+                  blurRadius: 6,
                 ),
-              ),
+              ],
             ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                titleText,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17,
-                  color: Colors.white,
-                  letterSpacing: 0.3,
-                ),
+            child: ClipOval(
+              child: Image.asset(
+                'assets/images/bvs_logo_gold.png',
+                width: 28,
+                height: 28,
+                fit: BoxFit.cover,
               ),
-            ),
-          ],
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 20),
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.pop(context);
-          },
-        ),
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFF5A000F), Color(0xFF8B1A2E), Color(0xFFB71C1C)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
             ),
           ),
-        ),
-        elevation: 3,
+        ],
       ),
       body: FadeTransition(
         opacity: _fadeAnimation,
@@ -507,10 +671,10 @@ Banti Shankar Rathod (7020797849)''';
                                           Expanded(
                                             child: Text(
                                               titleText,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 17.5,
-                                                fontWeight: FontWeight.bold,
+                                                fontSize: AppTypography.headingMedium,
+                                                fontWeight: AppTypography.bold,
                                                 letterSpacing: 0.4,
                                               ),
                                             ),
@@ -527,12 +691,12 @@ Banti Shankar Rathod (7020797849)''';
                                                 ),
                                               ],
                                             ),
-                                            child: const Text(
+                                            child: Text(
                                               'BVS VIP',
                                               style: TextStyle(
-                                                color: Color(0xFF4A000C),
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w900,
+                                                color: const Color(0xFF4A000C),
+                                                fontSize: AppTypography.bodySmall,
+                                                fontWeight: AppTypography.black,
                                                 letterSpacing: 0.5,
                                               ),
                                             ),
@@ -550,9 +714,9 @@ Banti Shankar Rathod (7020797849)''';
                                           conceptText,
                                           style: TextStyle(
                                             color: Colors.white.withValues(alpha: 0.95),
-                                            fontSize: 11,
+                                            fontSize: AppTypography.bodySmall,
                                             height: 1.35,
-                                            fontWeight: FontWeight.w500,
+                                            fontWeight: AppTypography.medium,
                                           ),
                                         ),
                                       ),
@@ -573,16 +737,16 @@ Banti Shankar Rathod (7020797849)''';
                               ),
                               child: Row(
                                 children: [
-                                  const Text('🚩', style: TextStyle(fontSize: 16)),
+                                  Text('🚩', style: TextStyle(fontSize: AppTypography.headingSmall)),
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
                                       movementDesc,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 11.5,
+                                        fontSize: AppTypography.bodyMedium,
                                         height: 1.35,
-                                        fontWeight: FontWeight.w500,
+                                        fontWeight: AppTypography.medium,
                                       ),
                                     ),
                                   ),
@@ -605,14 +769,16 @@ Banti Shankar Rathod (7020797849)''';
                 child: Container(
                   padding: EdgeInsets.all(4.w),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: theme.cardColor,
                     borderRadius: BorderRadius.circular(22),
                     border: Border.all(
-                      color: const Color(0xFF8B1A2E).withValues(alpha: 0.16),
+                      color: isDark
+                          ? const Color(0xFF8B1A2E).withValues(alpha: 0.35)
+                          : const Color(0xFF8B1A2E).withValues(alpha: 0.16),
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.04),
+                        color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.04),
                         blurRadius: 14,
                         offset: const Offset(0, 4),
                       ),
@@ -626,7 +792,7 @@ Banti Shankar Rathod (7020797849)''';
                           Container(
                             padding: const EdgeInsets.all(6),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF8B1A2E).withValues(alpha: 0.1),
+                              color: const Color(0xFF8B1A2E).withValues(alpha: 0.12),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
@@ -638,10 +804,10 @@ Banti Shankar Rathod (7020797849)''';
                           const SizedBox(width: 8),
                           Text(
                             officialEmblemsTitle,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                              color: Color(0xFF6B0E1E),
+                            style: TextStyle(
+                              fontWeight: AppTypography.bold,
+                              fontSize: AppTypography.bodyLarge,
+                              color: isDark ? const Color(0xFFFF8A9E) : const Color(0xFF6B0E1E),
                             ),
                           ),
                         ],
@@ -654,14 +820,16 @@ Banti Shankar Rathod (7020797849)''';
                             child: Container(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
                               decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                  colors: [Color(0xFFFAF5F6), Color(0xFFF3E7EA)],
+                                gradient: LinearGradient(
+                                  colors: isDark
+                                      ? [const Color(0xFF2A1C20), const Color(0xFF22161A)]
+                                      : [const Color(0xFFFAF5F6), const Color(0xFFF3E7EA)],
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
                                 ),
                                 borderRadius: BorderRadius.circular(16),
                                 border: Border.all(
-                                  color: const Color(0xFF8B1A2E).withValues(alpha: 0.18),
+                                  color: const Color(0xFF8B1A2E).withValues(alpha: 0.25),
                                 ),
                               ),
                               child: Column(
@@ -671,7 +839,7 @@ Banti Shankar Rathod (7020797849)''';
                                       borderRadius: BorderRadius.circular(12),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.black.withValues(alpha: 0.1),
+                                          color: Colors.black.withValues(alpha: 0.15),
                                           blurRadius: 8,
                                           offset: const Offset(0, 3),
                                         ),
@@ -690,10 +858,10 @@ Banti Shankar Rathod (7020797849)''';
                                   const SizedBox(height: 9),
                                   Text(
                                     unityTitle,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12.5,
-                                      color: Color(0xFF6B0E1E),
+                                    style: TextStyle(
+                                      fontWeight: AppTypography.bold,
+                                      fontSize: AppTypography.bodyMedium,
+                                      color: isDark ? Colors.white : const Color(0xFF6B0E1E),
                                     ),
                                   ),
                                   const SizedBox(height: 3),
@@ -703,8 +871,8 @@ Banti Shankar Rathod (7020797849)''';
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      fontSize: 10.5,
-                                      color: Colors.grey[700],
+                                      fontSize: AppTypography.bodySmall,
+                                      color: theme.colorScheme.onSurfaceVariant,
                                       height: 1.25,
                                     ),
                                   ),
@@ -718,8 +886,10 @@ Banti Shankar Rathod (7020797849)''';
                             child: Container(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
                               decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                  colors: [Color(0xFFFFFDF5), Color(0xFFFFF7DB)],
+                                gradient: LinearGradient(
+                                  colors: isDark
+                                      ? [const Color(0xFF2C2515), const Color(0xFF241E10)]
+                                      : [const Color(0xFFFFFDF5), const Color(0xFFFFF7DB)],
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
                                 ),
@@ -753,10 +923,10 @@ Banti Shankar Rathod (7020797849)''';
                                   const SizedBox(height: 9),
                                   Text(
                                     heritageTitle,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12.5,
-                                      color: Color(0xFF8B1A2E),
+                                    style: TextStyle(
+                                      fontWeight: AppTypography.bold,
+                                      fontSize: AppTypography.bodyMedium,
+                                      color: isDark ? const Color(0xFFFFD54F) : const Color(0xFF8B1A2E),
                                     ),
                                   ),
                                   const SizedBox(height: 3),
@@ -766,8 +936,8 @@ Banti Shankar Rathod (7020797849)''';
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      fontSize: 10.5,
-                                      color: Colors.grey[700],
+                                      fontSize: AppTypography.bodySmall,
+                                      color: theme.colorScheme.onSurfaceVariant,
                                       height: 1.25,
                                     ),
                                   ),
@@ -795,12 +965,18 @@ Banti Shankar Rathod (7020797849)''';
                       return Container(
                         padding: EdgeInsets.symmetric(horizontal: 4.5.w, vertical: 2.2.h),
                         decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color(0xFFFFFDE7),
-                              Color(0xFFFFF8E1),
-                              Color(0xFFFFECB3),
-                            ],
+                          gradient: LinearGradient(
+                            colors: isDark
+                                ? const [
+                                    Color(0xFF2E2414),
+                                    Color(0xFF241C0E),
+                                    Color(0xFF1F170B),
+                                  ]
+                                : const [
+                                    Color(0xFFFFFDE7),
+                                    Color(0xFFFFF8E1),
+                                    Color(0xFFFFECB3),
+                                  ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
@@ -815,7 +991,7 @@ Banti Shankar Rathod (7020797849)''';
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.amber.withValues(alpha: _glowAnimation.value * 0.4),
+                              color: Colors.amber.withValues(alpha: _glowAnimation.value * (isDark ? 0.25 : 0.4)),
                               blurRadius: 18,
                               offset: const Offset(0, 6),
                             ),
@@ -849,19 +1025,19 @@ Banti Shankar Rathod (7020797849)''';
                                 children: [
                                   Text(
                                     '👑 $subsidyTitle',
-                                    style: const TextStyle(
-                                      color: Color(0xFF6B0E1E),
-                                      fontSize: 14.5,
-                                      fontWeight: FontWeight.bold,
+                                    style: TextStyle(
+                                      color: isDark ? const Color(0xFFFFD54F) : const Color(0xFF6B0E1E),
+                                      fontSize: AppTypography.headingSmall,
+                                      fontWeight: AppTypography.bold,
                                     ),
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
                                     subsidySubtitle,
-                                    style: const TextStyle(
-                                      color: Color(0xFF5D4037),
-                                      fontSize: 11.5,
-                                      fontWeight: FontWeight.w500,
+                                    style: TextStyle(
+                                      color: isDark ? Colors.white70 : const Color(0xFF5D4037),
+                                      fontSize: AppTypography.bodyMedium,
+                                      fontWeight: AppTypography.medium,
                                     ),
                                   ),
                                 ],
@@ -872,102 +1048,169 @@ Banti Shankar Rathod (7020797849)''';
                         SizedBox(height: 1.8.h),
                         Row(
                           children: [
+                            // ─── Annual Plan (₹200/year) ───
                             Expanded(
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(14),
-                                  border: Border.all(color: Colors.amber.shade400, width: 1.2),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withValues(alpha: 0.04),
-                                      blurRadius: 8,
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xFFE8F5E9),
-                                        borderRadius: BorderRadius.circular(4),
+                              child: TactilePressable(
+                                onTap: () => _handleBvsPlanPurchase(PlanType.mass_market_annual),
+                                pressedScale: 0.96,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                                  decoration: BoxDecoration(
+                                    color: isDark ? const Color(0xFF1E1A14) : Colors.white,
+                                    borderRadius: BorderRadius.circular(14),
+                                    border: Border.all(color: Colors.amber.shade400, width: 1.5),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.04),
+                                        blurRadius: 8,
                                       ),
-                                      child: const Text(
-                                        'सर्वोत्कृष्ट बचत • Best Value',
-                                        style: TextStyle(
-                                          fontSize: 9,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xFF2E7D32),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                        decoration: BoxDecoration(
+                                          color: isDark
+                                              ? const Color(0xFF1B3820)
+                                              : const Color(0xFFE8F5E9),
+                                          borderRadius: BorderRadius.circular(4),
+                                        ),
+                                        child: Text(
+                                          'सर्वोत्कृष्ट बचत • Best Value',
+                                          style: TextStyle(
+                                            fontSize: AppTypography.labelSmall,
+                                            fontWeight: AppTypography.bold,
+                                            color: isDark ? const Color(0xFF81C784) : const Color(0xFF2E7D32),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      annualPlanLabel,
-                                      style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w600),
-                                    ),
-                                    const SizedBox(height: 3),
-                                    Text(
-                                      annualPrice,
-                                      style: const TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF8B1A2E),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        annualPlanLabel,
+                                        style: TextStyle(
+                                          fontSize: AppTypography.bodyMedium,
+                                          fontWeight: AppTypography.semiBold,
+                                          color: theme.colorScheme.onSurface,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        annualPrice,
+                                        style: TextStyle(
+                                          fontSize: AppTypography.headingMedium,
+                                          fontWeight: AppTypography.bold,
+                                          color: isDark ? const Color(0xFFFF8A9E) : const Color(0xFF8B1A2E),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Container(
+                                        width: double.infinity,
+                                        padding: const EdgeInsets.symmetric(vertical: 6),
+                                        decoration: BoxDecoration(
+                                          gradient: const LinearGradient(
+                                            colors: [Color(0xFFFFC107), Color(0xFFFF9800)],
+                                          ),
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            _isBvsVerified ? 'Buy Plan • ₹200' : 'Unlock with BVS',
+                                            style: TextStyle(
+                                              color: const Color(0xFF4A000C),
+                                              fontWeight: AppTypography.bold,
+                                              fontSize: AppTypography.labelSmall,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                             SizedBox(width: 2.5.w),
+                            // ─── Monthly Plan (₹20/month) ───
                             Expanded(
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(14),
-                                  border: Border.all(color: Colors.amber.shade300, width: 1.2),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withValues(alpha: 0.04),
-                                      blurRadius: 8,
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xFFFFF3E0),
-                                        borderRadius: BorderRadius.circular(4),
+                              child: TactilePressable(
+                                onTap: () => _handleBvsPlanPurchase(PlanType.mass_market),
+                                pressedScale: 0.96,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                                  decoration: BoxDecoration(
+                                    color: isDark ? const Color(0xFF1E1A14) : Colors.white,
+                                    borderRadius: BorderRadius.circular(14),
+                                    border: Border.all(color: Colors.amber.shade300, width: 1.2),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.04),
+                                        blurRadius: 8,
                                       ),
-                                      child: const Text(
-                                        'महिना दर महिना • Flexible',
-                                        style: TextStyle(
-                                          fontSize: 9,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xFFE65100),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                        decoration: BoxDecoration(
+                                          color: isDark
+                                              ? const Color(0xFF3E2312)
+                                              : const Color(0xFFFFF3E0),
+                                          borderRadius: BorderRadius.circular(4),
+                                        ),
+                                        child: Text(
+                                          'दर महिना • Flexible',
+                                          style: TextStyle(
+                                            fontSize: AppTypography.labelSmall,
+                                            fontWeight: AppTypography.bold,
+                                            color: isDark ? const Color(0xFFFFB74D) : const Color(0xFFE65100),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      monthlyPlanLabel,
-                                      style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w600),
-                                    ),
-                                    const SizedBox(height: 3),
-                                    Text(
-                                      monthlyPrice,
-                                      style: const TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF8B1A2E),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        monthlyPlanLabel,
+                                        style: TextStyle(
+                                          fontSize: AppTypography.bodyMedium,
+                                          fontWeight: AppTypography.semiBold,
+                                          color: theme.colorScheme.onSurface,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        monthlyPrice,
+                                        style: TextStyle(
+                                          fontSize: AppTypography.headingMedium,
+                                          fontWeight: AppTypography.bold,
+                                          color: isDark ? const Color(0xFFFF8A9E) : const Color(0xFF8B1A2E),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Container(
+                                        width: double.infinity,
+                                        padding: const EdgeInsets.symmetric(vertical: 6),
+                                        decoration: BoxDecoration(
+                                          color: isDark
+                                              ? Colors.white.withValues(alpha: 0.1)
+                                              : const Color(0xFF8B1A2E).withValues(alpha: 0.1),
+                                          borderRadius: BorderRadius.circular(8),
+                                          border: Border.all(
+                                            color: isDark ? Colors.amber.shade400 : const Color(0xFF8B1A2E),
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            _isBvsVerified ? 'Buy Plan • ₹20' : 'Unlock with BVS',
+                                            style: TextStyle(
+                                              color: isDark ? Colors.amber.shade200 : const Color(0xFF8B1A2E),
+                                              fontWeight: AppTypography.bold,
+                                              fontSize: AppTypography.labelSmall,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -987,12 +1230,16 @@ Banti Shankar Rathod (7020797849)''';
                 child: Container(
                   padding: EdgeInsets.all(4.5.w),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: theme.cardColor,
                     borderRadius: BorderRadius.circular(22),
-                    border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
+                    border: Border.all(
+                      color: isDark
+                          ? theme.colorScheme.outlineVariant.withValues(alpha: 0.3)
+                          : Colors.grey.withValues(alpha: 0.2),
+                    ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.04),
+                        color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.04),
                         blurRadius: 12,
                         offset: const Offset(0, 4),
                       ),
@@ -1008,10 +1255,10 @@ Banti Shankar Rathod (7020797849)''';
                           Expanded(
                             child: Text(
                               howToJoinTitle,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13.5,
-                                color: Colors.black87,
+                              style: TextStyle(
+                                fontWeight: AppTypography.bold,
+                                fontSize: AppTypography.bodyLarge,
+                                color: theme.colorScheme.onSurface,
                               ),
                             ),
                           ),
@@ -1024,6 +1271,8 @@ Banti Shankar Rathod (7020797849)''';
                         title: step1Title,
                         desc: step1Desc,
                         isLast: false,
+                        isDark: isDark,
+                        theme: theme,
                       ),
                       _buildTimelineStep(
                         stepNum: '2',
@@ -1031,6 +1280,8 @@ Banti Shankar Rathod (7020797849)''';
                         title: step2Title,
                         desc: step2Desc,
                         isLast: false,
+                        isDark: isDark,
+                        theme: theme,
                       ),
                       _buildTimelineStep(
                         stepNum: '3',
@@ -1038,6 +1289,8 @@ Banti Shankar Rathod (7020797849)''';
                         title: step3Title,
                         desc: step3Desc,
                         isLast: true,
+                        isDark: isDark,
+                        theme: theme,
                       ),
                     ],
                   ),
@@ -1052,16 +1305,21 @@ Banti Shankar Rathod (7020797849)''';
                 child: Container(
                   padding: EdgeInsets.all(4.w),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFFE8FCE8), Color(0xFFD7FAD7)],
+                    gradient: LinearGradient(
+                      colors: isDark
+                          ? const [Color(0xFF112E1E), Color(0xFF0C2417)]
+                          : const [Color(0xFFE8FCE8), Color(0xFFD7FAD7)],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
                     borderRadius: BorderRadius.circular(22),
-                    border: Border.all(color: const Color(0xFF25D366).withValues(alpha: 0.5), width: 1.2),
+                    border: Border.all(
+                      color: const Color(0xFF25D366).withValues(alpha: isDark ? 0.35 : 0.5),
+                      width: 1.2,
+                    ),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF25D366).withValues(alpha: 0.12),
+                        color: const Color(0xFF25D366).withValues(alpha: isDark ? 0.18 : 0.12),
                         blurRadius: 14,
                         offset: const Offset(0, 4),
                       ),
@@ -1083,10 +1341,10 @@ Banti Shankar Rathod (7020797849)''';
                               whatsAppInviteTitle,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13.5,
-                                color: Color(0xFF075E54),
+                              style: TextStyle(
+                                fontWeight: AppTypography.bold,
+                                fontSize: AppTypography.bodyLarge,
+                                color: isDark ? const Color(0xFF4ADE80) : const Color(0xFF075E54),
                               ),
                             ),
                           ),
@@ -1097,12 +1355,12 @@ Banti Shankar Rathod (7020797849)''';
                               color: const Color(0xFF25D366).withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(6),
                             ),
-                            child: const Text(
+                            child: Text(
                               'Auto Invite',
                               style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF075E54),
+                                fontSize: AppTypography.bodySmall,
+                                fontWeight: AppTypography.bold,
+                                color: isDark ? const Color(0xFF4ADE80) : const Color(0xFF075E54),
                               ),
                             ),
                           ),
@@ -1112,11 +1370,11 @@ Banti Shankar Rathod (7020797849)''';
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: isDark ? const Color(0xFF1B1B26) : Colors.white,
                           borderRadius: BorderRadius.circular(14),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.05),
+                              color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.05),
                               blurRadius: 6,
                             ),
                           ],
@@ -1125,9 +1383,9 @@ Banti Shankar Rathod (7020797849)''';
                           _getLocalizedWhatsAppMessage(context),
                           maxLines: 5,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 11.5,
-                            color: Colors.black87,
+                          style: TextStyle(
+                            fontSize: AppTypography.bodyMedium,
+                            color: isDark ? Colors.white : Colors.black87,
                             height: 1.35,
                           ),
                         ),
@@ -1146,8 +1404,12 @@ Banti Shankar Rathod (7020797849)''';
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     // Action 1: Shining Running-Colors Circular Glow Card
-                    _buildShiningRunningColorJoinCard(
-                      buttonText: joinNowButtonText,
+                    TactilePressable(
+                      onTap: _launchRegistration,
+                      pressedScale: 0.97,
+                      child: _buildShiningRunningColorJoinCard(
+                        buttonText: joinNowButtonText,
+                      ),
                     ),
 
                     SizedBox(height: 1.8.h),
@@ -1157,59 +1419,77 @@ Banti Shankar Rathod (7020797849)''';
                       children: [
                         Expanded(
                           flex: 4,
-                          child: ElevatedButton(
-                            onPressed: _shareOnWhatsApp,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF25D366),
-                              foregroundColor: Colors.white,
+                          child: TactilePressable(
+                            onTap: _shareOnWhatsApp,
+                            pressedScale: 0.96,
+                            child: Container(
                               padding: EdgeInsets.symmetric(vertical: 1.6.h),
-                              elevation: 3,
-                              shadowColor: const Color(0xFF25D366).withValues(alpha: 0.4),
-                              shape: RoundedRectangleBorder(
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  colors: [Color(0xFF25D366), Color(0xFF128C7E)],
+                                ),
                                 borderRadius: BorderRadius.circular(16),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/icons/whatsapp_icon.png',
-                                  width: 20,
-                                  height: 20,
-                                ),
-                                SizedBox(width: 2.w),
-                                Flexible(
-                                  child: Text(
-                                    shareOnWhatsAppText,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13.5),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFF25D366).withValues(alpha: 0.4),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 4),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/icons/whatsapp_icon.png',
+                                    width: 20,
+                                    height: 20,
+                                  ),
+                                  SizedBox(width: 2.w),
+                                  Flexible(
+                                    child: Text(
+                                      shareOnWhatsAppText,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontWeight: AppTypography.bold,
+                                        fontSize: AppTypography.bodyLarge,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                         SizedBox(width: 2.5.w),
                         Expanded(
-                          child: OutlinedButton(
-                            onPressed: _copyReferralMessage,
-                            style: OutlinedButton.styleFrom(
+                          child: TactilePressable(
+                            onTap: _copyReferralMessage,
+                            pressedScale: 0.92,
+                            child: Container(
                               padding: EdgeInsets.symmetric(vertical: 1.6.h),
-                              side: BorderSide(
-                                color: _isCopied ? Colors.green : Colors.grey.withValues(alpha: 0.4),
-                                width: 1.5,
-                              ),
-                              shape: RoundedRectangleBorder(
+                              decoration: BoxDecoration(
+                                color: _isCopied
+                                    ? Colors.green.withValues(alpha: 0.15)
+                                    : (isDark ? const Color(0xFF262635) : Colors.white),
                                 borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: _isCopied
+                                      ? Colors.green
+                                      : (isDark ? Colors.white24 : Colors.grey.withValues(alpha: 0.4)),
+                                  width: 1.5,
+                                ),
                               ),
-                              backgroundColor: _isCopied
-                                  ? Colors.green.withValues(alpha: 0.1)
-                                  : Colors.white,
-                            ),
-                            child: Icon(
-                              _isCopied ? Icons.check_circle : Icons.copy_rounded,
-                              color: _isCopied ? Colors.green : Colors.grey[700],
-                              size: 20,
+                              child: Center(
+                                child: Icon(
+                                  _isCopied ? Icons.check_circle : Icons.copy_rounded,
+                                  color: _isCopied
+                                      ? Colors.green
+                                      : (isDark ? Colors.white70 : Colors.grey[700]),
+                                  size: 20,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -1219,26 +1499,45 @@ Banti Shankar Rathod (7020797849)''';
                     SizedBox(height: 1.5.h),
 
                     // Action 3: Upload BVS Card for Discount
-                    OutlinedButton.icon(
-                      onPressed: () {
+                    TactilePressable(
+                      onTap: () {
                         HapticFeedback.lightImpact();
                         Navigator.pushNamed(context, AppRoutes.communityIdVerification);
                       },
-                      icon: const Icon(Icons.badge_outlined, size: 20, color: Color(0xFF8B1A2E)),
-                      label: Text(
-                        '🪪 $uploadCardButtonText',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 13.5,
-                          color: Color(0xFF8B1A2E),
-                        ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Color(0xFF8B1A2E), width: 1.6),
-                        backgroundColor: Colors.white,
+                      pressedScale: 0.96,
+                      child: Container(
                         padding: EdgeInsets.symmetric(vertical: 1.6.h),
-                        shape: RoundedRectangleBorder(
+                        decoration: BoxDecoration(
+                          color: isDark ? const Color(0xFF262635) : Colors.white,
                           borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: const Color(0xFF8B1A2E),
+                            width: 1.6,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF8B1A2E).withValues(alpha: isDark ? 0.2 : 0.08),
+                              blurRadius: 10,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.badge_outlined, size: 20, color: Color(0xFF8B1A2E)),
+                              SizedBox(width: 2.w),
+                              Text(
+                                '🪪 $uploadCardButtonText',
+                                style: TextStyle(
+                                  fontWeight: AppTypography.bold,
+                                  fontSize: AppTypography.bodyLarge,
+                                  color: isDark ? const Color(0xFFFF8A9E) : const Color(0xFF8B1A2E),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -1368,10 +1667,10 @@ Banti Shankar Rathod (7020797849)''';
                               Expanded(
                                 child: Text(
                                   buttonText,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.white,
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 15,
+                                    fontWeight: AppTypography.black,
+                                    fontSize: AppTypography.headingSmall,
                                     letterSpacing: 0.3,
                                   ),
                                 ),
@@ -1393,20 +1692,20 @@ Banti Shankar Rathod (7020797849)''';
                                     ),
                                   ],
                                 ),
-                                child: const Row(
+                                child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Text(
                                       'JOIN',
                                       style: TextStyle(
-                                        color: Color(0xFF4A000C),
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 11,
+                                        color: const Color(0xFF4A000C),
+                                        fontWeight: AppTypography.black,
+                                        fontSize: AppTypography.bodySmall,
                                         letterSpacing: 0.8,
                                       ),
                                     ),
-                                    SizedBox(width: 3),
-                                    Icon(
+                                    const SizedBox(width: 3),
+                                    const Icon(
                                       Icons.arrow_forward_rounded,
                                       size: 14,
                                       color: Color(0xFF4A000C),
@@ -1431,10 +1730,10 @@ Banti Shankar Rathod (7020797849)''';
                               AppLocalizations.of(context)?.bvsJoinCardSubtitle ??
                                   '⚡ BVS पोर्टलवर नोंदणी करा व ₹२००/वर्ष सवलत मिळवा',
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Color(0xFFFFE082),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
+                              style: TextStyle(
+                                color: const Color(0xFFFFE082),
+                                fontSize: AppTypography.bodyMedium,
+                                fontWeight: AppTypography.semiBold,
                                 height: 1.35,
                               ),
                             ),
@@ -1458,6 +1757,8 @@ Banti Shankar Rathod (7020797849)''';
     required String title,
     required String desc,
     required bool isLast,
+    required bool isDark,
+    required ThemeData theme,
   }) {
     return IntrinsicHeight(
       child: Row(
@@ -1484,10 +1785,10 @@ Banti Shankar Rathod (7020797849)''';
                 ),
                 child: Text(
                   stepNum,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
+                    fontWeight: AppTypography.bold,
+                    fontSize: AppTypography.bodyMedium,
                   ),
                 ),
               ),
@@ -1496,7 +1797,7 @@ Banti Shankar Rathod (7020797849)''';
                   child: Container(
                     width: 2,
                     margin: const EdgeInsets.symmetric(vertical: 4),
-                    color: const Color(0xFF8B1A2E).withValues(alpha: 0.25),
+                    color: const Color(0xFF8B1A2E).withValues(alpha: isDark ? 0.4 : 0.25),
                   ),
                 ),
             ],
@@ -1510,15 +1811,15 @@ Banti Shankar Rathod (7020797849)''';
                 children: [
                   Row(
                     children: [
-                      Icon(icon, size: 16, color: const Color(0xFF8B1A2E)),
+                      Icon(icon, size: 16, color: isDark ? const Color(0xFFFF8A9E) : const Color(0xFF8B1A2E)),
                       const SizedBox(width: 6),
                       Expanded(
                         child: Text(
                           title,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13,
-                            color: Colors.black87,
+                          style: TextStyle(
+                            fontWeight: AppTypography.bold,
+                            fontSize: AppTypography.bodyLarge,
+                            color: theme.colorScheme.onSurface,
                           ),
                         ),
                       ),
@@ -1528,8 +1829,8 @@ Banti Shankar Rathod (7020797849)''';
                   Text(
                     desc,
                     style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.grey[700],
+                      fontSize: AppTypography.bodySmall,
+                      color: theme.colorScheme.onSurfaceVariant,
                       height: 1.35,
                     ),
                   ),

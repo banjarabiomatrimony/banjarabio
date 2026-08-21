@@ -127,7 +127,7 @@ class HomeInterestHandler {
       );
     } catch (e) {
       if (context.mounted) {
-        Fluttertoast.showToast(msg: 'Error: $e');
+        Fluttertoast.showToast(msg: AppLocalizations.of(context)?.errorCheckingShareLimits(e.toString()) ?? 'Error: $e');
       }
     }
   }

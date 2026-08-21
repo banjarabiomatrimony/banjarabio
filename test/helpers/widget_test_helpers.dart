@@ -9,6 +9,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/theme/app_theme.dart';
 import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/core/session_manager.dart';
@@ -126,13 +127,24 @@ void tearDownWidgetTestMocks() {
 }
 
 /// Wraps a widget with all required wrappers for testing:
-/// Sizer > ProviderScope > MaterialApp with localizations.
-Widget createTestableWidget(Widget child, {List<Override>? overrides, Locale? locale}) {
+/// Sizer > ProviderScope > MaterialApp with localizations & typography theme.
+Widget createTestableWidget(
+  Widget child, {
+  List<Override>? overrides,
+  Locale? locale,
+  ThemeData? theme,
+  ThemeData? darkTheme,
+  ThemeMode? themeMode,
+}) {
   return Sizer(
     builder: (context, orientation, deviceType) => ProviderScope(
       overrides: overrides ?? [],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         locale: locale,
+        theme: theme ?? AppTheme.lightTheme,
+        darkTheme: darkTheme ?? AppTheme.darkTheme,
+        themeMode: themeMode ?? ThemeMode.light,
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -150,7 +162,10 @@ Widget createTestableWidget(Widget child, {List<Override>? overrides, Locale? lo
 void setTestScreenSize(WidgetTester tester) {
   tester.view.physicalSize = const Size(1080, 1920);
   tester.view.devicePixelRatio = 1.0;
-  addTearDown(() => tester.view.resetPhysicalSize());
+  addTearDown(() {
+    tester.view.resetPhysicalSize();
+    tester.view.resetDevicePixelRatio();
+  });
 }
 
 /// Pumps the widget safely, catching errors from platform channels

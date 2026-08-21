@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
 import '../helpers/golden_test_helpers.dart';
 
 /// SplashScreen golden test uses an isolated replica of the static UI
@@ -43,12 +44,9 @@ Widget _buildSplashVisual({required bool isDark}) {
                 ),
               ),
               const SizedBox(height: 32),
-              const Text(
+              Text(
                 'BanjaraBio',
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
+                style: AppTypography.displayStyle(
                   color: Colors.white,
                   letterSpacing: 1.2,
                 ),
@@ -56,10 +54,7 @@ Widget _buildSplashVisual({required bool isDark}) {
               const SizedBox(height: 8),
               Text(
                 'Connect with your community',
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+                style: AppTypography.bodyStyle(
                   color: Colors.white.withValues(alpha: 0.9),
                 ),
               ),

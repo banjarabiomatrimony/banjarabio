@@ -97,37 +97,123 @@ class _LiveSelfieScreenState extends State<LiveSelfieScreen> {
         showDialog(
           context: context,
           barrierDismissible: false,
-          builder: (dialogContext) => PopScope(
-            canPop: false,
-            child: AlertDialog(
-              title: Text(AppLocalizations.of(context)?.selfieSubmitted ?? 'Selfie Submitted'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.check_circle, color: Colors.green, size: 60),
-                  SizedBox(height: 2.h),
-                  Text(AppLocalizations.of(context)?.yourSelfieHasBeenSubmittedOurTeamWillVer ?? 'Your selfie has been submitted. Our team will verify it against your profile photo.',
-                  ),
-                  SizedBox(height: 1.h),
-                  Text(AppLocalizations.of(context)?.num15PointsPending ?? '+15 Points Pending',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
-                    ),
-                  ),
-                ],
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(dialogContext).pop(); // Close dialog
-                    Navigator.of(context).pop(true); // Close screen
-                  },
-                  child: Text(AppLocalizations.of(context)?.great ?? 'Great!'),
+          builder: (dialogContext) {
+            final theme = Theme.of(dialogContext);
+            final l10n = AppLocalizations.of(dialogContext);
+
+            return PopScope(
+              canPop: false,
+              child: Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
                 ),
-              ],
-            ),
-          ),
+                elevation: 10,
+                backgroundColor: theme.colorScheme.surface,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 72,
+                        height: 72,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF10B981).withValues(alpha: 0.12),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.verified_rounded,
+                          color: Color(0xFF10B981),
+                          size: 44,
+                        ),
+                      ),
+                      SizedBox(height: 2.h),
+                      Text(
+                        l10n?.selfieSubmitted ?? 'Selfie Submitted',
+                        style: TextStyle(
+                          fontSize: AppTypography.headingMedium,
+                          fontWeight: AppTypography.black,
+                          color: theme.colorScheme.onSurface,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 1.2.h),
+                      Text(
+                        l10n?.yourSelfieHasBeenSubmittedOurTeamWillVer ??
+                            'Your selfie has been submitted. Our team will verify it against your profile photo.',
+                        style: TextStyle(
+                          fontSize: AppTypography.bodyMedium,
+                          color: theme.colorScheme.onSurfaceVariant,
+                          height: 1.45,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 2.h),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 4.w,
+                          vertical: 1.2.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF10B981).withValues(alpha: 0.08),
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(
+                            color: const Color(0xFF10B981).withValues(alpha: 0.25),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.stars_rounded,
+                              color: Color(0xFF059669),
+                              size: 22,
+                            ),
+                            SizedBox(width: 2.w),
+                            Text(
+                              l10n?.num15PointsPending ?? '+15 Points Pending',
+                              style: TextStyle(
+                                fontSize: AppTypography.headingSmall,
+                                fontWeight: AppTypography.extraBold,
+                                color: const Color(0xFF059669),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 3.h),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(dialogContext).pop(); // Close dialog
+                            Navigator.of(context).pop(true); // Close screen
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 1.6.h),
+                            backgroundColor: const Color(0xFF10B981),
+                            foregroundColor: Colors.white,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                          ),
+                          child: Text(
+                            l10n?.great ?? 'Great!',
+                            style: TextStyle(
+                              fontSize: AppTypography.headingSmall,
+                              fontWeight: AppTypography.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         );
       }
     } catch (e) {
@@ -147,86 +233,162 @@ class _LiveSelfieScreenState extends State<LiveSelfieScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
+
     return Scaffold(
-      appBar: CustomAppBar(title: AppLocalizations.of(context)?.liveSelfieVerification ?? 'Live Selfie Verification'),
-      body: Padding(
-        padding: EdgeInsets.all(5.w),
-        child: Column(
-          children: [
-            if (_capturedImage == null) ...[
-              const Spacer(),
-              const Icon(
-                Icons.face_retouching_natural,
-                size: 80,
-                color: Colors.blue,
-              ),
-              SizedBox(height: 3.h),
-              Text(AppLocalizations.of(context)?.livenessCheck ?? 'Liveness Check',
-                style: TextStyle(fontSize: AppTypography.headingMedium, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 2.h),
-              Text(AppLocalizations.of(context)?.pleaseTakeASelfieToVerifyThatYouAreAReal ?? 'Please take a selfie to verify that you are a real person. Ensure you are in a well-lit area.',
-                textAlign: TextAlign.center,
-              ),
-              const Spacer(),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: _isLoading ? null : _captureSelfie,
-                  icon: const Icon(Icons.camera_alt),
-                  label: Text(AppLocalizations.of(context)?.openCamera ?? 'Open Camera'),
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 2.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
-              ),
-            ] else ...[
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.file(_capturedImage!, fit: BoxFit.cover),
-                ),
-              ),
-              SizedBox(height: 3.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: _isLoading ? null : _captureSelfie,
-                      style: OutlinedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 2.h),
+      appBar: CustomAppBar(
+        title: l10n?.liveSelfieVerification ?? 'Live Selfie Verification',
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+          child: _capturedImage == null
+              ? Column(
+                  children: [
+                    const Spacer(),
+                    Container(
+                      padding: EdgeInsets.all(5.w),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primary.withValues(alpha: 0.08),
+                        shape: BoxShape.circle,
                       ),
-                      child: Text(AppLocalizations.of(context)?.retake ?? 'Retake'),
-                    ),
-                  ),
-                  SizedBox(width: 4.w),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: _isLoading ? null : _submitVerification,
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 2.h),
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
+                      child: Icon(
+                        Icons.face_retouching_natural,
+                        size: 70,
+                        color: theme.colorScheme.primary,
                       ),
-                      child: _isLoading
-                          ? SizedBox(
-                              width: 2.5.h,
-                              height: 2.5.h,
-                              child: const CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
+                    ),
+                    SizedBox(height: 3.h),
+                    Text(
+                      l10n?.livenessCheck ?? 'Liveness Check',
+                      style: TextStyle(
+                        fontSize: AppTypography.headingMedium,
+                        fontWeight: AppTypography.bold,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    SizedBox(height: 1.5.h),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 4.w),
+                      child: Text(
+                        l10n?.pleaseTakeASelfieToVerifyThatYouAreAReal ??
+                            'Please take a selfie to verify that you are a real person. Ensure you are in a well-lit area.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: AppTypography.bodyMedium,
+                          color: theme.colorScheme.onSurfaceVariant,
+                          height: 1.4,
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: _isLoading ? null : _captureSelfie,
+                        icon: const Icon(Icons.camera_alt, size: 20),
+                        label: Text(
+                          l10n?.openCamera ?? 'Open Camera',
+                          style: TextStyle(
+                            fontSize: AppTypography.headingSmall,
+                            fontWeight: AppTypography.bold,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 1.6.h),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              : Column(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.only(bottom: 2.h),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: theme.colorScheme.outline.withValues(alpha: 0.2),
+                            width: 2,
+                          ),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(14),
+                          child: Image.file(
+                            _capturedImage!,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 0.5.h),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: OutlinedButton.icon(
+                              onPressed: _isLoading ? null : _captureSelfie,
+                              icon: const Icon(Icons.refresh_rounded, size: 18),
+                              style: OutlinedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(vertical: 1.5.h),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
                               ),
-                            )
-                          : Text(AppLocalizations.of(context)?.verifyNow ?? 'Verify Now'),
+                              label: Text(
+                                l10n?.retake ?? 'Retake',
+                                style: TextStyle(
+                                  fontSize: AppTypography.headingSmall,
+                                  fontWeight: AppTypography.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 3.w),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: _isLoading ? null : _submitVerification,
+                              icon: _isLoading
+                                  ? const SizedBox.shrink()
+                                  : const Icon(Icons.check_circle_outline, size: 18),
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(vertical: 1.5.h),
+                                backgroundColor: const Color(0xFF2E7D32),
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              label: _isLoading
+                                  ? SizedBox(
+                                      width: 2.2.h,
+                                      height: 2.2.h,
+                                      child: const CircularProgressIndicator(
+                                        color: Colors.white,
+                                        strokeWidth: 2.2,
+                                      ),
+                                    )
+                                  : Text(
+                                      l10n?.verifyNow ?? 'Verify Now',
+                                      style: TextStyle(
+                                        fontSize: AppTypography.headingSmall,
+                                        fontWeight: AppTypography.bold,
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ],
+                  ],
+                ),
         ),
       ),
     );

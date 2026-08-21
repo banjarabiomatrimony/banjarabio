@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -172,7 +173,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 children: [
                   Text(
                     AppLocalizations.of(context)?.adminPortal ?? 'Admin Portal',
-                    style: theme.textTheme.headlineSmall?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                    style: theme.textTheme.headlineSmall?.copyWith(color: Colors.white, fontWeight: AppTypography.bold),
                   ),
                   Text(
                     user?.email ?? '',
@@ -201,7 +202,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     child: ElevatedButton.icon(
                       onPressed: () => _creatorsKey.currentState?.showCreatorForm(),
                       icon: const Icon(Icons.add, color: Colors.white),
-                      label: const Text('Add New Influencer', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      label: const Text('Add New Influencer', style: TextStyle(color: Colors.white, fontWeight: AppTypography.bold)),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white.withValues(alpha: 0.2),
                         elevation: 0,
@@ -268,7 +269,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         backgroundColor: theme.cardColor,
         selectedItemColor: theme.colorScheme.primary,
         unselectedItemColor: theme.hintColor,
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+        selectedLabelStyle: const TextStyle(fontWeight: AppTypography.bold),
         items: items.map((item) => BottomNavigationBarItem(
           icon: Icon(item['icon']),
           activeIcon: Icon(item['activeIcon']),

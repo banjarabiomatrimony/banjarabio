@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter/material.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
@@ -38,7 +39,7 @@ class DisabilityStatusWidget extends StatelessWidget {
         ),
         title: Text(
           AppLocalizations.of(context)?.isDisabledPerson ?? 'Physical Status (Disabled)',
-          style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+          style: theme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.bold),
         ),
         value: isDisabled,
         onChanged: onChanged,

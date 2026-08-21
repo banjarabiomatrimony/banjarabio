@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/repositories/admin_repository.dart';
 
 /// [TeamManagementTab]
@@ -242,7 +243,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
             children: [
               Text(
                 'Team (${_telecallers.length})',
-                style: widget.theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                style: widget.theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold),
               ),
               IconButton(
                 icon: const Icon(Icons.refresh, size: 20),
@@ -265,7 +266,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
                   style: FilledButton.styleFrom(
                     backgroundColor: const Color(0xFF2196F3),
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    textStyle: const TextStyle(fontSize: 12),
+                    textStyle: TextStyle(fontSize: AppTypography.bodyMedium),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -276,7 +277,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
                   style: FilledButton.styleFrom(
                     backgroundColor: const Color(0xFF4CAF50),
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    textStyle: const TextStyle(fontSize: 12),
+                    textStyle: TextStyle(fontSize: AppTypography.bodyMedium),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -287,7 +288,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
                   style: FilledButton.styleFrom(
                     backgroundColor: const Color(0xFFFF9800),
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    textStyle: const TextStyle(fontSize: 12),
+                    textStyle: TextStyle(fontSize: AppTypography.bodyMedium),
                   ),
                 ),
               ],
@@ -491,7 +492,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
                   Expanded(
                     child: Text(
                       tc['full_name'] ?? 'Unknown',
-                      style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                      style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.semiBold),
                     ),
                   ),
                   PopupMenuButton<String>(
@@ -515,7 +516,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
                     ),
                     child: Text(
                       '${tc['designation'] ?? 'staff'}'.toUpperCase(),
-                      style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: theme.colorScheme.primary),
+                      style: TextStyle(fontSize: AppTypography.bodySmall, fontWeight: AppTypography.bold, color: theme.colorScheme.primary),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -554,8 +555,8 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
         ),
         child: Column(
           children: [
-            Text(value, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 16)),
-            Text(label, style: TextStyle(color: color.withValues(alpha: 0.7), fontSize: 10)),
+            Text(value, style: TextStyle(color: color, fontWeight: AppTypography.bold, fontSize: AppTypography.headingSmall)),
+            Text(label, style: TextStyle(color: color.withValues(alpha: 0.7), fontSize: AppTypography.bodySmall)),
           ],
         ),
       ),
@@ -578,7 +579,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('📊 Report: $tcName',
-                style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold)),
             const Divider(),
             _reportRow('Total Leads', '${r['total_leads'] ?? 0}'),
             _reportRow('Not Called', '${r['not_called'] ?? 0}', color: Colors.grey),
@@ -621,7 +622,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
           child: Row(
             children: [
               Text('🏆 Leaderboard',
-                  style: widget.theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                  style: widget.theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold)),
               const Spacer(),
               IconButton(icon: const Icon(Icons.refresh, size: 20), onPressed: _loadLeaderboard),
             ],
@@ -637,10 +638,10 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
             return Card(
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
               child: ListTile(
-                leading: Text(medal, style: const TextStyle(fontSize: 20)),
+                leading: Text(medal, style: TextStyle(fontSize: AppTypography.headingLarge)),
                 title: Text(
                   tc['full_name'] ?? 'Unknown',
-                  style: widget.theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+                  style: widget.theme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.semiBold),
                 ),
                 subtitle: Text(
                   '${tc['converted'] ?? 0} conversions • ${tc['profiles_completed'] ?? 0} profiles • ${tc['conversion_rate'] ?? 0}% rate',
@@ -651,9 +652,9 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
                   children: [
                     Text(
                       '${tc['calls_this_month'] ?? 0}',
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      style: TextStyle(fontWeight: AppTypography.bold, fontSize: AppTypography.headingMedium),
                     ),
-                    const Text('calls/mo', style: TextStyle(fontSize: 9, color: Colors.grey)),
+                    Text('calls/mo', style: TextStyle(fontSize: AppTypography.labelMedium, color: Colors.grey)),
                   ],
                 ),
               ),
@@ -675,7 +676,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
           child: Text('💰 Incentive Calculator',
-              style: widget.theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+              style: widget.theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold)),
         ),
       ),
       // Telecaller picker
@@ -729,7 +730,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('💰 $tcName — This Month',
-                style: widget.theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                style: widget.theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold)),
             const Divider(),
             // Work breakdown
             _reportRow('Welcome Calls', '${r['welcome_calls'] ?? 0}'),
@@ -786,7 +787,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
           child: Row(
             children: [
               Text('📈 ROI Dashboard',
-                  style: widget.theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                  style: widget.theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold)),
               const Spacer(),
               IconButton(icon: const Icon(Icons.refresh, size: 20), onPressed: _loadRoi),
             ],
@@ -804,9 +805,9 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
               children: [
                 Text(
                   '$roi%',
-                  style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: roiColor),
+                  style: TextStyle(fontSize: AppTypography.displayLarge, fontWeight: AppTypography.bold, color: roiColor),
                 ),
-                Text('Estimated ROI', style: TextStyle(color: roiColor, fontSize: 14)),
+                Text('Estimated ROI', style: TextStyle(color: roiColor, fontSize: AppTypography.bodyLarge)),
               ],
             ),
           ),
@@ -822,7 +823,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Business Metrics',
-                    style: widget.theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                    style: widget.theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold)),
                 const Divider(),
                 _reportRow('Total Telecallers', '${r['total_telecallers'] ?? 0}'),
                 _reportRow('Total Leads Assigned', '${r['total_leads'] ?? 0}'),
@@ -869,7 +870,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
         children: [
           Text(
             'Lead Inventory',
-            style: widget.theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+            style: widget.theme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.bold),
           ),
           const SizedBox(height: 12),
           SingleChildScrollView(
@@ -903,12 +904,12 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
         children: [
           Text(
             count,
-            style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 18),
+            style: TextStyle(color: color, fontWeight: AppTypography.bold, fontSize: AppTypography.headingMedium),
           ),
           const SizedBox(height: 4),
           Text(
             label,
-            style: TextStyle(color: color.withValues(alpha: 0.8), fontSize: 10),
+            style: TextStyle(color: color.withValues(alpha: 0.8), fontSize: AppTypography.bodySmall),
             textAlign: TextAlign.center,
           ),
         ],
@@ -1035,8 +1036,8 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: const TextStyle(fontSize: 13)),
-          Text(value, style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 13)),
+          Text(label, style: TextStyle(fontSize: AppTypography.bodyLarge)),
+          Text(value, style: TextStyle(fontWeight: AppTypography.bold, color: color, fontSize: AppTypography.bodyLarge)),
         ],
       ),
     );

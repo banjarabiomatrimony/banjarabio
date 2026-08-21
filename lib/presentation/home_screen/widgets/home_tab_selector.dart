@@ -21,35 +21,11 @@ class HomeTabSelector extends StatelessWidget {
   });
 
   String _getMatchesFilterLabel(BuildContext context) {
-    final locale = Localizations.localeOf(context).languageCode;
-    switch (locale) {
-      case 'hi':
-        return 'रिश्ते के प्रकार';
-      case 'te':
-        return 'మ్యాచ్ కేటగిరీ';
-      case 'mr':
-        return 'नात्यांचे प्रकार';
-      case 'kn':
-        return 'ಪಂದ್ಯದ ಪ್ರಕಾರ';
-      default:
-        return 'Matches Category';
-    }
+    return AppLocalizations.of(context)?.matchesCategoryLabel ?? 'Matches Category';
   }
 
   String _getDisplayLayoutLabel(BuildContext context) {
-    final locale = Localizations.localeOf(context).languageCode;
-    switch (locale) {
-      case 'hi':
-        return 'दिखाने का तरीका';
-      case 'te':
-        return 'చూపించే విధానం';
-      case 'mr':
-        return 'दाखवण्याची पद्धत';
-      case 'kn':
-        return 'ತೋರಿಸುವ ವಿಧಾನ';
-      default:
-        return 'Display Layout';
-    }
+    return AppLocalizations.of(context)?.displayLayoutLabel ?? 'Display Layout';
   }
 
   @override
@@ -82,7 +58,7 @@ class HomeTabSelector extends StatelessWidget {
                             _getMatchesFilterLabel(context),
                             style: theme.textTheme.labelSmall?.copyWith(
                               color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
-                              fontWeight: FontWeight.w700,
+                              fontWeight: AppTypography.bold,
                               fontSize: AppTypography.labelMedium,
                               letterSpacing: 0.3,
                             ),
@@ -109,7 +85,7 @@ class HomeTabSelector extends StatelessWidget {
                             _getDisplayLayoutLabel(context),
                             style: theme.textTheme.labelSmall?.copyWith(
                               color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
-                              fontWeight: FontWeight.w700,
+                              fontWeight: AppTypography.bold,
                               fontSize: AppTypography.labelMedium,
                               letterSpacing: 0.3,
                             ),
@@ -288,7 +264,7 @@ class HomeTabSelector extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.labelLarge?.copyWith(
                   color: isActive ? theme.colorScheme.onPrimary : theme.colorScheme.onSurfaceVariant,
-                  fontWeight: isActive ? FontWeight.w800 : FontWeight.w600,
+                  fontWeight: isActive ? AppTypography.extraBold : AppTypography.semiBold,
                   fontSize: AppTypography.bodySmall,
                 ),
                 textAlign: TextAlign.center,

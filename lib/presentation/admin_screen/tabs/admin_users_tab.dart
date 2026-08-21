@@ -226,18 +226,18 @@ class _AdminUsersTabState extends State<AdminUsersTab> {
                 SizedBox(width: 4.w),
                 Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Row(children: [
-                    Expanded(child: Text(user.fullName, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold))),
+                    Expanded(child: Text(user.fullName, style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold))),
                     if (user.isPremium) Icon(Icons.stars, color: Colors.amber, size: 16.sp),
                   ]),
                   SizedBox(height: 0.5.h),
                   Row(children: [
-                    Text(user.gender, style: theme.textTheme.bodySmall?.copyWith(color: user.gender.toLowerCase() == 'female' ? Colors.pink : Colors.blue, fontWeight: FontWeight.bold)),
+                    Text(user.gender, style: theme.textTheme.bodySmall?.copyWith(color: user.gender.toLowerCase() == 'female' ? Colors.pink : Colors.blue, fontWeight: AppTypography.bold)),
                     Text(' • ', style: theme.textTheme.bodySmall),
                     Text(AppLocalizations.of(context)?.idLabel(user.id.substring(0, 8)) ?? 'ID: ${user.id.substring(0, 8)}', style: theme.textTheme.bodySmall),
                   ]),
                   if (user.phoneNumber != null && user.phoneNumber!.isNotEmpty) ...[
                     SizedBox(height: 0.5.h),
-                    Text(user.phoneNumber!, style: theme.textTheme.bodySmall?.copyWith(color: theme.hintColor, fontWeight: FontWeight.w500)),
+                    Text(user.phoneNumber!, style: theme.textTheme.bodySmall?.copyWith(color: theme.hintColor, fontWeight: AppTypography.medium)),
                   ],
                   SizedBox(height: 1.5.h),
                   SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: [
@@ -284,7 +284,7 @@ class _AdminUsersTabState extends State<AdminUsersTab> {
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Icon(icon, size: 14.sp, color: isActive ? theme.colorScheme.primary : theme.hintColor.withValues(alpha: 0.7)),
           SizedBox(width: 1.5.w),
-          Text(label, style: TextStyle(color: isActive ? theme.colorScheme.primary : theme.hintColor.withValues(alpha: 0.7), fontWeight: isActive ? FontWeight.bold : FontWeight.w500, fontSize: AppTypography.labelMedium)),
+          Text(label, style: TextStyle(color: isActive ? theme.colorScheme.primary : theme.hintColor.withValues(alpha: 0.7), fontWeight: isActive ? AppTypography.bold : AppTypography.medium, fontSize: AppTypography.labelMedium)),
         ]),
       ),
     );
@@ -297,7 +297,7 @@ class _AdminUsersTabState extends State<AdminUsersTab> {
         Container(padding: EdgeInsets.all(2.w), decoration: BoxDecoration(color: color.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(icon, color: color, size: 16.sp)),
         SizedBox(width: 3.w),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
-          Text(value, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: color.withValues(alpha: 0.8))),
+          Text(value, style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold, color: color.withValues(alpha: 0.8))),
           Text(label, style: theme.textTheme.bodySmall?.copyWith(color: theme.hintColor, fontSize: AppTypography.labelSmall), maxLines: 1, overflow: TextOverflow.ellipsis),
         ])),
       ]),
@@ -316,7 +316,7 @@ class _AdminUsersTabState extends State<AdminUsersTab> {
         ),
         child: Text(
           isVerified ? '$label ✓' : (AppLocalizations.of(context)?.verifyLabel(label) ?? 'Verify $label'),
-          style: TextStyle(fontSize: AppTypography.labelSmall, color: isVerified ? Colors.green[700] : Colors.orange[700], fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: AppTypography.labelSmall, color: isVerified ? Colors.green[700] : Colors.orange[700], fontWeight: AppTypography.bold),
         ),
       ),
     );

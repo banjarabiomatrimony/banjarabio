@@ -319,6 +319,8 @@ class _LocationPreferencesSectionState
           ),
           SizedBox(height: 3.h),
 
+
+
           // Marriage readiness toggle
           Container(
             padding: EdgeInsets.all(4.w),
@@ -431,7 +433,7 @@ class _LocationPreferencesSectionState
                       village: _villageController.text,
                     ),
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTypography.semiBold,
                     ),
                   ),
                 ],

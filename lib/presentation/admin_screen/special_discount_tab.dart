@@ -1,3 +1,4 @@
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
@@ -104,7 +105,7 @@ class _SpecialDiscountTabState extends State<SpecialDiscountTab> {
               Text(
                 'Grant Special Discount',
                 style: widget.theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTypography.bold,
                 ),
               ),
               SizedBox(height: 1.h),
@@ -161,7 +162,7 @@ class _SpecialDiscountTabState extends State<SpecialDiscountTab> {
                             Text(
                               DateFormat('EEEE, MMM dd, yyyy').format(_expiryDate),
                               style: widget.theme.textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
+                                fontWeight: AppTypography.semiBold,
                               ),
                             ),
                             const Spacer(),
@@ -185,7 +186,7 @@ class _SpecialDiscountTabState extends State<SpecialDiscountTab> {
                         ),
                         child: _isSubmitting 
                             ? const CircularProgressIndicator(color: Colors.white)
-                            : const Text('Grant Special Discount', style: TextStyle(fontWeight: FontWeight.bold)),
+                            : const Text('Grant Special Discount', style: TextStyle(fontWeight: AppTypography.bold)),
                       ),
                     ),
                   ],
@@ -211,7 +212,7 @@ class _SpecialDiscountTabState extends State<SpecialDiscountTab> {
           Text(
             label,
             style: widget.theme.textTheme.labelMedium?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTypography.bold,
               color: widget.theme.hintColor,
             ),
           ),

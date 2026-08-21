@@ -30,7 +30,13 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <!-- Removed Full-screen intent to comply with Google Play Policy (not a calling/alarm app) -->
-    <application android:label="BanjaraBio" android:name="${applicationName}" android:icon="@mipmap/ic_launcher" android:enableOnBackInvokedCallback="true" android:largeHeap="true">
+    <application
+        android:label="BanjaraBio"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher"
+        android:enableOnBackInvokedCallback="true"
+        android:largeHeap="true"
+        android:usesCleartextTraffic="true">
         <!-- AdMob App ID (REQUIRED for startup stability, even if ads are disabled in Dart) -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

@@ -3,7 +3,6 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/core/app_export.dart';
-import 'package:banjarabio/core/constants/app_typography.dart';
 
 /// Upgrade dialog to show when free users hit feature limits
 class UpgradeDialog extends StatelessWidget {
@@ -143,7 +142,7 @@ class UpgradeDialog extends StatelessWidget {
             Text(
               title,
               style: theme.textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTypography.bold,
               ),
               textAlign: TextAlign.center,
             ),
@@ -171,7 +170,7 @@ class UpgradeDialog extends StatelessWidget {
                       '$currentUsage / $limit $featureName used',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.error,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTypography.semiBold,
                       ),
                     ),
                   ],
@@ -211,7 +210,7 @@ class UpgradeDialog extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 2.h),
                 ),
                 child: Text(AppLocalizations.of(context)?.upgradeToPremium ?? 'Upgrade to Premium',
-                  style: TextStyle(fontSize: AppTypography.bodyMedium, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: AppTypography.bodyMedium, fontWeight: AppTypography.bold),
                 ),
               ),
             ),
@@ -327,8 +326,8 @@ class SubscriptionBadge extends StatelessWidget {
             displayText,
             style: TextStyle(
               color: Colors.white,
-              fontSize: isSmall ? 10 : 12,
-              fontWeight: FontWeight.bold,
+              fontSize: isSmall ? AppTypography.bodySmall : AppTypography.bodyMedium,
+              fontWeight: AppTypography.bold,
               letterSpacing: 0.5,
             ),
           ),
@@ -422,7 +421,7 @@ class RemainingLimitsWidget extends StatelessWidget {
           remaining >= 999 ? '∞' : '$remaining',
           style: TextStyle(
             fontSize: AppTypography.bodySmall,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTypography.semiBold,
             color: isLow
                 ? theme.colorScheme.error
                 : theme.colorScheme.onSurface,
@@ -454,7 +453,7 @@ class RemainingLimitsWidget extends StatelessWidget {
           remaining >= 999 ? '∞' : '$remaining',
           style: TextStyle(
             fontSize: AppTypography.bodyMedium,
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTypography.bold,
             color: isLow
                 ? theme.colorScheme.error
                 : theme.colorScheme.onSurface,

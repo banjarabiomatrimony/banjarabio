@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:async';
 import 'dart:math' as math;
+import 'dart:ui';
 
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/data/location_data.dart';
@@ -30,7 +31,6 @@ import 'package:banjarabio/presentation/home_screen/widgets/offer_banner_widget.
 import 'package:banjarabio/presentation/home_screen/widgets/relative_browse_hero_card.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/home_feed_header.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/home_filter_chips.dart';
-import 'package:banjarabio/presentation/home_screen/widgets/home_tab_selector.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/home_sharing_sheet.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/home_recommended_content.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/home_daily_content.dart';
@@ -39,9 +39,12 @@ import 'package:banjarabio/widgets/ads/banner_ad_widget.dart';
 import 'package:banjarabio/presentation/filter_screen/filter_screen.dart';
 import 'package:banjarabio/presentation/home_screen/location_selection_screen.dart';
 import 'package:banjarabio/widgets/branded_refresh_indicator.dart';
+import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 import 'package:banjarabio/core/models/daily_reward_model.dart';
 import 'package:banjarabio/core/repositories/daily_reward_repository.dart';
 import 'package:banjarabio/widgets/daily_reward_dialog.dart';
+import 'package:banjarabio/core/repositories/chat_repository.dart';
+import 'package:banjarabio/presentation/match_profile_screen/widgets/direct_note_bottom_sheet.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 
 
@@ -65,7 +68,7 @@ class HomeScreenInitialPage extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver, TickerProviderStateMixin {
   @visibleForTesting
   Future<void> loadData() => _loadData();
 
@@ -86,6 +89,29 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
   late final ProfileRepository _profileRepository;
   late final ShareRepository _shareRepository;
   late final UsageRepository _usageRepository;
+  AnimationController? _bounceController;
+  Animation<double>? _bounceAnimation;
+  Animation<double>? _pulseAnimation;
+  Animation<double>? _glowAnimation;
+
+  void _initAnimations() {
+    if (_bounceController == null) {
+      _bounceController = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 1100),
+      )..repeat(reverse: true);
+
+      _bounceAnimation = Tween<double>(begin: -1.0, end: 3.5).animate(
+        CurvedAnimation(parent: _bounceController!, curve: Curves.easeInOut),
+      );
+      _pulseAnimation = Tween<double>(begin: 0.98, end: 1.025).animate(
+        CurvedAnimation(parent: _bounceController!, curve: Curves.easeInOut),
+      );
+      _glowAnimation = Tween<double>(begin: 0.25, end: 0.85).animate(
+        CurvedAnimation(parent: _bounceController!, curve: Curves.easeInOut),
+      );
+    }
+  }
 
 
   bool _isLoading = true;
@@ -96,7 +122,7 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
   String? _lastCreatedAt;
 
   bool _isLocationOverridden = true;
-  bool _isSwipeMode = false; // Default to Grid mode (user request)
+  // bool _isSwipeMode = false; // Commented out swipe mode
   int _selectedTab = 0; // 0 = Recommended, 1 = Daily
   String? _errorMessage;
   List<ProfileModel> _profiles = [];
@@ -112,6 +138,7 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
   Timer? _batchTimer;
   final List<ProfileModel> _batchEnrichedProfiles = [];
   Timer? _shimmerFallback;
+  Timer? _instagramTimer;
   StreamSubscription<List<ProfileModel>>? _feedSubscription;
 
   // Search and Location state
@@ -184,6 +211,8 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
 
     _scrollController.addListener(_onScroll);
     WidgetsBinding.instance.addObserver(this);
+
+    _initAnimations();
 
     // 📡 Stream listener: Live update feed whenever background API fetch arrives
     _feedSubscription = _profileRepository.onFeedUpdated.listen((freshProfiles) {
@@ -260,42 +289,46 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
     }
   }
 
-  Future<void> _checkInstagramPrompt() async {
+  void _checkInstagramPrompt() {
+    _instagramTimer?.cancel();
     // Small delay to ensure UI is ready and data might be loaded
-    await Future.delayed(const Duration(seconds: 4));
-    if (!mounted) return;
+    _instagramTimer = Timer(const Duration(seconds: 4), () async {
+      if (!mounted) return;
 
-    final ownProfile = _ownProfile;
-    if (ownProfile == null || ownProfile.hasFollowedInstagram) return;
+      final ownProfile = _ownProfile;
+      if (ownProfile == null || ownProfile.hasFollowedInstagram) return;
 
-    final lastPrompt = LocalCacheService().getLastInstagramPromptDate();
-    final now = DateTime.now();
+      final lastPrompt = LocalCacheService().getLastInstagramPromptDate();
+      final now = DateTime.now();
 
-    if (lastPrompt == null || now.difference(lastPrompt).inDays >= 7) {
-      if (mounted) {
-        await Navigator.push(
-          context,
-          PageRouteBuilder(
-            opaque: false,
-            pageBuilder: (context, animation, secondaryAnimation) => const InstagramFollowInterstitial(),
-            transitionsBuilder: (context, animation, _, child) {
-              return FadeTransition(opacity: animation, child: child);
-            },
-          ),
-        );
-        await LocalCacheService().saveLastInstagramPromptDate(now);
+      if (lastPrompt == null || now.difference(lastPrompt).inDays >= 7) {
+        if (mounted) {
+          await Navigator.push(
+            context,
+            PageRouteBuilder(
+              opaque: false,
+              pageBuilder: (context, animation, secondaryAnimation) => const InstagramFollowInterstitial(),
+              transitionsBuilder: (context, animation, _, child) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+            ),
+          );
+          await LocalCacheService().saveLastInstagramPromptDate(now);
+        }
       }
-    }
+    });
   }
 
   @override
   void dispose() {
+    _bounceController?.dispose();
     _feedSubscription?.cancel();
     _scrollController.dispose();
     _searchController.dispose();
     _debounce?.cancel();
     _batchTimer?.cancel();
     _shimmerFallback?.cancel();
+    _instagramTimer?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     // 🧬 PERFORMANCE: Removed aggressive image cache clearing during dispose.
     // Clearing the entire cache synchronously can block the main thread 
@@ -304,19 +337,24 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
     super.dispose();
   }
 
+  double get _currentScrollOffset {
+    if (!_scrollController.hasClients || _scrollController.positions.isEmpty) {
+      return 0.0;
+    }
+    return _scrollController.positions.first.pixels;
+  }
+
   void _onScroll() {
-    if (_isSwipeMode || _selectedTab != 0) return;
+    if (_selectedTab == 1) return;
+    if (!_scrollController.hasClients || _scrollController.positions.isEmpty) return;
     
-    // 🚨 SIGNAL 3 FIX: Prevent automatic precaching during layout attachment.
-    // Flutter triggers _onScroll automatically when the SliverGrid mounts and establishes its size.
-    // We strictly require that the user has actually moved the viewport before we
-    // unleash intense concurrent photo precaching tasks onto the isolate pool.
-    if (_scrollController.position.pixels <= 0) return;
+    final pos = _scrollController.positions.first;
+    if (pos.pixels <= 0) return;
     
     // 🧬 PERFORMANCE: Pre-fetch next page when 70% through
-    final triggerThreshold = _scrollController.position.maxScrollExtent * 0.7;
+    final triggerThreshold = pos.maxScrollExtent * 0.7;
     
-    if (_scrollController.position.pixels >= triggerThreshold &&
+    if (pos.pixels >= triggerThreshold &&
         !_isFetchingMore &&
         _hasMore &&
         !_isLoading) {
@@ -342,7 +380,7 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
     
     // Find next block of 10-20 profiles that might need precaching
     final itemHeight = 450.0;
-    final currentIndex = (_scrollController.offset / itemHeight).floor();
+    final currentIndex = (_currentScrollOffset / itemHeight).floor();
     final lookAheadStart = currentIndex + 5; // Start precaching 5 items ahead of current view
     final lookAheadEnd = math.min(lookAheadStart + 15, _profiles.length);
 
@@ -380,7 +418,7 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
     // Find first 5 un-enriched profiles in the visible vicinity + buffer
     // We look at the current scroll position to guess the visible range
     final itemHeight = 450.0; // Rough estimate of ProfileCardWidget height
-    final currentIndex = (_scrollController.offset / itemHeight).floor();
+    final currentIndex = (_currentScrollOffset / itemHeight).floor();
     final lookAheadStart = currentIndex + 3;
     final lookAheadEnd = math.min(lookAheadStart + 10, _profiles.length);
 
@@ -727,11 +765,30 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
   }
 
   void _openLocationSelection() async {
+    HapticFeedback.selectionClick();
     final Map<String, String?>? result =
         await Navigator.push<Map<String, String?>>(
           context,
-          MaterialPageRoute(
-            builder: (context) => const LocationSelectionScreen(),
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                const LocationSelectionScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              const begin = Offset(0.0, 0.08);
+              const end = Offset.zero;
+              final curve = CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeOutCubic,
+              );
+              return SlideTransition(
+                position: Tween<Offset>(begin: begin, end: end).animate(curve),
+                child: FadeTransition(
+                  opacity: curve,
+                  child: child,
+                ),
+              );
+            },
+            transitionDuration: const Duration(milliseconds: 260),
           ),
         );
 
@@ -864,6 +921,45 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
     );
   }
 
+  void _handleMessage(ProfileModel profile) async {
+    if (LocalCacheService().isRelativeBrowseMode()) {
+      GuestRestrictedDialog.show(context);
+      return;
+    }
+
+    if (profile.isMatched) {
+      final res = await ChatRepository().getOrCreateConversation(profile.userId);
+      res.fold(
+        onSuccess: (conversation) {
+          if (mounted) {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.chatScreen,
+              arguments: conversation,
+            );
+          }
+        },
+        onFailure: (err) {
+          if (mounted) {
+            Fluttertoast.showToast(
+              msg: AppLocalizations.of(context)?.failedToStartChat(err.toString()) ?? 'Failed to start chat: $err',
+            );
+          }
+        },
+      );
+    } else {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (ctx) => DirectNoteBottomSheet(
+          profile: profile.toDisplayMap(),
+          onSuccess: () => _handleInterest(profile),
+        ),
+      );
+    }
+  }
+
   String _getRelativeChipLabel() {
     final intent = LocalCacheService().getRelativeIntent();
     final relation = (intent?['relation'] ?? '').toString().toLowerCase();
@@ -899,132 +995,268 @@ class _HomeScreenInitialPageState extends ConsumerState<HomeScreenInitialPage>
   @override
   Widget build(BuildContext context) {
     // Bookmark UI updates via ref.watch(isBookmarkedProvider) per card - no ref.listen needed
-    return BrandedRefreshIndicator(
-      onRefresh: _handleRefresh,
-      child: CustomScrollView(
-        controller: _scrollController,
-        physics: const AlwaysScrollableScrollPhysics(),
-        slivers: [
-          HomeFeedHeader(
-            locationLabel: _getUserLocationLabel(),
-            onLocationTap: _openLocationSelection,
-            onFilterTap: _openFilterSheet,
-            searchController: _searchController,
-            onSearchChanged: _onSearchChanged,
-            onSearchClear: () {
-              _searchController.clear();
-              _loadData();
-            },
-            activeFilterCount: _activeFilterCount,
-            dailyRewardStatus: _dailyRewardStatus,
-            onRewardUpdated: (updated) {
-              if (updated != null && mounted) {
-                setState(() => _dailyRewardStatus = updated);
-              }
-            },
-          ),
-
-          if (LocalCacheService().isRelativeBrowseMode())
-            SliverToBoxAdapter(
-              child: RelativeBrowseHeroCard(
-                activeChipLabel: _getRelativeChipLabel(),
+    return Stack(
+      children: [
+        BrandedRefreshIndicator(
+          onRefresh: _handleRefresh,
+          child: CustomScrollView(
+            controller: _scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
+              HomeFeedHeader(
+                locationLabel: _getUserLocationLabel(),
+                onLocationTap: _openLocationSelection,
+                onFilterTap: _openFilterSheet,
+                searchController: _searchController,
+                onSearchChanged: _onSearchChanged,
+                onSearchClear: () {
+                  _searchController.clear();
+                  _loadData();
+                },
+                activeFilterCount: _activeFilterCount,
+                dailyRewardStatus: _dailyRewardStatus,
+                onRewardUpdated: (updated) {
+                  if (updated != null && mounted) {
+                    setState(() => _dailyRewardStatus = updated);
+                  }
+                },
+                selectedTab: _selectedTab,
+                // isSwipeMode: _isSwipeMode, // Commented out swipe mode
+                onTabChanged: (tab) => Future.microtask(() => setState(() => _selectedTab = tab)),
+                // onViewModeChanged: (swipe) => setState(() => _isSwipeMode = swipe), // Commented out swipe mode
               ),
-            ),
 
+              if (LocalCacheService().isRelativeBrowseMode())
+                SliverToBoxAdapter(
+                  child: RelativeBrowseHeroCard(
+                    activeChipLabel: _getRelativeChipLabel(),
+                  ),
+                ),
 
-          // Extracted: Applied filter chips
-          HomeFilterChips(
-            activeFiltersMap: _activeFiltersMap,
-            onAdjustFilters: _openFilterSheet,
-            onClearFilters: _clearFilters,
-            onRemoveFilter: (key) {
-              setState(() {
-                if (key == 'Age') {
-                  _currentFilters = _currentFilters.copyWith();
-                }
-                if (key == 'Education') {
-                  _currentFilters = _currentFilters.copyWith(education: []);
-                }
-                if (key == 'Profession') {
-                  _currentFilters = _currentFilters.copyWith(profession: []);
-                }
-                if (key == 'Marital') {
-                  _currentFilters = _currentFilters.copyWith();
-                }
-              });
-              _loadData();
-            },
+              // Extracted: Applied filter chips
+              HomeFilterChips(
+                activeFiltersMap: _activeFiltersMap,
+                onAdjustFilters: _openFilterSheet,
+                onClearFilters: _clearFilters,
+                onRemoveFilter: (key) {
+                  setState(() {
+                    if (key == 'Age') {
+                      _currentFilters = _currentFilters.copyWith();
+                    }
+                    if (key == 'Education') {
+                      _currentFilters = _currentFilters.copyWith(education: []);
+                    }
+                    if (key == 'Profession') {
+                      _currentFilters = _currentFilters.copyWith(profession: []);
+                    }
+                    if (key == 'Marital') {
+                      _currentFilters = _currentFilters.copyWith();
+                    }
+                  });
+                  _loadData();
+                },
+              ),
+
+              // 🎁 Dynamic Offer & Services Mini-Strip
+              if (!_isLoading && _errorMessage == null && _selectedTab != 1)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 0.3.h, bottom: 0.4.h),
+                    child: OfferBannerWidget(
+                      gender: _ownProfile?.gender,
+                      currentPlan: _ownProfile?.planType.name,
+                    ),
+                  ),
+                ),
+                
+               // 📢 Interleaved Banner Ad (omitted for Premium subscribers)
+               if (!_isLoading && _errorMessage == null && _selectedTab == 0 && !SessionManager.instance.isPremium)
+                  const SliverToBoxAdapter(
+                    child: BannerAdWidget(),
+                  ),
+
+              // ══════════════════════════════════════════════════════
+              // RECOMMENDED / ALL MATCHES (0), NEAR ME (2), VIP (3)
+              // ══════════════════════════════════════════════════════
+              if (_selectedTab != 1) ...HomeRecommendedContent.buildSlivers(
+                context: context,
+                isLoading: _isLoading,
+                errorMessage: _errorMessage,
+                profiles: _getFilteredProfilesForTab(_selectedTab),
+                isSwipeMode: false, // Commented out swipe mode
+                activeFilterCount: _activeFilterCount,
+                isFetchingMore: _isFetchingMore,
+                isDistrictFallback: _isDistrictFallback,
+                requestedDistrict: _fallbackDistrict ?? _currentFilters.district,
+                selectedState: _fallbackState ?? _currentFilters.state,
+                onLoadData: _loadData,
+                onClearFilters: _clearFilters,
+                onOpenFilterSheet: _openFilterSheet,
+                onOpenProfileDetail: _openProfileDetail,
+                onShowSharingOptions: _showSharingOptions,
+                onHandleInterest: _handleInterest,
+                onMessage: _handleMessage,
+                onToggleBookmark: _toggleBookmark,
+                onEnrichProfileLazy: _enrichProfileLazy,
+                onLoadMoreProfiles: _loadMoreProfiles,
+              ),
+
+              // ══════════════════════════════════════════════════════
+              // DAILY PICKS TAB (1)
+              // ══════════════════════════════════════════════════════
+              if (_selectedTab == 1) ...HomeDailyContent.buildSlivers(
+                context: context,
+                isLoading: _isLoading,
+                errorMessage: _errorMessage,
+                profiles: _profiles.take(10).toList(),
+                onTap: _openProfileDetail,
+                onInterest: _handleInterest,
+                onToggleBookmark: _toggleBookmark,
+                onShare: _showSharingOptions,
+              ),
+            ],
           ),
+        ),
 
-          // Extracted: Tab selector + View toggle
-          if (!_isLoading && _errorMessage == null)
-            HomeTabSelector(
-              selectedTab: _selectedTab,
-              isSwipeMode: _isSwipeMode,
-              onTabChanged: (tab) => Future.microtask(() => setState(() => _selectedTab = tab)),
-              onViewModeChanged: (swipe) => setState(() => _isSwipeMode = swipe),
-            ),
+        // 🌟 Smart Floating Bottom Scroll Indicator (Auto-Fades on scroll)
+        if (!_isLoading && _errorMessage == null && _profiles.isNotEmpty && _selectedTab != 1)
+          _buildSmartFloatingScrollIndicator(),
+      ],
+    );
+  }
 
+  Widget _buildSmartFloatingScrollIndicator() {
+    _initAnimations();
+    return AnimatedBuilder(
+      animation: _scrollController,
+      builder: (context, child) {
+        final offset = _currentScrollOffset;
+        final isVisible = offset <= 50.0;
 
-          // 🎁 Dynamic Offer Banners
-          if (!_isLoading && _errorMessage == null && _selectedTab == 0)
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.only(top: 1.h, bottom: 2.h),
-                child: OfferBannerWidget(
-                  gender: _ownProfile?.gender,
-                  currentPlan: _ownProfile?.planType.name,
+        return Positioned(
+          bottom: 12.h,
+          left: 0,
+          right: 0,
+          child: AnimatedOpacity(
+            opacity: isVisible ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 280),
+            curve: Curves.easeInOut,
+            child: IgnorePointer(
+              ignoring: !isVisible,
+              child: Center(
+                child: TactilePressable(
+                  onTap: () {
+                    HapticFeedback.selectionClick();
+                    if (_scrollController.hasClients && _scrollController.positions.isNotEmpty) {
+                      final pos = _scrollController.positions.first;
+                      _scrollController.animateTo(
+                        math.min(
+                          pos.pixels + 500.0,
+                          pos.maxScrollExtent,
+                        ),
+                        duration: const Duration(milliseconds: 450),
+                        curve: Curves.easeInOutCubic,
+                      );
+                    }
+                  },
+                  child: AnimatedBuilder(
+                    animation: _bounceController!,
+                    builder: (context, _) {
+                      return Transform.scale(
+                        scale: _pulseAnimation!.value,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(26),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withValues(alpha: 0.35), // Ultra-transparent glass
+                                borderRadius: BorderRadius.circular(26),
+                                border: Border.all(
+                                  color: const Color(0xFFFDE047).withValues(alpha: _glowAnimation!.value), // Pulsing aura rim
+                                  width: 1.2,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.25),
+                                    blurRadius: 12,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                  BoxShadow(
+                                    color: const Color(0xFFF59E0B).withValues(alpha: _glowAnimation!.value * 0.4),
+                                    blurRadius: 14,
+                                    spreadRadius: 0.5,
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Transform.translate(
+                                    offset: Offset(0, _bounceAnimation!.value),
+                                    child: const Icon(
+                                      Icons.keyboard_arrow_down_rounded,
+                                      color: Color(0xFFFDE047),
+                                      size: 20,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    'Scroll for more',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: AppTypography.labelSmall,
+                                      fontWeight: AppTypography.bold,
+                                      letterSpacing: 0.3,
+                                      shadows: [
+                                        const Shadow(
+                                          color: Colors.black87,
+                                          blurRadius: 3,
+                                          offset: Offset(0, 1),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
-            
-           // 📢 Interleaved Banner Ad (Hidden for Premium users inside the widget)
-           if (!_isLoading && _errorMessage == null && _selectedTab == 0)
-              const SliverToBoxAdapter(
-                child: BannerAdWidget(),
-              ),
-
-          // ══════════════════════════════════════════════════════
-          // RECOMMENDED TAB content
-          // ══════════════════════════════════════════════════════
-          if (_selectedTab == 0) ...HomeRecommendedContent.buildSlivers(
-            context: context,
-            isLoading: _isLoading,
-            errorMessage: _errorMessage,
-            profiles: _profiles,
-            isSwipeMode: _isSwipeMode,
-            activeFilterCount: _activeFilterCount,
-            isFetchingMore: _isFetchingMore,
-            isDistrictFallback: _isDistrictFallback,
-            requestedDistrict: _fallbackDistrict ?? _currentFilters.district,
-            selectedState: _fallbackState ?? _currentFilters.state,
-            onLoadData: _loadData,
-            onClearFilters: _clearFilters,
-            onOpenFilterSheet: _openFilterSheet,
-            onOpenProfileDetail: _openProfileDetail,
-            onShowSharingOptions: _showSharingOptions,
-            onHandleInterest: _handleInterest,
-            onToggleBookmark: _toggleBookmark,
-            onEnrichProfileLazy: _enrichProfileLazy,
-            onLoadMoreProfiles: _loadMoreProfiles,
           ),
-
-          // ══════════════════════════════════════════════════════
-          // DAILY TAB content
-          // ══════════════════════════════════════════════════════
-          if (_selectedTab == 1) ...HomeDailyContent.buildSlivers(
-            context: context,
-            isLoading: _isLoading,
-            errorMessage: _errorMessage,
-            profiles: _profiles,
-            onTap: _openProfileDetail,
-            onInterest: _handleInterest,
-            onToggleBookmark: _toggleBookmark,
-            onShare: _showSharingOptions,
-          ),
-        ],
-      ),
+        );
+      },
     );
+  }
+
+  List<ProfileModel> _getFilteredProfilesForTab(int tab) {
+    switch (tab) {
+      case 2:
+        // Near Me tab
+        final userDistrict = _ownProfile?.district?.toLowerCase() ?? '';
+        final userState = _ownProfile?.state?.toLowerCase() ?? '';
+        final near = _profiles.where((p) {
+          final pDist = p.district?.toLowerCase() ?? '';
+          final pState = p.state?.toLowerCase() ?? '';
+          return (userDistrict.isNotEmpty && pDist == userDistrict) ||
+              (userState.isNotEmpty && pState == userState);
+        }).toList();
+        return near.isNotEmpty ? near : _profiles;
+      case 3:
+        // VIP Verified tab
+        final vip = _profiles.where((p) => p.isVerified || p.isPremium).toList();
+        return vip.isNotEmpty ? vip : _profiles;
+      case 0:
+      default:
+        // All Matches
+        return _profiles;
+    }
   }
 }
 
