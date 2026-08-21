@@ -130,11 +130,11 @@ class _MatchSuccessDialogState extends State<MatchSuccessDialog>
             gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Color(0xFF1A1F35), Color(0xFF2D3655)],
+              colors: [AppColors.canvasRichDark, AppColors.slate700],
             ),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF64FFDA).withValues(alpha: 0.3),
+                color: AppColors.cyanAccent.withValues(alpha: AppColors.opacity30),
                 blurRadius: 20,
                 spreadRadius: 5,
               ),
@@ -148,13 +148,13 @@ class _MatchSuccessDialogState extends State<MatchSuccessDialog>
                 AppLocalizations.of(context)?.itSAMatch ?? "IT'S A MATCH!",
                 style: TextStyle(
                   fontFamily: 'Orbitron', // Assuming we have this or similar
-                  color: const Color(0xFF64FFDA),
+                  color: AppColors.cyanAccent,
                   fontSize: AppTypography.headingLarge,
                   fontWeight: FontWeight.w900,
                   letterSpacing: 2,
                   shadows: [
                     Shadow(
-                      color: const Color(0xFF64FFDA).withValues(alpha: 0.5),
+                      color: AppColors.cyanAccent.withValues(alpha: AppColors.opacity50),
                       blurRadius: 10,
                     ),
                   ],
@@ -183,7 +183,7 @@ class _MatchSuccessDialogState extends State<MatchSuccessDialog>
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.2),
+                            color: Colors.black.withValues(alpha: AppColors.opacity20),
                             blurRadius: 10,
                           ),
                         ],
@@ -205,7 +205,7 @@ class _MatchSuccessDialogState extends State<MatchSuccessDialog>
                 AppLocalizations.of(context)?.sharedProfilesWithEachOther(them?['full_name'] ?? 'Someone') ?? 'You and ${them?['full_name'] ?? 'Someone'} have shared profiles with each other.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.9),
+                  color: Colors.white.withValues(alpha: AppColors.opacity90),
                   fontSize: AppTypography.bodyMedium,
                 ),
               ),
@@ -249,8 +249,8 @@ class _MatchSuccessDialogState extends State<MatchSuccessDialog>
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF64FFDA),
-                    foregroundColor: const Color(0xFF1A1F35),
+                    backgroundColor: AppColors.cyanAccent,
+                    foregroundColor: AppColors.canvasRichDark,
                     padding: EdgeInsets.symmetric(vertical: 1.5.h),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -271,7 +271,7 @@ class _MatchSuccessDialogState extends State<MatchSuccessDialog>
                 },
                 child: Text(AppLocalizations.of(context)?.keepBrowsing ?? 'Keep Browsing',
                   style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.6),
+                    color: Colors.white.withValues(alpha: AppColors.opacity60),
                     fontSize: AppTypography.bodySmall,
                   ),
                 ),
@@ -292,7 +292,7 @@ class _MatchSuccessDialogState extends State<MatchSuccessDialog>
         border: Border.all(color: Colors.white, width: 3),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.3),
+            color: Colors.black.withValues(alpha: AppColors.opacity30),
             blurRadius: 10,
             offset: Offset(isLeft ? -5 : 5, 5),
           ),

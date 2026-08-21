@@ -3,6 +3,7 @@ import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Launches the phone dialer for the given [phone] number.
 Future<void> launchCaller(BuildContext context, String phone) async {
@@ -52,9 +53,9 @@ Widget buildAdminContactAction({
     child: Container(
       padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.8.h),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
+        color: color.withValues(alpha: AppColors.opacity10),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
+        border: Border.all(color: color.withValues(alpha: AppColors.opacity30)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

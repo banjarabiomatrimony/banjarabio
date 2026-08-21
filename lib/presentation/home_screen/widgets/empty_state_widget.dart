@@ -30,19 +30,19 @@ class EmptyStateWidget extends StatelessWidget {
                   shape: BoxShape.circle,
                   gradient: LinearGradient(
                     colors: [
-                      theme.colorScheme.primary.withValues(alpha: 0.12),
+                      theme.colorScheme.primary.withValues(alpha: AppColors.opacity12),
                       theme.colorScheme.primary.withValues(alpha: 0.03),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   border: Border.all(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                    color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity20),
                     width: 1.5,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.05),
+                      color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity5),
                       blurRadius: 20,
                       spreadRadius: 2,
                     ),
@@ -90,7 +90,7 @@ class EmptyStateWidget extends StatelessWidget {
                 AppLocalizations.of(context)?.tryAdjustingYourFiltersToSeeMoreProfiles ??
                     'अधिक बंजारा प्रोफाइल पाहण्यासाठी कृपया फिल्टर्स बदला किंवा शोधाची व्याप्ती वाढवा.',
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.85),
+                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity85),
                   height: 1.4,
                 ),
                 textAlign: TextAlign.center,
@@ -112,7 +112,7 @@ class EmptyStateWidget extends StatelessWidget {
                       gradient: LinearGradient(
                         colors: [
                           theme.colorScheme.primary,
-                          theme.colorScheme.primary.withValues(alpha: 0.85),
+                          theme.colorScheme.primary.withValues(alpha: AppColors.opacity85),
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -120,7 +120,7 @@ class EmptyStateWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(24),
                       boxShadow: [
                         BoxShadow(
-                          color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                          color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity30),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),

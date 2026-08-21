@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Custom app bar for Banjara matrimonial app
 /// Implements cultural minimalism with clean typography and respectful design
@@ -222,7 +223,7 @@ class CustomSearchAppBar extends StatelessWidget
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onPrimary.withValues(alpha: 0.7),
+            color: theme.colorScheme.onPrimary.withValues(alpha: AppColors.opacity70),
           ),
           border: InputBorder.none,
           enabledBorder: InputBorder.none,

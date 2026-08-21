@@ -327,7 +327,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.08),
+                              color: Colors.black.withValues(alpha: AppColors.opacity8),
                               blurRadius: 8,
                               offset: const Offset(0, 4),
                             ),
@@ -416,10 +416,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                 child: Container(
                                   padding: EdgeInsets.all(1.2.h),
                                   decoration: BoxDecoration(
-                                    color: theme.colorScheme.error.withValues(alpha: 0.08),
+                                    color: theme.colorScheme.error.withValues(alpha: AppColors.opacity8),
                                     borderRadius: BorderRadius.circular(10),
                                     border: Border.all(
-                                      color: theme.colorScheme.error.withValues(alpha: 0.2),
+                                      color: theme.colorScheme.error.withValues(alpha: AppColors.opacity20),
                                     ),
                                   ),
                                   child: Row(
@@ -447,7 +447,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                       // "Why BanjaraBio?" divider
                       Row(
                         children: [
-                          Expanded(child: Container(height: 1, color: theme.dividerColor.withValues(alpha: 0.3))),
+                          Expanded(child: Container(height: 1, color: theme.dividerColor.withValues(alpha: AppColors.opacity30))),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 3.w),
                             child: Text(
@@ -458,7 +458,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                               ),
                             ),
                           ),
-                          Expanded(child: Container(height: 1, color: theme.dividerColor.withValues(alpha: 0.3))),
+                          Expanded(child: Container(height: 1, color: theme.dividerColor.withValues(alpha: AppColors.opacity30))),
                         ],
                       ),
 
@@ -547,7 +547,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
             begin: Alignment.topCenter,
             end: Alignment.center,
             colors: [
-              theme.colorScheme.primary.withValues(alpha: 0.08),
+              theme.colorScheme.primary.withValues(alpha: AppColors.opacity8),
               theme.scaffoldBackgroundColor,
             ],
           ),
@@ -636,13 +636,13 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
           decoration: InputDecoration(
             labelText: l10n?.email ?? 'Email',
             hintText: l10n?.enterYourEmail ?? 'Enter your email',
-            prefixIcon: Icon(Icons.email_outlined, color: theme.colorScheme.primary.withValues(alpha: 0.7)),
+            prefixIcon: Icon(Icons.email_outlined, color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70)),
             filled: true,
             fillColor: theme.colorScheme.surface,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
-              borderSide: BorderSide(color: theme.dividerColor.withValues(alpha: 0.3)),
+              borderSide: BorderSide(color: theme.dividerColor.withValues(alpha: AppColors.opacity30)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
@@ -661,13 +661,13 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
           decoration: InputDecoration(
             labelText: l10n?.password ?? 'Password',
             hintText: l10n?.enterYourPassword ?? 'Enter your password',
-            prefixIcon: Icon(Icons.lock_outline, color: theme.colorScheme.primary.withValues(alpha: 0.7)),
+            prefixIcon: Icon(Icons.lock_outline, color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70)),
             filled: true,
             fillColor: theme.colorScheme.surface,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
-              borderSide: BorderSide(color: theme.dividerColor.withValues(alpha: 0.3)),
+              borderSide: BorderSide(color: theme.dividerColor.withValues(alpha: AppColors.opacity30)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
@@ -727,7 +727,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
             padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.5.h),
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
-              border: Border.all(color: theme.dividerColor.withValues(alpha: 0.3)),
+              border: Border.all(color: theme.dividerColor.withValues(alpha: AppColors.opacity30)),
               borderRadius: BorderRadius.circular(14),
             ),
             child: DropdownButtonHideUnderline(
@@ -760,7 +760,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
-                              color: Colors.blue.withValues(alpha: 0.1),
+                              color: Colors.blue.withValues(alpha: AppColors.opacity10),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
@@ -800,9 +800,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
             child: Container(
               padding: EdgeInsets.all(1.5.h),
               decoration: BoxDecoration(
-                color: Colors.orange.withValues(alpha: 0.08),
+                color: Colors.orange.withValues(alpha: AppColors.opacity8),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+                border: Border.all(color: Colors.orange.withValues(alpha: AppColors.opacity30)),
               ),
               child: Row(
                 children: [
@@ -831,7 +831,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: theme.dividerColor.withValues(alpha: 0.3)),
+        border: Border.all(color: theme.dividerColor.withValues(alpha: AppColors.opacity30)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -839,7 +839,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
           Container(
             padding: EdgeInsets.all(0.8.h),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primary.withValues(alpha: 0.1),
+              color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
               shape: BoxShape.circle,
             ),
             child: Icon(icon, size: 16, color: theme.colorScheme.primary),

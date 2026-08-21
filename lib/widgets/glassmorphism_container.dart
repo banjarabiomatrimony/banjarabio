@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// A premium, reusable Glassmorphism container that applies a blur backdrop filter
 /// and a translucent solid overlay color. It adapts to light/dark modes.
@@ -37,8 +38,8 @@ class GlassmorphismContainer extends StatelessWidget {
     final effectiveColor = color ?? theme.colorScheme.surface;
     final defaultBorder = Border.all(
       color: isDark 
-          ? Colors.white.withValues(alpha: 0.08)
-          : Colors.white.withValues(alpha: 0.4),
+          ? Colors.white.withValues(alpha: AppColors.opacity8)
+          : Colors.white.withValues(alpha: AppColors.opacity40),
     );
 
     return Container(
@@ -49,7 +50,7 @@ class GlassmorphismContainer extends StatelessWidget {
         borderRadius: borderRadius,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withValues(alpha: AppColors.opacity5),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

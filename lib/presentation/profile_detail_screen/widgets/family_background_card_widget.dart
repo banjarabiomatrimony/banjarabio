@@ -7,6 +7,7 @@ import 'package:banjarabio/widgets/tactile/tactile_category_card.dart';
 import 'package:banjarabio/widgets/tactile/tactile_detail_chip.dart';
 import 'package:banjarabio/widgets/tactile/tactile_quote_card.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/staggered_fade_slide_widget.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// 👨👩👧 Family Background Card displaying detailed family information.
 /// Consumes centralized AppCategoryTheme and shared Tactile components.
@@ -36,7 +37,7 @@ class FamilyBackgroundCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final catTheme = AppCategoryTheme.of(context).family;
-    const emeraldTeal = Color(0xFF10B981);
+    const emeraldTeal = AppColors.categoryLocation;
 
     return TactileCategoryCard(
       categoryType: CategoryType.family,

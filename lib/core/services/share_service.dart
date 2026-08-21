@@ -8,6 +8,7 @@ import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/profile_share_card.dart';
 import 'package:banjarabio/presentation/my_profile_screen/widgets/vouch_share_card.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Service to handle premium image generation and sharing.
 class ShareService {
@@ -63,7 +64,7 @@ class ShareService {
           barrierDismissible: false,
           builder: (context) => const Center(
             child: CircularProgressIndicator(
-              color: Color(0xFFE91E63),
+              color: AppColors.materialPink,
             ),
           ),
         );

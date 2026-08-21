@@ -6,6 +6,7 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:banjarabio/core/providers/locale_provider.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Enum to track the current stage of the multi-screen tour
 enum TourStage {
@@ -203,7 +204,7 @@ class _TourControlsWidgetState extends State<_TourControlsWidget> {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.2),
+                color: Colors.black.withValues(alpha: AppColors.opacity20),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),
@@ -231,7 +232,7 @@ class _TourControlsWidgetState extends State<_TourControlsWidget> {
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.2),
+                  color: Colors.black.withValues(alpha: AppColors.opacity20),
                   blurRadius: 8,
                   offset: const Offset(0, 4),
                 ),

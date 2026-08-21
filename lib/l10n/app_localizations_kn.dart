@@ -370,7 +370,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get bestValue => 'ಅತ್ಯುತ್ತಮ ಮೌಲ್ಯ';
 
   @override
-  String get biodata => 'Biodata';
+  String get biodata => 'ಬಯೋಡೇಟಾ';
 
   @override
   String get biodataDraftRestored => 'ಬಯೋಡೇಟಾ ಕರಡು ಮರುಸ್ಥಾಪಿಸಲಾಗಿದೆ!';
@@ -5444,4 +5444,10 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get zeroPercentCommission => '💰 0% Commission';
+
+  @override
+  String get inbox => 'ಇನ್‌ಬಾಕ್ಸ್';
+
+  @override
+  String get services => 'ಸೇವೆಗಳು';
 }

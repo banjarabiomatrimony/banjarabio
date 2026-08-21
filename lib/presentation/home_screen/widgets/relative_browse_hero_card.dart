@@ -6,6 +6,7 @@ import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/core/session_manager.dart';
 import 'package:banjarabio/routes/app_routes.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Premium Global-Standard Hero Banner for Relative Browse Mode.
 /// Features a royal burgundy mesh gradient, frosted glassmorphic filter chip,
@@ -109,9 +110,9 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
           borderRadius: BorderRadius.circular(20),
           gradient: const LinearGradient(
             colors: [
-              Color(0xFF4A0012), // Deep Royal Velvet Burgundy
-              Color(0xFF7B0024), // Rich Imperial Crimson
-              Color(0xFFA10830), // Warm Radiant Ruby
+              AppColors.maroonDarkest, // Deep Royal Velvet Burgundy
+              AppColors.burgundy, // Rich Imperial Crimson
+              AppColors.wineRed, // Warm Radiant Ruby
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -122,7 +123,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
           ),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF5A0016).withValues(alpha: 0.40),
+              color: AppColors.maroonAccent.withValues(alpha: AppColors.opacity40),
               blurRadius: 18,
               offset: const Offset(0, 6),
               spreadRadius: 1,
@@ -144,7 +145,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
                       colors: [
-                        const Color(0xFFFFD700).withValues(alpha: 0.18),
+                        AppColors.categoryVip.withValues(alpha: 0.18),
                         Colors.transparent,
                       ],
                     ),
@@ -161,7 +162,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
                       colors: [
-                        Colors.white.withValues(alpha: 0.08),
+                        Colors.white.withValues(alpha: AppColors.opacity8),
                         Colors.transparent,
                       ],
                     ),
@@ -188,7 +189,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                               color: Colors.white.withValues(alpha: 0.14),
                               borderRadius: BorderRadius.circular(24),
                               border: Border.all(
-                                color: Colors.white.withValues(alpha: 0.25),
+                                color: Colors.white.withValues(alpha: AppColors.opacity25),
                               ),
                             ),
                             child: Row(
@@ -196,7 +197,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                                 const Icon(
                                   Icons.explore_rounded,
                                   size: 13,
-                                  color: Color(0xFFFFD700),
+                                  color: AppColors.categoryVip,
                                 ),
                                 SizedBox(width: 1.5.w),
                                 Expanded(
@@ -228,7 +229,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                             child: Container(
                               padding: EdgeInsets.symmetric(horizontal: 2.6.w, vertical: 0.5.h),
                               decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: 0.25),
+                                color: Colors.black.withValues(alpha: AppColors.opacity25),
                                 borderRadius: BorderRadius.circular(16),
                                 border: Border.all(
                                   color: Colors.white.withValues(alpha: 0.22),
@@ -286,7 +287,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                                     ? 'तुम्ही भरलेली माहिती सुरक्षित आहे. फक्त काही माहिती बाकी आहे.'
                                     : 'इतर बंजारा परिवारांना स्थळ दाखवण्यासाठी बायोडेटा बनवा.',
                                 style: TextStyle(
-                                  color: Colors.white.withValues(alpha: 0.85),
+                                  color: Colors.white.withValues(alpha: AppColors.opacity85),
                                   fontSize: AppTypography.labelMedium,
                                   fontWeight: AppTypography.regular,
                                   height: 1.25,
@@ -317,22 +318,22 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                                   borderRadius: BorderRadius.circular(14),
                                   gradient: const LinearGradient(
                                     colors: [
-                                      Color(0xFFFFE066), // Soft Bright Gold
-                                      Color(0xFFFFC72C), // Rich Amber Gold
-                                      Color(0xFFE5A100), // Deep Gold
+                                      AppColors.goldGlow, // Soft Bright Gold
+                                      AppColors.goldSoft, // Rich Amber Gold
+                                      AppColors.categoryAstro, // Deep Gold
                                     ],
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: const Color(0xFFFFB300).withValues(alpha: 0.45),
+                                      color: AppColors.amber600.withValues(alpha: 0.45),
                                       blurRadius: 10,
                                       offset: const Offset(0, 3),
                                     ),
                                   ],
                                   border: Border.all(
-                                    color: Colors.white.withValues(alpha: 0.6),
+                                    color: Colors.white.withValues(alpha: AppColors.opacity60),
                                   ),
                                 ),
                                 child: Row(
@@ -341,13 +342,13 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                                     const Icon(
                                       Icons.auto_awesome_rounded,
                                       size: 15,
-                                      color: Color(0xFF3E1700),
+                                      color: AppColors.amberBgDark,
                                     ),
                                     SizedBox(width: 1.2.w),
                                     Text(
                                       _hasDraft ? 'बायोडेटा पूर्ण करा' : 'बायोडेटा बनवा',
                                       style: TextStyle(
-                                        color: const Color(0xFF3E1700),
+                                        color: AppColors.amberBgDark,
                                         fontSize: AppTypography.labelMedium,
                                         fontWeight: AppTypography.black,
                                         letterSpacing: 0.1,
@@ -371,7 +372,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                         color: Colors.black.withValues(alpha: 0.22),
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.12),
+                          color: Colors.white.withValues(alpha: AppColors.opacity12),
                         ),
                       ),
                       child: Row(
@@ -379,7 +380,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                           Icon(
                             _hasDraft ? Icons.edit_note_rounded : Icons.verified_user_rounded,
                             size: 13.5,
-                            color: const Color(0xFFFFD700),
+                            color: AppColors.categoryVip,
                           ),
                           SizedBox(width: 1.8.w),
                           Expanded(

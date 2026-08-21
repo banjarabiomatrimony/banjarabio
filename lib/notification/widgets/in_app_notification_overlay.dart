@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:banjarabio/core/services/persistent_cache_manager.dart';
 import 'package:banjarabio/notification/core/notification_payload.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Zomato-style in-app notification overlay.
 ///
@@ -150,18 +151,18 @@ class _InAppNotificationBannerState
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: const Color(0xFFE91E63).withValues(alpha: 0.2),
+                  color: AppColors.materialPink.withValues(alpha: AppColors.opacity20),
                   width: 1.5,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFFE91E63).withValues(alpha: 0.12),
+                    color: AppColors.materialPink.withValues(alpha: AppColors.opacity12),
                     blurRadius: 24,
                     spreadRadius: 2,
                     offset: const Offset(0, 8),
                   ),
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.08),
+                    color: Colors.black.withValues(alpha: AppColors.opacity8),
                     blurRadius: 10,
                     offset: const Offset(0, 2),
                   ),
@@ -195,7 +196,7 @@ class _InAppNotificationBannerState
                                   overflow: TextOverflow.ellipsis,
                                   style: AppTypography.headingStyle(
                                     fontSize: AppTypography.bodyLarge,
-                                    color: const Color(0xFF1F2937),
+                                    color: AppColors.slate800,
                                     letterSpacing: -0.2,
                                   ),
                                 ),
@@ -222,7 +223,7 @@ class _InAppNotificationBannerState
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFE91E63).withValues(alpha: 0.08),
+                            color: AppColors.materialPink.withValues(alpha: AppColors.opacity8),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Row(
@@ -233,13 +234,13 @@ class _InAppNotificationBannerState
                                 style: TextStyle(
                                   fontSize: AppTypography.bodyMedium,
                                   fontWeight: AppTypography.bold,
-                                  color: const Color(0xFFE91E63),
+                                  color: AppColors.materialPink,
                                 ),
                               ),
                               const SizedBox(width: 2),
                               const Icon(
                                 Icons.chevron_right_rounded,
-                                color: Color(0xFFE91E63),
+                                color: AppColors.materialPink,
                                 size: 16,
                               ),
                             ],
@@ -264,7 +265,7 @@ class _InAppNotificationBannerState
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
+        color: color.withValues(alpha: AppColors.opacity12),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
@@ -310,7 +311,7 @@ class _InAppNotificationBannerState
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
-            color: const Color(0xFFE91E63).withValues(alpha: 0.5),
+            color: AppColors.materialPink.withValues(alpha: AppColors.opacity50),
             width: 2,
           ),
         ),
@@ -338,10 +339,10 @@ class _InAppNotificationBannerState
       width: 44,
       height: 44,
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
+        color: color.withValues(alpha: AppColors.opacity12),
         shape: BoxShape.circle,
         border: Border.all(
-          color: color.withValues(alpha: 0.3),
+          color: color.withValues(alpha: AppColors.opacity30),
           width: 1.5,
         ),
       ),
@@ -354,25 +355,25 @@ class _InAppNotificationBannerState
   (String, Color) _getCategoryVisuals(NotificationCategory category) {
     switch (category) {
       case NotificationCategory.interestReceived:
-        return ('❤️', const Color(0xFFE91E63));
+        return ('❤️', AppColors.materialPink);
       case NotificationCategory.matchFound:
-        return ('💍', const Color(0xFF4CAF50));
+        return ('💍', AppColors.successDark);
       case NotificationCategory.chatMessage:
-        return ('💬', const Color(0xFF009688));
+        return ('💬', AppColors.teal);
       case NotificationCategory.profileView:
-        return ('👀', const Color(0xFFFF9800));
+        return ('👀', AppColors.materialOrange);
       case NotificationCategory.nudge:
-        return ('⭐', const Color(0xFFFFC107));
+        return ('⭐', AppColors.categoryAstro);
       case NotificationCategory.system:
-        return ('🔔', const Color(0xFF673AB7));
+        return ('🔔', AppColors.instagramPurple);
       case NotificationCategory.general:
-        return ('📢', const Color(0xFF607D8B));
+        return ('📢', AppColors.blueGray500);
       case NotificationCategory.staffTask:
-        return ('📋', const Color(0xFF2196F3));
+        return ('📋', AppColors.materialBlue);
       case NotificationCategory.adminAlert:
-        return ('🚨', const Color(0xFFFF5722));
+        return ('🚨', AppColors.deepOrange);
       case NotificationCategory.verificationReview:
-        return ('✅', const Color(0xFF4CAF50));
+        return ('✅', AppColors.successDark);
     }
   }
 }

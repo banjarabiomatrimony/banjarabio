@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/repositories/admin_repository.dart';
 import 'package:banjarabio/widgets/glassmorphism_container.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class SpecialDiscountTab extends StatefulWidget {
   final ThemeData theme;
@@ -153,7 +154,7 @@ class _SpecialDiscountTabState extends State<SpecialDiscountTab> {
                         decoration: BoxDecoration(
                           color: widget.theme.cardColor,
                           borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: widget.theme.dividerColor.withValues(alpha: 0.1)),
+                          border: Border.all(color: widget.theme.dividerColor.withValues(alpha: AppColors.opacity10)),
                         ),
                         child: Row(
                           children: [
@@ -228,11 +229,11 @@ class _SpecialDiscountTabState extends State<SpecialDiscountTab> {
       fillColor: widget.theme.cardColor,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(color: widget.theme.dividerColor.withValues(alpha: 0.1)),
+        borderSide: BorderSide(color: widget.theme.dividerColor.withValues(alpha: AppColors.opacity10)),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(color: widget.theme.dividerColor.withValues(alpha: 0.1)),
+        borderSide: BorderSide(color: widget.theme.dividerColor.withValues(alpha: AppColors.opacity10)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
@@ -245,9 +246,9 @@ class _SpecialDiscountTabState extends State<SpecialDiscountTab> {
     return Container(
       padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(
-        color: Colors.blue.withValues(alpha: 0.05),
+        color: Colors.blue.withValues(alpha: AppColors.opacity5),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.blue.withValues(alpha: 0.2)),
+        border: Border.all(color: Colors.blue.withValues(alpha: AppColors.opacity20)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

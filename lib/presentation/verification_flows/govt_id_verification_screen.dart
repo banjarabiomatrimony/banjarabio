@@ -11,6 +11,7 @@ import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/presentation/verification_flows/document_camera_screen.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class GovtIdVerificationScreen extends StatefulWidget {
   const GovtIdVerificationScreen({super.key});
@@ -171,12 +172,12 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
                             width: 72,
                             height: 72,
                             decoration: BoxDecoration(
-                              color: const Color(0xFF10B981).withValues(alpha: 0.12),
+                              color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity12),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
                               Icons.verified_user_rounded,
-                              color: Color(0xFF10B981),
+                              color: AppColors.categoryLocation,
                               size: 42,
                             ),
                           ),
@@ -208,10 +209,10 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
                               vertical: 1.2.h,
                             ),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF10B981).withValues(alpha: 0.08),
+                              color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity8),
                               borderRadius: BorderRadius.circular(14),
                               border: Border.all(
-                                color: const Color(0xFF10B981).withValues(alpha: 0.25),
+                                color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity25),
                               ),
                             ),
                             child: Row(
@@ -219,7 +220,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
                               children: [
                                 const Icon(
                                   Icons.stars_rounded,
-                                  color: Color(0xFF059669),
+                                  color: AppColors.categoryLocationDark,
                                   size: 22,
                                 ),
                                 SizedBox(width: 2.w),
@@ -228,7 +229,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
                                   style: TextStyle(
                                     fontSize: AppTypography.headingSmall,
                                     fontWeight: AppTypography.extraBold,
-                                    color: const Color(0xFF059669),
+                                    color: AppColors.categoryLocationDark,
                                   ),
                                 ),
                               ],
@@ -244,7 +245,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
                               },
                               style: ElevatedButton.styleFrom(
                                 padding: EdgeInsets.symmetric(vertical: 1.6.h),
-                                backgroundColor: const Color(0xFF10B981),
+                                backgroundColor: AppColors.categoryLocation,
                                 foregroundColor: Colors.white,
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
@@ -344,7 +345,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
         color: theme.colorScheme.surface,
         border: Border(
           bottom: BorderSide(
-            color: theme.colorScheme.outline.withValues(alpha: 0.08),
+            color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity8),
           ),
         ),
       ),
@@ -354,7 +355,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
           final isCurrent = index == _currentStep;
           final color = isCompleted || isCurrent
               ? theme.colorScheme.primary
-              : theme.colorScheme.outline.withValues(alpha: 0.3);
+              : theme.colorScheme.outline.withValues(alpha: AppColors.opacity30);
 
           return Expanded(
             child: Row(
@@ -366,7 +367,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
                     color: isCompleted
                         ? theme.colorScheme.primary
                         : (isCurrent
-                            ? theme.colorScheme.primary.withValues(alpha: 0.15)
+                            ? theme.colorScheme.primary.withValues(alpha: AppColors.opacity15)
                             : Colors.transparent),
                     shape: BoxShape.circle,
                     border: Border.all(
@@ -397,7 +398,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
                       decoration: BoxDecoration(
                         color: isCompleted
                             ? theme.colorScheme.primary
-                            : theme.colorScheme.outline.withValues(alpha: 0.15),
+                            : theme.colorScheme.outline.withValues(alpha: AppColors.opacity15),
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -424,7 +425,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
                 width: 64,
                 height: 64,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                  color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -469,7 +470,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
                   border: Border.all(
                     color: isSelected
                         ? theme.colorScheme.primary
-                        : theme.colorScheme.outline.withValues(alpha: 0.15),
+                        : theme.colorScheme.outline.withValues(alpha: AppColors.opacity15),
                     width: isSelected ? 2 : 1,
                   ),
                 ),
@@ -490,7 +491,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? theme.colorScheme.primary.withValues(alpha: 0.15)
+                                  ? theme.colorScheme.primary.withValues(alpha: AppColors.opacity15)
                                   : theme.colorScheme.surfaceContainerHighest,
                               shape: BoxShape.circle,
                             ),
@@ -651,7 +652,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
                 color: theme.cardColor,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.12),
+                  color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity12),
                 ),
               ),
               child: Column(
@@ -714,7 +715,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: theme.colorScheme.outline.withValues(alpha: 0.2),
+                          color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity20),
                         ),
                       ),
                       child: ClipRRect(
@@ -731,7 +732,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: theme.colorScheme.outline.withValues(alpha: 0.2),
+                          color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity20),
                         ),
                       ),
                       child: ClipRRect(
@@ -765,8 +766,8 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
             : theme.colorScheme.primary.withValues(alpha: 0.04),
         border: Border.all(
           color: image != null
-              ? const Color(0xFF10B981)
-              : theme.colorScheme.primary.withValues(alpha: 0.35),
+              ? AppColors.categoryLocation
+              : theme.colorScheme.primary.withValues(alpha: AppColors.opacity35),
           width: 1.5,
         ),
         borderRadius: BorderRadius.circular(16),
@@ -830,7 +831,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
                       Container(
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                          color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
@@ -875,13 +876,13 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
         color: theme.colorScheme.surface,
         border: Border(
           top: BorderSide(
-            color: theme.colorScheme.outline.withValues(alpha: 0.1),
+            color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity10),
           ),
         ),
         boxShadow: [
           BoxShadow(
             blurRadius: 10,
-            color: theme.shadowColor.withValues(alpha: 0.08),
+            color: theme.shadowColor.withValues(alpha: AppColors.opacity8),
             offset: const Offset(0, -2),
           ),
         ],
@@ -918,7 +919,7 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 1.5.h),
                 backgroundColor: _currentStep == 3
-                    ? const Color(0xFF10B981)
+                    ? AppColors.categoryLocation
                     : theme.colorScheme.primary,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(

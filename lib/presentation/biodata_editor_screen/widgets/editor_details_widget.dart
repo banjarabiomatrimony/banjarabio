@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/models/biodata_content.dart';
 import 'package:banjarabio/presentation/biodata_editor_screen/widgets/biodata_ui_helpers.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Details editor tab content for the Biodata Editor.
 /// Extracted from BiodataEditorScreen._buildDetailsEditor,
@@ -72,7 +73,7 @@ class EditorDetailsWidget extends StatelessWidget {
               ),
             ),
             iconColor: BiodataTheme.royalGold,
-            collapsedIconColor: BiodataTheme.deepCharcoal.withValues(alpha: 0.5),
+            collapsedIconColor: BiodataTheme.deepCharcoal.withValues(alpha: AppColors.opacity50),
             childrenPadding: EdgeInsets.fromLTRB(4.w, 0, 4.w, 2.h),
             children: data.keys.map((key) {
               return Padding(

@@ -3,8 +3,9 @@ import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/daily_match_widget.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
-/// Daily tab content slivers extracted from HomeScreenInitialPage.build().
+/// Daily tab content slivers extracted from HomeScreen.build().
 class HomeDailyContent {
   HomeDailyContent._();
 
@@ -29,7 +30,7 @@ class HomeDailyContent {
               style: TextStyle(
                 fontSize: AppTypography.headingLarge,
                 fontWeight: AppTypography.bold,
-                color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
+                color: Theme.of(context).colorScheme.primary.withValues(alpha: AppColors.opacity50),
               ),
             ),
           ),

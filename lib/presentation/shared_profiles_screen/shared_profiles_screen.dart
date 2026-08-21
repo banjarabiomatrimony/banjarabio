@@ -316,7 +316,7 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    // Direct single-tab rendering when embedded in ConnectScreen 4-tab bar
+    // Direct single-tab rendering when embedded in InboxScreen 4-tab bar
     if (widget.fixedFilter != null) {
       if (_isLoading) {
         final skeletonType = widget.fixedFilter == SharedProfileTabFilter.sent
@@ -359,7 +359,7 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
               gradient: LinearGradient(
                 colors: [
                   theme.colorScheme.primary,
-                  theme.colorScheme.primary.withValues(alpha: 0.8),
+                  theme.colorScheme.primary.withValues(alpha: AppColors.opacity80),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -367,7 +367,7 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
               borderRadius: const BorderRadius.vertical(bottom: Radius.circular(32)),
               boxShadow: [
                 BoxShadow(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                  color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity20),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -446,13 +446,13 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
           margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.5.h),
           decoration: BoxDecoration(
             color: theme.brightness == Brightness.dark
-                ? const Color(0xFF1B1B24)
-                : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                ? AppColors.canvasNearBlack
+                : theme.colorScheme.surfaceContainerHighest.withValues(alpha: AppColors.opacity50),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: theme.brightness == Brightness.dark
-                  ? Colors.white.withValues(alpha: 0.08)
-                  : theme.colorScheme.outlineVariant.withValues(alpha: 0.3),
+                  ? Colors.white.withValues(alpha: AppColors.opacity8)
+                  : theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity30),
             ),
           ),
           child: TabBar(
@@ -460,7 +460,7 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
             labelColor: Colors.white,
             unselectedLabelColor: theme.brightness == Brightness.dark
                 ? Colors.white60
-                : const Color(0xFF475569),
+                : AppColors.slate600,
             labelStyle: TextStyle(
               fontSize: AppTypography.labelMedium,
               fontWeight: AppTypography.black,
@@ -472,12 +472,12 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
             ),
             indicator: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [Color(0xFFBE123C), Color(0xFF9F1239)],
+                colors: [AppColors.crimsonRose, AppColors.wineRed],
               ),
               borderRadius: BorderRadius.circular(13),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFBE123C).withValues(alpha: 0.35),
+                  color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity35),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -781,26 +781,26 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
     final String subtitle;
 
     if (isSharedByMe == null) {
-      primaryColor = const Color(0xFFF59E0B);
+      primaryColor = AppColors.categoryAstro;
       gradientColors = isDark
-          ? const [Color(0xFF3B1E05), Color(0xFF1E1002)]
-          : const [Color(0xFFFFFBEB), Color(0xFFFEF3C7)];
+          ? const [AppColors.amberBgDark, AppColors.amberBrownBg]
+          : const [AppColors.warningLight, AppColors.goldTint100];
       iconData = Icons.favorite_rounded;
       title = '$count Mutual Matches 💍';
       subtitle = 'Both families showed mutual interest! Ready to start chatting.';
     } else if (isSharedByMe == false) {
-      primaryColor = const Color(0xFF2563EB);
+      primaryColor = AppColors.categoryCareerDark;
       gradientColors = isDark
-          ? const [Color(0xFF172554), Color(0xFF0F172A)]
-          : const [Color(0xFFEFF6FF), Color(0xFFDBEAFE)];
+          ? const [AppColors.blue900, AppColors.slate900]
+          : const [AppColors.infoLight, AppColors.blue100];
       iconData = Icons.inbox_rounded;
       title = '$count Connection Requests 📥';
       subtitle = 'Profiles shared with you. Review biodatas and respond.';
     } else {
-      primaryColor = const Color(0xFF7C3AED);
+      primaryColor = AppColors.categoryFamilyDark;
       gradientColors = isDark
-          ? const [Color(0xFF2E1065), Color(0xFF1E1B4B)]
-          : const [Color(0xFFFAF5FF), Color(0xFFF3E8FF)];
+          ? const [AppColors.deepIndigo, AppColors.canvasMidnight]
+          : const [AppColors.violetBgSoft, AppColors.violetBg];
       iconData = Icons.send_rounded;
       title = '$count Shared Profiles 📤';
       subtitle = "Track profiles you've shared with family and friends.";
@@ -852,7 +852,7 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
                   style: TextStyle(
                     fontSize: AppTypography.bodySmall,
                     fontWeight: AppTypography.black,
-                    color: isDark ? Colors.white : const Color(0xFF0F172A),
+                    color: isDark ? Colors.white : AppColors.slate900,
                     letterSpacing: 0.2,
                   ),
                 ),
@@ -862,7 +862,7 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
                   style: TextStyle(
                     fontSize: AppTypography.labelSmall,
                     fontWeight: AppTypography.medium,
-                    color: isDark ? Colors.white60 : const Color(0xFF475569),
+                    color: isDark ? Colors.white60 : AppColors.slate600,
                     height: 1.2,
                   ),
                 ),

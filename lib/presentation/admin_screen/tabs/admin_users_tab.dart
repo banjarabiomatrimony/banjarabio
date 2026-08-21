@@ -11,6 +11,7 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/services/csv_export_service.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// User management tab with search, gender / premium / tester sub-tabs,
 /// verification chips, and edit navigation.
@@ -179,7 +180,7 @@ class _AdminUsersTabState extends State<AdminUsersTab> {
           SliverFillRemaining(
             hasScrollBody: false,
             child: Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Icon(_activeSubTab == 'Female' ? Icons.female : _activeSubTab == 'Male' ? Icons.male : Icons.star_outline, size: 64, color: theme.hintColor.withValues(alpha: 0.3)),
+              Icon(_activeSubTab == 'Female' ? Icons.female : _activeSubTab == 'Male' ? Icons.male : Icons.star_outline, size: 64, color: theme.hintColor.withValues(alpha: AppColors.opacity30)),
               SizedBox(height: 2.h),
               Text('No $_activeSubTab users found', style: theme.textTheme.titleMedium?.copyWith(color: theme.hintColor)),
             ])),
@@ -214,7 +215,7 @@ class _AdminUsersTabState extends State<AdminUsersTab> {
               padding: EdgeInsets.all(4.w),
               child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Container(
-                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.2), width: 2)),
+                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity20), width: 2)),
                   child: CircleAvatar(
                     radius: 28,
                     backgroundImage: user.photos.isNotEmpty
@@ -256,7 +257,7 @@ class _AdminUsersTabState extends State<AdminUsersTab> {
                 Column(children: [
                   Container(
                     padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(color: theme.colorScheme.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12)),
+                    decoration: BoxDecoration(color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10), borderRadius: BorderRadius.circular(12)),
                     child: Icon(Icons.edit_outlined, size: 20, color: theme.colorScheme.primary),
                   ),
                 ]),
@@ -276,15 +277,15 @@ class _AdminUsersTabState extends State<AdminUsersTab> {
         duration: const Duration(milliseconds: 300),
         padding: EdgeInsets.symmetric(vertical: 1.2.h),
         decoration: BoxDecoration(
-          color: isActive ? theme.colorScheme.primary.withValues(alpha: 0.1) : Colors.transparent,
+          color: isActive ? theme.colorScheme.primary.withValues(alpha: AppColors.opacity10) : Colors.transparent,
           borderRadius: BorderRadius.circular(16),
-          border: isActive ? Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.2), width: 1.5) : null,
-          boxShadow: isActive ? [BoxShadow(color: theme.colorScheme.primary.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, 4))] : null,
+          border: isActive ? Border.all(color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity20), width: 1.5) : null,
+          boxShadow: isActive ? [BoxShadow(color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10), blurRadius: 10, offset: const Offset(0, 4))] : null,
         ),
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(icon, size: 14.sp, color: isActive ? theme.colorScheme.primary : theme.hintColor.withValues(alpha: 0.7)),
+          Icon(icon, size: 14.sp, color: isActive ? theme.colorScheme.primary : theme.hintColor.withValues(alpha: AppColors.opacity70)),
           SizedBox(width: 1.5.w),
-          Text(label, style: TextStyle(color: isActive ? theme.colorScheme.primary : theme.hintColor.withValues(alpha: 0.7), fontWeight: isActive ? AppTypography.bold : AppTypography.medium, fontSize: AppTypography.labelMedium)),
+          Text(label, style: TextStyle(color: isActive ? theme.colorScheme.primary : theme.hintColor.withValues(alpha: AppColors.opacity70), fontWeight: isActive ? AppTypography.bold : AppTypography.medium, fontSize: AppTypography.labelMedium)),
         ]),
       ),
     );
@@ -294,10 +295,10 @@ class _AdminUsersTabState extends State<AdminUsersTab> {
     return GlassmorphismContainer(
       padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h), borderRadius: BorderRadius.circular(20), opacity: 0.05,
       child: Row(children: [
-        Container(padding: EdgeInsets.all(2.w), decoration: BoxDecoration(color: color.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(icon, color: color, size: 16.sp)),
+        Container(padding: EdgeInsets.all(2.w), decoration: BoxDecoration(color: color.withValues(alpha: AppColors.opacity10), shape: BoxShape.circle), child: Icon(icon, color: color, size: 16.sp)),
         SizedBox(width: 3.w),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
-          Text(value, style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold, color: color.withValues(alpha: 0.8))),
+          Text(value, style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold, color: color.withValues(alpha: AppColors.opacity80))),
           Text(label, style: theme.textTheme.bodySmall?.copyWith(color: theme.hintColor, fontSize: AppTypography.labelSmall), maxLines: 1, overflow: TextOverflow.ellipsis),
         ])),
       ]),
@@ -310,7 +311,7 @@ class _AdminUsersTabState extends State<AdminUsersTab> {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
         decoration: BoxDecoration(
-          color: isVerified ? Colors.green.withValues(alpha: 0.1) : Colors.orange.withValues(alpha: 0.1),
+          color: isVerified ? Colors.green.withValues(alpha: AppColors.opacity10) : Colors.orange.withValues(alpha: AppColors.opacity10),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: isVerified ? Colors.green : Colors.orange),
         ),

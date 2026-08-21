@@ -7,6 +7,7 @@ import 'package:banjarabio/presentation/admin_screen/admin_helpers.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/services/csv_export_service.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Payments management tab with search, sub-tab filtering
 /// (Subscription / PDF / Tester), and detailed transaction cards.
@@ -114,17 +115,17 @@ class _AdminPaymentsTabState extends State<AdminPaymentsTab> {
         duration: const Duration(milliseconds: 300),
         padding: EdgeInsets.symmetric(vertical: 1.2.h),
         decoration: BoxDecoration(
-          color: isActive ? theme.colorScheme.primary.withValues(alpha: 0.1) : Colors.transparent,
+          color: isActive ? theme.colorScheme.primary.withValues(alpha: AppColors.opacity10) : Colors.transparent,
           borderRadius: BorderRadius.circular(16),
-          border: isActive ? Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.2), width: 1.5) : null,
-          boxShadow: isActive ? [BoxShadow(color: theme.colorScheme.primary.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, 4))] : null,
+          border: isActive ? Border.all(color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity20), width: 1.5) : null,
+          boxShadow: isActive ? [BoxShadow(color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10), blurRadius: 10, offset: const Offset(0, 4))] : null,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 14.sp, color: isActive ? theme.colorScheme.primary : theme.hintColor.withValues(alpha: 0.7)),
+            Icon(icon, size: 14.sp, color: isActive ? theme.colorScheme.primary : theme.hintColor.withValues(alpha: AppColors.opacity70)),
             SizedBox(width: 1.5.w),
-            Text(label, style: TextStyle(color: isActive ? theme.colorScheme.primary : theme.hintColor.withValues(alpha: 0.7), fontWeight: isActive ? AppTypography.bold : AppTypography.medium, fontSize: AppTypography.labelMedium)),
+            Text(label, style: TextStyle(color: isActive ? theme.colorScheme.primary : theme.hintColor.withValues(alpha: AppColors.opacity70), fontWeight: isActive ? AppTypography.bold : AppTypography.medium, fontSize: AppTypography.labelMedium)),
           ],
         ),
       ),
@@ -171,7 +172,7 @@ class _AdminPaymentsTabState extends State<AdminPaymentsTab> {
       return SliverFillRemaining(
         hasScrollBody: false,
         child: Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(_activeSubTab == 'PDF' ? Icons.picture_as_pdf : (_activeSubTab == 'Tester' ? Icons.bug_report : Icons.card_membership), size: 64, color: theme.hintColor.withValues(alpha: 0.3)),
+          Icon(_activeSubTab == 'PDF' ? Icons.picture_as_pdf : (_activeSubTab == 'Tester' ? Icons.bug_report : Icons.card_membership), size: 64, color: theme.hintColor.withValues(alpha: AppColors.opacity30)),
           SizedBox(height: 2.h),
           Text('No $_activeSubTab transactions', style: theme.textTheme.titleMedium?.copyWith(color: theme.hintColor)),
         ])),
@@ -201,7 +202,7 @@ class _AdminPaymentsTabState extends State<AdminPaymentsTab> {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: (isTest ? Colors.red : (category == 'PDF' ? Colors.orange : Colors.blue)).withValues(alpha: 0.1),
+                          color: (isTest ? Colors.red : (category == 'PDF' ? Colors.orange : Colors.blue)).withValues(alpha: AppColors.opacity10),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
@@ -225,7 +226,7 @@ class _AdminPaymentsTabState extends State<AdminPaymentsTab> {
                                 Container(
                                   margin: EdgeInsets.only(left: 2.w),
                                   padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                                  decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
+                                  decoration: BoxDecoration(color: Colors.red.withValues(alpha: AppColors.opacity10), borderRadius: BorderRadius.circular(4)),
                                   child: Text('TEST', style: TextStyle(color: Colors.red, fontSize: AppTypography.labelSmall, fontWeight: AppTypography.bold)),
                                 ),
                             ]),
@@ -252,7 +253,7 @@ class _AdminPaymentsTabState extends State<AdminPaymentsTab> {
                           SizedBox(height: 0.5.h),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                            decoration: BoxDecoration(color: (category == 'PDF' ? Colors.orange : Colors.blue).withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)),
+                            decoration: BoxDecoration(color: (category == 'PDF' ? Colors.orange : Colors.blue).withValues(alpha: AppColors.opacity10), borderRadius: BorderRadius.circular(8)),
                             child: Text(category, style: TextStyle(color: category == 'PDF' ? Colors.orange : Colors.blue, fontSize: AppTypography.labelSmall, fontWeight: AppTypography.bold)),
                           ),
                         ],

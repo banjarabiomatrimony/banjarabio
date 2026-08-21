@@ -204,7 +204,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
             // ─── 1. 📸 Instagram (Follow Daily Match Updates) ───
             _buildAnimatedMiniCard(
               cardId: 'instagram_matches',
-              outlineBorderColor: const Color(0xFFFDA4AF),
+              outlineBorderColor: AppColors.rose200,
               leadingWidget: Image.asset(
                 'assets/icons/instagram_icon.png',
                 width: 29,
@@ -222,14 +222,14 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                 ),
               ),
               badgeText: '⚡ DAILY',
-              badgeColor: const Color(0xFFFFE4E6),
-              badgeTextColor: const Color(0xFF9F1239),
+              badgeColor: AppColors.rose100,
+              badgeTextColor: AppColors.wineRed,
               title: AppLocalizations.of(context)?.instagramStories ?? 'Instagram Stories',
               subtitle: _selectedCardId == 'instagram_matches'
                   ? (AppLocalizations.of(context)?.tapAgainToView ?? 'Tap again to View ➔')
                   : (AppLocalizations.of(context)?.followDailyMatchUpdates ?? 'Follow Daily Match Updates'),
               gradient: const LinearGradient(
-                colors: [Color(0xFFF43F5E), Color(0xFFE11D48), Color(0xFFBE123C)],
+                colors: [AppColors.coralRed, AppColors.crimsonBlush, AppColors.crimsonRose],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -241,7 +241,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
             // ─── 2. 💬 WhatsApp Help (Direct Admin Support) ───
             _buildAnimatedMiniCard(
               cardId: 'whatsapp_help',
-              outlineBorderColor: const Color(0xFF6EE7B7),
+              outlineBorderColor: AppColors.cyanAccent,
               leadingWidget: Image.asset(
                 'assets/icons/whatsapp_icon.png',
                 width: 29,
@@ -259,14 +259,14 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                 ),
               ),
               badgeText: '● 24/7 LIVE',
-              badgeColor: const Color(0xFFD1FAE5),
-              badgeTextColor: const Color(0xFF065F46),
+              badgeColor: AppColors.green100alt,
+              badgeTextColor: AppColors.greenDeepForest,
               title: AppLocalizations.of(context)?.whatsappHelp ?? 'WhatsApp Help',
               subtitle: _selectedCardId == 'whatsapp_help'
                   ? (AppLocalizations.of(context)?.tapAgainToChat ?? 'Tap again to Chat ➔')
                   : (AppLocalizations.of(context)?.directAdminSupport ?? 'Direct Admin Support'),
               gradient: const LinearGradient(
-                colors: [Color(0xFF10B981), Color(0xFF059669), Color(0xFF047857)],
+                colors: [AppColors.categoryLocation, AppColors.categoryLocationDark, AppColors.emerald],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -277,7 +277,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
             // ─── 3. 🏛️ BVS Community (Banjara Virasat Sangh) ───
             _buildAnimatedMiniCard(
               cardId: 'bvs_virasat',
-              outlineBorderColor: const Color(0xFFFDE68A),
+              outlineBorderColor: AppColors.goldTint200,
               leadingWidget: ClipOval(
                 child: Image.asset(
                   'assets/sanjay rathod.webp',
@@ -303,12 +303,12 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: const Color(0xFFFEF08A),
+                    color: AppColors.goldTint200,
                     width: 1.2,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.25),
+                      color: Colors.black.withValues(alpha: AppColors.opacity25),
                       blurRadius: 3,
                       offset: const Offset(0, 1),
                     ),
@@ -333,7 +333,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                   ? (AppLocalizations.of(context)?.tapAgainToJoin ?? 'Tap again to Join ➔')
                   : (AppLocalizations.of(context)?.banjaraVirasatSangh ?? 'बणजारा विरासत संघ'),
               gradient: const LinearGradient(
-                colors: [Color(0xFF8B5CF6), Color(0xFF6D28D9), Color(0xFF4C1D95)],
+                colors: [AppColors.categoryFamily, AppColors.violetDeep, AppColors.deepIndigo],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -345,7 +345,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
             // ─── 4. 💍 Candidates Meet (Banjara Vadhu Var Suchak Initiative) ───
             _buildAnimatedMiniCard(
               cardId: 'candidates_meet',
-              outlineBorderColor: const Color(0xFFFBCFE8),
+              outlineBorderColor: AppColors.rose100,
               leadingWidget: const ClipOval(
                 child: AppLogoImage(
                   width: 32,
@@ -354,14 +354,14 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                 ),
               ),
               badgeText: '💍 VADHU VAR',
-              badgeColor: const Color(0xFFFCE7F3),
-              badgeTextColor: const Color(0xFF9D174D),
+              badgeColor: AppColors.purple50,
+              badgeTextColor: AppColors.wineRed,
               title: AppLocalizations.of(context)?.candidatesMeet ?? 'Candidates Meet',
               subtitle: _selectedCardId == 'candidates_meet'
                   ? (AppLocalizations.of(context)?.tapAgainToView ?? 'Tap again to View ➔')
                   : (AppLocalizations.of(context)?.vadhuVarSuchakInitiative ?? 'Vadhu Var Suchak Initiative'),
               gradient: const LinearGradient(
-                colors: [Color(0xFFEC4899), Color(0xFFDB2777), Color(0xFF9D174D)],
+                colors: [AppColors.categoryPersonal, AppColors.categoryPersonalDark, AppColors.wineRed],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -373,14 +373,14 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
             // ─── 5. 🎁 VIP Offer (🔥 50% OFF VIP Upgrade) ───
             _buildAnimatedMiniCard(
               cardId: 'vip_offer',
-              outlineBorderColor: const Color(0xFFFDE047),
+              outlineBorderColor: AppColors.goldLemon,
               leadingWidget: ShaderMask(
                 shaderCallback: (bounds) => const LinearGradient(
                   colors: [
-                    Color(0xFFFFFFFF),
-                    Color(0xFFFEF08A),
-                    Color(0xFFF59E0B),
-                    Color(0xFFD97706),
+                    AppColors.surfaceLight,
+                    AppColors.goldTint200,
+                    AppColors.categoryAstro,
+                    AppColors.categoryAstroDark,
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -392,14 +392,14 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                 ),
               ),
               badgeText: '🔥 50% OFF',
-              badgeColor: const Color(0xFFFEF3C7),
-              badgeTextColor: const Color(0xFF92400E),
+              badgeColor: AppColors.goldTint100,
+              badgeTextColor: AppColors.amberDarkestText,
               title: AppLocalizations.of(context)?.vipFiftyPercentOff ?? '50% OFF VIP',
               subtitle: _selectedCardId == 'vip_offer'
                   ? (AppLocalizations.of(context)?.tapAgainToOpen ?? 'Tap again to Open ➔')
                   : (AppLocalizations.of(context)?.fiftyPercentOffVipUpgrade ?? '🔥 50% OFF VIP Upgrade'),
               gradient: const LinearGradient(
-                colors: [Color(0xFFF59E0B), Color(0xFFD97706), Color(0xFFB45309)],
+                colors: [AppColors.categoryAstro, AppColors.categoryAstroDark, AppColors.amberDark],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -412,15 +412,15 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
               const SizedBox(width: 7),
               _buildAnimatedMiniCard(
                 cardId: banner.id,
-                outlineBorderColor: const Color(0xFF93C5FD),
+                outlineBorderColor: AppColors.blue300,
                 leadingWidget: const Icon(
                   Icons.campaign_rounded,
                   color: Colors.white,
                   size: 27,
                 ),
                 badgeText: '✨ SPECIAL',
-                badgeColor: const Color(0xFFDBEAFE),
-                badgeTextColor: const Color(0xFF1E40AF),
+                badgeColor: AppColors.blue100,
+                badgeTextColor: AppColors.blue800,
                 title: banner.title.isNotEmpty
                     ? banner.title
                     : 'Announcement',
@@ -428,7 +428,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                     ? 'Tap again to View ➔'
                     : 'Tap to discover more ➔',
                 gradient: const LinearGradient(
-                  colors: [Color(0xFF3B82F6), Color(0xFF2563EB), Color(0xFF1D4ED8)],
+                  colors: [AppColors.categoryCareer, AppColors.categoryCareerDark, AppColors.blue600],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -493,8 +493,8 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                       BoxShadow(
                         color: isPausedCard
                             ? Colors.amberAccent.withValues(alpha: glowAlpha)
-                            : (outlineBorderColor?.withValues(alpha: 0.40) ??
-                                gradient.colors.first.withValues(alpha: 0.35)),
+                            : (outlineBorderColor?.withValues(alpha: AppColors.opacity40) ??
+                                gradient.colors.first.withValues(alpha: AppColors.opacity35)),
                         blurRadius: isPausedCard ? 12 : 6,
                         offset: const Offset(0, 2.5),
                       ),
@@ -514,8 +514,8 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                           border: Border.all(
                             color: isPausedCard
                                 ? Colors.amberAccent
-                                : (outlineBorderColor?.withValues(alpha: 0.85) ??
-                                    Colors.white.withValues(alpha: 0.40)),
+                                : (outlineBorderColor?.withValues(alpha: AppColors.opacity85) ??
+                                    Colors.white.withValues(alpha: AppColors.opacity40)),
                             width: 1.2,
                           ),
                         ),
@@ -553,7 +553,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                                   child: Text(
                                     'PAUSED',
                                     style: TextStyle(
-                                      color: const Color(0xFF78350F),
+                                      color: AppColors.amberDeepText,
                                       fontWeight: AppTypography.black,
                                       fontSize: AppTypography.labelTiny,
                                       letterSpacing: 0.2,
@@ -567,13 +567,13 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 4, vertical: 1),
                                   decoration: BoxDecoration(
-                                    color: badgeColor ?? const Color(0xFFFEF3C7),
+                                    color: badgeColor ?? AppColors.goldTint100,
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: Text(
                                     badgeText,
                                     style: TextStyle(
-                                      color: badgeTextColor ?? const Color(0xFF92400E),
+                                      color: badgeTextColor ?? AppColors.amberDarkestText,
                                       fontWeight: AppTypography.black,
                                       fontSize: AppTypography.labelTiny,
                                       letterSpacing: 0.2,
@@ -607,7 +607,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                         decoration: BoxDecoration(
                           color: isPausedCard
                               ? Colors.amberAccent
-                              : Colors.white.withValues(alpha: 0.20),
+                              : Colors.white.withValues(alpha: AppColors.opacity20),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
@@ -615,7 +615,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                               ? Icons.arrow_outward_rounded
                               : Icons.arrow_forward_ios_rounded,
                           color: isPausedCard
-                              ? const Color(0xFF78350F)
+                              ? AppColors.amberDeepText
                               : Colors.white,
                           size: isPausedCard ? 10.5 : 8,
                         ),

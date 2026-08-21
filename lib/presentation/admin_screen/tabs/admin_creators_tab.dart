@@ -99,14 +99,14 @@ class AdminCreatorsTabState extends State<AdminCreatorsTab> {
                   padding: EdgeInsets.all(4.w), borderRadius: BorderRadius.circular(20), blur: 10, opacity: 0.1,
                   child: Column(children: [
                     Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      CircleAvatar(radius: 24, backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1), child: Icon(Icons.person, color: theme.colorScheme.primary)),
+                      CircleAvatar(radius: 24, backgroundColor: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10), child: Icon(Icons.person, color: theme.colorScheme.primary)),
                       SizedBox(width: 4.w),
                       Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                           Text(creator.name, style: theme.textTheme.titleMedium?.copyWith(fontWeight: AppTypography.bold)),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(color: theme.colorScheme.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)),
+                            decoration: BoxDecoration(color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10), borderRadius: BorderRadius.circular(8)),
                             child: Text(creator.promoCode, style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.primary, fontWeight: AppTypography.bold)),
                           ),
                         ]),
@@ -235,7 +235,7 @@ class _CreatorFormState extends State<_CreatorForm> {
             SizedBox(height: 3.h),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Text(isEdit ? 'Edit Influencer' : 'Add New Influencer', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: AppTypography.bold, color: theme.colorScheme.primary)),
-              IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close), style: IconButton.styleFrom(backgroundColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5))),
+              IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close), style: IconButton.styleFrom(backgroundColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: AppColors.opacity50))),
             ]),
             Text(isEdit ? 'Update details for ${widget.creator!.name}' : 'Register a new creator for influencer marketing', style: theme.textTheme.bodyMedium?.copyWith(color: theme.hintColor)),
             SizedBox(height: 4.h),
@@ -252,7 +252,7 @@ class _CreatorFormState extends State<_CreatorForm> {
               SizedBox(height: 2.h),
               GlassmorphismContainer(
                 padding: const EdgeInsets.symmetric(horizontal: 16), borderRadius: BorderRadius.circular(16), blur: 5, opacity: 0.05,
-                child: SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Account Status'), subtitle: Text(_isActive ? 'Active' : 'Deactivated'), value: _isActive, activeThumbColor: theme.colorScheme.primary, activeTrackColor: theme.colorScheme.primary.withValues(alpha: 0.3), onChanged: (v) => setState(() => _isActive = v)),
+                child: SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Account Status'), subtitle: Text(_isActive ? 'Active' : 'Deactivated'), value: _isActive, activeThumbColor: theme.colorScheme.primary, activeTrackColor: theme.colorScheme.primary.withValues(alpha: AppColors.opacity30), onChanged: (v) => setState(() => _isActive = v)),
               ),
             ],
             SizedBox(height: 6.h),
@@ -260,7 +260,7 @@ class _CreatorFormState extends State<_CreatorForm> {
               width: double.infinity, height: 7.h,
               child: ElevatedButton(
                 onPressed: _isSubmitting ? null : _submit,
-                style: ElevatedButton.styleFrom(backgroundColor: theme.colorScheme.primary, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)), elevation: 10, shadowColor: theme.colorScheme.primary.withValues(alpha: 0.3)),
+                style: ElevatedButton.styleFrom(backgroundColor: theme.colorScheme.primary, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)), elevation: 10, shadowColor: theme.colorScheme.primary.withValues(alpha: AppColors.opacity30)),
                 child: _isSubmitting ? const SizedBox(height: 24, width: 24, child: CircularProgressIndicator(strokeWidth: 3, color: Colors.white)) : Text(isEdit ? 'Update Creator' : 'Register Creator', style: TextStyle(fontSize: AppTypography.bodyMedium, fontWeight: AppTypography.bold)),
               ),
             ),
@@ -273,13 +273,13 @@ class _CreatorFormState extends State<_CreatorForm> {
   Widget _buildField({required String label, required TextEditingController controller, required IconData icon, bool enabled = true, String? hintText, TextInputType? keyboardType, TextCapitalization textCapitalization = TextCapitalization.none, String? Function(String?)? validator}) {
     final theme = Theme.of(context);
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(label, style: theme.textTheme.labelMedium?.copyWith(fontWeight: AppTypography.bold, color: theme.colorScheme.primary.withValues(alpha: 0.8))),
+      Text(label, style: theme.textTheme.labelMedium?.copyWith(fontWeight: AppTypography.bold, color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity80))),
       const SizedBox(height: 8),
       TextFormField(
         controller: controller, enabled: enabled, keyboardType: keyboardType, textCapitalization: textCapitalization, validator: validator, style: TextStyle(fontSize: AppTypography.bodySmall),
         decoration: InputDecoration(
-          hintText: hintText, prefixIcon: Icon(icon, size: 20, color: theme.colorScheme.primary.withValues(alpha: 0.6)),
-          filled: true, fillColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+          hintText: hintText, prefixIcon: Icon(icon, size: 20, color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity60)),
+          filled: true, fillColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: AppColors.opacity30),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
           enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
           focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: theme.colorScheme.primary, width: 1.5)),

@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Bottom navigation buttons (Previous / Next / Save / Quick Update) with animations and haptic feedback.
 class CreationNavigationButtons extends StatelessWidget {
@@ -39,7 +40,7 @@ class CreationNavigationButtons extends StatelessWidget {
         color: theme.colorScheme.surface,
         border: Border(
           top: BorderSide(
-            color: theme.colorScheme.outline.withValues(alpha: 0.08),
+            color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity8),
           ),
         ),
         boxShadow: [
@@ -60,7 +61,7 @@ class CreationNavigationButtons extends StatelessWidget {
                   style: OutlinedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 1.4.h),
                     side: BorderSide(
-                      color: theme.colorScheme.outline.withValues(alpha: 0.25),
+                      color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity25),
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
@@ -88,9 +89,9 @@ class CreationNavigationButtons extends StatelessWidget {
               Expanded(
                 child: OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xFF10B981),
+                    foregroundColor: AppColors.categoryLocation,
                     side: const BorderSide(
-                      color: Color(0xFF10B981),
+                      color: AppColors.categoryLocation,
                       width: 1.2,
                     ),
                     padding: EdgeInsets.symmetric(vertical: 1.4.h),
@@ -125,7 +126,7 @@ class CreationNavigationButtons extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                      color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity30),
                       blurRadius: 10,
                       offset: const Offset(0, 3),
                     ),

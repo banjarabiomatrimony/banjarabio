@@ -8,6 +8,7 @@ import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/widgets/glassmorphism_container.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Dashboard overview tab showing financial, engagement, safety,
 /// demographics, and growth statistics.
@@ -146,7 +147,7 @@ class _AdminOverviewTabState extends State<AdminOverviewTab> {
             Text('All Time Revenue', style: theme.textTheme.labelMedium?.copyWith(color: theme.hintColor, fontWeight: AppTypography.bold)),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              decoration: BoxDecoration(color: Colors.green.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)),
+              decoration: BoxDecoration(color: Colors.green.withValues(alpha: AppColors.opacity10), borderRadius: BorderRadius.circular(8)),
               child: Text('EXCLUSIVE TESTER', style: TextStyle(color: Colors.green, fontSize: AppTypography.labelSmall, fontWeight: AppTypography.bold)),
             ),
           ],
@@ -283,7 +284,7 @@ class _AdminOverviewTabState extends State<AdminOverviewTab> {
         ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: LinearProgressIndicator(
-            value: pct, backgroundColor: color.withValues(alpha: 0.1),
+            value: pct, backgroundColor: color.withValues(alpha: AppColors.opacity10),
             valueColor: AlwaysStoppedAnimation<Color>(color), minHeight: 8,
           ),
         ),

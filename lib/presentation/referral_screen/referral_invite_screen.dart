@@ -15,6 +15,7 @@ import 'package:banjarabio/widgets/tactile/tactile_back_button.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 import 'package:banjarabio/widgets/tactile/tactile_category_card.dart';
 import 'package:banjarabio/theme/app_category_theme.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// 🎁 Refer & Earn (Invite a Relative) Screen - Ultra-Premium Tactile Edition
 /// Features:
@@ -183,16 +184,16 @@ class _ReferralInviteScreenState extends ConsumerState<ReferralInviteScreen>
         borderRadius: BorderRadius.circular(22),
         gradient: const LinearGradient(
           colors: [
-            Color(0xFF880E4F),
-            Color(0xFF961B33),
-            Color(0xFFE65100),
+            AppColors.primaryDark,
+            AppColors.primary,
+            AppColors.deepOrange,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF961B33).withValues(alpha: 0.35),
+            color: AppColors.primary.withValues(alpha: AppColors.opacity35),
             blurRadius: 16,
             offset: const Offset(0, 6),
           ),
@@ -208,16 +209,16 @@ class _ReferralInviteScreenState extends ConsumerState<ReferralInviteScreen>
                 child: Container(
                   padding: EdgeInsets.all(3.w),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
+                    color: Colors.white.withValues(alpha: AppColors.opacity20),
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.4),
+                      color: Colors.white.withValues(alpha: AppColors.opacity40),
                       width: 1.2,
                     ),
                   ),
                   child: const Icon(
                     Icons.card_giftcard_rounded,
-                    color: Color(0xFFFFD700),
+                    color: AppColors.categoryVip,
                     size: 32,
                   ),
                 ),
@@ -243,7 +244,7 @@ class _ReferralInviteScreenState extends ConsumerState<ReferralInviteScreen>
                   l10n?.helpOurCommunityGrowAndUnlockPremiumRewa ??
                       'Help relatives find matches & unlock free Premium months + VIP passes for yourself.',
                   style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.9),
+                    color: Colors.white.withValues(alpha: AppColors.opacity90),
                     fontSize: AppTypography.bodySmall,
                     height: 1.35,
                   ),
@@ -276,19 +277,19 @@ class _ReferralInviteScreenState extends ConsumerState<ReferralInviteScreen>
             l10n?.referrals ?? 'Total Referrals',
             '${stats?.referralCount ?? 0}',
             Icons.people_alt_rounded,
-            const Color(0xFF00897B),
+            AppColors.teal,
           ),
           Container(
             height: 38,
             width: 1.2,
-            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.3),
+            color: theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity30),
           ),
           _buildStatItem(
             theme,
             l10n?.rewards ?? 'Free Months',
             '${stats?.rewardsEarned ?? 0}',
             Icons.military_tech_rounded,
-            const Color(0xFFD97706),
+            AppColors.categoryAstroDark,
           ),
         ],
       ),
@@ -355,11 +356,11 @@ class _ReferralInviteScreenState extends ConsumerState<ReferralInviteScreen>
               padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.4.h),
               decoration: BoxDecoration(
                 color: isDark
-                    ? const Color(0xFF2A1B28)
-                    : const Color(0xFFFDF2F8),
+                    ? AppColors.surfaceDark
+                    : AppColors.categoryPersonalBg,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: const Color(0xFFEC4899).withValues(alpha: 0.4),
+                  color: AppColors.categoryPersonal.withValues(alpha: AppColors.opacity40),
                   width: 1.4,
                 ),
               ),
@@ -368,10 +369,10 @@ class _ReferralInviteScreenState extends ConsumerState<ReferralInviteScreen>
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFEC4899).withValues(alpha: 0.15),
+                      color: AppColors.categoryPersonal.withValues(alpha: AppColors.opacity15),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.qr_code_2_rounded, color: Color(0xFFEC4899), size: 22),
+                    child: const Icon(Icons.qr_code_2_rounded, color: AppColors.categoryPersonal, size: 22),
                   ),
                   SizedBox(width: 3.w),
                   Expanded(
@@ -392,7 +393,7 @@ class _ReferralInviteScreenState extends ConsumerState<ReferralInviteScreen>
                             fontWeight: AppTypography.black,
                             fontSize: AppTypography.bodyLarge,
                             letterSpacing: 1.5,
-                            color: const Color(0xFF961B33),
+                            color: AppColors.primary,
                           ),
                         ),
                       ],
@@ -403,19 +404,19 @@ class _ReferralInviteScreenState extends ConsumerState<ReferralInviteScreen>
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF961B33).withValues(alpha: 0.12),
+                        color: AppColors.primary.withValues(alpha: AppColors.opacity12),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.copy_rounded, color: Color(0xFF961B33), size: 14),
+                          const Icon(Icons.copy_rounded, color: AppColors.primary, size: 14),
                           const SizedBox(width: 4),
                           Text(
                             'Copy',
                             style: TextStyle(
                               fontSize: AppTypography.bodySmall,
                               fontWeight: AppTypography.bold,
-                              color: const Color(0xFF961B33),
+                              color: AppColors.primary,
                             ),
                           ),
                         ],
@@ -434,10 +435,10 @@ class _ReferralInviteScreenState extends ConsumerState<ReferralInviteScreen>
             decoration: BoxDecoration(
               color: isDark
                   ? Colors.white.withValues(alpha: 0.04)
-                  : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.35),
+                  : theme.colorScheme.surfaceContainerHighest.withValues(alpha: AppColors.opacity35),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
-                color: theme.colorScheme.outlineVariant.withValues(alpha: 0.3),
+                color: theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity30),
               ),
             ),
             child: Row(
@@ -474,14 +475,14 @@ class _ReferralInviteScreenState extends ConsumerState<ReferralInviteScreen>
               height: 50,
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFF25D366), Color(0xFF128C7E)],
+                  colors: [AppColors.whatsapp, AppColors.whatsappDark],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF25D366).withValues(alpha: 0.3),
+                    color: AppColors.whatsapp.withValues(alpha: AppColors.opacity30),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
@@ -527,7 +528,7 @@ class _ReferralInviteScreenState extends ConsumerState<ReferralInviteScreen>
           AppLocalizations.of(context)?.referralLinkCopiedToClipboard ??
               '🎉 Copied to clipboard!',
         ),
-        backgroundColor: const Color(0xFF10B981),
+        backgroundColor: AppColors.categoryLocation,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
@@ -605,10 +606,10 @@ class _ReferralInviteScreenState extends ConsumerState<ReferralInviteScreen>
           width: 32,
           height: 32,
           decoration: BoxDecoration(
-            color: theme.colorScheme.primary.withValues(alpha: 0.12),
+            color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity12),
             shape: BoxShape.circle,
             border: Border.all(
-              color: theme.colorScheme.primary.withValues(alpha: 0.3),
+              color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity30),
               width: 1.2,
             ),
           ),

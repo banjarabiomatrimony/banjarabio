@@ -213,8 +213,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: isDark
-                        ? [const Color(0xFF140A0D), const Color(0xFF1F0D13), const Color(0xFF0F0709)]
-                        : [const Color(0xFFFFFBF9), const Color(0xFFFFF4EE), const Color(0xFFFDF0E9)],
+                        ? [AppColors.crimsonBlack, AppColors.crimsonBlack, AppColors.canvasDark]
+                        : [AppColors.roseBlush, AppColors.rosePinkLight, AppColors.rosePinkLight],
                   ),
                 ),
               ),
@@ -232,7 +232,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
               bottom: -10.h, left: -15.w,
               child: ScaleTransition(
                 scale: _pulseAnimation,
-                child: _auroraOrb(50.w, const Color(0xFFD97706).withValues(alpha: isDark ? 0.14 : 0.08)),
+                child: _auroraOrb(50.w, AppColors.categoryAstroDark.withValues(alpha: isDark ? 0.14 : 0.08)),
               ),
             ),
 
@@ -352,13 +352,13 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
               padding: EdgeInsets.all(2.2.w),
               decoration: BoxDecoration(
                 color: isDark
-                    ? Colors.white.withValues(alpha: 0.12)
+                    ? Colors.white.withValues(alpha: AppColors.opacity12)
                     : theme.colorScheme.surface,
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: isDark
                       ? Colors.white.withValues(alpha: 0.22)
-                      : primary.withValues(alpha: 0.25),
+                      : primary.withValues(alpha: AppColors.opacity25),
                   width: 1.2,
                 ),
                 boxShadow: [
@@ -381,12 +381,12 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
             padding: EdgeInsets.symmetric(horizontal: 3.2.w, vertical: 0.7.h),
             decoration: BoxDecoration(
               color: isDark
-                  ? Colors.white.withValues(alpha: 0.08)
+                  ? Colors.white.withValues(alpha: AppColors.opacity8)
                   : primary.withValues(alpha: 0.06),
               borderRadius: BorderRadius.circular(30),
               border: Border.all(
                 color: isDark
-                    ? Colors.white.withValues(alpha: 0.12)
+                    ? Colors.white.withValues(alpha: AppColors.opacity12)
                     : primary.withValues(alpha: 0.18),
               ),
             ),
@@ -396,7 +396,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                 Container(
                   width: 8, height: 8,
                   decoration: const BoxDecoration(
-                    color: Color(0xFF22C55E),
+                    color: AppColors.green500,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -421,7 +421,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
             decoration: BoxDecoration(
               color: isDark
                   ? primary.withValues(alpha: 0.18)
-                  : primary.withValues(alpha: 0.08),
+                  : primary.withValues(alpha: AppColors.opacity8),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: primary.withValues(alpha: isDark ? 0.40 : 0.25)),
             ),
@@ -494,7 +494,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
       padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.4.h),
       decoration: BoxDecoration(
         color: isDark
-            ? const Color(0xFF1F181B).withValues(alpha: 0.90)
+            ? AppColors.canvasDark.withValues(alpha: AppColors.opacity90)
             : theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
@@ -600,13 +600,13 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: isCompleted
-                                  ? [primary, primary.withValues(alpha: 0.85)]
+                                  ? [primary, primary.withValues(alpha: AppColors.opacity85)]
                                   : [primary, isDark ? AppTheme.primaryDark : AppTheme.primaryVariantLight],
                             )
                           : null,
                       color: isActive
                           ? null
-                          : (isDark ? Colors.white12 : Colors.black.withValues(alpha: 0.08)),
+                          : (isDark ? Colors.white12 : Colors.black.withValues(alpha: AppColors.opacity8)),
                       shape: BoxShape.circle,
                       border: isCurrent
                           ? Border.all(
@@ -617,7 +617,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                       boxShadow: isCurrent
                           ? [
                               BoxShadow(
-                                color: primary.withValues(alpha: 0.50),
+                                color: primary.withValues(alpha: AppColors.opacity50),
                                 blurRadius: 12,
                                 spreadRadius: 2,
                               ),
@@ -625,7 +625,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                           : (isCompleted
                               ? [
                                   BoxShadow(
-                                    color: primary.withValues(alpha: 0.25),
+                                    color: primary.withValues(alpha: AppColors.opacity25),
                                     blurRadius: 6,
                                   ),
                                 ]
@@ -666,7 +666,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                             ? primary
                             : (isCompleted
                                 ? theme.colorScheme.onSurface
-                                : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6)),
+                                : theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity60)),
                         fontSize: isCurrent ? AppTypography.bodySmall : AppTypography.labelMedium,
                       ),
                     ),
@@ -682,12 +682,12 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                         decoration: BoxDecoration(
                           gradient: index < displayStepIndex
                               ? LinearGradient(
-                                  colors: [primary, primary.withValues(alpha: 0.7)],
+                                  colors: [primary, primary.withValues(alpha: AppColors.opacity70)],
                                 )
                               : null,
                           color: index < displayStepIndex
                               ? null
-                              : (isDark ? Colors.white12 : Colors.black.withValues(alpha: 0.08)),
+                              : (isDark ? Colors.white12 : Colors.black.withValues(alpha: AppColors.opacity8)),
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
@@ -721,8 +721,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                 height: 5,
                 decoration: BoxDecoration(
                   color: isDark
-                      ? Colors.white.withValues(alpha: 0.10)
-                      : primary.withValues(alpha: 0.10),
+                      ? Colors.white.withValues(alpha: AppColors.opacity10)
+                      : primary.withValues(alpha: AppColors.opacity10),
                   borderRadius: BorderRadius.circular(6),
                 ),
               ),
@@ -748,7 +748,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                           borderRadius: BorderRadius.circular(6),
                           boxShadow: [
                             BoxShadow(
-                              color: primary.withValues(alpha: 0.4),
+                              color: primary.withValues(alpha: AppColors.opacity40),
                               blurRadius: 6,
                             ),
                           ],
@@ -784,17 +784,17 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: isDark
-              ? [const Color(0xFF381E05), const Color(0xFF231002)]
-              : [const Color(0xFFFFFBEB), const Color(0xFFFEF3C7)],
+              ? [AppColors.amberBgDark, AppColors.amberBrownBg]
+              : [AppColors.warningLight, AppColors.goldTint100],
         ),
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: const Color(0xFFF59E0B),
+          color: AppColors.categoryAstro,
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.30 : 0.15),
+            color: AppColors.categoryAstro.withValues(alpha: isDark ? 0.30 : 0.15),
             blurRadius: 14,
             offset: const Offset(0, 4),
           ),
@@ -814,13 +814,13 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                     Container(
                       padding: EdgeInsets.all(1.5.w),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF59E0B).withValues(alpha: 0.20),
+                        color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity20),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
                         Icons.edit_note_rounded,
                         size: 15.sp,
-                        color: const Color(0xFFD97706),
+                        color: AppColors.categoryAstroDark,
                       ),
                     ),
                     SizedBox(width: 2.w),
@@ -832,7 +832,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                         style: TextStyle(
                           fontSize: AppTypography.bodyMedium,
                           fontWeight: AppTypography.extraBold,
-                          color: isDark ? const Color(0xFFFDE68A) : const Color(0xFF92400E),
+                          color: isDark ? AppColors.goldTint200 : AppColors.amberDarkestText,
                         ),
                       ),
                     ),
@@ -848,7 +848,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                 child: Container(
                   padding: EdgeInsets.all(1.5.w),
                   decoration: BoxDecoration(
-                    color: (isDark ? Colors.white : Colors.black).withValues(alpha: 0.08),
+                    color: (isDark ? Colors.white : Colors.black).withValues(alpha: AppColors.opacity8),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -866,7 +866,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
             style: TextStyle(
               fontSize: AppTypography.bodySmall,
               height: 1.25,
-              color: isDark ? Colors.white.withValues(alpha: 0.85) : const Color(0xFF78350F),
+              color: isDark ? Colors.white.withValues(alpha: AppColors.opacity85) : AppColors.amberDeepText,
             ),
           ),
           SizedBox(height: 1.2.h),
@@ -890,12 +890,12 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
               padding: EdgeInsets.symmetric(vertical: 1.0.h),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFFF59E0B), Color(0xFFD97706)],
+                  colors: [AppColors.categoryAstro, AppColors.categoryAstroDark],
                 ),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFFD97706).withValues(alpha: 0.35),
+                    color: AppColors.categoryAstroDark.withValues(alpha: AppColors.opacity35),
                     blurRadius: 8,
                     offset: const Offset(0, 3),
                   ),
@@ -984,14 +984,14 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: isDark
-                      ? [const Color(0xFF2A151D), const Color(0xFF1F0D15)]
-                      : [Colors.white, const Color(0xFFFFF7F5)],
+                      ? [AppColors.bloodRedBg, AppColors.crimsonBlack]
+                      : [Colors.white, AppColors.roseBlush],
                 ),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: primary.withValues(alpha: 0.3), width: 1.5),
+                border: Border.all(color: primary.withValues(alpha: AppColors.opacity30), width: 1.5),
                 boxShadow: [
                   BoxShadow(
-                    color: primary.withValues(alpha: 0.08),
+                    color: primary.withValues(alpha: AppColors.opacity8),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
@@ -1002,7 +1002,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                   Container(
                     width: 12.w, height: 12.w,
                     decoration: BoxDecoration(
-                      color: primary.withValues(alpha: 0.12),
+                      color: primary.withValues(alpha: AppColors.opacity12),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(Icons.login_rounded, size: 22.sp, color: primary),
@@ -1052,14 +1052,14 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: isDark
-                      ? [const Color(0xFF1E1E2C), const Color(0xFF141420)]
-                      : [Colors.white, const Color(0xFFF8FAF9)],
+                      ? [AppColors.canvasRichDark, AppColors.canvasCharcoal]
+                      : [Colors.white, AppColors.neutral50],
                 ),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: const Color(0xFF25D366).withValues(alpha: 0.35), width: 1.5),
+                border: Border.all(color: AppColors.whatsapp.withValues(alpha: AppColors.opacity35), width: 1.5),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF25D366).withValues(alpha: 0.08),
+                    color: AppColors.whatsapp.withValues(alpha: AppColors.opacity8),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
@@ -1070,10 +1070,10 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                   Container(
                     width: 12.w, height: 12.w,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF25D366).withValues(alpha: 0.12),
+                      color: AppColors.whatsapp.withValues(alpha: AppColors.opacity12),
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(Icons.person_add_rounded, size: 22.sp, color: const Color(0xFF25D366)),
+                    child: Icon(Icons.person_add_rounded, size: 22.sp, color: AppColors.whatsapp),
                   ),
                   SizedBox(width: 4.w),
                   Expanded(
@@ -1098,7 +1098,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios_rounded, size: 14.sp, color: const Color(0xFF25D366)),
+                  Icon(Icons.arrow_forward_ios_rounded, size: 14.sp, color: AppColors.whatsapp),
                 ],
               ),
             ),
@@ -1156,15 +1156,15 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
         width: double.infinity,
         padding: EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.5.h),
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1E1418) : Colors.white,
+          color: isDark ? AppColors.canvasDark : Colors.white,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color: isDark ? const Color(0xFF0284C7).withValues(alpha: 0.4) : const Color(0xFF0284C7).withValues(alpha: 0.3),
+            color: isDark ? AppColors.sapphireBlue.withValues(alpha: AppColors.opacity40) : AppColors.sapphireBlue.withValues(alpha: AppColors.opacity30),
             width: 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF0284C7).withValues(alpha: isDark ? 0.25 : 0.08),
+              color: AppColors.sapphireBlue.withValues(alpha: isDark ? 0.25 : 0.08),
               blurRadius: 14,
               offset: const Offset(0, 4),
             ),
@@ -1181,14 +1181,14 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 3.0.w, vertical: 0.4.h),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF0369A1).withValues(alpha: 0.3) : const Color(0xFFE0F2FE),
+                      color: isDark ? AppColors.oceanBlueDark.withValues(alpha: AppColors.opacity30) : AppColors.infoLight,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: const Color(0xFF0284C7).withValues(alpha: 0.5)),
+                      border: Border.all(color: AppColors.sapphireBlue.withValues(alpha: AppColors.opacity50)),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.bolt_rounded, size: 13.sp, color: const Color(0xFF0284C7)),
+                        Icon(Icons.bolt_rounded, size: 13.sp, color: AppColors.sapphireBlue),
                         SizedBox(width: 1.w),
                         Flexible(
                           child: Text(
@@ -1197,7 +1197,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                             style: theme.textTheme.labelMedium?.copyWith(
                               fontWeight: AppTypography.black,
                               fontSize: AppTypography.bodyMedium,
-                              color: const Color(0xFF0284C7),
+                              color: AppColors.sapphireBlue,
                               letterSpacing: 0.4,
                             ),
                           ),
@@ -1212,11 +1212,11 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: LinearGradient(
-                      colors: [const Color(0xFF0284C7).withValues(alpha: 0.2), const Color(0xFF0284C7).withValues(alpha: 0.08)],
+                      colors: [AppColors.sapphireBlue.withValues(alpha: AppColors.opacity20), AppColors.sapphireBlue.withValues(alpha: AppColors.opacity8)],
                     ),
-                    border: Border.all(color: const Color(0xFF0284C7).withValues(alpha: 0.3)),
+                    border: Border.all(color: AppColors.sapphireBlue.withValues(alpha: AppColors.opacity30)),
                   ),
-                  child: Icon(Icons.person_search_rounded, size: 17.sp, color: const Color(0xFF0284C7)),
+                  child: Icon(Icons.person_search_rounded, size: 17.sp, color: AppColors.sapphireBlue),
                 ),
               ],
             ),
@@ -1265,21 +1265,21 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
               width: double.infinity,
               padding: EdgeInsets.symmetric(vertical: 0.9.h),
               decoration: BoxDecoration(
-                color: const Color(0xFF0284C7).withValues(alpha: 0.10),
+                color: AppColors.sapphireBlue.withValues(alpha: AppColors.opacity10),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: const Color(0xFF0284C7).withValues(alpha: 0.35), width: 1.2),
+                border: Border.all(color: AppColors.sapphireBlue.withValues(alpha: AppColors.opacity35), width: 1.2),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.search_rounded, size: 15.sp, color: const Color(0xFF0284C7)),
+                  Icon(Icons.search_rounded, size: 15.sp, color: AppColors.sapphireBlue),
                   SizedBox(width: 1.5.w),
                   Text(
                     ctaText,
                     style: theme.textTheme.labelLarge?.copyWith(
                       fontWeight: AppTypography.black,
                       fontSize: AppTypography.bodyLarge,
-                      color: const Color(0xFF0284C7),
+                      color: AppColors.sapphireBlue,
                     ),
                   ),
                 ],
@@ -1317,13 +1317,13 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
           gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFF881337), Color(0xFF9F1239), Color(0xFF700B1A)],
+            colors: [AppColors.crimsonMaroon, AppColors.wineRed, AppColors.wineDark],
           ),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: const Color(0xFFF59E0B), width: 1.8),
+          border: Border.all(color: AppColors.categoryAstro, width: 1.8),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF991B1B).withValues(alpha: 0.45),
+              color: AppColors.crimsonDeep.withValues(alpha: 0.45),
               blurRadius: 18,
               offset: const Offset(0, 5),
             ),
@@ -1340,10 +1340,10 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 3.0.w, vertical: 0.4.h),
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(colors: [Color(0xFFFEF3C7), Color(0xFFFDE68A)]),
+                      gradient: const LinearGradient(colors: [AppColors.goldTint100, AppColors.goldTint200]),
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
-                        BoxShadow(color: const Color(0xFFF59E0B).withValues(alpha: 0.35), blurRadius: 6),
+                        BoxShadow(color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity35), blurRadius: 6),
                       ],
                     ),
                     child: Row(
@@ -1358,7 +1358,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                             style: theme.textTheme.labelMedium?.copyWith(
                               fontWeight: AppTypography.black,
                               fontSize: AppTypography.bodyMedium,
-                              color: const Color(0xFF92400E),
+                              color: AppColors.amberDarkestText,
                               letterSpacing: 0.4,
                             ),
                           ),
@@ -1401,7 +1401,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                 fontFamily: AppTypography.bodyFontFamily,
                 fontSize: AppTypography.bodyMedium,
                 fontWeight: AppTypography.medium,
-                color: Colors.white.withValues(alpha: 0.9),
+                color: Colors.white.withValues(alpha: AppColors.opacity90),
                 height: 1.25,
               ),
             ),
@@ -1420,23 +1420,23 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
               width: double.infinity,
               padding: EdgeInsets.symmetric(vertical: 1.0.h),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(colors: [Color(0xFFFBBF24), Color(0xFFF59E0B)]),
+                gradient: const LinearGradient(colors: [AppColors.goldSoft, AppColors.categoryAstro]),
                 borderRadius: BorderRadius.circular(14),
                 boxShadow: [
-                  BoxShadow(color: const Color(0xFFF59E0B).withValues(alpha: 0.40), blurRadius: 10, offset: const Offset(0, 3)),
+                  BoxShadow(color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity40), blurRadius: 10, offset: const Offset(0, 3)),
                 ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.auto_awesome_rounded, size: 16, color: Color(0xFF451A03)),
+                  const Icon(Icons.auto_awesome_rounded, size: 16, color: AppColors.amberBgDark),
                   SizedBox(width: 1.5.w),
                   Text(
                     ctaText,
                     style: theme.textTheme.labelLarge?.copyWith(
                       fontWeight: AppTypography.black,
                       fontSize: AppTypography.bodyLarge,
-                      color: const Color(0xFF451A03),
+                      color: AppColors.amberBgDark,
                     ),
                   ),
                 ],
@@ -1466,15 +1466,15 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
         width: double.infinity,
         padding: EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.5.h),
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF0F1A14) : Colors.white,
+          color: isDark ? AppColors.canvasDark : Colors.white,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color: const Color(0xFF10B981).withValues(alpha: isDark ? 0.4 : 0.3),
+            color: AppColors.categoryLocation.withValues(alpha: isDark ? 0.4 : 0.3),
             width: 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF10B981).withValues(alpha: isDark ? 0.20 : 0.08),
+              color: AppColors.categoryLocation.withValues(alpha: isDark ? 0.20 : 0.08),
               blurRadius: 14,
               offset: const Offset(0, 4),
             ),
@@ -1491,14 +1491,14 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 3.0.w, vertical: 0.4.h),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF10B981).withValues(alpha: 0.2) : const Color(0xFFD1FAE5),
+                      color: isDark ? AppColors.categoryLocation.withValues(alpha: AppColors.opacity20) : AppColors.green100alt,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: const Color(0xFF10B981).withValues(alpha: 0.5)),
+                      border: Border.all(color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity50)),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.explore_rounded, size: 13.sp, color: const Color(0xFF10B981)),
+                        Icon(Icons.explore_rounded, size: 13.sp, color: AppColors.categoryLocation),
                         SizedBox(width: 1.w),
                         Flexible(
                           child: Text(
@@ -1507,7 +1507,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                             style: theme.textTheme.labelMedium?.copyWith(
                               fontWeight: AppTypography.black,
                               fontSize: AppTypography.bodyMedium,
-                              color: const Color(0xFF059669),
+                              color: AppColors.categoryLocationDark,
                               letterSpacing: 0.4,
                             ),
                           ),
@@ -1522,11 +1522,11 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: LinearGradient(
-                      colors: [const Color(0xFF10B981).withValues(alpha: 0.2), const Color(0xFF10B981).withValues(alpha: 0.08)],
+                      colors: [AppColors.categoryLocation.withValues(alpha: AppColors.opacity20), AppColors.categoryLocation.withValues(alpha: AppColors.opacity8)],
                     ),
-                    border: Border.all(color: const Color(0xFF10B981).withValues(alpha: 0.3)),
+                    border: Border.all(color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity30)),
                   ),
-                  child: Icon(Icons.travel_explore_rounded, size: 17.sp, color: const Color(0xFF10B981)),
+                  child: Icon(Icons.travel_explore_rounded, size: 17.sp, color: AppColors.categoryLocation),
                 ),
               ],
             ),
@@ -1563,21 +1563,21 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
               width: double.infinity,
               padding: EdgeInsets.symmetric(vertical: 0.9.h),
               decoration: BoxDecoration(
-                color: const Color(0xFF10B981).withValues(alpha: 0.10),
+                color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity10),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: const Color(0xFF10B981).withValues(alpha: 0.35), width: 1.2),
+                border: Border.all(color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity35), width: 1.2),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.travel_explore_rounded, size: 15.sp, color: const Color(0xFF10B981)),
+                  Icon(Icons.travel_explore_rounded, size: 15.sp, color: AppColors.categoryLocation),
                   SizedBox(width: 1.5.w),
                   Text(
                     ctaText,
                     style: theme.textTheme.labelLarge?.copyWith(
                       fontWeight: AppTypography.black,
                       fontSize: AppTypography.bodyLarge,
-                      color: const Color(0xFF10B981),
+                      color: AppColors.categoryLocation,
                     ),
                   ),
                 ],
@@ -1593,16 +1593,16 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 2.2.w, vertical: 0.35.h),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withValues(alpha: 0.07) : const Color(0xFFF1F5F9),
+        color: isDark ? Colors.white.withValues(alpha: 0.07) : AppColors.slate100,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+        border: Border.all(color: isDark ? Colors.white10 : AppColors.slate200),
       ),
       child: Text(
         text,
         style: theme.textTheme.bodySmall?.copyWith(
           fontSize: AppTypography.bodyMedium,
           fontWeight: AppTypography.semiBold,
-          color: isDark ? Colors.white70 : const Color(0xFF334155),
+          color: isDark ? Colors.white70 : AppColors.slate700,
         ),
       ),
     );
@@ -1652,20 +1652,20 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 0.7.h),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF25D366).withValues(alpha: 0.12),
+                    color: AppColors.whatsapp.withValues(alpha: AppColors.opacity12),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: const Color(0xFF25D366).withValues(alpha: 0.3)),
+                    border: Border.all(color: AppColors.whatsapp.withValues(alpha: AppColors.opacity30)),
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.chat_rounded, size: 13.sp, color: const Color(0xFF25D366)),
+                      Icon(Icons.chat_rounded, size: 13.sp, color: AppColors.whatsapp),
                       SizedBox(width: 1.5.w),
                       Text(
                         'WhatsApp Support',
                         style: theme.textTheme.labelMedium?.copyWith(
                           fontWeight: AppTypography.extraBold,
                           fontSize: AppTypography.bodySmall,
-                          color: const Color(0xFF25D366),
+                          color: AppColors.whatsapp,
                         ),
                       ),
                     ],
@@ -1678,9 +1678,9 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 0.7.h),
                   decoration: BoxDecoration(
-                    color: primary.withValues(alpha: 0.10),
+                    color: primary.withValues(alpha: AppColors.opacity10),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: primary.withValues(alpha: 0.25)),
+                    border: Border.all(color: primary.withValues(alpha: AppColors.opacity25)),
                   ),
                   child: Row(
                     children: [

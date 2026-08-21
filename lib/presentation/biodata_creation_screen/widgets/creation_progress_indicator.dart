@@ -6,6 +6,7 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/presentation/biodata_creation_screen/models/creation_step_config.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Progress indicator with animated interactive step tabs and profile strength badge.
 class CreationProgressIndicator extends StatefulWidget {
@@ -126,7 +127,7 @@ class _CreationProgressIndicatorState extends State<CreationProgressIndicator> {
         color: theme.colorScheme.surface,
         border: Border(
           bottom: BorderSide(
-            color: theme.colorScheme.outline.withValues(alpha: 0.08),
+            color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity8),
           ),
         ),
         boxShadow: [
@@ -151,7 +152,7 @@ class _CreationProgressIndicatorState extends State<CreationProgressIndicator> {
                     Container(
                       padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.12),
+                        color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity12),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
@@ -235,12 +236,12 @@ class _CreationProgressIndicatorState extends State<CreationProgressIndicator> {
                   child: LinearProgressIndicator(
                     value: value,
                     minHeight: 4,
-                    backgroundColor: theme.colorScheme.outline.withValues(alpha: 0.12),
+                    backgroundColor: theme.colorScheme.outline.withValues(alpha: AppColors.opacity12),
                     valueColor: AlwaysStoppedAnimation<Color>(
                       percentage >= 80
-                          ? const Color(0xFF10B981)
+                          ? AppColors.categoryLocation
                           : (percentage >= 50
-                              ? const Color(0xFFD97706)
+                              ? AppColors.categoryAstroDark
                               : theme.colorScheme.primary),
                     ),
                   ),
@@ -261,24 +262,24 @@ class _CreationProgressIndicatorState extends State<CreationProgressIndicator> {
 
     if (percentage < 40) {
       badgeText = AppLocalizations.of(context)?.bronze ?? 'Bronze';
-      badgeColor = const Color(0xFFCD7F32);
+      badgeColor = AppColors.bronze;
       badgeIcon = Icons.stars_outlined;
     } else if (percentage < 80) {
       badgeText = AppLocalizations.of(context)?.silver ?? 'Silver';
-      badgeColor = const Color(0xFF9E9E9E);
+      badgeColor = AppColors.neutral500;
       badgeIcon = Icons.stars_rounded;
     } else {
       badgeText = AppLocalizations.of(context)?.gold ?? 'Gold';
-      badgeColor = const Color(0xFFD97706);
+      badgeColor = AppColors.categoryAstroDark;
       badgeIcon = Icons.stars_rounded;
     }
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.4.h),
       decoration: BoxDecoration(
-        color: badgeColor.withValues(alpha: 0.12),
+        color: badgeColor.withValues(alpha: AppColors.opacity12),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: badgeColor.withValues(alpha: 0.35)),
+        border: Border.all(color: badgeColor.withValues(alpha: AppColors.opacity35)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -334,7 +335,7 @@ class _AnimatedStepPill extends StatelessWidget {
             ? LinearGradient(
                 colors: [
                   theme.colorScheme.primary,
-                  theme.colorScheme.primary.withValues(alpha: 0.85),
+                  theme.colorScheme.primary.withValues(alpha: AppColors.opacity85),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -343,21 +344,21 @@ class _AnimatedStepPill extends StatelessWidget {
         color: isSelected
             ? null
             : (isValid
-                ? const Color(0xFF10B981).withValues(alpha: 0.08)
-                : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5)),
+                ? AppColors.categoryLocation.withValues(alpha: AppColors.opacity8)
+                : theme.colorScheme.surfaceContainerHighest.withValues(alpha: AppColors.opacity50)),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: isSelected
               ? theme.colorScheme.primary
               : (isValid
-                  ? const Color(0xFF10B981).withValues(alpha: 0.3)
-                  : theme.colorScheme.outline.withValues(alpha: 0.15)),
+                  ? AppColors.categoryLocation.withValues(alpha: AppColors.opacity30)
+                  : theme.colorScheme.outline.withValues(alpha: AppColors.opacity15)),
           width: isSelected ? 1.5 : 1,
         ),
         boxShadow: isSelected
             ? [
                 BoxShadow(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                  color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity30),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -380,7 +381,7 @@ class _AnimatedStepPill extends StatelessWidget {
                   const Icon(
                     Icons.check_circle_rounded,
                     size: 16,
-                    color: Color(0xFF10B981),
+                    color: AppColors.categoryLocation,
                   )
                 else
                   Icon(
@@ -397,7 +398,7 @@ class _AnimatedStepPill extends StatelessWidget {
                     color: isSelected
                         ? Colors.white
                         : (isValid
-                            ? const Color(0xFF047857)
+                            ? AppColors.emerald
                             : theme.colorScheme.onSurfaceVariant),
                     fontSize: AppTypography.labelSmall,
                     fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,

@@ -2544,5 +2544,19 @@
   "yourSuccessStory": "Your Success Story",
   "yourTrustScore": "Your Trust Score",
   "yrs": "{count} Yrs",
-  "zeroPercentCommission": "💰 0% Commission"
+  "zeroPercentCommission": "💰 0% Commission",
+  "inbox": "Inbox",
+  "@inbox": {
+    "description": "Inbox bottom bar tab label"
+  },
+  "@biodata": {
+    "description": "Biodata bottom bar tab label"
+  },
+  "services": "Services",
+  "@services": {
+    "description": "Services bottom bar tab label"
+  },
+  "@account": {
+    "description": "Account bottom bar tab label"
+  }
 }

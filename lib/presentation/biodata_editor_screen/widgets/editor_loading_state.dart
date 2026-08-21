@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/presentation/biodata_editor_screen/widgets/biodata_ui_helpers.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Loading and error state widgets for the Biodata Editor screen.
 /// Extracted from BiodataEditorScreen._buildLoadingState and _buildErrorState.
@@ -33,7 +34,7 @@ class EditorLoadingStateWidget extends StatelessWidget {
           message,
           style: BiodataTheme.bodyStyle.copyWith(
             fontSize: AppTypography.bodyLarge,
-            color: BiodataTheme.deepCharcoal.withValues(alpha: 0.8),
+            color: BiodataTheme.deepCharcoal.withValues(alpha: AppColors.opacity80),
           ),
         ),
       ],

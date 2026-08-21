@@ -8,6 +8,7 @@ import 'package:banjarabio/services/ads/ad_service.dart';
 import 'package:banjarabio/core/session_manager.dart';
 import 'package:banjarabio/core/providers/home_tab_provider.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class BannerAdWidget extends ConsumerStatefulWidget {
   const BannerAdWidget({super.key});
@@ -124,7 +125,7 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
+        border: Border.all(color: Colors.grey.withValues(alpha: AppColors.opacity20)),
       ),
       child: Column(
         children: [
@@ -133,14 +134,14 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
             padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
             child: Row(
               children: [
-                Icon(Icons.public, color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5), size: 16),
+                Icon(Icons.public, color: Theme.of(context).colorScheme.primary.withValues(alpha: AppColors.opacity50), size: 16),
                 const SizedBox(width: 6),
                 Text(
                   'Sponsored',
                   style: TextStyle(
                     fontSize: AppTypography.bodyMedium,
                     fontWeight: AppTypography.bold,
-                    color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
+                    color: Theme.of(context).colorScheme.primary.withValues(alpha: AppColors.opacity50),
                     letterSpacing: 0.5,
                   ),
                 ),
@@ -162,7 +163,7 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
                   '. . .',
                   style: TextStyle(
                     fontSize: AppTypography.headingLarge,
-                    color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+                    color: Theme.of(context).colorScheme.primary.withValues(alpha: AppColors.opacity30),
                     fontWeight: AppTypography.bold,
                   ),
                 ),
@@ -232,7 +233,7 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3)),
+          border: Border.all(color: Theme.of(context).colorScheme.primary.withValues(alpha: AppColors.opacity30)),
         ),
         child: Container(
           height: 35.h,
@@ -263,7 +264,7 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: AppTypography.bodyLarge,
-                  color: Theme.of(context).colorScheme.onPrimaryContainer.withValues(alpha: 0.8),
+                  color: Theme.of(context).colorScheme.onPrimaryContainer.withValues(alpha: AppColors.opacity80),
                 ),
               ),
             ),
@@ -282,10 +283,10 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
+        border: Border.all(color: Colors.grey.withValues(alpha: AppColors.opacity20)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withValues(alpha: AppColors.opacity5),
             blurRadius: 10,
             spreadRadius: 1,
             offset: const Offset(0, 4),
@@ -332,7 +333,7 @@ class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> with AutomaticK
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
+              color: Theme.of(context).colorScheme.primary.withValues(alpha: AppColors.opacity5),
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(16),
                 bottomRight: Radius.circular(16),

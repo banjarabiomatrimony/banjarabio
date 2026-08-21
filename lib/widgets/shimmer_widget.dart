@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// A customizable Shimmer widget for high-fidelity loading states
 class ShimmerWidget extends StatelessWidget {
@@ -63,7 +64,7 @@ class ProfileCardSkeleton extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: isDark
-              ? Colors.white.withValues(alpha: 0.08)
+              ? Colors.white.withValues(alpha: AppColors.opacity8)
               : Colors.black.withValues(alpha: 0.06),
         ),
         boxShadow: [
@@ -122,8 +123,8 @@ class ProfileCardSkeleton extends StatelessWidget {
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.transparent,
-                      Colors.black.withValues(alpha: 0.6),
-                      Colors.black.withValues(alpha: 0.9),
+                      Colors.black.withValues(alpha: AppColors.opacity60),
+                      Colors.black.withValues(alpha: AppColors.opacity90),
                     ],
                   ),
                 ),

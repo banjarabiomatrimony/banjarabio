@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class FeatureComparisonSheet extends StatelessWidget {
   const FeatureComparisonSheet({super.key});
@@ -44,7 +45,7 @@ class FeatureComparisonSheet extends StatelessWidget {
             borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.15),
+                color: Colors.black.withValues(alpha: AppColors.opacity15),
                 blurRadius: 20,
                 spreadRadius: 2,
               ),
@@ -59,7 +60,7 @@ class FeatureComparisonSheet extends StatelessWidget {
                   height: 4,
                   margin: EdgeInsets.symmetric(vertical: 1.5.h),
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
+                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity30),
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
@@ -88,7 +89,7 @@ class FeatureComparisonSheet extends StatelessWidget {
               // Sticky horizontal headers for plan columns
               Container(
                 padding: EdgeInsets.symmetric(vertical: 1.5.h),
-                color: theme.cardColor.withValues(alpha: 0.9),
+                color: theme.cardColor.withValues(alpha: AppColors.opacity90),
                 child: Row(
                   children: [
                     Expanded(
@@ -170,9 +171,9 @@ class FeatureComparisonSheet extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
         decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.08),
+          color: color.withValues(alpha: AppColors.opacity8),
           borderRadius: BorderRadius.circular(4),
-          border: Border.all(color: color.withValues(alpha: 0.2)),
+          border: Border.all(color: color.withValues(alpha: AppColors.opacity20)),
         ),
         child: Text(
           text,
@@ -192,7 +193,7 @@ class FeatureComparisonSheet extends StatelessWidget {
       return Icon(Icons.check_circle_rounded, color: theme.colorScheme.primary, size: 16);
     }
     if (val == 'No') {
-      return Icon(Icons.cancel_outlined, color: theme.colorScheme.outline.withValues(alpha: 0.3), size: 14);
+      return Icon(Icons.cancel_outlined, color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity30), size: 14);
     }
     return Text(
       val,

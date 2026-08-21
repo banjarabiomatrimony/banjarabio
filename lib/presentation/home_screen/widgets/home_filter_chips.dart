@@ -49,7 +49,7 @@ class HomeFilterChips extends StatelessWidget {
                   gradient: LinearGradient(
                     colors: [
                       theme.colorScheme.primary,
-                      theme.colorScheme.primary.withValues(alpha: 0.85),
+                      theme.colorScheme.primary.withValues(alpha: AppColors.opacity85),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -57,7 +57,7 @@ class HomeFilterChips extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.25),
+                      color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity25),
                       blurRadius: 6,
                       offset: const Offset(0, 2),
                     ),
@@ -88,7 +88,7 @@ class HomeFilterChips extends StatelessWidget {
                   color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.45),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
+                    color: theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity50),
                     width: 1.1,
                   ),
                 ),
@@ -99,7 +99,7 @@ class HomeFilterChips extends StatelessWidget {
                     Text(
                       '${entry.key}: ',
                       style: theme.textTheme.labelSmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity70),
                         fontWeight: AppTypography.semiBold,
                         fontSize: AppTypography.labelSmall,
                       ),
@@ -145,8 +145,8 @@ class HomeFilterChips extends StatelessWidget {
                 margin: EdgeInsets.only(right: 2.w),
                 padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 0.6.h),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.errorContainer.withValues(alpha: 0.2),
-                  border: Border.all(color: theme.colorScheme.error.withValues(alpha: 0.4), width: 1.1),
+                  color: theme.colorScheme.errorContainer.withValues(alpha: AppColors.opacity20),
+                  border: Border.all(color: theme.colorScheme.error.withValues(alpha: AppColors.opacity40), width: 1.1),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(

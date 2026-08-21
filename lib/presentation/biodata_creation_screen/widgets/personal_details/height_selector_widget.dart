@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/widgets/custom_icon_widget.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Height selector widget with dual sliders for feet and inches.
 /// Extracted from PersonalDetailsSection._buildHeightSelector.
@@ -72,7 +73,7 @@ class _HeightSelectorWidgetState extends State<HeightSelectorWidget> {
           decoration: BoxDecoration(
             color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.15), width: 1.5),
+            border: Border.all(color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity15), width: 1.5),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.02),
@@ -127,7 +128,7 @@ class _HeightSelectorWidgetState extends State<HeightSelectorWidget> {
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.zero,
                                   filled: true,
-                                  fillColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                                  fillColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: AppColors.opacity30),
                                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
                                 ),
                                 onChanged: (val) {
@@ -178,7 +179,7 @@ class _HeightSelectorWidgetState extends State<HeightSelectorWidget> {
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.zero,
                                   filled: true,
-                                  fillColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                                  fillColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: AppColors.opacity30),
                                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
                                 ),
                                 onChanged: (val) {

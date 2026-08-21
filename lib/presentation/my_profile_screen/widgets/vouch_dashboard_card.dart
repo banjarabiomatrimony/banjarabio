@@ -7,6 +7,7 @@ import 'package:banjarabio/theme/app_theme.dart';
 import 'package:banjarabio/widgets/glassmorphism_container.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/community_trusted_badge.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class VouchDashboardCard extends StatelessWidget {
   final ProfileModel profile;
@@ -96,8 +97,8 @@ class VouchDashboardCard extends StatelessWidget {
             child: LinearProgressIndicator(
               value: (profile.vouchCount / 5).clamp(0.0, 1.0),
               minHeight: 8,
-              backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
-              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF22C55E)),
+              backgroundColor: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
+              valueColor: const AlwaysStoppedAnimation<Color>(AppColors.green500),
             ),
           ),
           SizedBox(height: 2.h),
@@ -116,10 +117,10 @@ class VouchDashboardCard extends StatelessWidget {
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF25D366),
+                backgroundColor: AppColors.whatsapp,
                 foregroundColor: Colors.white,
                 elevation: 3,
-                shadowColor: const Color(0xFF25D366).withValues(alpha: 0.4),
+                shadowColor: AppColors.whatsapp.withValues(alpha: AppColors.opacity40),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -156,7 +157,7 @@ class VouchDashboardCard extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: AppTheme.primaryLight.withValues(alpha: 0.1),
+            color: AppTheme.primaryLight.withValues(alpha: AppColors.opacity10),
             shape: BoxShape.circle,
           ),
           child: Icon(icon, color: AppTheme.primaryLight, size: 16),

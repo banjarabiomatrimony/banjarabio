@@ -134,14 +134,14 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                                 style: TextStyle(
                                   fontSize: AppTypography.bodyMedium,
                                   fontWeight: AppTypography.black,
-                                  color: isDark ? Colors.white70 : const Color(0xFF334155),
+                                  color: isDark ? Colors.white70 : AppColors.slate700,
                                   letterSpacing: 0.3,
                                 ),
                               ),
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                                 decoration: BoxDecoration(
-                                  color: isDark ? Colors.white10 : Colors.black.withValues(alpha: 0.05),
+                                  color: isDark ? Colors.white10 : Colors.black.withValues(alpha: AppColors.opacity5),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Text(
@@ -253,7 +253,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                                   style: TextStyle(
                                     fontSize: AppTypography.bodyMedium,
                                     fontWeight: AppTypography.black,
-                                    color: isDark ? Colors.white70 : const Color(0xFF334155),
+                                    color: isDark ? Colors.white70 : AppColors.slate700,
                                     letterSpacing: 0.3,
                                   ),
                                 ),
@@ -262,7 +262,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 6.5, vertical: 1.5),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFFBE123C).withValues(alpha: isDark ? 0.2 : 0.1),
+                                      color: AppColors.crimsonRose.withValues(alpha: isDark ? 0.2 : 0.1),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
@@ -270,7 +270,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                                       style: TextStyle(
                                         fontSize: AppTypography.labelTiny,
                                         fontWeight: AppTypography.black,
-                                        color: const Color(0xFFBE123C),
+                                        color: AppColors.crimsonRose,
                                       ),
                                     ),
                                   ),
@@ -280,7 +280,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                               decoration: BoxDecoration(
-                                color: isDark ? Colors.white10 : Colors.black.withValues(alpha: 0.05),
+                                color: isDark ? Colors.white10 : Colors.black.withValues(alpha: AppColors.opacity5),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Text(
@@ -355,8 +355,8 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
   // ignore: unused_element
   Widget _buildSearchBar(ThemeData theme, bool isDark) {
     final isFocused = _searchFocusNode.hasFocus;
-    final hintColor = isDark ? const Color(0xFFF1F5F9) : const Color(0xFF1E293B);
-    final textColor = isDark ? Colors.white : const Color(0xFF0F172A);
+    final hintColor = isDark ? AppColors.slate100 : AppColors.slate800;
+    final textColor = isDark ? Colors.white : AppColors.slate900;
 
     return Padding(
       padding: EdgeInsets.fromLTRB(4.w, 1.2.h, 4.w, 0.6.h),
@@ -365,21 +365,21 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
         height: 48,
         decoration: BoxDecoration(
           color: isDark
-              ? (isFocused ? const Color(0xFF222230) : const Color(0xFF1B1B26))
-              : (isFocused ? Colors.white : const Color(0xFFF8FAFC)),
+              ? (isFocused ? AppColors.surfaceDark30 : AppColors.canvasNearBlack)
+              : (isFocused ? Colors.white : AppColors.slate50),
           borderRadius: BorderRadius.circular(22),
           border: Border.all(
             color: isFocused
-                ? const Color(0xFFBE123C)
+                ? AppColors.crimsonRose
                 : (isDark
-                    ? Colors.white.withValues(alpha: 0.15)
-                    : const Color(0xFFCBD5E1)),
+                    ? Colors.white.withValues(alpha: AppColors.opacity15)
+                    : AppColors.slate300),
             width: isFocused ? 1.5 : 1.1,
           ),
           boxShadow: [
             BoxShadow(
               color: isFocused
-                  ? const Color(0xFFBE123C).withValues(alpha: isDark ? 0.25 : 0.12)
+                  ? AppColors.crimsonRose.withValues(alpha: isDark ? 0.25 : 0.12)
                   : Colors.black.withValues(alpha: isDark ? 0.2 : 0.03),
               blurRadius: isFocused ? 12 : 6,
               offset: const Offset(0, 3),
@@ -398,14 +398,14 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                 decoration: BoxDecoration(
                   gradient: isFocused
                       ? const LinearGradient(
-                          colors: [Color(0xFFBE123C), Color(0xFF9F1239)],
+                          colors: [AppColors.crimsonRose, AppColors.wineRed],
                         )
                       : null,
                   color: isFocused
                       ? null
                       : (isDark
-                          ? Colors.white.withValues(alpha: 0.08)
-                          : const Color(0xFFBE123C).withValues(alpha: 0.1)),
+                          ? Colors.white.withValues(alpha: AppColors.opacity8)
+                          : AppColors.crimsonRose.withValues(alpha: AppColors.opacity10)),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -413,7 +413,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                   size: 17,
                   color: isFocused
                       ? Colors.white
-                      : (isDark ? const Color(0xFFFB7185) : const Color(0xFFBE123C)),
+                      : (isDark ? AppColors.rose400 : AppColors.crimsonRose),
                 ),
               ),
             ),
@@ -479,7 +479,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                       fontWeight: AppTypography.semiBold,
                       color: textColor,
                     ),
-                    cursorColor: const Color(0xFFBE123C),
+                    cursorColor: AppColors.crimsonRose,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       isDense: true,
@@ -506,14 +506,14 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       color: isDark
-                          ? Colors.white.withValues(alpha: 0.12)
-                          : const Color(0xFFE2E8F0),
+                          ? Colors.white.withValues(alpha: AppColors.opacity12)
+                          : AppColors.slate200,
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
                       Icons.close_rounded,
                       size: 14,
-                      color: isDark ? Colors.white70 : const Color(0xFF475569),
+                      color: isDark ? Colors.white70 : AppColors.slate600,
                     ),
                   ),
                 ),
@@ -524,7 +524,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                 child: Icon(
                   Icons.tune_rounded,
                   size: 16,
-                  color: isDark ? Colors.white30 : const Color(0xFF94A3B8),
+                  color: isDark ? Colors.white30 : AppColors.slate400,
                 ),
               ),
           ],
@@ -569,32 +569,32 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
         'label': 'All',
         'icon': Icons.forum_rounded,
         'count': allConversations.length,
-        'gradient': const [Color(0xFFBE123C), Color(0xFFE11D48)],
-        'accent': const Color(0xFFBE123C),
+        'gradient': const [AppColors.crimsonRose, AppColors.crimsonBlush],
+        'accent': AppColors.crimsonRose,
       },
       {
         'id': 'Unread',
         'label': 'Unread',
         'icon': Icons.mark_chat_unread_rounded,
         'count': unreadCount,
-        'gradient': const [Color(0xFFE11D48), Color(0xFFBE123C)],
-        'accent': const Color(0xFFE11D48),
+        'gradient': const [AppColors.crimsonBlush, AppColors.crimsonRose],
+        'accent': AppColors.crimsonBlush,
       },
       {
         'id': 'Matches 💍',
         'label': 'Matches 💍',
         'icon': Icons.favorite_rounded,
         'count': matchesCount,
-        'gradient': const [Color(0xFFF59E0B), Color(0xFFD97706)],
-        'accent': const Color(0xFFF59E0B),
+        'gradient': const [AppColors.categoryAstro, AppColors.categoryAstroDark],
+        'accent': AppColors.categoryAstro,
       },
       {
         'id': 'Biodata 📄',
         'label': 'Biodata 📄',
         'icon': Icons.description_rounded,
         'count': biodataCount,
-        'gradient': const [Color(0xFF10B981), Color(0xFF059669)],
-        'accent': const Color(0xFF10B981),
+        'gradient': const [AppColors.categoryLocation, AppColors.categoryLocationDark],
+        'accent': AppColors.categoryLocation,
       },
     ];
 
@@ -631,21 +631,21 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                     color: isSelected
                         ? null
                         : (isDark
-                            ? Colors.white.withValues(alpha: 0.05)
+                            ? Colors.white.withValues(alpha: AppColors.opacity5)
                             : Colors.white),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: isSelected
-                          ? accent.withValues(alpha: 0.9)
+                          ? accent.withValues(alpha: AppColors.opacity90)
                           : (isDark
-                              ? Colors.white.withValues(alpha: 0.1)
-                              : theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
+                              ? Colors.white.withValues(alpha: AppColors.opacity10)
+                              : theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity50)),
                       width: isSelected ? 1.4 : 1.1,
                     ),
                     boxShadow: [
                       if (isSelected)
                         BoxShadow(
-                          color: accent.withValues(alpha: 0.35),
+                          color: accent.withValues(alpha: AppColors.opacity35),
                           blurRadius: 10,
                           offset: const Offset(0, 3),
                         )
@@ -665,7 +665,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                         size: 13.5,
                         color: isSelected
                             ? Colors.white
-                            : (isDark ? Colors.white70 : const Color(0xFF64748B)),
+                            : (isDark ? Colors.white70 : AppColors.slate500),
                       ),
                       const SizedBox(width: 5),
                       Text(
@@ -675,7 +675,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                           fontWeight: isSelected ? AppTypography.black : AppTypography.bold,
                           color: isSelected
                               ? Colors.white
-                              : (isDark ? Colors.white : const Color(0xFF334155)),
+                              : (isDark ? Colors.white : AppColors.slate700),
                           letterSpacing: 0.1,
                         ),
                       ),
@@ -685,9 +685,9 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? Colors.white.withValues(alpha: 0.25)
+                                ? Colors.white.withValues(alpha: AppColors.opacity25)
                                 : (id == 'Unread'
-                                    ? const Color(0xFFBE123C)
+                                    ? AppColors.crimsonRose
                                     : (isDark ? Colors.white12 : Colors.black.withValues(alpha: 0.06))),
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -700,7 +700,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                                   ? Colors.white
                                   : (id == 'Unread'
                                       ? Colors.white
-                                      : (isDark ? Colors.white70 : const Color(0xFF475569))),
+                                      : (isDark ? Colors.white70 : AppColors.slate600)),
                             ),
                           ),
                         ),
@@ -745,16 +745,16 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isDark ? Colors.white.withValues(alpha: 0.05) : const Color(0xFFFFF1F2),
+                color: isDark ? Colors.white.withValues(alpha: AppColors.opacity5) : AppColors.primaryLight,
                 border: Border.all(
-                  color: const Color(0xFFBE123C).withValues(alpha: 0.2),
+                  color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity20),
                   width: 1.2,
                 ),
               ),
               child: Icon(
                 emptyIcon,
                 size: 32,
-                color: const Color(0xFFBE123C),
+                color: AppColors.crimsonRose,
               ),
             ),
             const SizedBox(height: 14),
@@ -763,7 +763,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
               style: TextStyle(
                 fontSize: AppTypography.bodyLarge,
                 fontWeight: AppTypography.black,
-                color: isDark ? Colors.white : const Color(0xFF0F172A),
+                color: isDark ? Colors.white : AppColors.slate900,
               ),
               textAlign: TextAlign.center,
             ),
@@ -772,7 +772,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
               description,
               style: TextStyle(
                 fontSize: AppTypography.labelSmall,
-                color: isDark ? Colors.white60 : const Color(0xFF64748B),
+                color: isDark ? Colors.white60 : AppColors.slate500,
                 height: 1.4,
               ),
               textAlign: TextAlign.center,
@@ -789,12 +789,12 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xFFBE123C), Color(0xFFE11D48)],
+                    colors: [AppColors.crimsonRose, AppColors.crimsonBlush],
                   ),
                   borderRadius: BorderRadius.circular(14),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFFBE123C).withValues(alpha: 0.3),
+                      color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity30),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -834,12 +834,12 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
       decoration: BoxDecoration(
         color: isDark
             ? Colors.white.withValues(alpha: 0.04)
-            : const Color(0xFFFFF1F2).withValues(alpha: 0.5),
+            : AppColors.primaryLight.withValues(alpha: AppColors.opacity50),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: isDark
-              ? Colors.white.withValues(alpha: 0.08)
-              : const Color(0xFFBE123C).withValues(alpha: 0.12),
+              ? Colors.white.withValues(alpha: AppColors.opacity8)
+              : AppColors.crimsonRose.withValues(alpha: AppColors.opacity12),
         ),
       ),
       child: Column(
@@ -852,7 +852,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                 const Icon(
                   Icons.auto_awesome_rounded,
                   size: 13,
-                  color: Color(0xFFBE123C),
+                  color: AppColors.crimsonRose,
                 ),
                 const SizedBox(width: 5),
                 Text(
@@ -860,7 +860,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                   style: TextStyle(
                     fontSize: AppTypography.labelSmall,
                     fontWeight: AppTypography.extraBold,
-                    color: isDark ? const Color(0xFFFB7185) : const Color(0xFF9F1239),
+                    color: isDark ? AppColors.rose400 : AppColors.wineRed,
                     letterSpacing: 0.2,
                   ),
                 ),
@@ -899,13 +899,13 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               gradient: const LinearGradient(
-                                colors: [Color(0xFFBE123C), Color(0xFFF59E0B)],
+                                colors: [AppColors.crimsonRose, AppColors.categoryAstro],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color(0xFFBE123C).withValues(alpha: 0.3),
+                                  color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity30),
                                   blurRadius: 6,
                                   offset: const Offset(0, 2),
                                 ),
@@ -914,7 +914,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                             child: Container(
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: isDark ? const Color(0xFF13131A) : Colors.white,
+                                color: isDark ? AppColors.canvasCharcoal : Colors.white,
                               ),
                               padding: const EdgeInsets.all(1.5),
                               child: ClipOval(
@@ -932,10 +932,10 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                               width: 11,
                               height: 11,
                               decoration: BoxDecoration(
-                                color: const Color(0xFF10B981),
+                                color: AppColors.categoryLocation,
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: isDark ? const Color(0xFF171720) : Colors.white,
+                                  color: isDark ? AppColors.canvasDeepDark : Colors.white,
                                   width: 2,
                                 ),
                               ),
@@ -951,7 +951,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                           style: TextStyle(
                             fontSize: AppTypography.labelTiny,
                             fontWeight: AppTypography.bold,
-                            color: isDark ? Colors.white : const Color(0xFF1E293B),
+                            color: isDark ? Colors.white : AppColors.slate800,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -988,20 +988,20 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
 
     // Determine Matrimonial Context Tag
     String? matrimonialTag;
-    Color tagColor = const Color(0xFFBE123C);
+    Color tagColor = AppColors.crimsonRose;
     IconData tagIcon = Icons.favorite_rounded;
 
     if (lastMsg.contains('biodata') || lastMsg.contains('pdf')) {
       matrimonialTag = 'Biodata Exchanged 📄';
-      tagColor = const Color(0xFF10B981);
+      tagColor = AppColors.categoryLocation;
       tagIcon = Icons.description_rounded;
     } else if (lastMsg.contains('kundali') || lastMsg.contains('horoscope') || lastMsg.contains('match')) {
       matrimonialTag = 'Kundali Match ✨';
-      tagColor = const Color(0xFFF59E0B);
+      tagColor = AppColors.categoryAstro;
       tagIcon = Icons.auto_awesome_rounded;
     } else if (hasUnread) {
       matrimonialTag = 'New Message';
-      tagColor = const Color(0xFFBE123C);
+      tagColor = AppColors.crimsonRose;
       tagIcon = Icons.mark_chat_unread_rounded;
     }
 
@@ -1011,7 +1011,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.only(left: 20),
         decoration: BoxDecoration(
-          color: isPinned ? const Color(0xFF64748B) : const Color(0xFFF59E0B),
+          color: isPinned ? AppColors.slate500 : AppColors.categoryAstro,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
@@ -1037,7 +1037,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
         decoration: BoxDecoration(
-          color: const Color(0xFFBE123C),
+          color: AppColors.crimsonRose,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
@@ -1094,17 +1094,17 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
           padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 12),
           decoration: BoxDecoration(
             color: isDark
-                ? (hasUnread ? const Color(0xFF241B26) : const Color(0xFF191924))
-                : (hasUnread ? const Color(0xFFFFF1F2) : Colors.white),
+                ? (hasUnread ? AppColors.surfaceDark28 : AppColors.canvasNearBlack)
+                : (hasUnread ? AppColors.primaryLight : Colors.white),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: isPinned
-                  ? const Color(0xFFF59E0B).withValues(alpha: 0.6)
+                  ? AppColors.categoryAstro.withValues(alpha: AppColors.opacity60)
                   : (hasUnread
-                      ? const Color(0xFFBE123C).withValues(alpha: 0.4)
+                      ? AppColors.crimsonRose.withValues(alpha: AppColors.opacity40)
                       : (isDark
-                          ? Colors.white.withValues(alpha: 0.08)
-                          : const Color(0xFFE2E8F0))),
+                          ? Colors.white.withValues(alpha: AppColors.opacity8)
+                          : AppColors.slate200)),
               width: (isPinned || hasUnread) ? 1.4 : 1.1,
             ),
             boxShadow: [
@@ -1112,7 +1112,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                 color: isDark
                     ? Colors.black.withValues(alpha: 0.28)
                     : (hasUnread
-                        ? const Color(0xFFBE123C).withValues(alpha: 0.08)
+                        ? AppColors.crimsonRose.withValues(alpha: AppColors.opacity8)
                         : Colors.black.withValues(alpha: 0.03)),
                 blurRadius: 10,
                 offset: const Offset(0, 3),
@@ -1133,8 +1133,8 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                       gradient: (hasUnread || isPinned)
                           ? LinearGradient(
                               colors: isPinned
-                                  ? [const Color(0xFFF59E0B), const Color(0xFFD97706)]
-                                  : [const Color(0xFFBE123C), const Color(0xFFF59E0B)],
+                                  ? [AppColors.categoryAstro, AppColors.categoryAstroDark]
+                                  : [AppColors.crimsonRose, AppColors.categoryAstro],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             )
@@ -1161,10 +1161,10 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                       width: 10,
                       height: 10,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF10B981),
+                        color: AppColors.categoryLocation,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: isDark ? const Color(0xFF191924) : Colors.white,
+                          color: isDark ? AppColors.canvasNearBlack : Colors.white,
                           width: 1.8,
                         ),
                       ),
@@ -1178,11 +1178,11 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                         padding: const EdgeInsets.all(2.5),
                         decoration: BoxDecoration(
                           color: isPinned
-                              ? const Color(0xFFF59E0B)
+                              ? AppColors.categoryAstro
                               : tagColor,
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: isDark ? const Color(0xFF191924) : Colors.white,
+                            color: isDark ? AppColors.canvasNearBlack : Colors.white,
                             width: 1.5,
                           ),
                         ),
@@ -1213,7 +1213,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                                   style: TextStyle(
                                     fontWeight: (hasUnread || isPinned) ? AppTypography.black : AppTypography.bold,
                                     fontSize: AppTypography.bodyMedium,
-                                    color: isDark ? Colors.white : const Color(0xFF0F172A),
+                                    color: isDark ? Colors.white : AppColors.slate900,
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -1223,14 +1223,14 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                               const Icon(
                                 Icons.verified_rounded,
                                 size: 13.5,
-                                color: Color(0xFF0284C7),
+                                color: AppColors.sapphireBlue,
                               ),
                               if (isPinned) ...[
                                 const SizedBox(width: 4),
                                 const Icon(
                                   Icons.push_pin_rounded,
                                   size: 13,
-                                  color: Color(0xFFF59E0B),
+                                  color: AppColors.categoryAstro,
                                 ),
                               ],
                             ],
@@ -1242,8 +1242,8 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                             fontSize: AppTypography.labelTiny,
                             fontWeight: hasUnread ? AppTypography.extraBold : AppTypography.semiBold,
                             color: hasUnread
-                                ? const Color(0xFFBE123C)
-                                : (isDark ? Colors.white38 : const Color(0xFF94A3B8)),
+                                ? AppColors.crimsonRose
+                                : (isDark ? Colors.white38 : AppColors.slate400),
                           ),
                         ),
                       ],
@@ -1258,8 +1258,8 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               color: hasUnread
-                                  ? (isDark ? Colors.white : const Color(0xFF1E293B))
-                                  : (isDark ? Colors.white60 : const Color(0xFF64748B)),
+                                  ? (isDark ? Colors.white : AppColors.slate800)
+                                  : (isDark ? Colors.white60 : AppColors.slate500),
                               fontWeight: hasUnread ? AppTypography.bold : AppTypography.medium,
                               fontSize: AppTypography.labelSmall,
                             ),
@@ -1271,12 +1271,12 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                             padding: const EdgeInsets.symmetric(horizontal: 7.5, vertical: 2.5),
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
-                                colors: [Color(0xFFBE123C), Color(0xFF9F1239)],
+                                colors: [AppColors.crimsonRose, AppColors.wineRed],
                               ),
                               borderRadius: BorderRadius.circular(10),
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color(0xFFBE123C).withValues(alpha: 0.4),
+                                  color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity40),
                                   blurRadius: 6,
                                   offset: const Offset(0, 2),
                                 ),
@@ -1302,7 +1302,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                           color: tagColor.withValues(alpha: isDark ? 0.16 : 0.08),
                           borderRadius: BorderRadius.circular(6),
                           border: Border.all(
-                            color: tagColor.withValues(alpha: 0.25),
+                            color: tagColor.withValues(alpha: AppColors.opacity25),
                             width: 0.8,
                           ),
                         ),
@@ -1348,23 +1348,23 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
             decoration: BoxDecoration(
               gradient: isDark
                   ? const LinearGradient(
-                      colors: [Color(0xFF2C151B), Color(0xFF1E1015)],
+                      colors: [AppColors.bloodRedBg, AppColors.crimsonBlack],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     )
                   : const LinearGradient(
-                      colors: [Color(0xFFFFF1F2), Color(0xFFFFE4E6)],
+                      colors: [AppColors.primaryLight, AppColors.rose100],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
               borderRadius: BorderRadius.circular(22),
               border: Border.all(
-                color: const Color(0xFFBE123C).withValues(alpha: isDark ? 0.35 : 0.25),
+                color: AppColors.crimsonRose.withValues(alpha: isDark ? 0.35 : 0.25),
                 width: 1.2,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFBE123C).withValues(alpha: 0.08),
+                  color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity8),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -1379,7 +1379,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                       padding: const EdgeInsets.all(6),
                       decoration: const BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [Color(0xFFF59E0B), Color(0xFFD97706)],
+                          colors: [AppColors.categoryAstro, AppColors.categoryAstroDark],
                         ),
                         shape: BoxShape.circle,
                       ),
@@ -1399,7 +1399,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                             style: TextStyle(
                               fontSize: AppTypography.bodyMedium,
                               fontWeight: AppTypography.black,
-                              color: isDark ? Colors.white : const Color(0xFF0F172A),
+                              color: isDark ? Colors.white : AppColors.slate900,
                             ),
                           ),
                           const SizedBox(height: 2),
@@ -1407,7 +1407,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                             'You both expressed mutual interest. Say hello to start the family conversation!',
                             style: TextStyle(
                               fontSize: AppTypography.labelSmall,
-                              color: isDark ? Colors.white60 : const Color(0xFF64748B),
+                              color: isDark ? Colors.white60 : AppColors.slate500,
                             ),
                           ),
                         ],
@@ -1429,10 +1429,10 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                         width: 125,
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: isDark ? const Color(0xFF1E1E28) : Colors.white,
+                          color: isDark ? AppColors.surfaceDark28 : Colors.white,
                           borderRadius: BorderRadius.circular(18),
                           border: Border.all(
-                            color: const Color(0xFFF59E0B).withValues(alpha: 0.35),
+                            color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity35),
                           ),
                           boxShadow: [
                             BoxShadow(
@@ -1452,7 +1452,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 gradient: LinearGradient(
-                                  colors: [Color(0xFFF59E0B), Color(0xFFBE123C)],
+                                  colors: [AppColors.categoryAstro, AppColors.crimsonRose],
                                 ),
                               ),
                               child: ClipOval(
@@ -1468,7 +1468,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                               style: TextStyle(
                                 fontSize: AppTypography.labelSmall,
                                 fontWeight: AppTypography.extraBold,
-                                color: isDark ? Colors.white : const Color(0xFF0F172A),
+                                color: isDark ? Colors.white : AppColors.slate900,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -1498,7 +1498,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                                 decoration: BoxDecoration(
                                   gradient: const LinearGradient(
-                                    colors: [Color(0xFFBE123C), Color(0xFF9F1239)],
+                                    colors: [AppColors.crimsonRose, AppColors.wineRed],
                                   ),
                                   borderRadius: BorderRadius.circular(10),
                                 ),

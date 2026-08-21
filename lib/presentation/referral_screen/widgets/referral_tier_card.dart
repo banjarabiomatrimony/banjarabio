@@ -5,6 +5,7 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/theme/app_category_theme.dart';
 import 'package:banjarabio/widgets/tactile/tactile_category_card.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class ReferralTierItem {
   final int requiredReferrals;
@@ -35,7 +36,7 @@ class ReferralTierCard extends StatelessWidget {
       title: 'Bronze',
       reward: '1 Month Free',
       emoji: '🥉',
-      color: Color(0xFFCD7F32),
+      color: AppColors.bronze,
     ),
     ReferralTierItem(
       requiredReferrals: 5,
@@ -43,7 +44,7 @@ class ReferralTierCard extends StatelessWidget {
       title: 'Silver',
       reward: '2 Months Free',
       emoji: '🥈',
-      color: Color(0xFF78909C),
+      color: AppColors.blueGray500,
     ),
     ReferralTierItem(
       requiredReferrals: 10,
@@ -51,7 +52,7 @@ class ReferralTierCard extends StatelessWidget {
       title: 'Gold',
       reward: '6 Months Free',
       emoji: '🥇',
-      color: Color(0xFFD4AF37),
+      color: AppColors.gold,
     ),
     ReferralTierItem(
       requiredReferrals: 25,
@@ -59,7 +60,7 @@ class ReferralTierCard extends StatelessWidget {
       title: 'Diamond',
       reward: '1 Year VIP',
       emoji: '💎',
-      color: Color(0xFF00ACC1),
+      color: AppColors.categoryVerification,
     ),
   ];
 
@@ -132,7 +133,7 @@ class ReferralTierCard extends StatelessWidget {
                 color: nextTier.color.withValues(alpha: isDark ? 0.18 : 0.12),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: nextTier.color.withValues(alpha: 0.4),
+                  color: nextTier.color.withValues(alpha: AppColors.opacity40),
                 ),
               ),
               child: Row(
@@ -179,20 +180,20 @@ class ReferralTierCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: isUnlocked
-                              ? tier.color.withValues(alpha: 0.2)
+                              ? tier.color.withValues(alpha: AppColors.opacity20)
                               : (isDark
-                                  ? Colors.white.withValues(alpha: 0.05)
-                                  : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5)),
+                                  ? Colors.white.withValues(alpha: AppColors.opacity5)
+                                  : theme.colorScheme.surfaceContainerHighest.withValues(alpha: AppColors.opacity50)),
                           border: Border.all(
                             color: isUnlocked
                                 ? tier.color
-                                : theme.colorScheme.outlineVariant.withValues(alpha: 0.3),
+                                : theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity30),
                             width: isUnlocked ? 2.2 : 1,
                           ),
                           boxShadow: isUnlocked
                               ? [
                                   BoxShadow(
-                                    color: tier.color.withValues(alpha: 0.3),
+                                    color: tier.color.withValues(alpha: AppColors.opacity30),
                                     blurRadius: 8,
                                     offset: const Offset(0, 2),
                                   ),
@@ -216,7 +217,7 @@ class ReferralTierCard extends StatelessWidget {
                                 child: Container(
                                   padding: const EdgeInsets.all(2),
                                   decoration: const BoxDecoration(
-                                    color: Color(0xFF10B981),
+                                    color: AppColors.categoryLocation,
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
@@ -249,8 +250,8 @@ class ReferralTierCard extends StatelessWidget {
                           fontSize: AppTypography.labelTiny,
                           fontWeight: AppTypography.bold,
                           color: isUnlocked
-                              ? const Color(0xFF059669)
-                              : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                              ? AppColors.categoryLocationDark
+                              : theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity70),
                         ),
                       ),
                     ],

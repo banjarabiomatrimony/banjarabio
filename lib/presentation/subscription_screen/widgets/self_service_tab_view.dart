@@ -11,6 +11,7 @@ import 'package:banjarabio/presentation/home_screen/widgets/offer_banner_widget.
 import 'package:banjarabio/presentation/subscription_screen/widgets/plan_card.dart';
 import 'package:banjarabio/presentation/subscription_screen/widgets/feature_comparison_sheet.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class SelfServiceTabView extends StatelessWidget {
   final SubscriptionModel? currentSubscription;
@@ -151,11 +152,11 @@ class SelfServiceTabView extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.4.h),
               decoration: BoxDecoration(
                 color: isDark
-                    ? theme.colorScheme.primary.withValues(alpha: 0.1)
+                    ? theme.colorScheme.primary.withValues(alpha: AppColors.opacity10)
                     : theme.colorScheme.primary.withValues(alpha: 0.06),
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.35),
+                  color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity35),
                   width: 1.2,
                 ),
               ),
@@ -213,7 +214,7 @@ class SelfServiceTabView extends StatelessWidget {
             style: TextStyle(
               fontSize: AppTypography.labelTiny,
               fontWeight: AppTypography.medium,
-              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity60),
             ),
           ),
         ],
@@ -230,10 +231,10 @@ class SelfServiceTabView extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 1.8.h),
       padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.2.h),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primaryContainer.withValues(alpha: 0.8),
+        color: theme.colorScheme.primaryContainer.withValues(alpha: AppColors.opacity80),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: theme.colorScheme.primary.withValues(alpha: 0.35),
+          color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity35),
         ),
       ),
       child: Row(
@@ -258,7 +259,7 @@ class SelfServiceTabView extends StatelessWidget {
                   '$daysLeft days remaining in your free trial',
                   style: TextStyle(
                     color: theme.colorScheme.onPrimaryContainer
-                        .withValues(alpha: 0.8),
+                        .withValues(alpha: AppColors.opacity80),
                     fontSize: AppTypography.labelSmall,
                   ),
                 ),
@@ -275,10 +276,10 @@ class SelfServiceTabView extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 1.8.h),
       padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.2.h),
       decoration: BoxDecoration(
-        color: theme.colorScheme.errorContainer.withValues(alpha: 0.8),
+        color: theme.colorScheme.errorContainer.withValues(alpha: AppColors.opacity80),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: theme.colorScheme.error.withValues(alpha: 0.35),
+          color: theme.colorScheme.error.withValues(alpha: AppColors.opacity35),
         ),
       ),
       child: Row(

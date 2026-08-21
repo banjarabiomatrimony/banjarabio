@@ -80,20 +80,20 @@ class SharedProfileCardWidget extends StatelessWidget {
     final Color cardBorderColor;
     final Color cardShadowColor;
     if (isSelected) {
-      cardBorderColor = const Color(0xFFBE123C);
-      cardShadowColor = const Color(0xFFBE123C).withValues(alpha: isDark ? 0.35 : 0.2);
+      cardBorderColor = AppColors.crimsonRose;
+      cardShadowColor = AppColors.crimsonRose.withValues(alpha: isDark ? 0.35 : 0.2);
     } else if (isMatched) {
       // 💍 Matched Tab: Sacred 24K Gold
-      cardBorderColor = const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.55 : 0.45);
-      cardShadowColor = const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.22 : 0.09);
+      cardBorderColor = AppColors.categoryAstro.withValues(alpha: isDark ? 0.55 : 0.45);
+      cardShadowColor = AppColors.categoryAstro.withValues(alpha: isDark ? 0.22 : 0.09);
     } else if (isSharedByMe) {
       // 📤 Sent Tab: Royal Amethyst Purple
-      cardBorderColor = const Color(0xFF7C3AED).withValues(alpha: isDark ? 0.45 : 0.35);
-      cardShadowColor = const Color(0xFF7C3AED).withValues(alpha: isDark ? 0.18 : 0.07);
+      cardBorderColor = AppColors.categoryFamilyDark.withValues(alpha: isDark ? 0.45 : 0.35);
+      cardShadowColor = AppColors.categoryFamilyDark.withValues(alpha: isDark ? 0.18 : 0.07);
     } else {
       // 📥 Received Tab: Trust Sapphire Blue
-      cardBorderColor = const Color(0xFF2563EB).withValues(alpha: isDark ? 0.45 : 0.35);
-      cardShadowColor = const Color(0xFF2563EB).withValues(alpha: isDark ? 0.18 : 0.07);
+      cardBorderColor = AppColors.categoryCareerDark.withValues(alpha: isDark ? 0.45 : 0.35);
+      cardShadowColor = AppColors.categoryCareerDark.withValues(alpha: isDark ? 0.18 : 0.07);
     }
 
     return Semantics(
@@ -106,7 +106,7 @@ class SharedProfileCardWidget extends StatelessWidget {
         child: Container(
             margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF1B1B24) : Colors.white,
+              color: isDark ? AppColors.canvasNearBlack : Colors.white,
               borderRadius: BorderRadius.circular(22),
               border: Border.all(
                 color: cardBorderColor,
@@ -139,7 +139,7 @@ class SharedProfileCardWidget extends StatelessWidget {
                                 ? Icons.check_circle_rounded
                                 : Icons.radio_button_unchecked_rounded,
                             color: isSelected
-                                ? const Color(0xFFBE123C)
+                                ? AppColors.crimsonRose
                                 : (isDark ? Colors.white38 : Colors.black38),
                             size: 20,
                           ),
@@ -149,8 +149,8 @@ class SharedProfileCardWidget extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: isMatched
-                              ? const Color(0xFFBE123C).withValues(alpha: 0.15)
-                              : (isDark ? Colors.white10 : const Color(0xFFEFF6FF)),
+                              ? AppColors.crimsonRose.withValues(alpha: AppColors.opacity15)
+                              : (isDark ? Colors.white10 : AppColors.infoLight),
                         ),
                         child: Icon(
                           isMatched
@@ -160,8 +160,8 @@ class SharedProfileCardWidget extends StatelessWidget {
                                   : Icons.call_received_rounded),
                           size: 13,
                           color: isMatched
-                              ? const Color(0xFFBE123C)
-                              : (isDark ? const Color(0xFF60A5FA) : const Color(0xFF2563EB)),
+                              ? AppColors.crimsonRose
+                              : (isDark ? AppColors.blue400 : AppColors.categoryCareerDark),
                         ),
                       ),
                       SizedBox(width: 2.5.w),
@@ -179,8 +179,8 @@ class SharedProfileCardWidget extends StatelessWidget {
                                 fontWeight: AppTypography.extraBold,
                                 fontSize: AppTypography.labelSmall,
                                 color: isMatched
-                                    ? const Color(0xFFBE123C)
-                                    : (isDark ? Colors.white : const Color(0xFF0F172A)),
+                                    ? AppColors.crimsonRose
+                                    : (isDark ? Colors.white : AppColors.slate900),
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -190,7 +190,7 @@ class SharedProfileCardWidget extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: AppTypography.labelTiny,
                                 fontWeight: AppTypography.medium,
-                                color: isDark ? Colors.white54 : const Color(0xFF64748B),
+                                color: isDark ? Colors.white54 : AppColors.slate500,
                               ),
                             ),
                           ],
@@ -199,7 +199,7 @@ class SharedProfileCardWidget extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                         decoration: BoxDecoration(
-                          color: isDark ? Colors.white.withValues(alpha: 0.06) : const Color(0xFFF1F5F9),
+                          color: isDark ? Colors.white.withValues(alpha: 0.06) : AppColors.slate100,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
@@ -207,7 +207,7 @@ class SharedProfileCardWidget extends StatelessWidget {
                           style: TextStyle(
                             fontSize: AppTypography.labelTiny,
                             fontWeight: AppTypography.bold,
-                            color: isDark ? Colors.white54 : const Color(0xFF64748B),
+                            color: isDark ? Colors.white54 : AppColors.slate500,
                           ),
                         ),
                       ),
@@ -253,13 +253,13 @@ class SharedProfileCardWidget extends StatelessWidget {
                           color: Colors.black.withValues(alpha: 0.55),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.25),
+                            color: Colors.white.withValues(alpha: AppColors.opacity25),
                           ),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.verified_rounded, color: Color(0xFF3B82F6), size: 12),
+                            const Icon(Icons.verified_rounded, color: AppColors.categoryCareer, size: 12),
                             const SizedBox(width: 3.5),
                             Text(
                               'Verified',
@@ -281,8 +281,8 @@ class SharedProfileCardWidget extends StatelessWidget {
                         child: _buildBadge(
                           l10n?.matchedBadge ?? 'MATCHED',
                           [
-                            const Color(0xFFBE123C),
-                            const Color(0xFFE11D48),
+                            AppColors.crimsonRose,
+                            AppColors.crimsonBlush,
                           ],
                           Icons.favorite_rounded,
                         ),
@@ -295,8 +295,8 @@ class SharedProfileCardWidget extends StatelessWidget {
                         child: _buildBadge(
                           l10n?.premiumBadge ?? 'PREMIUM',
                           [
-                            const Color(0xFFF59E0B),
-                            const Color(0xFFD97706),
+                            AppColors.categoryAstro,
+                            AppColors.categoryAstroDark,
                           ],
                           Icons.star_rounded,
                         ),
@@ -372,7 +372,7 @@ class SharedProfileCardWidget extends StatelessWidget {
                             Icon(
                               Icons.visibility_outlined,
                               size: 13,
-                              color: isDark ? Colors.white38 : const Color(0xFF64748B),
+                              color: isDark ? Colors.white38 : AppColors.slate500,
                             ),
                             const SizedBox(width: 4),
                             Text(
@@ -380,7 +380,7 @@ class SharedProfileCardWidget extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: AppTypography.labelTiny,
                                 fontWeight: AppTypography.semiBold,
-                                color: isDark ? Colors.white54 : const Color(0xFF64748B),
+                                color: isDark ? Colors.white54 : AppColors.slate500,
                               ),
                             ),
                           ],
@@ -394,10 +394,10 @@ class SharedProfileCardWidget extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.h),
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF171720) : const Color(0xFFF8FAFC),
+                    color: isDark ? AppColors.canvasDeepDark : AppColors.slate50,
                     border: Border(
                       top: BorderSide(
-                        color: isDark ? Colors.white.withValues(alpha: 0.06) : const Color(0xFFF1F5F9),
+                        color: isDark ? Colors.white.withValues(alpha: 0.06) : AppColors.slate100,
                       ),
                     ),
                   ),
@@ -416,8 +416,8 @@ class SharedProfileCardWidget extends StatelessWidget {
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
                                 colors: [
-                                  Color(0xFFBE123C),
-                                  Color(0xFF9F1239),
+                                  AppColors.crimsonRose,
+                                  AppColors.wineRed,
                                 ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
@@ -425,7 +425,7 @@ class SharedProfileCardWidget extends StatelessWidget {
                               borderRadius: BorderRadius.circular(12),
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color(0xFFBE123C).withValues(alpha: 0.35),
+                                  color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity35),
                                   blurRadius: 6,
                                   offset: const Offset(0, 2),
                                 ),
@@ -464,15 +464,15 @@ class SharedProfileCardWidget extends StatelessWidget {
                           width: 38,
                           height: 38,
                           decoration: BoxDecoration(
-                            color: isDark ? const Color(0xFF252532) : Colors.white,
+                            color: isDark ? AppColors.surfaceDark30 : Colors.white,
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
+                              color: isDark ? Colors.white10 : AppColors.slate200,
                             ),
                           ),
                           child: Icon(
                             Icons.share_rounded,
-                            color: isDark ? const Color(0xFF93C5FD) : const Color(0xFF2563EB),
+                            color: isDark ? AppColors.blue300 : AppColors.categoryCareerDark,
                             size: 16,
                           ),
                         ),
@@ -490,15 +490,15 @@ class SharedProfileCardWidget extends StatelessWidget {
                           width: 38,
                           height: 38,
                           decoration: BoxDecoration(
-                            color: isDark ? const Color(0xFF2A1C1F) : const Color(0xFFFFF1F2),
+                            color: isDark ? AppColors.surfaceDark : AppColors.primaryLight,
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: const Color(0xFFBE123C).withValues(alpha: 0.2),
+                              color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity20),
                             ),
                           ),
                           child: const Icon(
                             Icons.delete_outline_rounded,
-                            color: Color(0xFFBE123C),
+                            color: AppColors.crimsonRose,
                             size: 17,
                           ),
                         ),
@@ -522,7 +522,7 @@ class SharedProfileCardWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: colors.first.withValues(alpha: 0.4),
+            color: colors.first.withValues(alpha: AppColors.opacity40),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -551,10 +551,10 @@ class SharedProfileCardWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF242432) : const Color(0xFFF1F5F9),
+        color: isDark ? AppColors.surfaceDark30 : AppColors.slate100,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: isDark ? Colors.white.withValues(alpha: 0.05) : const Color(0xFFE2E8F0),
+          color: isDark ? Colors.white.withValues(alpha: AppColors.opacity5) : AppColors.slate200,
         ),
       ),
       child: Row(
@@ -563,7 +563,7 @@ class SharedProfileCardWidget extends StatelessWidget {
           Icon(
             icon,
             size: 12,
-            color: isDark ? const Color(0xFFF43F5E) : const Color(0xFFBE123C),
+            color: isDark ? AppColors.coralRed : AppColors.crimsonRose,
           ),
           const SizedBox(width: 4),
           Text(
@@ -571,7 +571,7 @@ class SharedProfileCardWidget extends StatelessWidget {
             style: TextStyle(
               fontWeight: AppTypography.bold,
               fontSize: AppTypography.labelTiny,
-              color: isDark ? Colors.white70 : const Color(0xFF334155),
+              color: isDark ? Colors.white70 : AppColors.slate700,
             ),
           ),
         ],

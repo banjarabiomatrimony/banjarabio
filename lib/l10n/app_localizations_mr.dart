@@ -373,7 +373,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get bestValue => 'सर्वोत्तम मूल्य';
 
   @override
-  String get biodata => 'Biodata';
+  String get biodata => 'बायोडाटा';
 
   @override
   String get biodataDraftRestored => 'बायोडेटा मसुदा पुनर्संचयित केला!';
@@ -5438,4 +5438,10 @@ class AppLocalizationsMr extends AppLocalizations {
 
   @override
   String get zeroPercentCommission => '💰 0% Commission';
+
+  @override
+  String get inbox => 'इनबॉक्स';
+
+  @override
+  String get services => 'सेवा';
 }

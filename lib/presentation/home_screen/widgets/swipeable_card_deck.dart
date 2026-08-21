@@ -8,6 +8,7 @@ import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/theme/app_gradients.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/profile_card_widget.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Tinder-style swipeable card deck widget.
 class SwipeableCardDeck extends StatefulWidget {
@@ -330,12 +331,12 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 4.5.w, vertical: 0.8.h),
                         decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.4),
-                          border: Border.all(color: const Color(0xFFFF3366), width: 3),
+                          color: Colors.black.withValues(alpha: AppColors.opacity40),
+                          border: Border.all(color: AppColors.crimsonBlush, width: 3),
                           borderRadius: BorderRadius.circular(12),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFFFF3366).withValues(alpha: 0.5),
+                              color: AppColors.crimsonBlush.withValues(alpha: AppColors.opacity50),
                               blurRadius: 16,
                               spreadRadius: 2,
                             ),
@@ -344,12 +345,12 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.close_rounded, color: Color(0xFFFF3366), size: 24),
+                            const Icon(Icons.close_rounded, color: AppColors.crimsonBlush, size: 24),
                             const SizedBox(width: 6),
                             Text(
                               AppLocalizations.of(context)?.skip ?? 'PASS',
                               style: TextStyle(
-                                color: const Color(0xFFFF3366),
+                                color: AppColors.crimsonBlush,
                                 fontSize: AppTypography.headingMedium,
                                 fontWeight: AppTypography.black,
                                 letterSpacing: 2,
@@ -375,12 +376,12 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 4.5.w, vertical: 0.8.h),
                         decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.4),
-                          border: Border.all(color: const Color(0xFF10B981), width: 3),
+                          color: Colors.black.withValues(alpha: AppColors.opacity40),
+                          border: Border.all(color: AppColors.categoryLocation, width: 3),
                           borderRadius: BorderRadius.circular(12),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFF10B981).withValues(alpha: 0.5),
+                              color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity50),
                               blurRadius: 16,
                               spreadRadius: 2,
                             ),
@@ -389,12 +390,12 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.favorite_rounded, color: Color(0xFF10B981), size: 24),
+                            const Icon(Icons.favorite_rounded, color: AppColors.categoryLocation, size: 24),
                             const SizedBox(width: 6),
                             Text(
                               AppLocalizations.of(context)?.interest ?? 'INTEREST',
                               style: TextStyle(
-                                color: const Color(0xFF10B981),
+                                color: AppColors.categoryLocation,
                                 fontSize: AppTypography.headingMedium,
                                 fontWeight: AppTypography.black,
                                 letterSpacing: 2,
@@ -441,7 +442,7 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
           _buildCircularButton(
             icon: Icons.close_rounded,
             gradient: const LinearGradient(
-              colors: [Color(0xFFFF416C), Color(0xFFFF4B2B)],
+              colors: [AppColors.hotPink, AppColors.sunsetBlush],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -456,7 +457,7 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
             icon: isBookmarked ? Icons.bookmark_rounded : Icons.bookmark_outline_rounded,
             gradient: isBookmarked
                 ? const LinearGradient(
-                    colors: [Color(0xFFF59E0B), Color(0xFFD97706)],
+                    colors: [AppColors.categoryAstro, AppColors.categoryAstroDark],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   )
@@ -484,7 +485,7 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
           _buildCircularButton(
             icon: Icons.star_rounded,
             gradient: const LinearGradient(
-              colors: [Color(0xFF38BDF8), Color(0xFF0284C7)],
+              colors: [AppColors.skyBlueBright, AppColors.sapphireBlue],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -534,12 +535,12 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
                 shape: BoxShape.circle,
                 gradient: gradient,
                 border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.35),
+                  color: Colors.white.withValues(alpha: AppColors.opacity35),
                   width: 1.2,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: gradient.colors.first.withValues(alpha: 0.40),
+                    color: gradient.colors.first.withValues(alpha: AppColors.opacity40),
                     blurRadius: 10,
                     spreadRadius: 0.5,
                     offset: const Offset(0, 3),
@@ -555,7 +556,7 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
           label,
           style: TextStyle(
             fontSize: AppTypography.labelTiny,
-            color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.90),
+            color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity90),
             fontWeight: AppTypography.bold,
             letterSpacing: 0.2,
           ),
@@ -594,7 +595,7 @@ class _SwipeableCardDeckState extends State<SwipeableCardDeck>
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFFF416C).withValues(alpha: 0.3),
+                  color: AppColors.hotPink.withValues(alpha: AppColors.opacity30),
                   blurRadius: 8,
                   offset: const Offset(0, 8),
                 ),

@@ -4,7 +4,6 @@ import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:banjarabio/core/app_export.dart';
-import 'package:banjarabio/widgets/custom_icon_widget.dart';
 
 class ContactUsScreen extends StatelessWidget {
   const ContactUsScreen({super.key});
@@ -114,7 +113,7 @@ class ContactUsScreen extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(1.2.h),
               decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
                 shape: BoxShape.circle,
               ),
               child: CustomIconWidget(
@@ -144,7 +143,7 @@ class ContactUsScreen extends StatelessWidget {
             ),
             CustomIconWidget(
               iconName: 'open_in_new',
-              color: theme.colorScheme.primary.withValues(alpha: 0.5),
+              color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity50),
               size: 18,
             ),
           ],

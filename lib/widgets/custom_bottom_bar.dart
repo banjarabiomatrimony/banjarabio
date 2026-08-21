@@ -6,7 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/widgets/celebration_spark_painter.dart';
 import 'package:banjarabio/widgets/glassmorphism_container.dart';
+import 'package:banjarabio/core/utils/tour_keys.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// 🌟 WORLD'S MOST PREMIUM MATRIMONY BOTTOM NAVIGATION BAR 🌟
 ///
@@ -22,14 +24,12 @@ class CustomBottomBar extends StatefulWidget {
   final int currentIndex;
   final Function(int) onTap;
   final int? sharedBadgeCount;
-  final int? chatBadgeCount;
 
   const CustomBottomBar({
     super.key,
     required this.currentIndex,
     required this.onTap,
     this.sharedBadgeCount,
-    this.chatBadgeCount,
   });
 
   @override
@@ -100,12 +100,10 @@ class _CustomBottomBarState extends State<CustomBottomBar>
 
     final double barWidth = screenWidth;
     final double itemWidth = barWidth / itemCount;
-    final double capsuleWidth = itemWidth - 4;
+    final double capsuleWidth = 16.w;
     final double capsuleHeight = 4.5.h;
     final double leftPosition = widget.currentIndex * itemWidth + (itemWidth - capsuleWidth) / 2;
     final double topPosition = (contentHeight - 1.5 - capsuleHeight) / 2;
-
-    final int totalConnectBadge = (widget.sharedBadgeCount ?? 0) + (widget.chatBadgeCount ?? 0);
 
     return Container(
       width: screenWidth,
@@ -114,7 +112,7 @@ class _CustomBottomBarState extends State<CustomBottomBar>
         color: Colors.transparent,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
+            color: Colors.black.withValues(alpha: AppColors.opacity8),
             blurRadius: 12,
             offset: const Offset(0, -3),
           ),
@@ -130,7 +128,7 @@ class _CustomBottomBarState extends State<CustomBottomBar>
         blur: 25,
         border: Border(
           top: BorderSide(
-            color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.25),
+            color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: AppColors.opacity25),
             width: 1.5,
           ),
         ),
@@ -153,7 +151,7 @@ class _CustomBottomBarState extends State<CustomBottomBar>
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        _getGradientColors(widget.currentIndex)[0].withValues(alpha: 0.1),
+                        _getGradientColors(widget.currentIndex)[0].withValues(alpha: AppColors.opacity10),
                         _getGradientColors(widget.currentIndex)[1].withValues(alpha: 0.03),
                       ],
                     ),
@@ -191,58 +189,54 @@ class _CustomBottomBarState extends State<CustomBottomBar>
                   ),
                 ),
 
-                // 🎯 Navigation Items (5 Tabs: Home, Connect, Biodata, Services, Menu)
+                // 🎯 Navigation Items
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    // 0: Home (Discover)
                     _buildNavItem(
                       index: 0,
-                      icon: Icons.favorite_rounded,
-                      activeIcon: Icons.favorite,
+                      key: TourKeys.homeTabKey,
+                      icon: Icons.favorite_border_rounded,
+                      activeIcon: Icons.favorite_rounded,
                       label: AppLocalizations.of(context)?.home ?? 'Home',
-                      gradient: const [Color(0xFF880E4F), Color(0xFF961B33)],
+                      gradient: const [AppColors.primaryDark, AppColors.primary],
                       contentHeight: contentHeight - 1.5,
                     ),
-
-                    // 1: Connect (Matches + Chat)
                     _buildNavItem(
                       index: 1,
-                      icon: Icons.forum_outlined,
-                      activeIcon: Icons.forum_rounded,
-                      label: AppLocalizations.of(context)?.chat ?? 'Connect',
-                      badgeCount: totalConnectBadge > 0 ? totalConnectBadge : null,
-                      gradient: const [Color(0xFF00897B), Color(0xFF004D40)],
+                      key: TourKeys.sharedTabKey,
+                      icon: Icons.chat_bubble_outline_rounded,
+                      activeIcon: Icons.chat_bubble_rounded,
+                      label: AppLocalizations.of(context)?.inbox ?? 'Inbox',
+                      badgeCount: widget.sharedBadgeCount,
+                      gradient: const [AppColors.orange400, AppColors.orangeDark900],
                       contentHeight: contentHeight - 1.5,
                     ),
-
-                    // 2: Biodata (PDF Studio)
                     _buildNavItem(
                       index: 2,
+                      key: TourKeys.melavaTabKey,
                       icon: Icons.description_outlined,
                       activeIcon: Icons.description_rounded,
-                      label: AppLocalizations.of(context)?.biodataPdf.replaceAll(' PDF', '') ?? 'Biodata',
-                      gradient: const [Color(0xFFE65100), Color(0xFFBF360C)],
+                      label: AppLocalizations.of(context)?.biodata ?? 'Biodata',
+                      gradient: const [AppColors.materialPurple, AppColors.violetDeep],
                       contentHeight: contentHeight - 1.5,
                     ),
-
-                    // 3: Services (Melavas & Wedding Marketplace Hub)
                     _buildNavItem(
                       index: 3,
-                      icon: Icons.hub_outlined,
-                      activeIcon: Icons.hub_rounded,
-                      label: 'Services',
-                      gradient: const [Color(0xFF8E24AA), Color(0xFF5E35B1)],
+                      key: TourKeys.profileTabKey,
+                      icon: Icons.storefront_outlined,
+                      activeIcon: Icons.storefront_rounded,
+                      label: AppLocalizations.of(context)?.services ?? 'Services',
+                      gradient: const [AppColors.materialPurple700, AppColors.materialPurpleDark],
                       contentHeight: contentHeight - 1.5,
                     ),
-
-                    // 4: Menu / Profile
                     _buildNavItem(
                       index: 4,
+                      key: TourKeys.settingsTabKey,
                       icon: Icons.person_outline_rounded,
                       activeIcon: Icons.person_rounded,
-                      label: AppLocalizations.of(context)?.menu ?? 'Menu',
-                      gradient: const [Color(0xFF2196F3), Color(0xFF1976D2)],
+                      label: AppLocalizations.of(context)?.account ?? 'Account',
+                      gradient: const [AppColors.materialBlue, AppColors.materialBlueDark],
                       contentHeight: contentHeight - 1.5,
                     ),
                   ],
@@ -256,11 +250,11 @@ class _CustomBottomBarState extends State<CustomBottomBar>
                       builder: (context, child) {
                         if (_particleController.value == 0) return const SizedBox();
                         const tabSparkColors = <int, List<Color>>{
-                          0: [Color(0xFF880E4F), Color(0xFF961B33), Colors.white, Color(0xFFFFE082)],
-                          1: [Color(0xFF00897B), Color(0xFF004D40), Colors.white, Color(0xFFFFE082)],
-                          2: [Color(0xFFE65100), Color(0xFFBF360C), Colors.white, Color(0xFFFFE082)],
-                          3: [Color(0xFF8E24AA), Color(0xFF5E35B1), Colors.white, Color(0xFFFFE082)],
-                          4: [Color(0xFF2196F3), Color(0xFF1976D2), Colors.white, Color(0xFFFFE082)],
+                          0: [AppColors.primaryDark, AppColors.primary, Colors.white, AppColors.goldGlow],
+                          1: [AppColors.orange400, AppColors.orangeDark900, Colors.white, AppColors.goldGlow],
+                          2: [AppColors.materialPurple, AppColors.violetDeep, Colors.white, AppColors.goldGlow],
+                          3: [AppColors.materialPurple700, AppColors.materialPurpleDark, Colors.white, AppColors.goldGlow],
+                          4: [AppColors.materialBlue, AppColors.materialBlueDark, Colors.white, AppColors.goldGlow],
                         };
                         return CustomPaint(
                           size: Size(barWidth, contentHeight - 1.5),
@@ -287,25 +281,24 @@ class _CustomBottomBarState extends State<CustomBottomBar>
   List<Color> _getGradientColors(int index) {
     switch (index) {
       case 0:
-        return [const Color(0xFF961B33), const Color(0xFF731224)];
+        return [AppColors.primary, AppColors.primaryDark];
       case 1:
-        return [const Color(0xFF961B33), const Color(0xFF731224)];
+        return [AppColors.primary, AppColors.primaryDark];
       case 2:
-        return [const Color(0xFF961B33), const Color(0xFF731224)];
+        return [AppColors.primary, AppColors.primaryDark];
       case 3:
-        return [const Color(0xFF961B33), const Color(0xFF731224)];
+        return [AppColors.primary, AppColors.primaryDark];
       case 4:
-        return [const Color(0xFF961B33), const Color(0xFF731224)];
-      case 5:
-        return [const Color(0xFF961B33), const Color(0xFF731224)];
+        return [AppColors.primary, AppColors.primaryDark];
       default:
-        return [const Color(0xFF961B33), const Color(0xFF731224)];
+        return [AppColors.primary, AppColors.primaryDark];
     }
   }
 
 
   Widget _buildNavItem({
     required int index,
+    required Key key,
     required IconData icon,
     required IconData activeIcon,
     required String label,
@@ -314,7 +307,7 @@ class _CustomBottomBarState extends State<CustomBottomBar>
     int? badgeCount,
   }) {
     final bool isSelected = widget.currentIndex == index;
-    final double scale = isSelected ? 1.08 : 0.92;
+    final double scale = isSelected ? 1.05 : 0.85;
 
     return Expanded(
       child: Semantics(
@@ -347,8 +340,8 @@ class _CustomBottomBarState extends State<CustomBottomBar>
                           isSelected ? activeIcon : icon,
                           color: isSelected
                               ? Colors.white
-                              : Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
-                          size: 24,
+                              : Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity60),
+                          size: 22,
                         ),
   
                         // Badge
@@ -366,13 +359,13 @@ class _CustomBottomBarState extends State<CustomBottomBar>
                                 ),
                                 decoration: BoxDecoration(
                                   gradient: const LinearGradient(
-                                    colors: [Color(0xFFFFD700), Color(0xFFFFAA00)],
+                                    colors: [AppColors.categoryVip, AppColors.categoryVipDark],
                                   ),
                                   borderRadius: BorderRadius.circular(10),
                                   border: Border.all(color: Colors.white, width: 1.5),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: const Color(0xFFFFD700).withValues(alpha: 0.5),
+                                      color: AppColors.categoryVip.withValues(alpha: AppColors.opacity50),
                                       blurRadius: 6,
                                       offset: const Offset(0, 1.5),
                                     ),
@@ -396,17 +389,17 @@ class _CustomBottomBarState extends State<CustomBottomBar>
                     ),
                   ),
   
-                  SizedBox(height: 0.15.h),
+                  SizedBox(height: 0.3.h),
   
                   AnimatedDefaultTextStyle(
                     duration: const Duration(milliseconds: 300),
                     style: TextStyle(
                       color: isSelected
                           ? Colors.white
-                          : Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
-                      fontSize: isSelected ? AppTypography.labelMedium : AppTypography.labelSmall,
+                          : Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity70),
+                      fontSize: isSelected ? AppTypography.bodySmall : AppTypography.bodySmall,
                       fontWeight: isSelected ? AppTypography.bold : AppTypography.semiBold,
-                      letterSpacing: 0.1,
+                      letterSpacing: 0.3,
                     ),
                     child: Text(label),
                   ),

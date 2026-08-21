@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/repositories/admin_repository.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// [TeamManagementTab]
 ///
@@ -171,7 +172,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
       child: ChoiceChip(
         label: Text(label),
         selected: isActive,
-        selectedColor: theme.colorScheme.primary.withValues(alpha: 0.2),
+        selectedColor: theme.colorScheme.primary.withValues(alpha: AppColors.opacity20),
         onSelected: (_) {
           setState(() => _subTab = key);
           if (key == 'leaderboard' && _leaderboard.isEmpty) _loadLeaderboard();
@@ -264,7 +265,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
                   icon: const Icon(Icons.person_add, size: 16),
                   label: const Text('Hire'),
                   style: FilledButton.styleFrom(
-                    backgroundColor: const Color(0xFF2196F3),
+                    backgroundColor: AppColors.materialBlue,
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     textStyle: TextStyle(fontSize: AppTypography.bodyMedium),
                   ),
@@ -275,7 +276,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
                   icon: const Icon(Icons.auto_fix_high, size: 16),
                   label: const Text('Auto-Assign'),
                   style: FilledButton.styleFrom(
-                    backgroundColor: const Color(0xFF4CAF50),
+                    backgroundColor: AppColors.successDark,
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     textStyle: TextStyle(fontSize: AppTypography.bodyMedium),
                   ),
@@ -286,7 +287,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
                   icon: const Icon(Icons.assignment_ind, size: 16),
                   label: const Text('Manual Assign'),
                   style: FilledButton.styleFrom(
-                    backgroundColor: const Color(0xFFFF9800),
+                    backgroundColor: AppColors.materialOrange,
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     textStyle: TextStyle(fontSize: AppTypography.bodyMedium),
                   ),
@@ -472,7 +473,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      color: isSelected ? theme.colorScheme.primaryContainer.withValues(alpha: 0.3) : null,
+      color: isSelected ? theme.colorScheme.primaryContainer.withValues(alpha: AppColors.opacity30) : null,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () => _loadStaffReport(tc['user_id']),
@@ -486,7 +487,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
                   Icon(
                     tc['department'] == 'sales' ? Icons.headset_mic : Icons.computer, 
                     size: 18, 
-                    color: tc['department'] == 'sales' ? const Color(0xFF4CAF50) : const Color(0xFF2196F3)
+                    color: tc['department'] == 'sales' ? AppColors.successDark : AppColors.materialBlue
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -511,7 +512,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
-                       color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                       color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
                        borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
@@ -530,10 +531,10 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
                 const SizedBox(height: 10),
                 Row(
                   children: [
-                    _statChip('Leads', '${tc['total_leads'] ?? 0}', const Color(0xFF2196F3)),
-                    _statChip('Conv.', '${tc['total_converted'] ?? 0}', const Color(0xFF4CAF50)),
-                    _statChip('Calls', '${tc['total_calls'] ?? 0}', const Color(0xFFFF9800)),
-                    _statChip('Today', '${tc['calls_today'] ?? 0}', const Color(0xFF9C27B0)),
+                    _statChip('Leads', '${tc['total_leads'] ?? 0}', AppColors.materialBlue),
+                    _statChip('Conv.', '${tc['total_converted'] ?? 0}', AppColors.successDark),
+                    _statChip('Calls', '${tc['total_calls'] ?? 0}', AppColors.materialOrange),
+                    _statChip('Today', '${tc['calls_today'] ?? 0}', AppColors.materialPurple700),
                   ],
                 ),
               ],
@@ -550,13 +551,13 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
         padding: const EdgeInsets.symmetric(vertical: 6),
         margin: const EdgeInsets.symmetric(horizontal: 2),
         decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.1),
+          color: color.withValues(alpha: AppColors.opacity10),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
           children: [
             Text(value, style: TextStyle(color: color, fontWeight: AppTypography.bold, fontSize: AppTypography.headingSmall)),
-            Text(label, style: TextStyle(color: color.withValues(alpha: 0.7), fontSize: AppTypography.bodySmall)),
+            Text(label, style: TextStyle(color: color.withValues(alpha: AppColors.opacity70), fontSize: AppTypography.bodySmall)),
           ],
         ),
       ),
@@ -583,9 +584,9 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
             const Divider(),
             _reportRow('Total Leads', '${r['total_leads'] ?? 0}'),
             _reportRow('Not Called', '${r['not_called'] ?? 0}', color: Colors.grey),
-            _reportRow('Connected', '${r['connected'] ?? 0}', color: const Color(0xFF4CAF50)),
-            _reportRow('Follow Up', '${r['follow_up'] ?? 0}', color: const Color(0xFFFF9800)),
-            _reportRow('Converted ✓', '${r['converted'] ?? 0}', color: const Color(0xFF00E676)),
+            _reportRow('Connected', '${r['connected'] ?? 0}', color: AppColors.successDark),
+            _reportRow('Follow Up', '${r['follow_up'] ?? 0}', color: AppColors.materialOrange),
+            _reportRow('Converted ✓', '${r['converted'] ?? 0}', color: AppColors.greenBright),
             _reportRow('Not Interested', '${r['not_interested'] ?? 0}', color: Colors.redAccent),
             const Divider(),
             _reportRow('Calls Today', '${r['calls_today'] ?? 0}'),
@@ -742,15 +743,15 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
             const Divider(),
             // Earnings breakdown
             _reportRow('Profile Incentive', fmt.format(r['profile_incentive'] ?? 0),
-                color: const Color(0xFF2196F3)),
+                color: AppColors.materialBlue),
             _reportRow('Subscription Incentive', fmt.format(r['subscription_incentive'] ?? 0),
-                color: const Color(0xFF4CAF50)),
-            _reportRow('Bonuses', fmt.format(r['bonuses'] ?? 0), color: const Color(0xFFFF9800)),
+                color: AppColors.successDark),
+            _reportRow('Bonuses', fmt.format(r['bonuses'] ?? 0), color: AppColors.materialOrange),
             const Divider(thickness: 2),
             _reportRow(
               'TOTAL PAYOUT',
               fmt.format(r['total_payout'] ?? 0),
-              color: const Color(0xFF00E676),
+              color: AppColors.greenBright,
             ),
           ],
         ),
@@ -778,7 +779,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
     final r = _roiData!;
     final fmt = NumberFormat.currency(locale: 'en_IN', symbol: '₹', decimalDigits: 0);
     final roi = r['estimated_roi'] ?? 0;
-    final roiColor = (roi as num) > 0 ? const Color(0xFF4CAF50) : Colors.redAccent;
+    final roiColor = (roi as num) > 0 ? AppColors.successDark : Colors.redAccent;
 
     return [
       SliverToBoxAdapter(
@@ -798,7 +799,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
       SliverToBoxAdapter(
         child: Card(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-          color: roiColor.withValues(alpha: 0.1),
+          color: roiColor.withValues(alpha: AppColors.opacity10),
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -834,12 +835,12 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
                 _reportRow('Avg Calls/Telecaller', '${r['avg_calls_per_telecaller'] ?? 0}'),
                 const Divider(),
                 _reportRow('Est. Revenue', fmt.format(r['estimated_revenue'] ?? 0),
-                    color: const Color(0xFF4CAF50)),
+                    color: AppColors.successDark),
                 _reportRow('Est. Cost', fmt.format(r['estimated_cost'] ?? 0),
-                    color: const Color(0xFFFF9800)),
+                    color: AppColors.materialOrange),
                 _reportRow('Net Profit', fmt.format(r['net_profit'] ?? 0),
                     color: (r['net_profit'] as num? ?? 0) > 0
-                        ? const Color(0xFF00E676)
+                        ? AppColors.greenBright
                         : Colors.redAccent),
               ],
             ),
@@ -896,9 +897,9 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
       margin: const EdgeInsets.only(right: 12),
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
+        color: color.withValues(alpha: AppColors.opacity10),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withValues(alpha: 0.2)),
+        border: Border.all(color: color.withValues(alpha: AppColors.opacity20)),
       ),
       child: Column(
         children: [
@@ -909,7 +910,7 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
           const SizedBox(height: 4),
           Text(
             label,
-            style: TextStyle(color: color.withValues(alpha: 0.8), fontSize: AppTypography.bodySmall),
+            style: TextStyle(color: color.withValues(alpha: AppColors.opacity80), fontSize: AppTypography.bodySmall),
             textAlign: TextAlign.center,
           ),
         ],

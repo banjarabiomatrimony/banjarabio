@@ -155,7 +155,7 @@ class PremiumUpgradeModal extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(2.w),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+              color: theme.colorScheme.primaryContainer.withValues(alpha: AppColors.opacity30),
               borderRadius: BorderRadius.circular(8),
             ),
             child: CustomIconWidget(

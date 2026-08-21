@@ -9,6 +9,7 @@ import 'package:banjarabio/core/data/location_data.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class LocationSelectionScreen extends StatefulWidget {
   const LocationSelectionScreen({super.key});
@@ -165,73 +166,73 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
         return {
           'icon': '🚩',
           'sub': 'अस्सल महाराष्ट्र',
-          'gradient': const [Color(0xFFBE123C), Color(0xFF881337)],
+          'gradient': const [AppColors.crimsonRose, AppColors.crimsonMaroon],
           'tag': 'TOP POPULAR',
-          'tagColor': const Color(0xFFF59E0B),
-          'accent': const Color(0xFFBE123C),
+          'tagColor': AppColors.categoryAstro,
+          'accent': AppColors.crimsonRose,
         };
       case 'Karnataka':
         return {
           'icon': '🌟',
           'sub': 'ಕರ್ನಾಟಕ',
-          'gradient': const [Color(0xFF047857), Color(0xFF064E3B)],
+          'gradient': const [AppColors.emerald, AppColors.greenDeepForest],
           'tag': 'ACTIVE',
-          'tagColor': const Color(0xFF10B981),
-          'accent': const Color(0xFF059669),
+          'tagColor': AppColors.categoryLocation,
+          'accent': AppColors.categoryLocationDark,
         };
       case 'Telangana':
         return {
           'icon': '🏛️',
           'sub': 'తెలంగాణ',
-          'gradient': const [Color(0xFF4338CA), Color(0xFF312E81)],
+          'gradient': const [AppColors.categorySecurityDark, AppColors.categorySecurity],
           'tag': 'GROWING',
-          'tagColor': const Color(0xFF818CF8),
-          'accent': const Color(0xFF6366F1),
+          'tagColor': AppColors.indigoSoft,
+          'accent': AppColors.categorySecurity,
         };
       case 'Andhra Pradesh':
         return {
           'icon': '🌅',
           'sub': 'ఆంధ్ర ప్రదేశ్',
-          'gradient': const [Color(0xFF0284C7), Color(0xFF075985)],
+          'gradient': const [AppColors.sapphireBlue, AppColors.sapphireBlue],
           'tag': 'POPULAR',
-          'tagColor': const Color(0xFF38BDF8),
-          'accent': const Color(0xFF0EA5E9),
+          'tagColor': AppColors.skyBlueBright,
+          'accent': AppColors.skyBlue,
         };
       case 'Madhya Pradesh':
         return {
           'icon': '🌲',
           'sub': 'मध्य प्रदेश',
-          'gradient': const [Color(0xFFB45309), Color(0xFF78350F)],
+          'gradient': const [AppColors.amberDark, AppColors.amberDeepText],
           'tag': 'CENTRAL',
-          'tagColor': const Color(0xFFFBBF24),
-          'accent': const Color(0xFFD97706),
+          'tagColor': AppColors.goldSoft,
+          'accent': AppColors.categoryAstroDark,
         };
       case 'Gujarat':
         return {
           'icon': '🪔',
           'sub': 'ગુજરાત',
-          'gradient': const [Color(0xFFD97706), Color(0xFF92400E)],
+          'gradient': const [AppColors.categoryAstroDark, AppColors.amberDarkestText],
           'tag': 'WESTERN',
-          'tagColor': const Color(0xFFFDE68A),
-          'accent': const Color(0xFFF59E0B),
+          'tagColor': AppColors.goldTint200,
+          'accent': AppColors.categoryAstro,
         };
       case 'Rajasthan':
         return {
           'icon': '🏰',
           'sub': 'राजस्थान',
-          'gradient': const [Color(0xFF9F1239), Color(0xFF4C0519)],
+          'gradient': const [AppColors.wineRed, AppColors.crimsonDarkBg],
           'tag': 'HERITAGE',
-          'tagColor': const Color(0xFFFDA4AF),
-          'accent': const Color(0xFFE11D48),
+          'tagColor': AppColors.rose200,
+          'accent': AppColors.crimsonBlush,
         };
       default:
         return {
           'icon': '📍',
           'sub': state,
-          'gradient': const [Color(0xFF475569), Color(0xFF1E293B)],
+          'gradient': const [AppColors.slate600, AppColors.slate800],
           'tag': 'STATE',
-          'tagColor': const Color(0xFF94A3B8),
-          'accent': const Color(0xFF64748B),
+          'tagColor': AppColors.slate400,
+          'accent': AppColors.slate500,
         };
     }
   }
@@ -244,7 +245,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
     final foreground = theme.appBarTheme.foregroundColor ?? Colors.white;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0F0E17) : const Color(0xFFF8FAFC),
+      backgroundColor: isDark ? AppColors.canvasCharcoal : AppColors.slate50,
       appBar: CustomAppBar(
         automaticallyImplyLeading: false,
         leadingWidth: 175,
@@ -308,7 +309,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
             const Icon(
               Icons.location_on_rounded,
               size: 16,
-              color: Color(0xFFFBBF24),
+              color: AppColors.goldSoft,
             ),
           ],
         ),
@@ -322,12 +323,12 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                   padding: EdgeInsets.symmetric(horizontal: 2.4.w, vertical: 0.4.h),
                   decoration: BoxDecoration(
                     color: _isSearchExpanded
-                        ? const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.25 : 0.20)
+                        ? AppColors.categoryAstro.withValues(alpha: isDark ? 0.25 : 0.20)
                         : foreground.withValues(alpha: isDark ? 0.12 : 0.16),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
                       color: _isSearchExpanded
-                          ? const Color(0xFFF59E0B)
+                          ? AppColors.categoryAstro
                           : foreground.withValues(alpha: isDark ? 0.25 : 0.35),
                     ),
                   ),
@@ -336,14 +337,14 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                     children: [
                       Icon(
                         _isSearchExpanded ? Icons.close_rounded : Icons.search_rounded,
-                        color: _isSearchExpanded ? const Color(0xFFF59E0B) : foreground,
+                        color: _isSearchExpanded ? AppColors.categoryAstro : foreground,
                         size: 13,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         _isSearchExpanded ? 'Close' : 'Search',
                         style: TextStyle(
-                          color: _isSearchExpanded ? const Color(0xFFF59E0B) : foreground,
+                          color: _isSearchExpanded ? AppColors.categoryAstro : foreground,
                           fontWeight: AppTypography.bold,
                           fontSize: AppTypography.labelSmall,
                           letterSpacing: 0.2,
@@ -364,15 +365,15 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                   child: Container(
                     height: 4.8.h,
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF1E1B2E) : Colors.white,
+                      color: isDark ? AppColors.canvasRichDark : Colors.white,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: const Color(0xFFF59E0B).withValues(alpha: 0.8),
+                        color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity80),
                         width: 1.2,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.20 : 0.08),
+                          color: AppColors.categoryAstro.withValues(alpha: isDark ? 0.20 : 0.08),
                           blurRadius: 10,
                           offset: const Offset(0, 3),
                         ),
@@ -387,7 +388,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                         });
                       },
                       style: TextStyle(
-                        color: isDark ? Colors.white : const Color(0xFF1E293B),
+                        color: isDark ? Colors.white : AppColors.slate800,
                         fontSize: AppTypography.bodyMedium,
                         fontWeight: AppTypography.semiBold,
                       ),
@@ -401,7 +402,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                         ),
                         prefixIcon: const Icon(
                           Icons.search_rounded,
-                          color: Color(0xFFF59E0B),
+                          color: AppColors.categoryAstro,
                           size: 18,
                         ),
                         suffixIcon: _searchQuery.isNotEmpty
@@ -454,19 +455,19 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: isDark
-                    ? [const Color(0xFF38151D), const Color(0xFF1E1528), const Color(0xFF14121E)]
-                    : [const Color(0xFFBE123C), const Color(0xFF881337), const Color(0xFF4338CA)],
+                    ? [AppColors.bloodRedBg, AppColors.surfaceDarkBluePurple, AppColors.canvasCharcoal]
+                    : [AppColors.crimsonRose, AppColors.crimsonMaroon, AppColors.categorySecurityDark],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               borderRadius: BorderRadius.circular(22),
               border: Border.all(
-                color: const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.45 : 0.35),
+                color: AppColors.categoryAstro.withValues(alpha: isDark ? 0.45 : 0.35),
                 width: 1.2,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFBE123C).withValues(alpha: isDark ? 0.30 : 0.22),
+                  color: AppColors.crimsonRose.withValues(alpha: isDark ? 0.30 : 0.22),
                   blurRadius: 16,
                   offset: const Offset(0, 5),
                 ),
@@ -483,12 +484,12 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
-                          colors: [Color(0xFFF59E0B), Color(0xFFD97706)],
+                          colors: [AppColors.categoryAstro, AppColors.categoryAstroDark],
                         ),
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xFFF59E0B).withValues(alpha: 0.35 + (0.25 * pulse)),
+                            color: AppColors.categoryAstro.withValues(alpha: 0.35 + (0.25 * pulse)),
                             blurRadius: 10 + (4 * pulse),
                             spreadRadius: 1 * pulse,
                           ),
@@ -522,17 +523,17 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFF59E0B).withValues(alpha: 0.25),
+                              color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity25),
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
-                                color: const Color(0xFFF59E0B).withValues(alpha: 0.6),
+                                color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity60),
                                 width: 0.8,
                               ),
                             ),
                             child: Text(
                               'PAN-INDIA',
                               style: TextStyle(
-                                color: const Color(0xFFFDE68A),
+                                color: AppColors.goldTint200,
                                 fontSize: AppTypography.labelTiny,
                                 fontWeight: AppTypography.black,
                                 letterSpacing: 0.5,
@@ -558,7 +559,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                 Container(
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.15),
+                    color: Colors.white.withValues(alpha: AppColors.opacity15),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 14),
@@ -576,10 +577,10 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
               Container(
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF59E0B).withValues(alpha: 0.15),
+                  color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity15),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.history_rounded, size: 13, color: Color(0xFFF59E0B)),
+                child: const Icon(Icons.history_rounded, size: 13, color: AppColors.categoryAstro),
               ),
               SizedBox(width: 2.w),
               Text(
@@ -588,7 +589,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                   fontSize: AppTypography.labelSmall,
                   fontWeight: AppTypography.extraBold,
                   letterSpacing: 0.8,
-                  color: isDark ? const Color(0xFFCBD5E1) : const Color(0xFF64748B),
+                  color: isDark ? AppColors.slate300 : AppColors.slate500,
                 ),
               ),
             ],
@@ -614,12 +615,12 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF1A1828) : Colors.white,
+                      color: isDark ? AppColors.canvasNearBlack : Colors.white,
                       borderRadius: BorderRadius.circular(18),
                       border: Border.all(
                         color: isDark
-                            ? const Color(0xFFF59E0B).withValues(alpha: 0.25)
-                            : const Color(0xFFE2E8F0),
+                            ? AppColors.categoryAstro.withValues(alpha: AppColors.opacity25)
+                            : AppColors.slate200,
                         width: 1.1,
                       ),
                       boxShadow: [
@@ -633,14 +634,14 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.location_on_rounded, size: 12, color: Color(0xFFF59E0B)),
+                        const Icon(Icons.location_on_rounded, size: 12, color: AppColors.categoryAstro),
                         const SizedBox(width: 5),
                         Text(
                           LocationData.getLocalizedFullLocation(loc, context),
                           style: TextStyle(
                             fontSize: AppTypography.labelSmall,
                             fontWeight: AppTypography.bold,
-                            color: isDark ? Colors.white : const Color(0xFF334155),
+                            color: isDark ? Colors.white : AppColors.slate700,
                           ),
                         ),
                       ],
@@ -677,10 +678,10 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.0.h),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161424) : Colors.white,
+        color: isDark ? AppColors.canvasDeepDark : Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isDark ? Colors.white.withValues(alpha: 0.10) : const Color(0xFFE2E8F0),
+          color: isDark ? Colors.white.withValues(alpha: AppColors.opacity10) : AppColors.slate200,
         ),
         boxShadow: [
           BoxShadow(
@@ -695,7 +696,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
           Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primary.withValues(alpha: 0.12),
+              color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity12),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -716,7 +717,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
                         color: _selectedState == null
-                            ? theme.colorScheme.primary.withValues(alpha: 0.12)
+                            ? theme.colorScheme.primary.withValues(alpha: AppColors.opacity12)
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -751,7 +752,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                         decoration: BoxDecoration(
                           color: _selectedDistrict == null
-                              ? theme.colorScheme.primary.withValues(alpha: 0.12)
+                              ? theme.colorScheme.primary.withValues(alpha: AppColors.opacity12)
                               : Colors.transparent,
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -776,7 +777,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.12),
+                        color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity12),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -802,7 +803,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                   color: theme.colorScheme.primary.withValues(alpha: 0.14),
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.25),
+                    color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity25),
                   ),
                 ),
                 child: Row(
@@ -862,10 +863,10 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 3.8.w, vertical: 1.4.h),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF161424) : Colors.white,
+                  color: isDark ? AppColors.canvasDeepDark : Colors.white,
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(
-                    color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
+                    color: isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : AppColors.slate200,
                     width: 1.1,
                   ),
                   boxShadow: [
@@ -891,7 +892,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                         borderRadius: BorderRadius.circular(14),
                         boxShadow: [
                           BoxShadow(
-                            color: (meta['gradient'][0] as Color).withValues(alpha: 0.30),
+                            color: (meta['gradient'][0] as Color).withValues(alpha: AppColors.opacity30),
                             blurRadius: 8,
                             offset: const Offset(0, 3),
                           ),
@@ -916,14 +917,14 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                                 style: TextStyle(
                                   fontSize: AppTypography.bodyMedium,
                                   fontWeight: AppTypography.extraBold,
-                                  color: isDark ? Colors.white : const Color(0xFF1E293B),
+                                  color: isDark ? Colors.white : AppColors.slate800,
                                 ),
                               ),
                               const SizedBox(width: 6),
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1.5),
                                 decoration: BoxDecoration(
-                                  color: (meta['tagColor'] as Color).withValues(alpha: 0.15),
+                                  color: (meta['tagColor'] as Color).withValues(alpha: AppColors.opacity15),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Text(
@@ -944,7 +945,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                             style: TextStyle(
                               fontSize: AppTypography.labelSmall,
                               fontWeight: AppTypography.medium,
-                              color: isDark ? Colors.white60 : const Color(0xFF64748B),
+                              color: isDark ? Colors.white60 : AppColors.slate500,
                             ),
                           ),
                         ],
@@ -953,7 +954,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                     Container(
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
-                        color: isDark ? Colors.white.withValues(alpha: 0.06) : const Color(0xFFF1F5F9),
+                        color: isDark ? Colors.white.withValues(alpha: 0.06) : AppColors.slate100,
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(Icons.arrow_forward_ios_rounded, color: Colors.grey, size: 12),
@@ -984,14 +985,14 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
               padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.4.h),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFF059669), Color(0xFF047857)],
+                  colors: [AppColors.categoryLocationDark, AppColors.emerald],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(18),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF059669).withValues(alpha: 0.30),
+                    color: AppColors.categoryLocationDark.withValues(alpha: AppColors.opacity30),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -1002,7 +1003,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                   Container(
                     padding: const EdgeInsets.all(7),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.20),
+                      color: Colors.white.withValues(alpha: AppColors.opacity20),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(Icons.select_all_rounded, color: Colors.white, size: 18),
@@ -1023,14 +1024,14 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                         Text(
                           'Match profiles anywhere across ${_selectedState!}',
                           style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.8),
+                            color: Colors.white.withValues(alpha: AppColors.opacity80),
                             fontSize: AppTypography.labelSmall,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const Icon(Icons.check_circle_rounded, color: Color(0xFFA7F3D0), size: 20),
+                  const Icon(Icons.check_circle_rounded, color: AppColors.green100alt, size: 20),
                 ],
               ),
             ),
@@ -1067,10 +1068,10 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 3.8.w, vertical: 1.3.h),
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF161424) : Colors.white,
+                    color: isDark ? AppColors.canvasDeepDark : Colors.white,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
+                      color: isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : AppColors.slate200,
                     ),
                   ),
                   child: Row(
@@ -1078,7 +1079,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                       Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: (meta['accent'] as Color).withValues(alpha: 0.12),
+                          color: (meta['accent'] as Color).withValues(alpha: AppColors.opacity12),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Icon(
@@ -1094,7 +1095,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                           style: TextStyle(
                             fontSize: AppTypography.bodyMedium,
                             fontWeight: AppTypography.bold,
-                            color: isDark ? Colors.white : const Color(0xFF1E293B),
+                            color: isDark ? Colors.white : AppColors.slate800,
                           ),
                         ),
                       ),
@@ -1102,7 +1103,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                           decoration: BoxDecoration(
-                            color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFF1F5F9),
+                            color: isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : AppColors.slate100,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
@@ -1110,7 +1111,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                             style: TextStyle(
                               fontSize: AppTypography.labelSmall,
                               fontWeight: AppTypography.bold,
-                              color: isDark ? Colors.white70 : const Color(0xFF64748B),
+                              color: isDark ? Colors.white70 : AppColors.slate500,
                             ),
                           ),
                         ),
@@ -1145,14 +1146,14 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
               padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.4.h),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFFD97706), Color(0xFFB45309)],
+                  colors: [AppColors.categoryAstroDark, AppColors.amberDark],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(18),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFFD97706).withValues(alpha: 0.30),
+                    color: AppColors.categoryAstroDark.withValues(alpha: AppColors.opacity30),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -1163,7 +1164,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                   Container(
                     padding: const EdgeInsets.all(7),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.20),
+                      color: Colors.white.withValues(alpha: AppColors.opacity20),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(Icons.verified_rounded, color: Colors.white, size: 18),
@@ -1184,14 +1185,14 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                         Text(
                           'Match profiles across entire ${_selectedDistrict!} district',
                           style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.8),
+                            color: Colors.white.withValues(alpha: AppColors.opacity80),
                             fontSize: AppTypography.labelSmall,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const Icon(Icons.check_circle_rounded, color: Color(0xFFFDE68A), size: 20),
+                  const Icon(Icons.check_circle_rounded, color: AppColors.goldTint200, size: 20),
                 ],
               ),
             ),
@@ -1224,10 +1225,10 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 3.8.w, vertical: 1.3.h),
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF161424) : Colors.white,
+                    color: isDark ? AppColors.canvasDeepDark : Colors.white,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
+                      color: isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : AppColors.slate200,
                     ),
                   ),
                   child: Row(
@@ -1235,12 +1236,12 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                       Container(
                         padding: const EdgeInsets.all(7.5),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF59E0B).withValues(alpha: 0.14),
+                          color: AppColors.categoryAstro.withValues(alpha: 0.14),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: const Icon(
                           Icons.holiday_village_rounded,
-                          color: Color(0xFFF59E0B),
+                          color: AppColors.categoryAstro,
                           size: 16,
                         ),
                       ),
@@ -1251,11 +1252,11 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                           style: TextStyle(
                             fontSize: AppTypography.bodyMedium,
                             fontWeight: AppTypography.bold,
-                            color: isDark ? Colors.white : const Color(0xFF1E293B),
+                            color: isDark ? Colors.white : AppColors.slate800,
                           ),
                         ),
                       ),
-                      const Icon(Icons.arrow_forward_rounded, color: Color(0xFFF59E0B), size: 16),
+                      const Icon(Icons.arrow_forward_rounded, color: AppColors.categoryAstro, size: 16),
                     ],
                   ),
                 ),
@@ -1277,22 +1278,22 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 3.8.w, vertical: 1.3.h),
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1E1B2E) : Colors.white,
+                color: isDark ? AppColors.canvasRichDark : Colors.white,
                 borderRadius: BorderRadius.circular(18),
                 border: Border.all(
-                  color: const Color(0xFF8B5CF6).withValues(alpha: 0.45),
+                  color: AppColors.categoryFamily.withValues(alpha: 0.45),
                   width: 1.2,
                 ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.add_location_alt_rounded, color: Color(0xFF8B5CF6), size: 18),
+                  const Icon(Icons.add_location_alt_rounded, color: AppColors.categoryFamily, size: 18),
                   const SizedBox(width: 6),
                   Text(
                     'Enter Specific Village or Tanda Name',
                     style: TextStyle(
-                      color: const Color(0xFF8B5CF6),
+                      color: AppColors.categoryFamily,
                       fontSize: AppTypography.bodySmall,
                       fontWeight: AppTypography.extraBold,
                     ),
@@ -1316,14 +1317,14 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
         Container(
           padding: EdgeInsets.all(4.w),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF161424) : Colors.white,
+            color: isDark ? AppColors.canvasDeepDark : Colors.white,
             borderRadius: BorderRadius.circular(22),
             border: Border.all(
-              color: const Color(0xFF8B5CF6).withValues(alpha: 0.35),
+              color: AppColors.categoryFamily.withValues(alpha: AppColors.opacity35),
             ),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF8B5CF6).withValues(alpha: isDark ? 0.15 : 0.06),
+                color: AppColors.categoryFamily.withValues(alpha: isDark ? 0.15 : 0.06),
                 blurRadius: 12,
                 offset: const Offset(0, 4),
               ),
@@ -1337,10 +1338,10 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                   Container(
                     padding: const EdgeInsets.all(7),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF8B5CF6).withValues(alpha: 0.15),
+                      color: AppColors.categoryFamily.withValues(alpha: AppColors.opacity15),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.add_location_alt_rounded, color: Color(0xFF8B5CF6), size: 18),
+                    child: const Icon(Icons.add_location_alt_rounded, color: AppColors.categoryFamily, size: 18),
                   ),
                   SizedBox(width: 2.5.w),
                   Text(
@@ -1361,7 +1362,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                   hintText: AppLocalizations.of(context)?.villageTandaExampleHint ?? 'e.g. Pohradevi Tanda, Sevadas Nagar...',
                   hintStyle: TextStyle(fontSize: AppTypography.bodySmall, color: Colors.grey),
                   filled: true,
-                  fillColor: isDark ? Colors.white.withValues(alpha: 0.05) : const Color(0xFFF8FAFC),
+                  fillColor: isDark ? Colors.white.withValues(alpha: AppColors.opacity5) : AppColors.slate50,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
                     borderSide: BorderSide.none,
@@ -1397,7 +1398,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF8B5CF6),
+                        backgroundColor: AppColors.categoryFamily,
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                         padding: const EdgeInsets.symmetric(vertical: 12),
@@ -1456,10 +1457,10 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
-                  color: Colors.amber.withValues(alpha: 0.12),
+                  color: Colors.amber.withValues(alpha: AppColors.opacity12),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.search_off_rounded, size: 40, color: Color(0xFFF59E0B)),
+                child: const Icon(Icons.search_off_rounded, size: 40, color: AppColors.categoryAstro),
               ),
               SizedBox(height: 2.h),
               Text(
@@ -1482,12 +1483,12 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
       children: [
         // States Matches
         if (stateMatches.isNotEmpty) ...[
-          _buildSearchCategoryHeader('STATES', Icons.map_rounded, const Color(0xFF6366F1)),
+          _buildSearchCategoryHeader('STATES', Icons.map_rounded, AppColors.categorySecurity),
           ...stateMatches.map((s) => _buildSearchTile(
                 title: LocationData.getLocalizedName(s, context),
                 subtitle: AppLocalizations.of(context)?.stateInIndia ?? 'State in India',
                 badgeText: 'STATE',
-                badgeColor: const Color(0xFF6366F1),
+                badgeColor: AppColors.categorySecurity,
                 onTap: () => _onLocationSelected(state: s),
                 isDark: isDark,
               )),
@@ -1496,12 +1497,12 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
 
         // Districts Matches
         if (districtMatches.isNotEmpty) ...[
-          _buildSearchCategoryHeader('DISTRICTS', Icons.location_city_rounded, const Color(0xFF0EA5E9)),
+          _buildSearchCategoryHeader('DISTRICTS', Icons.location_city_rounded, AppColors.skyBlue),
           ...districtMatches.map((d) => _buildSearchTile(
                 title: LocationData.getLocalizedName(d.value, context),
                 subtitle: 'District in ${LocationData.getLocalizedName(d.key, context)}',
                 badgeText: 'DISTRICT',
-                badgeColor: const Color(0xFF0EA5E9),
+                badgeColor: AppColors.skyBlue,
                 onTap: () => _onLocationSelected(district: d.value, state: d.key),
                 isDark: isDark,
               )),
@@ -1510,12 +1511,12 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
 
         // Talukas Matches
         if (talukaMatches.isNotEmpty) ...[
-          _buildSearchCategoryHeader('TALUKAS & CITIES', Icons.holiday_village_rounded, const Color(0xFFF59E0B)),
+          _buildSearchCategoryHeader('TALUKAS & CITIES', Icons.holiday_village_rounded, AppColors.categoryAstro),
           ...talukaMatches.map((t) => _buildSearchTile(
                 title: LocationData.getLocalizedName(t['taluka'], context),
                 subtitle: '${LocationData.getLocalizedName(t['district'], context)}, ${LocationData.getLocalizedName(t['state'], context)}',
                 badgeText: 'TALUKA',
-                badgeColor: const Color(0xFFF59E0B),
+                badgeColor: AppColors.categoryAstro,
                 onTap: () => _onLocationSelected(
                   taluka: t['taluka'],
                   district: t['district'],
@@ -1564,10 +1565,10 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF161424) : Colors.white,
+            color: isDark ? AppColors.canvasDeepDark : Colors.white,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
+              color: isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : AppColors.slate200,
             ),
             boxShadow: [
               BoxShadow(
@@ -1588,14 +1589,14 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
                       style: TextStyle(
                         fontSize: AppTypography.bodyMedium,
                         fontWeight: AppTypography.bold,
-                        color: isDark ? Colors.white : const Color(0xFF1E293B),
+                        color: isDark ? Colors.white : AppColors.slate800,
                       ),
                     ),
                     Text(
                       subtitle,
                       style: TextStyle(
                         fontSize: AppTypography.labelSmall,
-                        color: isDark ? Colors.white54 : const Color(0xFF64748B),
+                        color: isDark ? Colors.white54 : AppColors.slate500,
                       ),
                     ),
                   ],

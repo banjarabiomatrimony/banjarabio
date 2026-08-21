@@ -27,6 +27,7 @@ import 'package:banjarabio/presentation/subscription_screen/widgets/services_tab
 import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/core/session_manager.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Subscription Screen with Tabbed UI:
 /// Tab 1: Self-Service Plans (Standard, Silver, Gold, Platinum, Eternal / BVS Subsidized Plans)
@@ -303,10 +304,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
 
   Color _getCurrentPlanTextColor(PlanType planType, ThemeData theme) {
     if (planType == PlanType.gold) {
-      return const Color(0xFF422100); // deep warm bronze
+      return AppColors.amberBgDark; // deep warm bronze
     }
     if (planType == PlanType.silver && theme.brightness == Brightness.light) {
-      return const Color(0xFF263238); // slate/dark blue grey
+      return AppColors.slate800; // slate/dark blue grey
     }
     return Colors.white;
   }
@@ -320,18 +321,18 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
           borderRadius: BorderRadius.circular(22),
           gradient: LinearGradient(
             colors: isDark
-                ? [const Color(0xFF1E293B), const Color(0xFF334155), const Color(0xFF0F172A)]
-                : [const Color(0xFF475569), const Color(0xFF64748B), const Color(0xFF334155)],
+                ? [AppColors.slate800, AppColors.slate700, AppColors.slate900]
+                : [AppColors.slate600, AppColors.slate500, AppColors.slate700],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           border: Border.all(
-            color: const Color(0xFFCBD5E1).withValues(alpha: 0.4),
+            color: AppColors.slate300.withValues(alpha: AppColors.opacity40),
             width: 1.3,
           ),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF334155).withValues(alpha: 0.35),
+              color: AppColors.slate700.withValues(alpha: AppColors.opacity35),
               blurRadius: 18,
               offset: const Offset(0, 6),
             ),
@@ -342,18 +343,18 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
           borderRadius: BorderRadius.circular(22),
           gradient: LinearGradient(
             colors: isDark
-                ? [const Color(0xFF2E1C03), const Color(0xFF4A3207), const Color(0xFF1C1102)]
-                : [const Color(0xFF78350F), const Color(0xFFB45309), const Color(0xFF451A03)],
+                ? [AppColors.amberBrownBg, AppColors.amberBgDark, AppColors.amberBrownBg]
+                : [AppColors.amberDeepText, AppColors.amberDark, AppColors.amberBgDark],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           border: Border.all(
-            color: const Color(0xFFFFD700).withValues(alpha: 0.55),
+            color: AppColors.categoryVip.withValues(alpha: 0.55),
             width: 1.4,
           ),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFFD4AF37).withValues(alpha: 0.35),
+              color: AppColors.gold.withValues(alpha: AppColors.opacity35),
               blurRadius: 20,
               offset: const Offset(0, 6),
             ),
@@ -364,18 +365,18 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
           borderRadius: BorderRadius.circular(22),
           gradient: LinearGradient(
             colors: isDark
-                ? [const Color(0xFF131C2E), const Color(0xFF223554), const Color(0xFF0B111C)]
-                : [const Color(0xFF1E293B), const Color(0xFF3B82F6), const Color(0xFF0F172A)],
+                ? [AppColors.surfaceDarkNavy, AppColors.blue900, AppColors.slate900]
+                : [AppColors.slate800, AppColors.categoryCareer, AppColors.slate900],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           border: Border.all(
-            color: const Color(0xFF93C5FD).withValues(alpha: 0.45),
+            color: AppColors.blue300.withValues(alpha: 0.45),
             width: 1.3,
           ),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF3B82F6).withValues(alpha: 0.3),
+              color: AppColors.categoryCareer.withValues(alpha: AppColors.opacity30),
               blurRadius: 18,
               offset: const Offset(0, 6),
             ),
@@ -386,18 +387,18 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
           borderRadius: BorderRadius.circular(22),
           gradient: LinearGradient(
             colors: isDark
-                ? [const Color(0xFF0D1821), const Color(0xFF1B2A38), const Color(0xFF091016)]
-                : [const Color(0xFF111827), const Color(0xFF1F2937), const Color(0xFF030712)],
+                ? [AppColors.slate900, AppColors.slate800, AppColors.slate900]
+                : [AppColors.slate900, AppColors.slate800, AppColors.slate900],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           border: Border.all(
-            color: const Color(0xFFFFD700).withValues(alpha: 0.6),
+            color: AppColors.categoryVip.withValues(alpha: AppColors.opacity60),
             width: 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFFFFD700).withValues(alpha: 0.25),
+              color: AppColors.categoryVip.withValues(alpha: AppColors.opacity25),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -410,18 +411,18 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
           borderRadius: BorderRadius.circular(22),
           gradient: LinearGradient(
             colors: isDark
-                ? [const Color(0xFF20093B), const Color(0xFF3E126F), const Color(0xFF140526)]
-                : [const Color(0xFF4C1D95), const Color(0xFF6D28D9), const Color(0xFF2E1065)],
+                ? [AppColors.canvasRichDark, AppColors.deepIndigo, AppColors.canvasDeepDark]
+                : [AppColors.deepIndigo, AppColors.violetDeep, AppColors.deepIndigo],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           border: Border.all(
-            color: const Color(0xFFFFD700).withValues(alpha: 0.5),
+            color: AppColors.categoryVip.withValues(alpha: AppColors.opacity50),
             width: 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF6D28D9).withValues(alpha: 0.4),
+              color: AppColors.violetDeep.withValues(alpha: AppColors.opacity40),
               blurRadius: 20,
               offset: const Offset(0, 6),
             ),
@@ -432,18 +433,18 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
           borderRadius: BorderRadius.circular(22),
           gradient: LinearGradient(
             colors: isDark
-                ? [const Color(0xFF2C0B14), const Color(0xFF4D1122), const Color(0xFF1A050B)]
-                : [const Color(0xFF881337), const Color(0xFFBE123C), const Color(0xFF4C0519)],
+                ? [AppColors.bloodRedBg, AppColors.crimsonDarkBg, AppColors.crimsonBlack]
+                : [AppColors.crimsonMaroon, AppColors.crimsonRose, AppColors.crimsonDarkBg],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           border: Border.all(
-            color: const Color(0xFFFFD700).withValues(alpha: 0.4),
+            color: AppColors.categoryVip.withValues(alpha: AppColors.opacity40),
             width: 1.3,
           ),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFFBE123C).withValues(alpha: 0.3),
+              color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity30),
               blurRadius: 18,
               offset: const Offset(0, 6),
             ),
@@ -465,7 +466,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
       appBar: CustomAppBar(
         leading: const TactileBackButton(),
         centerTitle: false,
-        backgroundColor: isDark ? const Color(0xFF121214) : theme.scaffoldBackgroundColor,
+        backgroundColor: isDark ? AppColors.canvasCharcoal : theme.scaffoldBackgroundColor,
         elevation: 0,
         titleWidget: Column(
           mainAxisSize: MainAxisSize.min,
@@ -488,7 +489,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                 SizedBox(width: 1.5.w),
                 Icon(
                   Icons.verified_rounded,
-                  color: isDark ? const Color(0xFFFFD700) : const Color(0xFFD97706),
+                  color: isDark ? AppColors.categoryVip : AppColors.categoryAstroDark,
                   size: 16,
                 ),
               ],
@@ -500,7 +501,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                 fontWeight: AppTypography.medium,
                 color: isDark
                     ? Colors.white60
-                    : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.85),
+                    : theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity85),
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -524,8 +525,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                             ? Colors.green.withValues(alpha: 0.18)
                             : Colors.amber.withValues(alpha: 0.18))
                         : (trustDiscount > 0
-                            ? const Color(0xFFE8F5E9)
-                            : const Color(0xFFFFF8E1)),
+                            ? AppColors.greenLightBg
+                            : AppColors.goldLight),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: isDark
@@ -533,15 +534,15 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                               ? Colors.green.withValues(alpha: 0.45)
                               : Colors.amber.withValues(alpha: 0.45))
                           : (trustDiscount > 0
-                              ? const Color(0xFFA5D6A7)
-                              : const Color(0xFFFFD54F)),
+                              ? AppColors.green200
+                              : AppColors.categoryVip),
                       width: 1.2,
                     ),
                     boxShadow: [
                       BoxShadow(
                         color: (trustDiscount > 0
-                                ? (isDark ? Colors.green : const Color(0xFF81C784))
-                                : (isDark ? Colors.amber : const Color(0xFFFFD54F)))
+                                ? (isDark ? Colors.green : AppColors.successDark)
+                                : (isDark ? Colors.amber : AppColors.categoryVip))
                             .withValues(alpha: isDark ? 0.25 : 0.18),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
@@ -557,7 +558,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                             : Icons.workspace_premium_rounded,
                         color: isDark
                             ? (trustDiscount > 0 ? Colors.greenAccent : Colors.amber)
-                            : (trustDiscount > 0 ? const Color(0xFF2E7D32) : const Color(0xFFB45309)),
+                            : (trustDiscount > 0 ? AppColors.success : AppColors.amberDark),
                         size: 15,
                       ),
                       SizedBox(width: 1.2.w),
@@ -568,7 +569,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                           fontWeight: AppTypography.bold,
                           color: isDark
                               ? (trustDiscount > 0 ? Colors.greenAccent : Colors.amber.shade200)
-                              : (trustDiscount > 0 ? const Color(0xFF1B5E20) : const Color(0xFF7A1020)),
+                              : (trustDiscount > 0 ? AppColors.success : AppColors.crimson700),
                           letterSpacing: 0.4,
                         ),
                       ),
@@ -724,26 +725,26 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
           gradient: LinearGradient(
             colors: isDark
                 ? [
-                    const Color(0xFF5E0D1B),
-                    const Color(0xFF380712),
+                    AppColors.wineDark,
+                    AppColors.bloodRedBg,
                   ]
                 : [
-                    const Color(0xFF8B1A2E), // BVS Crimson
-                    const Color(0xFF6B1020),
+                    AppColors.crimsonDeep, // BVS Crimson
+                    AppColors.wineDark,
                   ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF8B1A2E)
+              color: AppColors.crimsonDeep
                   .withValues(alpha: isDark ? 0.35 : 0.22),
               blurRadius: 10,
               offset: const Offset(0, 3),
             ),
           ],
           border: Border.all(
-            color: const Color(0xFFFFD700).withValues(alpha: 0.55),
+            color: AppColors.categoryVip.withValues(alpha: 0.55),
             width: 1.2,
           ),
         ),
@@ -755,7 +756,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                 color: Colors.white,
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: const Color(0xFFFFD700),
+                  color: AppColors.categoryVip,
                   width: 1.2,
                 ),
               ),
@@ -792,7 +793,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                               horizontal: 5, vertical: 1),
                           decoration: BoxDecoration(
                             gradient: const LinearGradient(
-                              colors: [Color(0xFFFFD700), Color(0xFFFFA000)],
+                              colors: [AppColors.categoryVip, AppColors.categoryVipDark],
                             ),
                             borderRadius: BorderRadius.circular(4),
                           ),
@@ -850,25 +851,25 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
             gradient: LinearGradient(
               colors: isDark
                   ? [
-                      const Color(0xFF2C0B14),
-                      const Color(0xFF1E0A24),
-                      const Color(0xFF120317),
+                      AppColors.bloodRedBg,
+                      AppColors.surfaceDarkBluePurple,
+                      AppColors.canvasCharcoal,
                     ]
                   : [
-                      const Color(0xFF7A1020),
-                      const Color(0xFF530D29),
-                      const Color(0xFF380720),
+                      AppColors.crimson700,
+                      AppColors.crimsonDarkBg,
+                      AppColors.bloodRedBg,
                     ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             border: Border.all(
-              color: const Color(0xFFFFD700).withValues(alpha: 0.45),
+              color: AppColors.categoryVip.withValues(alpha: 0.45),
               width: 1.2,
             ),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF7A1020)
+                color: AppColors.crimson700
                     .withValues(alpha: isDark ? 0.35 : 0.2),
                 blurRadius: 12,
                 offset: const Offset(0, 4),
@@ -880,12 +881,12 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
               Container(
                 padding: const EdgeInsets.all(7),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFD700).withValues(alpha: 0.15),
+                  color: AppColors.categoryVip.withValues(alpha: AppColors.opacity15),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
                   Icons.workspace_premium_rounded,
-                  color: Color(0xFFFFD700),
+                  color: AppColors.categoryVip,
                   size: 22,
                 ),
               ),
@@ -923,7 +924,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                       horizontal: 2.5.w, vertical: 0.45.h),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
-                      colors: [Color(0xFFFFD700), Color(0xFFFFA000)],
+                      colors: [AppColors.categoryVip, AppColors.categoryVipDark],
                     ),
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -969,14 +970,14 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                       isVip
                           ? Icons.diamond_rounded
                           : Icons.workspace_premium_rounded,
-                      color: const Color(0xFFFFD700),
+                      color: AppColors.categoryVip,
                       size: 18,
                     ),
                     SizedBox(width: 1.5.w),
                     Text(
                       isVip ? 'VIP CONCIERGE MEMBER' : 'PREMIUM ACTIVE MEMBER',
                       style: TextStyle(
-                        color: const Color(0xFFFFD700),
+                        color: AppColors.categoryVip,
                         fontWeight: AppTypography.bold,
                         fontSize: AppTypography.labelSmall,
                         letterSpacing: 0.8,
@@ -990,10 +991,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                     padding: EdgeInsets.symmetric(
                         horizontal: 2.2.w, vertical: 0.3.h),
                     decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.35),
+                      color: Colors.black.withValues(alpha: AppColors.opacity35),
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                        color: Colors.greenAccent.withValues(alpha: 0.6),
+                        color: Colors.greenAccent.withValues(alpha: AppColors.opacity60),
                       ),
                     ),
                     child: Row(
@@ -1050,7 +1051,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                       color: Colors.white.withValues(alpha: 0.16),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.2),
+                        color: Colors.white.withValues(alpha: AppColors.opacity20),
                       ),
                     ),
                     child: Row(
@@ -1075,16 +1076,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                     padding: EdgeInsets.symmetric(
                         horizontal: 2.2.w, vertical: 0.35.h),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFFD700).withValues(alpha: 0.2),
+                      color: AppColors.categoryVip.withValues(alpha: AppColors.opacity20),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: const Color(0xFFFFD700).withValues(alpha: 0.4),
+                        color: AppColors.categoryVip.withValues(alpha: AppColors.opacity40),
                       ),
                     ),
                     child: Text(
                       '👑 Lifetime',
                       style: TextStyle(
-                        color: const Color(0xFFFFD700),
+                        color: AppColors.categoryVip,
                         fontSize: AppTypography.labelSmall,
                         fontWeight: AppTypography.bold,
                       ),
@@ -1115,7 +1116,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 2.2.w, vertical: 0.3.h),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.12),
+        color: Colors.white.withValues(alpha: AppColors.opacity12),
         borderRadius: BorderRadius.circular(6),
         border: Border.all(
           color: Colors.white.withValues(alpha: 0.18),
@@ -1145,8 +1146,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
       blur: 20,
       border: Border.all(
         color: hasCoupon
-            ? Colors.green.withValues(alpha: 0.5)
-            : theme.colorScheme.outlineVariant.withValues(alpha: 0.25),
+            ? Colors.green.withValues(alpha: AppColors.opacity50)
+            : theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity25),
         width: 1.2,
       ),
       child: Column(
@@ -1161,9 +1162,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                     Icons.local_offer_rounded,
                     size: 18,
                     color: hasCoupon
-                        ? (isDark ? Colors.greenAccent : const Color(0xFF2E7D32))
+                        ? (isDark ? Colors.greenAccent : AppColors.success)
                         : (isDark
-                            ? const Color(0xFFFFD700)
+                            ? AppColors.categoryVip
                             : theme.colorScheme.primary),
                   ),
                   SizedBox(width: 1.8.w),
@@ -1189,10 +1190,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                     padding: EdgeInsets.symmetric(
                         horizontal: 2.2.w, vertical: 0.3.h),
                     decoration: BoxDecoration(
-                      color: Colors.red.withValues(alpha: 0.12),
+                      color: Colors.red.withValues(alpha: AppColors.opacity12),
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
-                        color: Colors.red.withValues(alpha: 0.25),
+                        color: Colors.red.withValues(alpha: AppColors.opacity25),
                       ),
                     ),
                     child: Text(
@@ -1222,15 +1223,15 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                       hintStyle: TextStyle(
                         fontSize: AppTypography.labelSmall,
                         color: theme.colorScheme.onSurfaceVariant
-                            .withValues(alpha: 0.6),
+                            .withValues(alpha: AppColors.opacity60),
                       ),
                       filled: true,
-                      fillColor: theme.cardColor.withValues(alpha: 0.5),
+                      fillColor: theme.cardColor.withValues(alpha: AppColors.opacity50),
                       prefixIcon: Icon(
                         Icons.discount_outlined,
                         size: 16,
                         color: theme.colorScheme.onSurfaceVariant
-                            .withValues(alpha: 0.7),
+                            .withValues(alpha: AppColors.opacity70),
                       ),
                       suffixIcon: hasCoupon
                           ? const Icon(Icons.check_circle_rounded,
@@ -1240,14 +1241,14 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide(
                           color: theme.colorScheme.outlineVariant
-                              .withValues(alpha: 0.4),
+                              .withValues(alpha: AppColors.opacity40),
                         ),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide(
                           color: theme.colorScheme.outlineVariant
-                              .withValues(alpha: 0.25),
+                              .withValues(alpha: AppColors.opacity25),
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
@@ -1288,7 +1289,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                           ? [Colors.green.shade600, Colors.green.shade800]
                           : [
                               theme.colorScheme.primary,
-                              theme.colorScheme.primary.withValues(alpha: 0.85),
+                              theme.colorScheme.primary.withValues(alpha: AppColors.opacity85),
                             ],
                     ),
                     borderRadius: BorderRadius.circular(10),
@@ -1297,7 +1298,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                         color: (hasCoupon
                                 ? Colors.green
                                 : theme.colorScheme.primary)
-                            .withValues(alpha: 0.25),
+                            .withValues(alpha: AppColors.opacity25),
                         blurRadius: 6,
                         offset: const Offset(0, 2),
                       ),
@@ -1342,13 +1343,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                     EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.8.h),
                 decoration: BoxDecoration(
                   color: isDark
-                      ? const Color(0xFF1E1E24).withValues(alpha: 0.6)
-                      : const Color(0xFFF1F5F9),
+                      ? AppColors.canvasNearBlack.withValues(alpha: AppColors.opacity60)
+                      : AppColors.slate100,
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
                     color: isDark
-                        ? const Color(0xFFFFD700).withValues(alpha: 0.3)
-                        : const Color(0xFFD97706).withValues(alpha: 0.25),
+                        ? AppColors.categoryVip.withValues(alpha: AppColors.opacity30)
+                        : AppColors.categoryAstroDark.withValues(alpha: AppColors.opacity25),
                   ),
                 ),
                 child: Row(
@@ -1357,8 +1358,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                       Icons.auto_awesome,
                       size: 14,
                       color: isDark
-                          ? const Color(0xFFFFD700)
-                          : const Color(0xFFD97706),
+                          ? AppColors.categoryVip
+                          : AppColors.categoryAstroDark,
                     ),
                     SizedBox(width: 1.8.w),
                     Expanded(
@@ -1368,8 +1369,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                           fontSize: AppTypography.labelSmall,
                           fontWeight: AppTypography.bold,
                           color: isDark
-                              ? const Color(0xFFFFD700)
-                              : const Color(0xFF92400E),
+                              ? AppColors.categoryVip
+                              : AppColors.amberDarkestText,
                         ),
                       ),
                     ),
@@ -1379,8 +1380,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                           : Icons.keyboard_arrow_down_rounded,
                       size: 18,
                       color: isDark
-                          ? const Color(0xFFFFD700)
-                          : const Color(0xFF92400E),
+                          ? AppColors.categoryVip
+                          : AppColors.amberDarkestText,
                     ),
                   ],
                 ),
@@ -1415,9 +1416,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
                           color: isSelected
-                              ? Colors.green.withValues(alpha: 0.6)
+                              ? Colors.green.withValues(alpha: AppColors.opacity60)
                               : theme.colorScheme.outlineVariant
-                                  .withValues(alpha: 0.25),
+                                  .withValues(alpha: AppColors.opacity25),
                           width: isSelected ? 1.3 : 1.0,
                         ),
                       ),
@@ -1428,13 +1429,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                                 horizontal: 2.w, vertical: 0.3.h),
                             decoration: BoxDecoration(
                               color: isDark
-                                  ? const Color(0xFFFFD700)
-                                  : const Color(0xFFFEF3C7),
+                                  ? AppColors.categoryVip
+                                  : AppColors.goldTint100,
                               borderRadius: BorderRadius.circular(6),
                               border: Border.all(
                                 color: isDark
-                                    ? const Color(0xFFFFD700)
-                                    : const Color(0xFFF59E0B),
+                                    ? AppColors.categoryVip
+                                    : AppColors.categoryAstro,
                               ),
                             ),
                             child: Text(
@@ -1444,7 +1445,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                                 fontWeight: AppTypography.bold,
                                 color: isDark
                                     ? Colors.black
-                                    : const Color(0xFFB45309),
+                                    : AppColors.amberDark,
                                 letterSpacing: 0.5,
                               ),
                             ),
@@ -1471,7 +1472,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                                     style: TextStyle(
                                       fontSize: AppTypography.labelTiny,
                                       color: theme.colorScheme.onSurfaceVariant
-                                          .withValues(alpha: 0.8),
+                                          .withValues(alpha: AppColors.opacity80),
                                     ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
@@ -1482,7 +1483,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                                   style: TextStyle(
                                     fontSize: AppTypography.labelTiny,
                                     color: theme.colorScheme.onSurfaceVariant
-                                        .withValues(alpha: 0.6),
+                                        .withValues(alpha: AppColors.opacity60),
                                   ),
                                 ),
                               ],
@@ -1496,7 +1497,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                               color: isSelected
                                   ? Colors.green
                                   : theme.colorScheme.primary
-                                      .withValues(alpha: 0.12),
+                                      .withValues(alpha: AppColors.opacity12),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
@@ -1528,7 +1529,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                 color: Colors.green.withValues(alpha: isDark ? 0.15 : 0.08),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: Colors.green.withValues(alpha: 0.3),
+                  color: Colors.green.withValues(alpha: AppColors.opacity30),
                 ),
               ),
               child: Row(

@@ -15,6 +15,7 @@ import 'package:banjarabio/notification/core/notification_payload.dart';
 import 'package:banjarabio/notification/widgets/in_app_notification_overlay.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/theme/app_gradients.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// The Bridge orchestrates interaction between FCM (Push) and Local Notification (UI).
 ///
@@ -175,7 +176,7 @@ class NotificationBridge {
             borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.25),
+                color: Colors.black.withValues(alpha: AppColors.opacity25),
                 blurRadius: 30,
                 spreadRadius: 5,
                 offset: const Offset(0, -5),
@@ -193,7 +194,7 @@ class NotificationBridge {
                     width: 44,
                     height: 5,
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
+                      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity30),
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
@@ -208,7 +209,7 @@ class NotificationBridge {
                         height: 90,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                          color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
                         ),
                       ),
                       Container(
@@ -219,7 +220,7 @@ class NotificationBridge {
                           gradient: AppGradients.romance,
                           boxShadow: [
                             BoxShadow(
-                              color: theme.colorScheme.primary.withValues(alpha: 0.4),
+                              color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity40),
                               blurRadius: 16,
                               offset: const Offset(0, 6),
                             ),
@@ -259,21 +260,21 @@ class NotificationBridge {
                   // Feature Cards
                   _PermissionBenefitTile(
                     icon: Icons.favorite_rounded,
-                    iconColor: const Color(0xFFE91E63),
+                    iconColor: AppColors.materialPink,
                     title: AppLocalizations.of(context)?.instantMatchAlerts ?? 'Instant Match Alerts',
                     subtitle: AppLocalizations.of(context)?.instantMatchAlertsSubtitle ?? 'Get notified immediately when mutual interest is accepted.',
                   ),
                   const SizedBox(height: 12),
                   _PermissionBenefitTile(
                     icon: Icons.chat_bubble_rounded,
-                    iconColor: const Color(0xFF009688),
+                    iconColor: AppColors.teal,
                     title: AppLocalizations.of(context)?.directMessages ?? 'Direct Messages',
                     subtitle: AppLocalizations.of(context)?.directMessagesSubtitle ?? 'Stay responsive when your match sends you a message.',
                   ),
                   const SizedBox(height: 12),
                   _PermissionBenefitTile(
                     icon: Icons.auto_awesome_rounded,
-                    iconColor: const Color(0xFFFF9800),
+                    iconColor: AppColors.materialOrange,
                     title: AppLocalizations.of(context)?.smartRecommendations ?? 'Smart Recommendations',
                     subtitle: AppLocalizations.of(context)?.smartRecommendationsSubtitle ?? 'Receive curated bio recommendations tailored for you.',
                   ),
@@ -284,10 +285,10 @@ class NotificationBridge {
                     width: double.infinity,
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: AppColors.opacity50),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
+                        color: theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity50),
                       ),
                     ),
                     child: Row(
@@ -324,7 +325,7 @@ class NotificationBridge {
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: theme.colorScheme.primary.withValues(alpha: 0.35),
+                          color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity35),
                           blurRadius: 12,
                           offset: const Offset(0, 5),
                         ),
@@ -425,7 +426,7 @@ class _PermissionBenefitTile extends StatelessWidget {
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.4),
+          color: theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity40),
         ),
       ),
       child: Row(
@@ -433,7 +434,7 @@ class _PermissionBenefitTile extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: iconColor.withValues(alpha: 0.12),
+              color: iconColor.withValues(alpha: AppColors.opacity12),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(

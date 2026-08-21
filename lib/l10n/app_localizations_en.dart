@@ -5428,4 +5428,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get zeroPercentCommission => '💰 0% Commission';
+
+  @override
+  String get inbox => 'Inbox';
+
+  @override
+  String get services => 'Services';
 }

@@ -51,7 +51,7 @@ class CreationDiscardDialog {
           toastLength: Toast.LENGTH_SHORT,
           timeInSecForIosWeb: 2,
           gravity: ToastGravity.BOTTOM,
-          backgroundColor: const Color(0xFF10B981),
+          backgroundColor: AppColors.categoryLocation,
           textColor: Colors.white,
         );
         if (isAdminEdit) {

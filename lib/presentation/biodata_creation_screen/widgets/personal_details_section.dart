@@ -15,6 +15,7 @@ import 'package:banjarabio/presentation/biodata_creation_screen/widgets/personal
 import 'package:banjarabio/presentation/biodata_creation_screen/widgets/personal_details/dob_field_widget.dart';
 import 'package:banjarabio/presentation/biodata_creation_screen/widgets/personal_details/disability_status_widget.dart';
 import 'package:banjarabio/presentation/biodata_creation_screen/widgets/personal_details/surname_gotra_selector_widget.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Personal details section for biodata creation
 /// Handles name, age, height, and surname selection
@@ -474,7 +475,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
                   children: [
                     CustomIconWidget(
                       iconName: e['icon']!,
-                      color: theme.colorScheme.primary.withValues(alpha: 0.6),
+                      color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity60),
                       size: 18,
                     ),
                     SizedBox(width: 3.w),
@@ -655,7 +656,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
                         children: [
                           CustomIconWidget(
                             iconName: 'face',
-                            color: theme.colorScheme.primary.withValues(alpha: 0.6),
+                            color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity60),
                             size: 18,
                           ),
                           SizedBox(width: 2.w),
@@ -681,7 +682,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
                         children: [
                           CustomIconWidget(
                             iconName: 'bloodtype',
-                            color: Colors.red.withValues(alpha: 0.7),
+                            color: Colors.red.withValues(alpha: AppColors.opacity70),
                             size: 18,
                           ),
                           SizedBox(width: 2.w),
@@ -715,7 +716,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
                     children: [
                       CustomIconWidget(
                         iconName: iconPath,
-                        color: theme.colorScheme.primary.withValues(alpha: 0.6),
+                        color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity60),
                         size: 18,
                       ),
                       SizedBox(width: 3.w),

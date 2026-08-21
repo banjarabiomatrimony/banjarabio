@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Reusable premium card wrapper used across biodata form sections.
 class PremiumCardWrapper extends StatelessWidget {
@@ -25,7 +26,7 @@ class PremiumCardWrapper extends StatelessWidget {
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.12),
+          color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity12),
         ),
         boxShadow: [
           BoxShadow(
@@ -46,7 +47,7 @@ class PremiumCardWrapper extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(7),
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.12),
+                    color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity12),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(
@@ -72,7 +73,7 @@ class PremiumCardWrapper extends StatelessWidget {
           ),
           Divider(
             height: 1,
-            color: theme.colorScheme.outline.withValues(alpha: 0.08),
+            color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity8),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),

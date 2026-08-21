@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/presentation/biodata_editor_screen/widgets/biodata_ui_helpers.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Horizontal language picker for the Biodata Editor.
 /// Extracted from BiodataEditorScreen._buildLanguagePicker.
@@ -74,7 +75,7 @@ class EditorLanguagePickerWidget extends StatelessWidget {
                           boxShadow: isSelected
                               ? [
                                   BoxShadow(
-                                    color: BiodataTheme.royalGold.withValues(alpha: 0.25),
+                                    color: BiodataTheme.royalGold.withValues(alpha: AppColors.opacity25),
                                     blurRadius: 8,
                                     offset: const Offset(0, 2),
                                   ),

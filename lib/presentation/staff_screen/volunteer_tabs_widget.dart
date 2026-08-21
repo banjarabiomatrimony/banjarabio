@@ -7,6 +7,7 @@ import 'package:banjarabio/core/data/location_data.dart';
 import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/presentation/staff_screen/widgets/melava_biodata_digitizer_dialog.dart';
 import 'package:banjarabio/routes/app_routes.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Self-contained volunteer tabs widget that can be embedded inside any host Scaffold.
 /// Manages its own TabController, state, and VolunteerRepository interactions.
@@ -319,8 +320,8 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
   // ─── BUILD ──────────────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
-    const kBgDark = Color(0xFF0F0F1A);
-    const kAccentColor = Color(0xFF6C63FF);
+    const kBgDark = AppColors.canvasCharcoal;
+    const kAccentColor = AppColors.violetDigital;
 
     return Scaffold(
       backgroundColor: kBgDark,
@@ -399,7 +400,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
         color: theme.cardColor,
         border: Border(
           bottom: BorderSide(
-            color: theme.primaryColor.withValues(alpha: 0.08),
+            color: theme.primaryColor.withValues(alpha: AppColors.opacity8),
           ),
         ),
       ),
@@ -476,7 +477,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
               Container(
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.1),
+                  color: color.withValues(alpha: AppColors.opacity10),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(icon, color: color, size: 14),
@@ -512,7 +513,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
               Text(
                 ' / $target',
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity60),
                   fontWeight: AppTypography.medium,
                   fontSize: AppTypography.bodySmall,
                 ),
@@ -524,7 +525,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
               value: percent,
-              backgroundColor: color.withValues(alpha: 0.1),
+              backgroundColor: color.withValues(alpha: AppColors.opacity10),
               valueColor: AlwaysStoppedAnimation<Color>(isTargetMet ? Colors.green : color),
               minHeight: 4,
             ),
@@ -569,7 +570,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
             decoration: InputDecoration(
               hintText: 'Search by name, phone, BB-ID…',
               hintStyle: theme.textTheme.bodyLarge?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity50),
               ),
               filled: true,
               fillColor: theme.cardColor,
@@ -577,13 +578,13 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: BorderSide(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.15),
+                  color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity15),
                 ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: BorderSide(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.15),
+                  color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity15),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
@@ -614,7 +615,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                   child: Text(
                     _searchCtrl.text.isEmpty ? 'Enter a search term' : 'No results found',
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity60),
                     ),
                   ),
                 )
@@ -649,9 +650,9 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
-        color: badgeColor.withValues(alpha: 0.1),
+        color: badgeColor.withValues(alpha: AppColors.opacity10),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: badgeColor.withValues(alpha: 0.2)),
+        border: Border.all(color: badgeColor.withValues(alpha: AppColors.opacity20)),
       ),
       child: Text(
         displayStatus,
@@ -687,7 +688,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.15),
+                      color: Colors.black.withValues(alpha: AppColors.opacity15),
                       blurRadius: 10,
                       offset: const Offset(0, -2),
                     ),
@@ -703,7 +704,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                         width: 48,
                         height: 4,
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
+                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity20),
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
@@ -745,7 +746,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                               setSheetState(() => selectedOutcome = outcome);
                             }
                           },
-                          selectedColor: theme.primaryColor.withValues(alpha: 0.15),
+                          selectedColor: theme.primaryColor.withValues(alpha: AppColors.opacity15),
                           checkmarkColor: theme.primaryColor,
                           labelStyle: TextStyle(
                             color: isSelected ? theme.primaryColor : theme.colorScheme.onSurface,
@@ -754,7 +755,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                             side: BorderSide(
-                              color: isSelected ? theme.primaryColor : theme.colorScheme.outline.withValues(alpha: 0.2),
+                              color: isSelected ? theme.primaryColor : theme.colorScheme.outline.withValues(alpha: AppColors.opacity20),
                             ),
                           ),
                         );
@@ -776,7 +777,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                       decoration: InputDecoration(
                         hintText: 'Enter call notes (e.g. details discussed, callback time, etc.)',
                         hintStyle: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity50),
                         ),
                         filled: true,
                         fillColor: theme.cardColor,
@@ -784,13 +785,13 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(
-                            color: theme.colorScheme.outline.withValues(alpha: 0.15),
+                            color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity15),
                           ),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(
-                            color: theme.colorScheme.outline.withValues(alpha: 0.15),
+                            color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity15),
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
@@ -813,7 +814,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              side: BorderSide(color: theme.colorScheme.outline.withValues(alpha: 0.3)),
+                              side: BorderSide(color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity30)),
                             ),
                             child: Text(
                               'Cancel',
@@ -892,7 +893,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: theme.colorScheme.outline.withValues(alpha: 0.1),
+          color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity10),
         ),
       ),
       child: Padding(
@@ -901,7 +902,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
           children: [
             CircleAvatar(
               radius: 24,
-              backgroundColor: avatarColor.withValues(alpha: 0.1),
+              backgroundColor: avatarColor.withValues(alpha: AppColors.opacity10),
               child: Text(
                 initials,
                 style: TextStyle(
@@ -953,7 +954,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                         Icon(
                           Icons.phone_iphone_rounded,
                           size: 14,
-                          color: theme.primaryColor.withValues(alpha: 0.7),
+                          color: theme.primaryColor.withValues(alpha: AppColors.opacity70),
                         ),
                         const SizedBox(width: 4),
                         Text(
@@ -993,7 +994,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
               onPressed: () => _openCorrection(p),
               style: IconButton.styleFrom(
                 foregroundColor: theme.primaryColor,
-                backgroundColor: theme.primaryColor.withValues(alpha: 0.1),
+                backgroundColor: theme.primaryColor.withValues(alpha: AppColors.opacity10),
               ),
             ),
           ],
@@ -1218,7 +1219,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
               decoration: InputDecoration(
                 hintText: 'Search profile to correct…',
                 hintStyle: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity50),
                 ),
                 filled: true,
                 fillColor: theme.cardColor,
@@ -1226,13 +1227,13 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide(
-                    color: theme.colorScheme.outline.withValues(alpha: 0.15),
+                    color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity15),
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide(
-                    color: theme.colorScheme.outline.withValues(alpha: 0.15),
+                    color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity15),
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
@@ -1266,7 +1267,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                         Icon(
                           Icons.edit_note_rounded,
                           size: 64,
-                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
+                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity30),
                         ),
                         const SizedBox(height: 12),
                         Text(
@@ -1274,7 +1275,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                               ? 'Search & select a profile to correct'
                               : 'No profiles found',
                           style: theme.textTheme.bodyLarge?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity60),
                           ),
                         ),
                       ],
@@ -1295,10 +1296,10 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: theme.primaryColor.withValues(alpha: 0.08),
+            color: theme.primaryColor.withValues(alpha: AppColors.opacity8),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: theme.primaryColor.withValues(alpha: 0.15),
+              color: theme.primaryColor.withValues(alpha: AppColors.opacity15),
             ),
           ),
           child: Row(
@@ -1541,7 +1542,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: theme.colorScheme.outline.withValues(alpha: 0.1),
+          color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity10),
         ),
       ),
       clipBehavior: Clip.antiAlias,
@@ -1613,7 +1614,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity50),
               ),
               prefixIcon: prefixIcon != null
                   ? Icon(prefixIcon, color: theme.colorScheme.onSurfaceVariant, size: 20)
@@ -1624,13 +1625,13 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.15),
+                  color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity15),
                 ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.15),
+                  color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity15),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
@@ -1706,7 +1707,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity50),
               ),
               prefixIcon: prefixIcon != null
                   ? Icon(prefixIcon, color: theme.colorScheme.onSurfaceVariant, size: 20)
@@ -1717,13 +1718,13 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.15),
+                  color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity15),
                 ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.15),
+                  color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity15),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
@@ -1837,7 +1838,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
         color: theme.cardColor,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: theme.primaryColor.withValues(alpha: 0.1),
+          color: theme.primaryColor.withValues(alpha: AppColors.opacity10),
         ),
         boxShadow: [
           BoxShadow(
@@ -1872,7 +1873,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
               Container(
                 height: 32,
                 width: 1,
-                color: theme.dividerColor.withValues(alpha: 0.5),
+                color: theme.dividerColor.withValues(alpha: AppColors.opacity50),
               ),
               Expanded(
                 child: _buildLifetimeStatItem(
@@ -1885,7 +1886,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
               Container(
                 height: 32,
                 width: 1,
-                color: theme.dividerColor.withValues(alpha: 0.5),
+                color: theme.dividerColor.withValues(alpha: AppColors.opacity50),
               ),
               Expanded(
                 child: _buildLifetimeStatItem(
@@ -1914,7 +1915,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
             Text(
               label,
               style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity80),
                 fontSize: AppTypography.bodySmall,
               ),
             ),
@@ -1943,7 +1944,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
           color: theme.scaffoldBackgroundColor,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: theme.primaryColor.withValues(alpha: 0.15),
+            color: theme.primaryColor.withValues(alpha: AppColors.opacity15),
           ),
         ),
         padding: const EdgeInsets.all(4),
@@ -2035,7 +2036,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
               Icon(
                 isCalls ? Icons.phone_disabled_rounded : Icons.person_add_disabled_rounded,
                 size: 64,
-                color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
+                color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity30),
               ),
               const SizedBox(height: 16),
               Text(
@@ -2050,7 +2051,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                 'Pull down to refresh and fetch latest activity',
                 style: TextStyle(
                   fontSize: AppTypography.bodyMedium,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                  color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity60),
                 ),
               ),
             ],
@@ -2086,7 +2087,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: theme.primaryColor.withValues(alpha: 0.08),
+          color: theme.primaryColor.withValues(alpha: AppColors.opacity8),
         ),
       ),
       color: theme.cardColor,
@@ -2112,7 +2113,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                       Text(
                         timeStr,
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity60),
                         ),
                       ),
                     ],
@@ -2121,7 +2122,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
-                    color: _getOutcomeColor(outcome).withValues(alpha: 0.1),
+                    color: _getOutcomeColor(outcome).withValues(alpha: AppColors.opacity10),
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Text(
@@ -2150,7 +2151,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                       _openCallLoggingSheet(mockProfile);
                     },
                     style: IconButton.styleFrom(
-                      backgroundColor: Colors.green.withValues(alpha: 0.1),
+                      backgroundColor: Colors.green.withValues(alpha: AppColors.opacity10),
                       padding: const EdgeInsets.all(8),
                       minimumSize: Size.zero,
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -2168,14 +2169,14 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                   color: theme.scaffoldBackgroundColor,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: theme.primaryColor.withValues(alpha: 0.05),
+                    color: theme.primaryColor.withValues(alpha: AppColors.opacity5),
                   ),
                 ),
                 child: Text(
                   notes,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     fontStyle: FontStyle.italic,
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                    color: theme.colorScheme.onSurface.withValues(alpha: AppColors.opacity80),
                   ),
                 ),
               ),
@@ -2203,7 +2204,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: theme.primaryColor.withValues(alpha: 0.08),
+          color: theme.primaryColor.withValues(alpha: AppColors.opacity8),
         ),
       ),
       color: theme.cardColor,
@@ -2227,7 +2228,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                     Text(
                       phone,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity80),
                         fontWeight: AppTypography.medium,
                       ),
                     ),
@@ -2239,14 +2240,14 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                         Icon(
                           Icons.location_on_rounded,
                           size: 12,
-                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity50),
                         ),
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
                             location,
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity60),
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -2259,7 +2260,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                   Text(
                     'Registered $timeStr',
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.primaryColor.withValues(alpha: 0.7),
+                      color: theme.primaryColor.withValues(alpha: AppColors.opacity70),
                       fontWeight: AppTypography.medium,
                     ),
                   ),
@@ -2279,7 +2280,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
                   _openCallLoggingSheet(mockProfile);
                 },
                 style: IconButton.styleFrom(
-                  backgroundColor: Colors.green.withValues(alpha: 0.1),
+                  backgroundColor: Colors.green.withValues(alpha: AppColors.opacity10),
                   padding: const EdgeInsets.all(10),
                 ),
               ),

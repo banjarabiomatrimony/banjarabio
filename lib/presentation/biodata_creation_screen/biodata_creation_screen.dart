@@ -186,7 +186,7 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
           toastLength: Toast.LENGTH_SHORT,
           timeInSecForIosWeb: 2,
           gravity: ToastGravity.BOTTOM,
-          backgroundColor: const Color(0xFFD97706),
+          backgroundColor: AppColors.categoryAstroDark,
           textColor: Colors.white,
         );
       }
@@ -765,7 +765,7 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
                       toastLength: Toast.LENGTH_SHORT,
                       timeInSecForIosWeb: 2,
                       gravity: ToastGravity.BOTTOM,
-                      backgroundColor: const Color(0xFF10B981),
+                      backgroundColor: AppColors.categoryLocation,
                       textColor: Colors.white,
                     );
                     // Navigate to user type selection for new users, home for existing, pop for admin
@@ -805,13 +805,13 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        const Color(0xFFD4AF37).withValues(alpha: 0.12),
+                        AppColors.gold.withValues(alpha: AppColors.opacity12),
                         theme.colorScheme.primary.withValues(alpha: 0.06),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: const Color(0xFFD4AF37).withValues(alpha: 0.4),
+                      color: AppColors.gold.withValues(alpha: AppColors.opacity40),
                     ),
                   ),
                   child: Row(

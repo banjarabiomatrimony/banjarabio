@@ -3,7 +3,6 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/core/app_export.dart';
-import 'package:banjarabio/widgets/custom_icon_widget.dart';
 
 /// Education and profession section for biodata creation
 /// Handles educational qualification and professional details
@@ -367,10 +366,10 @@ class _EducationProfessionSectionState
     return Container(
       padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface.withValues(alpha: 0.7),
+        color: theme.colorScheme.surface.withValues(alpha: AppColors.opacity70),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.1),
+          color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity10),
         ),
         boxShadow: [
           BoxShadow(
@@ -388,7 +387,7 @@ class _EducationProfessionSectionState
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primaryContainer.withValues(alpha: 0.5),
+                  color: theme.colorScheme.primaryContainer.withValues(alpha: AppColors.opacity50),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: CustomIconWidget(
@@ -441,7 +440,7 @@ class _EducationProfessionSectionState
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: CustomIconWidget(
                 iconName: 'currency_rupee',
-                color: theme.colorScheme.primary.withValues(alpha: 0.7),
+                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
                 size: 20,
               ),
             ),
@@ -449,7 +448,7 @@ class _EducationProfessionSectionState
             contentPadding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 4.w),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
+              borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity20)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
@@ -471,7 +470,7 @@ class _EducationProfessionSectionState
                 children: [
                   CustomIconWidget(
                     iconName: iconPath,
-                    color: theme.colorScheme.primary.withValues(alpha: 0.6),
+                    color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity60),
                     size: 18,
                   ),
                   SizedBox(width: 3.w),
@@ -533,7 +532,7 @@ class _EducationProfessionSectionState
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: CustomIconWidget(
                 iconName: 'school',
-                color: theme.colorScheme.primary.withValues(alpha: 0.7),
+                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
                 size: 20,
               ),
             ),
@@ -541,7 +540,7 @@ class _EducationProfessionSectionState
             contentPadding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 4.w),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
+              borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity20)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
@@ -564,7 +563,7 @@ class _EducationProfessionSectionState
                 children: [
                   CustomIconWidget(
                     iconName: iconPath,
-                    color: theme.colorScheme.primary.withValues(alpha: 0.6),
+                    color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity60),
                     size: 18,
                   ),
                   SizedBox(width: 3.w),
@@ -612,7 +611,7 @@ class _EducationProfessionSectionState
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: CustomIconWidget(
                 iconName: 'edit',
-                color: theme.colorScheme.primary.withValues(alpha: 0.7),
+                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
                 size: 20,
               ),
             ),
@@ -620,7 +619,7 @@ class _EducationProfessionSectionState
             contentPadding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 4.w),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
+              borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity20)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
@@ -678,7 +677,7 @@ class _EducationProfessionSectionState
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: CustomIconWidget(
                 iconName: 'work',
-                color: theme.colorScheme.primary.withValues(alpha: 0.7),
+                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
                 size: 20,
               ),
             ),
@@ -686,7 +685,7 @@ class _EducationProfessionSectionState
             contentPadding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 4.w),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
+              borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity20)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
@@ -712,7 +711,7 @@ class _EducationProfessionSectionState
                 children: [
                   CustomIconWidget(
                     iconName: iconPath,
-                    color: theme.colorScheme.primary.withValues(alpha: 0.6),
+                    color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity60),
                     size: 18,
                   ),
                   SizedBox(width: 3.w),
@@ -759,7 +758,7 @@ class _EducationProfessionSectionState
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: CustomIconWidget(
                 iconName: 'edit',
-                color: theme.colorScheme.primary.withValues(alpha: 0.7),
+                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
                 size: 20,
               ),
             ),
@@ -767,7 +766,7 @@ class _EducationProfessionSectionState
             contentPadding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 4.w),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
+              borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity20)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
@@ -815,7 +814,7 @@ class _EducationProfessionSectionState
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: CustomIconWidget(
                 iconName: icon,
-                color: theme.colorScheme.primary.withValues(alpha: 0.7),
+                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
                 size: 20,
               ),
             ),
@@ -823,7 +822,7 @@ class _EducationProfessionSectionState
             contentPadding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 4.w),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
+              borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity20)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),

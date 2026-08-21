@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// A stylish modal bottom sheet displayed after successful authentication
 /// showcasing the 6 core trust pillars of BanjaraBio.
@@ -27,7 +28,7 @@ class PostAuthWelcomeSheet extends StatelessWidget {
         borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.15),
+            color: Colors.black.withValues(alpha: AppColors.opacity15),
             blurRadius: 20,
             offset: const Offset(0, -4),
           ),
@@ -45,7 +46,7 @@ class PostAuthWelcomeSheet extends StatelessWidget {
                 width: 40,
                 height: 4.5,
                 decoration: BoxDecoration(
-                  color: theme.dividerColor.withValues(alpha: 0.4),
+                  color: theme.dividerColor.withValues(alpha: AppColors.opacity40),
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
@@ -58,15 +59,15 @@ class PostAuthWelcomeSheet extends StatelessWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      theme.colorScheme.primary.withValues(alpha: 0.12),
-                      const Color(0xFFE91E63).withValues(alpha: 0.08),
+                      theme.colorScheme.primary.withValues(alpha: AppColors.opacity12),
+                      AppColors.materialPink.withValues(alpha: AppColors.opacity8),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                    color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity20),
                   ),
                 ),
                 child: Column(
@@ -74,7 +75,7 @@ class PostAuthWelcomeSheet extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.15),
+                        color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity15),
                         shape: BoxShape.circle,
                       ),
                       child: Text(
@@ -112,7 +113,7 @@ class PostAuthWelcomeSheet extends StatelessWidget {
                 'WHY OUR COMMUNITY TRUSTS US',
                 style: theme.textTheme.labelSmall?.copyWith(
                   fontWeight: AppTypography.bold,
-                  color: theme.colorScheme.primary.withValues(alpha: 0.8),
+                  color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity80),
                   letterSpacing: 1.1,
                   fontSize: AppTypography.bodySmall,
                 ),
@@ -127,7 +128,7 @@ class PostAuthWelcomeSheet extends StatelessWidget {
                       icon: Icons.shield_rounded,
                       title: 'Secure Data',
                       subtitle: '100% Private',
-                      color: const Color(0xFF1E88E5),
+                      color: AppColors.bvsBrandBlue,
                     ),
                   ),
                   SizedBox(width: 2.5.w),
@@ -137,7 +138,7 @@ class PostAuthWelcomeSheet extends StatelessWidget {
                       icon: Icons.flash_on_rounded,
                       title: '1-Click Join',
                       subtitle: 'Fast Sign In',
-                      color: const Color(0xFFF57C00),
+                      color: AppColors.warning,
                     ),
                   ),
                 ],
@@ -152,7 +153,7 @@ class PostAuthWelcomeSheet extends StatelessWidget {
                       icon: Icons.thumb_up_alt_rounded,
                       title: 'Simple UX',
                       subtitle: 'Easiest To Use',
-                      color: const Color(0xFF8E24AA),
+                      color: AppColors.materialPurple,
                     ),
                   ),
                   SizedBox(width: 2.5.w),
@@ -162,7 +163,7 @@ class PostAuthWelcomeSheet extends StatelessWidget {
                       icon: Icons.favorite_rounded,
                       title: 'Banjara Samaj',
                       subtitle: 'Trusted Family',
-                      color: const Color(0xFFE91E63),
+                      color: AppColors.materialPink,
                     ),
                   ),
                 ],
@@ -177,7 +178,7 @@ class PostAuthWelcomeSheet extends StatelessWidget {
                       icon: Icons.card_giftcard_rounded,
                       title: '100% Free',
                       subtitle: 'Zero Charge',
-                      color: const Color(0xFFD4AF37),
+                      color: AppColors.gold,
                     ),
                   ),
                   SizedBox(width: 2.5.w),
@@ -187,7 +188,7 @@ class PostAuthWelcomeSheet extends StatelessWidget {
                       icon: Icons.verified_user_rounded,
                       title: 'Verified',
                       subtitle: 'Authentic Profiles',
-                      color: const Color(0xFF00897B),
+                      color: AppColors.teal,
                     ),
                   ),
                 ],
@@ -207,7 +208,7 @@ class PostAuthWelcomeSheet extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     elevation: 3,
-                    shadowColor: theme.colorScheme.primary.withValues(alpha: 0.4),
+                    shadowColor: theme.colorScheme.primary.withValues(alpha: AppColors.opacity40),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -245,7 +246,7 @@ class PostAuthWelcomeSheet extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: color.withValues(alpha: 0.2)),
+        border: Border.all(color: color.withValues(alpha: AppColors.opacity20)),
       ),
       child: Row(
         children: [
@@ -276,7 +277,7 @@ class PostAuthWelcomeSheet extends StatelessWidget {
                   style: theme.textTheme.labelSmall?.copyWith(
                     fontSize: AppTypography.bodySmall,
                     fontWeight: AppTypography.medium,
-                    color: color.withValues(alpha: 0.9),
+                    color: color.withValues(alpha: AppColors.opacity90),
                   ),
                 ),
               ],

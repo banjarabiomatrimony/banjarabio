@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/theme/app_theme.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class CommunityTrustedBadge extends StatelessWidget {
   final bool isLarge;
@@ -31,7 +32,7 @@ class CommunityTrustedBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.secondaryLight.withValues(alpha: 0.3),
+            color: AppTheme.secondaryLight.withValues(alpha: AppColors.opacity30),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),

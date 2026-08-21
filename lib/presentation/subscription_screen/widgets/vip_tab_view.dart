@@ -8,6 +8,7 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/presentation/subscription_screen/widgets/plan_card.dart';
 import 'package:banjarabio/presentation/subscription_screen/widgets/feature_comparison_sheet.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class VipTabView extends StatelessWidget {
   final SubscriptionModel? currentSubscription;
@@ -45,18 +46,18 @@ class VipTabView extends StatelessWidget {
             padding: EdgeInsets.all(5.w),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [Color(0xFF1F1235), Color(0xFF2C1654), Color(0xFF150A26)],
+                colors: [AppColors.canvasRichDark, AppColors.canvasMidnight, AppColors.canvasDeepDark],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               borderRadius: BorderRadius.circular(24),
               border: Border.all(
-                color: const Color(0xFFFFD700).withValues(alpha: 0.4),
+                color: AppColors.categoryVip.withValues(alpha: AppColors.opacity40),
                 width: 1.5,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF2C1654).withValues(alpha: 0.45),
+                  color: AppColors.canvasMidnight.withValues(alpha: 0.45),
                   blurRadius: 22,
                   spreadRadius: 1,
                   offset: const Offset(0, 8),
@@ -71,14 +72,14 @@ class VipTabView extends StatelessWidget {
                   height: 16.w,
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
-                      colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
+                      colors: [AppColors.categoryVip, AppColors.categoryVipDark],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFFFFD700).withValues(alpha: 0.45),
+                        color: AppColors.categoryVip.withValues(alpha: 0.45),
                         blurRadius: 18,
                         spreadRadius: 2,
                         offset: const Offset(0, 4),
@@ -86,7 +87,7 @@ class VipTabView extends StatelessWidget {
                     ],
                   ),
                   child: const Center(
-                    child: Icon(Icons.diamond, color: Color(0xFF3A0070), size: 32),
+                    child: Icon(Icons.diamond, color: AppColors.deepIndigo, size: 32),
                   ),
                 ),
                 SizedBox(height: 2.5.h),
@@ -97,7 +98,7 @@ class VipTabView extends StatelessWidget {
                   style: TextStyle(
                     fontSize: AppTypography.headingMedium,
                     fontWeight: AppTypography.bold,
-                    color: const Color(0xFFFFD700),
+                    color: AppColors.categoryVip,
                     letterSpacing: 0.5,
                   ),
                 ),
@@ -108,7 +109,7 @@ class VipTabView extends StatelessWidget {
                   l10n?.focusOnCareer ??
                       'Focus on your career, while we find your life partner',
                   style: TextStyle(
-                    color: const Color(0xFFE2D6FF),
+                    color: AppColors.blue100,
                     fontSize: AppTypography.bodyMedium,
                     height: 1.3,
                   ),
@@ -154,7 +155,7 @@ class VipTabView extends StatelessWidget {
                     width: 4,
                     height: 16,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF8E2DE2),
+                      color: AppColors.purpleElectric,
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -212,25 +213,25 @@ class VipTabView extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.6.h),
               decoration: BoxDecoration(
                 color: isDark
-                    ? const Color(0xFF8E2DE2).withValues(alpha: 0.12)
-                    : const Color(0xFF8E2DE2).withValues(alpha: 0.08),
+                    ? AppColors.purpleElectric.withValues(alpha: AppColors.opacity12)
+                    : AppColors.purpleElectric.withValues(alpha: AppColors.opacity8),
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                  color: const Color(0xFF8E2DE2).withValues(alpha: 0.4),
+                  color: AppColors.purpleElectric.withValues(alpha: AppColors.opacity40),
                   width: 1.2,
                 ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.compare_arrows_rounded, color: Color(0xFF8E2DE2), size: 20),
+                  const Icon(Icons.compare_arrows_rounded, color: AppColors.purpleElectric, size: 20),
                   SizedBox(width: 2.5.w),
                   Text(
                     AppLocalizations.of(context)?.compareAllPlanFeatures ?? 'Compare All Plan Features',
                     style: TextStyle(
                       fontSize: AppTypography.bodySmall,
                       fontWeight: AppTypography.bold,
-                      color: isDark ? const Color(0xFFD1B2FF) : const Color(0xFF6A1B9A),
+                      color: isDark ? AppColors.lavender : AppColors.materialPurpleDark,
                     ),
                   ),
                 ],
@@ -254,20 +255,20 @@ class VipTabView extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(7),
             decoration: BoxDecoration(
-              color: const Color(0xFFFFD700).withValues(alpha: 0.12),
+              color: AppColors.categoryVip.withValues(alpha: AppColors.opacity12),
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                color: const Color(0xFFFFD700).withValues(alpha: 0.25),
+                color: AppColors.categoryVip.withValues(alpha: AppColors.opacity25),
               ),
             ),
-            child: Icon(icon, color: const Color(0xFFFFD700), size: 18),
+            child: Icon(icon, color: AppColors.categoryVip, size: 18),
           ),
           SizedBox(width: 4.w),
           Expanded(
             child: Text(
               text,
               style: TextStyle(
-                color: const Color(0xFFF0E6FF),
+                color: AppColors.violetBg,
                 fontWeight: AppTypography.semiBold,
                 fontSize: AppTypography.bodyLarge,
               ),
@@ -286,14 +287,14 @@ class VipTabView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.lock_outline, size: 14, color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6)),
+              Icon(Icons.lock_outline, size: 14, color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity60)),
               SizedBox(width: 1.5.w),
               Text(
                 'Secure 256-bit SSL Encrypted Payment',
                 style: TextStyle(
                   fontSize: AppTypography.labelSmall,
                   fontWeight: AppTypography.semiBold,
-                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity70),
                 ),
               ),
             ],
@@ -316,14 +317,14 @@ class VipTabView extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 15, color: theme.colorScheme.primary.withValues(alpha: 0.8)),
+        Icon(icon, size: 15, color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity80)),
         SizedBox(width: 1.w),
         Text(
           label,
           style: TextStyle(
             fontSize: AppTypography.labelMedium,
             fontWeight: AppTypography.bold,
-            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity80),
           ),
         ),
       ],

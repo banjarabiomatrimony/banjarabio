@@ -8,6 +8,7 @@ import 'package:banjarabio/theme/app_category_theme.dart';
 import 'package:banjarabio/widgets/tactile/tactile_category_card.dart';
 import 'package:banjarabio/widgets/tactile/tactile_detail_chip.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/staggered_fade_slide_widget.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// 💼 Education and Profession Card displaying academic and career information.
 /// Consumes centralized AppCategoryTheme and shared Tactile components.
@@ -172,10 +173,10 @@ class EducationProfessionCardWidget extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal: 2.w, vertical: 0.2.h),
                       decoration: BoxDecoration(
-                        color: incomeColor.withValues(alpha: 0.15),
+                        color: incomeColor.withValues(alpha: AppColors.opacity15),
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(
-                          color: incomeColor.withValues(alpha: 0.3),
+                          color: incomeColor.withValues(alpha: AppColors.opacity30),
                           width: 0.8,
                         ),
                       ),

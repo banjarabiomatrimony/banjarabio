@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:banjarabio/core/services/ad_reward_service.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// [RewardedAdDialog]
 /// 
@@ -98,7 +99,7 @@ class _RewardedAdDialogState extends State<RewardedAdDialog> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: accentColor.withValues(alpha: 0.1),
+                color: accentColor.withValues(alpha: AppColors.opacity10),
                 shape: BoxShape.circle,
               ),
               child: Icon(icon, color: accentColor, size: 40),
@@ -123,7 +124,7 @@ class _RewardedAdDialogState extends State<RewardedAdDialog> {
               decoration: BoxDecoration(
                 color: Colors.grey[100],
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: accentColor.withValues(alpha: 0.3)),
+                border: Border.all(color: accentColor.withValues(alpha: AppColors.opacity30)),
               ),
               child: Text(
                 rewardText,

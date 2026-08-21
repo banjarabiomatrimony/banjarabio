@@ -9,3 +9,5 @@ export 'session_manager.dart';
 export 'models/backend_response.dart';
 export 'utils/onboarding_validator.dart';
 export 'constants/app_typography.dart';
+export '../theme/app_colors.dart';
+export '../theme/app_color_scheme.dart';

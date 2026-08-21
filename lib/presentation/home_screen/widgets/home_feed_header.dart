@@ -12,6 +12,7 @@ import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/core/services/guest_guided_tour_service.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// The gradient AppBar header containing:
 /// 1. Top row: Logo, Location, Daily Reward, Notification.
@@ -163,13 +164,13 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
               end: Alignment.bottomRight,
               colors: [
                 theme.colorScheme.primary,
-                theme.colorScheme.primary.withValues(alpha: 0.85),
+                theme.colorScheme.primary.withValues(alpha: AppColors.opacity85),
               ],
             ),
             borderRadius: const BorderRadius.vertical(bottom: Radius.circular(22)),
             boxShadow: [
               BoxShadow(
-                color: theme.colorScheme.primary.withValues(alpha: 0.25),
+                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity25),
                 blurRadius: 14,
                 offset: const Offset(0, 3),
               ),
@@ -238,7 +239,7 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
                   letterSpacing: 0.6,
                   shadows: [
                     Shadow(
-                      color: Colors.black.withValues(alpha: 0.25),
+                      color: Colors.black.withValues(alpha: AppColors.opacity25),
                       blurRadius: 6,
                       offset: const Offset(0, 2),
                     ),
@@ -256,16 +257,16 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.45.h),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.15),
+              color: Colors.white.withValues(alpha: AppColors.opacity15),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                color: Colors.white.withValues(alpha: 0.20),
+                color: Colors.white.withValues(alpha: AppColors.opacity20),
               ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.location_on_rounded, color: Color(0xFFFBBF24), size: 12),
+                const Icon(Icons.location_on_rounded, color: AppColors.goldSoft, size: 12),
                 SizedBox(width: 1.w),
                 ConstrainedBox(
                   constraints: BoxConstraints(maxWidth: 26.w),
@@ -314,7 +315,7 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.card_giftcard_rounded, color: Color(0xFFFDE68A), size: 13),
+                        const Icon(Icons.card_giftcard_rounded, color: AppColors.goldTint200, size: 13),
                         SizedBox(width: 1.w),
                         Text(
                           streak > 0 ? 'Day $streak' : 'Claimed',
@@ -333,14 +334,14 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
                   padding: EdgeInsets.symmetric(horizontal: 2.4.w, vertical: 0.4.h),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
-                      colors: [Color(0xFFF59E0B), Color(0xFFD97706)],
+                      colors: [AppColors.categoryAstro, AppColors.categoryAstroDark],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFFF59E0B).withValues(alpha: 0.35 + (pulse * 0.25)),
+                        color: AppColors.categoryAstro.withValues(alpha: 0.35 + (pulse * 0.25)),
                         blurRadius: 8 + (pulse * 4),
                         spreadRadius: pulse * 1.2,
                       ),
@@ -380,7 +381,7 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
         color: Colors.black.withValues(alpha: 0.22),
         borderRadius: BorderRadius.circular(30),
         border: Border.all(
-          color: Colors.white.withValues(alpha: 0.25),
+          color: Colors.white.withValues(alpha: AppColors.opacity25),
         ),
       ),
       child: TextField(
@@ -403,7 +404,7 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
           ),
           prefixIcon: Container(
             margin: const EdgeInsets.only(left: 10, right: 6),
-            child: Icon(Icons.search_rounded, color: Colors.white.withValues(alpha: 0.85), size: 18),
+            child: Icon(Icons.search_rounded, color: Colors.white.withValues(alpha: AppColors.opacity85), size: 18),
           ),
           prefixIconConstraints: const BoxConstraints(
             minWidth: 32,
@@ -424,7 +425,7 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
               ? IconButton(
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
-                  icon: Icon(Icons.close_rounded, color: Colors.white.withValues(alpha: 0.85), size: 16),
+                  icon: Icon(Icons.close_rounded, color: Colors.white.withValues(alpha: AppColors.opacity85), size: 16),
                   onPressed: widget.onSearchClear,
                 )
               : null,
@@ -461,12 +462,12 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
             label: 'All Matches',
             isActive: widget.selectedTab == 0,
             activeGradient: const LinearGradient(
-              colors: [Color(0xFFFFFFFF), Color(0xFFF3E8FF)],
+              colors: [AppColors.surfaceLight, AppColors.violetBg],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            activeTextColor: const Color(0xFF4A154B),
-            activeGlowColor: Colors.white.withValues(alpha: 0.40),
+            activeTextColor: AppColors.deepIndigo,
+            activeGlowColor: Colors.white.withValues(alpha: AppColors.opacity40),
             iconAnimationType: _IconAnimType.twinkle,
             onTap: () {
               _scrollToChip(1);
@@ -485,12 +486,12 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
             badgeText: '10',
             isActive: widget.selectedTab == 1,
             activeGradient: const LinearGradient(
-              colors: [Color(0xFFF59E0B), Color(0xFFD97706)],
+              colors: [AppColors.categoryAstro, AppColors.categoryAstroDark],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             activeTextColor: Colors.white,
-            activeGlowColor: Colors.amberAccent.withValues(alpha: 0.50),
+            activeGlowColor: Colors.amberAccent.withValues(alpha: AppColors.opacity50),
             iconAnimationType: _IconAnimType.pulse,
             onTap: () {
               _scrollToChip(2);
@@ -508,12 +509,12 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
             label: 'Near Me',
             isActive: widget.selectedTab == 2,
             activeGradient: const LinearGradient(
-              colors: [Color(0xFF10B981), Color(0xFF059669)],
+              colors: [AppColors.categoryLocation, AppColors.categoryLocationDark],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             activeTextColor: Colors.white,
-            activeGlowColor: const Color(0xFF10B981).withValues(alpha: 0.50),
+            activeGlowColor: AppColors.categoryLocation.withValues(alpha: AppColors.opacity50),
             iconAnimationType: _IconAnimType.float,
             onTap: () {
               _scrollToChip(3);
@@ -531,12 +532,12 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
             label: 'VIP Verified',
             isActive: widget.selectedTab == 3,
             activeGradient: const LinearGradient(
-              colors: [Color(0xFF8B5CF6), Color(0xFF6D28D9)],
+              colors: [AppColors.categoryFamily, AppColors.violetDeep],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             activeTextColor: Colors.white,
-            activeGlowColor: const Color(0xFF8B5CF6).withValues(alpha: 0.50),
+            activeGlowColor: AppColors.categoryFamily.withValues(alpha: AppColors.opacity50),
             iconAnimationType: _IconAnimType.pulse,
             onTap: () {
               _scrollToChip(4);
@@ -554,12 +555,12 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
             label: 'Search',
             isActive: _isSearchExpanded,
             activeGradient: const LinearGradient(
-              colors: [Color(0xFF3B82F6), Color(0xFF2563EB)],
+              colors: [AppColors.categoryCareer, AppColors.categoryCareerDark],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             activeTextColor: Colors.white,
-            activeGlowColor: const Color(0xFF3B82F6).withValues(alpha: 0.50),
+            activeGlowColor: AppColors.categoryCareer.withValues(alpha: AppColors.opacity50),
             iconAnimationType: _IconAnimType.none,
             onTap: () {
               _scrollToChip(5);
@@ -613,7 +614,7 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: isActive
-                          ? Colors.white.withValues(alpha: 0.85)
+                          ? Colors.white.withValues(alpha: AppColors.opacity85)
                           : Colors.white.withValues(alpha: 0.22),
                       width: isActive ? 1.4 : 1.0,
                     ),
@@ -663,7 +664,7 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
                           child: Text(
                             badgeText,
                             style: TextStyle(
-                              color: isActive ? Colors.white : const Color(0xFF78350F),
+                              color: isActive ? Colors.white : AppColors.amberDeepText,
                               fontWeight: AppTypography.black,
                               fontSize: AppTypography.labelTiny,
                             ),
@@ -769,7 +770,7 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
                 decoration: BoxDecoration(
                   gradient: hasActiveFilters
                       ? const LinearGradient(
-                          colors: [Color(0xFFF59E0B), Color(0xFFD97706)],
+                          colors: [AppColors.categoryAstro, AppColors.categoryAstroDark],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         )
@@ -779,13 +780,13 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
                   border: Border.all(
                     color: hasActiveFilters
                         ? Colors.amberAccent
-                        : Colors.white.withValues(alpha: 0.35),
+                        : Colors.white.withValues(alpha: AppColors.opacity35),
                     width: hasActiveFilters ? 1.4 : 1.0,
                   ),
                   boxShadow: hasActiveFilters
                       ? [
                           BoxShadow(
-                            color: Colors.amberAccent.withValues(alpha: 0.50),
+                            color: Colors.amberAccent.withValues(alpha: AppColors.opacity50),
                             blurRadius: glowSpread,
                             offset: const Offset(0, 2),
                           ),

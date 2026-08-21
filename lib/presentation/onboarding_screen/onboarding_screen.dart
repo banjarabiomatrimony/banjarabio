@@ -7,6 +7,7 @@ import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 
 import 'package:banjarabio/routes/app_routes.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Premium onboarding flow shown only on first app launch.
 /// 3 steps with animated illustrations, smooth page indicators,
@@ -115,7 +116,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
         imagePath: 'assets/images/onboarding/family.png',
         title: l10n?.familyFirstValues ?? 'Family-First Values',
         subtitle: l10n?.shareProfilesWithYourFamilyInstantlyNbui ?? 'Share profiles with your family instantly.\nBuilt for the way Indian families make decisions.',
-        bgGradient: [AppTheme.secondaryVariantLight, AppTheme.secondaryVariantLight.withValues(alpha: 0.85)],
+        bgGradient: [AppTheme.secondaryVariantLight, AppTheme.secondaryVariantLight.withValues(alpha: AppColors.opacity85)],
       ),
     ];
 
@@ -145,7 +146,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     onPressed: _completeOnboarding,
                     child: Text(AppLocalizations.of(context)?.skip ?? 'Skip',
                       style: AppTypography.headingStyle(
-                        color: Colors.white.withValues(alpha: 0.8),
+                        color: Colors.white.withValues(alpha: AppColors.opacity80),
                         fontSize: AppTypography.bodyMedium,
                         fontWeight: AppTypography.medium,
                       ),
@@ -199,7 +200,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                           backgroundColor: Colors.white,
                           foregroundColor: page.bgGradient.first,
                           elevation: 8,
-                          shadowColor: Colors.black.withValues(alpha: 0.3),
+                          shadowColor: Colors.black.withValues(alpha: AppColors.opacity30),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),
@@ -256,7 +257,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.2),
+                      color: Colors.black.withValues(alpha: AppColors.opacity20),
                       blurRadius: 8,
                       offset: const Offset(0, 10),
                     ),
@@ -298,7 +299,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               style: AppTypography.headingStyle(
                 fontSize: AppTypography.bodyMedium,
                 fontWeight: AppTypography.regular,
-                color: Colors.white.withValues(alpha: 0.85),
+                color: Colors.white.withValues(alpha: AppColors.opacity85),
                 height: 1.6,
               ),
             ),
@@ -319,12 +320,12 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       decoration: BoxDecoration(
         color: isActive
             ? Colors.white
-            : Colors.white.withValues(alpha: 0.4),
+            : Colors.white.withValues(alpha: AppColors.opacity40),
         borderRadius: BorderRadius.circular(10),
         boxShadow: isActive
             ? [
                 BoxShadow(
-                  color: Colors.white.withValues(alpha: 0.4),
+                  color: Colors.white.withValues(alpha: AppColors.opacity40),
                   blurRadius: 6,
                   offset: const Offset(0, 2),
                 ),

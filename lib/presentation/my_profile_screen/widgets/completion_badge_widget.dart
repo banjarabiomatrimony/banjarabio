@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Badge tier definitions for profile completion gamification.
 enum CompletionTier {
-  starter(0, 24, 'Starter', '🌱', Color(0xFF9E9E9E)),
-  bronze(25, 49, 'Bronze', '🥉', Color(0xFFCD7F32)),
-  silver(50, 74, 'Silver', '🥈', Color(0xFFC0C0C0)),
-  gold(75, 99, 'Gold', '🥇', Color(0xFFD4AF37)),
-  champion(100, 100, 'Champion', '🏆', Color(0xFF6A1B9A));
+  starter(0, 24, 'Starter', '🌱', AppColors.neutral500),
+  bronze(25, 49, 'Bronze', '🥉', AppColors.bronze),
+  silver(50, 74, 'Silver', '🥈', AppColors.neutral400),
+  gold(75, 99, 'Gold', '🥇', AppColors.gold),
+  champion(100, 100, 'Champion', '🏆', AppColors.materialPurpleDark);
 
   final int minPct;
   final int maxPct;
@@ -85,10 +86,10 @@ class CompletionBadgeWidget extends StatelessWidget {
               width: double.infinity,
               padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.8.h),
               decoration: BoxDecoration(
-                color: nextTier.color.withValues(alpha: 0.08),
+                color: nextTier.color.withValues(alpha: AppColors.opacity8),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: nextTier.color.withValues(alpha: 0.2),
+                  color: nextTier.color.withValues(alpha: AppColors.opacity20),
                 ),
               ),
               child: Row(
@@ -108,7 +109,7 @@ class CompletionBadgeWidget extends StatelessWidget {
                   Icon(
                     Icons.arrow_forward_ios,
                     size: 12,
-                    color: nextTier.color.withValues(alpha: 0.6),
+                    color: nextTier.color.withValues(alpha: AppColors.opacity60),
                   ),
                 ],
               ),
@@ -121,7 +122,7 @@ class CompletionBadgeWidget extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.8.h),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [Color(0xFFFFF8E1), Color(0xFFF3E5F5)],
+                colors: [AppColors.goldLight, AppColors.purple50],
               ),
               borderRadius: BorderRadius.circular(8),
             ),
@@ -133,7 +134,7 @@ class CompletionBadgeWidget extends StatelessWidget {
                   child: Text(
                     'Profile 100% Complete — Champion Badge Unlocked!',
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: const Color(0xFF6A1B9A),
+                      color: AppColors.materialPurpleDark,
                       fontWeight: AppTypography.extraBold,
                       fontSize: AppTypography.labelMedium,
                     ),
@@ -167,11 +168,11 @@ class _BadgeIcon extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.4.h),
       decoration: BoxDecoration(
         color: isCurrent
-            ? tier.color.withValues(alpha: 0.12)
+            ? tier.color.withValues(alpha: AppColors.opacity12)
             : Colors.transparent,
         borderRadius: BorderRadius.circular(10),
         border: isCurrent
-            ? Border.all(color: tier.color.withValues(alpha: 0.3), width: 1.5)
+            ? Border.all(color: tier.color.withValues(alpha: AppColors.opacity30), width: 1.5)
             : null,
       ),
       child: Column(
@@ -193,7 +194,7 @@ class _BadgeIcon extends StatelessWidget {
               fontWeight: isCurrent ? AppTypography.extraBold : AppTypography.medium,
               color: isAchieved
                   ? tier.color
-                  : Colors.grey.withValues(alpha: 0.5),
+                  : Colors.grey.withValues(alpha: AppColors.opacity50),
             ),
           ),
         ],

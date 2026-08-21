@@ -714,7 +714,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen>
           color: theme.cardColor,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: theme.dividerColor.withValues(alpha: 0.5),
+            color: theme.dividerColor.withValues(alpha: AppColors.opacity50),
             width: 1.1,
           ),
           boxShadow: [
@@ -731,7 +731,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen>
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: (iconColor ?? theme.colorScheme.primary)
-                    .withValues(alpha: 0.1),
+                    .withValues(alpha: AppColors.opacity10),
                 shape: BoxShape.circle,
               ),
               child: CustomIconWidget(
@@ -798,15 +798,15 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen>
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
           color: isPremium
-              ? const Color(0xFFD4AF37)
-              : theme.colorScheme.outlineVariant.withValues(alpha: 0.35),
+              ? AppColors.gold
+              : theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity35),
           width: isPremium ? 1.6 : 1.1,
         ),
         boxShadow: [
           BoxShadow(
             color: isPremium
-                ? const Color(0xFFD4AF37).withValues(alpha: 0.12)
-                : theme.colorScheme.primary.withValues(alpha: 0.05),
+                ? AppColors.gold.withValues(alpha: AppColors.opacity12)
+                : theme.colorScheme.primary.withValues(alpha: AppColors.opacity5),
             blurRadius: 18,
             offset: const Offset(0, 6),
           ),
@@ -859,12 +859,12 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen>
                             shape: BoxShape.circle,
                             gradient: SweepGradient(
                               colors: [
-                                const Color(0xFFFFD700),
+                                AppColors.categoryVip,
                                 theme.colorScheme.primary,
                                 isComplete
-                                    ? const Color(0xFF10B981)
-                                    : const Color(0xFFFF8F00),
-                                const Color(0xFFFFD700),
+                                    ? AppColors.categoryLocation
+                                    : AppColors.orangeAmber700,
+                                AppColors.categoryVip,
                               ],
                               transform: GradientRotation(
                                   _pulseController.value * 6.28),
@@ -872,7 +872,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen>
                             boxShadow: [
                               BoxShadow(
                                 color: (isComplete
-                                        ? const Color(0xFF10B981)
+                                        ? AppColors.categoryLocation
                                         : theme.colorScheme.primary)
                                     .withValues(
                                         alpha: 0.28 * _pulseAnimation.value),
@@ -910,7 +910,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen>
                             child: Container(
                               padding: const EdgeInsets.all(3.0),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF10B981),
+                                color: AppColors.categoryLocation,
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   color: theme.cardColor,
@@ -918,8 +918,8 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen>
                                 ),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: const Color(0xFF10B981)
-                                        .withValues(alpha: 0.4),
+                                    color: AppColors.categoryLocation
+                                        .withValues(alpha: AppColors.opacity40),
                                     blurRadius: 4,
                                   ),
                                 ],
@@ -967,7 +967,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen>
                           SizedBox(width: 1.5.w),
                           const Icon(
                             Icons.verified_rounded,
-                            color: Color(0xFF10B981),
+                            color: AppColors.categoryLocation,
                             size: 18,
                           ),
                         ],
@@ -998,7 +998,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen>
                                 horizontal: 2.2.w, vertical: 0.4.h),
                             decoration: BoxDecoration(
                               color: theme.colorScheme.primary
-                                  .withValues(alpha: 0.08),
+                                  .withValues(alpha: AppColors.opacity8),
                               borderRadius: BorderRadius.circular(6),
                               border: Border.all(
                                 color: theme.colorScheme.primary
@@ -1035,17 +1035,17 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen>
                             gradient: isPremium
                                 ? const LinearGradient(
                                     colors: [
-                                      Color(0xFFFFB300),
-                                      Color(0xFFFF8F00)
+                                      AppColors.amber600,
+                                      AppColors.orangeAmber700
                                     ],
                                   )
                                 : null,
-                            color: isPremium ? null : const Color(0xFFF5F5F5),
+                            color: isPremium ? null : AppColors.neutral100,
                             borderRadius: BorderRadius.circular(6),
                             border: isPremium
                                 ? null
                                 : Border.all(
-                                    color: Colors.grey.withValues(alpha: 0.3),
+                                    color: Colors.grey.withValues(alpha: AppColors.opacity30),
                                     width: 0.8,
                                   ),
                           ),
@@ -1062,7 +1062,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen>
                                 style: TextStyle(
                                   color: isPremium
                                       ? Colors.white
-                                      : const Color(0xFF616161),
+                                      : AppColors.neutral700,
                                   fontWeight: AppTypography.extraBold,
                                   fontSize: AppTypography.labelTiny,
                                   letterSpacing: 0.2,
@@ -1095,7 +1095,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen>
                   fontSize: AppTypography.labelSmall,
                   fontWeight: AppTypography.extraBold,
                   color: isComplete
-                      ? const Color(0xFF10B981)
+                      ? AppColors.categoryLocation
                       : theme.colorScheme.onSurface,
                 ),
               ),
@@ -1105,7 +1105,7 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen>
                   fontSize: AppTypography.labelSmall,
                   fontWeight: AppTypography.black,
                   color: isComplete
-                      ? const Color(0xFF10B981)
+                      ? AppColors.categoryLocation
                       : theme.colorScheme.primary,
                 ),
               ),
@@ -1118,10 +1118,10 @@ class _MyProfileScreenState extends ConsumerState<MyProfileScreen>
               value: _profile!.completionPercentage / 100,
               minHeight: 8,
               backgroundColor:
-                  theme.colorScheme.primary.withValues(alpha: 0.08),
+                  theme.colorScheme.primary.withValues(alpha: AppColors.opacity8),
               valueColor: AlwaysStoppedAnimation<Color>(
                 isComplete
-                    ? const Color(0xFF10B981)
+                    ? AppColors.categoryLocation
                     : theme.colorScheme.primary,
               ),
             ),
@@ -1296,14 +1296,14 @@ class _AnimatedEditProfileButtonState extends State<_AnimatedEditProfileButton>
                   gradient: LinearGradient(
                     colors: [
                       theme.colorScheme.primary,
-                      theme.colorScheme.primary.withValues(alpha: 0.85),
+                      theme.colorScheme.primary.withValues(alpha: AppColors.opacity85),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.3),
+                    color: Colors.white.withValues(alpha: AppColors.opacity30),
                     width: 1.2,
                   ),
                   boxShadow: [

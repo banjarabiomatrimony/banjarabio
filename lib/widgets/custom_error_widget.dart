@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 // custom_error_widget.dart
 
@@ -17,7 +18,7 @@ class CustomErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAFA),
+      backgroundColor: AppColors.neutral50,
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -28,14 +29,14 @@ class CustomErrorWidget extends StatelessWidget {
                 Icon(
                   Icons.sentiment_dissatisfied_rounded,
                   size: 48,
-                  color: theme.colorScheme.error.withValues(alpha: 0.7),
+                  color: theme.colorScheme.error.withValues(alpha: AppColors.opacity70),
                 ),
                 SizedBox(height: 1.h),
                 Text(AppLocalizations.of(context)?.somethingWentWrong ?? 'Something went wrong',
                   style: TextStyle(
                     fontSize: AppTypography.headingMedium,
                     fontWeight: AppTypography.medium,
-                    color: const Color(0xFF262626),
+                    color: AppColors.surfaceDark,
                   ),
                 ),
                 SizedBox(height: 0.5.h),
@@ -44,7 +45,7 @@ class CustomErrorWidget extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: AppTypography.bodyMedium,
-                      color: const Color(0xFF525252), // neutral-600
+                      color: AppColors.slate600, // neutral-600
                     ),
                   ),
                 ),

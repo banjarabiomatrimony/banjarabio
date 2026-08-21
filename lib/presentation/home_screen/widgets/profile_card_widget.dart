@@ -117,68 +117,68 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
     if (isMatched || gunMilan >= 28) {
       // 💍 Sacred Romance & High Astrological Match: Ruby & Crimson Rose Gradient
       return const [
-        Color(0xFFE11D48),
-        Color(0xFFFF4D8D),
-        Color(0xFFBE123C),
-        Color(0xFFFF2A6D),
-        Color(0xFFE11D48),
+        AppColors.crimsonBlush,
+        AppColors.materialPink,
+        AppColors.crimsonRose,
+        AppColors.crimsonBlush,
+        AppColors.crimsonBlush,
       ];
     } else if (widget.profile.isPremium) {
       // 👑 VIP / Gold / Platinum: 24K Sacred Gold Shimmer Gradient
       return const [
-        Color(0xFFFFD700),
-        Color(0xFFF59E0B),
-        Color(0xFFFBBF24),
-        Color(0xFFD97706),
-        Color(0xFFFFD700),
+        AppColors.categoryVip,
+        AppColors.categoryAstro,
+        AppColors.goldSoft,
+        AppColors.categoryAstroDark,
+        AppColors.categoryVip,
       ];
     } else if (widget.profile.isVerified || trustScore >= 80) {
       // 🛡️ ID Verified & High Trust: Electric Sapphire & Sky Blue Gradient
       return const [
-        Color(0xFF2563EB),
-        Color(0xFF38BDF8),
-        Color(0xFF1D4ED8),
-        Color(0xFF60A5FA),
-        Color(0xFF2563EB),
+        AppColors.categoryCareerDark,
+        AppColors.skyBlueBright,
+        AppColors.blue600,
+        AppColors.blue400,
+        AppColors.categoryCareerDark,
       ];
     } else if (_isBookmarked) {
       // 🔖 Shortlisted / Saved: Royal Amethyst Purple Gradient
       return const [
-        Color(0xFF7C3AED),
-        Color(0xFFA855F7),
-        Color(0xFF6D28D9),
-        Color(0xFFC084FC),
-        Color(0xFF7C3AED),
+        AppColors.categoryFamilyDark,
+        AppColors.purple400,
+        AppColors.violetDeep,
+        AppColors.violetSoft,
+        AppColors.categoryFamilyDark,
       ];
     } else {
       // ✨ Standard Candidate: Vibrant Rose-Gold Matrimonial Gradient Outline
       return isDark
           ? [
-              const Color(0xFFBE123C).withValues(alpha: 0.85),
-              const Color(0xFFF59E0B).withValues(alpha: 0.75),
-              const Color(0xFF6366F1).withValues(alpha: 0.60),
-              const Color(0xFFBE123C).withValues(alpha: 0.85),
+              AppColors.crimsonRose.withValues(alpha: AppColors.opacity85),
+              AppColors.categoryAstro.withValues(alpha: 0.75),
+              AppColors.categorySecurity.withValues(alpha: AppColors.opacity60),
+              AppColors.crimsonRose.withValues(alpha: AppColors.opacity85),
             ]
           : [
-              const Color(0xFFE11D48).withValues(alpha: 0.90),
-              const Color(0xFFD97706).withValues(alpha: 0.80),
-              const Color(0xFF4F46E5).withValues(alpha: 0.70),
-              const Color(0xFFE11D48).withValues(alpha: 0.90),
+              AppColors.crimsonBlush.withValues(alpha: AppColors.opacity90),
+              AppColors.categoryAstroDark.withValues(alpha: AppColors.opacity80),
+              AppColors.categorySecurityDark.withValues(alpha: AppColors.opacity70),
+              AppColors.crimsonBlush.withValues(alpha: AppColors.opacity90),
             ];
     }
   }
 
   Color _getShadowGlowColor(bool isDark, bool isMatched, int trustScore, int gunMilan) {
     if (isMatched || gunMilan >= 28) {
-      return const Color(0xFFE11D48).withValues(alpha: isDark ? 0.38 : 0.22);
+      return AppColors.crimsonBlush.withValues(alpha: isDark ? 0.38 : 0.22);
     } else if (widget.profile.isPremium) {
-      return const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.40 : 0.25);
+      return AppColors.categoryAstro.withValues(alpha: isDark ? 0.40 : 0.25);
     } else if (widget.profile.isVerified || trustScore >= 80) {
-      return const Color(0xFF2563EB).withValues(alpha: isDark ? 0.35 : 0.20);
+      return AppColors.categoryCareerDark.withValues(alpha: isDark ? 0.35 : 0.20);
     } else if (_isBookmarked) {
-      return const Color(0xFF7C3AED).withValues(alpha: isDark ? 0.35 : 0.20);
+      return AppColors.categoryFamilyDark.withValues(alpha: isDark ? 0.35 : 0.20);
     } else {
-      return const Color(0xFFE11D48).withValues(alpha: isDark ? 0.25 : 0.12);
+      return AppColors.crimsonBlush.withValues(alpha: isDark ? 0.25 : 0.12);
     }
   }
 
@@ -259,7 +259,7 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                   borderRadius: BorderRadius.circular(22.2),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF191924) : theme.colorScheme.surface,
+                      color: isDark ? AppColors.canvasNearBlack : theme.colorScheme.surface,
                     ),
                     child: Stack(
                       fit: StackFit.expand,
@@ -385,11 +385,11 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                               decoration: BoxDecoration(
                                 color: isActive
                                     ? Colors.white
-                                    : Colors.white.withValues(alpha: 0.5),
+                                    : Colors.white.withValues(alpha: AppColors.opacity50),
                                 borderRadius: BorderRadius.circular(4),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.4),
+                                    color: Colors.black.withValues(alpha: AppColors.opacity40),
                                     blurRadius: 3,
                                     offset: const Offset(0, 1),
                                   )
@@ -489,8 +489,8 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                           end: Alignment.topCenter,
                           colors: [
                             Colors.black.withValues(alpha: 0.98),
-                            Colors.black.withValues(alpha: 0.85),
-                            Colors.black.withValues(alpha: 0.40),
+                            Colors.black.withValues(alpha: AppColors.opacity85),
+                            Colors.black.withValues(alpha: AppColors.opacity40),
                             Colors.transparent,
                           ],
                           stops: const [0.0, 0.5, 0.85, 1.0],
@@ -526,7 +526,7 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                                 Text(
                                   ' • ${widget.profile.height}',
                                   style: theme.textTheme.titleMedium?.copyWith(
-                                    color: Colors.white.withValues(alpha: 0.9),
+                                    color: Colors.white.withValues(alpha: AppColors.opacity90),
                                     fontWeight: AppTypography.bold,
                                     fontSize: AppTypography.bodyLarge,
                                   ),
@@ -536,7 +536,7 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                                 const SizedBox(width: 5),
                                 const Icon(
                                   Icons.verified_rounded,
-                                  color: Color(0xFF3B82F6),
+                                  color: AppColors.categoryCareer,
                                   size: 18,
                                 ),
                               ],
@@ -550,7 +550,7 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                               const Icon(
                                 Icons.school_rounded,
                                 size: 14,
-                                color: Color(0xFF93C5FD),
+                                color: AppColors.blue300,
                               ),
                               SizedBox(width: 1.5.w),
                               Expanded(
@@ -576,14 +576,14 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                               const Icon(
                                 Icons.location_on_rounded,
                                 size: 14,
-                                color: Color(0xFFFDA4AF),
+                                color: AppColors.rose200,
                               ),
                               SizedBox(width: 1.5.w),
                               Expanded(
                                 child: Text(
                                   location,
                                   style: theme.textTheme.bodyMedium?.copyWith(
-                                    color: Colors.white.withValues(alpha: 0.85),
+                                    color: Colors.white.withValues(alpha: AppColors.opacity85),
                                     fontSize: AppTypography.bodySmall,
                                     fontWeight: AppTypography.medium,
                                     shadows: const [Shadow(color: Colors.black87, blurRadius: 2)],
@@ -612,7 +612,7 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                                         ? Icons.bookmark_rounded
                                         : Icons.bookmark_border_rounded,
                                     color: _isBookmarked
-                                        ? const Color(0xFFF59E0B)
+                                        ? AppColors.categoryAstro
                                         : Colors.white.withValues(alpha: 0.18),
                                     iconColor: _isBookmarked ? Colors.black : Colors.white,
                                     onTap: _handleBookmark,
@@ -644,7 +644,7 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                                     context: context,
                                     icon: Icons.share_rounded,
                                     color: Colors.white.withValues(alpha: 0.18),
-                                    iconColor: const Color(0xFF4ADE80),
+                                    iconColor: AppColors.green300,
                                     onTap: () {
                                       if (LocalCacheService().isRelativeBrowseMode()) {
                                         ShareService().shareProfileToCandidateWhatsApp(
@@ -669,7 +669,7 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                                         ? Icons.bookmark_rounded
                                         : Icons.bookmark_border_rounded,
                                     color: _isBookmarked
-                                        ? const Color(0xFFF59E0B)
+                                        ? AppColors.categoryAstro
                                         : Colors.white.withValues(alpha: 0.18),
                                     iconColor: _isBookmarked ? Colors.black : Colors.white,
                                     onTap: _handleBookmark,
@@ -695,9 +695,9 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                                   _buildQuickActionButton(
                                     context: context,
                                     icon: Icons.mark_email_unread_rounded,
-                                    color: const Color(0xFFF59E0B).withValues(alpha: 0.28),
-                                    iconColor: const Color(0xFFFCD34D),
-                                    borderColor: const Color(0xFFF59E0B).withValues(alpha: 0.85),
+                                    color: AppColors.categoryAstro.withValues(alpha: 0.28),
+                                    iconColor: AppColors.goldLemonLight,
+                                    borderColor: AppColors.categoryAstro.withValues(alpha: AppColors.opacity85),
                                     onTap: () {
                                       if (widget.onMessage != null) {
                                         widget.onMessage!(widget.profile);
@@ -723,7 +723,7 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                                     context: context,
                                     icon: Icons.share_rounded,
                                     color: Colors.white.withValues(alpha: 0.18),
-                                    iconColor: const Color(0xFF4ADE80),
+                                    iconColor: AppColors.green300,
                                     onTap: () {
                                       if (LocalCacheService().isRelativeBrowseMode()) {
                                         ShareService().shareProfileToCandidateWhatsApp(
@@ -768,17 +768,17 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 2.8.w, vertical: 0.55.h),
           decoration: BoxDecoration(
-            color: const Color(0xFF1E1002).withValues(alpha: 0.75),
+            color: AppColors.amberBrownBg.withValues(alpha: 0.75),
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
               color: info.isLocked
-                  ? const Color(0xFFF59E0B).withValues(alpha: 0.5)
-                  : const Color(0xFFF59E0B).withValues(alpha: 0.85),
+                  ? AppColors.categoryAstro.withValues(alpha: AppColors.opacity50)
+                  : AppColors.categoryAstro.withValues(alpha: AppColors.opacity85),
               width: 1.2,
             ),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFF59E0B).withValues(alpha: 0.25),
+                color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity25),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -789,14 +789,14 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
             children: [
               Icon(
                 info.isLocked ? Icons.lock_outline_rounded : Icons.shield_rounded,
-                color: const Color(0xFFF59E0B),
+                color: AppColors.categoryAstro,
                 size: 13,
               ),
               SizedBox(width: 1.2.w),
               Text(
                 info.formattedText,
                 style: TextStyle(
-                  color: const Color(0xFFFEF3C7),
+                  color: AppColors.goldTint100,
                   fontWeight: AppTypography.extraBold,
                   fontSize: AppTypography.labelSmall,
                   letterSpacing: 0.3,
@@ -826,7 +826,7 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
             border: Border.all(color: badge.borderColor, width: 1.2),
             boxShadow: [
               BoxShadow(
-                color: badge.gradientColors.first.withValues(alpha: 0.40),
+                color: badge.gradientColors.first.withValues(alpha: AppColors.opacity40),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -858,28 +858,28 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
     final bool isMedium = score >= 40;
 
     final Color bgColor = isHigh
-        ? const Color(0xFF064E3B).withValues(alpha: 0.75)
+        ? AppColors.greenDeepForest.withValues(alpha: 0.75)
         : isMedium
-            ? const Color(0xFF78350F).withValues(alpha: 0.75)
-            : const Color(0xFF1E293B).withValues(alpha: 0.75);
+            ? AppColors.amberDeepText.withValues(alpha: 0.75)
+            : AppColors.slate800.withValues(alpha: 0.75);
 
     final Color borderColor = isHigh
-        ? const Color(0xFF10B981).withValues(alpha: 0.7)
+        ? AppColors.categoryLocation.withValues(alpha: AppColors.opacity70)
         : isMedium
-            ? const Color(0xFFF59E0B).withValues(alpha: 0.7)
-            : const Color(0xFF64748B).withValues(alpha: 0.6);
+            ? AppColors.categoryAstro.withValues(alpha: AppColors.opacity70)
+            : AppColors.slate500.withValues(alpha: AppColors.opacity60);
 
     final Color iconColor = isHigh
-        ? const Color(0xFF34D399)
+        ? AppColors.green400
         : isMedium
-            ? const Color(0xFFFBBF24)
-            : const Color(0xFF94A3B8);
+            ? AppColors.goldSoft
+            : AppColors.slate400;
 
     final Color textColor = isHigh
-        ? const Color(0xFFD1FAE5)
+        ? AppColors.green100alt
         : isMedium
-            ? const Color(0xFFFEF3C7)
-            : const Color(0xFFE2E8F0);
+            ? AppColors.goldTint100
+            : AppColors.slate200;
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(14),
@@ -893,7 +893,7 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
             border: Border.all(color: borderColor, width: 1.1),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.25),
+                color: Colors.black.withValues(alpha: AppColors.opacity25),
                 blurRadius: 6,
                 offset: const Offset(0, 2),
               ),
@@ -922,17 +922,17 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
   Widget _buildVouchesBadge(BuildContext context, int count) {
     final bool hasVouches = count > 0;
     final Color bgColor = hasVouches
-        ? const Color(0xFF1E1B4B).withValues(alpha: 0.75)
-        : const Color(0xFF1E293B).withValues(alpha: 0.75);
+        ? AppColors.canvasMidnight.withValues(alpha: 0.75)
+        : AppColors.slate800.withValues(alpha: 0.75);
     final Color borderColor = hasVouches
-        ? const Color(0xFFA855F7).withValues(alpha: 0.7)
-        : const Color(0xFF64748B).withValues(alpha: 0.6);
+        ? AppColors.purple400.withValues(alpha: AppColors.opacity70)
+        : AppColors.slate500.withValues(alpha: AppColors.opacity60);
     final Color iconColor = hasVouches
-        ? const Color(0xFFC084FC)
-        : const Color(0xFF94A3B8);
+        ? AppColors.violetSoft
+        : AppColors.slate400;
     final Color textColor = hasVouches
-        ? const Color(0xFFF3E8FF)
-        : const Color(0xFFE2E8F0);
+        ? AppColors.violetBg
+        : AppColors.slate200;
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(14),
@@ -946,7 +946,7 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
             border: Border.all(color: borderColor, width: 1.1),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.25),
+                color: Colors.black.withValues(alpha: AppColors.opacity25),
                 blurRadius: 6,
                 offset: const Offset(0, 2),
               ),
@@ -980,15 +980,15 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 2.4.w, vertical: 0.45.h),
           decoration: BoxDecoration(
-            color: const Color(0xFF064E3B).withValues(alpha: 0.70),
+            color: AppColors.greenDeepForest.withValues(alpha: AppColors.opacity70),
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
-              color: const Color(0xFF10B981).withValues(alpha: 0.65),
+              color: AppColors.categoryLocation.withValues(alpha: 0.65),
               width: 1.1,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.25),
+                color: Colors.black.withValues(alpha: AppColors.opacity25),
                 blurRadius: 6,
                 offset: const Offset(0, 2),
               ),
@@ -997,12 +997,12 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.verified_user_rounded, color: Color(0xFF34D399), size: 11),
+              const Icon(Icons.verified_user_rounded, color: AppColors.green400, size: 11),
               SizedBox(width: 1.w),
               Text(
                 text,
                 style: TextStyle(
-                  color: const Color(0xFFD1FAE5),
+                  color: AppColors.green100alt,
                   fontWeight: AppTypography.extraBold,
                   fontSize: AppTypography.labelSmall,
                   letterSpacing: 0.2,
@@ -1028,15 +1028,15 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 0.7.h),
             decoration: BoxDecoration(
-              color: const Color(0xFF4C0519).withValues(alpha: 0.80),
+              color: AppColors.crimsonDarkBg.withValues(alpha: AppColors.opacity80),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: const Color(0xFFF43F5E).withValues(alpha: 0.65),
+                color: AppColors.coralRed.withValues(alpha: 0.65),
                 width: 1.1,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFE11D48).withValues(alpha: 0.25),
+                  color: AppColors.crimsonBlush.withValues(alpha: AppColors.opacity25),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -1050,7 +1050,7 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                   children: [
                     const Icon(
                       Icons.auto_awesome_rounded,
-                      color: Color(0xFFFB7185),
+                      color: AppColors.rose400,
                       size: 13,
                     ),
                     SizedBox(width: 1.5.w),
@@ -1078,7 +1078,7 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                     const SizedBox(width: 4),
                     const Icon(
                       Icons.arrow_forward_ios_rounded,
-                      color: Color(0xFFFDA4AF),
+                      color: AppColors.rose200,
                       size: 9.5,
                     ),
                   ],
@@ -1125,12 +1125,12 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                     color: color,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: borderColor ?? Colors.white.withValues(alpha: 0.30),
+                      color: borderColor ?? Colors.white.withValues(alpha: AppColors.opacity30),
                       width: borderColor != null ? 1.4 : 1.1,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.25),
+                        color: Colors.black.withValues(alpha: AppColors.opacity25),
                         blurRadius: 6,
                         offset: const Offset(0, 2),
                       ),
@@ -1175,21 +1175,21 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
                   colors: [
-                    Color(0xFF4F46E5), // Indigo 600
-                    Color(0xFF7C3AED), // Violet 600
-                    Color(0xFFDB2777), // Pink 600
+                    AppColors.categorySecurityDark, // Indigo 600
+                    AppColors.categoryFamilyDark, // Violet 600
+                    AppColors.categoryPersonalDark, // Pink 600
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.60),
+                  color: Colors.white.withValues(alpha: AppColors.opacity60),
                   width: 1.2,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF4F46E5).withValues(alpha: 0.55),
+                    color: AppColors.categorySecurityDark.withValues(alpha: 0.55),
                     blurRadius: 12,
                     spreadRadius: 1,
                     offset: const Offset(0, 3),
@@ -1249,12 +1249,12 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                 gradient: AppGradients.love,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.50),
+                  color: Colors.white.withValues(alpha: AppColors.opacity50),
                   width: 1.2,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFFBE123C).withValues(alpha: 0.55),
+                    color: AppColors.crimsonRose.withValues(alpha: 0.55),
                     blurRadius: 12,
                     spreadRadius: 1,
                     offset: const Offset(0, 3),
@@ -1305,7 +1305,7 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
             borderRadius: BorderRadius.circular(14),
             boxShadow: [
               BoxShadow(
-                color: colors.last.withValues(alpha: 0.35),
+                color: colors.last.withValues(alpha: AppColors.opacity35),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),

@@ -11,6 +11,7 @@ import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/core/services/guest_guided_tour_service.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Action buttons widget for profile interactions
 /// Provides sharing, messaging, and bookmarking functionality
@@ -67,12 +68,12 @@ class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
         color: theme.colorScheme.surface,
         border: Border(
           top: BorderSide(
-            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.3),
+            color: theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity30),
           ),
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: Colors.black.withValues(alpha: AppColors.opacity10),
             blurRadius: 10,
             offset: const Offset(0, -4),
           ),
@@ -120,7 +121,7 @@ class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
                                 (_isBookmarked
                                         ? Colors.green.shade600
                                         : Colors.amber.shade600)
-                                    .withValues(alpha: 0.25),
+                                    .withValues(alpha: AppColors.opacity25),
                             blurRadius: 6,
                             offset: const Offset(0, 3),
                           ),
@@ -175,12 +176,12 @@ class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
                         gradient: AppGradients.love,
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.4),
+                          color: Colors.white.withValues(alpha: AppColors.opacity40),
                           width: 1.5,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.pink.withValues(alpha: 0.4),
+                            color: Colors.pink.withValues(alpha: AppColors.opacity40),
                             blurRadius: 10,
                             spreadRadius: 1,
                             offset: const Offset(0, 3),
@@ -279,7 +280,7 @@ class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
                         gradient: LinearGradient(
                           colors: [
                             theme.colorScheme.primary,
-                            theme.colorScheme.primary.withValues(alpha: 0.8),
+                            theme.colorScheme.primary.withValues(alpha: AppColors.opacity80),
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
@@ -287,7 +288,7 @@ class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
                         borderRadius: BorderRadius.circular(14),
                         boxShadow: [
                           BoxShadow(
-                            color: theme.colorScheme.primary.withValues(alpha: 0.25),
+                            color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity25),
                             blurRadius: 6,
                             offset: const Offset(0, 3),
                           ),

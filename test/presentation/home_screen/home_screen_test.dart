@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:banjarabio/presentation/home_screen/home_screen.dart';
+import 'package:banjarabio/presentation/main_navigation_screen/main_navigation_screen.dart';
 import 'package:banjarabio/widgets/custom_bottom_bar.dart';
 
 import '../../helpers/widget_test_helpers.dart';
@@ -20,7 +20,7 @@ void main() {
     });
 
     await tester.pumpWidget(createTestableWidget(
-      const HomeScreen(),
+      const MainNavigationScreen(),
     ));
 
     // Pump frames to let async initState, timers, and inner Navigator settle

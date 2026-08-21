@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Date of Birth field with calendar picker trigger.
 /// Extracted from PersonalDetailsSection._buildDOBField.
@@ -38,7 +39,7 @@ class DobFieldWidget extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.3)),
+              border: Border.all(color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity30)),
             ),
             child: Row(
               children: [
@@ -50,7 +51,7 @@ class DobFieldWidget extends StatelessWidget {
                         ? AppLocalizations.of(context)?.selectDate ?? 'Select Date'
                         : "${selectedDOB!.day.toString().padLeft(2, '0')}/${selectedDOB!.month.toString().padLeft(2, '0')}/${selectedDOB!.year}",
                     style: theme.textTheme.bodyLarge?.copyWith(
-                      color: selectedDOB == null ? theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5) : theme.colorScheme.onSurface,
+                      color: selectedDOB == null ? theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity50) : theme.colorScheme.onSurface,
                     ),
                   ),
                 ),

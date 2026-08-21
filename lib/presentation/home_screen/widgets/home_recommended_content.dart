@@ -10,7 +10,7 @@ import 'package:banjarabio/presentation/home_screen/widgets/profile_card_widget.
 import 'package:banjarabio/widgets/shimmer_widget.dart';
 import 'package:banjarabio/widgets/ads/banner_ad_widget.dart';
 
-/// Recommended tab content slivers extracted from HomeScreenInitialPage.build().
+/// Recommended tab content slivers extracted from HomeScreen.build().
 /// Renders one of: skeleton grid, error state, empty/filtered state,
 /// swipe deck, or masonry grid — depending on loading/data state.
 class HomeRecommendedContent {
@@ -51,7 +51,7 @@ class HomeRecommendedContent {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    theme.colorScheme.primaryContainer.withValues(alpha: 0.8),
+                    theme.colorScheme.primaryContainer.withValues(alpha: AppColors.opacity80),
                     theme.colorScheme.surface,
                   ],
                   begin: Alignment.topLeft,
@@ -59,7 +59,7 @@ class HomeRecommendedContent {
                 ),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.35),
+                  color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity35),
                   width: 1.2,
                 ),
                 boxShadow: [
@@ -76,7 +76,7 @@ class HomeRecommendedContent {
                   Container(
                     padding: EdgeInsets.all(2.5.w),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.12),
+                      color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity12),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
@@ -279,7 +279,7 @@ class HomeRecommendedContent {
                 style: TextStyle(
                   fontSize: AppTypography.headingLarge,
                   fontWeight: AppTypography.bold,
-                  color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
+                  color: Theme.of(context).colorScheme.primary.withValues(alpha: AppColors.opacity50),
                 ),
               ),
             ),

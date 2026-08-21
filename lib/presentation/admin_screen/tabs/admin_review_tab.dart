@@ -205,7 +205,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                                   child: Container(
                                     padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
-                                      color: Colors.blue.withValues(alpha: 0.1),
+                                      color: Colors.blue.withValues(alpha: AppColors.opacity10),
                                       shape: BoxShape.circle,
                                     ),
                                     child: const Icon(Icons.call, size: 18, color: Colors.blue),
@@ -217,7 +217,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                                   child: Container(
                                     padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
-                                      color: Colors.green.withValues(alpha: 0.1),
+                                      color: Colors.green.withValues(alpha: AppColors.opacity10),
                                       shape: BoxShape.circle,
                                     ),
                                     child: const Icon(Icons.chat, size: 18, color: Colors.green),
@@ -394,7 +394,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                                         children: [
                                           CircleAvatar(
                                             radius: 24,
-                                            backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
+                                            backgroundColor: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
                                             child: Text(
                                               (profile?['full_name'] as String?)?.isNotEmpty == true
                                                   ? profile!['full_name'][0]
@@ -535,9 +535,9 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                             Container(
                               padding: EdgeInsets.all(4.w),
                               decoration: BoxDecoration(
-                                color: Colors.orange.withValues(alpha: 0.1),
+                                color: Colors.orange.withValues(alpha: AppColors.opacity10),
                                 borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: Colors.orange.withValues(alpha: 0.5)),
+                                border: Border.all(color: Colors.orange.withValues(alpha: AppColors.opacity50)),
                               ),
                               child: Row(
                                 children: [
@@ -628,9 +628,9 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 1.5.h),
           decoration: BoxDecoration(
-            color: isSelected ? color : color.withValues(alpha: 0.1),
+            color: isSelected ? color : color.withValues(alpha: AppColors.opacity10),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: isSelected ? color : color.withValues(alpha: 0.3)),
+            border: Border.all(color: isSelected ? color : color.withValues(alpha: AppColors.opacity30)),
           ),
           child: Text(
             label,
@@ -769,7 +769,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.5.h),
                             decoration: BoxDecoration(
-                              color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                              color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity20),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
@@ -872,7 +872,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
               onPressed: onPressed,
               style: OutlinedButton.styleFrom(
                 foregroundColor: color,
-                side: BorderSide(color: color.withValues(alpha: 0.5)),
+                side: BorderSide(color: color.withValues(alpha: AppColors.opacity50)),
                 padding: EdgeInsets.symmetric(vertical: 1.5.h),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
@@ -884,7 +884,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.8.h),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primary.withValues(alpha: 0.1),
+        color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
@@ -905,9 +905,9 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.8.h),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
+        color: color.withValues(alpha: AppColors.opacity10),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
+        border: Border.all(color: color.withValues(alpha: AppColors.opacity30)),
       ),
       child: Text(
         label,
@@ -1012,11 +1012,11 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: theme.dividerColor.withValues(alpha: 0.1)),
+              border: Border.all(color: theme.dividerColor.withValues(alpha: AppColors.opacity10)),
               color: theme.cardColor,
             ),
             child: pathOrUrl == null || pathOrUrl.isEmpty || pathOrUrl == 'null'
-                ? Center(child: Icon(Icons.person_outline, size: 48, color: theme.hintColor.withValues(alpha: 0.3)))
+                ? Center(child: Icon(Icons.person_outline, size: 48, color: theme.hintColor.withValues(alpha: AppColors.opacity30)))
                 : isPrivate 
                     ? FutureBuilder<BackendResponse<String>>(
                         future: widget.adminRepository.getSignedUrl(StorageConfig.verificationDocs, pathOrUrl),
@@ -1109,13 +1109,13 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                   padding: EdgeInsets.all(4.w),
                   decoration: BoxDecoration(
                     color: response != null && !response.isSuccess
-                        ? Colors.red.withValues(alpha: 0.05)
-                        : (isViewed ? Colors.green.withValues(alpha: 0.05) : theme.colorScheme.primary.withValues(alpha: 0.05)),
+                        ? Colors.red.withValues(alpha: AppColors.opacity5)
+                        : (isViewed ? Colors.green.withValues(alpha: AppColors.opacity5) : theme.colorScheme.primary.withValues(alpha: AppColors.opacity5)),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: response != null && !response.isSuccess
-                          ? Colors.red.withValues(alpha: 0.3)
-                          : (isViewed ? Colors.green : theme.colorScheme.primary.withValues(alpha: 0.2)),
+                          ? Colors.red.withValues(alpha: AppColors.opacity30)
+                          : (isViewed ? Colors.green : theme.colorScheme.primary.withValues(alpha: AppColors.opacity20)),
                     ),
                   ),
                   child: Row(
@@ -1204,11 +1204,11 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
                             color: isError 
-                              ? Colors.red.withValues(alpha: 0.5) 
-                              : (isViewed ? Colors.green : theme.dividerColor.withValues(alpha: 0.5)),
+                              ? Colors.red.withValues(alpha: AppColors.opacity50) 
+                              : (isViewed ? Colors.green : theme.dividerColor.withValues(alpha: AppColors.opacity50)),
                             width: isViewed ? 2 : 1,
                           ),
-                          color: isError ? Colors.red.withValues(alpha: 0.05) : theme.cardColor,
+                          color: isError ? Colors.red.withValues(alpha: AppColors.opacity5) : theme.cardColor,
                         ),
                         child: Stack(
                           children: [
@@ -1223,7 +1223,7 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                                   cacheManager: PersistentCacheManager.instance,
                                   cacheKey: PersistentCacheManager.stableKeyFor(url),
                                   errorWidget: (context, url, error) => Container(
-                                    color: theme.disabledColor.withValues(alpha: 0.1),
+                                    color: theme.disabledColor.withValues(alpha: AppColors.opacity10),
                                     child: const Center(child: Icon(Icons.broken_image, color: Colors.red)),
                                   ),
                                 ),

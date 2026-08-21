@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class InstagramFollowInterstitial extends StatelessWidget {
   const InstagramFollowInterstitial({super.key});
@@ -13,7 +14,7 @@ class InstagramFollowInterstitial extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: Colors.black.withValues(alpha: 0.85),
+      backgroundColor: Colors.black.withValues(alpha: AppColors.opacity85),
       body: Stack(
         children: [
           // Background Gradient
@@ -23,12 +24,12 @@ class InstagramFollowInterstitial extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  const Color(0xFF405DE6).withValues(alpha: 0.6), // Instagram Blue
-                  const Color(0xFF5851DB).withValues(alpha: 0.6), // Instagram Purple
-                  const Color(0xFF833AB4).withValues(alpha: 0.6), // Instagram Violet
-                  const Color(0xFFC13584).withValues(alpha: 0.6), // Instagram Magenta
-                  const Color(0xFFE1306C).withValues(alpha: 0.6), // Instagram Red
-                  const Color(0xFFFD1D1D).withValues(alpha: 0.6), // Instagram Orange
+                  AppColors.categorySecurityDark.withValues(alpha: AppColors.opacity60), // Instagram Blue
+                  AppColors.categorySecurityDark.withValues(alpha: AppColors.opacity60), // Instagram Purple
+                  AppColors.instagramPurple.withValues(alpha: AppColors.opacity60), // Instagram Violet
+                  AppColors.categoryPersonalDark.withValues(alpha: AppColors.opacity60), // Instagram Magenta
+                  AppColors.roseBlushAccent.withValues(alpha: AppColors.opacity60), // Instagram Red
+                  AppColors.deepOrange600.withValues(alpha: AppColors.opacity60), // Instagram Orange
                 ],
               ),
             ),
@@ -49,7 +50,7 @@ class InstagramFollowInterstitial extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.3),
+                        color: Colors.black.withValues(alpha: AppColors.opacity30),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
@@ -61,7 +62,7 @@ class InstagramFollowInterstitial extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(2.h),
                         decoration: const BoxDecoration(
-                          color: Color(0xFFF5F5F5),
+                          color: AppColors.neutral100,
                           shape: BoxShape.circle,
                         ),
                         child: Image.asset(
@@ -110,7 +111,7 @@ class InstagramFollowInterstitial extends StatelessWidget {
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFE1306C), // Instagram Pink
+                            backgroundColor: AppColors.roseBlushAccent, // Instagram Pink
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),

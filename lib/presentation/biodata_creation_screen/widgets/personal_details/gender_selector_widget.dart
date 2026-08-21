@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Gender selector widget with image-based selection cards.
 /// Extracted from PersonalDetailsSection._buildGenderSelector.
@@ -75,13 +76,13 @@ class GenderSelectorWidget extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(24),
                       border: Border.all(
-                        color: isSelected ? baseColor : theme.colorScheme.outline.withValues(alpha: 0.2),
+                        color: isSelected ? baseColor : theme.colorScheme.outline.withValues(alpha: AppColors.opacity20),
                         width: isSelected ? 4.0 : 1.5,
                       ),
                       boxShadow: isSelected
                           ? [
                               BoxShadow(
-                                color: baseColor.withValues(alpha: 0.3),
+                                color: baseColor.withValues(alpha: AppColors.opacity30),
                                 blurRadius: 15,
                                 offset: const Offset(0, 8),
                               ),
@@ -106,7 +107,7 @@ class GenderSelectorWidget extends StatelessWidget {
                                 end: Alignment.bottomCenter,
                                 colors: [
                                   Colors.transparent,
-                                  Colors.black.withValues(alpha: 0.7),
+                                  Colors.black.withValues(alpha: AppColors.opacity70),
                                 ],
                               ),
                             ),

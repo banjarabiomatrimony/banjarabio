@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/widgets/custom_icon_widget.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Disability status toggle widget.
 /// Extracted from PersonalDetailsSection._buildDisabilityStatus.
@@ -24,17 +25,17 @@ class DisabilityStatusWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.15)),
+        border: Border.all(color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity15)),
       ),
       child: SwitchListTile(
         secondary: CustomIconWidget(
           iconName: 'accessible',
-          color: theme.colorScheme.primary.withValues(alpha: 0.7),
+          color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
         ),
         subtitle: Text(
           AppLocalizations.of(context)?.disabledHint ?? 'Optional field',
           style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity60),
           ),
         ),
         title: Text(

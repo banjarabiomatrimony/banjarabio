@@ -73,10 +73,10 @@ class _WhoViewedMeScreenState extends ConsumerState<WhoViewedMeScreen> {
               margin: EdgeInsets.only(right: 3.w),
               padding: EdgeInsets.symmetric(horizontal: 2.8.w, vertical: 0.5.h),
               decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.25),
+                  color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity25),
                 ),
               ),
               child: Row(
@@ -225,7 +225,7 @@ class _WhoViewedMeScreenState extends ConsumerState<WhoViewedMeScreen> {
         color: isDark ? theme.cardColor : theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: theme.colorScheme.primary.withValues(alpha: 0.15),
+          color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity15),
         ),
         boxShadow: [
           BoxShadow(
@@ -243,7 +243,7 @@ class _WhoViewedMeScreenState extends ConsumerState<WhoViewedMeScreen> {
               gradient: LinearGradient(
                 colors: [
                   theme.colorScheme.primary,
-                  theme.colorScheme.primary.withValues(alpha: 0.8),
+                  theme.colorScheme.primary.withValues(alpha: AppColors.opacity80),
                 ],
               ),
               shape: BoxShape.circle,
@@ -310,8 +310,8 @@ class _WhoViewedMeScreenState extends ConsumerState<WhoViewedMeScreen> {
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: isDark
-                          ? Colors.white.withValues(alpha: 0.08)
-                          : theme.colorScheme.outlineVariant.withValues(alpha: 0.2),
+                          ? Colors.white.withValues(alpha: AppColors.opacity8)
+                          : theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity20),
                     ),
                   ),
                   child: Row(
@@ -375,13 +375,13 @@ class _WhoViewedMeScreenState extends ConsumerState<WhoViewedMeScreen> {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    color: theme.cardColor.withValues(alpha: 0.3),
+                    color: theme.cardColor.withValues(alpha: AppColors.opacity30),
                   ),
                   child: Center(
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.9),
+                        color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity90),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
@@ -423,12 +423,12 @@ class _WhoViewedMeScreenState extends ConsumerState<WhoViewedMeScreen> {
         color: isDark ? theme.cardColor : Colors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: theme.colorScheme.primary.withValues(alpha: 0.3),
+          color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity30),
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: theme.colorScheme.primary.withValues(alpha: 0.1),
+            color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
             blurRadius: 16,
             offset: const Offset(0, 4),
           ),
@@ -445,12 +445,12 @@ class _WhoViewedMeScreenState extends ConsumerState<WhoViewedMeScreen> {
               gradient: LinearGradient(
                 colors: [
                   theme.colorScheme.primary,
-                  theme.colorScheme.primary.withValues(alpha: 0.7),
+                  theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
                 ],
               ),
               boxShadow: [
                 BoxShadow(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                  color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity30),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -543,13 +543,13 @@ class _WhoViewedMeScreenState extends ConsumerState<WhoViewedMeScreen> {
                       gradient: LinearGradient(
                         colors: [
                           theme.colorScheme.primary,
-                          theme.colorScheme.primary.withValues(alpha: 0.85),
+                          theme.colorScheme.primary.withValues(alpha: AppColors.opacity85),
                         ],
                       ),
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                          color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity30),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -599,7 +599,7 @@ class _WhoViewedMeScreenState extends ConsumerState<WhoViewedMeScreen> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
+                color: theme.colorScheme.onSurface.withValues(alpha: AppColors.opacity20),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -651,7 +651,7 @@ class _WhoViewedMeScreenState extends ConsumerState<WhoViewedMeScreen> {
                     borderRadius: BorderRadius.circular(14),
                     boxShadow: [
                       BoxShadow(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                        color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity30),
                         blurRadius: 8,
                         offset: const Offset(0, 3),
                       ),
@@ -748,7 +748,7 @@ class _WhoViewedMeScreenState extends ConsumerState<WhoViewedMeScreen> {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                      color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity30),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -809,8 +809,8 @@ class _WhoViewedMeScreenState extends ConsumerState<WhoViewedMeScreen> {
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isDark
-                ? Colors.white.withValues(alpha: 0.08)
-                : theme.colorScheme.outlineVariant.withValues(alpha: 0.2),
+                ? Colors.white.withValues(alpha: AppColors.opacity8)
+                : theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity20),
           ),
           boxShadow: [
             BoxShadow(
@@ -1009,7 +1009,7 @@ class _AnimatedTimelineEntryState extends State<_AnimatedTimelineEntry>
                           boxShadow: [
                             BoxShadow(
                               color: theme.colorScheme.primary
-                                  .withValues(alpha: 0.3),
+                                  .withValues(alpha: AppColors.opacity30),
                               blurRadius: 4,
                             ),
                           ],
@@ -1027,7 +1027,7 @@ class _AnimatedTimelineEntryState extends State<_AnimatedTimelineEntry>
                               colors: [
                                 theme.colorScheme.primary,
                                 theme.colorScheme.primary
-                                    .withValues(alpha: 0.1),
+                                    .withValues(alpha: AppColors.opacity10),
                               ],
                             ),
                           ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/models/trust_score_config.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// A premium trust-score ring badge that shows a radial progress arc,
 /// color-coded tier label, and optional sparkle overlay on Gold+ profiles.
@@ -75,7 +76,7 @@ class _TrustScoreBadgeState extends State<TrustScoreBadge>
             child: CircularProgressIndicator(
               value: 1.0,
               strokeWidth: 2.5,
-              color: levelColor.withValues(alpha: 0.15),
+              color: levelColor.withValues(alpha: AppColors.opacity15),
               strokeCap: StrokeCap.round,
             ),
           ),
@@ -127,7 +128,7 @@ class _TrustScoreBadgeState extends State<TrustScoreBadge>
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 1.5.w, vertical: 0.15.h),
                 decoration: BoxDecoration(
-                  color: levelColor.withValues(alpha: 0.12),
+                  color: levelColor.withValues(alpha: AppColors.opacity12),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(

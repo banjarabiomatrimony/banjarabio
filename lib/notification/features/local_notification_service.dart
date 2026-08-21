@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
@@ -8,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:banjarabio/notification/core/notification_base.dart';
 import 'package:banjarabio/notification/core/notification_payload.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Service to handle local notifications for foreground alerts and scheduled messages.
 ///
@@ -41,7 +41,7 @@ class LocalNotificationService implements NotificationBase {
     description: 'Notifications for new matches, interests, and messages.',
     importance: Importance.max,
     enableLights: true,
-    ledColor: Color(0xFFC94B4B),
+    ledColor: AppColors.softRed,
   );
 
   /// Medium-importance channel for profile views and nudges.
@@ -66,7 +66,7 @@ class LocalNotificationService implements NotificationBase {
     description: 'Verification requests, reports, and assigned tasks.',
     importance: Importance.max,
     enableLights: true,
-    ledColor: Color(0xFF2196F3),
+    ledColor: AppColors.materialBlue,
   );
 
   /// High-importance channel for admin alerts.
@@ -76,7 +76,7 @@ class LocalNotificationService implements NotificationBase {
     description: 'Payments, registrations, deletions, and critical events.',
     importance: Importance.max,
     enableLights: true,
-    ledColor: Color(0xFFFF5722),
+    ledColor: AppColors.deepOrange,
   );
 
   @override
@@ -202,7 +202,7 @@ class LocalNotificationService implements NotificationBase {
       category: _getAndroidCategory(payload.category),
       vibrationPattern: Int64List.fromList([0, 500, 200, 500]),
       enableLights: true,
-      ledColor: const Color(0xFFC94B4B),
+      ledColor: AppColors.softRed,
       ledOnMs: 1000,
       ledOffMs: 500,
       fullScreenIntent: _isHighPriority(payload.category),

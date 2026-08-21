@@ -7,6 +7,7 @@ import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/services/photo_picker_service.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class LiveSelfieScreen extends StatefulWidget {
   const LiveSelfieScreen({super.key});
@@ -118,12 +119,12 @@ class _LiveSelfieScreenState extends State<LiveSelfieScreen> {
                         width: 72,
                         height: 72,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF10B981).withValues(alpha: 0.12),
+                          color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity12),
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
                           Icons.verified_rounded,
-                          color: Color(0xFF10B981),
+                          color: AppColors.categoryLocation,
                           size: 44,
                         ),
                       ),
@@ -155,10 +156,10 @@ class _LiveSelfieScreenState extends State<LiveSelfieScreen> {
                           vertical: 1.2.h,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF10B981).withValues(alpha: 0.08),
+                          color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity8),
                           borderRadius: BorderRadius.circular(14),
                           border: Border.all(
-                            color: const Color(0xFF10B981).withValues(alpha: 0.25),
+                            color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity25),
                           ),
                         ),
                         child: Row(
@@ -166,7 +167,7 @@ class _LiveSelfieScreenState extends State<LiveSelfieScreen> {
                           children: [
                             const Icon(
                               Icons.stars_rounded,
-                              color: Color(0xFF059669),
+                              color: AppColors.categoryLocationDark,
                               size: 22,
                             ),
                             SizedBox(width: 2.w),
@@ -175,7 +176,7 @@ class _LiveSelfieScreenState extends State<LiveSelfieScreen> {
                               style: TextStyle(
                                 fontSize: AppTypography.headingSmall,
                                 fontWeight: AppTypography.extraBold,
-                                color: const Color(0xFF059669),
+                                color: AppColors.categoryLocationDark,
                               ),
                             ),
                           ],
@@ -191,7 +192,7 @@ class _LiveSelfieScreenState extends State<LiveSelfieScreen> {
                           },
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.symmetric(vertical: 1.6.h),
-                            backgroundColor: const Color(0xFF10B981),
+                            backgroundColor: AppColors.categoryLocation,
                             foregroundColor: Colors.white,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
@@ -250,7 +251,7 @@ class _LiveSelfieScreenState extends State<LiveSelfieScreen> {
                     Container(
                       padding: EdgeInsets.all(5.w),
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.08),
+                        color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity8),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
@@ -314,7 +315,7 @@ class _LiveSelfieScreenState extends State<LiveSelfieScreen> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                            color: theme.colorScheme.outline.withValues(alpha: 0.2),
+                            color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity20),
                             width: 2,
                           ),
                         ),
@@ -360,7 +361,7 @@ class _LiveSelfieScreenState extends State<LiveSelfieScreen> {
                                   : const Icon(Icons.check_circle_outline, size: 18),
                               style: ElevatedButton.styleFrom(
                                 padding: EdgeInsets.symmetric(vertical: 1.5.h),
-                                backgroundColor: const Color(0xFF2E7D32),
+                                backgroundColor: AppColors.success,
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),

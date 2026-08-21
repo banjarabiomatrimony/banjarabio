@@ -140,7 +140,7 @@ abstract class AppLocalizations {
   /// **'ACCEPT & CONNECT 💖'**
   String get acceptAndConnect;
 
-  /// No description provided for @account.
+  /// Account bottom bar tab label
   ///
   /// In en, this message translates to:
   /// **'Account'**
@@ -758,7 +758,7 @@ abstract class AppLocalizations {
   /// **'BEST VALUE'**
   String get bestValue;
 
-  /// No description provided for @biodata.
+  /// Biodata bottom bar tab label
   ///
   /// In en, this message translates to:
   /// **'Biodata'**
@@ -9769,6 +9769,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'💰 0% Commission'**
   String get zeroPercentCommission;
+
+  /// Inbox bottom bar tab label
+  ///
+  /// In en, this message translates to:
+  /// **'Inbox'**
+  String get inbox;
+
+  /// Services bottom bar tab label
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get services;
 }
 
 class _AppLocalizationsDelegate

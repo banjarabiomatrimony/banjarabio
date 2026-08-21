@@ -122,7 +122,7 @@ class UpgradeDialog extends StatelessWidget {
                 gradient: LinearGradient(
                   colors: [
                     theme.colorScheme.primary,
-                    theme.colorScheme.primary.withValues(alpha: 0.7),
+                    theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
                   ],
                 ),
                 shape: BoxShape.circle,
@@ -154,7 +154,7 @@ class UpgradeDialog extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.error.withValues(alpha: 0.1),
+                  color: theme.colorScheme.error.withValues(alpha: AppColors.opacity10),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
@@ -302,12 +302,12 @@ class SubscriptionBadge extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [badgeColor, badgeColor.withValues(alpha: 0.7)],
+          colors: [badgeColor, badgeColor.withValues(alpha: AppColors.opacity70)],
         ),
         borderRadius: BorderRadius.circular(isSmall ? 4 : 8),
         boxShadow: [
           BoxShadow(
-            color: badgeColor.withValues(alpha: 0.3),
+            color: badgeColor.withValues(alpha: AppColors.opacity30),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),

@@ -285,9 +285,9 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
               Container(
                 padding: EdgeInsets.all(3.w),
                 decoration: BoxDecoration(
-                  color: Colors.blue.withValues(alpha: 0.1),
+                  color: Colors.blue.withValues(alpha: AppColors.opacity10),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.blue.withValues(alpha: 0.3)),
+                  border: Border.all(color: Colors.blue.withValues(alpha: AppColors.opacity30)),
                 ),
                 child: Row(
                   children: [

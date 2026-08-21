@@ -169,8 +169,8 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: isDark
-                        ? [const Color(0xFF140A0D), const Color(0xFF1F0D13), const Color(0xFF0F0709)]
-                        : [const Color(0xFFFFFBF9), const Color(0xFFFFF4EE), const Color(0xFFFDF0E9)],
+                        ? [AppColors.crimsonBlack, AppColors.crimsonBlack, AppColors.canvasDark]
+                        : [AppColors.roseBlush, AppColors.rosePinkLight, AppColors.rosePinkLight],
                   ),
                 ),
               ),
@@ -188,7 +188,7 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
               bottom: -10.h, left: -15.w,
               child: ScaleTransition(
                 scale: _pulseAnimation,
-                child: _auroraOrb(50.w, const Color(0xFFD97706).withValues(alpha: isDark ? 0.14 : 0.08)),
+                child: _auroraOrb(50.w, AppColors.categoryAstroDark.withValues(alpha: isDark ? 0.14 : 0.08)),
               ),
             ),
 
@@ -263,13 +263,13 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
               padding: EdgeInsets.all(2.w),
               decoration: BoxDecoration(
                 color: isDark
-                    ? Colors.white.withValues(alpha: 0.12)
+                    ? Colors.white.withValues(alpha: AppColors.opacity12)
                     : theme.colorScheme.surface,
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: isDark
                       ? Colors.white.withValues(alpha: 0.22)
-                      : primary.withValues(alpha: 0.25),
+                      : primary.withValues(alpha: AppColors.opacity25),
                   width: 1.2,
                 ),
                 boxShadow: [
@@ -291,10 +291,10 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.7.h),
               decoration: BoxDecoration(
-                color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.white,
+                color: isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : Colors.white,
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(
-                  color: isDark ? Colors.white.withValues(alpha: 0.12) : Colors.black.withValues(alpha: 0.08),
+                  color: isDark ? Colors.white.withValues(alpha: AppColors.opacity12) : Colors.black.withValues(alpha: AppColors.opacity8),
                 ),
                 boxShadow: [
                   if (!isDark)
@@ -338,10 +338,10 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
               padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 0.7.h),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [primary.withValues(alpha: 0.12), primary.withValues(alpha: 0.06)],
+                  colors: [primary.withValues(alpha: AppColors.opacity12), primary.withValues(alpha: 0.06)],
                 ),
                 borderRadius: BorderRadius.circular(30),
-                border: Border.all(color: primary.withValues(alpha: 0.25)),
+                border: Border.all(color: primary.withValues(alpha: AppColors.opacity25)),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -374,9 +374,9 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
         width: 8, height: 8,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: const Color(0xFF25D366),
+          color: AppColors.whatsapp,
           boxShadow: [
-            BoxShadow(color: const Color(0xFF25D366).withValues(alpha: 0.6), blurRadius: 8, spreadRadius: 1),
+            BoxShadow(color: AppColors.whatsapp.withValues(alpha: AppColors.opacity60), blurRadius: 8, spreadRadius: 1),
           ],
         ),
       ),
@@ -402,7 +402,7 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: theme.colorScheme.surface,
-                border: Border.all(color: primary.withValues(alpha: 0.40), width: 3.5),
+                border: Border.all(color: primary.withValues(alpha: AppColors.opacity40), width: 3.5),
                 boxShadow: [
                   BoxShadow(color: primary.withValues(alpha: 0.32), blurRadius: 28, spreadRadius: 4),
                 ],
@@ -418,11 +418,11 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: isDark
-                    ? [const Color(0xFF3B0A12), const Color(0xFF2A060C)]
-                    : [const Color(0xFFFFF1F2), const Color(0xFFFFE4E6)],
+                    ? [AppColors.bloodRedBg, AppColors.crimsonBlack]
+                    : [AppColors.primaryLight, AppColors.rose100],
               ),
               borderRadius: BorderRadius.circular(25),
-              border: Border.all(color: primary.withValues(alpha: 0.25), width: 1.2),
+              border: Border.all(color: primary.withValues(alpha: AppColors.opacity25), width: 1.2),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -508,15 +508,15 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.5.h),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1E1418) : Colors.white,
+            color: isDark ? AppColors.canvasDark : Colors.white,
             borderRadius: BorderRadius.circular(18),
             border: Border.all(
-              color: isDark ? const Color(0xFF0284C7).withValues(alpha: 0.4) : const Color(0xFF0284C7).withValues(alpha: 0.3),
+              color: isDark ? AppColors.sapphireBlue.withValues(alpha: AppColors.opacity40) : AppColors.sapphireBlue.withValues(alpha: AppColors.opacity30),
               width: 1.5,
             ),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF0284C7).withValues(alpha: isDark ? 0.25 : 0.08),
+                color: AppColors.sapphireBlue.withValues(alpha: isDark ? 0.25 : 0.08),
                 blurRadius: 14,
                 offset: const Offset(0, 4),
               ),
@@ -533,21 +533,21 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 3.0.w, vertical: 0.4.h),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF0369A1).withValues(alpha: 0.3) : const Color(0xFFE0F2FE),
+                      color: isDark ? AppColors.oceanBlueDark.withValues(alpha: AppColors.opacity30) : AppColors.infoLight,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: const Color(0xFF0284C7).withValues(alpha: 0.5)),
+                      border: Border.all(color: AppColors.sapphireBlue.withValues(alpha: AppColors.opacity50)),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.bolt_rounded, size: 13.sp, color: const Color(0xFF0284C7)),
+                        Icon(Icons.bolt_rounded, size: 13.sp, color: AppColors.sapphireBlue),
                         SizedBox(width: 1.w),
                         Text(
                           badgeText,
                           style: theme.textTheme.labelMedium?.copyWith(
                             fontWeight: AppTypography.black,
                             fontSize: AppTypography.bodyMedium,
-                            color: const Color(0xFF0284C7),
+                            color: AppColors.sapphireBlue,
                             letterSpacing: 0.4,
                           ),
                         ),
@@ -561,11 +561,11 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: LinearGradient(
-                        colors: [const Color(0xFF0284C7).withValues(alpha: 0.2), const Color(0xFF0284C7).withValues(alpha: 0.08)],
+                        colors: [AppColors.sapphireBlue.withValues(alpha: AppColors.opacity20), AppColors.sapphireBlue.withValues(alpha: AppColors.opacity8)],
                       ),
-                      border: Border.all(color: const Color(0xFF0284C7).withValues(alpha: 0.3)),
+                      border: Border.all(color: AppColors.sapphireBlue.withValues(alpha: AppColors.opacity30)),
                     ),
-                    child: Icon(Icons.person_search_rounded, size: 17.sp, color: const Color(0xFF0284C7)),
+                    child: Icon(Icons.person_search_rounded, size: 17.sp, color: AppColors.sapphireBlue),
                   ),
                 ],
               ),
@@ -614,21 +614,21 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 0.9.h),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF0284C7).withValues(alpha: 0.10),
+                  color: AppColors.sapphireBlue.withValues(alpha: AppColors.opacity10),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: const Color(0xFF0284C7).withValues(alpha: 0.35), width: 1.2),
+                  border: Border.all(color: AppColors.sapphireBlue.withValues(alpha: AppColors.opacity35), width: 1.2),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.search_rounded, size: 15.sp, color: const Color(0xFF0284C7)),
+                    Icon(Icons.search_rounded, size: 15.sp, color: AppColors.sapphireBlue),
                     SizedBox(width: 1.5.w),
                     Text(
                       ctaText,
                       style: theme.textTheme.labelLarge?.copyWith(
                         fontWeight: AppTypography.black,
                         fontSize: AppTypography.bodyLarge,
-                        color: const Color(0xFF0284C7),
+                        color: AppColors.sapphireBlue,
                       ),
                     ),
                   ],
@@ -662,16 +662,16 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                Color(0xFF881337), // Deep Rose/Crimson
-                Color(0xFF9F1239),
-                Color(0xFF700B1A),
+                AppColors.crimsonMaroon, // Deep Rose/Crimson
+                AppColors.wineRed,
+                AppColors.wineDark,
               ],
             ),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: const Color(0xFFF59E0B), width: 1.8), // Gold Glowing Accent Border
+            border: Border.all(color: AppColors.categoryAstro, width: 1.8), // Gold Glowing Accent Border
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF991B1B).withValues(alpha: 0.45),
+                color: AppColors.crimsonDeep.withValues(alpha: 0.45),
                 blurRadius: 18,
                 offset: const Offset(0, 5),
               ),
@@ -689,12 +689,12 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                     padding: EdgeInsets.symmetric(horizontal: 3.0.w, vertical: 0.4.h),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
-                        colors: [Color(0xFFFEF3C7), Color(0xFFFDE68A)],
+                        colors: [AppColors.goldTint100, AppColors.goldTint200],
                       ),
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFFF59E0B).withValues(alpha: 0.35),
+                          color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity35),
                           blurRadius: 6,
                         ),
                       ],
@@ -709,7 +709,7 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                           style: theme.textTheme.labelMedium?.copyWith(
                             fontWeight: AppTypography.black,
                             fontSize: AppTypography.bodyMedium,
-                            color: const Color(0xFF92400E),
+                            color: AppColors.amberDarkestText,
                             letterSpacing: 0.4,
                           ),
                         ),
@@ -751,7 +751,7 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                   fontFamily: AppTypography.bodyFontFamily,
                   fontSize: AppTypography.bodyMedium,
                   fontWeight: AppTypography.medium,
-                  color: Colors.white.withValues(alpha: 0.9),
+                  color: Colors.white.withValues(alpha: AppColors.opacity90),
                   height: 1.25,
                 ),
               ),
@@ -783,12 +783,12 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                 padding: EdgeInsets.symmetric(vertical: 1.0.h),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xFFFBBF24), Color(0xFFF59E0B)],
+                    colors: [AppColors.goldSoft, AppColors.categoryAstro],
                   ),
                   borderRadius: BorderRadius.circular(14),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFFF59E0B).withValues(alpha: 0.40),
+                      color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity40),
                       blurRadius: 10,
                       offset: const Offset(0, 3),
                     ),
@@ -797,14 +797,14 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.auto_awesome_rounded, size: 16, color: Color(0xFF451A03)),
+                    const Icon(Icons.auto_awesome_rounded, size: 16, color: AppColors.amberBgDark),
                     SizedBox(width: 1.5.w),
                     Text(
                       ctaText,
                       style: theme.textTheme.labelLarge?.copyWith(
                         fontWeight: AppTypography.black,
                         fontSize: AppTypography.bodyLarge,
-                        color: const Color(0xFF451A03),
+                        color: AppColors.amberBgDark,
                       ),
                     ),
                   ],
@@ -821,16 +821,16 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 2.2.w, vertical: 0.35.h),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withValues(alpha: 0.07) : const Color(0xFFF1F5F9),
+        color: isDark ? Colors.white.withValues(alpha: 0.07) : AppColors.slate100,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+        border: Border.all(color: isDark ? Colors.white10 : AppColors.slate200),
       ),
       child: Text(
         text,
         style: theme.textTheme.bodySmall?.copyWith(
           fontSize: AppTypography.bodyMedium,
           fontWeight: AppTypography.semiBold,
-          color: isDark ? Colors.white70 : const Color(0xFF334155),
+          color: isDark ? Colors.white70 : AppColors.slate700,
         ),
       ),
     );
@@ -870,7 +870,7 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.7.h),
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.withValues(alpha: 0.08),
+                  color: isDark ? Colors.white.withValues(alpha: AppColors.opacity5) : Colors.grey.withValues(alpha: AppColors.opacity8),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: isDark ? Colors.white12 : Colors.black12),
                 ),
@@ -900,7 +900,7 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                 decoration: BoxDecoration(
                   color: primary.withValues(alpha: isDark ? 0.10 : 0.06),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: primary.withValues(alpha: 0.25)),
+                  border: Border.all(color: primary.withValues(alpha: AppColors.opacity25)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -959,21 +959,21 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.8.h),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF25D366).withValues(alpha: 0.12),
+                    color: AppColors.whatsapp.withValues(alpha: AppColors.opacity12),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: const Color(0xFF25D366).withValues(alpha: 0.3)),
+                    border: Border.all(color: AppColors.whatsapp.withValues(alpha: AppColors.opacity30)),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.chat_rounded, size: 15.sp, color: const Color(0xFF25D366)),
+                      Icon(Icons.chat_rounded, size: 15.sp, color: AppColors.whatsapp),
                       SizedBox(width: 1.8.w),
                       Text(
                         'WhatsApp',
                         style: theme.textTheme.labelMedium?.copyWith(
                           fontWeight: AppTypography.extraBold,
                           fontSize: AppTypography.bodyLarge,
-                          color: const Color(0xFF25D366),
+                          color: AppColors.whatsapp,
                         ),
                       ),
                     ],
@@ -988,9 +988,9 @@ class _OnboardingSelectionScreenState extends State<OnboardingSelectionScreen>
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.8.h),
                   decoration: BoxDecoration(
-                    color: primary.withValues(alpha: 0.10),
+                    color: primary.withValues(alpha: AppColors.opacity10),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: primary.withValues(alpha: 0.25)),
+                    border: Border.all(color: primary.withValues(alpha: AppColors.opacity25)),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,

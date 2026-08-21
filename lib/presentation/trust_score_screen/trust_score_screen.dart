@@ -162,7 +162,7 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
               margin: EdgeInsets.only(right: 3.w),
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -206,7 +206,7 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
                             vertical: 0.4.h,
                           ),
                           decoration: BoxDecoration(
-                            color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                            color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Text(
@@ -278,12 +278,12 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
                   padding: EdgeInsets.symmetric(vertical: 1.5.h),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
-                      colors: [Color(0xFF8B1A2E), Color(0xFF5A000F)],
+                      colors: [AppColors.crimsonDeep, AppColors.maroonAccent],
                     ),
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF8B1A2E).withValues(alpha: 0.35),
+                        color: AppColors.crimsonDeep.withValues(alpha: AppColors.opacity35),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),
@@ -323,25 +323,25 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
     String nextTierName;
 
     if (_currentScore >= 90) {
-      scoreColor = const Color(0xFF6A1B9A); // Deep purple Platinum
+      scoreColor = AppColors.materialPurpleDark; // Deep purple Platinum
       tierName = 'Platinum Verified';
       tierEmoji = '🛡️';
       nextMilestoneScore = 100;
       nextTierName = 'Max Trust';
     } else if (_currentScore >= 70) {
-      scoreColor = const Color(0xFF10B981); // Emerald Gold
+      scoreColor = AppColors.categoryLocation; // Emerald Gold
       tierName = 'Gold Trusted';
       tierEmoji = '🥇';
       nextMilestoneScore = 90;
       nextTierName = 'Platinum';
     } else if (_currentScore >= 40) {
-      scoreColor = const Color(0xFFF59E0B); // Amber Silver
+      scoreColor = AppColors.categoryAstro; // Amber Silver
       tierName = 'Silver Profile';
       tierEmoji = '🥈';
       nextMilestoneScore = 70;
       nextTierName = 'Gold';
     } else {
-      scoreColor = const Color(0xFFEF4444); // Crimson Bronze
+      scoreColor = AppColors.trustLow; // Crimson Bronze
       tierName = 'Bronze Profile';
       tierEmoji = '🥉';
       nextMilestoneScore = 40;
@@ -356,12 +356,12 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
         color: theme.cardColor,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: scoreColor.withValues(alpha: 0.25),
+          color: scoreColor.withValues(alpha: AppColors.opacity25),
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: scoreColor.withValues(alpha: 0.08),
+            color: scoreColor.withValues(alpha: AppColors.opacity8),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -382,9 +382,9 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.6.h),
                 decoration: BoxDecoration(
-                  color: scoreColor.withValues(alpha: 0.12),
+                  color: scoreColor.withValues(alpha: AppColors.opacity12),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: scoreColor.withValues(alpha: 0.3)),
+                  border: Border.all(color: scoreColor.withValues(alpha: AppColors.opacity30)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -472,16 +472,16 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
             Container(
               padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.2.h),
               decoration: BoxDecoration(
-                color: scoreColor.withValues(alpha: 0.08),
+                color: scoreColor.withValues(alpha: AppColors.opacity8),
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: scoreColor.withValues(alpha: 0.2)),
+                border: Border.all(color: scoreColor.withValues(alpha: AppColors.opacity20)),
               ),
               child: Row(
                 children: [
                   Container(
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      color: scoreColor.withValues(alpha: 0.15),
+                      color: scoreColor.withValues(alpha: AppColors.opacity15),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(Icons.trending_up_rounded, color: scoreColor, size: 18),
@@ -515,8 +515,8 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            const Color(0xFF1E3A8A).withValues(alpha: 0.95),
-            const Color(0xFF3B82F6).withValues(alpha: 0.9),
+            AppColors.blue800.withValues(alpha: 0.95),
+            AppColors.categoryCareer.withValues(alpha: AppColors.opacity90),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -524,7 +524,7 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF1E3A8A).withValues(alpha: 0.25),
+            color: AppColors.blue800.withValues(alpha: AppColors.opacity25),
             blurRadius: 16,
             offset: const Offset(0, 6),
           ),
@@ -538,7 +538,7 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.2),
+                  color: Colors.white.withValues(alpha: AppColors.opacity20),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -584,7 +584,7 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
                 ? '🎉 Congratulations! You have unlocked a $discount% discount applied automatically at checkout on all premium matrimonial plans.'
                 : 'Complete more profile verification steps to unlock up to 30% instant discount on all matrimonial plans!',
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.9),
+              color: Colors.white.withValues(alpha: AppColors.opacity90),
               fontSize: AppTypography.bodySmall,
               height: 1.4,
             ),
@@ -608,7 +608,7 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.4.h),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.15),
+        color: Colors.white.withValues(alpha: AppColors.opacity15),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
@@ -629,56 +629,56 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
         'points': 10,
         'itemKey': 'mobile',
         'icon': Icons.phone_android_rounded,
-        'color': const Color(0xFF3B82F6),
+        'color': AppColors.categoryCareer,
       },
       {
         'title': AppLocalizations.of(context)?.emailAddress ?? 'Email Address',
         'points': 10,
         'itemKey': 'email',
         'icon': Icons.email_rounded,
-        'color': const Color(0xFFF97316),
+        'color': AppColors.warning,
       },
       {
         'title': AppLocalizations.of(context)?.liveSelfie ?? 'Live Selfie',
         'points': 10,
         'itemKey': 'photo',
         'icon': Icons.face_retouching_natural_rounded,
-        'color': const Color(0xFFEC4899),
+        'color': AppColors.categoryPersonal,
       },
       {
         'title': AppLocalizations.of(context)?.governmentId ?? 'Government ID',
         'points': 15,
         'itemKey': 'govtId',
         'icon': Icons.badge_rounded,
-        'color': const Color(0xFF8B5CF6),
+        'color': AppColors.categoryFamily,
       },
       {
         'title': AppLocalizations.of(context)?.bvsMembershipCard ?? 'BVS Membership Card',
         'points': 15,
         'itemKey': 'communityId',
         'icon': Icons.verified_user_rounded,
-        'color': const Color(0xFF8B1A2E),
+        'color': AppColors.crimsonDeep,
       },
       {
         'title': AppLocalizations.of(context)?.references ?? 'Family References',
         'points': 10,
         'itemKey': 'reference',
         'icon': Icons.group_add_rounded,
-        'color': const Color(0xFF6366F1),
+        'color': AppColors.categorySecurity,
       },
       {
         'title': 'Video Bio / Intro',
         'points': 10,
         'itemKey': 'videoBio',
         'icon': Icons.videocam_rounded,
-        'color': const Color(0xFFEF4444),
+        'color': AppColors.trustLow,
       },
       {
         'title': AppLocalizations.of(context)?.profileCompleted ?? 'Profile Completed',
         'points': 20,
         'itemKey': 'profileCompletion',
         'icon': Icons.assignment_turned_in_rounded,
-        'color': const Color(0xFF10B981),
+        'color': AppColors.categoryLocation,
       },
     ];
 
@@ -772,8 +772,8 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: status == TrustScoreRepository.statusVerified
-                ? const Color(0xFF10B981).withValues(alpha: 0.25)
-                : theme.colorScheme.outline.withValues(alpha: 0.08),
+                ? AppColors.categoryLocation.withValues(alpha: AppColors.opacity25)
+                : theme.colorScheme.outline.withValues(alpha: AppColors.opacity8),
           ),
           boxShadow: [
             BoxShadow(
@@ -791,7 +791,7 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.12),
+                  color: color.withValues(alpha: AppColors.opacity12),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(icon, color: color, size: 22),
@@ -815,7 +815,7 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
                         Text(
                           '+$points Points',
                           style: TextStyle(
-                            color: const Color(0xFF10B981),
+                            color: AppColors.categoryLocation,
                             fontWeight: AppTypography.bold,
                             fontSize: AppTypography.bodySmall,
                           ),
@@ -844,10 +844,10 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.6.h),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF10B981).withValues(alpha: 0.12),
+                    color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity12),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: const Color(0xFF10B981).withValues(alpha: 0.3),
+                      color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity30),
                     ),
                   ),
                   child: Row(
@@ -855,14 +855,14 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
                     children: [
                       const Icon(
                         Icons.check_circle_rounded,
-                        color: Color(0xFF10B981),
+                        color: AppColors.categoryLocation,
                         size: 16,
                       ),
                       SizedBox(width: 1.5.w),
                       Text(
                         'Verified',
                         style: TextStyle(
-                          color: const Color(0xFF10B981),
+                          color: AppColors.categoryLocation,
                           fontWeight: AppTypography.extraBold,
                           fontSize: AppTypography.bodySmall,
                         ),
@@ -874,10 +874,10 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.6.h),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF59E0B).withValues(alpha: 0.12),
+                    color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity12),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: const Color(0xFFF59E0B).withValues(alpha: 0.3),
+                      color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity30),
                     ),
                   ),
                   child: Row(
@@ -885,14 +885,14 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
                     children: [
                       const Icon(
                         Icons.hourglass_top_rounded,
-                        color: Color(0xFFF59E0B),
+                        color: AppColors.categoryAstro,
                         size: 15,
                       ),
                       SizedBox(width: 1.5.w),
                       Text(
                         'In Review',
                         style: TextStyle(
-                          color: const Color(0xFFF59E0B),
+                          color: AppColors.categoryAstro,
                           fontWeight: AppTypography.extraBold,
                           fontSize: AppTypography.bodySmall,
                         ),
@@ -904,16 +904,16 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.6.h),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFEF4444).withValues(alpha: 0.12),
+                    color: AppColors.trustLow.withValues(alpha: AppColors.opacity12),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: const Color(0xFFEF4444).withValues(alpha: 0.3),
+                      color: AppColors.trustLow.withValues(alpha: AppColors.opacity30),
                     ),
                   ),
                   child: Text(
                     'Retry',
                     style: TextStyle(
-                      color: const Color(0xFFEF4444),
+                      color: AppColors.trustLow,
                       fontWeight: AppTypography.extraBold,
                       fontSize: AppTypography.bodySmall,
                     ),

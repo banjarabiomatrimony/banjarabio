@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/widgets/custom_icon_widget.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Surname and Gotra dropdown selector with custom surname support.
 /// Extracted from PersonalDetailsSection: _buildSurnameDropdown,
@@ -86,7 +87,7 @@ class SurnameGotraSelectorWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: CustomIconWidget(
                 iconName: 'family_restroom',
-                color: theme.colorScheme.primary.withValues(alpha: 0.7),
+                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
                 size: 20,
               ),
             ),
@@ -94,7 +95,7 @@ class SurnameGotraSelectorWidget extends StatelessWidget {
             contentPadding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 4.w),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
+              borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity20)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
@@ -108,7 +109,7 @@ class SurnameGotraSelectorWidget extends StatelessWidget {
                 children: [
                   CustomIconWidget(
                     iconName: 'family_restroom',
-                    color: theme.colorScheme.primary.withValues(alpha: 0.6),
+                    color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity60),
                     size: 18,
                   ),
                   SizedBox(width: 3.w),
@@ -178,7 +179,7 @@ class SurnameGotraSelectorWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: CustomIconWidget(
                 iconName: 'diversity_3',
-                color: theme.colorScheme.primary.withValues(alpha: 0.7),
+                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
                 size: 20,
               ),
             ),
@@ -186,7 +187,7 @@ class SurnameGotraSelectorWidget extends StatelessWidget {
             contentPadding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 4.w),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
+              borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity20)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
@@ -200,7 +201,7 @@ class SurnameGotraSelectorWidget extends StatelessWidget {
                 children: [
                   CustomIconWidget(
                     iconName: 'groups',
-                    color: theme.colorScheme.primary.withValues(alpha: 0.6),
+                    color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity60),
                     size: 18,
                   ),
                   SizedBox(width: 3.w),

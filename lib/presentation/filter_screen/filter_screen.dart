@@ -13,6 +13,7 @@ import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class FilterScreen extends StatefulWidget {
   final FilterCriteria? initialFilters;
@@ -370,7 +371,7 @@ class _FilterScreenState extends State<FilterScreen>
     final foreground = theme.appBarTheme.foregroundColor ?? Colors.white;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0F0E17) : const Color(0xFFF8FAFC),
+      backgroundColor: isDark ? AppColors.canvasCharcoal : AppColors.slate50,
       appBar: CustomAppBar(
         automaticallyImplyLeading: false,
         leadingWidth: 175,
@@ -434,7 +435,7 @@ class _FilterScreenState extends State<FilterScreen>
             const Icon(
               Icons.tune_rounded,
               size: 16,
-              color: Color(0xFFFBBF24),
+              color: AppColors.goldSoft,
             ),
           ],
         ),
@@ -449,12 +450,12 @@ class _FilterScreenState extends State<FilterScreen>
                   padding: EdgeInsets.symmetric(horizontal: 2.4.w, vertical: 0.4.h),
                   decoration: BoxDecoration(
                     color: _activeFilterCount > 0
-                        ? const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.25 : 0.20)
+                        ? AppColors.categoryAstro.withValues(alpha: isDark ? 0.25 : 0.20)
                         : foreground.withValues(alpha: isDark ? 0.12 : 0.16),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
                       color: _activeFilterCount > 0
-                          ? const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.6 : 0.4)
+                          ? AppColors.categoryAstro.withValues(alpha: isDark ? 0.6 : 0.4)
                           : foreground.withValues(alpha: isDark ? 0.20 : 0.25),
                       width: 1.1,
                     ),
@@ -466,7 +467,7 @@ class _FilterScreenState extends State<FilterScreen>
                         Icons.refresh_rounded,
                         size: 13,
                         color: _activeFilterCount > 0
-                            ? const Color(0xFFF59E0B)
+                            ? AppColors.categoryAstro
                             : foreground.withValues(alpha: isDark ? 0.85 : 0.9),
                       ),
                       const SizedBox(width: 3.5),
@@ -483,7 +484,7 @@ class _FilterScreenState extends State<FilterScreen>
                             fontSize: AppTypography.labelSmall,
                             fontWeight: AppTypography.bold,
                             color: _activeFilterCount > 0
-                                ? const Color(0xFFF59E0B)
+                                ? AppColors.categoryAstro
                                 : foreground.withValues(alpha: isDark ? 0.85 : 0.9),
                           ),
                         ),
@@ -508,7 +509,7 @@ class _FilterScreenState extends State<FilterScreen>
               height: 260,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xFFBE123C).withValues(alpha: isDark ? 0.08 : 0.04),
+                color: AppColors.crimsonRose.withValues(alpha: isDark ? 0.08 : 0.04),
               ),
             ),
           ),
@@ -520,7 +521,7 @@ class _FilterScreenState extends State<FilterScreen>
               height: 280,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.06 : 0.03),
+                color: AppColors.categoryAstro.withValues(alpha: isDark ? 0.06 : 0.03),
               ),
             ),
           ),
@@ -544,7 +545,7 @@ class _FilterScreenState extends State<FilterScreen>
                       title: AppLocalizations.of(context)?.standardFilters ?? 'Standard Filters',
                       subtitle: AppLocalizations.of(context)?.standardFiltersSubtitle ?? 'Basic demographic criteria for all registered members',
                       badgeText: 'STANDARD',
-                      badgeColor: const Color(0xFF10B981),
+                      badgeColor: AppColors.categoryLocation,
                       icon: Icons.check_circle_outline_rounded,
                       isDark: isDark,
                     ),
@@ -573,7 +574,7 @@ class _FilterScreenState extends State<FilterScreen>
                       title: AppLocalizations.of(context)?.communityFiltersTitle ?? 'Community Filters (BVS)',
                       subtitle: AppLocalizations.of(context)?.communityFiltersSubtitle ?? 'Gotra, Mamakul, Origin, Height, Income & Lineage',
                       badgeText: AppLocalizations.of(context)?.subsidizedPricePill ?? '₹20/mo or ₹200/yr',
-                      badgeColor: const Color(0xFFF59E0B),
+                      badgeColor: AppColors.categoryAstro,
                       icon: _hasCommunityAccess ? Icons.stars_rounded : Icons.lock_outline_rounded,
                       isDark: isDark,
                     ),
@@ -592,7 +593,7 @@ class _FilterScreenState extends State<FilterScreen>
                       title: AppLocalizations.of(context)?.premiumFiltersTitle ?? 'Premium Filters',
                       subtitle: AppLocalizations.of(context)?.premiumFiltersSubtitle ?? 'ID Verification, Trust Score, Horoscope, Lifestyle & Activity',
                       badgeText: 'PREMIUM',
-                      badgeColor: const Color(0xFF8B5CF6),
+                      badgeColor: AppColors.categoryFamily,
                       icon: _hasPremiumAccess ? Icons.verified_rounded : Icons.lock_outline_rounded,
                       isDark: isDark,
                     ),
@@ -611,7 +612,7 @@ class _FilterScreenState extends State<FilterScreen>
                       title: AppLocalizations.of(context)?.matchmakerFiltersTitle ?? 'Matchmaker Filters',
                       subtitle: AppLocalizations.of(context)?.matchmakerFiltersSubtitle ?? 'Direct Contact, RM Handpicked, 36 Guna Score & Land Holdings',
                       badgeText: 'MATCHMAKER',
-                      badgeColor: const Color(0xFFBE123C),
+                      badgeColor: AppColors.crimsonRose,
                       icon: _hasMatchmakerAccess ? Icons.workspace_premium_rounded : Icons.lock_clock_rounded,
                       isDark: isDark,
                     ),
@@ -641,10 +642,10 @@ class _FilterScreenState extends State<FilterScreen>
         width: double.infinity,
         padding: EdgeInsets.fromLTRB(2.5.w, 0.2.h, 2.5.w, 0.8.h),
         decoration: BoxDecoration(
-          color: theme.appBarTheme.backgroundColor ?? (isDark ? const Color(0xFF0F0E17) : Colors.white),
+          color: theme.appBarTheme.backgroundColor ?? (isDark ? AppColors.canvasCharcoal : Colors.white),
           border: Border(
             bottom: BorderSide(
-              color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
+              color: isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : AppColors.slate200,
             ),
           ),
         ),
@@ -658,7 +659,7 @@ class _FilterScreenState extends State<FilterScreen>
                 index: 0,
                 label: 'Standard',
                 icon: Icons.check_circle_outline_rounded,
-                color: const Color(0xFF10B981),
+                color: AppColors.categoryLocation,
                 onTap: () => _scrollToTier(0, _standardTierKey),
                 isDark: isDark,
               ),
@@ -667,7 +668,7 @@ class _FilterScreenState extends State<FilterScreen>
                 index: 1,
                 label: 'Community',
                 icon: _hasCommunityAccess ? Icons.stars_rounded : Icons.lock_outline_rounded,
-                color: const Color(0xFFF59E0B),
+                color: AppColors.categoryAstro,
                 onTap: () => _scrollToTier(1, _communityTierKey),
                 isDark: isDark,
               ),
@@ -676,7 +677,7 @@ class _FilterScreenState extends State<FilterScreen>
                 index: 2,
                 label: 'Premium',
                 icon: _hasPremiumAccess ? Icons.verified_rounded : Icons.lock_outline_rounded,
-                color: const Color(0xFF8B5CF6),
+                color: AppColors.categoryFamily,
                 onTap: () => _scrollToTier(2, _premiumTierKey),
                 isDark: isDark,
               ),
@@ -685,7 +686,7 @@ class _FilterScreenState extends State<FilterScreen>
                 index: 3,
                 label: 'Matchmaker',
                 icon: _hasMatchmakerAccess ? Icons.workspace_premium_rounded : Icons.lock_clock_rounded,
-                color: const Color(0xFFBE123C),
+                color: AppColors.crimsonRose,
                 onTap: () => _scrollToTier(3, _matchmakerTierKey),
                 isDark: isDark,
               ),
@@ -725,27 +726,27 @@ class _FilterScreenState extends State<FilterScreen>
                   )
                 : (isHovered
                     ? LinearGradient(
-                        colors: [color.withValues(alpha: 0.22), color.withValues(alpha: 0.12)],
+                        colors: [color.withValues(alpha: 0.22), color.withValues(alpha: AppColors.opacity12)],
                       )
                     : null),
             color: isSelected
                 ? null
                 : (isHovered
                     ? null
-                    : (isDark ? const Color(0xFF1B182B) : const Color(0xFFF1F5F9))),
+                    : (isDark ? AppColors.canvasRichDark : AppColors.slate100)),
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
               color: isSelected
                   ? Colors.white.withValues(alpha: 0.95)
                   : (isHovered
                       ? color.withValues(alpha: 0.65)
-                      : (isDark ? Colors.white.withValues(alpha: 0.10) : const Color(0xFFCBD5E1))),
+                      : (isDark ? Colors.white.withValues(alpha: AppColors.opacity10) : AppColors.slate300)),
               width: isSelected ? 1.6 : 1.0,
             ),
             boxShadow: isSelected
                 ? [
                     BoxShadow(
-                      color: color.withValues(alpha: 0.50),
+                      color: color.withValues(alpha: AppColors.opacity50),
                       blurRadius: 8,
                       offset: const Offset(0, 3),
                     ),
@@ -753,7 +754,7 @@ class _FilterScreenState extends State<FilterScreen>
                 : (isHovered
                     ? [
                         BoxShadow(
-                          color: color.withValues(alpha: 0.20),
+                          color: color.withValues(alpha: AppColors.opacity20),
                           blurRadius: 6,
                           offset: const Offset(0, 2),
                         ),
@@ -768,14 +769,14 @@ class _FilterScreenState extends State<FilterScreen>
                 padding: const EdgeInsets.all(3),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? Colors.white.withValues(alpha: 0.25)
+                      ? Colors.white.withValues(alpha: AppColors.opacity25)
                       : (isHovered ? color.withValues(alpha: 0.18) : Colors.transparent),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   icon,
                   size: 13,
-                  color: isSelected ? Colors.white : (isHovered ? color : (isDark ? Colors.white70 : const Color(0xFF475569))),
+                  color: isSelected ? Colors.white : (isHovered ? color : (isDark ? Colors.white70 : AppColors.slate600)),
                 ),
               ),
               SizedBox(width: 1.4.w),
@@ -784,7 +785,7 @@ class _FilterScreenState extends State<FilterScreen>
                 style: TextStyle(
                   color: isSelected
                       ? Colors.white
-                      : (isHovered ? color : (isDark ? Colors.white70 : const Color(0xFF334155))),
+                      : (isHovered ? color : (isDark ? Colors.white70 : AppColors.slate700)),
                   fontWeight: isSelected ? AppTypography.black : (isHovered ? AppTypography.extraBold : AppTypography.semiBold),
                   fontSize: AppTypography.labelMedium,
                   letterSpacing: isSelected ? 0.2 : 0.05,
@@ -852,12 +853,12 @@ class _FilterScreenState extends State<FilterScreen>
               gradient: LinearGradient(
                 colors: [
                   badgeColor.withValues(alpha: 0.28),
-                  badgeColor.withValues(alpha: 0.15),
+                  badgeColor.withValues(alpha: AppColors.opacity15),
                 ],
               ),
               shape: BoxShape.circle,
               border: Border.all(
-                color: badgeColor.withValues(alpha: 0.5),
+                color: badgeColor.withValues(alpha: AppColors.opacity50),
                 width: 1.2,
               ),
             ),
@@ -880,7 +881,7 @@ class _FilterScreenState extends State<FilterScreen>
                 Text(
                   subtitle,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.85),
+                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity85),
                     fontSize: AppTypography.labelSmall,
                     height: 1.25,
                   ),
@@ -892,12 +893,12 @@ class _FilterScreenState extends State<FilterScreen>
             padding: EdgeInsets.symmetric(horizontal: 2.4.w, vertical: 0.45.h),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [badgeColor, badgeColor.withValues(alpha: 0.85)],
+                colors: [badgeColor, badgeColor.withValues(alpha: AppColors.opacity85)],
               ),
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: badgeColor.withValues(alpha: 0.35),
+                  color: badgeColor.withValues(alpha: AppColors.opacity35),
                   blurRadius: 6,
                   offset: const Offset(0, 2),
                 ),
@@ -932,10 +933,10 @@ class _FilterScreenState extends State<FilterScreen>
         Container(
           padding: const EdgeInsets.all(8.5),
           decoration: BoxDecoration(
-            color: accent.withValues(alpha: 0.15),
+            color: accent.withValues(alpha: AppColors.opacity15),
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
-              color: accent.withValues(alpha: 0.25),
+              color: accent.withValues(alpha: AppColors.opacity25),
             ),
           ),
           child: Icon(
@@ -973,12 +974,12 @@ class _FilterScreenState extends State<FilterScreen>
                         padding: const EdgeInsets.symmetric(horizontal: 7.5, vertical: 2.0),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
-                            colors: [accent, accent.withValues(alpha: 0.85)],
+                            colors: [accent, accent.withValues(alpha: AppColors.opacity85)],
                           ),
                           borderRadius: BorderRadius.circular(12),
                           boxShadow: [
                             BoxShadow(
-                              color: accent.withValues(alpha: 0.35),
+                              color: accent.withValues(alpha: AppColors.opacity35),
                               blurRadius: 6,
                               offset: const Offset(0, 2),
                             ),
@@ -1040,15 +1041,15 @@ class _FilterScreenState extends State<FilterScreen>
             decoration: BoxDecoration(
               gradient: isSelected
                   ? LinearGradient(
-                      colors: [color, color.withValues(alpha: 0.85)],
+                      colors: [color, color.withValues(alpha: AppColors.opacity85)],
                     )
                   : null,
               color: isSelected
                   ? null
-                  : (isDark ? const Color(0xFF1E1B2E) : const Color(0xFFF1F5F9)),
+                  : (isDark ? AppColors.canvasRichDark : AppColors.slate100),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: isSelected ? color : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+                color: isSelected ? color : (isDark ? Colors.white10 : AppColors.slate200),
                 width: isSelected ? 1.6 : 1,
               ),
               boxShadow: isSelected
@@ -1067,7 +1068,7 @@ class _FilterScreenState extends State<FilterScreen>
                 Icon(
                   icon,
                   size: 17,
-                  color: isSelected ? Colors.white : (isDark ? Colors.white70 : const Color(0xFF475569)),
+                  color: isSelected ? Colors.white : (isDark ? Colors.white70 : AppColors.slate600),
                 ),
                 const SizedBox(width: 6),
                 Text(
@@ -1075,7 +1076,7 @@ class _FilterScreenState extends State<FilterScreen>
                   style: TextStyle(
                     fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
                     fontSize: AppTypography.bodySmall,
-                    color: isSelected ? Colors.white : (isDark ? Colors.white : const Color(0xFF1E293B)),
+                    color: isSelected ? Colors.white : (isDark ? Colors.white : AppColors.slate800),
                   ),
                 ),
               ],
@@ -1088,10 +1089,10 @@ class _FilterScreenState extends State<FilterScreen>
     return Container(
       padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161424) : Colors.white,
+        color: isDark ? AppColors.canvasDeepDark : Colors.white,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
-          color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
+          color: isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : AppColors.slate200,
         ),
         boxShadow: [
           BoxShadow(
@@ -1107,18 +1108,18 @@ class _FilterScreenState extends State<FilterScreen>
           _buildSectionHeader(
             theme: theme,
             icon: Icons.wc_rounded,
-            iconAccent: const Color(0xFFEC4899),
+            iconAccent: AppColors.categoryPersonal,
             title: AppLocalizations.of(context)?.lookingForGender ?? 'Looking For (Gender)',
             subtitle: AppLocalizations.of(context)?.selectMatchPreference ?? 'Select match preference for groom or bride search',
           ),
           SizedBox(height: 1.6.h),
           Row(
             children: [
-              buildGenderPill(AppLocalizations.of(context)?.all ?? 'All', '', Icons.people_outline_rounded, const Color(0xFF6366F1)),
+              buildGenderPill(AppLocalizations.of(context)?.all ?? 'All', '', Icons.people_outline_rounded, AppColors.categorySecurity),
               SizedBox(width: 2.w),
-              buildGenderPill(AppLocalizations.of(context)?.bride ?? 'Bride', 'female', Icons.female_rounded, const Color(0xFFEC4899)),
+              buildGenderPill(AppLocalizations.of(context)?.bride ?? 'Bride', 'female', Icons.female_rounded, AppColors.categoryPersonal),
               SizedBox(width: 2.w),
-              buildGenderPill(AppLocalizations.of(context)?.groom ?? 'Groom', 'male', Icons.male_rounded, const Color(0xFF0EA5E9)),
+              buildGenderPill(AppLocalizations.of(context)?.groom ?? 'Groom', 'male', Icons.male_rounded, AppColors.skyBlue),
             ],
           ),
         ],
@@ -1146,13 +1147,13 @@ class _FilterScreenState extends State<FilterScreen>
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
             color: isSelected
-                ? const Color(0xFF8B5CF6).withValues(alpha: 0.20)
-                : (isDark ? const Color(0xFF1E1B2E) : const Color(0xFFF1F5F9)),
+                ? AppColors.categoryFamily.withValues(alpha: AppColors.opacity20)
+                : (isDark ? AppColors.canvasRichDark : AppColors.slate100),
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: isSelected
-                  ? const Color(0xFF8B5CF6)
-                  : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+                  ? AppColors.categoryFamily
+                  : (isDark ? Colors.white10 : AppColors.slate200),
               width: isSelected ? 1.4 : 1,
             ),
           ),
@@ -1162,8 +1163,8 @@ class _FilterScreenState extends State<FilterScreen>
               fontWeight: isSelected ? AppTypography.bold : AppTypography.medium,
               fontSize: AppTypography.labelSmall,
               color: isSelected
-                  ? const Color(0xFF8B5CF6)
-                  : (isDark ? Colors.white70 : const Color(0xFF475569)),
+                  ? AppColors.categoryFamily
+                  : (isDark ? Colors.white70 : AppColors.slate600),
             ),
           ),
         ),
@@ -1173,10 +1174,10 @@ class _FilterScreenState extends State<FilterScreen>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161424) : Colors.white,
+        color: isDark ? AppColors.canvasDeepDark : Colors.white,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
+          color: isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : AppColors.slate200,
         ),
         boxShadow: [
           BoxShadow(
@@ -1196,7 +1197,7 @@ class _FilterScreenState extends State<FilterScreen>
                 child: _buildSectionHeader(
                   theme: theme,
                   icon: Icons.cake_rounded,
-                  iconAccent: const Color(0xFF8B5CF6),
+                  iconAccent: AppColors.categoryFamily,
                   title: AppLocalizations.of(context)?.ageRange ?? 'Age Range',
                 ),
               ),
@@ -1205,12 +1206,12 @@ class _FilterScreenState extends State<FilterScreen>
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3.5),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xFF8B5CF6), Color(0xFF6D28D9)],
+                    colors: [AppColors.categoryFamily, AppColors.violetDeep],
                   ),
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF8B5CF6).withValues(alpha: 0.30),
+                      color: AppColors.categoryFamily.withValues(alpha: AppColors.opacity30),
                       blurRadius: 6,
                       offset: const Offset(0, 2),
                     ),
@@ -1231,10 +1232,10 @@ class _FilterScreenState extends State<FilterScreen>
 
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
-              activeTrackColor: const Color(0xFF8B5CF6),
-              inactiveTrackColor: const Color(0xFF8B5CF6).withValues(alpha: 0.18),
-              thumbColor: const Color(0xFF8B5CF6),
-              overlayColor: const Color(0xFF8B5CF6).withValues(alpha: 0.2),
+              activeTrackColor: AppColors.categoryFamily,
+              inactiveTrackColor: AppColors.categoryFamily.withValues(alpha: 0.18),
+              thumbColor: AppColors.categoryFamily,
+              overlayColor: AppColors.categoryFamily.withValues(alpha: AppColors.opacity20),
               rangeThumbShape: const RoundRangeSliderThumbShape(
                 enabledThumbRadius: 8.5,
                 elevation: 3,
@@ -1293,18 +1294,18 @@ class _FilterScreenState extends State<FilterScreen>
       curve: Curves.easeOutCubic,
       padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.4.h),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161424) : Colors.white,
+        color: isDark ? AppColors.canvasDeepDark : Colors.white,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
           color: hasPhoto
-              ? const Color(0xFF0EA5E9).withValues(alpha: 0.65)
-              : (isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0)),
+              ? AppColors.skyBlue.withValues(alpha: 0.65)
+              : (isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : AppColors.slate200),
           width: hasPhoto ? 1.6 : 1,
         ),
         boxShadow: [
           BoxShadow(
             color: hasPhoto
-                ? const Color(0xFF0EA5E9).withValues(alpha: 0.15)
+                ? AppColors.skyBlue.withValues(alpha: AppColors.opacity15)
                 : Colors.black.withValues(alpha: isDark ? 0.15 : 0.03),
             blurRadius: 12,
             offset: const Offset(0, 4),
@@ -1318,13 +1319,13 @@ class _FilterScreenState extends State<FilterScreen>
             padding: const EdgeInsets.all(9.5),
             decoration: BoxDecoration(
               color: hasPhoto
-                  ? const Color(0xFF0EA5E9)
-                  : const Color(0xFF0EA5E9).withValues(alpha: 0.12),
+                  ? AppColors.skyBlue
+                  : AppColors.skyBlue.withValues(alpha: AppColors.opacity12),
               borderRadius: BorderRadius.circular(14),
               boxShadow: hasPhoto
                   ? [
                       BoxShadow(
-                        color: const Color(0xFF0EA5E9).withValues(alpha: 0.35),
+                        color: AppColors.skyBlue.withValues(alpha: AppColors.opacity35),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -1334,7 +1335,7 @@ class _FilterScreenState extends State<FilterScreen>
             child: Icon(
               Icons.photo_camera_rounded,
               size: 20,
-              color: hasPhoto ? Colors.white : const Color(0xFF0EA5E9),
+              color: hasPhoto ? Colors.white : AppColors.skyBlue,
             ),
           ),
           SizedBox(width: 3.5.w),
@@ -1362,7 +1363,7 @@ class _FilterScreenState extends State<FilterScreen>
           ),
           Switch.adaptive(
             value: hasPhoto,
-            activeTrackColor: const Color(0xFF0EA5E9),
+            activeTrackColor: AppColors.skyBlue,
             onChanged: (val) {
               HapticFeedback.selectionClick();
               setState(() {
@@ -1388,7 +1389,7 @@ class _FilterScreenState extends State<FilterScreen>
       theme: theme,
       isDark: isDark,
       icon: Icons.favorite_rounded,
-      iconAccent: const Color(0xFFBE123C),
+      iconAccent: AppColors.crimsonRose,
       title: AppLocalizations.of(context)?.maritalStatusLabel ?? 'Marital Status',
       subtitle: AppLocalizations.of(context)?.selectMaritalStatus ?? 'Select marital status requirement',
       options: options,
@@ -1420,10 +1421,10 @@ class _FilterScreenState extends State<FilterScreen>
     return Container(
       padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161424) : Colors.white,
+        color: isDark ? AppColors.canvasDeepDark : Colors.white,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
-          color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
+          color: isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : AppColors.slate200,
         ),
         boxShadow: [
           BoxShadow(
@@ -1439,7 +1440,7 @@ class _FilterScreenState extends State<FilterScreen>
           _buildSectionHeader(
             theme: theme,
             icon: Icons.location_on_rounded,
-            iconAccent: const Color(0xFF0EA5E9),
+            iconAccent: AppColors.skyBlue,
             title: AppLocalizations.of(context)?.locationAndState ?? 'Location & Native State',
             subtitle: AppLocalizations.of(context)?.filterCandidateHomeState ?? 'Filter candidate home state or current residing district',
           ),
@@ -1464,22 +1465,22 @@ class _FilterScreenState extends State<FilterScreen>
                   decoration: BoxDecoration(
                     gradient: isSelected
                         ? const LinearGradient(
-                            colors: [Color(0xFF0EA5E9), Color(0xFF0284C7)],
+                            colors: [AppColors.skyBlue, AppColors.sapphireBlue],
                           )
                         : null,
                     color: isSelected
                         ? null
-                        : (isDark ? const Color(0xFF1E1B2E) : const Color(0xFFF1F5F9)),
+                        : (isDark ? AppColors.canvasRichDark : AppColors.slate100),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: isSelected
-                          ? const Color(0xFF0EA5E9)
-                          : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+                          ? AppColors.skyBlue
+                          : (isDark ? Colors.white10 : AppColors.slate200),
                     ),
                     boxShadow: isSelected
                         ? [
                             BoxShadow(
-                              color: const Color(0xFF0EA5E9).withValues(alpha: 0.35),
+                              color: AppColors.skyBlue.withValues(alpha: AppColors.opacity35),
                               blurRadius: 8,
                               offset: const Offset(0, 3),
                             ),
@@ -1491,7 +1492,7 @@ class _FilterScreenState extends State<FilterScreen>
                     style: TextStyle(
                       fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
                       fontSize: AppTypography.labelSmall,
-                      color: isSelected ? Colors.white : (isDark ? Colors.white : const Color(0xFF1E293B)),
+                      color: isSelected ? Colors.white : (isDark ? Colors.white : AppColors.slate800),
                     ),
                   ),
                 ),
@@ -1506,7 +1507,7 @@ class _FilterScreenState extends State<FilterScreen>
               hintText: AppLocalizations.of(context)?.enterDistrictExample ?? 'Enter District (e.g. Nanded, Yavatmal, Nizamabad)',
               prefixIcon: const Icon(
                 Icons.map_rounded,
-                color: Color(0xFF0EA5E9),
+                color: AppColors.skyBlue,
                 size: 20,
               ),
               suffixIcon: _districtController.text.isNotEmpty
@@ -1521,7 +1522,7 @@ class _FilterScreenState extends State<FilterScreen>
                     )
                   : null,
               filled: true,
-              fillColor: isDark ? const Color(0xFF0F0D1A) : const Color(0xFFF8FAFC),
+              fillColor: isDark ? AppColors.canvasCharcoal : AppColors.slate50,
               contentPadding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.3.h),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
@@ -1530,13 +1531,13 @@ class _FilterScreenState extends State<FilterScreen>
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: BorderSide(
-                  color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
+                  color: isDark ? Colors.white10 : AppColors.slate200,
                 ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: const BorderSide(
-                  color: Color(0xFF0EA5E9),
+                  color: AppColors.skyBlue,
                   width: 1.5,
                 ),
               ),
@@ -1563,7 +1564,7 @@ class _FilterScreenState extends State<FilterScreen>
       theme: theme,
       isDark: isDark,
       icon: Icons.school_rounded,
-      iconAccent: const Color(0xFF10B981),
+      iconAccent: AppColors.categoryLocation,
       title: 'Basic Education Level',
       subtitle: 'Filter by primary academic attainment',
       options: options,
@@ -1638,15 +1639,15 @@ class _FilterScreenState extends State<FilterScreen>
               margin: EdgeInsets.symmetric(vertical: 1.5.h),
               padding: EdgeInsets.all(5.w),
               decoration: BoxDecoration(
-                color: (isDark ? const Color(0xFF12101C) : Colors.white).withValues(alpha: 0.94),
+                color: (isDark ? AppColors.canvasCharcoal : Colors.white).withValues(alpha: 0.94),
                 borderRadius: BorderRadius.circular(26),
                 border: Border.all(
-                  color: const Color(0xFFF59E0B).withValues(alpha: 0.65),
+                  color: AppColors.categoryAstro.withValues(alpha: 0.65),
                   width: 1.5,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFFF59E0B).withValues(alpha: 0.18),
+                    color: AppColors.categoryAstro.withValues(alpha: 0.18),
                     blurRadius: 22,
                     spreadRadius: 2,
                   ),
@@ -1659,13 +1660,13 @@ class _FilterScreenState extends State<FilterScreen>
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: const Color(0xFFF59E0B).withValues(alpha: 0.15),
-                      border: Border.all(color: const Color(0xFFF59E0B), width: 1.5),
+                      color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity15),
+                      border: Border.all(color: AppColors.categoryAstro, width: 1.5),
                     ),
                     child: const Icon(
                       Icons.stars_rounded,
                       size: 32,
-                      color: Color(0xFFF59E0B),
+                      color: AppColors.categoryAstro,
                     ),
                   ),
                   SizedBox(height: 1.4.h),
@@ -1693,11 +1694,11 @@ class _FilterScreenState extends State<FilterScreen>
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       gradient: const LinearGradient(
-                        colors: [Color(0xFFBE123C), Color(0xFF881337)],
+                        colors: [AppColors.crimsonRose, AppColors.crimsonMaroon],
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFFBE123C).withValues(alpha: 0.35),
+                          color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity35),
                           blurRadius: 10,
                           offset: const Offset(0, 4),
                         ),
@@ -1740,7 +1741,7 @@ class _FilterScreenState extends State<FilterScreen>
       theme: theme,
       isDark: isDark,
       icon: Icons.auto_awesome_rounded,
-      iconAccent: const Color(0xFFF59E0B),
+      iconAccent: AppColors.categoryAstro,
       title: AppLocalizations.of(context)?.banjaraGotraSelfClan ?? 'Banjara Gotra (Self Clan)',
       subtitle: AppLocalizations.of(context)?.selectPaternalGotra ?? 'Select candidate paternal Gotra customary clan',
       options: gotraOptions,
@@ -1779,7 +1780,7 @@ class _FilterScreenState extends State<FilterScreen>
       theme: theme,
       isDark: isDark,
       icon: Icons.family_restroom_rounded,
-      iconAccent: const Color(0xFFF59E0B),
+      iconAccent: AppColors.categoryAstro,
       title: AppLocalizations.of(context)?.maternalGotraMamakul ?? 'Maternal Gotra (Mamakul / मोसळ)',
       subtitle: AppLocalizations.of(context)?.maternalGotraSubtitle ?? 'Exclude or specify maternal lineage to avoid customary gotra clash',
       options: gotraOptions,
@@ -1814,7 +1815,7 @@ class _FilterScreenState extends State<FilterScreen>
       theme: theme,
       isDark: isDark,
       icon: Icons.diversity_3_rounded,
-      iconAccent: const Color(0xFFF59E0B),
+      iconAccent: AppColors.categoryAstro,
       title: AppLocalizations.of(context)?.subCasteJatiVariant ?? 'Sub-Caste / Jati Variant',
       subtitle: AppLocalizations.of(context)?.subCasteSubtitle ?? 'Filter by regional Banjara cultural designation',
       options: options,
@@ -1847,7 +1848,7 @@ class _FilterScreenState extends State<FilterScreen>
       theme: theme,
       isDark: isDark,
       icon: Icons.holiday_village_rounded,
-      iconAccent: const Color(0xFFF59E0B),
+      iconAccent: AppColors.categoryAstro,
       title: AppLocalizations.of(context)?.habitatNativeOrigin ?? 'Habitat / Native Origin',
       subtitle: AppLocalizations.of(context)?.habitatSubtitle ?? 'Filter candidate living environment & origin type',
       options: options,
@@ -1881,10 +1882,10 @@ class _FilterScreenState extends State<FilterScreen>
     return Container(
       padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161424) : Colors.white,
+        color: isDark ? AppColors.canvasDeepDark : Colors.white,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
-          color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
+          color: isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : AppColors.slate200,
         ),
         boxShadow: [
           BoxShadow(
@@ -1900,7 +1901,7 @@ class _FilterScreenState extends State<FilterScreen>
           _buildSectionHeader(
             theme: theme,
             icon: Icons.height_rounded,
-            iconAccent: const Color(0xFF10B981),
+            iconAccent: AppColors.categoryLocation,
             title: AppLocalizations.of(context)?.minimumHeight ?? 'Minimum Height',
             subtitle: AppLocalizations.of(context)?.minimumHeightSubtitle ?? 'Select minimum height requirement for matches',
           ),
@@ -1925,22 +1926,22 @@ class _FilterScreenState extends State<FilterScreen>
                   decoration: BoxDecoration(
                     gradient: isSelected
                         ? const LinearGradient(
-                            colors: [Color(0xFF10B981), Color(0xFF059669)],
+                            colors: [AppColors.categoryLocation, AppColors.categoryLocationDark],
                           )
                         : null,
                     color: isSelected
                         ? null
-                        : (isDark ? const Color(0xFF1E1B2E) : const Color(0xFFF1F5F9)),
+                        : (isDark ? AppColors.canvasRichDark : AppColors.slate100),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: isSelected
-                          ? const Color(0xFF10B981)
-                          : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+                          ? AppColors.categoryLocation
+                          : (isDark ? Colors.white10 : AppColors.slate200),
                     ),
                     boxShadow: isSelected
                         ? [
                             BoxShadow(
-                              color: const Color(0xFF10B981).withValues(alpha: 0.35),
+                              color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity35),
                               blurRadius: 8,
                               offset: const Offset(0, 3),
                             ),
@@ -1952,7 +1953,7 @@ class _FilterScreenState extends State<FilterScreen>
                     style: TextStyle(
                       fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
                       fontSize: AppTypography.bodySmall,
-                      color: isSelected ? Colors.white : (isDark ? Colors.white : const Color(0xFF1E293B)),
+                      color: isSelected ? Colors.white : (isDark ? Colors.white : AppColors.slate800),
                     ),
                   ),
                 ),
@@ -1981,7 +1982,7 @@ class _FilterScreenState extends State<FilterScreen>
       theme: theme,
       isDark: isDark,
       icon: Icons.school_rounded,
-      iconAccent: const Color(0xFF6366F1),
+      iconAccent: AppColors.categorySecurity,
       title: AppLocalizations.of(context)?.educationFieldStream ?? 'Education Field / Stream',
       subtitle: AppLocalizations.of(context)?.educationFieldSubtitle ?? 'Filter by specialized degree stream & career path',
       options: options,
@@ -2020,7 +2021,7 @@ class _FilterScreenState extends State<FilterScreen>
       theme: theme,
       isDark: isDark,
       icon: Icons.work_rounded,
-      iconAccent: const Color(0xFF14B8A6),
+      iconAccent: AppColors.categoryLocation,
       title: AppLocalizations.of(context)?.professionLabel ?? 'Profession',
       subtitle: 'Select candidate career and occupation categories',
       options: options,
@@ -2055,7 +2056,7 @@ class _FilterScreenState extends State<FilterScreen>
       theme: theme,
       isDark: isDark,
       icon: Icons.payments_rounded,
-      iconAccent: const Color(0xFF22C55E),
+      iconAccent: AppColors.green500,
       title: AppLocalizations.of(context)?.annualIncome ?? 'Annual Income',
       subtitle: AppLocalizations.of(context)?.annualIncomeSubtitle ?? 'Select candidate yearly income expectations',
       options: options,
@@ -2083,7 +2084,7 @@ class _FilterScreenState extends State<FilterScreen>
       theme: theme,
       isDark: isDark,
       icon: Icons.groups_rounded,
-      iconAccent: const Color(0xFFA855F7),
+      iconAccent: AppColors.purple400,
       title: AppLocalizations.of(context)?.familyStructure ?? 'Family Structure',
       subtitle: AppLocalizations.of(context)?.familyStructureSubtitle ?? 'Select nuclear or joint family preferences',
       options: options,
@@ -2111,7 +2112,7 @@ class _FilterScreenState extends State<FilterScreen>
       theme: theme,
       isDark: isDark,
       icon: Icons.favorite_outline_rounded,
-      iconAccent: const Color(0xFFF59E0B),
+      iconAccent: AppColors.categoryAstro,
       title: AppLocalizations.of(context)?.familyValues ?? 'Family Values',
       subtitle: AppLocalizations.of(context)?.familyValuesSubtitle ?? 'Filter by cultural and social outlook',
       options: options,
@@ -2139,7 +2140,7 @@ class _FilterScreenState extends State<FilterScreen>
       theme: theme,
       isDark: isDark,
       icon: Icons.villa_rounded,
-      iconAccent: const Color(0xFFD946EF),
+      iconAccent: AppColors.purple400,
       title: AppLocalizations.of(context)?.familyStatus ?? 'Family Status',
       subtitle: AppLocalizations.of(context)?.familyStatusSubtitle ?? 'Select socioeconomic family status requirement',
       options: options,
@@ -2167,7 +2168,7 @@ class _FilterScreenState extends State<FilterScreen>
       theme: theme,
       isDark: isDark,
       icon: Icons.person_pin_rounded,
-      iconAccent: const Color(0xFF0284C7),
+      iconAccent: AppColors.sapphireBlue,
       title: AppLocalizations.of(context)?.profileManagedBy ?? 'Profile Managed By',
       subtitle: AppLocalizations.of(context)?.profileManagedBySubtitle ?? 'Select who created and manages the candidate biodata',
       options: options,
@@ -2207,20 +2208,20 @@ class _FilterScreenState extends State<FilterScreen>
             decoration: BoxDecoration(
               gradient: isSelected
                   ? const LinearGradient(
-                      colors: [Color(0xFF6366F1), Color(0xFF4F46E5)],
+                      colors: [AppColors.categorySecurity, AppColors.categorySecurityDark],
                     )
                   : null,
               color: isSelected
                   ? null
-                  : (isDark ? const Color(0xFF1E1B2E) : const Color(0xFFF1F5F9)),
+                  : (isDark ? AppColors.canvasRichDark : AppColors.slate100),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: isSelected ? const Color(0xFF6366F1) : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+                color: isSelected ? AppColors.categorySecurity : (isDark ? Colors.white10 : AppColors.slate200),
               ),
               boxShadow: isSelected
                   ? [
                       BoxShadow(
-                        color: const Color(0xFF6366F1).withValues(alpha: 0.35),
+                        color: AppColors.categorySecurity.withValues(alpha: AppColors.opacity35),
                         blurRadius: 8,
                         offset: const Offset(0, 3),
                       ),
@@ -2233,7 +2234,7 @@ class _FilterScreenState extends State<FilterScreen>
               style: TextStyle(
                 fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
                 fontSize: AppTypography.labelSmall,
-                color: isSelected ? Colors.white : (isDark ? Colors.white : const Color(0xFF1E293B)),
+                color: isSelected ? Colors.white : (isDark ? Colors.white : AppColors.slate800),
               ),
             ),
           ),
@@ -2244,10 +2245,10 @@ class _FilterScreenState extends State<FilterScreen>
     return Container(
       padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161424) : Colors.white,
+        color: isDark ? AppColors.canvasDeepDark : Colors.white,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
-          color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
+          color: isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : AppColors.slate200,
         ),
         boxShadow: [
           BoxShadow(
@@ -2263,7 +2264,7 @@ class _FilterScreenState extends State<FilterScreen>
           _buildSectionHeader(
             theme: theme,
             icon: Icons.accessible_rounded,
-            iconAccent: const Color(0xFF6366F1),
+            iconAccent: AppColors.categorySecurity,
             title: AppLocalizations.of(context)?.physicalHealthStatus ?? 'Physical Health Status',
             subtitle: AppLocalizations.of(context)?.physicalHealthStatusSubtitle ?? 'Select physical disability match preferences',
           ),
@@ -2304,7 +2305,7 @@ class _FilterScreenState extends State<FilterScreen>
           subtitle: AppLocalizations.of(context)?.govtIdVerifiedSubtitle ?? 'Only show candidates with 100% verified Govt ID badge',
           icon: Icons.verified_user_rounded,
           value: isVerified,
-          activeColor: const Color(0xFF10B981),
+          activeColor: AppColors.categoryLocation,
           onChanged: (val) {
             setState(() {
               _currentFilters = _currentFilters.copyWith(isVerified: val);
@@ -2318,7 +2319,7 @@ class _FilterScreenState extends State<FilterScreen>
           subtitle: AppLocalizations.of(context)?.communityTrustedProfilesSubtitle ?? 'Vouched Banjara profiles with Community Trust Score > 75%',
           icon: Icons.shield_rounded,
           value: isTrusted,
-          activeColor: const Color(0xFF8B5CF6),
+          activeColor: AppColors.categoryFamily,
           onChanged: (val) {
             setState(() {
               _currentFilters = _currentFilters.copyWith(isCommunityTrusted: val);
@@ -2332,7 +2333,7 @@ class _FilterScreenState extends State<FilterScreen>
           subtitle: AppLocalizations.of(context)?.incomeSalaryVerifiedSubtitle ?? 'Candidates with verified salary slip or ITR documentation',
           icon: Icons.request_quote_rounded,
           value: isIncomeVer,
-          activeColor: const Color(0xFF22C55E),
+          activeColor: AppColors.green500,
           onChanged: (val) {
             setState(() {
               _currentFilters = _currentFilters.copyWith(isIncomeVerified: val);
@@ -2380,7 +2381,7 @@ class _FilterScreenState extends State<FilterScreen>
           subtitle: 'Candidates active within the last 24 hours or 7 days',
           icon: Icons.bolt_rounded,
           value: isRecent,
-          activeColor: const Color(0xFF0EA5E9),
+          activeColor: AppColors.skyBlue,
           onChanged: (val) {
             setState(() {
               _currentFilters = _currentFilters.copyWith(isRecentlyActive: val);
@@ -2394,7 +2395,7 @@ class _FilterScreenState extends State<FilterScreen>
           subtitle: 'Profiles with proven track record of replying to interest messages',
           icon: Icons.chat_bubble_outline_rounded,
           value: isHighResp,
-          activeColor: const Color(0xFFEC4899),
+          activeColor: AppColors.categoryPersonal,
           onChanged: (val) {
             setState(() {
               _currentFilters = _currentFilters.copyWith(isHighResponse: val);
@@ -2408,7 +2409,7 @@ class _FilterScreenState extends State<FilterScreen>
           subtitle: 'Profiles with complete verified photo albums',
           icon: Icons.photo_library_rounded,
           value: hasMultiPics,
-          activeColor: const Color(0xFF8B5CF6),
+          activeColor: AppColors.categoryFamily,
           onChanged: (val) {
             setState(() {
               _currentFilters = _currentFilters.copyWith(hasMultiplePhotos: val);
@@ -2438,15 +2439,15 @@ class _FilterScreenState extends State<FilterScreen>
               margin: EdgeInsets.symmetric(vertical: 1.5.h),
               padding: EdgeInsets.all(5.w),
               decoration: BoxDecoration(
-                color: (isDark ? const Color(0xFF141022) : Colors.white).withValues(alpha: 0.94),
+                color: (isDark ? AppColors.canvasDeepDark : Colors.white).withValues(alpha: 0.94),
                 borderRadius: BorderRadius.circular(26),
                 border: Border.all(
-                  color: const Color(0xFF8B5CF6).withValues(alpha: 0.65),
+                  color: AppColors.categoryFamily.withValues(alpha: 0.65),
                   width: 1.5,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF8B5CF6).withValues(alpha: 0.18),
+                    color: AppColors.categoryFamily.withValues(alpha: 0.18),
                     blurRadius: 22,
                     spreadRadius: 2,
                   ),
@@ -2459,13 +2460,13 @@ class _FilterScreenState extends State<FilterScreen>
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: const Color(0xFF8B5CF6).withValues(alpha: 0.15),
-                      border: Border.all(color: const Color(0xFF8B5CF6), width: 1.5),
+                      color: AppColors.categoryFamily.withValues(alpha: AppColors.opacity15),
+                      border: Border.all(color: AppColors.categoryFamily, width: 1.5),
                     ),
                     child: const Icon(
                       Icons.verified_rounded,
                       size: 32,
-                      color: Color(0xFF8B5CF6),
+                      color: AppColors.categoryFamily,
                     ),
                   ),
                   SizedBox(height: 1.4.h),
@@ -2493,11 +2494,11 @@ class _FilterScreenState extends State<FilterScreen>
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       gradient: const LinearGradient(
-                        colors: [Color(0xFF8B5CF6), Color(0xFF6D28D9)],
+                        colors: [AppColors.categoryFamily, AppColors.violetDeep],
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFF8B5CF6).withValues(alpha: 0.35),
+                          color: AppColors.categoryFamily.withValues(alpha: AppColors.opacity35),
                           blurRadius: 10,
                           offset: const Offset(0, 4),
                         ),
@@ -2570,7 +2571,7 @@ class _FilterScreenState extends State<FilterScreen>
       theme: theme,
       isDark: isDark,
       icon: Icons.brightness_2_rounded,
-      iconAccent: const Color(0xFF8B5CF6),
+      iconAccent: AppColors.categoryFamily,
       title: 'Rashi (Moon Sign / रास)',
       subtitle: 'Select one or more compatible zodiac signs',
       options: options,
@@ -2604,7 +2605,7 @@ class _FilterScreenState extends State<FilterScreen>
       theme: theme,
       isDark: isDark,
       icon: Icons.domain_rounded,
-      iconAccent: const Color(0xFF0EA5E9),
+      iconAccent: AppColors.skyBlue,
       title: 'Employment Sector',
       subtitle: 'Filter by organization and employer category',
       options: options,
@@ -2632,7 +2633,7 @@ class _FilterScreenState extends State<FilterScreen>
       theme: theme,
       isDark: isDark,
       icon: Icons.restaurant_rounded,
-      iconAccent: const Color(0xFF10B981),
+      iconAccent: AppColors.categoryLocation,
       title: 'Dietary Preference',
       subtitle: 'Filter candidate food habits',
       options: options,
@@ -2661,10 +2662,10 @@ class _FilterScreenState extends State<FilterScreen>
     return Container(
       padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161424) : Colors.white,
+        color: isDark ? AppColors.canvasDeepDark : Colors.white,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
-          color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
+          color: isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : AppColors.slate200,
         ),
         boxShadow: [
           BoxShadow(
@@ -2680,7 +2681,7 @@ class _FilterScreenState extends State<FilterScreen>
           _buildSectionHeader(
             theme: theme,
             icon: Icons.smoke_free_rounded,
-            iconAccent: const Color(0xFFF43F5E),
+            iconAccent: AppColors.coralRed,
             title: 'Lifestyle & Habits',
             subtitle: 'Smoking and drinking preferences',
           ),
@@ -2714,11 +2715,11 @@ class _FilterScreenState extends State<FilterScreen>
                   padding: EdgeInsets.symmetric(horizontal: 3.4.w, vertical: 0.8.h),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? const Color(0xFFF43F5E).withValues(alpha: 0.20)
-                        : (isDark ? const Color(0xFF1E1B2E) : const Color(0xFFF1F5F9)),
+                        ? AppColors.coralRed.withValues(alpha: AppColors.opacity20)
+                        : (isDark ? AppColors.canvasRichDark : AppColors.slate100),
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(
-                      color: isSelected ? const Color(0xFFF43F5E) : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+                      color: isSelected ? AppColors.coralRed : (isDark ? Colors.white10 : AppColors.slate200),
                     ),
                   ),
                   child: Text(
@@ -2726,7 +2727,7 @@ class _FilterScreenState extends State<FilterScreen>
                     style: TextStyle(
                       fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
                       fontSize: AppTypography.labelSmall,
-                      color: isSelected ? const Color(0xFFF43F5E) : (isDark ? Colors.white70 : const Color(0xFF475569)),
+                      color: isSelected ? AppColors.coralRed : (isDark ? Colors.white70 : AppColors.slate600),
                     ),
                   ),
                 ),
@@ -2763,11 +2764,11 @@ class _FilterScreenState extends State<FilterScreen>
                   padding: EdgeInsets.symmetric(horizontal: 3.4.w, vertical: 0.8.h),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? const Color(0xFF8B5CF6).withValues(alpha: 0.20)
-                        : (isDark ? const Color(0xFF1E1B2E) : const Color(0xFFF1F5F9)),
+                        ? AppColors.categoryFamily.withValues(alpha: AppColors.opacity20)
+                        : (isDark ? AppColors.canvasRichDark : AppColors.slate100),
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(
-                      color: isSelected ? const Color(0xFF8B5CF6) : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+                      color: isSelected ? AppColors.categoryFamily : (isDark ? Colors.white10 : AppColors.slate200),
                     ),
                   ),
                   child: Text(
@@ -2775,7 +2776,7 @@ class _FilterScreenState extends State<FilterScreen>
                     style: TextStyle(
                       fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
                       fontSize: AppTypography.labelSmall,
-                      color: isSelected ? const Color(0xFF8B5CF6) : (isDark ? Colors.white70 : const Color(0xFF475569)),
+                      color: isSelected ? AppColors.categoryFamily : (isDark ? Colors.white70 : AppColors.slate600),
                     ),
                   ),
                 ),
@@ -2799,7 +2800,7 @@ class _FilterScreenState extends State<FilterScreen>
       theme: theme,
       isDark: isDark,
       icon: Icons.flight_takeoff_rounded,
-      iconAccent: const Color(0xFF0EA5E9),
+      iconAccent: AppColors.skyBlue,
       title: 'Relocation & Geographic Flexibility',
       subtitle: 'Filter candidate mobility and NRI status',
       options: options,
@@ -2839,7 +2840,7 @@ class _FilterScreenState extends State<FilterScreen>
           subtitle: AppLocalizations.of(context)?.directContactUnlockedSubtitle ?? 'Direct Phone Number & WhatsApp verified access',
           icon: Icons.contact_phone_rounded,
           value: isDirectUnlocked,
-          activeColor: const Color(0xFFBE123C),
+          activeColor: AppColors.crimsonRose,
           onChanged: (val) {
             setState(() {
               _currentFilters = _currentFilters.copyWith(isDirectContactUnlocked: val);
@@ -2853,7 +2854,7 @@ class _FilterScreenState extends State<FilterScreen>
           subtitle: AppLocalizations.of(context)?.rmHandpickedMatchesSubtitle ?? 'Profiles curated and vetted by your Personal Relationship Manager',
           icon: Icons.star_rounded,
           value: isHandpicked,
-          activeColor: const Color(0xFFF59E0B),
+          activeColor: AppColors.categoryAstro,
           onChanged: (val) {
             setState(() {
               _currentFilters = _currentFilters.copyWith(isRmHandpicked: val);
@@ -2872,7 +2873,7 @@ class _FilterScreenState extends State<FilterScreen>
           subtitle: AppLocalizations.of(context)?.vipSpotlightElitePoolSubtitle ?? 'Top-tier prominent Banjara families with premium background checks',
           icon: Icons.military_tech_rounded,
           value: isSpotlight,
-          activeColor: const Color(0xFFE11D48),
+          activeColor: AppColors.crimsonBlush,
           onChanged: (val) {
             setState(() {
               _currentFilters = _currentFilters.copyWith(isVipSpotlight: val);
@@ -2891,7 +2892,7 @@ class _FilterScreenState extends State<FilterScreen>
           subtitle: AppLocalizations.of(context)?.ownResidentialHouseVillaSubtitle ?? 'Family owns self-acquired or independent residential house',
           icon: Icons.home_work_rounded,
           value: isHouse,
-          activeColor: const Color(0xFF10B981),
+          activeColor: AppColors.categoryLocation,
           onChanged: (val) {
             setState(() {
               _currentFilters = _currentFilters.copyWith(isHouseOwner: val);
@@ -2905,7 +2906,7 @@ class _FilterScreenState extends State<FilterScreen>
           subtitle: AppLocalizations.of(context)?.familyReputationVettedSubtitle ?? 'Clean background check conducted by field relationship managers',
           icon: Icons.verified_user_rounded,
           value: isFamilyOk,
-          activeColor: const Color(0xFFBE123C),
+          activeColor: AppColors.crimsonRose,
           onChanged: (val) {
             setState(() {
               _currentFilters = _currentFilters.copyWith(isFamilyVetted: val);
@@ -2919,7 +2920,7 @@ class _FilterScreenState extends State<FilterScreen>
           subtitle: AppLocalizations.of(context)?.confidentialMatchmakingSubtitle ?? 'High-profile biodatas viewable exclusively with mutual RM consent',
           icon: Icons.lock_person_rounded,
           value: isConfidential,
-          activeColor: const Color(0xFF8B5CF6),
+          activeColor: AppColors.categoryFamily,
           onChanged: (val) {
             setState(() {
               _currentFilters = _currentFilters.copyWith(isConfidentialMode: val);
@@ -2949,15 +2950,15 @@ class _FilterScreenState extends State<FilterScreen>
               margin: EdgeInsets.symmetric(vertical: 1.5.h),
               padding: EdgeInsets.all(5.w),
               decoration: BoxDecoration(
-                color: (isDark ? const Color(0xFF1E101A) : Colors.white).withValues(alpha: 0.94),
+                color: (isDark ? AppColors.canvasDark : Colors.white).withValues(alpha: 0.94),
                 borderRadius: BorderRadius.circular(26),
                 border: Border.all(
-                  color: const Color(0xFFBE123C).withValues(alpha: 0.65),
+                  color: AppColors.crimsonRose.withValues(alpha: 0.65),
                   width: 1.5,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFFBE123C).withValues(alpha: 0.20),
+                    color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity20),
                     blurRadius: 22,
                     spreadRadius: 2,
                   ),
@@ -2970,13 +2971,13 @@ class _FilterScreenState extends State<FilterScreen>
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: const Color(0xFFBE123C).withValues(alpha: 0.15),
-                      border: Border.all(color: const Color(0xFFBE123C), width: 1.5),
+                      color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity15),
+                      border: Border.all(color: AppColors.crimsonRose, width: 1.5),
                     ),
                     child: const Icon(
                       Icons.workspace_premium_rounded,
                       size: 32,
-                      color: Color(0xFFBE123C),
+                      color: AppColors.crimsonRose,
                     ),
                   ),
                   SizedBox(height: 1.4.h),
@@ -3004,11 +3005,11 @@ class _FilterScreenState extends State<FilterScreen>
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       gradient: const LinearGradient(
-                        colors: [Color(0xFFBE123C), Color(0xFF881337)],
+                        colors: [AppColors.crimsonRose, AppColors.crimsonMaroon],
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFFBE123C).withValues(alpha: 0.35),
+                          color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity35),
                           blurRadius: 10,
                           offset: const Offset(0, 4),
                         ),
@@ -3045,10 +3046,10 @@ class _FilterScreenState extends State<FilterScreen>
     return Container(
       padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161424) : Colors.white,
+        color: isDark ? AppColors.canvasDeepDark : Colors.white,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
-          color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
+          color: isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : AppColors.slate200,
         ),
         boxShadow: [
           BoxShadow(
@@ -3064,7 +3065,7 @@ class _FilterScreenState extends State<FilterScreen>
           _buildSectionHeader(
             theme: theme,
             icon: Icons.auto_awesome_rounded,
-            iconAccent: const Color(0xFFF59E0B),
+            iconAccent: AppColors.categoryAstro,
             title: AppLocalizations.of(context)?.astro36GunaMilanScore ?? 'Astro 36 Guna Milan Score',
             subtitle: AppLocalizations.of(context)?.astro36GunaSubtitle ?? 'Filter matches by minimum astrological compatibility threshold',
           ),
@@ -3091,22 +3092,22 @@ class _FilterScreenState extends State<FilterScreen>
                   decoration: BoxDecoration(
                     gradient: isSelected
                         ? const LinearGradient(
-                            colors: [Color(0xFFF59E0B), Color(0xFFD97706)],
+                            colors: [AppColors.categoryAstro, AppColors.categoryAstroDark],
                           )
                         : null,
                     color: isSelected
                         ? null
-                        : (isDark ? const Color(0xFF1E1B2E) : const Color(0xFFF1F5F9)),
+                        : (isDark ? AppColors.canvasRichDark : AppColors.slate100),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: isSelected
-                          ? const Color(0xFFF59E0B)
-                          : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+                          ? AppColors.categoryAstro
+                          : (isDark ? Colors.white10 : AppColors.slate200),
                     ),
                     boxShadow: isSelected
                         ? [
                             BoxShadow(
-                              color: const Color(0xFFF59E0B).withValues(alpha: 0.35),
+                              color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity35),
                               blurRadius: 8,
                               offset: const Offset(0, 3),
                             ),
@@ -3118,7 +3119,7 @@ class _FilterScreenState extends State<FilterScreen>
                     style: TextStyle(
                       fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
                       fontSize: AppTypography.labelSmall,
-                      color: isSelected ? Colors.white : (isDark ? Colors.white : const Color(0xFF1E293B)),
+                      color: isSelected ? Colors.white : (isDark ? Colors.white : AppColors.slate800),
                     ),
                   ),
                 ),
@@ -3143,7 +3144,7 @@ class _FilterScreenState extends State<FilterScreen>
       theme: theme,
       isDark: isDark,
       icon: Icons.agriculture_rounded,
-      iconAccent: const Color(0xFF10B981),
+      iconAccent: AppColors.categoryLocation,
       title: AppLocalizations.of(context)?.ancestralLandHoldingsAcres ?? 'Ancestral Land Holdings (Acres)',
       subtitle: AppLocalizations.of(context)?.ancestralLandSubtitle ?? 'Filter candidates by family agricultural land ownership',
       options: options,
@@ -3181,16 +3182,16 @@ class _FilterScreenState extends State<FilterScreen>
       curve: Curves.easeOutCubic,
       padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.2.h),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161424) : Colors.white,
+        color: isDark ? AppColors.canvasDeepDark : Colors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: value ? activeColor.withValues(alpha: 0.65) : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+          color: value ? activeColor.withValues(alpha: 0.65) : (isDark ? Colors.white10 : AppColors.slate200),
           width: value ? 1.6 : 1,
         ),
         boxShadow: value
             ? [
                 BoxShadow(
-                  color: activeColor.withValues(alpha: 0.15),
+                  color: activeColor.withValues(alpha: AppColors.opacity15),
                   blurRadius: 10,
                   offset: const Offset(0, 3),
                 ),
@@ -3203,12 +3204,12 @@ class _FilterScreenState extends State<FilterScreen>
             duration: const Duration(milliseconds: 220),
             padding: const EdgeInsets.all(9.5),
             decoration: BoxDecoration(
-              color: value ? activeColor : activeColor.withValues(alpha: 0.12),
+              color: value ? activeColor : activeColor.withValues(alpha: AppColors.opacity12),
               borderRadius: BorderRadius.circular(14),
               boxShadow: value
                   ? [
                       BoxShadow(
-                        color: activeColor.withValues(alpha: 0.35),
+                        color: activeColor.withValues(alpha: AppColors.opacity35),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -3231,14 +3232,14 @@ class _FilterScreenState extends State<FilterScreen>
                   style: TextStyle(
                     fontWeight: AppTypography.extraBold,
                     fontSize: AppTypography.bodySmall,
-                    color: isDark ? Colors.white : const Color(0xFF1E293B),
+                    color: isDark ? Colors.white : AppColors.slate800,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   subtitle,
                   style: TextStyle(
-                    color: isDark ? Colors.white60 : const Color(0xFF64748B),
+                    color: isDark ? Colors.white60 : AppColors.slate500,
                     fontSize: AppTypography.labelSmall,
                   ),
                 ),
@@ -3273,10 +3274,10 @@ class _FilterScreenState extends State<FilterScreen>
     return Container(
       padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161424) : Colors.white,
+        color: isDark ? AppColors.canvasDeepDark : Colors.white,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
-          color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
+          color: isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : AppColors.slate200,
         ),
         boxShadow: [
           BoxShadow(
@@ -3312,23 +3313,23 @@ class _FilterScreenState extends State<FilterScreen>
                   decoration: BoxDecoration(
                     gradient: isSelected
                         ? LinearGradient(
-                            colors: [accent, accent.withValues(alpha: 0.85)],
+                            colors: [accent, accent.withValues(alpha: AppColors.opacity85)],
                           )
                         : null,
                     color: isSelected
                         ? null
-                        : (isDark ? const Color(0xFF1E1B2E) : const Color(0xFFF1F5F9)),
+                        : (isDark ? AppColors.canvasRichDark : AppColors.slate100),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: isSelected
                           ? accent
-                          : (isDark ? Colors.white10 : const Color(0xFFE2E8F0)),
+                          : (isDark ? Colors.white10 : AppColors.slate200),
                       width: isSelected ? 1.4 : 1.0,
                     ),
                     boxShadow: isSelected
                         ? [
                             BoxShadow(
-                              color: accent.withValues(alpha: 0.35),
+                              color: accent.withValues(alpha: AppColors.opacity35),
                               blurRadius: 8,
                               offset: const Offset(0, 3),
                             ),
@@ -3358,7 +3359,7 @@ class _FilterScreenState extends State<FilterScreen>
                         style: TextStyle(
                           fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
                           fontSize: AppTypography.labelSmall,
-                          color: isSelected ? Colors.white : (isDark ? Colors.white : const Color(0xFF1E293B)),
+                          color: isSelected ? Colors.white : (isDark ? Colors.white : AppColors.slate800),
                         ),
                       ),
                     ],
@@ -3381,10 +3382,10 @@ class _FilterScreenState extends State<FilterScreen>
           child: Container(
             padding: EdgeInsets.fromLTRB(4.w, 1.2.h, 4.w, 2.5.h),
             decoration: BoxDecoration(
-              color: (isDark ? const Color(0xFF0F0E17) : Colors.white).withValues(alpha: 0.88),
+              color: (isDark ? AppColors.canvasCharcoal : Colors.white).withValues(alpha: 0.88),
               border: Border(
                 top: BorderSide(
-                  color: isDark ? Colors.white12 : const Color(0xFFE2E8F0),
+                  color: isDark ? Colors.white12 : AppColors.slate200,
                 ),
               ),
               boxShadow: [
@@ -3405,10 +3406,10 @@ class _FilterScreenState extends State<FilterScreen>
                       height: 5.4.h,
                       padding: EdgeInsets.symmetric(horizontal: 4.w),
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF161424) : const Color(0xFFF1F5F9),
+                        color: isDark ? AppColors.canvasDeepDark : AppColors.slate100,
                         borderRadius: BorderRadius.circular(18),
                         border: Border.all(
-                          color: isDark ? Colors.white12 : const Color(0xFFCBD5E1),
+                          color: isDark ? Colors.white12 : AppColors.slate300,
                         ),
                       ),
                       child: Center(
@@ -3417,7 +3418,7 @@ class _FilterScreenState extends State<FilterScreen>
                             Icon(
                               Icons.refresh_rounded,
                               size: 16,
-                              color: isDark ? Colors.white70 : const Color(0xFF475569),
+                              color: isDark ? Colors.white70 : AppColors.slate600,
                             ),
                             const SizedBox(width: 4),
                             Text(
@@ -3425,7 +3426,7 @@ class _FilterScreenState extends State<FilterScreen>
                               style: TextStyle(
                                 fontSize: AppTypography.bodySmall,
                                 fontWeight: AppTypography.bold,
-                                color: isDark ? Colors.white70 : const Color(0xFF475569),
+                                color: isDark ? Colors.white70 : AppColors.slate600,
                               ),
                             ),
                           ],
@@ -3444,13 +3445,13 @@ class _FilterScreenState extends State<FilterScreen>
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(18),
                           gradient: const LinearGradient(
-                            colors: [Color(0xFFBE123C), Color(0xFF881337)],
+                            colors: [AppColors.crimsonRose, AppColors.crimsonMaroon],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFFBE123C).withValues(alpha: 0.38),
+                              color: AppColors.crimsonRose.withValues(alpha: 0.38),
                               blurRadius: 14,
                               offset: const Offset(0, 4),
                             ),
@@ -3539,10 +3540,10 @@ class _FilterScreenState extends State<FilterScreen>
         return Container(
           padding: EdgeInsets.all(6.w),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1E1B2E) : Colors.white,
+            color: isDark ? AppColors.canvasRichDark : Colors.white,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
             border: Border.all(
-              color: const Color(0xFFF59E0B).withValues(alpha: 0.5),
+              color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity50),
               width: 1.5,
             ),
           ),
@@ -3562,13 +3563,13 @@ class _FilterScreenState extends State<FilterScreen>
                 padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color(0xFFF59E0B).withValues(alpha: 0.15),
-                  border: Border.all(color: const Color(0xFFF59E0B)),
+                  color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity15),
+                  border: Border.all(color: AppColors.categoryAstro),
                 ),
                 child: const Icon(
                   Icons.stars_rounded,
                   size: 34,
-                  color: Color(0xFFF59E0B),
+                  color: AppColors.categoryAstro,
                 ),
               ),
               SizedBox(height: 1.6.h),
@@ -3584,28 +3585,28 @@ class _FilterScreenState extends State<FilterScreen>
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.6.h),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF59E0B).withValues(alpha: 0.15),
+                  color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity15),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
                   AppLocalizations.of(context)?.subsidizedPricePill ?? 'Subsidized: ₹20 / month  •  ₹200 / year',
                   style: TextStyle(
-                    color: const Color(0xFFF59E0B),
+                    color: AppColors.categoryAstro,
                     fontWeight: AppTypography.black,
                     fontSize: AppTypography.bodySmall,
                   ),
                 ),
               ),
               SizedBox(height: 2.0.h),
-              _buildPerkRow(theme, 'Banjara Gotra & Maternal Gotra (मोसळ) filters', const Color(0xFFF59E0B)),
+              _buildPerkRow(theme, 'Banjara Gotra & Maternal Gotra (मोसळ) filters', AppColors.categoryAstro),
               SizedBox(height: 0.8.h),
-              _buildPerkRow(theme, 'Sub-caste / Jati & Native Tanda origin filters', const Color(0xFFF59E0B)),
+              _buildPerkRow(theme, 'Sub-caste / Jati & Native Tanda origin filters', AppColors.categoryAstro),
               SizedBox(height: 0.8.h),
-              _buildPerkRow(theme, 'Height & Physical health status filters', const Color(0xFFF59E0B)),
+              _buildPerkRow(theme, 'Height & Physical health status filters', AppColors.categoryAstro),
               SizedBox(height: 0.8.h),
-              _buildPerkRow(theme, 'Annual Income & Specialized education streams', const Color(0xFFF59E0B)),
+              _buildPerkRow(theme, 'Annual Income & Specialized education streams', AppColors.categoryAstro),
               SizedBox(height: 0.8.h),
-              _buildPerkRow(theme, 'Family Structure, Values & Socioeconomic status', const Color(0xFFF59E0B)),
+              _buildPerkRow(theme, 'Family Structure, Values & Socioeconomic status', AppColors.categoryAstro),
               SizedBox(height: 2.5.h),
               SizedBox(
                 width: double.infinity,
@@ -3616,7 +3617,7 @@ class _FilterScreenState extends State<FilterScreen>
                     Navigator.pushNamed(context, '/subscription');
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFBE123C),
+                    backgroundColor: AppColors.crimsonRose,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -3660,10 +3661,10 @@ class _FilterScreenState extends State<FilterScreen>
         return Container(
           padding: EdgeInsets.all(6.w),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1E1B2E) : Colors.white,
+            color: isDark ? AppColors.canvasRichDark : Colors.white,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
             border: Border.all(
-              color: const Color(0xFF8B5CF6).withValues(alpha: 0.5),
+              color: AppColors.categoryFamily.withValues(alpha: AppColors.opacity50),
               width: 1.5,
             ),
           ),
@@ -3683,13 +3684,13 @@ class _FilterScreenState extends State<FilterScreen>
                 padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color(0xFF8B5CF6).withValues(alpha: 0.15),
-                  border: Border.all(color: const Color(0xFF8B5CF6)),
+                  color: AppColors.categoryFamily.withValues(alpha: AppColors.opacity15),
+                  border: Border.all(color: AppColors.categoryFamily),
                 ),
                 child: const Icon(
                   Icons.verified_rounded,
                   size: 34,
-                  color: Color(0xFF8B5CF6),
+                  color: AppColors.categoryFamily,
                 ),
               ),
               SizedBox(height: 1.6.h),
@@ -3705,28 +3706,28 @@ class _FilterScreenState extends State<FilterScreen>
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.6.h),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF8B5CF6).withValues(alpha: 0.15),
+                  color: AppColors.categoryFamily.withValues(alpha: AppColors.opacity15),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
                   AppLocalizations.of(context)?.premiumPlansSubtitle ?? 'Standard • Silver • Gold • Platinum • Eternal',
                   style: TextStyle(
-                    color: const Color(0xFF8B5CF6),
+                    color: AppColors.categoryFamily,
                     fontWeight: AppTypography.black,
                     fontSize: AppTypography.labelSmall,
                   ),
                 ),
               ),
               SizedBox(height: 2.0.h),
-              _buildPerkRow(theme, 'Govt ID & Income verified profile filters', const Color(0xFF8B5CF6)),
+              _buildPerkRow(theme, 'Govt ID & Income verified profile filters', AppColors.categoryFamily),
               SizedBox(height: 0.8.h),
-              _buildPerkRow(theme, 'Community Trust Score > 75% filter', const Color(0xFF8B5CF6)),
+              _buildPerkRow(theme, 'Community Trust Score > 75% filter', AppColors.categoryFamily),
               SizedBox(height: 0.8.h),
-              _buildPerkRow(theme, 'Manglik Dosha & Rashi (Horoscope) compatibility', const Color(0xFF8B5CF6)),
+              _buildPerkRow(theme, 'Manglik Dosha & Rashi (Horoscope) compatibility', AppColors.categoryFamily),
               SizedBox(height: 0.8.h),
-              _buildPerkRow(theme, 'Diet, Habits, Relocation & Employment Sector', const Color(0xFF8B5CF6)),
+              _buildPerkRow(theme, 'Diet, Habits, Relocation & Employment Sector', AppColors.categoryFamily),
               SizedBox(height: 0.8.h),
-              _buildPerkRow(theme, 'Recently Active & High Responder filters', const Color(0xFF8B5CF6)),
+              _buildPerkRow(theme, 'Recently Active & High Responder filters', AppColors.categoryFamily),
               SizedBox(height: 2.5.h),
               SizedBox(
                 width: double.infinity,
@@ -3737,7 +3738,7 @@ class _FilterScreenState extends State<FilterScreen>
                     Navigator.pushNamed(context, '/subscription');
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF8B5CF6),
+                    backgroundColor: AppColors.categoryFamily,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -3781,10 +3782,10 @@ class _FilterScreenState extends State<FilterScreen>
         return Container(
           padding: EdgeInsets.all(6.w),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1E101A) : Colors.white,
+            color: isDark ? AppColors.canvasDark : Colors.white,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
             border: Border.all(
-              color: const Color(0xFFBE123C).withValues(alpha: 0.5),
+              color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity50),
               width: 1.5,
             ),
           ),
@@ -3804,13 +3805,13 @@ class _FilterScreenState extends State<FilterScreen>
                 padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color(0xFFBE123C).withValues(alpha: 0.15),
-                  border: Border.all(color: const Color(0xFFBE123C)),
+                  color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity15),
+                  border: Border.all(color: AppColors.crimsonRose),
                 ),
                 child: const Icon(
                   Icons.workspace_premium_rounded,
                   size: 34,
-                  color: Color(0xFFBE123C),
+                  color: AppColors.crimsonRose,
                 ),
               ),
               SizedBox(height: 1.6.h),
@@ -3826,30 +3827,30 @@ class _FilterScreenState extends State<FilterScreen>
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.6.h),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFBE123C).withValues(alpha: 0.15),
+                  color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity15),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
                   AppLocalizations.of(context)?.matchmakerPlansSubtitle ?? 'Elite • Royal • Eternal Elite',
                   style: TextStyle(
-                    color: const Color(0xFFBE123C),
+                    color: AppColors.crimsonRose,
                     fontWeight: AppTypography.black,
                     fontSize: AppTypography.labelSmall,
                   ),
                 ),
               ),
               SizedBox(height: 2.0.h),
-              _buildPerkRow(theme, 'Direct Phone Number & WhatsApp Unlocks', const Color(0xFFBE123C)),
+              _buildPerkRow(theme, 'Direct Phone Number & WhatsApp Unlocks', AppColors.crimsonRose),
               SizedBox(height: 0.8.h),
-              _buildPerkRow(theme, 'Dedicated Relationship Manager Handpicked Matches', const Color(0xFFBE123C)),
+              _buildPerkRow(theme, 'Dedicated Relationship Manager Handpicked Matches', AppColors.crimsonRose),
               SizedBox(height: 0.8.h),
-              _buildPerkRow(theme, '36 Guna Score & High Compatibility Matching (≥24 Gunas)', const Color(0xFFBE123C)),
+              _buildPerkRow(theme, '36 Guna Score & High Compatibility Matching (≥24 Gunas)', AppColors.crimsonRose),
               SizedBox(height: 0.8.h),
-              _buildPerkRow(theme, 'Ancestral Land Holdings (5+ to 50+ Acres) filter', const Color(0xFFBE123C)),
+              _buildPerkRow(theme, 'Ancestral Land Holdings (5+ to 50+ Acres) filter', AppColors.crimsonRose),
               SizedBox(height: 0.8.h),
-              _buildPerkRow(theme, 'Own Residential House & Vetted Family Background', const Color(0xFFBE123C)),
+              _buildPerkRow(theme, 'Own Residential House & Vetted Family Background', AppColors.crimsonRose),
               SizedBox(height: 0.8.h),
-              _buildPerkRow(theme, 'VIP Spotlight & Confidential Matchmaking', const Color(0xFFBE123C)),
+              _buildPerkRow(theme, 'VIP Spotlight & Confidential Matchmaking', AppColors.crimsonRose),
               SizedBox(height: 2.5.h),
               SizedBox(
                 width: double.infinity,
@@ -3860,7 +3861,7 @@ class _FilterScreenState extends State<FilterScreen>
                     Navigator.pushNamed(context, '/subscription');
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFBE123C),
+                    backgroundColor: AppColors.crimsonRose,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),

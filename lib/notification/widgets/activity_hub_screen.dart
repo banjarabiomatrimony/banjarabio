@@ -6,6 +6,7 @@ import 'package:banjarabio/core/services/persistent_cache_manager.dart';
 import 'package:banjarabio/notification/core/notification_history.dart';
 import 'package:banjarabio/notification/core/notification_payload.dart';
 import 'package:banjarabio/notification/features/notification_navigator.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Activity Hub Screen — an in-app Notification Center.
 ///
@@ -44,7 +45,7 @@ class _ActivityHubScreenState extends State<ActivityHubScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: AppColors.neutral100,
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context)?.activity ?? 'Activity',
@@ -60,7 +61,7 @@ class _ActivityHubScreenState extends State<ActivityHubScreen> {
               icon: const Icon(Icons.done_all_rounded, size: 18),
               label: Text(AppLocalizations.of(context)?.readAll ?? 'Read All'),
               style: TextButton.styleFrom(
-                foregroundColor: const Color(0xFFC94B4B),
+                foregroundColor: AppColors.softRed,
               ),
             ),
         ],
@@ -124,13 +125,13 @@ class _ActivityHubScreenState extends State<ActivityHubScreen> {
             selected: isSelected,
             label: Text(label),
             onSelected: (_) => setState(() => _selectedFilter = value),
-            selectedColor: const Color(0xFFC94B4B).withValues(alpha: 0.15),
-            checkmarkColor: const Color(0xFFC94B4B),
+            selectedColor: AppColors.softRed.withValues(alpha: AppColors.opacity15),
+            checkmarkColor: AppColors.softRed,
             labelStyle: TextStyle(
               fontSize: AppTypography.bodyMedium,
               fontWeight: isSelected ? AppTypography.semiBold : AppTypography.regular,
               color: isSelected
-                  ? const Color(0xFFC94B4B)
+                  ? AppColors.softRed
                   : Colors.grey.shade700,
             ),
             shape: RoundedRectangleBorder(
@@ -138,7 +139,7 @@ class _ActivityHubScreenState extends State<ActivityHubScreen> {
             ),
             side: BorderSide(
               color: isSelected
-                  ? const Color(0xFFC94B4B).withValues(alpha: 0.3)
+                  ? AppColors.softRed.withValues(alpha: AppColors.opacity30)
                   : Colors.grey.shade300,
             ),
           );
@@ -158,7 +159,7 @@ class _ActivityHubScreenState extends State<ActivityHubScreen> {
               width: 80,
               height: 80,
               decoration: BoxDecoration(
-                color: const Color(0xFFC94B4B).withValues(alpha: 0.08),
+                color: AppColors.softRed.withValues(alpha: AppColors.opacity8),
                 shape: BoxShape.circle,
               ),
               child: Center(
@@ -173,7 +174,7 @@ class _ActivityHubScreenState extends State<ActivityHubScreen> {
               style: TextStyle(
                 fontSize: AppTypography.headingSmall,
                 fontWeight: AppTypography.semiBold,
-                color: const Color(0xFF333333),
+                color: AppColors.cardDark,
               ),
             ),
             const SizedBox(height: 8),
@@ -203,7 +204,7 @@ class _NotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: item.isRead ? Colors.white : const Color(0xFFFFF3F3),
+      color: item.isRead ? Colors.white : AppColors.primaryLight,
       borderRadius: BorderRadius.circular(14),
       elevation: item.isRead ? 0 : 1,
       shadowColor: Colors.black12,
@@ -217,7 +218,7 @@ class _NotificationCard extends StatelessWidget {
             border: Border.all(
               color: item.isRead
                   ? Colors.grey.shade200
-                  : const Color(0xFFC94B4B).withValues(alpha: 0.15),
+                  : AppColors.softRed.withValues(alpha: AppColors.opacity15),
             ),
           ),
           child: Row(
@@ -244,7 +245,7 @@ class _NotificationCard extends StatelessWidget {
                                   ? AppTypography.medium
                                   : AppTypography.bold,
                               fontSize: AppTypography.bodyLarge,
-                              color: const Color(0xFF1A1A1A),
+                              color: AppColors.canvasDark,
                             ),
                           ),
                         ),
@@ -254,7 +255,7 @@ class _NotificationCard extends StatelessWidget {
                             height: 8,
                             margin: const EdgeInsets.only(left: 8),
                             decoration: const BoxDecoration(
-                              color: Color(0xFFC94B4B),
+                              color: AppColors.softRed,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -314,7 +315,7 @@ class _NotificationCard extends StatelessWidget {
       width: 48,
       height: 48,
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
+        color: color.withValues(alpha: AppColors.opacity12),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Center(
@@ -326,23 +327,23 @@ class _NotificationCard extends StatelessWidget {
   (String, Color) _categoryVisuals() {
     switch (item.category) {
       case 'interestReceived':
-        return ('❤️', const Color(0xFFC94B4B));
+        return ('❤️', AppColors.softRed);
       case 'matchFound':
-        return ('💍', const Color(0xFF4CAF50));
+        return ('💍', AppColors.successDark);
       case 'chatMessage':
-        return ('💬', const Color(0xFF2196F3));
+        return ('💬', AppColors.materialBlue);
       case 'profileView':
-        return ('👀', const Color(0xFFFF9800));
+        return ('👀', AppColors.materialOrange);
       case 'nudge':
-        return ('⭐', const Color(0xFFFFC107));
+        return ('⭐', AppColors.categoryAstro);
       case 'staffTask':
-        return ('📋', const Color(0xFF2196F3));
+        return ('📋', AppColors.materialBlue);
       case 'adminAlert':
-        return ('🚨', const Color(0xFFFF5722));
+        return ('🚨', AppColors.deepOrange);
       case 'verificationReview':
-        return ('✅', const Color(0xFF4CAF50));
+        return ('✅', AppColors.successDark);
       default:
-        return ('🔔', const Color(0xFF9E9E9E));
+        return ('🔔', AppColors.neutral500);
     }
   }
 

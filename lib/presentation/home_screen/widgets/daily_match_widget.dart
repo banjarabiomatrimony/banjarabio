@@ -144,7 +144,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
       padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFFFF416C), Color(0xFFFF4B2B)],
+          colors: [AppColors.hotPink, AppColors.sunsetBlush],
         ),
         borderRadius: BorderRadius.circular(16),
         boxShadow: const [
@@ -177,7 +177,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
                           widget.dailyProfiles.length) ??
                       '${widget.dailyProfiles.length} curated profiles just for you',
                   style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.8),
+                    color: Colors.white.withValues(alpha: AppColors.opacity80),
                     fontSize: AppTypography.labelMedium,
                   ),
                 ),
@@ -203,7 +203,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
             Icons.chevron_left_rounded,
             color: _currentMatchIndex > 0
                 ? theme.colorScheme.primary
-                : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
+                : theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity30),
           ),
           iconSize: 20.sp,
         ),
@@ -220,7 +220,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
               gradient: isActive ? AppGradients.romance : null,
               color: isActive
                   ? null
-                  : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
+                  : theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity20),
             ),
           );
         }),
@@ -233,7 +233,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
             Icons.chevron_right_rounded,
             color: _currentMatchIndex < widget.dailyProfiles.length - 1
                 ? theme.colorScheme.primary
-                : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
+                : theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity30),
           ),
           iconSize: 20.sp,
         ),
@@ -294,8 +294,8 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        Colors.black.withValues(alpha: 0.2),
-                        Colors.black.withValues(alpha: 0.6),
+                        Colors.black.withValues(alpha: AppColors.opacity20),
+                        Colors.black.withValues(alpha: AppColors.opacity60),
                       ],
                     ),
                   ),
@@ -338,7 +338,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
                       Text(
                         AppLocalizations.of(context)?.matchNOfTotal((_currentMatchIndex + 1).toString(), widget.dailyProfiles.length.toString()) ?? 'Match ${_currentMatchIndex + 1} of ${widget.dailyProfiles.length}',
                         style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.7),
+                          color: Colors.white.withValues(alpha: AppColors.opacity70),
                           fontSize: AppTypography.bodySmall,
                         ),
                       ),
@@ -433,8 +433,8 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          Colors.black.withValues(alpha: 0.3),
-                          Colors.black.withValues(alpha: 0.85),
+                          Colors.black.withValues(alpha: AppColors.opacity30),
+                          Colors.black.withValues(alpha: AppColors.opacity85),
                         ],
                         stops: const [0.0, 0.4, 1.0],
                       ),
@@ -564,10 +564,10 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.5.h),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.15),
+        color: Colors.white.withValues(alpha: AppColors.opacity15),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-            color: Colors.white.withValues(alpha: 0.2), width: 0.5),
+            color: Colors.white.withValues(alpha: AppColors.opacity20), width: 0.5),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -577,7 +577,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
           Text(
             text,
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.9),
+              color: Colors.white.withValues(alpha: AppColors.opacity90),
               fontSize: AppTypography.labelMedium,
               fontWeight: AppTypography.medium,
             ),
@@ -599,7 +599,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
             icon: Icons.close_rounded,
             label: AppLocalizations.of(context)?.skip ?? 'Skip',
             gradient: const LinearGradient(
-              colors: [Color(0xFFBDBDBD), Color(0xFF9E9E9E)],
+              colors: [AppColors.neutral400, AppColors.neutral500],
             ),
             onTap: _nextMatch,
           ),
@@ -607,7 +607,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
             icon: Icons.bookmark_outline_rounded,
             label: AppLocalizations.of(context)?.save ?? 'Save',
             gradient: const LinearGradient(
-              colors: [Color(0xFFFFA726), Color(0xFFEF6C00)],
+              colors: [AppColors.orange400, AppColors.orangeDark900],
             ),
             onTap: () {
               HapticFeedback.lightImpact();
@@ -618,7 +618,7 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
             icon: Icons.share_outlined,
             label: AppLocalizations.of(context)?.share ?? 'Share',
             gradient: const LinearGradient(
-              colors: [Color(0xFF4FC3F7), Color(0xFF1976D2)],
+              colors: [AppColors.skyBlueBright, AppColors.materialBlueDark],
             ),
             onTap: () {
               HapticFeedback.lightImpact();
@@ -787,7 +787,7 @@ class _CountdownTimerRowState extends State<_CountdownTimerRow> {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
         decoration: BoxDecoration(
-          color: theme.colorScheme.primary.withValues(alpha: 0.1),
+          color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
@@ -813,7 +813,7 @@ class _CountdownTimerRowState extends State<_CountdownTimerRow> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.5.h),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.2),
+        color: Colors.white.withValues(alpha: AppColors.opacity20),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(

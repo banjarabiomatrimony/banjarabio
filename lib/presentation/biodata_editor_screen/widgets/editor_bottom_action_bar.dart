@@ -3,6 +3,7 @@ import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 
 /// Bottom action bar with Print, Download, Share buttons.
@@ -31,7 +32,7 @@ class EditorBottomActionBar extends StatelessWidget {
         color: theme.colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
+            color: Colors.black.withValues(alpha: AppColors.opacity8),
             blurRadius: 8,
             offset: const Offset(0, -2),
           ),
@@ -97,7 +98,7 @@ class _EditorActionButton extends StatelessWidget {
                 Icon(
                   icon,
                   color: disabled
-                      ? theme.colorScheme.onSurface.withValues(alpha: 0.4)
+                      ? theme.colorScheme.onSurface.withValues(alpha: AppColors.opacity40)
                       : theme.colorScheme.primary,
                   size: 24,
                 ),
@@ -108,7 +109,7 @@ class _EditorActionButton extends StatelessWidget {
                     fontSize: AppTypography.bodySmall,
                     fontWeight: AppTypography.semiBold,
                     color: disabled
-                        ? theme.colorScheme.onSurface.withValues(alpha: 0.4)
+                        ? theme.colorScheme.onSurface.withValues(alpha: AppColors.opacity40)
                         : theme.colorScheme.onSurface,
                   ),
                 ),

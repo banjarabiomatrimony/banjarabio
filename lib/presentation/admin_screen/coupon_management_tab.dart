@@ -13,6 +13,7 @@ import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/core/models/subscription_model.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class CouponManagementTab extends StatefulWidget {
   final ThemeData theme;
@@ -206,7 +207,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                             decoration: BoxDecoration(
                               color: widget.theme.cardColor,
                               borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: widget.theme.dividerColor.withValues(alpha: 0.1)),
+                              border: Border.all(color: widget.theme.dividerColor.withValues(alpha: AppColors.opacity10)),
                             ),
                             child: Row(
                               children: [
@@ -245,7 +246,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                               color: widget.theme.cardColor,
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
-                                color: widget.theme.dividerColor.withValues(alpha: 0.1),
+                                color: widget.theme.dividerColor.withValues(alpha: AppColors.opacity10),
                               ),
                               image: bannerImage != null
                                   ? DecorationImage(
@@ -470,11 +471,11 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
       fillColor: widget.theme.cardColor,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(color: widget.theme.dividerColor.withValues(alpha: 0.1)),
+        borderSide: BorderSide(color: widget.theme.dividerColor.withValues(alpha: AppColors.opacity10)),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(color: widget.theme.dividerColor.withValues(alpha: 0.1)),
+        borderSide: BorderSide(color: widget.theme.dividerColor.withValues(alpha: AppColors.opacity10)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
@@ -521,7 +522,7 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: widget.theme.colorScheme.primary.withValues(alpha: 0.1),
+                      color: widget.theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(Icons.local_offer, color: widget.theme.colorScheme.primary),
@@ -649,10 +650,10 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                 decoration: BoxDecoration(
                                   color: isToday
-                                      ? Colors.green.withValues(alpha: 0.1)
+                                      ? Colors.green.withValues(alpha: AppColors.opacity10)
                                       : isExpired
-                                          ? Colors.red.withValues(alpha: 0.1)
-                                          : Colors.blue.withValues(alpha: 0.1),
+                                          ? Colors.red.withValues(alpha: AppColors.opacity10)
+                                          : Colors.blue.withValues(alpha: AppColors.opacity10),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(

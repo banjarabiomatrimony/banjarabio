@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/theme/app_category_theme.dart';
+import 'package:banjarabio/theme/app_color_scheme.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// A class that contains all theme configurations for the Banjara matrimonial application.
 /// Implements Cultural Minimalism design style with Warm Trust Palette colors.
@@ -12,60 +14,60 @@ class AppTheme {
   static const String bodyFontFamily = AppTypography.bodyFontFamily;
 
   // Primary color palette - Royal Crimson & Champagne Gold
-  static const Color primaryLight = Color(0xFF961B33); // Royal Crimson (Sacred/Love)
-  static const Color primaryVariantLight = Color(0xFF731224); // Deeper Maroon/Crimson
-  static const Color secondaryLight = Color(0xFFD4AF37); // Champagne Gold (Tradition/Warmth)
-  static const Color secondaryVariantLight = Color(0xFFB8922A); // Darker Gold
-  static const Color backgroundLight = Color(0xFFFAF8F5); // Soft Warm Ivory
-  static const Color surfaceLight = Color(0xFFFFFFFF); // Pure white
-  static const Color errorLight = Color(0xFFBA1A1A); // Refined Material error
-  static const Color successLight = Color(0xFF2E7D32); // Standard success green
-  static const Color successVariantLight = Color(0xFF1B5E20); // Deeper success green
-  static const Color warningLight = Color(0xFFF57C00); // Warm orange
-  static const Color onPrimaryLight = Color(0xFFFFFFFF); // White on Crimson
-  static const Color onSecondaryLight = Color(0xFF1D1B20); // Dark on Gold
-  static const Color onBackgroundLight = Color(0xFF2C2523); // Warm dark-gray for reading
-  static const Color onSurfaceLight = Color(0xFF2C2523);
-  static const Color onErrorLight = Color(0xFFFFFFFF);
+  static const Color primaryLight = AppColors.primary; // Royal Crimson (Sacred/Love)
+  static const Color primaryVariantLight = AppColors.primaryDark; // Deeper Maroon/Crimson
+  static const Color secondaryLight = AppColors.gold; // Champagne Gold (Tradition/Warmth)
+  static const Color secondaryVariantLight = AppColors.goldDark; // Darker Gold
+  static const Color backgroundLight = AppColors.canvasLight; // Soft Warm Ivory
+  static const Color surfaceLight = AppColors.surfaceLight; // Pure white
+  static const Color errorLight = AppColors.error; // Refined Material error
+  static const Color successLight = AppColors.success; // Standard success green
+  static const Color successVariantLight = AppColors.success; // Deeper success green
+  static const Color warningLight = AppColors.warning; // Warm orange
+  static const Color onPrimaryLight = AppColors.surfaceLight; // White on Crimson
+  static const Color onSecondaryLight = AppColors.canvasNearBlack; // Dark on Gold
+  static const Color onBackgroundLight = AppColors.warmDarkText; // Warm dark-gray for reading
+  static const Color onSurfaceLight = AppColors.warmDarkText;
+  static const Color onErrorLight = AppColors.surfaceLight;
 
   // Dark theme colors
-  static const Color primaryDark = Color(0xFFFFB3B4); // Soft pinkish-crimson for Dark Mode contrast
-  static const Color primaryVariantDark = Color(0xFF7D1629); // Deeper Crimson
-  static const Color secondaryDark = Color(0xFFE5C158); // Soft Champagne Gold
-  static const Color secondaryVariantDark = Color(0xFF9E7A1C); // Deeper Gold
-  static const Color backgroundDark = Color(0xFF1A1616); // Deep Warm Charcoal/Dark Mahogany
-  static const Color surfaceDark = Color(0xFF262121); // Elevated warm dark surface
-  static const Color errorDark = Color(0xFFF2B8B5);
-  static const Color successDark = Color(0xFF81C784);
-  static const Color warningDark = Color(0xFFFFB74D);
-  static const Color onPrimaryDark = Color(0xFF5F0018);
-  static const Color onSecondaryDark = Color(0xFF3E2D00);
-  static const Color onBackgroundDark = Color(0xFFF0EAE8);
-  static const Color onSurfaceDark = Color(0xFFF0EAE8);
-  static const Color onErrorDark = Color(0xFF601410);
+  static const Color primaryDark = AppColors.primaryDarkContrast; // Soft pinkish-crimson for Dark Mode contrast
+  static const Color primaryVariantDark = AppColors.crimson700; // Deeper Crimson
+  static const Color secondaryDark = AppColors.goldDarkContrast; // Soft Champagne Gold
+  static const Color secondaryVariantDark = AppColors.darkGoldenrod; // Deeper Gold
+  static const Color backgroundDark = AppColors.canvasDark; // Deep Warm Charcoal/Dark Mahogany
+  static const Color surfaceDark = AppColors.surfaceDark; // Elevated warm dark surface
+  static const Color errorDark = AppColors.errorDark;
+  static const Color successDark = AppColors.successDark;
+  static const Color warningDark = AppColors.warningDark;
+  static const Color onPrimaryDark = AppColors.primaryDark;
+  static const Color onSecondaryDark = AppColors.goldDark;
+  static const Color onBackgroundDark = AppColors.neutral50;
+  static const Color onSurfaceDark = AppColors.neutral50;
+  static const Color onErrorDark = AppColors.wineDark;
 
   // Card and dialog colors
-  static const Color cardLight = Color(0xFFFFFFFF);
-  static const Color cardDark = Color(0xFF2C2C2C);
-  static const Color dialogLight = Color(0xFFFFFFFF);
-  static const Color dialogDark = Color(0xFF2C2C2C);
+  static const Color cardLight = AppColors.surfaceLight;
+  static const Color cardDark = AppColors.cardDark;
+  static const Color dialogLight = AppColors.surfaceLight;
+  static const Color dialogDark = AppColors.cardDark;
 
   // Shadow colors - Minimal elevation strategy
-  static const Color shadowLight = Color(0x14000000);
-  static const Color shadowDark = Color(0x1FFFFFFF);
+  static const Color shadowLight = AppColors.shadowLight;
+  static const Color shadowDark = AppColors.shadowDark;
 
   // Divider colors - Structural clarity
-  static const Color dividerLight = Color(0xFFE0E0E0);
-  static const Color dividerDark = Color(0xFF424242);
+  static const Color dividerLight = AppColors.neutral300;
+  static const Color dividerDark = AppColors.neutral800;
 
   // Text colors with cultural sensitivity
-  static const Color textPrimaryLight = Color(0xFF2C2C2C);
-  static const Color textSecondaryLight = Color(0xFF666666);
-  static const Color textDisabledLight = Color(0xFF9E9E9E);
+  static const Color textPrimaryLight = AppColors.cardDark;
+  static const Color textSecondaryLight = AppColors.textSecondary;
+  static const Color textDisabledLight = AppColors.neutral500;
 
-  static const Color textPrimaryDark = Color(0xFFFAFAFA);
-  static const Color textSecondaryDark = Color(0xFFB0B0B0);
-  static const Color textDisabledDark = Color(0xFF757575);
+  static const Color textPrimaryDark = AppColors.neutral50;
+  static const Color textSecondaryDark = AppColors.textSecondaryDark;
+  static const Color textDisabledDark = AppColors.neutral600;
 
   /// Light theme with Cultural Minimalism design
   static ThemeData lightTheme = ThemeData(
@@ -220,7 +222,7 @@ class AppTheme {
 
     // Input decoration with cultural sensitivity - Modernized
     inputDecorationTheme: InputDecorationThemeData(
-      fillColor: const Color(0xFFF4F6F8), // Very soft grey/blue tint
+      fillColor: AppColors.neutral100, // Very soft grey/blue tint
       filled: true,
       contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
       border: OutlineInputBorder(
@@ -432,6 +434,7 @@ class AppTheme {
     ),
     extensions: [
       AppCategoryTheme.light(),
+      AppColorScheme.light(),
     ],
   );
 
@@ -581,7 +584,7 @@ class AppTheme {
     textTheme: _buildTextTheme(isLight: false),
 
     inputDecorationTheme: InputDecorationThemeData(
-      fillColor: const Color(0xFF252525), // Slightly lighter than background
+      fillColor: AppColors.surfaceDark, // Slightly lighter than background
       filled: true,
       contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
       border: OutlineInputBorder(
@@ -784,6 +787,7 @@ class AppTheme {
     ),
     extensions: [
       AppCategoryTheme.dark(),
+      AppColorScheme.dark(),
     ],
   );
 

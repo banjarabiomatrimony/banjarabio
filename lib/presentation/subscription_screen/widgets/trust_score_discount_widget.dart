@@ -5,6 +5,7 @@ import 'package:banjarabio/core/models/trust_score_config.dart';
 import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/widgets/glassmorphism_container.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class TrustScoreDiscountWidget extends StatelessWidget {
   final int trustScore;
@@ -53,7 +54,7 @@ class TrustScoreDiscountWidget extends StatelessWidget {
         opacity: 0.85,
         blur: 16,
         border: Border.all(
-          color: levelColor.withValues(alpha: 0.35),
+          color: levelColor.withValues(alpha: AppColors.opacity35),
           width: 1.2,
         ),
         child: Column(
@@ -90,7 +91,7 @@ class TrustScoreDiscountWidget extends StatelessWidget {
                           Colors.green.withValues(alpha: isDark ? 0.2 : 0.12),
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
-                        color: Colors.green.withValues(alpha: 0.4),
+                        color: Colors.green.withValues(alpha: AppColors.opacity40),
                       ),
                     ),
                     child: Text(
@@ -108,7 +109,7 @@ class TrustScoreDiscountWidget extends StatelessWidget {
                     padding: EdgeInsets.symmetric(
                         horizontal: 2.2.w, vertical: 0.3.h),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                      color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
@@ -134,7 +135,7 @@ class TrustScoreDiscountWidget extends StatelessWidget {
                     child: LinearProgressIndicator(
                       value: (trustScore / 100.0).clamp(0.05, 1.0),
                       backgroundColor: theme.colorScheme.outlineVariant
-                          .withValues(alpha: 0.25),
+                          .withValues(alpha: AppColors.opacity25),
                       valueColor: AlwaysStoppedAnimation<Color>(levelColor),
                       minHeight: 5,
                     ),

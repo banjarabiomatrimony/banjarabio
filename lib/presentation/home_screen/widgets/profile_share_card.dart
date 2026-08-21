@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/core/theme/app_gradients.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// A premium, high-resolution widget designed to be captured as an image 
 /// for WhatsApp Status sharing.
@@ -46,7 +47,7 @@ class ProfileShareCard extends StatelessWidget {
                 width: 1080,
                 height: 1920,
                 cacheManager: PersistentCacheManager.instance,
-                errorWidget: (context, url, error) => Container(color: const Color(0xFF961B33)),
+                errorWidget: (context, url, error) => Container(color: AppColors.primary),
               ),
               
             // 2. Dark Gradient Overlay (Premium feel)
@@ -56,9 +57,9 @@ class ProfileShareCard extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.black.withValues(alpha: 0.3),
+                    Colors.black.withValues(alpha: AppColors.opacity30),
                     Colors.transparent,
-                    Colors.black.withValues(alpha: 0.6),
+                    Colors.black.withValues(alpha: AppColors.opacity60),
                     Colors.black.withValues(alpha: 0.95),
                   ],
                   stops: const [0.0, 0.4, 0.7, 1.0],
@@ -74,7 +75,7 @@ class ProfileShareCard extends StatelessWidget {
               child: Column(
                 children: [
                   Text('॥ जय सेवालाल ॥', style: TextStyle(
-                      color: const Color(0xFFFFD700), // Gold
+                      color: AppColors.categoryVip, // Gold
                       fontSize: AppTypography.displayLarge,
                       fontWeight: AppTypography.extraBold,
                       letterSpacing: 2,

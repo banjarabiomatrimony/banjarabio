@@ -1043,7 +1043,7 @@
   "benefitVerifiedProfiles": "100% ధృవీకరించబడిన ప్రొఫైల్‌లు",
   "bestTimeToContact": "సంప్రదించడానికి ఉత్తమ సమయం",
   "bestValue": "ఉత్తమ విలువ",
-  "biodata": "Biodata",
+  "biodata": "బయోడేటా",
   "biodataDraftRestored": "బయోడేటా డ్రాఫ్ట్ పునరుద్ధరించబడింది!",
   "biodataDraftRestoredSuccess": "Biodata draft restored successfully!",
   "biodataPdf": "బయోడేటా PDF",
@@ -2544,5 +2544,7 @@
   "yourSuccessStory": "మీ విజయ కథ",
   "yourTrustScore": "మీ ట్రస్ట్ స్కోర్",
   "yrs": "{count} సంవత్సరాలు",
-  "zeroPercentCommission": "💰 0% Commission"
+  "zeroPercentCommission": "💰 0% Commission",
+  "inbox": "ఇన్‌బాక్స్",
+  "services": "సేవలు"
 }

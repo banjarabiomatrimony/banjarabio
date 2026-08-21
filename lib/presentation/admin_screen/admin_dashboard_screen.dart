@@ -22,6 +22,7 @@ import 'package:banjarabio/presentation/admin_screen/special_discount_tab.dart';
 import 'package:banjarabio/presentation/admin_screen/team_management_tab.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/routes/app_routes.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   final AdminRepository? adminRepository;
@@ -157,7 +158,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         ),
         boxShadow: [
           BoxShadow(
-            color: theme.colorScheme.primary.withValues(alpha: 0.3),
+            color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity30),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -177,7 +178,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   ),
                   Text(
                     user?.email ?? '',
-                    style: theme.textTheme.bodySmall?.copyWith(color: Colors.white.withValues(alpha: 0.7)),
+                    style: theme.textTheme.bodySmall?.copyWith(color: Colors.white.withValues(alpha: AppColors.opacity70)),
                   ),
                 ],
               ),
@@ -204,7 +205,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       icon: const Icon(Icons.add, color: Colors.white),
                       label: const Text('Add New Influencer', style: TextStyle(color: Colors.white, fontWeight: AppTypography.bold)),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white.withValues(alpha: 0.2),
+                        backgroundColor: Colors.white.withValues(alpha: AppColors.opacity20),
                         elevation: 0,
                         padding: EdgeInsets.symmetric(vertical: 1.5.h),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -260,7 +261,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     return Container(
       decoration: BoxDecoration(
         color: theme.cardColor,
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, -5))],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: AppColors.opacity10), blurRadius: 10, offset: const Offset(0, -5))],
       ),
       child: BottomNavigationBar(
         currentIndex: currentIndex,

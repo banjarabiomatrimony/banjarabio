@@ -7,6 +7,7 @@ import 'package:lottie/lottie.dart';
 import 'package:banjarabio/core/models/daily_reward_model.dart';
 import 'package:banjarabio/core/repositories/daily_reward_repository.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class DailyRewardDialog extends StatefulWidget {
   final DailyRewardModel initialStatus;
@@ -18,7 +19,7 @@ class DailyRewardDialog extends StatefulWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      barrierColor: Colors.black.withValues(alpha: 0.70),
+      barrierColor: Colors.black.withValues(alpha: AppColors.opacity70),
       builder: (context) => DailyRewardDialog(initialStatus: status),
     );
   }
@@ -45,44 +46,44 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
       'day': 1,
       'label': '+1 Profile View',
       'icon': Icons.visibility_rounded,
-      'accent': Color(0xFF38BDF8),
+      'accent': AppColors.skyBlueBright,
     },
     {
       'day': 2,
       'label': '+1 Bookmark',
       'icon': Icons.bookmark_rounded,
-      'accent': Color(0xFFA78BFA),
+      'accent': AppColors.violetSoft,
     },
     {
       'day': 3,
       'label': '+2 Profile Views',
       'icon': Icons.visibility_rounded,
-      'accent': Color(0xFF34D399),
+      'accent': AppColors.green400,
     },
     {
       'day': 4,
       'label': '+1 Bookmark',
       'icon': Icons.bookmark_rounded,
-      'accent': Color(0xFFF472B6),
+      'accent': AppColors.warmPink,
     },
     {
       'day': 5,
       'label': '+3 Profile Views',
       'icon': Icons.visibility_rounded,
-      'accent': Color(0xFFFBBF24),
+      'accent': AppColors.goldSoft,
     },
     {
       'day': 6,
       'label': '+5 Profile Views',
       'icon': Icons.visibility_rounded,
-      'accent': Color(0xFFFB923C),
+      'accent': AppColors.warning,
     },
     {
       'day': 7,
       'label': '👑 +1 Free Direct Message & VIP Spotlight',
       'icon': Icons.chat_bubble_rounded,
       'isJackpot': true,
-      'accent': Color(0xFFF59E0B),
+      'accent': AppColors.categoryAstro,
     },
   ];
 
@@ -181,19 +182,19 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: isDark
-                  ? [const Color(0xFF1E1528), const Color(0xFF13101E), const Color(0xFF0C0A14)]
-                  : [const Color(0xFFFFFFFF), const Color(0xFFFFF7ED), const Color(0xFFFEF3C7)],
+                  ? [AppColors.surfaceDarkBluePurple, AppColors.canvasCharcoal, AppColors.canvasCharcoal]
+                  : [AppColors.surfaceLight, AppColors.goldLight, AppColors.goldTint100],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
             borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
             border: Border.all(
-              color: const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.35 : 0.25),
+              color: AppColors.categoryAstro.withValues(alpha: isDark ? 0.35 : 0.25),
               width: 1.2,
             ),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.20 : 0.12),
+                color: AppColors.categoryAstro.withValues(alpha: isDark ? 0.20 : 0.12),
                 blurRadius: 24,
                 offset: const Offset(0, -6),
               ),
@@ -231,12 +232,12 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
-                                colors: [Color(0xFFF59E0B), Color(0xFFD97706)],
+                                colors: [AppColors.categoryAstro, AppColors.categoryAstroDark],
                               ),
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color(0xFFF59E0B).withValues(alpha: 0.35),
+                                  color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity35),
                                   blurRadius: 8,
                                   offset: const Offset(0, 2),
                                 ),
@@ -254,7 +255,7 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
                                 style: TextStyle(
                                   fontSize: AppTypography.headingSmall,
                                   fontWeight: AppTypography.black,
-                                  color: isDark ? Colors.white : const Color(0xFF1E293B),
+                                  color: isDark ? Colors.white : AppColors.slate800,
                                   letterSpacing: 0.2,
                                 ),
                               ),
@@ -265,7 +266,7 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
                                 style: TextStyle(
                                   fontSize: AppTypography.labelSmall,
                                   fontWeight: AppTypography.bold,
-                                  color: const Color(0xFFF59E0B),
+                                  color: AppColors.categoryAstro,
                                 ),
                               ),
                             ],
@@ -277,7 +278,7 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
                         child: Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
-                            color: isDark ? Colors.white10 : Colors.black.withValues(alpha: 0.05),
+                            color: isDark ? Colors.white10 : Colors.black.withValues(alpha: AppColors.opacity5),
                             shape: BoxShape.circle,
                           ),
                           child: Icon(Icons.close_rounded,
@@ -293,10 +294,10 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.0.h),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF141220) : Colors.white,
+                      color: isDark ? AppColors.canvasCharcoal : Colors.white,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
+                        color: isDark ? Colors.white10 : AppColors.slate200,
                       ),
                     ),
                     child: Column(
@@ -309,7 +310,7 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
                               style: TextStyle(
                                 fontSize: AppTypography.labelSmall,
                                 fontWeight: AppTypography.bold,
-                                color: isDark ? Colors.white70 : const Color(0xFF475569),
+                                color: isDark ? Colors.white70 : AppColors.slate600,
                               ),
                             ),
                             Text(
@@ -317,7 +318,7 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
                               style: TextStyle(
                                 fontSize: AppTypography.labelSmall,
                                 fontWeight: AppTypography.extraBold,
-                                color: const Color(0xFFF59E0B),
+                                color: AppColors.categoryAstro,
                               ),
                             ),
                           ],
@@ -328,8 +329,8 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
                           child: LinearProgressIndicator(
                             value: progressPercent,
                             minHeight: 7,
-                            backgroundColor: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
-                            valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFF59E0B)),
+                            backgroundColor: isDark ? Colors.white10 : AppColors.slate200,
+                            valueColor: const AlwaysStoppedAnimation<Color>(AppColors.categoryAstro),
                           ),
                         ),
                       ],
@@ -371,23 +372,23 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
                         gradient: _status.isClaimedToday
                             ? LinearGradient(
                                 colors: isDark
-                                    ? [const Color(0xFF1E293B), const Color(0xFF0F172A)]
-                                    : [const Color(0xFFE2E8F0), const Color(0xFFCBD5E1)],
+                                    ? [AppColors.slate800, AppColors.slate900]
+                                    : [AppColors.slate200, AppColors.slate300],
                               )
                             : const LinearGradient(
-                                colors: [Color(0xFFF59E0B), Color(0xFFD97706), Color(0xFFB45309)],
+                                colors: [AppColors.categoryAstro, AppColors.categoryAstroDark, AppColors.amberDark],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
                         borderRadius: BorderRadius.circular(20),
                         border: _status.isClaimedToday
                             ? null
-                            : Border.all(color: const Color(0xFFFDE68A), width: 1.2),
+                            : Border.all(color: AppColors.goldTint200, width: 1.2),
                         boxShadow: _status.isClaimedToday
                             ? []
                             : [
                                 BoxShadow(
-                                  color: const Color(0xFFF59E0B).withValues(alpha: 0.40),
+                                  color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity40),
                                   blurRadius: 14,
                                   offset: const Offset(0, 4),
                                 ),
@@ -515,35 +516,35 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
               gradient: isToday
                   ? LinearGradient(
                       colors: isDark
-                          ? [const Color(0xFF382312), const Color(0xFF1E1528)]
-                          : [const Color(0xFFFFFBEB), const Color(0xFFFEF3C7)],
+                          ? [AppColors.warmDarkText, AppColors.surfaceDarkBluePurple]
+                          : [AppColors.warningLight, AppColors.goldTint100],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     )
                   : isCompleted
                       ? LinearGradient(
                           colors: isDark
-                              ? [const Color(0xFF0B2418), const Color(0xFF0F1E19)]
-                              : [const Color(0xFFF0FDF4), const Color(0xFFDCFCE7)],
+                              ? [AppColors.canvasDark, AppColors.canvasDark]
+                              : [AppColors.successLight, AppColors.green100alt],
                         )
                       : LinearGradient(
                           colors: isDark
-                              ? [const Color(0xFF161424), const Color(0xFF100E1C)]
-                              : [Colors.white, const Color(0xFFF8FAFC)],
+                              ? [AppColors.canvasDeepDark, AppColors.canvasDeepDark]
+                              : [Colors.white, AppColors.slate50],
                         ),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: isToday
-                    ? const Color(0xFFF59E0B)
+                    ? AppColors.categoryAstro
                     : isCompleted
-                        ? const Color(0xFF10B981).withValues(alpha: 0.5)
-                        : (isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0)),
+                        ? AppColors.categoryLocation.withValues(alpha: AppColors.opacity50)
+                        : (isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : AppColors.slate200),
                 width: isToday ? 1.8 : 1.0,
               ),
               boxShadow: isToday
                   ? [
                       BoxShadow(
-                        color: const Color(0xFFF59E0B).withValues(alpha: 0.25),
+                        color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity25),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -569,19 +570,19 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
                         fontSize: AppTypography.labelTiny,
                         fontWeight: AppTypography.extraBold,
                         color: isToday
-                            ? const Color(0xFFF59E0B)
+                            ? AppColors.categoryAstro
                             : isCompleted
-                                ? const Color(0xFF10B981)
+                                ? AppColors.categoryLocation
                                 : (isDark ? Colors.white60 : Colors.black54),
                       ),
                     ),
                     if (isCompleted)
-                      const Icon(Icons.check_circle_rounded, color: Color(0xFF10B981), size: 12)
+                      const Icon(Icons.check_circle_rounded, color: AppColors.categoryLocation, size: 12)
                     else if (isToday)
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF59E0B),
+                          color: AppColors.categoryAstro,
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
@@ -604,9 +605,9 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
                   padding: const EdgeInsets.all(7),
                   decoration: BoxDecoration(
                     color: isCompleted
-                        ? const Color(0xFF10B981).withValues(alpha: 0.15)
+                        ? AppColors.categoryLocation.withValues(alpha: AppColors.opacity15)
                         : isToday
-                            ? const Color(0xFFF59E0B).withValues(alpha: 0.18)
+                            ? AppColors.categoryAstro.withValues(alpha: 0.18)
                             : accent.withValues(alpha: isDark ? 0.12 : 0.10),
                     shape: BoxShape.circle,
                   ),
@@ -614,9 +615,9 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
                     isCompleted ? Icons.check_rounded : icon,
                     size: 18,
                     color: isCompleted
-                        ? const Color(0xFF10B981)
+                        ? AppColors.categoryLocation
                         : isToday
-                            ? const Color(0xFFF59E0B)
+                            ? AppColors.categoryAstro
                             : accent,
                   ),
                 ),
@@ -628,8 +629,8 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
                     fontSize: AppTypography.labelTiny,
                     fontWeight: AppTypography.bold,
                     color: isCompleted
-                        ? const Color(0xFF10B981)
-                        : (isDark ? Colors.white : const Color(0xFF1E293B)),
+                        ? AppColors.categoryLocation
+                        : (isDark ? Colors.white : AppColors.slate800),
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 1,
@@ -657,29 +658,29 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
       decoration: BoxDecoration(
         gradient: isToday
             ? const LinearGradient(
-                colors: [Color(0xFFF59E0B), Color(0xFFD97706), Color(0xFFB45309)],
+                colors: [AppColors.categoryAstro, AppColors.categoryAstroDark, AppColors.amberDark],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               )
             : isCompleted
                 ? LinearGradient(
                     colors: isDark
-                        ? [const Color(0xFF0B2418), const Color(0xFF0F1E19)]
-                        : [const Color(0xFFF0FDF4), const Color(0xFFDCFCE7)],
+                        ? [AppColors.canvasDark, AppColors.canvasDark]
+                        : [AppColors.successLight, AppColors.green100alt],
                   )
                 : LinearGradient(
                     colors: isDark
-                        ? [const Color(0xFF281C0F), const Color(0xFF1A1424)]
-                        : [const Color(0xFFFFFBEB), const Color(0xFFFEF3C7)],
+                        ? [AppColors.bloodRedBg, AppColors.canvasDeepDark]
+                        : [AppColors.warningLight, AppColors.goldTint100],
                   ),
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: const Color(0xFFF59E0B).withValues(alpha: isToday ? 0.9 : 0.5),
+          color: AppColors.categoryAstro.withValues(alpha: isToday ? 0.9 : 0.5),
           width: isToday ? 1.8 : 1.2,
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFF59E0B).withValues(alpha: isToday ? 0.35 : 0.12),
+            color: AppColors.categoryAstro.withValues(alpha: isToday ? 0.35 : 0.12),
             blurRadius: 12,
             offset: const Offset(0, 3),
           ),
@@ -692,13 +693,13 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
             padding: const EdgeInsets.all(9),
             decoration: BoxDecoration(
               gradient: isToday
-                  ? const LinearGradient(colors: [Colors.white, Color(0xFFFDE68A)])
-                  : const LinearGradient(colors: [Color(0xFFF59E0B), Color(0xFFD97706)]),
+                  ? const LinearGradient(colors: [Colors.white, AppColors.goldTint200])
+                  : const LinearGradient(colors: [AppColors.categoryAstro, AppColors.categoryAstroDark]),
               shape: BoxShape.circle,
             ),
             child: Icon(
               Icons.military_tech_rounded,
-              color: isToday ? const Color(0xFFB45309) : Colors.white,
+              color: isToday ? AppColors.amberDark : Colors.white,
               size: 22,
             ),
           ),
@@ -716,7 +717,7 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
                         fontWeight: AppTypography.black,
                         color: isToday
                             ? Colors.white
-                            : (isDark ? const Color(0xFFFDE68A) : const Color(0xFF92400E)),
+                            : (isDark ? AppColors.goldTint200 : AppColors.amberDarkestText),
                         letterSpacing: 0.4,
                       ),
                     ),
@@ -724,7 +725,7 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
                       decoration: BoxDecoration(
-                        color: isToday ? Colors.white24 : const Color(0xFFF59E0B).withValues(alpha: 0.2),
+                        color: isToday ? Colors.white24 : AppColors.categoryAstro.withValues(alpha: AppColors.opacity20),
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
@@ -732,7 +733,7 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
                         style: TextStyle(
                           fontSize: AppTypography.labelTiny,
                           fontWeight: AppTypography.black,
-                          color: isToday ? Colors.white : const Color(0xFFF59E0B),
+                          color: isToday ? Colors.white : AppColors.categoryAstro,
                         ),
                       ),
                     ),
@@ -746,7 +747,7 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
                     fontWeight: AppTypography.bold,
                     color: isToday
                         ? Colors.white.withValues(alpha: 0.92)
-                        : (isDark ? Colors.white70 : const Color(0xFF78350F)),
+                        : (isDark ? Colors.white70 : AppColors.amberDeepText),
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -755,7 +756,7 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
             ),
           ),
           if (isCompleted)
-            const Icon(Icons.check_circle_rounded, color: Color(0xFF10B981), size: 20)
+            const Icon(Icons.check_circle_rounded, color: AppColors.categoryLocation, size: 20)
           else if (isToday)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -766,7 +767,7 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
               child: Text(
                 'CLAIM',
                 style: TextStyle(
-                  color: const Color(0xFFB45309),
+                  color: AppColors.amberDark,
                   fontWeight: AppTypography.black,
                   fontSize: AppTypography.labelTiny,
                 ),
@@ -849,13 +850,13 @@ class _Particle {
   late bool isStar;
 
   static final List<Color> _palette = [
-    const Color(0xFFF59E0B),
-    const Color(0xFF10B981),
-    const Color(0xFF38BDF8),
-    const Color(0xFFF472B6),
-    const Color(0xFFFBBF24),
-    const Color(0xFFA78BFA),
-    const Color(0xFFBE123C),
+    AppColors.categoryAstro,
+    AppColors.categoryLocation,
+    AppColors.skyBlueBright,
+    AppColors.warmPink,
+    AppColors.goldSoft,
+    AppColors.violetSoft,
+    AppColors.crimsonRose,
   ];
 
   _Particle(int index) {

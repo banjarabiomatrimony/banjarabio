@@ -11,7 +11,7 @@ import 'package:banjarabio/widgets/upgrade_dialog.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/guest_restricted_dialog.dart';
 
 /// Interest confirmation dialog + execution logic extracted from
-/// HomeScreenInitialPage._handleInterest / _executeInterest.
+/// HomeScreen._handleInterest / _executeInterest.
 class HomeInterestHandler {
   HomeInterestHandler._();
 

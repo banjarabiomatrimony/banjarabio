@@ -105,7 +105,7 @@ class StartupWorkflow {
               msg: l10n?.welcomeBackAccountFound ?? 'Welcome back! Your account has been found.',
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
-              backgroundColor: const Color(0xFFD97706),
+              backgroundColor: AppColors.categoryAstroDark,
               textColor: Colors.white,
             );
 

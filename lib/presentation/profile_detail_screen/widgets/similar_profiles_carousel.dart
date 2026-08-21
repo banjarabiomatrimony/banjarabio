@@ -6,6 +6,7 @@ import 'package:banjarabio/core/models/filter_criteria.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/widgets/custom_image_widget.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class SimilarProfilesCarousel extends StatefulWidget {
   final Map<String, dynamic> currentProfileData;
@@ -215,7 +216,7 @@ class _SimilarProfileCard extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 1.5.w, vertical: 0.2.h),
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.primary.withValues(alpha: 0.08),
+                          color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity8),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(

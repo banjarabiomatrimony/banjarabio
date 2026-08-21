@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Dual tab-group selector: Recommended/Daily + Grid/Swipe with visual labels and icons.
 class HomeTabSelector extends StatelessWidget {
@@ -57,7 +58,7 @@ class HomeTabSelector extends StatelessWidget {
                           child: Text(
                             _getMatchesFilterLabel(context),
                             style: theme.textTheme.labelSmall?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity80),
                               fontWeight: AppTypography.bold,
                               fontSize: AppTypography.labelMedium,
                               letterSpacing: 0.3,
@@ -84,7 +85,7 @@ class HomeTabSelector extends StatelessWidget {
                           child: Text(
                             _getDisplayLayoutLabel(context),
                             style: theme.textTheme.labelSmall?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity80),
                               fontWeight: AppTypography.bold,
                               fontSize: AppTypography.labelMedium,
                               letterSpacing: 0.3,
@@ -140,7 +141,7 @@ class HomeTabSelector extends StatelessWidget {
                     height: 26,
                     margin: EdgeInsets.symmetric(horizontal: 2.w),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.outlineVariant.withValues(alpha: 0.4),
+                      color: theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity40),
                       borderRadius: BorderRadius.circular(1),
                     ),
                   ),
@@ -190,7 +191,7 @@ class HomeTabSelector extends StatelessWidget {
   Widget _buildPillGroup({required ThemeData theme, required List<Widget> children}) {
     return Container(
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.35),
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: AppColors.opacity35),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: theme.colorScheme.outlineVariant.withValues(alpha: 0.45),
@@ -230,7 +231,7 @@ class HomeTabSelector extends StatelessWidget {
               ? LinearGradient(
                   colors: [
                     theme.colorScheme.primary,
-                    theme.colorScheme.primary.withValues(alpha: 0.85),
+                    theme.colorScheme.primary.withValues(alpha: AppColors.opacity85),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -240,7 +241,7 @@ class HomeTabSelector extends StatelessWidget {
           boxShadow: isActive
               ? [
                   BoxShadow(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                    color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity30),
                     blurRadius: 10,
                     offset: const Offset(0, 3),
                   ),

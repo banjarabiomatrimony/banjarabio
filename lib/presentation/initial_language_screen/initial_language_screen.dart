@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/providers/locale_provider.dart';
 import 'package:banjarabio/core/utils/startup_workflow.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 
 class InitialLanguageScreen extends ConsumerStatefulWidget {
@@ -69,7 +70,7 @@ class _InitialLanguageScreenState extends ConsumerState<InitialLanguageScreen>
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              theme.colorScheme.primary.withValues(alpha: 0.1),
+              theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
               theme.scaffoldBackgroundColor,
             ],
           ),
@@ -94,7 +95,7 @@ class _InitialLanguageScreenState extends ConsumerState<InitialLanguageScreen>
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                          color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity20),
                           blurRadius: 8,
                           offset: const Offset(0, 10),
                         ),
@@ -190,7 +191,7 @@ class _InitialLanguageScreenState extends ConsumerState<InitialLanguageScreen>
                           borderRadius: BorderRadius.circular(16),
                         ),
                         elevation: 4,
-                        shadowColor: theme.colorScheme.primary.withValues(alpha: 0.4),
+                        shadowColor: theme.colorScheme.primary.withValues(alpha: AppColors.opacity40),
                       ),
                       child: Text(
                         _getContinueText(activeCode),
@@ -234,20 +235,20 @@ class _InitialLanguageScreenState extends ConsumerState<InitialLanguageScreen>
             color: isSelected ? theme.colorScheme.primary : theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: isSelected ? theme.colorScheme.primary : theme.dividerColor.withValues(alpha: 0.1),
+              color: isSelected ? theme.colorScheme.primary : theme.dividerColor.withValues(alpha: AppColors.opacity10),
               width: 2,
             ),
             boxShadow: isSelected
                 ? [
                     BoxShadow(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                      color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity30),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
                   ]
                 : [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
+                      color: Colors.black.withValues(alpha: AppColors.opacity5),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -267,7 +268,7 @@ class _InitialLanguageScreenState extends ConsumerState<InitialLanguageScreen>
               if (isSelected)
                 Icon(Icons.check_circle_rounded, color: theme.colorScheme.onPrimary, size: 24)
               else
-                Icon(Icons.circle_outlined, color: theme.colorScheme.onSurface.withValues(alpha: 0.3), size: 24),
+                Icon(Icons.circle_outlined, color: theme.colorScheme.onSurface.withValues(alpha: AppColors.opacity30), size: 24),
             ],
           ),
         ),

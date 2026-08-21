@@ -1043,7 +1043,7 @@
   "benefitVerifiedProfiles": "100% ಪರಿಶೀಲಿಸಿದ ಪ್ರೊಫೈಲ್‌ಗಳು",
   "bestTimeToContact": "ಸಂಪರ್ಕಿಸಲು ಉತ್ತಮ ಸಮಯ",
   "bestValue": "ಅತ್ಯುತ್ತಮ ಮೌಲ್ಯ",
-  "biodata": "Biodata",
+  "biodata": "ಬಯೋಡೇಟಾ",
   "biodataDraftRestored": "ಬಯೋಡೇಟಾ ಕರಡು ಮರುಸ್ಥಾಪಿಸಲಾಗಿದೆ!",
   "biodataDraftRestoredSuccess": "Biodata draft restored successfully!",
   "biodataPdf": "ಬಯೋಡೇಟಾ PDF",
@@ -2544,5 +2544,7 @@
   "yourSuccessStory": "ನಿಮ್ಮ ಯಶಸ್ಸಿನ ಕಥೆ",
   "yourTrustScore": "ನಿಮ್ಮ ಟ್ರಸ್ಟ್ ಸ್ಕೋರ್",
   "yrs": "{count} ವರ್ಷ",
-  "zeroPercentCommission": "💰 0% Commission"
+  "zeroPercentCommission": "💰 0% Commission",
+  "inbox": "ಇನ್‌ಬಾಕ್ಸ್",
+  "services": "ಸೇವೆಗಳು"
 }

@@ -7,7 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:banjarabio/presentation/home_screen/home_screen_initial_page.dart';
+import 'package:banjarabio/presentation/home_screen/home_screen.dart';
 import '../../helpers/supabase_fakes.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/core/repositories/share_repository.dart';
@@ -163,7 +163,7 @@ void main() {
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: const [Locale('en')],
-            home: HomeScreenInitialPage(
+            home: HomeScreen(
               profileRepository: mockProfileRepository,
               shareRepository: mockShareRepository,
               usageRepository: mockUsageRepository,
@@ -175,7 +175,7 @@ void main() {
     );
   }
 
-  testWidgets('HomeScreenInitialPage loads and displays profiles after interactive phase', (WidgetTester tester) async {
+  testWidgets('HomeScreen loads and displays profiles after interactive phase', (WidgetTester tester) async {
     final profiles = [
       ProfileModel(
         id: '1',
@@ -297,7 +297,7 @@ void main() {
       ),
     ];
 
-    final state = tester.state(find.byType(HomeScreenInitialPage)) as dynamic;
+    final state = tester.state(find.byType(HomeScreen)) as dynamic;
     state.profiles = mockProfilesList;
     
     await tester.pump(); // Start task
@@ -318,7 +318,7 @@ void main() {
     await tester.pump(const Duration(seconds: 10));
   });
 
-  testWidgets('HomeScreenInitialPage AppBar displays location without logo or static branding', (WidgetTester tester) async {
+  testWidgets('HomeScreen AppBar displays location without logo or static branding', (WidgetTester tester) async {
     when(() => mockProfileRepository.getProfiles(
       limit: any(named: 'limit'),
       lastCreatedAt: any(named: 'lastCreatedAt'),

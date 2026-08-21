@@ -403,7 +403,7 @@ class _LocationPreferencesSectionState
                 ),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                  color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity30),
                 ),
               ),
               child: Column(
@@ -451,7 +451,7 @@ class _LocationPreferencesSectionState
               ),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: theme.colorScheme.secondary.withValues(alpha: 0.3),
+                color: theme.colorScheme.secondary.withValues(alpha: AppColors.opacity30),
               ),
             ),
             child: Column(

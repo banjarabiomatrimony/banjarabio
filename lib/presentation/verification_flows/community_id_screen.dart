@@ -14,6 +14,7 @@ import 'package:banjarabio/services/photo_picker_service.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/routes/app_routes.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class CommunityIdScreen extends StatefulWidget {
   const CommunityIdScreen({super.key});
@@ -118,7 +119,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.outline.withValues(alpha: 0.3),
+                    color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity30),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -144,10 +145,10 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 2.h),
                           decoration: BoxDecoration(
-                            color: theme.colorScheme.primary.withValues(alpha: 0.08),
+                            color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity8),
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                              color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity20),
                             ),
                           ),
                           child: Column(
@@ -182,10 +183,10 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 2.h),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF8B1A2E).withValues(alpha: 0.08),
+                            color: AppColors.crimsonDeep.withValues(alpha: AppColors.opacity8),
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: const Color(0xFF8B1A2E).withValues(alpha: 0.2),
+                              color: AppColors.crimsonDeep.withValues(alpha: AppColors.opacity20),
                             ),
                           ),
                           child: Column(
@@ -193,7 +194,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                               const Icon(
                                 Icons.photo_library_rounded,
                                 size: 32,
-                                color: Color(0xFF8B1A2E),
+                                color: AppColors.crimsonDeep,
                               ),
                               SizedBox(height: 1.h),
                               Text(
@@ -201,7 +202,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                                 style: TextStyle(
                                   fontSize: AppTypography.bodyMedium,
                                   fontWeight: AppTypography.bold,
-                                  color: const Color(0xFF8B1A2E),
+                                  color: AppColors.crimsonDeep,
                                 ),
                               ),
                             ],
@@ -328,7 +329,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                             width: 72,
                             height: 72,
                             decoration: BoxDecoration(
-                              color: const Color(0xFF8B1A2E).withValues(alpha: 0.12),
+                              color: AppColors.crimsonDeep.withValues(alpha: AppColors.opacity12),
                               shape: BoxShape.circle,
                             ),
                             child: Center(
@@ -371,10 +372,10 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                                   vertical: 0.8.h,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF10B981).withValues(alpha: 0.1),
+                                  color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity10),
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
-                                    color: const Color(0xFF10B981).withValues(alpha: 0.3),
+                                    color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity30),
                                   ),
                                 ),
                                 child: Row(
@@ -382,7 +383,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                                   children: [
                                     const Icon(
                                       Icons.stars_rounded,
-                                      color: Color(0xFF059669),
+                                      color: AppColors.categoryLocationDark,
                                       size: 18,
                                     ),
                                     SizedBox(width: 1.5.w),
@@ -391,7 +392,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                                       style: TextStyle(
                                         fontSize: AppTypography.labelMedium,
                                         fontWeight: AppTypography.extraBold,
-                                        color: const Color(0xFF059669),
+                                        color: AppColors.categoryLocationDark,
                                       ),
                                     ),
                                   ],
@@ -403,10 +404,10 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                                   vertical: 0.8.h,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Colors.amber.withValues(alpha: 0.15),
+                                  color: Colors.amber.withValues(alpha: AppColors.opacity15),
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
-                                    color: Colors.amber.withValues(alpha: 0.4),
+                                    color: Colors.amber.withValues(alpha: AppColors.opacity40),
                                   ),
                                 ),
                                 child: Row(
@@ -414,7 +415,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                                   children: [
                                     const Icon(
                                       Icons.local_offer_rounded,
-                                      color: Color(0xFFB45309),
+                                      color: AppColors.amberDark,
                                       size: 16,
                                     ),
                                     SizedBox(width: 1.5.w),
@@ -423,7 +424,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                                       style: TextStyle(
                                         fontSize: AppTypography.labelMedium,
                                         fontWeight: AppTypography.extraBold,
-                                        color: const Color(0xFFB45309),
+                                        color: AppColors.amberDark,
                                       ),
                                     ),
                                   ],
@@ -441,7 +442,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                               },
                               style: ElevatedButton.styleFrom(
                                 padding: EdgeInsets.symmetric(vertical: 1.6.h),
-                                backgroundColor: const Color(0xFF8B1A2E),
+                                backgroundColor: AppColors.crimsonDeep,
                                 foregroundColor: Colors.white,
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
@@ -556,8 +557,8 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
         decoration: BoxDecoration(
           gradient: const LinearGradient(
             colors: [
-              Color(0xFF8B1A2E), // BVS Crimson
-              Color(0xFFB91C1C), // Deep Coral Red
+              AppColors.crimsonDeep, // BVS Crimson
+              AppColors.error, // Deep Coral Red
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -565,7 +566,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF8B1A2E).withValues(alpha: 0.35),
+              color: AppColors.crimsonDeep.withValues(alpha: AppColors.opacity35),
               blurRadius: 16,
               offset: const Offset(0, 6),
             ),
@@ -589,7 +590,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.2),
+                          color: Colors.black.withValues(alpha: AppColors.opacity20),
                           blurRadius: 8,
                           offset: const Offset(0, 3),
                         ),
@@ -603,7 +604,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => const Icon(
                           Icons.workspace_premium_rounded,
-                          color: Color(0xFF8B1A2E),
+                          color: AppColors.crimsonDeep,
                           size: 32,
                         ),
                       ),
@@ -629,7 +630,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                         l10n?.bvsConceptSubtitle.split('\n').first ??
                             'ना. संजयभाऊ राठोड यांच्या प्रेरणेतून',
                         style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.9),
+                          color: Colors.white.withValues(alpha: AppColors.opacity90),
                           fontSize: AppTypography.bodySmall,
                           fontWeight: AppTypography.semiBold,
                         ),
@@ -643,9 +644,9 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
             Container(
               padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.2.h),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.15),
+                color: Colors.white.withValues(alpha: AppColors.opacity15),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.white.withValues(alpha: 0.25)),
+                border: Border.all(color: Colors.white.withValues(alpha: AppColors.opacity25)),
               ),
               child: Row(
                 children: [
@@ -687,18 +688,18 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [
-            Color(0xFF2E1065), // Royal deep violet
-            Color(0xFF4C1D95),
-            Color(0xFF701A75),
+            AppColors.deepIndigo, // Royal deep violet
+            AppColors.deepIndigo,
+            AppColors.materialPurpleDark,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Colors.amber.withValues(alpha: 0.4), width: 1.5),
+        border: Border.all(color: Colors.amber.withValues(alpha: AppColors.opacity40), width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF4C1D95).withValues(alpha: 0.25),
+            color: AppColors.deepIndigo.withValues(alpha: AppColors.opacity25),
             blurRadius: 14,
             offset: const Offset(0, 6),
           ),
@@ -764,7 +765,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                     Text(
                       'Gotra: $gotra',
                       style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.85),
+                        color: Colors.white.withValues(alpha: AppColors.opacity85),
                         fontSize: AppTypography.bodySmall,
                         fontWeight: AppTypography.semiBold,
                       ),
@@ -785,9 +786,9 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.8.h),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.12),
+                  color: Colors.white.withValues(alpha: AppColors.opacity12),
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+                  border: Border.all(color: Colors.white.withValues(alpha: AppColors.opacity20)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -840,7 +841,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
           decoration: InputDecoration(
             labelText: l10n?.bvsMemberId ?? 'BVS Member ID No (e.g. 405812)',
             hintText: 'उदा. 405812',
-            prefixIcon: const Icon(Icons.badge_outlined, color: Color(0xFF8B1A2E)),
+            prefixIcon: const Icon(Icons.badge_outlined, color: AppColors.crimsonDeep),
             filled: true,
             fillColor: theme.cardColor,
             border: OutlineInputBorder(
@@ -848,7 +849,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: Color(0xFF8B1A2E), width: 2),
+              borderSide: const BorderSide(color: AppColors.crimsonDeep, width: 2),
             ),
           ),
         ),
@@ -909,11 +910,11 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
           decoration: BoxDecoration(
             color: _proofImage != null
                 ? theme.cardColor
-                : const Color(0xFF8B1A2E).withValues(alpha: 0.04),
+                : AppColors.crimsonDeep.withValues(alpha: 0.04),
             border: Border.all(
               color: _proofImage != null
-                  ? const Color(0xFF10B981)
-                  : const Color(0xFF8B1A2E).withValues(alpha: 0.35),
+                  ? AppColors.categoryLocation
+                  : AppColors.crimsonDeep.withValues(alpha: AppColors.opacity35),
               width: 1.5,
             ),
             borderRadius: BorderRadius.circular(18),
@@ -949,7 +950,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                                 vertical: 5,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: 0.7),
+                                color: Colors.black.withValues(alpha: AppColors.opacity70),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
@@ -977,20 +978,20 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
                           Container(
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF8B1A2E).withValues(alpha: 0.1),
+                              color: AppColors.crimsonDeep.withValues(alpha: AppColors.opacity10),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
                               Icons.add_a_photo_rounded,
                               size: 32,
-                              color: Color(0xFF8B1A2E),
+                              color: AppColors.crimsonDeep,
                             ),
                           ),
                           SizedBox(height: 1.2.h),
                           Text(
                             'Tap to Capture or Select Card Photo',
                             style: TextStyle(
-                              color: const Color(0xFF8B1A2E),
+                              color: AppColors.crimsonDeep,
                               fontWeight: AppTypography.bold,
                               fontSize: AppTypography.bodyMedium,
                             ),
@@ -1020,7 +1021,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
         color: theme.cardColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.12),
+          color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity12),
         ),
       ),
       child: Row(
@@ -1028,12 +1029,12 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: const Color(0xFF8B1A2E).withValues(alpha: 0.1),
+              color: AppColors.crimsonDeep.withValues(alpha: AppColors.opacity10),
               shape: BoxShape.circle,
             ),
             child: const Icon(
               Icons.app_registration_rounded,
-              color: Color(0xFF8B1A2E),
+              color: AppColors.crimsonDeep,
               size: 24,
             ),
           ),
@@ -1065,7 +1066,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
           TextButton(
             onPressed: _launchBvsRegistration,
             style: TextButton.styleFrom(
-              foregroundColor: const Color(0xFF8B1A2E),
+              foregroundColor: AppColors.crimsonDeep,
               padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.8.h),
             ),
             child: const Row(
@@ -1093,13 +1094,13 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
         color: theme.colorScheme.surface,
         border: Border(
           top: BorderSide(
-            color: theme.colorScheme.outline.withValues(alpha: 0.1),
+            color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity10),
           ),
         ),
         boxShadow: [
           BoxShadow(
             blurRadius: 10,
-            color: theme.shadowColor.withValues(alpha: 0.08),
+            color: theme.shadowColor.withValues(alpha: AppColors.opacity8),
             offset: const Offset(0, -2),
           ),
         ],
@@ -1110,7 +1111,7 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
         child: ElevatedButton(
           onPressed: _isLoading ? null : (isReady ? _submit : _showImagePickerSheet),
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF8B1A2E),
+            backgroundColor: AppColors.crimsonDeep,
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Centralized brand gradient constants used across the app.
 /// Import this file anywhere you need consistent gradient styling.
@@ -7,35 +8,35 @@ class AppGradients {
 
   // ── Primary Crimson ──────────────────────────────────────────
   static const LinearGradient primary = LinearGradient(
-    colors: [Color(0xFF961B33), Color(0xFF731224)],
+    colors: [AppColors.primary, AppColors.primaryDark],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
   // ── Romance / CTA ────────────────────────────────────────────
   static const LinearGradient romance = LinearGradient(
-    colors: [Color(0xFF880E4F), Color(0xFF961B33)], // Deep Rose to Crimson
+    colors: [AppColors.primaryDark, AppColors.primary], // Deep Rose to Crimson
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
   // ── Love / Interest ──────────────────────────────────────────
   static const LinearGradient love = LinearGradient(
-    colors: [Color(0xFFE91E63), Color(0xFFC2185B)], // Pink 500 to Pink 700
+    colors: [AppColors.materialPink, AppColors.materialPink700], // Pink 500 to Pink 700
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
   // ── Gold / Premium ───────────────────────────────────────────
   static const LinearGradient gold = LinearGradient(
-    colors: [Color(0xFFD4AF37), Color(0xFFB8941F)],
+    colors: [AppColors.gold, AppColors.goldDark],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
   // ── Trust / Verified ─────────────────────────────────────────
   static const LinearGradient trust = LinearGradient(
-    colors: [Color(0xFF4CAF50), Color(0xFF2E7D32)],
+    colors: [AppColors.successDark, AppColors.success],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
@@ -52,7 +53,7 @@ class AppGradients {
   static LinearGradient shimmer({required double position}) => LinearGradient(
         colors: const [
           Colors.transparent,
-          Color(0x22FFFFFF),
+          AppColors.shadowDark,
           Colors.transparent,
         ],
         stops: [

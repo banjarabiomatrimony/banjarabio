@@ -11,6 +11,7 @@ import 'package:banjarabio/core/session_manager.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class PremiumGateScreen extends StatefulWidget {
   final VoidCallback onComplete;
@@ -174,7 +175,7 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.black,
-                  AppTheme.primaryLight.withValues(alpha: 0.1),
+                  AppTheme.primaryLight.withValues(alpha: AppColors.opacity10),
                   Colors.black,
                 ],
               ),
@@ -199,12 +200,12 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
                           width: 140,
                           height: 140,
                           decoration: BoxDecoration(
-                            color: AppTheme.primaryLight.withValues(alpha: 0.1),
+                            color: AppTheme.primaryLight.withValues(alpha: AppColors.opacity10),
                             shape: BoxShape.circle,
-                            border: Border.all(color: AppTheme.primaryLight.withValues(alpha: 0.2), width: 2),
+                            border: Border.all(color: AppTheme.primaryLight.withValues(alpha: AppColors.opacity20), width: 2),
                             boxShadow: [
                               BoxShadow(
-                                color: AppTheme.primaryLight.withValues(alpha: 0.15),
+                                color: AppTheme.primaryLight.withValues(alpha: AppColors.opacity15),
                                 blurRadius: 40,
                                 spreadRadius: 5,
                               ),
@@ -254,7 +255,7 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
                           textAlign: TextAlign.center,
                           style: GoogleFonts.inter(
                             fontSize: AppTypography.bodyLarge,
-                            color: Colors.white.withValues(alpha: 0.5),
+                            color: Colors.white.withValues(alpha: AppColors.opacity50),
                             height: 1.5,
                           ),
                         ),
@@ -277,7 +278,7 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.02),
                     borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-                    border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
+                    border: Border(top: BorderSide(color: Colors.white.withValues(alpha: AppColors.opacity5))),
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -345,7 +346,7 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
             minimumSize: const Size(double.infinity, 64),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
             elevation: 10,
-            shadowColor: AppTheme.primaryLight.withValues(alpha: 0.4),
+            shadowColor: AppTheme.primaryLight.withValues(alpha: AppColors.opacity40),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -379,9 +380,9 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           decoration: BoxDecoration(
-            color: AppTheme.successLight.withValues(alpha: 0.1),
+            color: AppTheme.successLight.withValues(alpha: AppColors.opacity10),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppTheme.successLight.withValues(alpha: 0.3)),
+            border: Border.all(color: AppTheme.successLight.withValues(alpha: AppColors.opacity30)),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -446,9 +447,9 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             decoration: BoxDecoration(
-              color: Colors.orange.withValues(alpha: 0.1),
+              color: Colors.orange.withValues(alpha: AppColors.opacity10),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+              border: Border.all(color: Colors.orange.withValues(alpha: AppColors.opacity30)),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -471,7 +472,7 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
             child: ElevatedButton(
               onPressed: widget.onComplete,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white.withValues(alpha: 0.1),
+                backgroundColor: Colors.white.withValues(alpha: AppColors.opacity10),
                 foregroundColor: Colors.white70,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 elevation: 0,
@@ -500,9 +501,9 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
         decoration: BoxDecoration(
-          color: isAccent ? AppTheme.primaryLight.withValues(alpha: 0.2) : Colors.white.withValues(alpha: 0.05),
+          color: isAccent ? AppTheme.primaryLight.withValues(alpha: AppColors.opacity20) : Colors.white.withValues(alpha: AppColors.opacity5),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: isAccent ? AppTheme.primaryLight : Colors.white.withValues(alpha: 0.1), width: 1.5),
+          border: Border.all(color: isAccent ? AppTheme.primaryLight : Colors.white.withValues(alpha: AppColors.opacity10), width: 1.5),
         ),
         child: Column(
           children: [
@@ -528,7 +529,7 @@ class _PremiumGateScreenState extends State<PremiumGateScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1A1A1A),
+        backgroundColor: AppColors.canvasDark,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: Colors.white12)),
         title: Text(l10n?.banjaraBioPro ?? 'BanjaraBio Pro', style: GoogleFonts.outfit(color: Colors.white, fontWeight: AppTypography.bold)),
         content: Text(

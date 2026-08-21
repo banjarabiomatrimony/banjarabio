@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Header widget for the Personal Details section.
 /// Extracted from PersonalDetailsSection._buildHeader.
@@ -28,7 +29,7 @@ class PersonalSectionHeader extends StatelessWidget {
         Text(
           AppLocalizations.of(context)?.enterYourBasicInformationAsItAppearsInOf ?? 'Enter your basic information faithfully',
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity70),
             letterSpacing: 0.2,
           ),
         ),

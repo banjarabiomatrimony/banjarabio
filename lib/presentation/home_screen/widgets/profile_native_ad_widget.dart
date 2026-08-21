@@ -5,6 +5,7 @@ import 'package:banjarabio/services/ads/ad_service.dart';
 import 'package:banjarabio/core/session_manager.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// A native ad widget that blends into the profile feed.
 class ProfileNativeAdWidget extends StatefulWidget {
@@ -136,15 +137,15 @@ class _ProfileNativeAdWidgetState extends State<ProfileNativeAdWidget> with Auto
         boxShadow: [
           BoxShadow(
             color: isDark 
-                ? Colors.black.withValues(alpha: 0.2) 
-                : theme.colorScheme.primary.withValues(alpha: 0.1),
+                ? Colors.black.withValues(alpha: AppColors.opacity20) 
+                : theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
             blurRadius: 16,
             offset: const Offset(0, 8),
             spreadRadius: 1,
           ),
         ],
         border: Border.all(
-          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.2),
+          color: theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity20),
         ),
       ),
       child: ClipRRect(
@@ -161,9 +162,9 @@ class _ProfileNativeAdWidgetState extends State<ProfileNativeAdWidget> with Auto
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.5),
+                  color: Colors.black.withValues(alpha: AppColors.opacity50),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+                  border: Border.all(color: Colors.white.withValues(alpha: AppColors.opacity20)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,

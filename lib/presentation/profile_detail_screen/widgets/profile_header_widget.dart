@@ -56,7 +56,7 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
         borderRadius: BorderRadius.circular(32), // Full rounding like Home Tab
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: Colors.black.withValues(alpha: AppColors.opacity10),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -113,7 +113,7 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
                       colors: [
                         Colors.transparent,
                         Colors.black.withValues(alpha: 0.0),
-                        Colors.black.withValues(alpha: 0.4),
+                        Colors.black.withValues(alpha: AppColors.opacity40),
                       ],
                       stops: const [0.0, 0.6, 1.0],
                     ),
@@ -143,12 +143,12 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
                         decoration: BoxDecoration(
                           color: isActive
                               ? Colors.white
-                              : Colors.white.withValues(alpha: 0.35),
+                              : Colors.white.withValues(alpha: AppColors.opacity35),
                           borderRadius: BorderRadius.circular(4),
                           boxShadow: isActive
                               ? [
                                   BoxShadow(
-                                    color: Colors.white.withValues(alpha: 0.3),
+                                    color: Colors.white.withValues(alpha: AppColors.opacity30),
                                     blurRadius: 4,
                                     offset: const Offset(0, 1),
                                   ),
@@ -189,13 +189,13 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
                       ),
                       _buildGradientBadge(
                         widget.profileData['displayId']?.toString() ?? 'BB-UNKNOWN',
-                        [const Color(0xFF607D8B), const Color(0xFF455A64)],
+                        [AppColors.blueGray500, AppColors.slate600],
                         Icons.fingerprint,
                       ),
                       if (isMatched)
                         _buildGradientBadge('MATCHED', [
-                          const Color(0xFFFF4B2B),
-                          const Color(0xFFFF416C),
+                          AppColors.sunsetBlush,
+                          AppColors.hotPink,
                         ], Icons.favorite),
                       if (isDisabled)
                         _buildGradientBadge(
@@ -210,8 +210,8 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
                   // Right-aligned Badges (Premium)
                   if (widget.isPremium)
                     _buildGradientBadge('PREMIUM', [
-                      const Color(0xFFFFD700),
-                      const Color(0xFFFFA500),
+                      AppColors.categoryVip,
+                      AppColors.categoryVipDark,
                     ], Icons.star),
                 ],
               ),
@@ -236,8 +236,8 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
         : (AppLocalizations.of(context)?.female ?? 'FEMALE');
 
     final colors = isMale
-        ? [const Color(0xFF2196F3), const Color(0xFF00BCD4)] // Blue/Cyan for Male
-        : [const Color(0xFFE91E63), const Color(0xFFFF4081)]; // Pink/Accent for Female
+        ? [AppColors.materialBlue, AppColors.categoryVerification] // Blue/Cyan for Male
+        : [AppColors.materialPink, AppColors.materialPink]; // Pink/Accent for Female
 
     return _buildGradientBadge(label.toUpperCase(), colors, isMale ? Icons.male : Icons.female);
   }
@@ -254,7 +254,7 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: colors.last.withValues(alpha: 0.3),
+            color: colors.last.withValues(alpha: AppColors.opacity30),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -308,7 +308,7 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
                 left: 2.w,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.5),
+                    color: Colors.black.withValues(alpha: AppColors.opacity50),
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
@@ -387,12 +387,12 @@ class _AnimatedScrollIndicatorState extends State<AnimatedScrollIndicator>
                   children: [
                     Icon(
                       Icons.touch_app_outlined,
-                      color: Colors.white.withValues(alpha: 0.9),
+                      color: Colors.white.withValues(alpha: AppColors.opacity90),
                       size: 24,
                     ),
                     Icon(
                       Icons.keyboard_arrow_up_rounded,
-                      color: Colors.white.withValues(alpha: 0.7),
+                      color: Colors.white.withValues(alpha: AppColors.opacity70),
                       size: 18,
                     ),
                   ],
@@ -405,13 +405,13 @@ class _AnimatedScrollIndicatorState extends State<AnimatedScrollIndicator>
         Text(
           'Scroll up for more details',
           style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.9),
+            color: Colors.white.withValues(alpha: AppColors.opacity90),
             fontSize: AppTypography.labelMedium,
             fontWeight: AppTypography.bold,
             letterSpacing: 0.2,
             shadows: [
               Shadow(
-                color: Colors.black.withValues(alpha: 0.5),
+                color: Colors.black.withValues(alpha: AppColors.opacity50),
                 blurRadius: 4,
                 offset: const Offset(0, 1),
               ),

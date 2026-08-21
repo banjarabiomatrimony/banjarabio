@@ -6,6 +6,7 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 class BvsWebViewScreen extends StatefulWidget {
   final String? initialUrl;
@@ -158,7 +159,7 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
                   border: Border.all(color: Colors.amberAccent, width: 1.5),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.2),
+                      color: Colors.black.withValues(alpha: AppColors.opacity20),
                       blurRadius: 6,
                     ),
                   ],
@@ -232,7 +233,7 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFF5A000F), Color(0xFF8B1A2E), Color(0xFFB71C1C)],
+                colors: [AppColors.maroonAccent, AppColors.crimsonDeep, AppColors.error],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -245,7 +246,7 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
                   child: LinearProgressIndicator(
                     value: _loadingProgress / 100.0,
                     backgroundColor: Colors.white24,
-                    valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFFFD700)),
+                    valueColor: const AlwaysStoppedAnimation<Color>(AppColors.categoryVip),
                     minHeight: 3,
                   ),
                 )
@@ -263,13 +264,13 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
                       Container(
                         padding: const EdgeInsets.all(18),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF8B1A2E).withValues(alpha: 0.1),
+                          color: AppColors.crimsonDeep.withValues(alpha: AppColors.opacity10),
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
                           Icons.wifi_off_rounded,
                           size: 54,
-                          color: Color(0xFF8B1A2E),
+                          color: AppColors.crimsonDeep,
                         ),
                       ),
                       SizedBox(height: 2.h),
@@ -304,12 +305,12 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
                           padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 1.4.h),
                           decoration: BoxDecoration(
                             gradient: const LinearGradient(
-                              colors: [Color(0xFF8B1A2E), Color(0xFF5A000F)],
+                              colors: [AppColors.crimsonDeep, AppColors.maroonAccent],
                             ),
                             borderRadius: BorderRadius.circular(14),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFF8B1A2E).withValues(alpha: 0.35),
+                                color: AppColors.crimsonDeep.withValues(alpha: AppColors.opacity35),
                                 blurRadius: 8,
                                 offset: const Offset(0, 3),
                               ),
@@ -358,7 +359,7 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.amber.withValues(alpha: 0.4),
+                                  color: Colors.amber.withValues(alpha: AppColors.opacity40),
                                   blurRadius: 18,
                                 ),
                               ],
@@ -378,7 +379,7 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
                           style: TextStyle(
                             fontSize: AppTypography.bodyLarge,
                             fontWeight: AppTypography.bold,
-                            color: isDark ? const Color(0xFFFFD54F) : const Color(0xFF6B0E1E),
+                            color: isDark ? AppColors.categoryVip : AppColors.wineDark,
                           ),
                         ),
                       ],
@@ -403,7 +404,7 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
               ],
               border: Border(
                 top: BorderSide(
-                  color: const Color(0xFFFFD700).withValues(alpha: isDark ? 0.3 : 0.5),
+                  color: AppColors.categoryVip.withValues(alpha: isDark ? 0.3 : 0.5),
                   width: 1.5,
                 ),
               ),
@@ -414,13 +415,13 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF3E2312) : const Color(0xFFFFF9C4),
+                      color: isDark ? AppColors.amberBgDark : AppColors.goldLight,
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.amber, width: 1.2),
                     ),
                     child: const Icon(
                       Icons.card_membership_rounded,
-                      color: Color(0xFF8B1A2E),
+                      color: AppColors.crimsonDeep,
                       size: 20,
                     ),
                   ),
@@ -435,7 +436,7 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
                           style: TextStyle(
                             fontWeight: AppTypography.bold,
                             fontSize: AppTypography.bodyLarge,
-                            color: isDark ? const Color(0xFFFF8A9E) : const Color(0xFF6B0E1E),
+                            color: isDark ? AppColors.primaryDarkContrast : AppColors.wineDark,
                           ),
                         ),
                         const SizedBox(height: 1),
@@ -467,13 +468,13 @@ class _BvsWebViewScreenState extends State<BvsWebViewScreen>
                         padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.2.h),
                         decoration: BoxDecoration(
                           gradient: const LinearGradient(
-                            colors: [Color(0xFF8B1A2E), Color(0xFF5A000F)],
+                            colors: [AppColors.crimsonDeep, AppColors.maroonAccent],
                           ),
                           borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: const Color(0xFFFFD700), width: 1.2),
+                          border: Border.all(color: AppColors.categoryVip, width: 1.2),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFF8B1A2E).withValues(alpha: 0.4),
+                              color: AppColors.crimsonDeep.withValues(alpha: AppColors.opacity40),
                               blurRadius: 8,
                               offset: const Offset(0, 3),
                             ),

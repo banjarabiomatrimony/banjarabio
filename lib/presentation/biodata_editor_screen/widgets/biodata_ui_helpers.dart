@@ -1,6 +1,7 @@
 import 'package:banjarabio/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Global-grade theme for Customize Biodata: spacing, typography, inputs.
 ///
@@ -10,13 +11,13 @@ class BiodataTheme {
   BiodataTheme._();
 
   // ─── Colors ─────────────────────────────────────────────────────────────
-  static const Color royalIvory = Color(0xFFFDFCF5);
-  static const Color royalGold = Color(0xFFD4AF37);
-  static const Color deepCharcoal = Color(0xFF1A1A1A);
-  static const Color softGold = Color(0xFFF1E5AC);
-  static const Color royalMaroon = Color(0xFF800000);
-  static const Color surfaceWhite = Color(0xFFFFFFFF);
-  static const Color surfaceLight = Color(0xFFF8F6F0);
+  static const Color royalIvory = AppColors.roseBlush;
+  static const Color royalGold = AppColors.gold;
+  static const Color deepCharcoal = AppColors.canvasDark;
+  static const Color softGold = AppColors.goldTint100;
+  static const Color royalMaroon = AppColors.burgundy;
+  static const Color surfaceWhite = AppColors.surfaceLight;
+  static const Color surfaceLight = AppColors.canvasLight;
 
   // ─── Spacing (logical px; scale via breakpoints in screen) ───────────────
   static const double spaceXs = 4.0;
@@ -34,13 +35,13 @@ class BiodataTheme {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
-      Color(0xFFFFFDF5),
-      Color(0xFFF5F0E1),
+      AppColors.goldLight,
+      AppColors.goldLight,
     ],
   );
 
   static const LinearGradient goldGradient = LinearGradient(
-    colors: [Color(0xFFD4AF37), Color(0xFFFFDF00), Color(0xFFD4AF37)],
+    colors: [AppColors.gold, AppColors.categoryVip, AppColors.gold],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
@@ -58,7 +59,7 @@ class BiodataTheme {
         fontFamily: AppTheme.bodyFontFamily,
         fontSize: AppTypography.bodyMedium,
         fontWeight: FontWeight.w600,
-        color: deepCharcoal.withValues(alpha: 0.85),
+        color: deepCharcoal.withValues(alpha: AppColors.opacity85),
         letterSpacing: 0.5,
       );
 
@@ -106,7 +107,7 @@ class BiodataTheme {
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(radiusMd),
-        borderSide: BorderSide(color: deepCharcoal.withValues(alpha: 0.08)),
+        borderSide: BorderSide(color: deepCharcoal.withValues(alpha: AppColors.opacity8)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(radiusMd),
@@ -134,13 +135,13 @@ class BiodataTheme {
             blurRadius: 20,
           ),
           BoxShadow(
-            color: royalGold.withValues(alpha: 0.08),
+            color: royalGold.withValues(alpha: AppColors.opacity8),
             offset: const Offset(0, 2),
             blurRadius: 8,
             spreadRadius: -2,
           ),
         ],
-        border: Border.all(color: royalGold.withValues(alpha: 0.15)),
+        border: Border.all(color: royalGold.withValues(alpha: AppColors.opacity15)),
       );
 
   static BoxDecoration get glassEffect => BoxDecoration(
@@ -154,7 +155,7 @@ class BiodataTheme {
           ),
         ],
         border: Border(
-          top: BorderSide(color: Colors.white.withValues(alpha: 0.6)),
+          top: BorderSide(color: Colors.white.withValues(alpha: AppColors.opacity60)),
         ),
       );
 

@@ -373,7 +373,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get bestValue => 'ఉత్తమ విలువ';
 
   @override
-  String get biodata => 'Biodata';
+  String get biodata => 'బయోడేటా';
 
   @override
   String get biodataDraftRestored => 'బయోడేటా డ్రాఫ్ట్ పునరుద్ధరించబడింది!';
@@ -5456,4 +5456,10 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get zeroPercentCommission => '💰 0% Commission';
+
+  @override
+  String get inbox => 'ఇన్‌బాక్స్';
+
+  @override
+  String get services => 'సేవలు';
 }

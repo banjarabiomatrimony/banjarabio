@@ -7,6 +7,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/services/analytics_service.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/widgets/tactile/tactile_back_button.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
@@ -445,7 +446,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
           Icon(
             Icons.lens,
             size: 8,
-            color: theme.colorScheme.secondary.withValues(alpha: 0.7),
+            color: theme.colorScheme.secondary.withValues(alpha: AppColors.opacity70),
           ),
           Expanded(
             child: Padding(
@@ -456,7 +457,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                   (index) => Expanded(
                     child: Container(
                       color: index % 2 == 0 
-                          ? theme.colorScheme.outlineVariant.withValues(alpha: 0.6) 
+                          ? theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity60) 
                           : Colors.transparent,
                       height: 1,
                     ),
@@ -468,7 +469,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
           Icon(
             Icons.lens,
             size: 8,
-            color: theme.colorScheme.secondary.withValues(alpha: 0.7),
+            color: theme.colorScheme.secondary.withValues(alpha: AppColors.opacity70),
           ),
         ],
       ),
@@ -482,7 +483,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
         Icon(
           icon,
           size: 16,
-          color: theme.colorScheme.primary.withValues(alpha: 0.8),
+          color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity80),
         ),
         SizedBox(width: 2.5.w),
         Expanded(
@@ -493,7 +494,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                 label,
                 style: theme.textTheme.labelSmall?.copyWith(
                   fontWeight: AppTypography.semiBold,
-                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity60),
                 ),
               ),
               SizedBox(height: 0.2.h),
@@ -534,7 +535,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
             borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.12),
+                color: Colors.black.withValues(alpha: AppColors.opacity12),
                 blurRadius: 25,
                 spreadRadius: 2,
               )
@@ -551,7 +552,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                   width: 12.w,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
+                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity20),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -574,7 +575,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                 icon: Icon(
                                   Icons.share_outlined,
                                   size: 20,
-                                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity80),
                                 ),
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
@@ -586,7 +587,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                   Icons.close_rounded,
                                   key: const Key('melava_details_close_btn'),
                                   size: 20,
-                                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity80),
                                 ),
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
@@ -612,7 +613,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                       Text(
                         'by ${event.organizer}',
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity80),
                           fontWeight: AppTypography.semiBold,
                         ),
                       ),
@@ -627,7 +628,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                           color: theme.colorScheme.onSurface.withValues(alpha: 0.02),
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.4),
+                            color: theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity40),
                           ),
                         ),
                         child: Column(
@@ -660,7 +661,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                 Container(
                                   width: 1,
                                   height: 40,
-                                  color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
+                                  color: theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity50),
                                   margin: EdgeInsets.symmetric(horizontal: 3.w),
                                 ),
                                 Expanded(
@@ -688,7 +689,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                 Container(
                                   width: 1,
                                   height: 40,
-                                  color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
+                                  color: theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity50),
                                   margin: EdgeInsets.symmetric(horizontal: 3.w),
                                 ),
                                 Expanded(
@@ -733,15 +734,15 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
-                              theme.colorScheme.secondary.withValues(alpha: 0.12),
-                              theme.colorScheme.primary.withValues(alpha: 0.05),
+                              theme.colorScheme.secondary.withValues(alpha: AppColors.opacity12),
+                              theme.colorScheme.primary.withValues(alpha: AppColors.opacity5),
                             ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                            color: theme.colorScheme.secondary.withValues(alpha: 0.25),
+                            color: theme.colorScheme.secondary.withValues(alpha: AppColors.opacity25),
                           ),
                         ),
                         child: Column(
@@ -846,16 +847,16 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
     final Color baseColor;
     final IconData icon;
     if (partnerType == 'BanjaraBio Exclusive') {
-      baseColor = theme.colorScheme.secondary;
+      baseColor = AppColors.gold;
       icon = Icons.star_rounded;
     } else if (partnerType == 'Verified Trust Partner') {
-      baseColor = theme.colorScheme.primary;
+      baseColor = AppColors.primary;
       icon = Icons.verified_rounded;
     } else {
-      baseColor = Colors.teal;
+      baseColor = AppColors.categoryLocationDark;
       icon = Icons.handshake_rounded;
     }
-    final Color bgColor = baseColor.withValues(alpha: 0.08);
+    final Color bgColor = baseColor.withValues(alpha: AppColors.opacity8);
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.5.h),
@@ -863,7 +864,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
         color: bgColor,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: baseColor.withValues(alpha: 0.25),
+          color: baseColor.withValues(alpha: AppColors.opacity25),
         ),
       ),
       child: Row(
@@ -895,8 +896,8 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          theme.colorScheme.secondary,
-          theme.colorScheme.secondary.withValues(alpha: 0.6),
+          AppColors.gold,
+          AppColors.gold.withValues(alpha: AppColors.opacity60),
         ],
       );
     } else if (partnerType == 'Verified Trust Partner') {
@@ -904,8 +905,8 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          theme.colorScheme.primary,
-          theme.colorScheme.primary.withValues(alpha: 0.6),
+          AppColors.primary,
+          AppColors.primary.withValues(alpha: AppColors.opacity60),
         ],
       );
     } else {
@@ -913,8 +914,8 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          Colors.teal,
-          Colors.teal.withValues(alpha: 0.6),
+          AppColors.categoryLocationDark,
+          AppColors.categoryLocationDark.withValues(alpha: AppColors.opacity60),
         ],
       );
     }
@@ -931,13 +932,13 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
         border: Border.all(
           color: _isSearchFocused
               ? theme.colorScheme.primary
-              : theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
+              : theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity50),
           width: _isSearchFocused ? 1.5 : 1.0,
         ),
         boxShadow: [
           if (_isSearchFocused)
             BoxShadow(
-              color: theme.colorScheme.primary.withValues(alpha: 0.15),
+              color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity15),
               blurRadius: 10,
               spreadRadius: 2,
               offset: const Offset(0, 2),
@@ -960,7 +961,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
         decoration: InputDecoration(
           hintText: 'Search by location, trust, or keywords...',
           hintStyle: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity60),
             fontFamily: AppTypography.headingFontFamily,
           ),
           prefixIcon: Icon(
@@ -1021,13 +1022,13 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                   border: Border.all(
                     color: isSelected
                         ? theme.colorScheme.secondary
-                        : theme.colorScheme.secondary.withValues(alpha: 0.25),
+                        : theme.colorScheme.secondary.withValues(alpha: AppColors.opacity25),
                     width: isSelected ? 1.5 : 1.0,
                   ),
                   boxShadow: isSelected
                       ? [
                           BoxShadow(
-                            color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                            color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity20),
                             blurRadius: 6,
                             offset: const Offset(0, 3),
                           )
@@ -1053,8 +1054,8 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? theme.colorScheme.secondary.withValues(alpha: 0.25)
-                              : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.8),
+                              ? theme.colorScheme.secondary.withValues(alpha: AppColors.opacity25)
+                              : theme.colorScheme.surfaceContainerHighest.withValues(alpha: AppColors.opacity80),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
@@ -1089,7 +1090,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
             Container(
               padding: EdgeInsets.all(4.w),
               decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: 0.08),
+                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity8),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -1128,7 +1129,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.25),
+                      color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity25),
                       blurRadius: 10,
                       offset: const Offset(0, 3),
                     ),
@@ -1184,7 +1185,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
         color: theme.colorScheme.onSurface.withValues(alpha: 0.04),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: theme.colorScheme.onSurface.withValues(alpha: 0.08),
+          color: theme.colorScheme.onSurface.withValues(alpha: AppColors.opacity8),
         ),
       ),
       child: Row(
@@ -1193,7 +1194,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
           Icon(
             icon,
             size: 12,
-            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity80),
           ),
           SizedBox(width: 1.w),
           Text(
@@ -1229,16 +1230,16 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
               child: CustomPaint(
                 painter: BanjaraPatternPainter(
                   primaryColor: theme.colorScheme.primary,
-                  secondaryColor: theme.colorScheme.secondary,
+                  secondaryColor: AppColors.gold,
                 ),
                 child: Container(
                   width: double.infinity,
                   padding: EdgeInsets.all(5.w),
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.05), // translucent background
+                    color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity5), // translucent background
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: theme.colorScheme.secondary.withValues(alpha: 0.25),
+                      color: AppColors.gold.withValues(alpha: AppColors.opacity25),
                       width: 1.5,
                     ),
                   ),
@@ -1252,10 +1253,10 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.5.h),
                               decoration: BoxDecoration(
-                                color: theme.colorScheme.secondary.withValues(alpha: 0.15),
+                                color: theme.colorScheme.secondary.withValues(alpha: AppColors.opacity15),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
-                                  color: theme.colorScheme.secondary.withValues(alpha: 0.4),
+                                  color: theme.colorScheme.secondary.withValues(alpha: AppColors.opacity40),
                                 ),
                               ),
                               child: Row(
@@ -1360,7 +1361,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                             color: theme.cardColor,
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: theme.colorScheme.outlineVariant.withValues(alpha: 0.4),
+                              color: theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity40),
                             ),
                             boxShadow: [
                               BoxShadow(
@@ -1376,7 +1377,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                               color: theme.cardColor,
                               borderRadius: BorderRadius.circular(13),
                               border: Border.all(
-                                color: theme.colorScheme.secondary.withValues(alpha: 0.25),
+                                color: theme.colorScheme.secondary.withValues(alpha: AppColors.opacity25),
                               ),
                             ),
                             child: IntrinsicHeight(
@@ -1409,7 +1410,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                                 icon: Icon(
                                                   Icons.share_outlined,
                                                   size: 18,
-                                                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                                                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity70),
                                                 ),
                                                 padding: EdgeInsets.zero,
                                                 constraints: const BoxConstraints(),
@@ -1455,7 +1456,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                                           width: 14,
                                                           height: 14,
                                                           decoration: BoxDecoration(
-                                                            color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                                                            color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
                                                             shape: BoxShape.circle,
                                                             border: Border.all(
                                                               color: theme.colorScheme.primary,
@@ -1476,7 +1477,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                                         Container(
                                                           width: 1.5,
                                                           height: 20,
-                                                          color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                                                          color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity30),
                                                         ),
                                                       ],
                                                     ),
@@ -1491,7 +1492,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                                               fontSize: AppTypography.labelMedium,
                                                               fontWeight: AppTypography.extraBold,
                                                               letterSpacing: 0.5,
-                                                              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                                                              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity60),
                                                             ),
                                                           ),
                                                           SizedBox(height: 0.2.h),
@@ -1519,7 +1520,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                                           width: 14,
                                                           height: 14,
                                                           decoration: BoxDecoration(
-                                                            color: theme.colorScheme.secondary.withValues(alpha: 0.1),
+                                                            color: theme.colorScheme.secondary.withValues(alpha: AppColors.opacity10),
                                                             shape: BoxShape.circle,
                                                             border: Border.all(
                                                               color: theme.colorScheme.secondary,
@@ -1550,7 +1551,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                                               fontSize: AppTypography.labelMedium,
                                                               fontWeight: AppTypography.extraBold,
                                                               letterSpacing: 0.5,
-                                                              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                                                              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity60),
                                                             ),
                                                           ),
                                                           SizedBox(height: 0.2.h),
@@ -1584,12 +1585,12 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                                padding: EdgeInsets.symmetric(vertical: 1.2.h),
                                                decoration: BoxDecoration(
                                                  gradient: const LinearGradient(
-                                                   colors: [Color(0xFF25D366), Color(0xFF128C7E)],
+                                                   colors: [AppColors.whatsapp, AppColors.whatsappDark],
                                                  ),
                                                  borderRadius: BorderRadius.circular(12),
                                                  boxShadow: [
                                                    BoxShadow(
-                                                     color: const Color(0xFF25D366).withValues(alpha: 0.25),
+                                                     color: AppColors.whatsapp.withValues(alpha: AppColors.opacity25),
                                                      blurRadius: 8,
                                                      offset: const Offset(0, 3),
                                                    ),
@@ -1632,7 +1633,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                                      decoration: BoxDecoration(
                                                        borderRadius: BorderRadius.circular(12),
                                                        border: Border.all(
-                                                         color: theme.colorScheme.primary.withValues(alpha: 0.5),
+                                                         color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity50),
                                                          width: 1.2,
                                                        ),
                                                      ),
@@ -1685,7 +1686,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                                                        borderRadius: BorderRadius.circular(12),
                                                        boxShadow: [
                                                          BoxShadow(
-                                                           color: theme.colorScheme.primary.withValues(alpha: 0.25),
+                                                           color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity25),
                                                            blurRadius: 8,
                                                            offset: const Offset(0, 3),
                                                          ),
@@ -1745,15 +1746,15 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       width: double.infinity,
       padding: EdgeInsets.all(4.5.w),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F1F2B) : const Color(0xFFFFFBEB),
+        color: isDark ? AppColors.surfaceDark : AppColors.goldLight,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: const Color(0xFFD97706).withValues(alpha: 0.35),
+          color: AppColors.gold.withValues(alpha: AppColors.opacity35),
           width: 1.2,
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFD97706).withValues(alpha: isDark ? 0.15 : 0.08),
+            color: AppColors.gold.withValues(alpha: isDark ? 0.15 : 0.08),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -1767,10 +1768,10 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFD97706).withValues(alpha: 0.15),
+                  color: AppColors.gold.withValues(alpha: AppColors.opacity15),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.campaign_rounded, color: Color(0xFFD97706), size: 22),
+                child: const Icon(Icons.campaign_rounded, color: AppColors.goldDark, size: 22),
               ),
               SizedBox(width: 3.w),
               Expanded(
@@ -1808,12 +1809,12 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
               height: 44,
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFF880E4F), Color(0xFF961B33)],
+                  colors: [AppColors.primary, AppColors.primaryDark],
                 ),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF961B33).withValues(alpha: 0.3),
+                    color: AppColors.primaryDark.withValues(alpha: AppColors.opacity30),
                     blurRadius: 10,
                     offset: const Offset(0, 3),
                   ),
@@ -1856,7 +1857,7 @@ class BanjaraPatternPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paintPrimary = Paint()
-      ..color = primaryColor.withValues(alpha: 0.05)
+      ..color = primaryColor.withValues(alpha: AppColors.opacity5)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.0;
 
@@ -1881,7 +1882,7 @@ class BanjaraPatternPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
     
     final borderPaint = Paint()
-      ..color = secondaryColor.withValues(alpha: 0.12)
+      ..color = secondaryColor.withValues(alpha: AppColors.opacity12)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 0.8;
 

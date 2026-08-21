@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/providers/home_tab_provider.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// A premium, brand-aligned empty state widget designed to drive conversion loop.
 /// Instead of a generic "No data" message, it displays a beautiful glowing
@@ -66,7 +67,7 @@ class BrandedEmptyState extends ConsumerWidget {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: fallbackGlowColor.withValues(alpha: 0.08),
+                      color: fallbackGlowColor.withValues(alpha: AppColors.opacity8),
                       blurRadius: 30,
                       spreadRadius: 8,
                       offset: const Offset(0, 8),
@@ -106,7 +107,7 @@ class BrandedEmptyState extends ConsumerWidget {
                 description,
                 style: AppTypography.bodyStyle(
                   fontSize: AppTypography.bodySmall,
-                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.9),
+                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity90),
                   height: 1.5,
                 ),
                 textAlign: TextAlign.center,
@@ -131,7 +132,7 @@ class BrandedEmptyState extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: [
                     BoxShadow(
-                      color: primaryColor.withValues(alpha: 0.3),
+                      color: primaryColor.withValues(alpha: AppColors.opacity30),
                       blurRadius: 16,
                       offset: const Offset(0, 6),
                     ),

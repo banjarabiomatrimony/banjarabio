@@ -21,6 +21,7 @@ sentry_config.dart
 
 # ─── Miscellaneous ────────────────────────────────────────────────────────────
 *.class
+*.hprof
 *.pyc
 *.swp
 .DS_Store

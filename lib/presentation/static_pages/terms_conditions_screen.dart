@@ -3,7 +3,6 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/core/app_export.dart';
-import 'package:banjarabio/widgets/custom_icon_widget.dart';
 
 class TermsConditionsScreen extends StatelessWidget {
   const TermsConditionsScreen({super.key});

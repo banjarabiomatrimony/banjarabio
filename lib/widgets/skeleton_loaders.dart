@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/widgets/shimmer_widget.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Additional skeleton loading placeholders for screens that still use
 /// plain CircularProgressIndicator. These complement the existing
@@ -80,23 +81,23 @@ class ConversationListSkeleton extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 12),
               decoration: BoxDecoration(
                 color: isDark
-                    ? (isFirst ? const Color(0xFF241B26) : const Color(0xFF191924))
-                    : (isFirst ? const Color(0xFFFFF1F2) : Colors.white),
+                    ? (isFirst ? AppColors.surfaceDark28 : AppColors.canvasNearBlack)
+                    : (isFirst ? AppColors.primaryLight : Colors.white),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: isFirst
-                      ? const Color(0xFFBE123C).withValues(alpha: 0.35)
+                      ? AppColors.crimsonRose.withValues(alpha: AppColors.opacity35)
                       : (isDark
-                          ? Colors.white.withValues(alpha: 0.08)
-                          : const Color(0xFFE2E8F0)),
+                          ? Colors.white.withValues(alpha: AppColors.opacity8)
+                          : AppColors.slate200),
                   width: isFirst ? 1.4 : 1.1,
                 ),
                 boxShadow: [
                   BoxShadow(
                     color: isDark
-                        ? Colors.black.withValues(alpha: 0.25)
+                        ? Colors.black.withValues(alpha: AppColors.opacity25)
                         : (isFirst
-                            ? const Color(0xFFBE123C).withValues(alpha: 0.06)
+                            ? AppColors.crimsonRose.withValues(alpha: 0.06)
                             : Colors.black.withValues(alpha: 0.03)),
                     blurRadius: 10,
                     offset: const Offset(0, 3),
@@ -117,7 +118,7 @@ class ConversationListSkeleton extends StatelessWidget {
                           shape: BoxShape.circle,
                           border: Border.all(
                             color: isFirst
-                                ? const Color(0xFFBE123C).withValues(alpha: 0.4)
+                                ? AppColors.crimsonRose.withValues(alpha: AppColors.opacity40)
                                 : (isDark ? Colors.white24 : Colors.black12),
                             width: 1.2,
                           ),
@@ -133,10 +134,10 @@ class ConversationListSkeleton extends StatelessWidget {
                           width: 10,
                           height: 10,
                           decoration: BoxDecoration(
-                            color: const Color(0xFF10B981),
+                            color: AppColors.categoryLocation,
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: isDark ? const Color(0xFF191924) : Colors.white,
+                              color: isDark ? AppColors.canvasNearBlack : Colors.white,
                               width: 1.8,
                             ),
                           ),
@@ -179,11 +180,11 @@ class ConversationListSkeleton extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
                               decoration: BoxDecoration(
                                 color: (index == 0
-                                        ? const Color(0xFFBE123C)
+                                        ? AppColors.crimsonRose
                                         : (index == 1
-                                            ? const Color(0xFF10B981)
-                                            : const Color(0xFFF59E0B)))
-                                    .withValues(alpha: 0.12),
+                                            ? AppColors.categoryLocation
+                                            : AppColors.categoryAstro))
+                                    .withValues(alpha: AppColors.opacity12),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Row(
@@ -194,11 +195,11 @@ class ConversationListSkeleton extends StatelessWidget {
                                     height: 8,
                                     decoration: BoxDecoration(
                                       color: (index == 0
-                                              ? const Color(0xFFBE123C)
+                                              ? AppColors.crimsonRose
                                               : (index == 1
-                                                  ? const Color(0xFF10B981)
-                                                  : const Color(0xFFF59E0B)))
-                                          .withValues(alpha: 0.6),
+                                                  ? AppColors.categoryLocation
+                                                  : AppColors.categoryAstro))
+                                          .withValues(alpha: AppColors.opacity60),
                                       shape: BoxShape.circle,
                                     ),
                                   ),
@@ -281,22 +282,22 @@ class SharedProfilesScreenSkeleton extends StatelessWidget {
         final Color cardShadowColor;
         if (isMatched) {
           // 💍 Matched Tab: Sacred 24K Gold
-          cardBorderColor = const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.55 : 0.45);
-          cardShadowColor = const Color(0xFFF59E0B).withValues(alpha: isDark ? 0.22 : 0.09);
+          cardBorderColor = AppColors.categoryAstro.withValues(alpha: isDark ? 0.55 : 0.45);
+          cardShadowColor = AppColors.categoryAstro.withValues(alpha: isDark ? 0.22 : 0.09);
         } else if (isSent) {
           // 📤 Sent Tab: Royal Amethyst Purple
-          cardBorderColor = const Color(0xFF7C3AED).withValues(alpha: isDark ? 0.45 : 0.35);
-          cardShadowColor = const Color(0xFF7C3AED).withValues(alpha: isDark ? 0.18 : 0.07);
+          cardBorderColor = AppColors.categoryFamilyDark.withValues(alpha: isDark ? 0.45 : 0.35);
+          cardShadowColor = AppColors.categoryFamilyDark.withValues(alpha: isDark ? 0.18 : 0.07);
         } else {
           // 📥 Received Tab: Trust Sapphire Blue
-          cardBorderColor = const Color(0xFF2563EB).withValues(alpha: isDark ? 0.45 : 0.35);
-          cardShadowColor = const Color(0xFF2563EB).withValues(alpha: isDark ? 0.18 : 0.07);
+          cardBorderColor = AppColors.categoryCareerDark.withValues(alpha: isDark ? 0.45 : 0.35);
+          cardShadowColor = AppColors.categoryCareerDark.withValues(alpha: isDark ? 0.18 : 0.07);
         }
 
         return Container(
           margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1B1B24) : Colors.white,
+            color: isDark ? AppColors.canvasNearBlack : Colors.white,
             borderRadius: BorderRadius.circular(22),
             border: Border.all(
               color: cardBorderColor,
@@ -326,8 +327,8 @@ class SharedProfilesScreenSkeleton extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: isMatched
-                              ? const Color(0xFFBE123C).withValues(alpha: 0.15)
-                              : (isDark ? Colors.white10 : const Color(0xFFEFF6FF)),
+                              ? AppColors.crimsonRose.withValues(alpha: AppColors.opacity15)
+                              : (isDark ? Colors.white10 : AppColors.infoLight),
                         ),
                         child: Icon(
                           isMatched
@@ -337,8 +338,8 @@ class SharedProfilesScreenSkeleton extends StatelessWidget {
                                   : Icons.call_received_rounded),
                           size: 13,
                           color: isMatched
-                              ? const Color(0xFFBE123C)
-                              : (isDark ? const Color(0xFF60A5FA) : const Color(0xFF2563EB)),
+                              ? AppColors.crimsonRose
+                              : (isDark ? AppColors.blue400 : AppColors.categoryCareerDark),
                         ),
                       ),
                       SizedBox(width: 2.5.w),
@@ -363,7 +364,7 @@ class SharedProfilesScreenSkeleton extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: isDark ? Colors.white.withValues(alpha: 0.06) : const Color(0xFFF1F5F9),
+                          color: isDark ? Colors.white.withValues(alpha: 0.06) : AppColors.slate100,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const ShimmerWidget.rectangular(
@@ -411,13 +412,13 @@ class SharedProfilesScreenSkeleton extends StatelessWidget {
                           color: Colors.black.withValues(alpha: 0.55),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.25),
+                            color: Colors.white.withValues(alpha: AppColors.opacity25),
                           ),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.verified_rounded, color: Color(0xFF3B82F6), size: 12),
+                            const Icon(Icons.verified_rounded, color: AppColors.categoryCareer, size: 12),
                             const SizedBox(width: 3.5),
                             Text(
                               'Verified',
@@ -440,7 +441,7 @@ class SharedProfilesScreenSkeleton extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             gradient: const LinearGradient(
-                              colors: [Color(0xFFBE123C), Color(0xFFE11D48)],
+                              colors: [AppColors.crimsonRose, AppColors.crimsonBlush],
                             ),
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -468,7 +469,7 @@ class SharedProfilesScreenSkeleton extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFF59E0B).withValues(alpha: 0.85),
+                            color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity85),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Row(
@@ -531,13 +532,13 @@ class SharedProfilesScreenSkeleton extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.2.h),
                   decoration: BoxDecoration(
                     color: isDark
-                        ? const Color(0xFF14141C)
-                        : const Color(0xFFFAFAFC),
+                        ? AppColors.canvasCharcoal
+                        : AppColors.neutral50,
                     border: Border(
                       top: BorderSide(
                         color: isDark
-                            ? Colors.white.withValues(alpha: 0.05)
-                            : Colors.black.withValues(alpha: 0.05),
+                            ? Colors.white.withValues(alpha: AppColors.opacity5)
+                            : Colors.black.withValues(alpha: AppColors.opacity5),
                       ),
                     ),
                   ),
@@ -550,7 +551,7 @@ class SharedProfilesScreenSkeleton extends StatelessWidget {
                             height: 38,
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
-                                colors: [Color(0xFFBE123C), Color(0xFF9F1239)],
+                                colors: [AppColors.crimsonRose, AppColors.wineRed],
                               ),
                               borderRadius: BorderRadius.circular(14),
                             ),
@@ -577,16 +578,16 @@ class SharedProfilesScreenSkeleton extends StatelessWidget {
                           child: Container(
                             height: 38,
                             decoration: BoxDecoration(
-                              color: isDark ? const Color(0xFF242430) : const Color(0xFFF1F5F9),
+                              color: isDark ? AppColors.surfaceDark30 : AppColors.slate100,
                               borderRadius: BorderRadius.circular(14),
                               border: Border.all(
-                                color: const Color(0xFFBE123C).withValues(alpha: 0.3),
+                                color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity30),
                               ),
                             ),
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.description_outlined, color: Color(0xFFBE123C), size: 14),
+                                Icon(Icons.description_outlined, color: AppColors.crimsonRose, size: 14),
                                 SizedBox(width: 4),
                                 ShimmerWidget.rectangular(
                                   height: 10,
@@ -602,13 +603,13 @@ class SharedProfilesScreenSkeleton extends StatelessWidget {
                           child: Container(
                             height: 38,
                             decoration: BoxDecoration(
-                              color: isDark ? const Color(0xFF242430) : const Color(0xFFF1F5F9),
+                              color: isDark ? AppColors.surfaceDark30 : AppColors.slate100,
                               borderRadius: BorderRadius.circular(14),
                             ),
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.share_outlined, color: Color(0xFF2563EB), size: 14),
+                                Icon(Icons.share_outlined, color: AppColors.categoryCareerDark, size: 14),
                                 SizedBox(width: 6),
                                 ShimmerWidget.rectangular(
                                   height: 10,
@@ -624,13 +625,13 @@ class SharedProfilesScreenSkeleton extends StatelessWidget {
                           child: Container(
                             height: 38,
                             decoration: BoxDecoration(
-                              color: isDark ? const Color(0xFF242430) : const Color(0xFFF1F5F9),
+                              color: isDark ? AppColors.surfaceDark30 : AppColors.slate100,
                               borderRadius: BorderRadius.circular(14),
                             ),
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.info_outline_rounded, color: Color(0xFF64748B), size: 14),
+                                Icon(Icons.info_outline_rounded, color: AppColors.slate500, size: 14),
                                 SizedBox(width: 6),
                                 ShimmerWidget.rectangular(
                                   height: 10,
@@ -647,7 +648,7 @@ class SharedProfilesScreenSkeleton extends StatelessWidget {
                           child: Container(
                             height: 38,
                             decoration: BoxDecoration(
-                              color: isDark ? const Color(0xFF242430) : const Color(0xFFF1F5F9),
+                              color: isDark ? AppColors.surfaceDark30 : AppColors.slate100,
                               borderRadius: BorderRadius.circular(14),
                               border: Border.all(
                                 color: isDark ? Colors.white12 : Colors.black12,
@@ -656,7 +657,7 @@ class SharedProfilesScreenSkeleton extends StatelessWidget {
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.close_rounded, color: Color(0xFFEF4444), size: 15),
+                                Icon(Icons.close_rounded, color: AppColors.trustLow, size: 15),
                                 SizedBox(width: 6),
                                 ShimmerWidget.rectangular(
                                   height: 10,
@@ -674,7 +675,7 @@ class SharedProfilesScreenSkeleton extends StatelessWidget {
                             height: 38,
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
-                                colors: [Color(0xFFBE123C), Color(0xFF9F1239)],
+                                colors: [AppColors.crimsonRose, AppColors.wineRed],
                               ),
                               borderRadius: BorderRadius.circular(14),
                             ),
@@ -714,24 +715,24 @@ class SharedProfilesScreenSkeleton extends StatelessWidget {
     final double titleWidth;
 
     if (type == SharedProfileSkeletonType.matched) {
-      primaryColor = const Color(0xFFF59E0B);
+      primaryColor = AppColors.categoryAstro;
       gradientColors = isDark
-          ? const [Color(0xFF3B1E05), Color(0xFF1E1002)]
-          : const [Color(0xFFFFFBEB), Color(0xFFFEF3C7)];
+          ? const [AppColors.amberBgDark, AppColors.amberBrownBg]
+          : const [AppColors.warningLight, AppColors.goldTint100];
       iconData = Icons.favorite_rounded;
       titleWidth = 140;
     } else if (type == SharedProfileSkeletonType.received) {
-      primaryColor = const Color(0xFF2563EB);
+      primaryColor = AppColors.categoryCareerDark;
       gradientColors = isDark
-          ? const [Color(0xFF172554), Color(0xFF0F172A)]
-          : const [Color(0xFFEFF6FF), Color(0xFFDBEAFE)];
+          ? const [AppColors.blue900, AppColors.slate900]
+          : const [AppColors.infoLight, AppColors.blue100];
       iconData = Icons.inbox_rounded;
       titleWidth = 160;
     } else {
-      primaryColor = const Color(0xFF7C3AED);
+      primaryColor = AppColors.categoryFamilyDark;
       gradientColors = isDark
-          ? const [Color(0xFF2E1065), Color(0xFF1E1B4B)]
-          : const [Color(0xFFFAF5FF), Color(0xFFF3E8FF)];
+          ? const [AppColors.deepIndigo, AppColors.canvasMidnight]
+          : const [AppColors.violetBgSoft, AppColors.violetBg];
       iconData = Icons.send_rounded;
       titleWidth = 150;
     }
@@ -800,16 +801,16 @@ class SharedProfilesScreenSkeleton extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF22222E) : const Color(0xFFF1F5F9),
+        color: isDark ? AppColors.surfaceDark30 : AppColors.slate100,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.04),
+          color: isDark ? Colors.white.withValues(alpha: AppColors.opacity5) : Colors.black.withValues(alpha: 0.04),
         ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 12, color: isDark ? Colors.white38 : const Color(0xFF64748B)),
+          Icon(icon, size: 12, color: isDark ? Colors.white38 : AppColors.slate500),
           const SizedBox(width: 5),
           ShimmerWidget.rectangular(
             height: 9,
@@ -910,7 +911,7 @@ class TrustScoreSkeleton extends StatelessWidget {
               borderRadius: BorderRadius.circular(24),
               border: Border.all(
                 color: isDark
-                    ? Colors.white.withValues(alpha: 0.08)
+                    ? Colors.white.withValues(alpha: AppColors.opacity8)
                     : Colors.black.withValues(alpha: 0.06),
               ),
               boxShadow: [
@@ -1030,7 +1031,7 @@ class TrustScoreSkeleton extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
                 color: isDark
-                    ? Colors.white.withValues(alpha: 0.08)
+                    ? Colors.white.withValues(alpha: AppColors.opacity8)
                     : Colors.black.withValues(alpha: 0.06),
               ),
               boxShadow: [
@@ -1150,7 +1151,7 @@ class TrustScoreSkeleton extends StatelessWidget {
                 border: Border.all(
                   color: isDark
                       ? Colors.white.withValues(alpha: 0.06)
-                      : Colors.black.withValues(alpha: 0.05),
+                      : Colors.black.withValues(alpha: AppColors.opacity5),
                 ),
               ),
               child: Row(
@@ -1249,7 +1250,7 @@ class SubscriptionSkeleton extends StatelessWidget {
               border: Border.all(
                 color: isDark
                     ? Colors.white.withValues(alpha: 0.06)
-                    : Colors.black.withValues(alpha: 0.05),
+                    : Colors.black.withValues(alpha: AppColors.opacity5),
               ),
               boxShadow: [
                 BoxShadow(
@@ -1305,7 +1306,7 @@ class SubscriptionSkeleton extends StatelessWidget {
               borderRadius: BorderRadius.circular(18),
               border: Border.all(
                 color: isDark
-                    ? Colors.white.withValues(alpha: 0.05)
+                    ? Colors.white.withValues(alpha: AppColors.opacity5)
                     : Colors.black.withValues(alpha: 0.04),
               ),
             ),
@@ -1351,7 +1352,7 @@ class SubscriptionSkeleton extends StatelessWidget {
               borderRadius: BorderRadius.circular(18),
               border: Border.all(
                 color: isDark
-                    ? Colors.white.withValues(alpha: 0.05)
+                    ? Colors.white.withValues(alpha: AppColors.opacity5)
                     : Colors.black.withValues(alpha: 0.04),
               ),
             ),
@@ -1401,7 +1402,7 @@ class SubscriptionSkeleton extends StatelessWidget {
                 border: Border.all(
                   color: isDark
                       ? Colors.white.withValues(alpha: 0.06)
-                      : Colors.black.withValues(alpha: 0.05),
+                      : Colors.black.withValues(alpha: AppColors.opacity5),
                 ),
               ),
               child: Column(

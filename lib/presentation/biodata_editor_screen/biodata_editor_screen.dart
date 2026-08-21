@@ -32,6 +32,7 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/services/analytics_service.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// World-class Biodata Editor Screen with production-ready architecture
 /// 
@@ -445,7 +446,7 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
                             borderRadius: BorderRadius.circular(BiodataTheme.radiusPill),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.1),
+                                color: Colors.black.withValues(alpha: AppColors.opacity10),
                                 blurRadius: 10,
                                 offset: const Offset(0, 4),
                               ),
@@ -467,7 +468,7 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
                             indicatorSize: TabBarIndicatorSize.tab,
                             dividerHeight: 0,
                             labelColor: BiodataTheme.royalGold,
-                            unselectedLabelColor: BiodataTheme.deepCharcoal.withValues(alpha: 0.6),
+                            unselectedLabelColor: BiodataTheme.deepCharcoal.withValues(alpha: AppColors.opacity60),
                             labelStyle: TextStyle(
                               fontWeight: AppTypography.semiBold,
                               fontSize: AppTypography.bodySmall,
@@ -545,7 +546,7 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
                                             color: Colors.white,
                                             boxShadow: [
                                               BoxShadow(
-                                                color: Colors.black.withValues(alpha: 0.1),
+                                                color: Colors.black.withValues(alpha: AppColors.opacity10),
                                                 blurRadius: 10,
                                                 spreadRadius: 2,
                                               ),
@@ -574,7 +575,7 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
                                               style: BiodataTheme.bodyStyle.copyWith(
                                                 fontSize: AppTypography.bodyLarge,
                                                 color: BiodataTheme.deepCharcoal
-                                                    .withValues(alpha: 0.7),
+                                                    .withValues(alpha: AppColors.opacity70),
                                               ),
                                             ),
                                           ],
@@ -590,12 +591,12 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
                                 Positioned.fill(
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Colors.white.withValues(alpha: 0.3),
+                                      color: Colors.white.withValues(alpha: AppColors.opacity30),
                                       borderRadius: BorderRadius.circular(16),
                                     ),
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        color: BiodataTheme.royalGold.withValues(alpha: 0.1),
+                                        color: BiodataTheme.royalGold.withValues(alpha: AppColors.opacity10),
                                       ),
                                     ),
                                   ),

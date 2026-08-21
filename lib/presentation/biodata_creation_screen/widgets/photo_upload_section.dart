@@ -10,6 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/services/photo_picker_service.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Robust photo upload section with crash-resistant processing
 /// Uses isolate-based compression via PhotoPickerService
@@ -401,7 +402,7 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
                           width: 20.w,
                           height: 20.w,
                           decoration: BoxDecoration(
-                            color: Colors.black.withValues(alpha: 0.1),
+                            color: Colors.black.withValues(alpha: AppColors.opacity10),
                           ),
                         ),
                       ],
@@ -416,7 +417,7 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
                   SizedBox(height: 1.h),
                   Text(AppLocalizations.of(context)?.tapTheButtonToAddAPhoto ?? 'Tap the + button to add a photo',
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity70),
                     ),
                   ),
                 ],
@@ -429,10 +430,10 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
           Container(
             padding: EdgeInsets.all(3.w),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer.withValues(alpha: 0.2),
+              color: theme.colorScheme.primaryContainer.withValues(alpha: AppColors.opacity20),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity30),
               ),
             ),
             child: Row(
@@ -462,7 +463,7 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
     return Container(
       padding: EdgeInsets.all(3.w),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+        color: theme.colorScheme.primaryContainer.withValues(alpha: AppColors.opacity30),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -506,7 +507,7 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: theme.colorScheme.outline.withValues(alpha: 0.2),
+              color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity20),
             ),
           ),
           child: ClipRRect(
@@ -528,7 +529,7 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.3),
+                    color: Colors.black.withValues(alpha: AppColors.opacity30),
                     blurRadius: 4,
                   ),
                 ],
@@ -621,7 +622,7 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
           color: theme.colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: theme.colorScheme.outline.withValues(alpha: 0.3),
+            color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity30),
             width: 2,
           ),
         ),

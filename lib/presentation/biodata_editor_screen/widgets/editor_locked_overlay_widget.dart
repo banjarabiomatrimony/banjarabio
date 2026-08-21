@@ -5,6 +5,7 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/models/subscription_model.dart';
 import 'package:banjarabio/presentation/biodata_editor_screen/widgets/biodata_ui_helpers.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Locked overlay shown when a premium template is not unlocked.
 /// Extracted from BiodataEditorScreen._buildLockedOverlay.
@@ -23,7 +24,7 @@ class EditorLockedOverlayWidget extends StatelessWidget {
     return Positioned.fill(
       child: Container(
         decoration: BoxDecoration(
-          color: BiodataTheme.deepCharcoal.withValues(alpha: 0.4),
+          color: BiodataTheme.deepCharcoal.withValues(alpha: AppColors.opacity40),
         ),
         child: Center(
           child: Container(

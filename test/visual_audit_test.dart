@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:banjarabio/presentation/subscription_screen/subscription_screen.dart';
-import 'package:banjarabio/presentation/settings_screen/settings_screen.dart';
-import 'package:banjarabio/presentation/home_screen/home_screen.dart';
+import 'package:banjarabio/presentation/account_screen/account_screen.dart';
+import 'package:banjarabio/presentation/main_navigation_screen/main_navigation_screen.dart';
 import 'package:banjarabio/presentation/profile_detail_screen/profile_detail_screen.dart';
 import 'package:banjarabio/presentation/biodata_editor_screen/biodata_editor_screen.dart';
 import 'package:banjarabio/presentation/authentication_screen/authentication_screen.dart';
@@ -86,7 +86,7 @@ void main() {
         expect(find.byType(SubscriptionScreen), findsOneWidget);
       });
 
-      testWidgets('SettingsScreen renders without overflow in ${locale.languageCode}', (tester) async {
+      testWidgets('AccountScreen renders without overflow in ${locale.languageCode}', (tester) async {
         setTestScreenSize(tester);
 
         final List<FlutterErrorDetails> errors = [];
@@ -97,7 +97,7 @@ void main() {
         };
 
         try {
-          await tester.pumpWidget(createTestableWidget(const SettingsScreen(), locale: locale));
+          await tester.pumpWidget(createTestableWidget(const AccountScreen(), locale: locale));
           await tester.pump();
           await tester.pump(const Duration(milliseconds: 500));
         } finally {
@@ -109,9 +109,9 @@ void main() {
           d.exception is FlutterError && 
           d.exception.toString().contains('A RenderFlex overflowed')
         );
-        expect(overflows, isEmpty, reason: 'Overflows detected in SettingsScreen (${locale.languageCode})');
+        expect(overflows, isEmpty, reason: 'Overflows detected in AccountScreen (${locale.languageCode})');
 
-        expect(find.byType(SettingsScreen), findsOneWidget);
+        expect(find.byType(AccountScreen), findsOneWidget);
       });
 
       testWidgets('HomeScreen renders without overflow in ${locale.languageCode}', (tester) async {
@@ -120,7 +120,7 @@ void main() {
         final originalOnError = FlutterError.onError;
         FlutterError.onError = (details) { errors.add(details); originalOnError?.call(details); };
         try {
-          await tester.pumpWidget(createTestableWidget(const HomeScreen(), locale: locale));
+          await tester.pumpWidget(createTestableWidget(const MainNavigationScreen(), locale: locale));
           await tester.pump();
           await tester.pump(const Duration(milliseconds: 500));
         } finally { FlutterError.onError = originalOnError; }

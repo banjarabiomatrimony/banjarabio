@@ -94,7 +94,7 @@ class PhotoGridWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: theme.shadowColor.withValues(alpha: 0.1),
+              color: theme.shadowColor.withValues(alpha: AppColors.opacity10),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -116,7 +116,7 @@ class PhotoGridWidget extends StatelessWidget {
               Positioned.fill(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.5),
+                    color: Colors.black.withValues(alpha: AppColors.opacity50),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Center(
@@ -173,7 +173,7 @@ class PhotoGridWidget extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(1.w),
                   decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.6),
+                    color: Colors.black.withValues(alpha: AppColors.opacity60),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const CustomIconWidget(
@@ -226,7 +226,7 @@ class PhotoGridWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: theme.shadowColor.withValues(alpha: 0.1),
+              color: theme.shadowColor.withValues(alpha: AppColors.opacity10),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
@@ -248,7 +248,7 @@ class PhotoGridWidget extends StatelessWidget {
               Positioned.fill(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.5),
+                    color: Colors.black.withValues(alpha: AppColors.opacity50),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Center(
@@ -284,7 +284,7 @@ class PhotoGridWidget extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(1.w),
                   decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.6),
+                    color: Colors.black.withValues(alpha: AppColors.opacity60),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: const CustomIconWidget(

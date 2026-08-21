@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:banjarabio/core/animations/premium_page_route.dart';
 import 'package:banjarabio/presentation/authentication_screen/authentication_screen.dart';
 import 'package:banjarabio/presentation/biodata_creation_screen/biodata_creation_screen.dart';
-import 'package:banjarabio/presentation/biodata_pdf_screen/biodata_pdf_screen.dart';
+import 'package:banjarabio/presentation/biodata_screen/biodata_screen.dart';
 import 'package:banjarabio/presentation/filter_screen/filter_screen.dart';
-import 'package:banjarabio/presentation/home_screen/home_screen.dart';
+import 'package:banjarabio/presentation/main_navigation_screen/main_navigation_screen.dart';
 import 'package:banjarabio/presentation/self_profile_screen/self_profile_screen.dart';
 import 'package:banjarabio/presentation/photo_management_screen/widgets/photo_management_screen.dart';
 import 'package:banjarabio/presentation/match_profile_screen/match_profile_screen.dart';
@@ -13,8 +13,8 @@ import 'package:banjarabio/presentation/shared_profiles_screen/shared_profiles_s
 import 'package:banjarabio/presentation/splash_screen/splash_screen.dart';
 import 'package:banjarabio/presentation/biodata_editor_screen/biodata_editor_screen.dart';
 import 'package:banjarabio/presentation/subscription_screen/subscription_screen.dart';
+import 'package:banjarabio/presentation/account_screen/account_screen.dart';
 import 'package:banjarabio/presentation/settings_screen/settings_screen.dart';
-import 'package:banjarabio/presentation/settings_screen/app_preferences_screen.dart';
 import 'package:banjarabio/presentation/ads/premium_gate_screen.dart';
 import 'package:banjarabio/presentation/saved_profiles_screen/saved_profiles_screen.dart';
 import 'package:banjarabio/presentation/chat/conversation_list_screen.dart';
@@ -46,8 +46,8 @@ import 'package:banjarabio/presentation/user_type_selection_screen/user_type_sel
 import 'package:banjarabio/notification/widgets/activity_hub_screen.dart';
 import 'package:banjarabio/presentation/bvs_gateway_screen/bvs_gateway_screen.dart';
 import 'package:banjarabio/presentation/bvs_gateway_screen/bvs_web_view_screen.dart';
-import 'package:banjarabio/presentation/services_hub_screen/services_hub_screen.dart';
-import 'package:banjarabio/presentation/connect_screen/connect_screen.dart';
+import 'package:banjarabio/presentation/services_screen/services_screen.dart';
+import 'package:banjarabio/presentation/inbox_screen/inbox_screen.dart';
 import 'package:banjarabio/presentation/vendor_registration_screen/vendor_registration_screen.dart';
 
 class AppRoutes {
@@ -85,6 +85,7 @@ class AppRoutes {
   static const String biodataPdf = '/biodata-pdf-screen';
   static const String adminDashboard = '/admin-dashboard';
   static const String referralInvite = '/referral-invite';
+  static const String account = '/account-screen';
   static const String settings = '/settings-screen';
   static const String conversationList = '/conversation-list';
   static const String chatScreen = '/chat-screen';
@@ -109,7 +110,7 @@ class AppRoutes {
     sharedProfiles: (context) => const SharedProfilesScreen(),
     authentication: (context) => const AuthenticationScreen(),
     biodataCreation: (context) => const BiodataCreationScreen(),
-    home: (context) => const HomeScreen(),
+    home: (context) => const MainNavigationScreen(),
     photoManagement: (context) => const PhotoManagementScreen(),
     selfProfile: (context) => const SelfProfileScreen(),
     myProfile: (context) => const SelfProfileScreen(),
@@ -129,9 +130,10 @@ class AppRoutes {
     communityIdVerification: (context) => const CommunityIdScreen(),
     referenceVerification: (context) => const ReferenceVerificationScreen(),
     videoIntro: (context) => const VideoIntroScreen(),
-    biodataPdf: (context) => const BiodataPdfScreen(),
+    biodataPdf: (context) => const BiodataScreen(),
     adminDashboard: (context) => const AdminDashboardScreen(),
     referralInvite: (context) => const ReferralInviteScreen(),
+    account: (context) => const AccountScreen(),
     settings: (context) => const SettingsScreen(),
     conversationList: (context) => const ConversationListScreen(),
     chatScreen: (context) {
@@ -161,10 +163,10 @@ class AppRoutes {
       final url = ModalRoute.of(context)?.settings.arguments as String?;
       return BvsWebViewScreen(initialUrl: url);
     },
-    servicesHub: (context) => const ServicesHubScreen(),
+    servicesHub: (context) => const ServicesScreen(),
     vendorRegistration: (context) => const VendorRegistrationScreen(),
-    connect: (context) => const ConnectScreen(),
-    appPreferences: (context) => const AppPreferencesScreen(),
+    connect: (context) => const InboxScreen(),
+    appPreferences: (context) => const SettingsScreen(),
   };
 
   /// Generates premium animated routes for named navigation.

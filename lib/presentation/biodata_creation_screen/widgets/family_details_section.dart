@@ -6,6 +6,7 @@ import 'package:banjarabio/core/models/sibling_model.dart';
 import 'package:banjarabio/core/repositories/subscription_repository.dart';
 import 'package:banjarabio/core/services/bio_synthesis_service.dart';
 import 'package:banjarabio/widgets/custom_icon_widget.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Family details section for biodata creation
 /// Handles about self description
@@ -405,7 +406,7 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
                   children: [
                     CustomIconWidget(
                       iconName: 'groups',
-                      color: theme.colorScheme.outline.withValues(alpha: 0.5),
+                      color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity50),
                       size: 40,
                     ),
                     SizedBox(height: 1.h),
@@ -609,9 +610,9 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
     return Container(
       padding: EdgeInsets.all(3.w),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: AppColors.opacity30),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
+        border: Border.all(color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity20)),
       ),
       child: Column(
         children: [
@@ -699,7 +700,7 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.3)),
+          border: Border.all(color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity30)),
         ),
         child: DropdownButton<String>(
           value: items.any((i) => i.value == value) ? value : items.first.value,

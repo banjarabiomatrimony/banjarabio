@@ -5,6 +5,7 @@ import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/data/location_data.dart';
 import 'package:banjarabio/core/repositories/volunteer_repository.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Ultra-fast paper biodata digitizer dialog for trust volunteers at Melava events.
 class MelavaBiodataDigitizerDialog extends StatefulWidget {
@@ -178,9 +179,9 @@ class _MelavaBiodataDigitizerDialogState
 
   @override
   Widget build(BuildContext context) {
-    const kDarkBg = Color(0xFF0F0F1A);
-    const kCardBg = Color(0xFF1E1E2E);
-    const kAccent = Color(0xFF6C63FF);
+    const kDarkBg = AppColors.canvasCharcoal;
+    const kCardBg = AppColors.canvasRichDark;
+    const kAccent = AppColors.violetDigital;
 
     return Dialog(
       backgroundColor: kDarkBg,
@@ -203,7 +204,7 @@ class _MelavaBiodataDigitizerDialogState
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: kAccent.withValues(alpha: 0.2),
+                      color: kAccent.withValues(alpha: AppColors.opacity20),
                       borderRadius: BorderRadius.circular(14),
                     ),
                     child: const Icon(Icons.bolt_rounded, color: kAccent, size: 24),
@@ -225,7 +226,7 @@ class _MelavaBiodataDigitizerDialogState
                         Text(
                           'सत्रात नोंदणी केलेले: $_sessionCount बायो-डाटा',
                           style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.6),
+                            color: Colors.white.withValues(alpha: AppColors.opacity60),
                             fontSize: AppTypography.bodyMedium,
                           ),
                         ),
@@ -256,7 +257,7 @@ class _MelavaBiodataDigitizerDialogState
   }
 
   Widget _buildSuccessCard() {
-    const kAccent = Color(0xFF6C63FF);
+    const kAccent = AppColors.violetDigital;
     final name = _lastRegisteredResult!['fullName'] ?? 'Candidate';
 
     return Column(
@@ -265,9 +266,9 @@ class _MelavaBiodataDigitizerDialogState
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.green.withValues(alpha: 0.1),
+            color: Colors.green.withValues(alpha: AppColors.opacity10),
             shape: BoxShape.circle,
-            border: Border.all(color: Colors.green.withValues(alpha: 0.3)),
+            border: Border.all(color: Colors.green.withValues(alpha: AppColors.opacity30)),
           ),
           child: const Icon(Icons.check_circle_rounded, color: Colors.green, size: 56),
         ),
@@ -284,13 +285,13 @@ class _MelavaBiodataDigitizerDialogState
         Text(
           '$name ची प्रोफाईल बंजाराबायो सिस्टीमवर यशस्वीरित्या जोडली गेली आहे.',
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white.withValues(alpha: 0.7), fontSize: AppTypography.bodyLarge),
+          style: TextStyle(color: Colors.white.withValues(alpha: AppColors.opacity70), fontSize: AppTypography.bodyLarge),
         ),
         const SizedBox(height: 24),
         ElevatedButton.icon(
           onPressed: _launchWhatsAppCandidateInvite,
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF25D366),
+            backgroundColor: AppColors.whatsapp,
             foregroundColor: Colors.white,
             minimumSize: const Size(double.infinity, 50),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -322,7 +323,7 @@ class _MelavaBiodataDigitizerDialogState
   }
 
   Widget _buildFormContent() {
-    const kAccent = Color(0xFF6C63FF);
+    const kAccent = AppColors.violetDigital;
 
     return Form(
       key: _formKey,
@@ -525,7 +526,7 @@ class _MelavaBiodataDigitizerDialogState
     TextInputType keyboardType = TextInputType.text,
     String? Function(String?)? validator,
   }) {
-    const kCardBg = Color(0xFF1E1E2E);
+    const kCardBg = AppColors.canvasRichDark;
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
@@ -533,7 +534,7 @@ class _MelavaBiodataDigitizerDialogState
       style: TextStyle(color: Colors.white, fontSize: AppTypography.bodyLarge),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: AppTypography.bodyMedium),
+        labelStyle: TextStyle(color: Colors.white.withValues(alpha: AppColors.opacity60), fontSize: AppTypography.bodyMedium),
         prefixIcon: Icon(icon, color: Colors.white54, size: 18),
         filled: true,
         fillColor: kCardBg,
@@ -552,7 +553,7 @@ class _MelavaBiodataDigitizerDialogState
     required List<String> items,
     required void Function(String?) onChanged,
   }) {
-    const kCardBg = Color(0xFF1E1E2E);
+    const kCardBg = AppColors.canvasRichDark;
     final validValue = items.contains(value) ? value : null;
 
     return DropdownButtonFormField<String>(
@@ -562,7 +563,7 @@ class _MelavaBiodataDigitizerDialogState
       onChanged: onChanged,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: AppTypography.bodyMedium),
+        labelStyle: TextStyle(color: Colors.white.withValues(alpha: AppColors.opacity60), fontSize: AppTypography.bodyMedium),
         filled: true,
         fillColor: kCardBg,
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),

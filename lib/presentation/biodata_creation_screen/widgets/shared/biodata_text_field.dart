@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/widgets/custom_icon_widget.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Reusable text field widget for biodata creation forms.
 /// Extracted from PersonalDetailsSection._buildTextField.
@@ -63,13 +64,13 @@ class BiodataTextField extends StatelessWidget {
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: theme.textTheme.bodyLarge?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity40),
             ),
             prefixIcon: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: CustomIconWidget(
                 iconName: icon,
-                color: theme.colorScheme.primary.withValues(alpha: 0.7),
+                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
                 size: 20,
               ),
             ),
@@ -79,7 +80,7 @@ class BiodataTextField extends StatelessWidget {
             contentPadding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 4.w),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
+              borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity20)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),

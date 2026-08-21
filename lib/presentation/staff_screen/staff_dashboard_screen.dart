@@ -10,10 +10,11 @@ import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/presentation/staff_screen/volunteer_tabs_widget.dart';
 import 'package:banjarabio/routes/app_routes.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
-const _kBgDark = Color(0xFF0F0F1A);
-const _kSurfaceColor = Color(0xFF1E1E2E);
-const _kAccentColor = Color(0xFF6C63FF);
+const _kBgDark = AppColors.canvasCharcoal;
+const _kSurfaceColor = AppColors.canvasRichDark;
+const _kAccentColor = AppColors.violetDigital;
 
 class StaffDashboardScreen extends StatefulWidget {
   const StaffDashboardScreen({super.key});
@@ -256,7 +257,7 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
                             }
                           },
                           backgroundColor: _kSurfaceColor,
-                          selectedColor: _kAccentColor.withValues(alpha: 0.2),
+                          selectedColor: _kAccentColor.withValues(alpha: AppColors.opacity20),
                           labelStyle: TextStyle(
                             color: isSelected ? _kAccentColor : Colors.white70,
                             fontWeight: isSelected ? AppTypography.bold : FontWeight.normal,
@@ -319,10 +320,10 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
       decoration: BoxDecoration(
         color: _kSurfaceColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withValues(alpha: 0.2)),
+        border: Border.all(color: color.withValues(alpha: AppColors.opacity20)),
         boxShadow: [
           BoxShadow(
-            color: color.withValues(alpha: 0.05),
+            color: color.withValues(alpha: AppColors.opacity5),
             blurRadius: 10,
             spreadRadius: 1,
             offset: const Offset(0, 4),
@@ -345,7 +346,7 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
                   color: Colors.white,
                   fontSize: AppTypography.headingLarge,
                   fontWeight: AppTypography.bold,
-                  shadows: [Shadow(color: color.withValues(alpha: 0.4), blurRadius: 4)],
+                  shadows: [Shadow(color: color.withValues(alpha: AppColors.opacity40), blurRadius: 4)],
                 ),
               ),
             ],
@@ -418,11 +419,11 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
           end: Alignment.bottomRight,
           colors: [
             _kSurfaceColor,
-            _kSurfaceColor.withValues(alpha: 0.8),
+            _kSurfaceColor.withValues(alpha: AppColors.opacity80),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        border: Border.all(color: Colors.white.withValues(alpha: AppColors.opacity5)),
       ),
       clipBehavior: Clip.antiAlias,
       child: Column(
@@ -435,7 +436,7 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
               children: [
                 CircleAvatar(
                   radius: 24,
-                  backgroundColor: _kAccentColor.withValues(alpha: 0.2),
+                  backgroundColor: _kAccentColor.withValues(alpha: AppColors.opacity20),
                   child: Text(
                     initial,
                     style: TextStyle(color: _kAccentColor, fontWeight: AppTypography.bold, fontSize: AppTypography.headingLarge),
@@ -481,7 +482,7 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
                               child: LinearProgressIndicator(
                                 value: (profile.completionPercentage) / 100,
                                 backgroundColor: Colors.white12,
-                                valueColor: const AlwaysStoppedAnimation(Color(0xFF4CAF50)),
+                                valueColor: const AlwaysStoppedAnimation(AppColors.successDark),
                                 minHeight: 4,
                               ),
                             ),
@@ -500,9 +501,9 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: statusColor.withValues(alpha: 0.15),
+                    color: statusColor.withValues(alpha: AppColors.opacity15),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: statusColor.withValues(alpha: 0.3)),
+                    border: Border.all(color: statusColor.withValues(alpha: AppColors.opacity30)),
                   ),
                   child: Text(
                     statusText,
@@ -517,7 +518,7 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
             decoration: BoxDecoration(
-              color: Colors.black.withValues(alpha: 0.15),
+              color: Colors.black.withValues(alpha: AppColors.opacity15),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -525,25 +526,25 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
                 _buildActionButton(
                   icon: Icons.phone_rounded,
                   label: 'Call',
-                  color: const Color(0xFF4CAF50),
+                  color: AppColors.successDark,
                   onTap: () => _makeCall(profile),
                 ),
                 _buildActionButton(
                   icon: Icons.chat_bubble_rounded,
                   label: 'WhatsApp',
-                  color: const Color(0xFF25D366),
+                  color: AppColors.whatsapp,
                   onTap: () => _showWhatsAppTemplatePicker(profile),
                 ),
                 _buildActionButton(
                   icon: Icons.assignment_rounded,
                   label: 'Log Call',
-                  color: const Color(0xFFFF9800),
+                  color: AppColors.materialOrange,
                   onTap: () => _showCallOutcomeBottomsheet(profile),
                 ),
                 _buildActionButton(
                   icon: Icons.edit_note_rounded,
                   label: 'Details',
-                  color: const Color(0xFF2196F3),
+                  color: AppColors.materialBlue,
                   onTap: () => _showProfileEditor(profile),
                 ),
                 _buildActionButton(
@@ -570,7 +571,7 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
           children: [
             Icon(icon, color: color, size: 20),
             const SizedBox(height: 2),
-            Text(label, style: TextStyle(color: color.withValues(alpha: 0.8), fontSize: AppTypography.bodySmall, fontWeight: AppTypography.medium)),
+            Text(label, style: TextStyle(color: color.withValues(alpha: AppColors.opacity80), fontSize: AppTypography.bodySmall, fontWeight: AppTypography.medium)),
           ],
         ),
       ),
@@ -777,8 +778,8 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: isProminent ? color.withValues(alpha: 0.15) : _kBgDark,
-          border: Border.all(color: isProminent ? color : color.withValues(alpha: 0.3)),
+          color: isProminent ? color.withValues(alpha: AppColors.opacity15) : _kBgDark,
+          border: Border.all(color: isProminent ? color : color.withValues(alpha: AppColors.opacity30)),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
@@ -813,14 +814,14 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
 
   Color _getStatusColor(String status) {
     switch (status) {
-      case 'connected': return const Color(0xFF4CAF50);
-      case 'follow_up': return const Color(0xFF2196F3);
-      case 'converted': return const Color(0xFF00E676);
-      case 'not_interested': return const Color(0xFFE53935);
+      case 'connected': return AppColors.successDark;
+      case 'follow_up': return AppColors.materialBlue;
+      case 'converted': return AppColors.greenBright;
+      case 'not_interested': return AppColors.materialRed600;
       case 'busy':
-      case 'not_answered': return const Color(0xFFFFB74D);
+      case 'not_answered': return AppColors.warningDark;
       case 'not_called':
-      default: return const Color(0xFF9E9E9E);
+      default: return AppColors.neutral500;
     }
   }
 

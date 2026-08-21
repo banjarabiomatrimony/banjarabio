@@ -6,6 +6,8 @@ import 'package:banjarabio/core/data/location_data.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/routes/app_routes.dart';
+import 'package:banjarabio/theme/app_colors.dart';
+import 'package:banjarabio/theme/app_color_scheme.dart';
 
 /// World-Class Single-Page Preference Intake for Pathway A: Relative / Visitor Match Browse.
 ///
@@ -228,7 +230,7 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                           icon: Icons.girl_rounded,
                           value: 'Female',
                           isSelected: _selectedGender == 'Female',
-                          accentColor: const Color(0xFFE11D48),
+                          accentColor: AppColors.crimsonBlush,
                           isDark: isDark,
                           onTap: () => _onGenderSelected('Female'),
                         ),
@@ -242,7 +244,7 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                           icon: Icons.boy_rounded,
                           value: 'Male',
                           isSelected: _selectedGender == 'Male',
-                          accentColor: const Color(0xFF2563EB),
+                          accentColor: AppColors.categoryCareerDark,
                           isDark: isDark,
                           onTap: () => _onGenderSelected('Male'),
                         ),
@@ -396,7 +398,7 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: (isDark ? const Color(0xFFD4AF37) : secondary)
+                    color: (isDark ? AppColors.gold : secondary)
                         .withValues(alpha: isDark ? 0.12 : 0.06),
                     blurRadius: 70,
                     spreadRadius: 15,
@@ -420,9 +422,9 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
   Widget _buildTopBar(ThemeData theme, bool isDark, Color primary) {
     // 3 distinct step colors for vibrant UX progression
     const stepColors = [
-      Color(0xFF3B82F6), // Step 1: Electric Blue
-      Color(0xFF8B5CF6), // Step 2: Royal Purple
-      Color(0xFF10B981), // Step 3: Emerald Green
+      AppColors.categoryCareer, // Step 1: Electric Blue
+      AppColors.categoryFamily, // Step 2: Royal Purple
+      AppColors.categoryLocation, // Step 3: Emerald Green
     ];
 
     // Current accent color based on highest step reached
@@ -442,11 +444,11 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
               padding: EdgeInsets.all(2.5.w),
               decoration: BoxDecoration(
                 color: isDark
-                    ? const Color(0xFF1E293B).withValues(alpha: 0.9)
+                    ? AppColors.slate800.withValues(alpha: AppColors.opacity90)
                     : Colors.white.withValues(alpha: 0.95),
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1),
+                  color: isDark ? AppColors.slate700 : AppColors.slate300,
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -505,13 +507,13 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                         color: currentStepColor.withValues(alpha: isDark ? 0.22 : 0.12),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: currentStepColor.withValues(alpha: 0.4),
+                          color: currentStepColor.withValues(alpha: AppColors.opacity40),
                           width: 1.2,
                         ),
                         boxShadow: [
                           if (_completedSteps > 0)
                             BoxShadow(
-                              color: currentStepColor.withValues(alpha: 0.2),
+                              color: currentStepColor.withValues(alpha: AppColors.opacity20),
                               blurRadius: 8,
                             ),
                         ],
@@ -552,11 +554,11 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                                     : (isCurrent
                                         ? color.withValues(alpha: isDark ? 0.35 : 0.25)
                                         : (isDark
-                                            ? const Color(0xFF334155).withValues(alpha: 0.6)
-                                            : const Color(0xFFE2E8F0))),
+                                            ? AppColors.slate700.withValues(alpha: AppColors.opacity60)
+                                            : AppColors.slate200)),
                                 borderRadius: BorderRadius.circular(10),
                                 border: isCurrent
-                                    ? Border.all(color: color.withValues(alpha: 0.7), width: 1.2)
+                                    ? Border.all(color: color.withValues(alpha: AppColors.opacity70), width: 1.2)
                                     : null,
                                 boxShadow: isDone
                                     ? [
@@ -616,15 +618,15 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 0.5.h),
           decoration: BoxDecoration(
-            color: (isDark ? const Color(0xFF1E293B) : Colors.white).withValues(alpha: 0.9),
+            color: (isDark ? AppColors.slate800 : Colors.white).withValues(alpha: AppColors.opacity90),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: primary.withValues(alpha: 0.25),
+              color: primary.withValues(alpha: AppColors.opacity25),
               width: 1.2,
             ),
             boxShadow: [
               BoxShadow(
-                color: primary.withValues(alpha: 0.08),
+                color: primary.withValues(alpha: AppColors.opacity8),
                 blurRadius: 6,
                 offset: const Offset(0, 2),
               ),
@@ -673,10 +675,10 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.0.h),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E293B).withValues(alpha: 0.85) : Colors.white,
+        color: isDark ? AppColors.slate800.withValues(alpha: AppColors.opacity85) : Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+          color: context.colors.border,
           width: 1.2,
         ),
         boxShadow: [
@@ -699,12 +701,12 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                 height: 6.5.w,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [primary, primary.withValues(alpha: 0.85)],
+                    colors: [primary, primary.withValues(alpha: AppColors.opacity85)],
                   ),
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: primary.withValues(alpha: 0.3),
+                      color: primary.withValues(alpha: AppColors.opacity30),
                       blurRadius: 5,
                     ),
                   ],
@@ -771,12 +773,12 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.2.h),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC),
+        color: isDark ? AppColors.slate900 : AppColors.slate50,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: value != null
               ? primary
-              : (isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1)),
+              : (isDark ? AppColors.slate700 : AppColors.slate300),
           width: value != null ? 1.5 : 1.0,
         ),
       ),
@@ -796,7 +798,7 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                   ),
                 ),
                 isExpanded: true,
-                dropdownColor: isDark ? const Color(0xFF1E293B) : Colors.white,
+                dropdownColor: isDark ? AppColors.slate800 : Colors.white,
                 icon: Icon(Icons.keyboard_arrow_down_rounded, color: primary, size: 20),
                 items: items
                     .map((item) => DropdownMenuItem(
@@ -823,7 +825,7 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.0.h),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF0F172A) : Colors.white,
+        color: isDark ? AppColors.slate900 : Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: isDark ? 0.4 : 0.08),
@@ -846,8 +848,8 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primary,
                   foregroundColor: Colors.white,
-                  disabledBackgroundColor: primary.withValues(alpha: 0.4),
-                  disabledForegroundColor: Colors.white.withValues(alpha: 0.7),
+                  disabledBackgroundColor: primary.withValues(alpha: AppColors.opacity40),
+                  disabledForegroundColor: Colors.white.withValues(alpha: AppColors.opacity70),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),
@@ -929,18 +931,18 @@ class _TactileChip extends StatelessWidget {
           decoration: BoxDecoration(
             color: isSelected
                 ? primaryColor.withValues(alpha: isDark ? 0.22 : 0.12)
-                : (isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC)),
+                : (isDark ? AppColors.slate900 : AppColors.slate50),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: isSelected
                   ? primaryColor
-                  : (isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
+                  : (context.colors.border),
               width: isSelected ? 2.0 : 1.0,
             ),
             boxShadow: isSelected
                 ? [
                     BoxShadow(
-                      color: primaryColor.withValues(alpha: 0.2),
+                      color: primaryColor.withValues(alpha: AppColors.opacity20),
                       blurRadius: 6,
                       offset: const Offset(0, 2),
                     ),
@@ -1010,18 +1012,18 @@ class _GenderCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: isSelected
                 ? accentColor.withValues(alpha: isDark ? 0.20 : 0.10)
-                : (isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC)),
+                : (isDark ? AppColors.slate900 : AppColors.slate50),
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
               color: isSelected
                   ? accentColor
-                  : (isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
+                  : (context.colors.border),
               width: isSelected ? 2.0 : 1.0,
             ),
             boxShadow: isSelected
                 ? [
                     BoxShadow(
-                      color: accentColor.withValues(alpha: 0.25),
+                      color: accentColor.withValues(alpha: AppColors.opacity25),
                       blurRadius: 8,
                       offset: const Offset(0, 3),
                     ),
@@ -1166,7 +1168,7 @@ class __AnimatedExplanationSummaryCardState
                               fontWeight: AppTypography.black,
                               fontSize: AppTypography.headingSmall,
                               color: widget.isDark
-                                  ? const Color(0xFFFDE047)
+                                  ? AppColors.goldLemon
                                   : widget.primary,
                               height: 1.35,
                             ),

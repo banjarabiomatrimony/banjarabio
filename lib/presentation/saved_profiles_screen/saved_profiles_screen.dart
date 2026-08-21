@@ -235,12 +235,12 @@ class _SavedProfilesScreenState extends ConsumerState<SavedProfilesScreen> {
               padding: EdgeInsets.symmetric(horizontal: 2.8.w, vertical: 0.5.h),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFFE53935), Color(0xFFC62828)],
+                  colors: [AppColors.materialRed600, AppColors.error],
                 ),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFFE53935).withValues(alpha: 0.3),
+                    color: AppColors.materialRed600.withValues(alpha: AppColors.opacity30),
                     blurRadius: 6,
                     offset: const Offset(0, 2),
                   ),
@@ -333,12 +333,12 @@ class _SavedProfilesScreenState extends ConsumerState<SavedProfilesScreen> {
       decoration: BoxDecoration(
         color: isDark
             ? theme.colorScheme.surfaceContainerHigh
-            : theme.colorScheme.primaryContainer.withValues(alpha: 0.4),
+            : theme.colorScheme.primaryContainer.withValues(alpha: AppColors.opacity40),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isDark
-              ? theme.colorScheme.outlineVariant.withValues(alpha: 0.3)
-              : theme.colorScheme.primary.withValues(alpha: 0.15),
+              ? theme.colorScheme.outlineVariant.withValues(alpha: AppColors.opacity30)
+              : theme.colorScheme.primary.withValues(alpha: AppColors.opacity15),
         ),
       ),
       child: Row(
@@ -346,13 +346,13 @@ class _SavedProfilesScreenState extends ConsumerState<SavedProfilesScreen> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: const Color(0xFFE53935).withValues(alpha: isDark ? 0.2 : 0.1),
+              color: AppColors.materialRed600.withValues(alpha: isDark ? 0.2 : 0.1),
               shape: BoxShape.circle,
             ),
             child: const Icon(
               Icons.bookmark_added_rounded,
               size: 18,
-              color: Color(0xFFE53935),
+              color: AppColors.materialRed600,
             ),
           ),
           SizedBox(width: 3.w),
@@ -395,7 +395,7 @@ class _SavedProfilesScreenState extends ConsumerState<SavedProfilesScreen> {
             color: theme.cardColor,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: Colors.red.withValues(alpha: 0.2),
+              color: Colors.red.withValues(alpha: AppColors.opacity20),
             ),
             boxShadow: [
               BoxShadow(
@@ -411,7 +411,7 @@ class _SavedProfilesScreenState extends ConsumerState<SavedProfilesScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.red.withValues(alpha: 0.1),
+                  color: Colors.red.withValues(alpha: AppColors.opacity10),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(Icons.error_outline_rounded, size: 40, color: Colors.red),
@@ -439,7 +439,7 @@ class _SavedProfilesScreenState extends ConsumerState<SavedProfilesScreen> {
                     borderRadius: BorderRadius.circular(14),
                     boxShadow: [
                       BoxShadow(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                        color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity30),
                         blurRadius: 8,
                         offset: const Offset(0, 3),
                       ),

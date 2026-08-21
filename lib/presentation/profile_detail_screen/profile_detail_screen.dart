@@ -580,7 +580,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
               _executeInterest(profile);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFE91E63),
+              backgroundColor: AppColors.materialPink,
               foregroundColor: Colors.white,
             ),
             child: Text(AppLocalizations.of(context)?.yesInterest ?? 'Yes, Interest'),

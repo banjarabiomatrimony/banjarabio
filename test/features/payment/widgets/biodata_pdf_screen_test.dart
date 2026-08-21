@@ -12,7 +12,7 @@ import 'package:banjarabio/core/providers/locale_provider.dart';
 import 'package:banjarabio/core/models/backend_response.dart';
 import 'package:banjarabio/core/providers/profile_providers.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
-import 'package:banjarabio/presentation/biodata_pdf_screen/biodata_pdf_screen.dart';
+import 'package:banjarabio/presentation/biodata_screen/biodata_screen.dart';
 import '../../../helpers/supabase_test_setup.dart';
 
 class MockProfileRepository extends Mock implements ProfileRepository {}
@@ -52,15 +52,15 @@ void main() {
             ],
             supportedLocales: appSupportedLocales,
             locale: Locale('en'),
-            home: BiodataPdfScreen(),
+            home: BiodataScreen(),
           ),
         ),
       ),
     );
   }
 
-  test('BiodataPdfScreen is ConsumerStatefulWidget', () {
-    expect(const BiodataPdfScreen(), isA<ConsumerStatefulWidget>());
+  test('BiodataScreen is ConsumerStatefulWidget', () {
+    expect(const BiodataScreen(), isA<ConsumerStatefulWidget>());
   });
 
   testWidgets('shows loading or content', (tester) async {

@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/constants/biodata_templates.dart';
 import 'package:banjarabio/core/models/biodata_template_type.dart';
 import 'package:banjarabio/presentation/biodata_editor_screen/widgets/biodata_ui_helpers.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Horizontal template picker for the Biodata Editor.
 /// Extracted from BiodataEditorScreen._buildTemplatePicker.
@@ -61,7 +62,7 @@ class EditorTemplatePickerWidget extends StatelessWidget {
                       border: Border.all(
                         color: isSelected
                             ? BiodataTheme.royalGold
-                            : BiodataTheme.deepCharcoal.withValues(alpha: 0.08),
+                            : BiodataTheme.deepCharcoal.withValues(alpha: AppColors.opacity8),
                         width: isSelected ? 2 : 1,
                       ),
                       boxShadow: isSelected
@@ -96,7 +97,7 @@ class EditorTemplatePickerWidget extends StatelessWidget {
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(BiodataTheme.radiusSm),
-                              color: Colors.black.withValues(alpha: 0.1),
+                              color: Colors.black.withValues(alpha: AppColors.opacity10),
                             ),
                           ),
                           // Template name stacked on the preview

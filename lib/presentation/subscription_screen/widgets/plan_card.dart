@@ -7,6 +7,7 @@ import 'package:banjarabio/core/models/coupon_model.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/presentation/subscription_screen/widgets/feature_comparison_sheet.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 /// Highly attractive, easy-to-understand, state-of-the-art PlanCard.
 /// Features distinct jewel gradients, clear pricing scannability,
@@ -45,15 +46,15 @@ class PlanCard extends StatelessWidget {
           tagline: 'Most chosen by verified matches',
           durationLabel: '6 Months',
           ribbonLabel: '🔥 MOST POPULAR',
-          primaryColor: Color(0xFFD97706),
-          secondaryColor: Color(0xFFB45309),
-          accentColor: Color(0xFFF59E0B),
-          lightBgGradient: [Color(0xFFFFFBEB), Color(0xFFFEF3C7)],
-          darkBgGradient: [Color(0xFF2C1905), Color(0xFF190E02)],
+          primaryColor: AppColors.categoryAstroDark,
+          secondaryColor: AppColors.amberDark,
+          accentColor: AppColors.categoryAstro,
+          lightBgGradient: [AppColors.warningLight, AppColors.goldTint100],
+          darkBgGradient: [AppColors.amberBrownBg, AppColors.amberBrownBg],
           borderColors: [
-            Color(0xFFFFD700),
-            Color(0xFFFFA000),
-            Color(0xFFFFD700),
+            AppColors.categoryVip,
+            AppColors.categoryVipDark,
+            AppColors.categoryVip,
           ],
         );
 
@@ -65,15 +66,15 @@ class PlanCard extends StatelessWidget {
           tagline: 'Best long-term value for serious seekers',
           durationLabel: '1 Year',
           ribbonLabel: '✨ BEST VALUE • 1 YEAR',
-          primaryColor: Color(0xFF7C3AED),
-          secondaryColor: Color(0xFF5B21B6),
-          accentColor: Color(0xFF8B5CF6),
-          lightBgGradient: [Color(0xFFFAF5FF), Color(0xFFF3E8FF)],
-          darkBgGradient: [Color(0xFF1E0E38), Color(0xFF100720)],
+          primaryColor: AppColors.categoryFamilyDark,
+          secondaryColor: AppColors.materialPurpleDark,
+          accentColor: AppColors.categoryFamily,
+          lightBgGradient: [AppColors.violetBgSoft, AppColors.violetBg],
+          darkBgGradient: [AppColors.canvasRichDark, AppColors.canvasDeepDark],
           borderColors: [
-            Color(0xFF9C27B0),
-            Color(0xFF7C4DFF),
-            Color(0xFF9C27B0),
+            AppColors.materialPurple700,
+            AppColors.categoryFamily,
+            AppColors.materialPurple700,
           ],
         );
 
@@ -85,15 +86,15 @@ class PlanCard extends StatelessWidget {
           tagline: 'Pay once, enjoy till you find your match',
           durationLabel: 'Lifetime',
           ribbonLabel: '👑 TILL U MARRY • BEST VALUE',
-          primaryColor: Color(0xFFEA580C),
-          secondaryColor: Color(0xFFC2410C),
-          accentColor: Color(0xFFFB923C),
-          lightBgGradient: [Color(0xFFFFF7ED), Color(0xFFFFEDD5)],
-          darkBgGradient: [Color(0xFF331405), Color(0xFF1C0902)],
+          primaryColor: AppColors.sunsetOrange,
+          secondaryColor: AppColors.deepOrange,
+          accentColor: AppColors.warning,
+          lightBgGradient: [AppColors.goldLight, AppColors.orangePeachBg],
+          darkBgGradient: [AppColors.amberBgDark, AppColors.amberBrownBg],
           borderColors: [
-            Color(0xFFFFB300),
-            Color(0xFFFF6F00),
-            Color(0xFFFFB300),
+            AppColors.amber600,
+            AppColors.orangeDark900,
+            AppColors.amber600,
           ],
         );
 
@@ -105,15 +106,15 @@ class PlanCard extends StatelessWidget {
           tagline: 'Fast-track search with direct contacts',
           durationLabel: '3 Months',
           ribbonLabel: '⚡ STARTER PACK',
-          primaryColor: Color(0xFF475569),
-          secondaryColor: Color(0xFF334155),
-          accentColor: Color(0xFF64748B),
-          lightBgGradient: [Color(0xFFF8FAFC), Color(0xFFF1F5F9)],
-          darkBgGradient: [Color(0xFF1E293B), Color(0xFF0F172A)],
+          primaryColor: AppColors.slate600,
+          secondaryColor: AppColors.slate700,
+          accentColor: AppColors.slate500,
+          lightBgGradient: [AppColors.slate50, AppColors.slate100],
+          darkBgGradient: [AppColors.slate800, AppColors.slate900],
           borderColors: [
-            Color(0xFF94A3B8),
-            Color(0xFF64748B),
-            Color(0xFF94A3B8),
+            AppColors.slate400,
+            AppColors.slate500,
+            AppColors.slate400,
           ],
         );
 
@@ -127,15 +128,15 @@ class PlanCard extends StatelessWidget {
           tagline: 'Dedicated Matchmaker & Relationship Manager',
           durationLabel: features.isLifetime ? 'Lifetime' : '${features.duration} Mo',
           ribbonLabel: '💎 VIP CONCIERGE',
-          primaryColor: const Color(0xFF8E2DE2),
-          secondaryColor: const Color(0xFF4A00E0),
-          accentColor: const Color(0xFFA855F7),
-          lightBgGradient: const [Color(0xFFF5F3FF), Color(0xFFEDE9FE)],
-          darkBgGradient: const [Color(0xFF200E3D), Color(0xFF110722)],
+          primaryColor: AppColors.purpleElectric,
+          secondaryColor: AppColors.violetDeep,
+          accentColor: AppColors.purple400,
+          lightBgGradient: const [AppColors.categoryFamilyBg, AppColors.violetBg],
+          darkBgGradient: const [AppColors.canvasMidnight, AppColors.canvasCharcoal],
           borderColors: const [
-            Color(0xFF8E2DE2),
-            Color(0xFFFFD700),
-            Color(0xFF8E2DE2),
+            AppColors.purpleElectric,
+            AppColors.categoryVip,
+            AppColors.purpleElectric,
           ],
         );
 
@@ -183,7 +184,7 @@ class PlanCard extends StatelessWidget {
           color: hasAnimatedBorder
               ? Colors.transparent
               : isDark
-                  ? Colors.white.withValues(alpha: 0.08)
+                  ? Colors.white.withValues(alpha: AppColors.opacity8)
                   : Colors.black.withValues(alpha: 0.07),
         ),
         boxShadow: [
@@ -250,7 +251,7 @@ class PlanCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     boxShadow: [
                       BoxShadow(
-                        color: tier.primaryColor.withValues(alpha: 0.35),
+                        color: tier.primaryColor.withValues(alpha: AppColors.opacity35),
                         blurRadius: 6,
                         offset: const Offset(0, 2),
                       ),
@@ -274,7 +275,7 @@ class PlanCard extends StatelessWidget {
                     color: tier.primaryColor.withValues(alpha: isDark ? 0.25 : 0.12),
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
-                      color: tier.primaryColor.withValues(alpha: 0.35),
+                      color: tier.primaryColor.withValues(alpha: AppColors.opacity35),
                     ),
                   ),
                   child: Text(
@@ -301,7 +302,7 @@ class PlanCard extends StatelessWidget {
                   color: tier.primaryColor.withValues(alpha: isDark ? 0.25 : 0.12),
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: tier.primaryColor.withValues(alpha: 0.4),
+                    color: tier.primaryColor.withValues(alpha: AppColors.opacity40),
                     width: 1.2,
                   ),
                 ),
@@ -331,7 +332,7 @@ class PlanCard extends StatelessWidget {
                       tier.tagline,
                       style: TextStyle(
                         fontSize: AppTypography.labelSmall,
-                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.85),
+                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity85),
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -486,7 +487,7 @@ class PlanCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: tier.primaryColor.withValues(alpha: 0.3),
+                          color: tier.primaryColor.withValues(alpha: AppColors.opacity30),
                           blurRadius: 6,
                           offset: const Offset(0, 2),
                         ),
@@ -536,7 +537,7 @@ class PlanCard extends StatelessWidget {
                           fontSize: AppTypography.labelSmall,
                           fontWeight: AppTypography.semiBold,
                           color: theme.colorScheme.onSurfaceVariant
-                              .withValues(alpha: 0.9),
+                              .withValues(alpha: AppColors.opacity90),
                         ),
                       ),
                     ],
@@ -567,7 +568,7 @@ class PlanCard extends StatelessWidget {
                   color: Colors.green.withValues(alpha: isDark ? 0.15 : 0.08),
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(
-                    color: Colors.green.withValues(alpha: 0.3),
+                    color: Colors.green.withValues(alpha: AppColors.opacity30),
                   ),
                 ),
                 child: Row(
@@ -691,7 +692,7 @@ class PlanCard extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 1.2.h),
           decoration: BoxDecoration(
-            color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.03),
+            color: isDark ? Colors.white.withValues(alpha: AppColors.opacity5) : Colors.black.withValues(alpha: 0.03),
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
               color: isDark ? Colors.white12 : Colors.black12,
@@ -730,7 +731,7 @@ class PlanCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(14),
             boxShadow: [
               BoxShadow(
-                color: tier.primaryColor.withValues(alpha: 0.35),
+                color: tier.primaryColor.withValues(alpha: AppColors.opacity35),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -789,7 +790,7 @@ class PlanCard extends StatelessWidget {
               colors: [
                 tier.borderColors[0],
                 tier.borderColors[1],
-                tier.borderColors[0].withValues(alpha: 0.25),
+                tier.borderColors[0].withValues(alpha: AppColors.opacity25),
                 tier.borderColors[0],
               ],
               stops: const [0.0, 0.3, 0.7, 1.0],
