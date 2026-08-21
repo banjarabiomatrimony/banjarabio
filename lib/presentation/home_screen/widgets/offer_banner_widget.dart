@@ -178,7 +178,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 52,
+      height: 62,
       child: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
           if (notification is ScrollStartNotification &&
@@ -207,17 +207,17 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
               outlineBorderColor: AppColors.rose200,
               leadingWidget: Image.asset(
                 'assets/icons/instagram_icon.png',
-                width: 29,
-                height: 29,
+                width: 28,
+                height: 28,
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) => SvgPicture.asset(
                   'assets/images/social/instagram.svg',
-                  width: 29,
-                  height: 29,
+                  width: 28,
+                  height: 28,
                   placeholderBuilder: (_) => const Icon(
                     Icons.camera_alt_rounded,
                     color: Colors.white,
-                    size: 26,
+                    size: 24,
                   ),
                 ),
               ),
@@ -236,7 +236,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
               onTap: () => _launchUrlHelper(
                   'https://www.instagram.com/banjarabio.matrimony/'),
             ),
-            const SizedBox(width: 7),
+            const SizedBox(width: 8),
 
             // ─── 2. 💬 WhatsApp Help (Direct Admin Support) ───
             _buildAnimatedMiniCard(
@@ -244,17 +244,17 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
               outlineBorderColor: AppColors.cyanAccent,
               leadingWidget: Image.asset(
                 'assets/icons/whatsapp_icon.png',
-                width: 29,
-                height: 29,
+                width: 28,
+                height: 28,
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) => SvgPicture.asset(
                   'assets/images/social/whatsapp.svg',
-                  width: 29,
-                  height: 29,
+                  width: 28,
+                  height: 28,
                   placeholderBuilder: (_) => const Icon(
                     Icons.chat_bubble_rounded,
                     color: Colors.white,
-                    size: 26,
+                    size: 24,
                   ),
                 ),
               ),
@@ -272,7 +272,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
               ),
               onTap: () => _launchUrlHelper('https://wa.me/8186050406'),
             ),
-            const SizedBox(width: 7),
+            const SizedBox(width: 8),
 
             // ─── 3. 🏛️ BVS Community (Banjara Virasat Sangh) ───
             _buildAnimatedMiniCard(
@@ -286,13 +286,13 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) => Image.asset(
                     'assets/images/bvs_logo_gold.png',
-                    width: 29,
-                    height: 29,
+                    width: 28,
+                    height: 28,
                     fit: BoxFit.cover,
                     errorBuilder: (ctx, err, stack) => const Icon(
                       Icons.person_rounded,
                       color: Colors.amberAccent,
-                      size: 26,
+                      size: 24,
                     ),
                   ),
                 ),
@@ -340,7 +340,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
               onTap: () =>
                   Navigator.pushNamed(context, AppRoutes.bvsGateway),
             ),
-            const SizedBox(width: 7),
+            const SizedBox(width: 8),
 
             // ─── 4. 💍 Candidates Meet (Banjara Vadhu Var Suchak Initiative) ───
             _buildAnimatedMiniCard(
@@ -368,7 +368,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
               onTap: () =>
                   Navigator.pushNamed(context, AppRoutes.bvsGateway),
             ),
-            const SizedBox(width: 7),
+            const SizedBox(width: 8),
 
             // ─── 5. 🎁 VIP Offer (🔥 50% OFF VIP Upgrade) ───
             _buildAnimatedMiniCard(
@@ -388,7 +388,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                 child: const Icon(
                   Icons.workspace_premium_rounded,
                   color: Colors.white,
-                  size: 27,
+                  size: 28,
                 ),
               ),
               badgeText: '🔥 50% OFF',
@@ -409,14 +409,14 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
 
             // ─── 6. Dynamic Backend Announcements (if any) ───
             for (final banner in _backendBanners) ...[
-              const SizedBox(width: 7),
+              const SizedBox(width: 8),
               _buildAnimatedMiniCard(
                 cardId: banner.id,
                 outlineBorderColor: AppColors.blue300,
                 leadingWidget: const Icon(
                   Icons.campaign_rounded,
                   color: Colors.white,
-                  size: 27,
+                  size: 28,
                 ),
                 badgeText: '✨ SPECIAL',
                 badgeColor: AppColors.blue100,
@@ -481,10 +481,10 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
             child: Stack(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0.5),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
                     gradient: gradient,
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: effectiveBorderColor,
                       width: isPausedCard ? 2.0 : 1.3,
@@ -495,8 +495,8 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                             ? Colors.amberAccent.withValues(alpha: glowAlpha)
                             : (outlineBorderColor?.withValues(alpha: AppColors.opacity40) ??
                                 gradient.colors.first.withValues(alpha: AppColors.opacity35)),
-                        blurRadius: isPausedCard ? 12 : 6,
-                        offset: const Offset(0, 2.5),
+                        blurRadius: isPausedCard ? 14 : 7,
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),
@@ -505,8 +505,8 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                     children: [
                       // ─── High-Impact Icon Shield with Colored Outline ───
                       Container(
-                        width: 28,
-                        height: 28,
+                        width: 38,
+                        height: 38,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: Colors.black.withValues(alpha: 0.22),
@@ -516,12 +516,12 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                                 ? Colors.amberAccent
                                 : (outlineBorderColor?.withValues(alpha: AppColors.opacity85) ??
                                     Colors.white.withValues(alpha: AppColors.opacity40)),
-                            width: 1.2,
+                            width: 1.3,
                           ),
                         ),
                         child: leadingWidget,
                       ),
-                      const SizedBox(width: 6),
+                      const SizedBox(width: 9),
 
                       // ─── Text Column + Highlight Micro-Badge ───
                       Column(
@@ -537,15 +537,15 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: AppTypography.black,
-                                  fontSize: AppTypography.labelSmall,
+                                  fontSize: AppTypography.bodySmall,
                                   letterSpacing: 0.1,
                                 ),
                               ),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: 6),
                               if (isPausedCard)
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 4, vertical: 1),
+                                      horizontal: 6, vertical: 1.5),
                                   decoration: BoxDecoration(
                                     color: Colors.amberAccent,
                                     borderRadius: BorderRadius.circular(6),
@@ -555,7 +555,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                                     style: TextStyle(
                                       color: AppColors.amberDeepText,
                                       fontWeight: AppTypography.black,
-                                      fontSize: AppTypography.labelTiny,
+                                      fontSize: AppTypography.labelSmall,
                                       letterSpacing: 0.2,
                                     ),
                                   ),
@@ -565,7 +565,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                               else if (badgeText != null)
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 4, vertical: 1),
+                                      horizontal: 6, vertical: 1.5),
                                   decoration: BoxDecoration(
                                     color: badgeColor ?? AppColors.goldTint100,
                                     borderRadius: BorderRadius.circular(6),
@@ -575,14 +575,14 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                                     style: TextStyle(
                                       color: badgeTextColor ?? AppColors.amberDarkestText,
                                       fontWeight: AppTypography.black,
-                                      fontSize: AppTypography.labelTiny,
+                                      fontSize: AppTypography.labelSmall,
                                       letterSpacing: 0.2,
                                     ),
                                   ),
                                 ),
                             ],
                           ),
-                          const SizedBox(height: 1.0),
+                          const SizedBox(height: 2.0),
                           Text(
                             subtitle,
                             style: TextStyle(
@@ -592,17 +592,17 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                               fontWeight: isPausedCard
                                   ? AppTypography.black
                                   : AppTypography.medium,
-                              fontSize: AppTypography.labelTiny,
+                              fontSize: AppTypography.labelSmall,
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(width: 5),
+                      const SizedBox(width: 8),
 
                       // ─── Interactive Trailing Indicator ───
                       Container(
-                        width: 18,
-                        height: 18,
+                        width: 22,
+                        height: 22,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: isPausedCard
@@ -617,7 +617,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                           color: isPausedCard
                               ? AppColors.amberDeepText
                               : Colors.white,
-                          size: isPausedCard ? 10.5 : 8,
+                          size: isPausedCard ? 12 : 9.5,
                         ),
                       ),
                     ],
@@ -628,7 +628,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                 Positioned.fill(
                   child: IgnorePointer(
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(16),
                       child: CustomPaint(
                         painter: _CardGlintPainter(
                           percent: shimmerPercent,

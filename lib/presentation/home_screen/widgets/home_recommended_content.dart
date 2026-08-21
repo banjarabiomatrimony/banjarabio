@@ -227,7 +227,7 @@ class HomeRecommendedContent {
       else
         // ── Grid Mode (Standard Feed) ──
         SliverPadding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
           sliver: SliverGrid(
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 600,

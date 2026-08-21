@@ -1061,7 +1061,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               if (!_isLoading && _errorMessage == null && _selectedTab != 1)
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: EdgeInsets.only(top: 0.3.h, bottom: 0.4.h),
+                    padding: EdgeInsets.zero,
                     child: OfferBannerWidget(
                       gender: _ownProfile?.gender,
                       currentPlan: _ownProfile?.planType.name,
