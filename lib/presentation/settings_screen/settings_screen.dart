@@ -427,7 +427,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
         if (context.mounted) {
           Navigator.pushNamedAndRemoveUntil(
             context,
-            AppRoutes.authentication,
+            AppRoutes.onboardingSelection,
             (route) => false,
           );
         }

@@ -1218,7 +1218,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen>
         if (context.mounted) {
           Navigator.pushNamedAndRemoveUntil(
             context,
-            AppRoutes.authentication,
+            AppRoutes.onboardingSelection,
             (route) => false,
           );
         }
