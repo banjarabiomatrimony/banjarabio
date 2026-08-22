@@ -1,5 +1,4 @@
 import 'package:banjarabio/l10n/app_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -62,20 +61,8 @@ class _SplashScreenState extends State<SplashScreen> {
     }
 
     if (mounted) {
-      final prefs = await SharedPreferences.getInstance();
-      final hasSavedLocale = prefs.getString('selected_locale') != null;
-
-      if (hasSavedLocale) {
-        AppLogger.debug('SplashScreen', 'Splash: Locale already saved, jumping to status-based navigation');
-        if (mounted) {
-          await StartupWorkflow.navigateBasedOnStatus(context);
-        }
-      } else {
-        AppLogger.debug('SplashScreen', 'Splash: No locale saved, showing Language Selection');
-        if (mounted) {
-          Navigator.of(context).pushReplacementNamed(AppRoutes.initialLanguageSelection);
-        }
-      }
+      AppLogger.debug('SplashScreen', 'Splash: Proceeding to status-based navigation');
+      await StartupWorkflow.navigateBasedOnStatus(context);
     }
   }
 

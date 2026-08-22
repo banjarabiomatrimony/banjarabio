@@ -44,6 +44,7 @@ class SessionManager {
   static const String _biodataDraftKey = 'biodata_draft';
   static const String _hasNotifiedInstallKey = 'has_notified_install';
   static const String _isPremiumKey = 'is_premium';
+  static const String _hasPreviouslyLoggedInKey = 'has_previously_logged_in';
 
   // ---------------------------------------------------------------------------
   // 3. Initialization Logic
@@ -105,13 +106,25 @@ class SessionManager {
 
   /// Login Status
   bool get isLoggedIn => _safePrefs.getBool(_isLoggedInKey) ?? false;
-  Future<void> setLoggedIn(bool value) =>
-      _safePrefs.setBool(_isLoggedInKey, value);
+  Future<void> setLoggedIn(bool value) async {
+    await _safePrefs.setBool(_isLoggedInKey, value);
+    if (value) {
+      await setHasPreviouslyLoggedIn(true);
+    }
+  }
+
+  /// Has User Ever Logged In (persists even after logout)
+  bool get hasPreviouslyLoggedIn =>
+      _safePrefs.getBool(_hasPreviouslyLoggedInKey) ?? false;
+  Future<void> setHasPreviouslyLoggedIn(bool value) =>
+      _safePrefs.setBool(_hasPreviouslyLoggedInKey, value);
 
   /// User ID
   String? get userId => _safePrefs.getString(_userIdKey);
-  Future<void> setUserId(String value) =>
-      _safePrefs.setString(_userIdKey, value);
+  Future<void> setUserId(String value) async {
+    await _safePrefs.setString(_userIdKey, value);
+    await setHasPreviouslyLoggedIn(true);
+  }
 
   /// Profile ID (Separate from User ID for multi-profile apps)
   String? get profileId => _safePrefs.getString(_profileIdKey);

@@ -308,66 +308,138 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     // Core content shared by both standalone and embedded modes
     final coreContent = SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
-      padding: EdgeInsets.symmetric(horizontal: 5.w),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: MediaQuery.of(context).size.height -
-                        MediaQuery.of(context).padding.top -
-                        MediaQuery.of(context).padding.bottom,
+      padding: EdgeInsets.symmetric(horizontal: widget.embedded ? 2.w : 5.w),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: widget.embedded
+              ? 0.0
+              : MediaQuery.of(context).size.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom,
+        ),
+        child: Column(
+          children: [
+            if (!widget.embedded) ...[
+              SizedBox(height: 6.h),
+
+              // Logo — simple circle, no heavy shadow
+              Container(
+                width: 25.w,
+                height: 25.w,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: AppColors.opacity8),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: const AppLogoImage(),
+                ),
+              ),
+
+              SizedBox(height: 2.h),
+
+              // Welcome text
+              Text(
+                l10n?.welcomeToBanjaraBio ?? 'Welcome to BanjaraBio',
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  fontWeight: AppTypography.bold,
+                  letterSpacing: -0.3,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 0.5.h),
+              Text(
+                l10n?.connectWithCommunity ?? 'Connect with your Banjara community',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+                textAlign: TextAlign.center,
+              ),
+
+              SizedBox(height: 5.h),
+            ] else ...[
+              SizedBox(height: 0.5.h),
+              // 🛡️ Security Trust Badge with Radiant Glow
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 3.2.w, vertical: 0.45.h),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      theme.colorScheme.primary.withValues(alpha: 0.14),
+                      AppColors.categoryAstro.withValues(alpha: 0.10),
+                    ],
                   ),
-                  child: Column(
-                    children: [
-                      SizedBox(height: 6.h),
-
-                      // Logo — simple circle, no heavy shadow
-                      Container(
-                        width: 25.w,
-                        height: 25.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: AppColors.opacity8),
-                              blurRadius: 8,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: const AppLogoImage(),
-                        ),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: theme.colorScheme.primary.withValues(alpha: 0.25),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.lock_person_rounded, size: 14, color: theme.colorScheme.primary),
+                    SizedBox(width: 1.5.w),
+                    Text(
+                      Localizations.localeOf(context).languageCode == 'mr'
+                          ? 'सुरक्षित व जलद प्रवेश'
+                          : 'Fast & Secure Sign In',
+                      style: TextStyle(
+                        fontFamily: AppTypography.headingFontFamily,
+                        fontWeight: AppTypography.bold,
+                        fontSize: AppTypography.labelSmall,
+                        color: theme.colorScheme.primary,
+                        letterSpacing: 0.3,
                       ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 1.2.h),
+              Text(
+                Localizations.localeOf(context).languageCode == 'mr'
+                    ? 'खात्यात लॉगिन करा'
+                    : 'Sign In to Your Account',
+                style: TextStyle(
+                  fontFamily: AppTypography.headingFontFamily,
+                  fontWeight: AppTypography.extraBold,
+                  fontSize: AppTypography.titleMedium,
+                  color: theme.colorScheme.onSurface,
+                  letterSpacing: -0.2,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 0.4.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 2.w),
+                child: Text(
+                  Localizations.localeOf(context).languageCode == 'mr'
+                      ? 'बायोडेटा, फोटो आणि संपर्क तपशील पाहण्यासाठी लॉगिन करा'
+                      : 'Access verified biodatas, photos, and direct contact numbers',
+                  style: TextStyle(
+                    fontFamily: AppTypography.bodyFontFamily,
+                    fontSize: AppTypography.bodySmall,
+                    color: theme.colorScheme.onSurfaceVariant,
+                    height: 1.3,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(height: 2.2.h),
+            ],
 
-                      SizedBox(height: 2.h),
-
-                      // Welcome text
-                      Text(
-                        l10n?.welcomeToBanjaraBio ?? 'Welcome to BanjaraBio',
-                        style: theme.textTheme.headlineSmall?.copyWith(
-                          fontWeight: AppTypography.bold,
-                          letterSpacing: -0.3,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 0.5.h),
-                      Text(
-                        l10n?.connectWithCommunity ?? 'Connect with your Banjara community',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-
-                      SizedBox(height: 5.h),
-
-                      // Auth section — Google or Email
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 360),
-                        child: Column(
-                          children: [
-                            if (!_showEmailLogin) _buildGoogleButton(theme, l10n),
-                            if (_showEmailLogin) _buildEmailForm(theme, l10n),
+            // Auth section — Google or Email
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 360),
+              child: Column(
+                children: [
+                  if (!_showEmailLogin) _buildGoogleButton(theme, l10n),
+                  if (_showEmailLogin) _buildEmailForm(theme, l10n),
 
                             SizedBox(height: 1.h),
 
@@ -442,55 +514,57 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         ),
                       ),
 
-                      SizedBox(height: 4.h),
+                      if (!widget.embedded) ...[
+                        SizedBox(height: 4.h),
 
-                      // "Why BanjaraBio?" divider
-                      Row(
-                        children: [
-                          Expanded(child: Container(height: 1, color: theme.dividerColor.withValues(alpha: AppColors.opacity30))),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 3.w),
-                            child: Text(
-                              l10n?.whyBanjaraBio ?? 'Why BanjaraBio?',
-                              style: theme.textTheme.labelSmall?.copyWith(
-                                color: theme.colorScheme.primary,
-                                fontWeight: AppTypography.semiBold,
+                        // "Why BanjaraBio?" divider
+                        Row(
+                          children: [
+                            Expanded(child: Container(height: 1, color: theme.dividerColor.withValues(alpha: AppColors.opacity30))),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 3.w),
+                              child: Text(
+                                l10n?.whyBanjaraBio ?? 'Why BanjaraBio?',
+                                style: theme.textTheme.labelSmall?.copyWith(
+                                  color: theme.colorScheme.primary,
+                                  fontWeight: AppTypography.semiBold,
+                                ),
                               ),
                             ),
-                          ),
-                          Expanded(child: Container(height: 1, color: theme.dividerColor.withValues(alpha: AppColors.opacity30))),
-                        ],
-                      ),
-
-                      SizedBox(height: 1.5.h),
-
-                      // Benefits — lightweight cards, no heavy shadows
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 380),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(child: _buildBenefit(theme, Icons.verified_user, l10n?.verified ?? 'Verified')),
-                                SizedBox(width: 2.w),
-                                Expanded(child: _buildBenefit(theme, Icons.security, l10n?.secure ?? 'Secure')),
-                                SizedBox(width: 2.w),
-                                Expanded(child: _buildBenefit(theme, Icons.touch_app, l10n?.quick ?? 'Quick')),
-                              ],
-                            ),
-                            SizedBox(height: 0.8.h),
-                            Row(
-                              children: [
-                                Expanded(child: _buildBenefit(theme, Icons.thumb_up, l10n?.easiest ?? 'Easiest')),
-                                SizedBox(width: 2.w),
-                                Expanded(child: _buildBenefit(theme, Icons.favorite, l10n?.trusted ?? 'Trusted')),
-                                SizedBox(width: 2.w),
-                                Expanded(child: _buildBenefit(theme, Icons.card_giftcard, l10n?.free ?? 'Free')),
-                              ],
-                            ),
+                            Expanded(child: Container(height: 1, color: theme.dividerColor.withValues(alpha: AppColors.opacity30))),
                           ],
                         ),
-                      ),
+
+                        SizedBox(height: 1.5.h),
+
+                        // Benefits — lightweight cards, no heavy shadows
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 380),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(child: _buildBenefit(theme, Icons.verified_user, l10n?.verified ?? 'Verified')),
+                                  SizedBox(width: 2.w),
+                                  Expanded(child: _buildBenefit(theme, Icons.security, l10n?.secure ?? 'Secure')),
+                                  SizedBox(width: 2.w),
+                                  Expanded(child: _buildBenefit(theme, Icons.touch_app, l10n?.quick ?? 'Quick')),
+                                ],
+                              ),
+                              SizedBox(height: 0.8.h),
+                              Row(
+                                children: [
+                                  Expanded(child: _buildBenefit(theme, Icons.thumb_up, l10n?.easiest ?? 'Easiest')),
+                                  SizedBox(width: 2.w),
+                                  Expanded(child: _buildBenefit(theme, Icons.favorite, l10n?.trusted ?? 'Trusted')),
+                                  SizedBox(width: 2.w),
+                                  Expanded(child: _buildBenefit(theme, Icons.card_giftcard, l10n?.free ?? 'Free')),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
 
                       SizedBox(height: 2.h),
 
@@ -560,33 +634,50 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   // ─── Lightweight sub-widgets ───
 
   Widget _buildGoogleButton(ThemeData theme, AppLocalizations? l10n) {
-    return SizedBox(
+    return Container(
       width: double.infinity,
-      height: 7.h,
+      height: 7.0.h,
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [
+            Colors.white,
+            Color(0xFFFAFAFA),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: theme.colorScheme.primary.withValues(alpha: 0.35),
+          width: 1.3,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: theme.colorScheme.primary.withValues(alpha: 0.14),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 4,
+            offset: const Offset(0, 1),
+          ),
+        ],
+      ),
       child: Material(
-        color: _isLoading ? Colors.grey.shade50 : Colors.white,
-        borderRadius: BorderRadius.circular(14),
-        elevation: _isLoading ? 0 : 1,
+        color: Colors.transparent,
         child: InkWell(
           onTap: _isLoading ? null : _signInWithGoogle,
-          borderRadius: BorderRadius.circular(14),
-          child: Container(
+          borderRadius: BorderRadius.circular(18),
+          child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.w),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: theme.dividerColor.withValues(alpha: _isLoading ? 0.15 : 0.3),
-              ),
-            ),
             child: _isLoading
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: 20,
-                        height: 20,
+                        width: 22,
+                        height: 22,
                         child: CircularProgressIndicator(
-                          strokeWidth: 2.2,
+                          strokeWidth: 2.4,
                           valueColor: AlwaysStoppedAnimation<Color>(theme.colorScheme.primary),
                         ),
                       ),
@@ -594,8 +685,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                       Flexible(
                         child: Text(
                           l10n?.loading ?? 'Connecting...',
-                          style: theme.textTheme.titleSmall?.copyWith(
+                          style: TextStyle(
+                            fontFamily: AppTypography.headingFontFamily,
                             fontWeight: AppTypography.semiBold,
+                            fontSize: AppTypography.bodySmall,
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -606,14 +699,17 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset('assets/icons/google_icon.png', width: 3.h, height: 3.h),
-                      SizedBox(width: 1.5.h),
+                      Image.asset('assets/icons/google_icon.png', width: 24, height: 24),
+                      SizedBox(width: 3.w),
                       Flexible(
                         child: Text(
                           l10n?.continueWithGoogle ?? 'Continue with Google',
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: AppTypography.semiBold,
-                            color: Colors.black87,
+                          style: TextStyle(
+                            fontFamily: AppTypography.headingFontFamily,
+                            fontWeight: AppTypography.bold,
+                            fontSize: AppTypography.bodyMedium,
+                            color: const Color(0xFF1E293B),
+                            letterSpacing: 0.2,
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),

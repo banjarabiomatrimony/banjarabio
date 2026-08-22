@@ -1,153 +1,412 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
-import 'package:banjarabio/core/app_export.dart';
+import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/theme/app_colors.dart';
+import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/core/supabase_client.dart';
-import 'package:banjarabio/core/services/local_cache_service.dart';
+import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
+import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 import 'package:banjarabio/presentation/authentication_screen/authentication_screen.dart';
-import 'package:banjarabio/presentation/onboarding_screen/relative_intake_screen.dart';
+import 'package:banjarabio/core/session_manager.dart';
+import 'package:banjarabio/core/providers/locale_provider.dart';
 
-/// 10/10 UX User Type Gateway Screen
-/// Offers 2 primary pathways:
-/// 1. Existing User (Direct Login)
-/// 2. New User (Onboarding Selection Dual Gateway)
-class UserTypeSelectionScreen extends StatefulWidget {
-  const UserTypeSelectionScreen({super.key});
+/// 🌟 Billion-Dollar Global Standard 2-Tab Entry Gateway Screen
+/// Features:
+/// - Floating Ambient Gold & Crimson Constellation Particles
+/// - Floating Multi-Ring Luminous Halo for Brand Emblem
+/// - Spring-animated Liquid Pill Tab Switcher with Dynamic Gradient & Shadows
+/// - Continuous 60FPS Diagonal Sweep Glint on Primary Action Cards
+/// - Frosted Glassmorphic Containers with Subtle Specular Edge Lighting
+/// - Direct modal language selector on launch & anytime top-bar trigger
+class UserTypeSelectionScreen extends ConsumerStatefulWidget {
+  /// Initial tab index (0 = Existing Member, 1 = New Member, null = Auto Detect based on session history)
+  final int? initialTabIndex;
+
+  const UserTypeSelectionScreen({
+    super.key,
+    this.initialTabIndex,
+  });
 
   @override
-  State<UserTypeSelectionScreen> createState() => _UserTypeSelectionScreenState();
+  ConsumerState<UserTypeSelectionScreen> createState() => _UserTypeSelectionScreenState();
 }
 
-class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
+class _UserTypeSelectionScreenState extends ConsumerState<UserTypeSelectionScreen>
     with TickerProviderStateMixin {
-  final PageController _pageController = PageController();
+  late TabController _tabController;
   late AnimationController _entranceController;
   late AnimationController _pulseController;
+  late AnimationController _glintController;
+  late AnimationController _particleController;
+
   late Animation<double> _pulseAnimation;
+  late Animation<double> _glowAnimation;
 
-  int _currentStep = 0;
-  String _selectedPath = ''; // '', 'existing', or 'new'
-  String _selectedPurpose = ''; // '', 'biodata', 'relative'
+  // Staggered Entrance Animations
+  late Animation<double> _headerFade;
+  late Animation<Offset> _headerSlide;
+  late Animation<double> _heroFade;
+  late Animation<Offset> _heroSlide;
+  late Animation<double> _tabsFade;
+  late Animation<Offset> _tabsSlide;
+  late Animation<double> _bodyFade;
+  late Animation<Offset> _bodySlide;
+  late Animation<double> _footerFade;
 
-  bool _hasDraft = false;
-  bool _isDraftDismissed = false;
-  Map<String, dynamic>? _draftData;
-
-  /// Computes the total page count for the current navigation state.
-  int get _pageCount {
-    if (_selectedPath == 'existing') return 2; // Gateway + Auth
-    if (_selectedPath == 'new' && _selectedPurpose == 'relative') return 4; // Gateway + Purpose + RelativeIntake + Auth
-    if (_selectedPath == 'new') return 3; // Gateway + Purpose + Auth(biodata)
-    return 1; // Gateway only (no path selected yet)
-  }
-
-  /// Unique key for the PageView — forces Flutter to reconstruct the
-  /// PageView (and rebind the controller's ScrollPosition) whenever the
-  /// page structure changes, without disposing the controller itself.
-  Key get _pageViewKey => ValueKey('pv_${_selectedPath}_$_selectedPurpose');
+  final List<_FloatingParticle> _particles = List.generate(
+    14,
+    (index) => _FloatingParticle(
+      x: (index * 0.07 + 0.05) % 1.0,
+      y: (index * 0.08 + 0.1) % 1.0,
+      radius: 1.5 + (index % 4) * 1.2,
+      speed: 0.2 + (index % 5) * 0.15,
+      isGold: index % 2 == 0,
+    ),
+  );
 
   @override
   void initState() {
     super.initState();
 
+    // 🎯 Smart Tab Resolution:
+    // If no explicit tab index passed:
+    // - If user has previously logged in or has active/past session -> Tab 0 (Existing Member)
+    // - New install / first launch / no account ever -> Tab 1 (New Member)
+    final resolvedTabIndex = widget.initialTabIndex ??
+        (SessionManager.instance.hasPreviouslyLoggedIn || SessionManager.instance.isLoggedIn ? 0 : 1);
+
+    _tabController = TabController(
+      length: 2,
+      vsync: this,
+      initialIndex: resolvedTabIndex,
+    );
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        HapticFeedback.mediumImpact();
+        setState(() {});
+      }
+    });
+
     _entranceController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 700),
-    )..forward();
+      duration: const Duration(milliseconds: 1100),
+    );
 
     _pulseController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2500),
+      duration: const Duration(milliseconds: 2600),
     );
-    _pulseAnimation = Tween<double>(begin: 0.98, end: 1.04).animate(
-      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
-    );
-    _pulseController.repeat(reverse: true);
 
-    _checkSavedDraft();
+    _glintController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 3000),
+    );
+
+    _particleController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 10),
+    );
+
+    _pulseAnimation = Tween<double>(begin: 0.96, end: 1.06).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOutSine),
+    );
+
+    _glowAnimation = Tween<double>(begin: 0.20, end: 0.75).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOutSine),
+    );
+
+    // Staggered curves
+    _headerFade = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _entranceController, curve: const Interval(0.0, 0.35, curve: Curves.easeOut)),
+    );
+    _headerSlide = Tween<Offset>(begin: const Offset(0, -0.1), end: Offset.zero).animate(
+      CurvedAnimation(parent: _entranceController, curve: const Interval(0.0, 0.35, curve: Curves.easeOutCubic)),
+    );
+
+    _heroFade = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _entranceController, curve: const Interval(0.15, 0.50, curve: Curves.easeOut)),
+    );
+    _heroSlide = Tween<Offset>(begin: const Offset(0, 0.08), end: Offset.zero).animate(
+      CurvedAnimation(parent: _entranceController, curve: const Interval(0.15, 0.50, curve: Curves.easeOutCubic)),
+    );
+
+    _tabsFade = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _entranceController, curve: const Interval(0.30, 0.65, curve: Curves.easeOut)),
+    );
+    _tabsSlide = Tween<Offset>(begin: const Offset(0, 0.08), end: Offset.zero).animate(
+      CurvedAnimation(parent: _entranceController, curve: const Interval(0.30, 0.65, curve: Curves.easeOutCubic)),
+    );
+
+    _bodyFade = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _entranceController, curve: const Interval(0.45, 0.85, curve: Curves.easeOut)),
+    );
+    _bodySlide = Tween<Offset>(begin: const Offset(0, 0.06), end: Offset.zero).animate(
+      CurvedAnimation(parent: _entranceController, curve: const Interval(0.45, 0.85, curve: Curves.easeOutCubic)),
+    );
+
+    _footerFade = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _entranceController, curve: const Interval(0.65, 1.0, curve: Curves.easeOut)),
+    );
+
+    _entranceController.forward();
+    _pulseController.repeat(reverse: true);
+    _glintController.repeat();
+    _particleController.repeat();
+
+    // 🌐 Auto-prompt Language Selection on 1st Launch if no locale saved yet
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAndPromptLanguageOnLaunch();
+    });
   }
 
-  Future<void> _checkSavedDraft() async {
+  Future<void> _checkAndPromptLanguageOnLaunch() async {
     try {
-      final draft = await SessionManager.instance.getBiodataDraft();
-      if (draft != null && draft.isNotEmpty) {
-        final name = draft['name']?.toString() ?? '';
-        final surname = draft['surname']?.toString() ?? '';
-        final phone = draft['phone_number']?.toString() ?? '';
-        if (name.isNotEmpty || surname.isNotEmpty || phone.isNotEmpty) {
-          if (mounted) {
-            setState(() {
-              _hasDraft = true;
-              _draftData = draft;
-            });
-          }
+      final prefs = await SharedPreferences.getInstance();
+      final savedLocale = prefs.getString('selected_locale');
+      if (savedLocale == null && mounted) {
+        // Small delay to let screen entrance animation settle
+        await Future.delayed(const Duration(milliseconds: 300));
+        if (mounted) {
+          _showLanguageSelectionModal(context, isFirstTime: true);
         }
       }
-    } catch (_) {}
+    } catch (e) {
+      AppLogger.error('UserTypeSelectionScreen', 'Error checking saved locale: $e');
+    }
+  }
+
+  void _showLanguageSelectionModal(BuildContext context, {bool isFirstTime = false}) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final currentLocale = ref.read(localeProvider);
+    final activeCode = currentLocale?.languageCode ??
+        WidgetsBinding.instance.platformDispatcher.locale.languageCode;
+
+    final languages = [
+      {'code': 'mr', 'label': 'Marathi', 'native': 'मराठी', 'sub': 'बंजारा समाजासाठी पहिली पसंती'},
+      {'code': 'en', 'label': 'English', 'native': 'English', 'sub': 'Universal Language'},
+      {'code': 'hi', 'label': 'Hindi', 'native': 'हिंदी', 'sub': 'राष्ट्रभाषा'},
+      {'code': 'te', 'label': 'Telugu', 'native': 'తెలుగు', 'sub': 'తెలుగు మాట్లాడే వారి కోసం'},
+      {'code': 'kn', 'label': 'Kannada', 'native': 'ಕನ್ನಡ', 'sub': 'ಕರ್ನಾಟಕದ ಬಂಜಾರ ಬಾಂಧವರಿಗಾಗಿ'},
+    ];
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (modalContext) {
+        return Container(
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF1A1114) : Colors.white,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+            border: Border.all(
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.15)
+                  : AppColors.categoryAstro.withValues(alpha: 0.25),
+              width: 1.5,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: isDark ? 0.60 : 0.20),
+                blurRadius: 30,
+                offset: const Offset(0, -6),
+              ),
+            ],
+          ),
+          padding: EdgeInsets.fromLTRB(5.w, 1.5.h, 5.w, 3.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Handle Pill
+              Center(
+                child: Container(
+                  width: 42,
+                  height: 4.5,
+                  decoration: BoxDecoration(
+                    color: isDark ? Colors.white24 : AppColors.slate300,
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                ),
+              ),
+              SizedBox(height: 2.0.h),
+
+              // Title & Icon
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppColors.categoryAstro.withValues(alpha: 0.15),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.language_rounded, size: 22, color: AppColors.categoryAstroDark),
+                  ),
+                  SizedBox(width: 2.5.w),
+                  Text(
+                    'निवडा तुमची भाषा / Select Language',
+                    style: TextStyle(
+                      fontFamily: AppTypography.headingFontFamily,
+                      fontWeight: AppTypography.extraBold,
+                      fontSize: AppTypography.bodyLarge,
+                      color: theme.colorScheme.onSurface,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 0.6.h),
+              Text(
+                'तुम्हाला सोयीस्कर असलेली भाषा निवडा',
+                style: TextStyle(
+                  fontSize: AppTypography.labelSmall,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 2.0.h),
+
+              // Language List Cards
+              ...languages.map((lang) {
+                final isSelected = lang['code'] == activeCode;
+                final primaryColor = isSelected ? AppColors.categoryAstroDark : theme.colorScheme.onSurface;
+
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 1.0.h),
+                  child: TactilePressable(
+                    onTap: () {
+                      HapticFeedback.mediumImpact();
+                      final code = lang['code']!;
+                      ref.read(localeProvider.notifier).setLocale(Locale(code));
+                      Navigator.of(modalContext).pop();
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.2.h),
+                      decoration: BoxDecoration(
+                        gradient: isSelected
+                            ? LinearGradient(
+                                colors: [
+                                  AppColors.goldTint100.withValues(alpha: isDark ? 0.35 : 0.65),
+                                  AppColors.goldTint200.withValues(alpha: isDark ? 0.20 : 0.40),
+                                ],
+                              )
+                            : null,
+                        color: isSelected
+                            ? null
+                            : (isDark ? Colors.white.withValues(alpha: 0.05) : AppColors.slate50),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: isSelected
+                              ? AppColors.categoryAstro
+                              : (isDark ? Colors.white12 : AppColors.slate200),
+                          width: isSelected ? 1.8 : 1.0,
+                        ),
+                        boxShadow: isSelected
+                            ? [
+                                BoxShadow(
+                                  color: AppColors.categoryAstro.withValues(alpha: 0.25),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ]
+                            : null,
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 36,
+                            height: 36,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: isSelected
+                                  ? AppColors.categoryAstroDark
+                                  : (isDark ? Colors.white10 : AppColors.slate200),
+                            ),
+                            child: Center(
+                              child: Text(
+                                lang['native']!.substring(0, 1),
+                                style: TextStyle(
+                                  fontWeight: AppTypography.bold,
+                                  fontSize: 16,
+                                  color: isSelected ? Colors.white : theme.colorScheme.onSurface,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 3.5.w),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      lang['native']!,
+                                      style: TextStyle(
+                                        fontFamily: AppTypography.headingFontFamily,
+                                        fontWeight: AppTypography.bold,
+                                        fontSize: AppTypography.bodyMedium,
+                                        color: primaryColor,
+                                      ),
+                                    ),
+                                    SizedBox(width: 2.w),
+                                    Text(
+                                      '(${lang['label']})',
+                                      style: TextStyle(
+                                        fontSize: AppTypography.labelSmall,
+                                        color: theme.colorScheme.onSurfaceVariant,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  lang['sub']!,
+                                  style: TextStyle(
+                                    fontSize: 10.5,
+                                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (isSelected)
+                            const Icon(
+                              Icons.check_circle_rounded,
+                              color: AppColors.categoryAstroDark,
+                              size: 22,
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
+    _tabController.dispose();
     _entranceController.dispose();
     _pulseController.dispose();
+    _glintController.dispose();
+    _particleController.dispose();
     super.dispose();
   }
 
-  void _animateToStep(int step) {
-    if (step < 0 || step >= _pageCount) return; // Bounds guard
-    setState(() {
-      _currentStep = step;
-    });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_pageController.hasClients && _pageController.page?.round() != step) {
-        _pageController.animateToPage(
-          step,
-          duration: const Duration(milliseconds: 400),
-          curve: Curves.easeInOutCubic,
-        );
-      }
-    });
-  }
-
-  /// Navigates to a target step by first updating state (which triggers
-  /// a PageView rebuild via _pageViewKey change) and then jumping to
-  /// the target page in the next frame.
-  void _jumpToStep(int step) {
-    setState(() {
-      _currentStep = step;
-    });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_pageController.hasClients) {
-        _pageController.jumpToPage(step);
-      }
-    });
-  }
-
-  void _goBackStep() {
-    if (_currentStep <= 0) return;
-    final targetStep = _currentStep - 1;
-    if (targetStep == 0) {
-      // Returning to Step 0 (Gateway): Full state reset.
-      // The _pageViewKey change reconstructs the PageView cleanly.
-      setState(() {
-        _currentStep = 0;
-        _selectedPath = '';
-        _selectedPurpose = '';
-      });
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (_pageController.hasClients) {
-          _pageController.jumpToPage(0);
-        }
-      });
-    } else {
-      _animateToStep(targetStep);
-    }
-  }
+  // ── Navigation Launchers ──
 
   Future<void> _launchWhatsApp() async {
     final lang = Localizations.localeOf(context).languageCode;
@@ -161,31 +420,35 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
     final url = Uri.parse('https://wa.me/918186050406?text=${Uri.encodeComponent(msg)}');
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(AppLocalizations.of(context)?.couldNotLaunchWhatsApp ?? 'Could not launch WhatsApp'),
+      ));
     }
   }
 
-  Future<void> _launchDialer() async {
-    final url = Uri.parse('tel:+918186050406');
+  Future<void> _launchInstagram() async {
+    final url = Uri.parse('https://www.instagram.com/banjarabio.matrimony/');
     if (await canLaunchUrl(url)) {
-      await launchUrl(url);
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Could not launch Instagram'),
+      ));
     }
   }
 
-  Widget _staggered({required double start, required double end, required Widget child}) {
-    return SlideTransition(
-      position: Tween<Offset>(begin: const Offset(0, 0.05), end: Offset.zero).animate(
-        CurvedAnimation(
-          parent: _entranceController,
-          curve: Interval(start, end, curve: Curves.easeOutCubic),
-        ),
-      ),
-      child: FadeTransition(
-        opacity: Tween<double>(begin: 0, end: 1).animate(
-          CurvedAnimation(parent: _entranceController, curve: Interval(start, end)),
-        ),
-        child: child,
-      ),
-    );
+  bool get _isAuthenticated => AppSupabaseClient.isAuthenticated;
+
+  void _browseMatches() => Navigator.of(context).pushNamed(AppRoutes.relativeIntake);
+
+  void _createBiodata() {
+    AppLogger.debug('UserTypeSelectionScreen', '_createBiodata called. isAuthenticated: $_isAuthenticated');
+    if (_isAuthenticated) {
+      Navigator.of(context).pushNamed(AppRoutes.biodataCreation);
+    } else {
+      _tabController.animateTo(0);
+    }
   }
 
   @override
@@ -195,74 +458,148 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
     final l10n = AppLocalizations.of(context);
     final primary = theme.colorScheme.primary;
 
-    return PopScope(
-      canPop: _currentStep == 0,
-      onPopInvokedWithResult: (didPop, _) {
-        if (!didPop && _currentStep > 0) _goBackStep();
-      },
-      child: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
-        child: Scaffold(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+      child: Scaffold(
         body: Stack(
           children: [
-            // Layer 0: Gradient Background
+            // Layer 0: Multi-Tone Ultra-Rich Ambient Mesh Background
             Positioned.fill(
               child: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                     colors: isDark
-                        ? [AppColors.crimsonBlack, AppColors.crimsonBlack, AppColors.canvasDark]
-                        : [AppColors.roseBlush, AppColors.rosePinkLight, AppColors.rosePinkLight],
+                        ? [
+                            AppColors.crimsonBlack,
+                            const Color(0xFF14070A),
+                            theme.scaffoldBackgroundColor,
+                            const Color(0xFF0F0A0E),
+                          ]
+                        : [
+                            AppColors.roseBlush,
+                            const Color(0xFFFFF0F3),
+                            AppColors.rosePinkLight,
+                            theme.scaffoldBackgroundColor,
+                          ],
                   ),
                 ),
               ),
             ),
 
-            // Layer 1: Ambient Glow Orbs
+            // Layer 1: Ambient Floating Aurora Glow Orbs
             Positioned(
-              top: -10.h, right: -15.w,
+              top: -14.h,
+              right: -18.w,
               child: ScaleTransition(
                 scale: _pulseAnimation,
-                child: _auroraOrb(55.w, primary.withValues(alpha: isDark ? 0.18 : 0.10)),
+                child: _auroraOrb(65.w, primary.withValues(alpha: isDark ? 0.22 : 0.14)),
               ),
             ),
             Positioned(
-              bottom: -10.h, left: -15.w,
+              top: 25.h,
+              left: -20.w,
               child: ScaleTransition(
                 scale: _pulseAnimation,
-                child: _auroraOrb(50.w, AppColors.categoryAstroDark.withValues(alpha: isDark ? 0.14 : 0.08)),
+                child: _auroraOrb(50.w, AppColors.categoryAstro.withValues(alpha: isDark ? 0.12 : 0.08)),
+              ),
+            ),
+            Positioned(
+              bottom: -12.h,
+              left: -10.w,
+              child: ScaleTransition(
+                scale: _pulseAnimation,
+                child: _auroraOrb(60.w, AppColors.categoryAstroDark.withValues(alpha: isDark ? 0.18 : 0.10)),
               ),
             ),
 
-            // Layer 2: Main Layout
+            // Layer 2: Floating Constellation Particles
+            Positioned.fill(
+              child: IgnorePointer(
+                child: AnimatedBuilder(
+                  animation: _particleController,
+                  builder: (context, child) {
+                    return CustomPaint(
+                      painter: _ConstellationParticlePainter(
+                        progress: _particleController.value,
+                        particles: _particles,
+                        isDark: isDark,
+                        primaryColor: primary,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+
+            // Layer 3: Main Layout Surface
             SafeArea(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
+                padding: EdgeInsets.fromLTRB(4.5.w, 1.2.h, 4.5.w, 0.6.h),
                 child: Column(
                   children: [
-                    _buildTopHeaderBar(theme, isDark, l10n, primary),
-                    SizedBox(height: 1.5.h),
-                    _buildProgressIndicator(theme, isDark, primary),
-                    SizedBox(height: 1.5.h),
-                    Expanded(
-                      child: PageView.builder(
-                        key: _pageViewKey,
-                        controller: _pageController,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: _pageCount,
-                        onPageChanged: (index) {
-                          setState(() {
-                            _currentStep = index;
-                          });
-                        },
-                        itemBuilder: (context, index) =>
-                            _buildPageAtIndex(index, theme, isDark, l10n, primary),
+                    // 1. Top Header (Trust Badge & Lang Switcher)
+                    SlideTransition(
+                      position: _headerSlide,
+                      child: FadeTransition(
+                        opacity: _headerFade,
+                        child: _buildTopHeaderBar(theme, isDark, l10n, primary),
                       ),
                     ),
-                    _buildSupportFooter(theme, isDark, l10n, primary),
-                    SizedBox(height: 0.5.h),
+                    SizedBox(height: 1.4.h),
+
+                    // 2. Hero Section (Pulsing Multi-Halo Brand Emblem & Global Headlines)
+                    SlideTransition(
+                      position: _heroSlide,
+                      child: FadeTransition(
+                        opacity: _heroFade,
+                        child: _buildHero(theme, isDark, l10n, primary),
+                      ),
+                    ),
+
+                    // Unified gap that shifts the entire tabs + screen section further down
+                    SizedBox(height: 5.5.h),
+
+                    // 3. Segmented 2-Tab Switcher (Connected Card Architecture)
+                    SlideTransition(
+                      position: _tabsSlide,
+                      child: FadeTransition(
+                        opacity: _tabsFade,
+                        child: _buildSegmentedTabBar(theme, isDark, l10n, primary),
+                      ),
+                    ),
+                    SizedBox(height: 1.4.h),
+
+                    // 4. Tab View Contents (Card Body that seamlessly connects with selected tab)
+                    Expanded(
+                      child: SlideTransition(
+                        position: _bodySlide,
+                        child: FadeTransition(
+                          opacity: _bodyFade,
+                          child: TabBarView(
+                            controller: _tabController,
+                            physics: const BouncingScrollPhysics(),
+                            children: [
+                              // ── TAB 0: Existing Member (Direct Login) ──
+                              _buildExistingMemberTab(theme, isDark, l10n, primary),
+
+                              // ── TAB 1: New Member (Pathway Choices) ──
+                              _buildNewMemberTab(theme, isDark, l10n, primary),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 0.8.h),
+
+                    // 5. Support Footer Bar
+                    FadeTransition(
+                      opacity: _footerFade,
+                      child: _buildSupportFooter(theme, isDark, l10n, primary),
+                    ),
+                    SizedBox(height: 0.4.h),
                   ],
                 ),
               ),
@@ -270,13 +607,13 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
           ],
         ),
       ),
-      ),
     );
   }
 
   Widget _auroraOrb(double size, Color color) {
     return Container(
-      width: size, height: size,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: RadialGradient(colors: [color, Colors.transparent]),
@@ -285,160 +622,208 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
   }
 
   // ══════════════════════════════════════════════
-  // PAGE ROUTER — maps index to widget per path
+  // 1. TOP BAR — Language Switcher
   // ══════════════════════════════════════════════
-  Widget _buildPageAtIndex(int index, ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
-    // Page 0 is always the Gateway
-    if (index == 0) return _buildStep1PathGateway(theme, isDark, l10n, primary);
-
-    if (_selectedPath == 'existing') {
-      // Existing User: page 1 = Auth
-      if (index == 1) {
-        return const AuthenticationScreen(
-          key: ValueKey('existing_user_auth'),
-          embedded: true,
-        );
-      }
-    }
-
-    if (_selectedPath == 'new') {
-      // New User: page 1 = Purpose Selection
-      if (index == 1) return _buildStep2PurposeSelection(theme, isDark, l10n, primary);
-
-      if (_selectedPurpose == 'relative') {
-        // Relative path: page 2 = RelativeIntake, page 3 = Auth
-        if (index == 2) {
-          return RelativeIntakeScreen(
-            key: const ValueKey('relative_intake_step'),
-            embedded: true,
-            onProceed: () => _animateToStep(3),
-          );
-        }
-        if (index == 3) {
-          return const AuthenticationScreen(
-            key: ValueKey('relative_user_auth'),
-            embedded: true,
-          );
-        }
-      } else {
-        // Biodata path: page 2 = Auth
-        if (index == 2) {
-          return const AuthenticationScreen(
-            key: ValueKey('biodata_user_auth'),
-            embedded: true,
-            targetRouteOnNewProfile: AppRoutes.biodataCreation,
-          );
-        }
-      }
-    }
-
-    // Unreachable fallback
-    return const SizedBox.shrink();
+  Widget _buildTopHeaderBar(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: TactilePressable(
+        onTap: () {
+          HapticFeedback.lightImpact();
+          _showLanguageSelectionModal(context);
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 3.8.w, vertical: 0.8.h),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                primary.withValues(alpha: isDark ? 0.25 : 0.14),
+                primary.withValues(alpha: isDark ? 0.12 : 0.06),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(30),
+            border: Border.all(
+              color: primary.withValues(alpha: isDark ? 0.40 : 0.25),
+              width: 1.1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: primary.withValues(alpha: isDark ? 0.20 : 0.08),
+                blurRadius: 10,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.language_rounded, size: 16, color: primary),
+              SizedBox(width: 1.5.w),
+              Text(
+                l10n?.changeLanguage ?? 'भाषा',
+                style: TextStyle(
+                  fontFamily: AppTypography.headingFontFamily,
+                  fontWeight: AppTypography.bold,
+                  fontSize: AppTypography.labelSmall,
+                  color: primary,
+                ),
+              ),
+              const SizedBox(width: 3),
+              Icon(Icons.keyboard_arrow_down_rounded, size: 16, color: primary),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   // ══════════════════════════════════════════════
-  // HEADER BAR (Trust Badge / Back Button & Lang)
+  // 2. HERO — Brand Emblem with Luminous Halo (Dynamic Tab Reactive)
   // ══════════════════════════════════════════════
-  Widget _buildTopHeaderBar(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
-    final onSurface = theme.colorScheme.onSurface;
+  Widget _buildHero(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
+    final lang = Localizations.localeOf(context).languageCode;
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        if (_currentStep > 0)
-          _TactileWrapper(
-            onTap: _goBackStep,
-            child: Container(
-              padding: EdgeInsets.all(2.2.w),
-              decoration: BoxDecoration(
-                color: isDark
-                    ? Colors.white.withValues(alpha: AppColors.opacity12)
-                    : theme.colorScheme.surface,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: isDark
-                      ? Colors.white.withValues(alpha: 0.22)
-                      : primary.withValues(alpha: AppColors.opacity25),
-                  width: 1.2,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: (isDark ? Colors.black : primary).withValues(alpha: isDark ? 0.35 : 0.12),
-                    blurRadius: 10,
-                    offset: const Offset(0, 3),
+        // Pulsing Dual Ring Halo Emblem (Enlarged for prominent brand presence)
+        ScaleTransition(
+          scale: _pulseAnimation,
+          child: AnimatedBuilder(
+            animation: _glowAnimation,
+            builder: (context, child) {
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  // Outer Glow Halo
+                  Container(
+                    width: 20.w,
+                    height: 20.w,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: primary.withValues(alpha: _glowAnimation.value * 0.55),
+                          blurRadius: 26,
+                          spreadRadius: 5,
+                        ),
+                        BoxShadow(
+                          color: AppColors.categoryAstro.withValues(alpha: _glowAnimation.value * 0.40),
+                          blurRadius: 20,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Inner Emblem Container
+                  Container(
+                    width: 17.5.w,
+                    height: 17.5.w,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: theme.colorScheme.surface,
+                      border: Border.all(
+                        color: primary.withValues(alpha: 0.90),
+                        width: 2.5,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.18),
+                          blurRadius: 10,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: const ClipOval(child: AppLogoImage()),
                   ),
                 ],
-              ),
-              child: Icon(
-                Icons.arrow_back_rounded,
-                size: 18.sp,
-                color: onSurface,
-              ),
-            ),
-          )
-        else
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 3.2.w, vertical: 0.7.h),
-            decoration: BoxDecoration(
-              color: isDark
-                  ? Colors.white.withValues(alpha: AppColors.opacity8)
-                  : primary.withValues(alpha: 0.06),
-              borderRadius: BorderRadius.circular(30),
-              border: Border.all(
-                color: isDark
-                    ? Colors.white.withValues(alpha: AppColors.opacity12)
-                    : primary.withValues(alpha: 0.18),
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 8, height: 8,
-                  decoration: const BoxDecoration(
-                    color: AppColors.green500,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                SizedBox(width: 2.w),
-                Text(
-                  AppLocalizations.of(context)?.trustedCommunityBadge ?? '100% Trusted Community',
-                  style: theme.textTheme.labelMedium?.copyWith(
-                    fontWeight: AppTypography.bold,
-                    fontSize: AppTypography.bodySmall,
-                    color: isDark ? AppTheme.secondaryDark : primary,
-                  ),
-                ),
-              ],
-            ),
+              );
+            },
           ),
+        ),
 
-        // Language Switcher
-        _TactileWrapper(
-          onTap: () => Navigator.of(context).pushReplacementNamed(AppRoutes.initialLanguageSelection),
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.7.h),
-            decoration: BoxDecoration(
-              color: isDark
-                  ? primary.withValues(alpha: 0.18)
-                  : primary.withValues(alpha: AppColors.opacity8),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: primary.withValues(alpha: isDark ? 0.40 : 0.25)),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.language_rounded, size: 14.sp, color: primary),
-                SizedBox(width: 1.w),
-                Text(
-                  '${AppLocalizations.of(context)?.languageSwitcherLabel ?? 'Language'} / Lang',
-                  style: theme.textTheme.labelMedium?.copyWith(
-                    fontWeight: AppTypography.extraBold,
-                    fontSize: AppTypography.bodyMedium,
-                    color: primary,
+        SizedBox(width: 3.5.w),
+
+        // Brand Headlines & Community Badge (Dynamic tab reactive with overflow safety)
+        Expanded(
+          child: AnimatedBuilder(
+            animation: _tabController.animation ?? _tabController,
+            builder: (context, child) {
+              final double animValue = _tabController.animation?.value ?? _tabController.index.toDouble();
+              final isExistingTab = animValue < 0.5;
+
+              final dynamicTitle = isExistingTab
+                  ? (lang == 'mr' ? 'पुन्हा स्वागत आहे! 👋' : 'Welcome Back! 👋')
+                  : (l10n?.welcomeToBanjaraBio ?? 'Welcome to BanjaraBio!');
+
+              final dynamicSubtitle = isExistingTab
+                  ? (lang == 'mr' ? 'आपल्या खात्यात प्रवेश करा' : 'Sign in to your account')
+                  : 'बंजारा समाजाचे #1 बायोडेटा प्लॅटफॉर्म';
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 250),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        dynamicTitle,
+                        key: ValueKey<String>(dynamicTitle),
+                        style: TextStyle(
+                          fontFamily: AppTypography.headingFontFamily,
+                          fontWeight: AppTypography.black,
+                          fontSize: AppTypography.titleMedium + 2.0,
+                          color: theme.colorScheme.onSurface,
+                          letterSpacing: -0.3,
+                          height: 1.15,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ],
-            ),
+                  SizedBox(height: 0.4.h),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.35.h),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            primary.withValues(alpha: isDark ? 0.25 : 0.12),
+                            AppColors.categoryAstro.withValues(alpha: isDark ? 0.20 : 0.08),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: primary.withValues(alpha: 0.30),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(isExistingTab ? '🔐' : '🚩', style: const TextStyle(fontSize: 12)),
+                          const SizedBox(width: 5),
+                          Text(
+                            dynamicSubtitle,
+                            style: TextStyle(
+                              fontFamily: AppTypography.headingFontFamily,
+                              fontWeight: AppTypography.bold,
+                              fontSize: AppTypography.bodySmall - 1.0,
+                              color: primary,
+                              letterSpacing: 0.2,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ],
@@ -446,1150 +831,566 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
   }
 
   // ══════════════════════════════════════════════
-  // STEPPER PROGRESS INDICATOR BAR
+  // 3. SEGMENTED TAB SWITCHER (Billion-Dollar Animated Liquid Switcher with Notch)
   // ══════════════════════════════════════════════
-  Widget _buildProgressIndicator(ThemeData theme, bool isDark, Color primary) {
-    final l10n = AppLocalizations.of(context);
-    final secondary = theme.colorScheme.secondary;
-    final stepType = l10n?.stepLabelType ?? 'Type';
-    final stepGoal = l10n?.stepLabelGoal ?? 'Goal';
-    final stepDetails = l10n?.stepLabelDetails ?? 'Details';
-    final stepSignIn = l10n?.stepLabelSignIn ?? 'Sign In';
-    final stepWelcome = l10n?.stepLabelWelcome ?? 'Welcome';
+  Widget _buildSegmentedTabBar(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
+    final lang = Localizations.localeOf(context).languageCode;
+    final tab0Label = lang == 'mr' ? 'हयात सदस्य' : 'Existing Member';
+    final tab1Label = lang == 'mr' ? 'नवीन सदस्य' : 'New Member';
 
-    final List<String> stepLabels;
-    if (_selectedPath == 'existing') {
-      stepLabels = [
-        stepType,
-        stepSignIn,
-      ];
-    } else if (_selectedPath == 'new' && _selectedPurpose == 'relative') {
-      stepLabels = [
-        stepType,
-        stepGoal,
-        stepDetails,
-        stepSignIn,
-      ];
-    } else if (_selectedPath == 'new') {
-      stepLabels = [
-        stepType,
-        stepGoal,
-        stepSignIn,
-      ];
-    } else {
-      // No path selected yet — Gateway step
-      stepLabels = [
-        stepWelcome,
-      ];
-    }
+    return AnimatedBuilder(
+      animation: _tabController.animation ?? _tabController,
+      builder: (context, child) {
+        final double animValue = _tabController.animation?.value ?? _tabController.index.toDouble();
 
-    final totalSteps = stepLabels.length;
-    final displayStepIndex = _currentStep.clamp(0, totalSteps - 1);
-    final maxStep = totalSteps > 1 ? totalSteps - 1 : 1;
-    final progressFraction = totalSteps == 1 ? 0.25 : ((displayStepIndex / maxStep).clamp(0.0, 1.0));
-    final percentText = '${(progressFraction * 100).round()}%';
-
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.4.h),
-      decoration: BoxDecoration(
-        color: isDark
-            ? AppColors.canvasDark.withValues(alpha: AppColors.opacity90)
-            : theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(
-          color: isDark
-              ? Colors.white.withValues(alpha: 0.14)
-              : primary.withValues(alpha: 0.18),
-          width: 1.2,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: (isDark ? Colors.black : primary).withValues(alpha: isDark ? 0.40 : 0.08),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Step Counter Header Row
-          if (totalSteps > 1) ...[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(1.2.w),
-                      decoration: BoxDecoration(
-                        color: primary.withValues(alpha: isDark ? 0.20 : 0.10),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.route_rounded,
-                        size: 11.sp,
-                        color: isDark ? AppTheme.secondaryDark : primary,
-                      ),
-                    ),
-                    SizedBox(width: 1.8.w),
-                    Text(
-                      l10n?.stepCounterFormat(displayStepIndex + 1, totalSteps) ??
-                          'Step ${displayStepIndex + 1} of $totalSteps',
-                      style: theme.textTheme.labelMedium?.copyWith(
-                        fontWeight: AppTypography.extraBold,
-                        fontSize: AppTypography.bodySmall,
-                        color: isDark
-                            ? AppTheme.secondaryDark
-                            : primary,
-                        letterSpacing: 0.3,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.4.h),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        primary.withValues(alpha: isDark ? 0.25 : 0.12),
-                        secondary.withValues(alpha: isDark ? 0.20 : 0.10),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: primary.withValues(alpha: isDark ? 0.35 : 0.20),
-                      width: 0.8,
-                    ),
-                  ),
-                  child: Text(
-                    percentText,
-                    style: TextStyle(
-                      fontWeight: AppTypography.black,
-                      fontSize: AppTypography.labelMedium,
-                      color: primary,
-                      letterSpacing: 0.5,
-                    ),
-                  ),
-                ),
-              ],
+        return Container(
+          height: 52,
+          padding: const EdgeInsets.all(4.0),
+          decoration: BoxDecoration(
+            color: isDark
+                ? const Color(0xFF1B0F13).withValues(alpha: 0.90)
+                : Colors.white,
+            borderRadius: BorderRadius.circular(26),
+            border: Border.all(
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.12)
+                  : primary.withValues(alpha: 0.15),
+              width: 1.2,
             ),
-            SizedBox(height: 1.2.h),
-          ],
-
-          // Stepper Node Flow Row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(totalSteps, (index) {
-              final isCompleted = index < displayStepIndex;
-              final isCurrent = index == displayStepIndex;
-              final isActive = index <= displayStepIndex;
-
-              final Widget nodeWidget = Row(
-                children: [
-                  // Node Badge Icon / Number
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeOutBack,
-                    width: isCurrent ? 28 : 22,
-                    height: isCurrent ? 28 : 22,
-                    decoration: BoxDecoration(
-                      gradient: isActive
-                          ? LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: isCompleted
-                                  ? [primary, primary.withValues(alpha: AppColors.opacity85)]
-                                  : [primary, isDark ? AppTheme.primaryDark : AppTheme.primaryVariantLight],
-                            )
-                          : null,
-                      color: isActive
-                          ? null
-                          : (isDark ? Colors.white12 : Colors.black.withValues(alpha: AppColors.opacity8)),
-                      shape: BoxShape.circle,
-                      border: isCurrent
-                          ? Border.all(
-                              color: isDark ? AppTheme.secondaryDark : Colors.white,
-                              width: 2.2,
-                            )
-                          : null,
-                      boxShadow: isCurrent
-                          ? [
-                              BoxShadow(
-                                color: primary.withValues(alpha: AppColors.opacity50),
-                                blurRadius: 12,
-                                spreadRadius: 2,
-                              ),
-                            ]
-                          : (isCompleted
-                              ? [
-                                  BoxShadow(
-                                    color: primary.withValues(alpha: AppColors.opacity25),
-                                    blurRadius: 6,
-                                  ),
-                                ]
-                              : null),
-                    ),
-                    child: Center(
-                      child: isCompleted
-                          ? Icon(
-                              Icons.check_rounded,
-                              size: 12.5.sp,
-                              color: Colors.white,
-                            )
-                          : Text(
-                              '${index + 1}',
-                              style: TextStyle(
-                                color: isActive
-                                    ? Colors.white
-                                    : (isDark ? Colors.white54 : Colors.black45),
-                                fontWeight: AppTypography.black,
-                                fontSize: isCurrent ? AppTypography.bodySmall : AppTypography.labelMedium,
-                              ),
-                            ),
-                    ),
-                  ),
-                  SizedBox(width: 1.2.w),
-
-                  // Label Text
-                  Flexible(
-                    child: Text(
-                      stepLabels[index],
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.labelMedium?.copyWith(
-                        fontWeight: isCurrent
-                            ? AppTypography.extraBold
-                            : (isCompleted ? AppTypography.bold : AppTypography.medium),
-                        color: isCurrent
-                            ? primary
-                            : (isCompleted
-                                ? theme.colorScheme.onSurface
-                                : theme.colorScheme.onSurfaceVariant.withValues(alpha: AppColors.opacity60)),
-                        fontSize: isCurrent ? AppTypography.bodySmall : AppTypography.labelMedium,
-                      ),
-                    ),
-                  ),
-
-                  // Connector Line
-                  if (index < totalSteps - 1)
-                    Expanded(
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        height: index < displayStepIndex ? 3.5 : 2.0,
-                        margin: EdgeInsets.symmetric(horizontal: 1.5.w),
-                        decoration: BoxDecoration(
-                          gradient: index < displayStepIndex
-                              ? LinearGradient(
-                                  colors: [primary, primary.withValues(alpha: AppColors.opacity70)],
-                                )
-                              : null,
-                          color: index < displayStepIndex
-                              ? null
-                              : (isDark ? Colors.white12 : Colors.black.withValues(alpha: AppColors.opacity8)),
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                    ),
-                ],
-              );
-
-              // Allow tapping previous completed nodes to jump back cleanly
-              if (index < displayStepIndex) {
-                return Expanded(
-                  child: _TactileWrapper(
-                    onTap: () {
-                      HapticFeedback.selectionClick();
-                      _jumpToStep(index);
-                    },
-                    child: nodeWidget,
-                  ),
-                );
-              }
-
-              return Expanded(child: nodeWidget);
-            }),
-          ),
-
-          // Bottom Smooth Dual-Tone Gradient Progress Track
-          SizedBox(height: 1.2.h),
-          Stack(
-            children: [
-              // Track Background
-              Container(
-                height: 5,
-                decoration: BoxDecoration(
-                  color: isDark
-                      ? Colors.white.withValues(alpha: AppColors.opacity10)
-                      : primary.withValues(alpha: AppColors.opacity10),
-                  borderRadius: BorderRadius.circular(6),
-                ),
+            boxShadow: [
+              BoxShadow(
+                color: (isDark ? Colors.black : primary).withValues(alpha: isDark ? 0.40 : 0.08),
+                blurRadius: 16,
+                offset: const Offset(0, 4),
               ),
+            ],
+          ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final tabWidth = constraints.maxWidth / 2;
 
-              // Animated Gradient Progress Bar
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  return TweenAnimationBuilder<double>(
-                    duration: const Duration(milliseconds: 350),
-                    curve: Curves.easeInOutCubic,
-                    tween: Tween<double>(begin: 0.0, end: progressFraction),
-                    builder: (context, value, child) {
-                      return Container(
-                        height: 5,
-                        width: constraints.maxWidth * value,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              primary,
-                              isDark ? AppTheme.secondaryDark : AppTheme.secondaryLight,
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(6),
-                          boxShadow: [
-                            BoxShadow(
-                              color: primary.withValues(alpha: AppColors.opacity40),
-                              blurRadius: 6,
-                            ),
+              return Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  // 🌊 1. Smooth Animated Liquid Indicator Pill with Notch Pointer
+                  Positioned(
+                    left: animValue * tabWidth,
+                    top: 0,
+                    bottom: 0,
+                    width: tabWidth,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            primary,
+                            Color.lerp(primary, AppColors.crimsonMaroon, 0.40) ?? primary,
                           ],
                         ),
-                      );
-                    },
-                  );
-                },
+                        borderRadius: BorderRadius.circular(22),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.25),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: primary.withValues(alpha: isDark ? 0.50 : 0.35),
+                            blurRadius: 12,
+                            spreadRadius: 1,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // 🏷️ 2. Interactive Animated Tab Headers (Centered Vertically and Horizontally)
+                  Row(
+                    children: [
+                      // ── Tab 0: Existing Member ──
+                      Expanded(
+                        child: TactilePressable(
+                          onTap: () {
+                            if (_tabController.index != 0) {
+                              HapticFeedback.selectionClick();
+                              _tabController.animateTo(0);
+                            }
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            height: double.infinity,
+                            alignment: Alignment.center,
+                            child: _buildAnimatedTabItem(
+                              icon: Icons.login_rounded,
+                              label: tab0Label,
+                              isSelected: animValue < 0.5,
+                              selectedFraction: (1.0 - animValue).clamp(0.0, 1.0),
+                              theme: theme,
+                              isDark: isDark,
+                              primary: primary,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // ── Tab 1: New Member ──
+                      Expanded(
+                        child: TactilePressable(
+                          onTap: () {
+                            if (_tabController.index != 1) {
+                              HapticFeedback.selectionClick();
+                              _tabController.animateTo(1);
+                            }
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            height: double.infinity,
+                            alignment: Alignment.center,
+                            child: _buildAnimatedTabItem(
+                              icon: Icons.person_add_alt_1_rounded,
+                              label: tab1Label,
+                              badge: 'FREE',
+                              isSelected: animValue >= 0.5,
+                              selectedFraction: animValue.clamp(0.0, 1.0),
+                              theme: theme,
+                              isDark: isDark,
+                              primary: primary,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildAnimatedTabItem({
+    required IconData icon,
+    required String label,
+    String? badge,
+    required bool isSelected,
+    required double selectedFraction,
+    required ThemeData theme,
+    required bool isDark,
+    required Color primary,
+  }) {
+    final textColor = Color.lerp(
+      theme.colorScheme.onSurfaceVariant,
+      Colors.white,
+      selectedFraction,
+    );
+
+    final scale = 0.94 + (selectedFraction * 0.08);
+
+    return Transform.scale(
+      scale: scale,
+      child: Center(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Icon with animated scale & glow
+            Icon(
+              icon,
+              size: 18,
+              color: textColor,
+            ),
+            const SizedBox(width: 7),
+            Flexible(
+              child: Text(
+                label,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: AppTypography.headingFontFamily,
+                  fontWeight: isSelected ? AppTypography.extraBold : AppTypography.bold,
+                  fontSize: AppTypography.bodySmall,
+                  color: textColor,
+                  letterSpacing: 0.2,
+                  height: 1.0,
+                ),
+              ),
+            ),
+            if (badge != null) ...[
+              const SizedBox(width: 5),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? AppColors.goldTint100
+                      : AppColors.categoryAstro.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  badge,
+                  style: TextStyle(
+                    fontFamily: AppTypography.headingFontFamily,
+                    fontWeight: AppTypography.black,
+                    fontSize: 8.5,
+                    color: isSelected ? AppColors.amberDarkestText : AppColors.categoryAstroDark,
+                    letterSpacing: 0.4,
+                    height: 1.0,
+                  ),
+                ),
               ),
             ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildDraftResumeCard(ThemeData theme, bool isDark, Color primary) {
-    final l10n = AppLocalizations.of(context);
-    final candidateName = _draftData?['name']?.toString().trim();
-    final nameDisplay = candidateName != null && candidateName.isNotEmpty ? candidateName : null;
-
-    final title = l10n?.unsavedDraftTitle ?? '📝 Unsaved Biodata Draft Found!';
-    final body = nameDisplay != null
-        ? (l10n?.unsavedDraftBodyWithName(nameDisplay) ?? '$nameDisplay\'s biodata draft is saved. Resume from where you left.')
-        : (l10n?.unsavedDraftBodyGeneric ?? 'Your entered information is saved safely. Tap to resume.');
-    final btnText = l10n?.resumeDraftCta ?? 'Resume Draft Now 👉';
-
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: isDark
-              ? [AppColors.amberBgDark, AppColors.amberBrownBg]
-              : [AppColors.warningLight, AppColors.goldTint100],
-        ),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: AppColors.categoryAstro,
-          width: 1.5,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.categoryAstro.withValues(alpha: isDark ? 0.30 : 0.15),
-            blurRadius: 14,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+  // ══════════════════════════════════════════════
+  // 4. TAB 0 VIEW: EXISTING MEMBER (Direct Auth with Animated Card Container)
+  // ══════════════════════════════════════════════
+  Widget _buildExistingMemberTab(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Top row with badge title and close button
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(1.5.w),
-                      decoration: BoxDecoration(
-                        color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity20),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.edit_note_rounded,
-                        size: 15.sp,
-                        color: AppColors.categoryAstroDark,
-                      ),
-                    ),
-                    SizedBox(width: 2.w),
-                    Flexible(
-                      child: Text(
-                        title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: AppTypography.bodyMedium,
-                          fontWeight: AppTypography.extraBold,
-                          color: isDark ? AppColors.goldTint200 : AppColors.amberDarkestText,
-                        ),
-                      ),
+          SizedBox(height: 0.6.h),
+          AnimatedBuilder(
+            animation: _pulseAnimation,
+            builder: (context, child) {
+              return Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.8.h),
+                decoration: BoxDecoration(
+                  color: isDark ? AppColors.canvasDark : Colors.white,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                    color: isDark
+                        ? primary.withValues(alpha: 0.30 + (_pulseAnimation.value - 1.0) * 0.3)
+                        : primary.withValues(alpha: 0.20 + (_pulseAnimation.value - 1.0) * 0.2),
+                    width: 1.4,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: (isDark ? Colors.black : primary).withValues(alpha: isDark ? 0.35 : 0.08),
+                      blurRadius: 18 + (_pulseAnimation.value - 1.0) * 8,
+                      offset: const Offset(0, 5),
                     ),
                   ],
                 ),
-              ),
-              InkWell(
-                onTap: () {
-                  HapticFeedback.lightImpact();
-                  setState(() => _isDraftDismissed = true);
-                },
-                borderRadius: BorderRadius.circular(16),
-                child: Container(
-                  padding: EdgeInsets.all(1.5.w),
-                  decoration: BoxDecoration(
-                    color: (isDark ? Colors.white : Colors.black).withValues(alpha: AppColors.opacity8),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.close_rounded,
-                    size: 13.5.sp,
-                    color: isDark ? Colors.white70 : Colors.black54,
-                  ),
+                child: const AuthenticationScreen(
+                  embedded: true,
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 0.8.h),
-          Text(
-            body,
-            style: TextStyle(
-              fontSize: AppTypography.bodySmall,
-              height: 1.25,
-              color: isDark ? Colors.white.withValues(alpha: AppColors.opacity85) : AppColors.amberDeepText,
-            ),
-          ),
-          SizedBox(height: 1.2.h),
-
-          // CTA Button
-          _TactileWrapper(
-            onTap: () {
-              HapticFeedback.mediumImpact();
-              if (AppSupabaseClient.isAuthenticated) {
-                Navigator.of(context).pushNamed(AppRoutes.biodataCreation);
-              } else {
-                setState(() {
-                  _selectedPath = 'new';
-                  _selectedPurpose = 'biodata';
-                });
-                _jumpToStep(2);
-              }
+              );
             },
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 1.0.h),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [AppColors.categoryAstro, AppColors.categoryAstroDark],
-                ),
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.categoryAstroDark.withValues(alpha: AppColors.opacity35),
-                    blurRadius: 8,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Center(
-                child: Text(
-                  btnText,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: AppTypography.bodyMedium,
-                    fontWeight: AppTypography.extraBold,
-                    letterSpacing: 0.2,
-                  ),
-                ),
-              ),
-            ),
           ),
+          SizedBox(height: 1.0.h),
         ],
       ),
     );
   }
 
   // ══════════════════════════════════════════════
-  // STEP 1: PATH SELECTION (Existing vs New User)
+  // 5. TAB 1 VIEW: NEW MEMBER (Pathway Choices)
   // ══════════════════════════════════════════════
-  Widget _buildStep1PathGateway(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
-    final lang = Localizations.localeOf(context).languageCode;
-    final title = lang == 'mr' ? 'बंजाराबायो मध्ये आपले स्वागत आहे' : 'Welcome to BanjaraBio';
-    final subtitle = lang == 'mr' ? 'कृपया पुढे जाण्यासाठी पर्याय निवडा' : 'Select an option to continue';
-
-    final existingTitle = lang == 'mr' ? 'माझे खाते आहे (लॉगिन करा)' : 'Existing User (Sign In)';
-    final existingSub = lang == 'mr'
-        ? 'तुम्ही आधीच नोंदणी केली असल्यास, इथे लॉगिन करून तुमचे प्रोफाईल व स्थळे पहा.'
-        : 'Sign in to access your saved profile and matches.';
-
-    final newTitle = lang == 'mr' ? 'मी नवीन सदस्य आहे (नवीन सुरू करा)' : 'New User (Get Started)';
-    final newSub = lang == 'mr'
-        ? 'नवीन बायोडेटा तयार करण्यासाठी किंवा नातेवाईकांसाठी मोफत स्थळे शोधण्यासाठी.'
-        : 'Create a new profile or browse matches for relatives.';
-
+  Widget _buildNewMemberTab(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Column(
         children: [
-          SizedBox(height: 1.h),
-          const AppLogoImage(width: 80, height: 80),
-          SizedBox(height: 1.5.h),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.headlineMedium?.copyWith(
-              fontWeight: AppTypography.black,
-              fontSize: AppTypography.headingMedium,
-              color: theme.colorScheme.onSurface,
-            ),
-          ),
-          SizedBox(height: 0.5.h),
-          Text(
-            subtitle,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              fontSize: AppTypography.bodyMedium,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-          SizedBox(height: 3.h),
-
-          // ── Dismissible Smart Resume Draft Card ──
-          if (_hasDraft && !_isDraftDismissed) ...[
-            _buildDraftResumeCard(theme, isDark, primary),
-            SizedBox(height: 1.h),
-          ],
-
-          // Option 1: Existing User
-          _TactileWrapper(
-            onTap: () {
-              setState(() {
-                _selectedPath = 'existing';
-                _selectedPurpose = '';
-              });
-              _jumpToStep(1);
-            },
-            child: Container(
-              padding: EdgeInsets.all(4.5.w),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: isDark
-                      ? [AppColors.bloodRedBg, AppColors.crimsonBlack]
-                      : [Colors.white, AppColors.roseBlush],
-                ),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: primary.withValues(alpha: AppColors.opacity30), width: 1.5),
-                boxShadow: [
-                  BoxShadow(
-                    color: primary.withValues(alpha: AppColors.opacity8),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 12.w, height: 12.w,
-                    decoration: BoxDecoration(
-                      color: primary.withValues(alpha: AppColors.opacity12),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(Icons.login_rounded, size: 22.sp, color: primary),
-                  ),
-                  SizedBox(width: 4.w),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          existingTitle,
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: AppTypography.bold,
-                            fontSize: AppTypography.bodyLarge,
-                          ),
-                        ),
-                        SizedBox(height: 0.4.h),
-                        Text(
-                          existingSub,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            fontSize: AppTypography.bodySmall,
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Icon(Icons.arrow_forward_ios_rounded, size: 14.sp, color: primary),
-                ],
-              ),
-            ),
-          ),
-
-          SizedBox(height: 2.h),
-
-          // Option 2: New User
-          _TactileWrapper(
-            onTap: () {
-              setState(() {
-                _selectedPath = 'new';
-                _selectedPurpose = '';
-              });
-              _jumpToStep(1);
-            },
-            child: Container(
-              padding: EdgeInsets.all(4.5.w),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: isDark
-                      ? [AppColors.canvasRichDark, AppColors.canvasCharcoal]
-                      : [Colors.white, AppColors.neutral50],
-                ),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.whatsapp.withValues(alpha: AppColors.opacity35), width: 1.5),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.whatsapp.withValues(alpha: AppColors.opacity8),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 12.w, height: 12.w,
-                    decoration: BoxDecoration(
-                      color: AppColors.whatsapp.withValues(alpha: AppColors.opacity12),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(Icons.person_add_rounded, size: 22.sp, color: AppColors.whatsapp),
-                  ),
-                  SizedBox(width: 4.w),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          newTitle,
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: AppTypography.bold,
-                            fontSize: AppTypography.bodyLarge,
-                          ),
-                        ),
-                        SizedBox(height: 0.4.h),
-                        Text(
-                          newSub,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            fontSize: AppTypography.bodySmall,
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Icon(Icons.arrow_forward_ios_rounded, size: 14.sp, color: AppColors.whatsapp),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStep2PurposeSelection(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Column(
-        children: [
-          SizedBox(height: 0.5.h),
-
-          // ── Dismissible Smart Resume Draft Card (in Purpose Selection) ──
-          if (_hasDraft && !_isDraftDismissed) ...[
-            _buildDraftResumeCard(theme, isDark, primary),
-            SizedBox(height: 0.5.h),
-          ],
-
-          // ── Card 1: Search Matches (Instant Discovery) ──
+          SizedBox(height: 0.4.h),
+          // Option 1: Search Matches for Relatives
           _buildSearchMatchesCard(theme, isDark, l10n, primary),
-          SizedBox(height: 1.0.h),
+          SizedBox(height: 1.4.h),
 
-          // ── Card 2: Create Biodata (Hero Conversion Card) ──
+          // Option 2: Create My Biodata (High Conversion Hero Card with Glint Sheen)
           _buildCreateBiodataCard(theme, isDark, l10n, primary),
-          SizedBox(height: 1.0.h),
-
-          // ── Card 3: Guest Mode ──
-          _buildGuestModeCard(theme, isDark, l10n, primary),
-          SizedBox(height: 1.h),
         ],
       ),
     );
   }
 
-  /// CARD 1: Search Matches — Same-to-same from OnboardingSelectionScreen
+  /// CARD 1: Search Matches (Instant Discovery / Relative Search Card)
   Widget _buildSearchMatchesCard(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
-    final badgeText = l10n?.option1Badge ?? 'OPTION 1 • NO LOGIN NEEDED';
     final cardTitle = l10n?.searchMatchesForRelativesTitle ?? 'Find Matches for Relatives';
     final cardSub = l10n?.searchMatchesForRelativesSubtitle ??
         'Search thousands of verified profiles for son, daughter, brother or sister directly without creating a profile.';
     final ctaText = l10n?.searchMatchesForRelativesCta ?? 'Find Matches for Relatives 👉';
 
-    return _TactileWrapper(
-      onTap: () {
-        setState(() {
-          _selectedPurpose = 'relative';
-        });
-        _jumpToStep(2);
-      },
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.5.h),
-        decoration: BoxDecoration(
-          color: isDark ? AppColors.canvasDark : Colors.white,
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(
-            color: isDark ? AppColors.sapphireBlue.withValues(alpha: AppColors.opacity40) : AppColors.sapphireBlue.withValues(alpha: AppColors.opacity30),
-            width: 1.5,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.sapphireBlue.withValues(alpha: isDark ? 0.25 : 0.08),
-              blurRadius: 14,
-              offset: const Offset(0, 4),
+    return TactilePressable(
+      onTap: _browseMatches,
+      child: AnimatedBuilder(
+        animation: _pulseAnimation,
+        builder: (context, child) {
+          return Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 4.5.w, vertical: 1.8.h),
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.canvasDark : Colors.white,
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(
+                color: isDark
+                    ? AppColors.sapphireBlue.withValues(alpha: 0.40 + (_pulseAnimation.value - 1.0) * 0.4)
+                    : AppColors.sapphireBlue.withValues(alpha: 0.30 + (_pulseAnimation.value - 1.0) * 0.3),
+                width: 1.5,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.sapphireBlue.withValues(alpha: isDark ? 0.25 : 0.08),
+                  blurRadius: 16 + (_pulseAnimation.value - 1.0) * 8,
+                  offset: const Offset(0, 5),
+                ),
+              ],
             ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Top Header Row: Badge & Icon
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Flexible(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 3.0.w, vertical: 0.4.h),
-                    decoration: BoxDecoration(
-                      color: isDark ? AppColors.oceanBlueDark.withValues(alpha: AppColors.opacity30) : AppColors.infoLight,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.sapphireBlue.withValues(alpha: AppColors.opacity50)),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.bolt_rounded, size: 13.sp, color: AppColors.sapphireBlue),
-                        SizedBox(width: 1.w),
-                        Flexible(
-                          child: Text(
-                            badgeText,
-                            overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.labelMedium?.copyWith(
-                              fontWeight: AppTypography.black,
-                              fontSize: AppTypography.bodyMedium,
-                              color: AppColors.sapphireBlue,
-                              letterSpacing: 0.4,
-                            ),
-                          ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        cardTitle,
+                        style: TextStyle(
+                          fontFamily: AppTypography.headingFontFamily,
+                          fontWeight: AppTypography.extraBold,
+                          fontSize: AppTypography.bodyLarge,
+                          color: theme.colorScheme.onSurface,
+                          height: 1.2,
                         ),
-                      ],
+                      ),
                     ),
+                    const SizedBox(width: 8),
+                    Container(
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.sapphireBlue.withValues(alpha: 0.22),
+                            AppColors.sapphireBlue.withValues(alpha: 0.08),
+                          ],
+                        ),
+                        border: Border.all(
+                          color: AppColors.sapphireBlue.withValues(alpha: 0.35),
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.person_search_rounded,
+                        size: 20,
+                        color: AppColors.sapphireBlue,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 0.4.h),
+                Text(
+                  cardSub,
+                  style: TextStyle(
+                    fontSize: AppTypography.bodySmall,
+                    fontWeight: AppTypography.regular,
+                    color: theme.colorScheme.onSurfaceVariant,
+                    height: 1.3,
                   ),
                 ),
-                SizedBox(width: 2.w),
+                SizedBox(height: 0.8.h),
+                Wrap(
+                  spacing: 2.0.w,
+                  runSpacing: 0.5.h,
+                  children: [
+                    _featureChip(theme, l10n?.chipNoAccount ?? '⚡ No Account Needed', isDark),
+                    _featureChip(theme, l10n?.chipQuickFilter ?? '🔍 1-Min Search', isDark),
+                    _featureChip(theme, l10n?.chipFreeAccess ?? '⭐ 100% Free Access', isDark),
+                  ],
+                ),
+                SizedBox(height: 1.2.h),
                 Container(
-                  width: 9.5.w, height: 9.5.w,
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(vertical: 1.0.h),
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      colors: [AppColors.sapphireBlue.withValues(alpha: AppColors.opacity20), AppColors.sapphireBlue.withValues(alpha: AppColors.opacity8)],
+                    color: AppColors.sapphireBlue.withValues(alpha: 0.10),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: AppColors.sapphireBlue.withValues(alpha: 0.35),
+                      width: 1.2,
                     ),
-                    border: Border.all(color: AppColors.sapphireBlue.withValues(alpha: AppColors.opacity30)),
                   ),
-                  child: Icon(Icons.person_search_rounded, size: 17.sp, color: AppColors.sapphireBlue),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.search_rounded, size: 16, color: AppColors.sapphireBlue),
+                      SizedBox(width: 2.w),
+                      Text(
+                        ctaText,
+                        style: TextStyle(
+                          fontFamily: AppTypography.headingFontFamily,
+                          fontWeight: AppTypography.bold,
+                          fontSize: AppTypography.bodyMedium,
+                          color: AppColors.sapphireBlue,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
-            SizedBox(height: 0.8.h),
-
-            // Title
-            Text(
-              cardTitle,
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontFamily: AppTypography.headingFontFamily,
-                fontWeight: AppTypography.black,
-                fontSize: AppTypography.headingSmall,
-                color: theme.colorScheme.onSurface,
-                height: 1.15,
-              ),
-            ),
-            SizedBox(height: 0.4.h),
-
-            // Subtitle
-            Text(
-              cardSub,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontFamily: AppTypography.bodyFontFamily,
-                fontSize: AppTypography.bodyMedium,
-                fontWeight: AppTypography.medium,
-                color: theme.colorScheme.onSurfaceVariant,
-                height: 1.25,
-              ),
-            ),
-            SizedBox(height: 0.8.h),
-
-            // Feature Chips
-            Wrap(
-              spacing: 1.8.w,
-              runSpacing: 0.5.h,
-              children: [
-                _stepperFeatureChip(theme, l10n?.chipNoAccount ?? '⚡ No Account Needed', isDark),
-                _stepperFeatureChip(theme, l10n?.chipQuickFilter ?? '🔍 1-Min Search', isDark),
-                _stepperFeatureChip(theme, l10n?.chipFreeAccess ?? '⭐ 100% Free Access', isDark),
-              ],
-            ),
-            SizedBox(height: 1.2.h),
-
-            // CTA Button
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 0.9.h),
-              decoration: BoxDecoration(
-                color: AppColors.sapphireBlue.withValues(alpha: AppColors.opacity10),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.sapphireBlue.withValues(alpha: AppColors.opacity35), width: 1.2),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.search_rounded, size: 15.sp, color: AppColors.sapphireBlue),
-                  SizedBox(width: 1.5.w),
-                  Text(
-                    ctaText,
-                    style: theme.textTheme.labelLarge?.copyWith(
-                      fontWeight: AppTypography.black,
-                      fontSize: AppTypography.bodyLarge,
-                      color: AppColors.sapphireBlue,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
-  /// CARD 2: Create Biodata — Same-to-same hero card from OnboardingSelectionScreen
+  /// CARD 2: Create My Biodata (Luxurious Primary Hero Card with Animated Sheen)
   Widget _buildCreateBiodataCard(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
-    final badgeText = l10n?.option2Badge ?? 'OPTION 2 • MOST POPULAR • 100% FREE';
     final cardTitle = l10n?.createBiodataForSelfOrCandidateTitle ?? (l10n?.createMyBiodata ?? 'Create My Biodata');
     final cardSub = l10n?.createBiodataForSelfOrCandidateSubtitle ??
-        'Create an attractive marriage biodata in 2 minutes, download PDF, share on WhatsApp, and receive matches directly.';
+        'Create official biodata to view photos, mobile numbers & download PDF.';
     final ctaText = l10n?.loginAndCreateBiodataCta ?? 'Login & Create Biodata ✨';
 
-    return _TactileWrapper(
-      onTap: () {
-        if (AppSupabaseClient.isAuthenticated) {
-          Navigator.of(context).pushNamed(AppRoutes.biodataCreation);
-          return;
-        }
-        setState(() {
-          _selectedPurpose = 'biodata';
-        });
-        _jumpToStep(2);
-      },
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.5.h),
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [AppColors.crimsonMaroon, AppColors.wineRed, AppColors.wineDark],
-          ),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.categoryAstro, width: 1.8),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.crimsonDeep.withValues(alpha: 0.45),
-              blurRadius: 18,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Badge & Icon
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 3.0.w, vertical: 0.4.h),
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(colors: [AppColors.goldTint100, AppColors.goldTint200]),
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity35), blurRadius: 6),
-                      ],
+    return AnimatedBuilder(
+      animation: _glintController,
+      builder: (context, child) {
+        final glintValue = _glintController.value;
+
+        return TactilePressable(
+          onTap: _createBiodata,
+          child: Stack(
+            children: [
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 4.5.w, vertical: 1.8.h),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      AppColors.crimsonMaroon,
+                      AppColors.wineRed,
+                      AppColors.wineDark,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(22),
+                  border: Border.all(color: AppColors.categoryAstro, width: 1.8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.crimsonDeep.withValues(alpha: 0.50),
+                      blurRadius: 22,
+                      offset: const Offset(0, 6),
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('⭐', style: TextStyle(fontSize: AppTypography.bodySmall)),
-                        SizedBox(width: 1.w),
-                        Flexible(
+                        Expanded(
                           child: Text(
-                            badgeText,
-                            overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.labelMedium?.copyWith(
-                              fontWeight: AppTypography.black,
-                              fontSize: AppTypography.bodyMedium,
-                              color: AppColors.amberDarkestText,
-                              letterSpacing: 0.4,
+                            cardTitle,
+                            style: TextStyle(
+                              fontFamily: AppTypography.headingFontFamily,
+                              fontWeight: AppTypography.extraBold,
+                              fontSize: AppTypography.bodyLarge,
+                              color: Colors.white,
+                              height: 1.2,
                             ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Container(
+                          width: 38,
+                          height: 38,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withValues(alpha: 0.22),
+                            border: Border.all(color: Colors.white.withValues(alpha: 0.45)),
+                          ),
+                          child: const Icon(
+                            Icons.person_add_alt_1_rounded,
+                            size: 20,
+                            color: Colors.white,
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ),
-                SizedBox(width: 2.w),
-                Container(
-                  width: 9.5.w, height: 9.5.w,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white.withValues(alpha: 0.22),
-                    border: Border.all(color: Colors.white.withValues(alpha: 0.45)),
-                  ),
-                  child: Icon(Icons.person_add_alt_1_rounded, size: 17.sp, color: Colors.white),
-                ),
-              ],
-            ),
-            SizedBox(height: 0.8.h),
-
-            // Title
-            Text(
-              cardTitle,
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontFamily: AppTypography.headingFontFamily,
-                fontWeight: AppTypography.black,
-                fontSize: AppTypography.headingSmall,
-                color: Colors.white,
-                height: 1.15,
-              ),
-            ),
-            SizedBox(height: 0.4.h),
-
-            // Subtitle
-            Text(
-              cardSub,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontFamily: AppTypography.bodyFontFamily,
-                fontSize: AppTypography.bodyMedium,
-                fontWeight: AppTypography.medium,
-                color: Colors.white.withValues(alpha: AppColors.opacity90),
-                height: 1.25,
-              ),
-            ),
-            SizedBox(height: 0.8.h),
-
-            // Benefit Rows
-            _stepperBenefitRow(theme, '✨', l10n?.benefitPdfBiodata ?? 'Create Beautiful PDF Biodata in 2 Mins'),
-            SizedBox(height: 0.4.h),
-            _stepperBenefitRow(theme, '📱', l10n?.benefitShareWhatsApp ?? 'Share Directly on WhatsApp'),
-            SizedBox(height: 0.4.h),
-            _stepperBenefitRow(theme, '🛡️', l10n?.benefitVerifiedProfiles ?? '100% Verified Community Profiles'),
-            SizedBox(height: 1.2.h),
-
-            // Golden CTA Button
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 1.0.h),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(colors: [AppColors.goldSoft, AppColors.categoryAstro]),
-                borderRadius: BorderRadius.circular(14),
-                boxShadow: [
-                  BoxShadow(color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity40), blurRadius: 10, offset: const Offset(0, 3)),
-                ],
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.auto_awesome_rounded, size: 16, color: AppColors.amberBgDark),
-                  SizedBox(width: 1.5.w),
-                  Text(
-                    ctaText,
-                    style: theme.textTheme.labelLarge?.copyWith(
-                      fontWeight: AppTypography.black,
-                      fontSize: AppTypography.bodyLarge,
-                      color: AppColors.amberBgDark,
+                    SizedBox(height: 0.3.h),
+                    Text(
+                      cardSub,
+                      style: TextStyle(
+                        fontSize: AppTypography.bodySmall,
+                        fontWeight: AppTypography.regular,
+                        color: Colors.white.withValues(alpha: 0.92),
+                        height: 1.3,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// CARD 3: Guest Mode — Matching design language
-  Widget _buildGuestModeCard(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
-    final badgeText = l10n?.option3Badge ?? 'OPTION 3 • GUEST MODE';
-    final cardTitle = l10n?.guestModeInstantBrowseTitle ?? 'Guest Mode (Instant Browse)';
-    final cardSub = l10n?.guestModeInstantBrowseSubtitle ?? 'Explore BanjaraBio instantly without an account to see features and available profiles.';
-    final ctaText = l10n?.continueAsGuestCta ?? 'Continue as Guest 🚀';
-
-    return _TactileWrapper(
-      onTap: () async {
-        await LocalCacheService().setGuestMode(true);
-        if (mounted) {
-          Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
-        }
-      },
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.5.h),
-        decoration: BoxDecoration(
-          color: isDark ? AppColors.canvasDark : Colors.white,
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(
-            color: AppColors.categoryLocation.withValues(alpha: isDark ? 0.4 : 0.3),
-            width: 1.5,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.categoryLocation.withValues(alpha: isDark ? 0.20 : 0.08),
-              blurRadius: 14,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Badge & Icon
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 3.0.w, vertical: 0.4.h),
-                    decoration: BoxDecoration(
-                      color: isDark ? AppColors.categoryLocation.withValues(alpha: AppColors.opacity20) : AppColors.green100alt,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity50)),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.explore_rounded, size: 13.sp, color: AppColors.categoryLocation),
-                        SizedBox(width: 1.w),
-                        Flexible(
-                          child: Text(
-                            badgeText,
-                            overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.labelMedium?.copyWith(
+                    SizedBox(height: 0.8.h),
+                    _heroBenefitRow(theme, '✨', l10n?.benefitPdfBiodata ?? 'Create Beautiful PDF Biodata in 2 Mins'),
+                    SizedBox(height: 0.4.h),
+                    _heroBenefitRow(theme, '📱', l10n?.benefitShareWhatsApp ?? 'Share Directly on WhatsApp with Families'),
+                    SizedBox(height: 0.4.h),
+                    _heroBenefitRow(theme, '🛡️', l10n?.benefitVerifiedProfiles ?? '100% Verified Community Profiles'),
+                    SizedBox(height: 1.2.h),
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 1.2.h),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [AppColors.goldSoft, AppColors.categoryAstro],
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.categoryAstro.withValues(alpha: 0.45),
+                            blurRadius: 12,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ScaleTransition(
+                            scale: _pulseAnimation,
+                            child: const Icon(Icons.auto_awesome_rounded, size: 17, color: AppColors.amberBgDark),
+                          ),
+                          SizedBox(width: 2.w),
+                          Text(
+                            ctaText,
+                            style: TextStyle(
+                              fontFamily: AppTypography.headingFontFamily,
                               fontWeight: AppTypography.black,
                               fontSize: AppTypography.bodyMedium,
-                              color: AppColors.categoryLocationDark,
-                              letterSpacing: 0.4,
+                              color: AppColors.amberBgDark,
+                              letterSpacing: 0.2,
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(22),
+                    child: CustomPaint(
+                      painter: _SheenGlintPainter(percent: glintValue),
                     ),
                   ),
                 ),
-                SizedBox(width: 2.w),
-                Container(
-                  width: 9.5.w, height: 9.5.w,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      colors: [AppColors.categoryLocation.withValues(alpha: AppColors.opacity20), AppColors.categoryLocation.withValues(alpha: AppColors.opacity8)],
-                    ),
-                    border: Border.all(color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity30)),
-                  ),
-                  child: Icon(Icons.travel_explore_rounded, size: 17.sp, color: AppColors.categoryLocation),
-                ),
-              ],
-            ),
-            SizedBox(height: 0.8.h),
-
-            // Title
-            Text(
-              cardTitle,
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontFamily: AppTypography.headingFontFamily,
-                fontWeight: AppTypography.black,
-                fontSize: AppTypography.headingSmall,
-                color: theme.colorScheme.onSurface,
-                height: 1.15,
               ),
-            ),
-            SizedBox(height: 0.4.h),
-
-            // Subtitle
-            Text(
-              cardSub,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontFamily: AppTypography.bodyFontFamily,
-                fontSize: AppTypography.bodyMedium,
-                fontWeight: AppTypography.medium,
-                color: theme.colorScheme.onSurfaceVariant,
-                height: 1.25,
-              ),
-            ),
-            SizedBox(height: 1.0.h),
-
-            // CTA Button
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 0.9.h),
-              decoration: BoxDecoration(
-                color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity10),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.categoryLocation.withValues(alpha: AppColors.opacity35), width: 1.2),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.travel_explore_rounded, size: 15.sp, color: AppColors.categoryLocation),
-                  SizedBox(width: 1.5.w),
-                  Text(
-                    ctaText,
-                    style: theme.textTheme.labelLarge?.copyWith(
-                      fontWeight: AppTypography.black,
-                      fontSize: AppTypography.bodyLarge,
-                      color: AppColors.categoryLocation,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      },
     );
   }
 
-  Widget _stepperFeatureChip(ThemeData theme, String text, bool isDark) {
+  Widget _featureChip(ThemeData theme, String text, bool isDark) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 2.2.w, vertical: 0.35.h),
       decoration: BoxDecoration(
@@ -1599,8 +1400,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
       ),
       child: Text(
         text,
-        style: theme.textTheme.bodySmall?.copyWith(
-          fontSize: AppTypography.bodyMedium,
+        style: TextStyle(
+          fontSize: AppTypography.labelSmall,
           fontWeight: AppTypography.semiBold,
           color: isDark ? Colors.white70 : AppColors.slate700,
         ),
@@ -1608,17 +1409,17 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
     );
   }
 
-  Widget _stepperBenefitRow(ThemeData theme, String emoji, String text) {
+  Widget _heroBenefitRow(ThemeData theme, String emoji, String text) {
     return Row(
       children: [
-        Text(emoji, style: TextStyle(fontSize: AppTypography.bodyMedium)),
-        SizedBox(width: 1.5.w),
+        Text(emoji, style: const TextStyle(fontSize: 14)),
+        SizedBox(width: 2.w),
         Expanded(
           child: Text(
             text,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              fontSize: AppTypography.bodyMedium,
-              fontWeight: AppTypography.semiBold,
+            style: TextStyle(
+              fontSize: AppTypography.bodySmall,
+              fontWeight: AppTypography.medium,
               color: Colors.white.withValues(alpha: 0.95),
             ),
           ),
@@ -1628,127 +1429,209 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
   }
 
   // ══════════════════════════════════════════════
-  // FOOTER (Support Strip)
+  // 6. FOOTER (Balanced Equal Size WhatsApp & Instagram Support)
   // ══════════════════════════════════════════════
   Widget _buildSupportFooter(ThemeData theme, bool isDark, AppLocalizations? l10n, Color primary) {
-    return _staggered(
-      start: 0.6, end: 0.9,
-      child: Column(
-        children: [
-          Text(
-            'काही अडचण आहे? मदत हवी असल्यास संपर्क साधा',
-            style: theme.textTheme.bodySmall?.copyWith(
-              fontWeight: AppTypography.semiBold,
-              fontSize: AppTypography.bodySmall,
-              color: theme.colorScheme.onSurfaceVariant,
+    return Row(
+      children: [
+        // 💬 1. WhatsApp Support Action Pill (Expanded for equal 50/50 width)
+        Expanded(
+          child: TactilePressable(
+            onTap: _launchWhatsApp,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 1.1.h),
+              decoration: BoxDecoration(
+                color: AppColors.whatsapp.withValues(alpha: isDark ? 0.16 : 0.10),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: AppColors.whatsapp.withValues(alpha: isDark ? 0.45 : 0.35),
+                  width: 1.2,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.whatsapp.withValues(alpha: isDark ? 0.20 : 0.08),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/icons/whatsapp_icon.png',
+                    width: 24,
+                    height: 24,
+                    fit: BoxFit.contain,
+                  ),
+                  SizedBox(width: 2.2.w),
+                  Flexible(
+                    child: Text(
+                      'WhatsApp',
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontFamily: AppTypography.headingFontFamily,
+                        fontWeight: AppTypography.extraBold,
+                        fontSize: AppTypography.bodyMedium,
+                        color: AppColors.whatsapp,
+                        letterSpacing: 0.2,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          SizedBox(height: 0.8.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _TactileWrapper(
-                onTap: _launchWhatsApp,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 0.7.h),
-                  decoration: BoxDecoration(
-                    color: AppColors.whatsapp.withValues(alpha: AppColors.opacity12),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: AppColors.whatsapp.withValues(alpha: AppColors.opacity30)),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.chat_rounded, size: 13.sp, color: AppColors.whatsapp),
-                      SizedBox(width: 1.5.w),
-                      Text(
-                        'WhatsApp Support',
-                        style: theme.textTheme.labelMedium?.copyWith(
-                          fontWeight: AppTypography.extraBold,
-                          fontSize: AppTypography.bodySmall,
-                          color: AppColors.whatsapp,
-                        ),
-                      ),
-                    ],
-                  ),
+        ),
+
+        SizedBox(width: 3.0.w),
+
+        // 📸 2. Instagram Official Page Pill (Expanded for equal 50/50 width)
+        Expanded(
+          child: TactilePressable(
+            onTap: _launchInstagram,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 1.1.h),
+              decoration: BoxDecoration(
+                color: AppColors.instagramPurple.withValues(alpha: isDark ? 0.16 : 0.08),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: AppColors.instagramPurple.withValues(alpha: isDark ? 0.45 : 0.30),
+                  width: 1.2,
                 ),
-              ),
-              SizedBox(width: 3.w),
-              _TactileWrapper(
-                onTap: _launchDialer,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 0.7.h),
-                  decoration: BoxDecoration(
-                    color: primary.withValues(alpha: AppColors.opacity10),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: primary.withValues(alpha: AppColors.opacity25)),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.instagramPurple.withValues(alpha: isDark ? 0.20 : 0.08),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
                   ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.call_rounded, size: 13.sp, color: primary),
-                      SizedBox(width: 1.5.w),
-                      Text(
-                        'Call Us',
-                        style: theme.textTheme.labelMedium?.copyWith(
-                          fontWeight: AppTypography.extraBold,
-                          fontSize: AppTypography.bodySmall,
-                          color: primary,
-                        ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/icons/instagram_icon.png',
+                    width: 24,
+                    height: 24,
+                    fit: BoxFit.contain,
+                  ),
+                  SizedBox(width: 2.2.w),
+                  Flexible(
+                    child: Text(
+                      'Instagram',
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontFamily: AppTypography.headingFontFamily,
+                        fontWeight: AppTypography.extraBold,
+                        fontSize: AppTypography.bodyMedium,
+                        color: AppColors.instagramPurple,
+                        letterSpacing: 0.2,
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
+        ),
+      ],
+    );
+  }
+}
+
+/// 🌟 Model for Ambient Constellation Particles
+class _FloatingParticle {
+  final double x;
+  final double y;
+  final double radius;
+  final double speed;
+  final bool isGold;
+
+  _FloatingParticle({
+    required this.x,
+    required this.y,
+    required this.radius,
+    required this.speed,
+    required this.isGold,
+  });
+}
+
+/// 🌟 Custom Painter for Floating Ambient Constellation Particles
+class _ConstellationParticlePainter extends CustomPainter {
+  final double progress;
+  final List<_FloatingParticle> particles;
+  final bool isDark;
+  final Color primaryColor;
+
+  _ConstellationParticlePainter({
+    required this.progress,
+    required this.particles,
+    required this.isDark,
+    required this.primaryColor,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    for (int i = 0; i < particles.length; i++) {
+      final p = particles[i];
+      final currentY = ((p.y - (progress * p.speed)) % 1.0) * size.height;
+      final currentX = ((p.x + math.sin(progress * 2 * math.pi + i) * 0.04) % 1.0) * size.width;
+
+      final color = p.isGold
+          ? AppColors.categoryAstro.withValues(alpha: isDark ? 0.35 : 0.22)
+          : primaryColor.withValues(alpha: isDark ? 0.30 : 0.18);
+
+      final paint = Paint()
+        ..color = color
+        ..style = PaintingStyle.fill;
+
+      canvas.drawCircle(Offset(currentX, currentY), p.radius, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _ConstellationParticlePainter oldDelegate) =>
+      oldDelegate.progress != progress;
+}
+
+/// 🌟 Shimmering Diagonal Light-Sweep Glint Painter
+class _SheenGlintPainter extends CustomPainter {
+  final double percent;
+
+  _SheenGlintPainter({required this.percent});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final double glintWidth = size.width * 0.45;
+    final double totalDistance = size.width + glintWidth * 2;
+    final double currentX = -glintWidth + (totalDistance * percent);
+
+    final Paint paint = Paint()
+      ..shader = LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Colors.white.withValues(alpha: 0.0),
+          Colors.white.withValues(alpha: 0.25),
+          Colors.white.withValues(alpha: 0.0),
         ],
-      ),
-    );
-  }
-}
+        stops: const [0.0, 0.5, 1.0],
+      ).createShader(Rect.fromLTWH(currentX, 0, glintWidth, size.height));
 
-class _TactileWrapper extends StatefulWidget {
-  final Widget child;
-  final VoidCallback onTap;
-  const _TactileWrapper({required this.child, required this.onTap});
+    final Path path = Path()
+      ..moveTo(currentX, 0)
+      ..lineTo(currentX + glintWidth, 0)
+      ..lineTo(currentX + glintWidth - (size.height * math.tan(0.35)), size.height)
+      ..lineTo(currentX - (size.height * math.tan(0.35)), size.height)
+      ..close();
 
-  @override
-  State<_TactileWrapper> createState() => _TactileWrapperState();
-}
-
-class _TactileWrapperState extends State<_TactileWrapper>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scale;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 100),
-    );
-    _scale = Tween<double>(begin: 1.0, end: 0.97).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic),
-    );
+    canvas.drawPath(path, paint);
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (_) => _controller.forward(),
-      onTapUp: (_) {
-        _controller.reverse();
-        HapticFeedback.lightImpact();
-        widget.onTap();
-      },
-      onTapCancel: () => _controller.reverse(),
-      child: ScaleTransition(scale: _scale, child: widget.child),
-    );
-  }
+  bool shouldRepaint(covariant _SheenGlintPainter oldDelegate) =>
+      oldDelegate.percent != percent;
 }
