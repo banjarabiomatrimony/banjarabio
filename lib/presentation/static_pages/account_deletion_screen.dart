@@ -283,14 +283,16 @@ class _AccountDeletionScreenState extends State<AccountDeletionScreen>
                           size: 20,
                         ),
                         SizedBox(width: 2.5.w),
-                        Text(
-                          l10n?.deletingYourAccountWillResultIn ??
-                              'Deleting your account will result in:',
-                          style: TextStyle(
-                            fontFamily: AppTypography.headingFontFamily,
-                            fontWeight: AppTypography.bold,
-                            fontSize: AppTypography.bodyMedium,
-                            color: theme.colorScheme.onSurface,
+                        Flexible(
+                          child: Text(
+                            l10n?.deletingYourAccountWillResultIn ??
+                                'Deleting your account will result in:',
+                            style: TextStyle(
+                              fontFamily: AppTypography.headingFontFamily,
+                              fontWeight: AppTypography.bold,
+                              fontSize: AppTypography.bodyMedium,
+                              color: theme.colorScheme.onSurface,
+                            ),
                           ),
                         ),
                       ],

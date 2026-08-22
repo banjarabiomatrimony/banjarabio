@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,6 +47,7 @@ class _UserTypeSelectionScreenState extends ConsumerState<UserTypeSelectionScree
   late AnimationController _pulseController;
   late AnimationController _glintController;
   late AnimationController _particleController;
+  Timer? _langPromptTimer;
 
   late Animation<double> _pulseAnimation;
   late Animation<double> _glowAnimation;
@@ -173,10 +175,12 @@ class _UserTypeSelectionScreenState extends ConsumerState<UserTypeSelectionScree
       final savedLocale = prefs.getString('selected_locale');
       if (savedLocale == null && mounted) {
         // Small delay to let screen entrance animation settle
-        await Future.delayed(const Duration(milliseconds: 300));
-        if (mounted) {
-          _showLanguageSelectionModal(context, isFirstTime: true);
-        }
+        _langPromptTimer?.cancel();
+        _langPromptTimer = Timer(const Duration(milliseconds: 300), () {
+          if (mounted) {
+            _showLanguageSelectionModal(context, isFirstTime: true);
+          }
+        });
       }
     } catch (e) {
       AppLogger.error('UserTypeSelectionScreen', 'Error checking saved locale: $e');
@@ -251,13 +255,17 @@ class _UserTypeSelectionScreenState extends ConsumerState<UserTypeSelectionScree
                     child: const Icon(Icons.language_rounded, size: 22, color: AppColors.categoryAstroDark),
                   ),
                   SizedBox(width: 2.5.w),
-                  Text(
-                    'निवडा तुमची भाषा / Select Language',
-                    style: TextStyle(
-                      fontFamily: AppTypography.headingFontFamily,
-                      fontWeight: AppTypography.extraBold,
-                      fontSize: AppTypography.bodyLarge,
-                      color: theme.colorScheme.onSurface,
+                  Flexible(
+                    child: Text(
+                      'निवडा तुमची भाषा / Select Language',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: AppTypography.headingFontFamily,
+                        fontWeight: AppTypography.extraBold,
+                        fontSize: AppTypography.bodyLarge,
+                        color: theme.colorScheme.onSurface,
+                      ),
                     ),
                   ),
                 ],
@@ -348,21 +356,27 @@ class _UserTypeSelectionScreenState extends ConsumerState<UserTypeSelectionScree
                               children: [
                                 Row(
                                   children: [
-                                    Text(
-                                      lang['native']!,
-                                      style: TextStyle(
-                                        fontFamily: AppTypography.headingFontFamily,
-                                        fontWeight: AppTypography.bold,
-                                        fontSize: AppTypography.bodyMedium,
-                                        color: primaryColor,
+                                    Flexible(
+                                      child: Text(
+                                        lang['native']!,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontFamily: AppTypography.headingFontFamily,
+                                          fontWeight: AppTypography.bold,
+                                          fontSize: AppTypography.bodyMedium,
+                                          color: primaryColor,
+                                        ),
                                       ),
                                     ),
                                     SizedBox(width: 2.w),
-                                    Text(
-                                      '(${lang['label']})',
-                                      style: TextStyle(
-                                        fontSize: AppTypography.labelSmall,
-                                        color: theme.colorScheme.onSurfaceVariant,
+                                    Flexible(
+                                      child: Text(
+                                        '(${lang['label']})',
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: AppTypography.labelSmall,
+                                          color: theme.colorScheme.onSurfaceVariant,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -398,6 +412,7 @@ class _UserTypeSelectionScreenState extends ConsumerState<UserTypeSelectionScree
 
   @override
   void dispose() {
+    _langPromptTimer?.cancel();
     _tabController.dispose();
     _entranceController.dispose();
     _pulseController.dispose();

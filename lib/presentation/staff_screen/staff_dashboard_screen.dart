@@ -337,16 +337,21 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Icon(icon, size: 16, color: color),
-              const Spacer(),
-              Text(
-                value,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: AppTypography.headingLarge,
-                  fontWeight: AppTypography.bold,
-                  shadows: [Shadow(color: color.withValues(alpha: AppColors.opacity40), blurRadius: 4)],
+              const SizedBox(width: 4),
+              Flexible(
+                child: Text(
+                  value,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: AppTypography.headingMedium,
+                    fontWeight: AppTypography.bold,
+                    shadows: [Shadow(color: color.withValues(alpha: AppColors.opacity40), blurRadius: 4)],
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.end,
                 ),
               ),
             ],

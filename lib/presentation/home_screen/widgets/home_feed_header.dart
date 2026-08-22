@@ -145,8 +145,8 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
     final theme = Theme.of(context);
     final topPadding = MediaQuery.of(context).padding.top;
     final double headerHeight = _isSearchExpanded
-        ? (11.0.h + topPadding)
-        : (6.1.h + topPadding);
+        ? (11.5.h + topPadding)
+        : (6.6.h + topPadding);
 
     return SliverAppBar(
       floating: true,
@@ -177,26 +177,29 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
             ],
           ),
           padding: EdgeInsets.fromLTRB(3.5.w, topPadding + 0.15.h, 3.5.w, 0.15.h),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // ─── ROW 1: BRANDING, LOCATION PILL & REWARD STREAK (OPTION B) ───
-              _buildLocationRow(context, theme),
+          child: SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // ─── ROW 1: BRANDING, LOCATION PILL & REWARD STREAK (OPTION B) ───
+                _buildLocationRow(context, theme),
 
-              // ─── ROW 1.5: ON-DEMAND EXPANDABLE SEARCH BAR ───
-              if (_isSearchExpanded) ...[
-                SizedBox(height: 0.5.h),
-                _buildSearchRow(context, theme),
+                // ─── ROW 1.5: ON-DEMAND EXPANDABLE SEARCH BAR ───
+                if (_isSearchExpanded) ...[
+                  SizedBox(height: 0.5.h),
+                  _buildSearchRow(context, theme),
+                ],
+
+                SizedBox(height: 0.75.h),
+
+                // ─── ROW 2: ANIMATED HORIZONTAL DISCOVERY STRIP ───
+                // [ 0: ⚡ Filter ] -> [ 1: ✨ All Matches ] -> [ 2: 🌟 Daily (10) ] -> [ 3: 📍 Near Me ] -> [ 4: 👑 VIP Verified ] -> [ 5: 🔍 Search ]
+                _buildUnifiedControlRow(context, theme),
               ],
-
-              SizedBox(height: 0.75.h),
-
-              // ─── ROW 2: ANIMATED HORIZONTAL DISCOVERY STRIP ───
-              // [ 0: ⚡ Filter ] -> [ 1: ✨ All Matches ] -> [ 2: 🌟 Daily (10) ] -> [ 3: 📍 Near Me ] -> [ 4: 👑 VIP Verified ] -> [ 5: 🔍 Search ]
-              _buildUnifiedControlRow(context, theme),
-            ],
+            ),
           ),
         ),
       ),

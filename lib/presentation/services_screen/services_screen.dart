@@ -1379,7 +1379,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
-          height: 195,
+          height: 235,
           child: PageView(
             controller: pageController,
             physics: const BouncingScrollPhysics(),
@@ -1458,95 +1458,98 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
           ),
         ],
       ),
-      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.4.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Row: Top Badge + Sparkle Icon
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3.5),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.18),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: AppColors.opacity25),
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.0.h),
+      child: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Row: Top Badge + Sparkle Icon
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3.5),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.18),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: AppColors.opacity25),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ScaleTransition(
+                        scale: _pulseAnimation ??
+                            const AlwaysStoppedAnimation<double>(1.0),
+                        child: const Icon(Icons.verified_rounded,
+                            color: AppColors.gold, size: 13),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        '100% VERIFIED BANJARA NETWORK',
+                        style: AppTypography.bodyStyle(
+                          color: Colors.white,
+                          fontWeight: AppTypography.black,
+                          fontSize: AppTypography.labelTiny,
+                          letterSpacing: 0.4,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ScaleTransition(
-                      scale: _pulseAnimation ??
-                          const AlwaysStoppedAnimation<double>(1.0),
-                      child: const Icon(Icons.verified_rounded,
-                          color: AppColors.gold, size: 13),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      '100% VERIFIED BANJARA NETWORK',
-                      style:                       AppTypography.bodyStyle(
-                        color: Colors.white,
-                        fontWeight: AppTypography.black,
-                        fontSize: AppTypography.labelTiny,
-                        letterSpacing: 0.4,
-                      ),
-                    ),
-                  ],
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: AppColors.opacity15),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.celebration_rounded,
+                      color: AppColors.gold, size: 16),
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: AppColors.opacity15),
-                  shape: BoxShape.circle,
+              ],
+            ),
+            SizedBox(height: 1.h),
+            // Main Headline & Subtitle
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Banjara Wedding Services Hub',
+                  style: AppTypography.displayStyle(
+                    color: Colors.white,
+                    fontSize: AppTypography.headingMedium,
+                    letterSpacing: -0.3,
+                  ),
                 ),
-                child: const Icon(Icons.celebration_rounded,
-                    color: AppColors.gold, size: 16),
-              ),
-            ],
-          ),
-
-          // Main Headline & Subtitle
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Banjara Wedding Services Hub',
-                style:                 AppTypography.displayStyle(
-                  color: Colors.white,
-                  fontSize: AppTypography.headingMedium,
-                  letterSpacing: -0.3,
+                const SizedBox(height: 3),
+                Text(
+                  'Direct quotations & authentic contacts from community vendors for your dream wedding.',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: AppTypography.labelSmall,
+                    color: Colors.white.withValues(alpha: AppColors.opacity90),
+                    height: 1.3,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 3),
-              Text(
-                'Direct quotations & authentic contacts from community vendors for your dream wedding.',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: AppTypography.labelSmall,
-                  color: Colors.white.withValues(alpha: AppColors.opacity90),
-                  height: 1.3,
-                ),
-              ),
-            ],
-          ),
-
-          // 3 Trust Metric Badges
-          Row(
-            children: [
-              _buildTrustPill('🛡️ 500+ Vendors'),
-              SizedBox(width: 1.5.w),
-              _buildTrustPill('⚡ Instant Quote'),
-              SizedBox(width: 1.5.w),
-              _buildTrustPill('💰 0% Commission'),
-            ],
-          ),
-        ],
+              ],
+            ),
+            SizedBox(height: 1.2.h),
+            // 3 Trust Metric Badges
+            Row(
+              children: [
+                _buildTrustPill('🛡️ 500+ Vendors'),
+                SizedBox(width: 1.5.w),
+                _buildTrustPill('⚡ Instant Quote'),
+                SizedBox(width: 1.5.w),
+                _buildTrustPill('💰 0% Commission'),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

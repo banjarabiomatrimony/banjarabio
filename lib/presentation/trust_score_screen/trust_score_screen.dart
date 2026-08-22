@@ -193,11 +193,14 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Verifications Checklist',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: AppTypography.extraBold,
-                            fontSize: AppTypography.headingSmall,
+                        Flexible(
+                          child: Text(
+                            'Verifications Checklist',
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: AppTypography.extraBold,
+                              fontSize: AppTypography.headingSmall,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         Container(
@@ -372,11 +375,14 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                AppLocalizations.of(context)?.yourTrustScore ?? 'Your Trust Score',
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: AppTypography.black,
-                  fontSize: AppTypography.headingSmall,
+              Flexible(
+                child: Text(
+                  AppLocalizations.of(context)?.yourTrustScore ?? 'Your Trust Score',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: AppTypography.black,
+                    fontSize: AppTypography.headingSmall,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               Container(

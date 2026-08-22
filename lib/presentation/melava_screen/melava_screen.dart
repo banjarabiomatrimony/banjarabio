@@ -568,7 +568,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _buildTrustBadge(theme, event.partnerType),
+                          Flexible(child: _buildTrustBadge(theme, event.partnerType)),
                           Row(
                             children: [
                               IconButton(
@@ -876,13 +876,16 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
             color: baseColor,
           ),
           SizedBox(width: 1.w),
-          Text(
-            partnerType.toUpperCase(),
-            style: TextStyle(
-              fontSize: AppTypography.bodySmall,
-              fontWeight: AppTypography.bold,
-              letterSpacing: 0.5,
-              color: baseColor,
+          Flexible(
+            child: Text(
+              partnerType.toUpperCase(),
+              style: TextStyle(
+                fontSize: AppTypography.bodySmall,
+                fontWeight: AppTypography.bold,
+                letterSpacing: 0.5,
+                color: baseColor,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],
@@ -1140,11 +1143,14 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                   children: [
                     const Icon(Icons.add_comment_rounded, color: Colors.white, size: 18),
                     SizedBox(width: 2.w),
-                    Text(
-                      'Suggest an Event',
-                      style: AppTypography.headingStyle(
-                        fontWeight: AppTypography.bold,
-                        color: Colors.white,
+                    Flexible(
+                      child: Text(
+                        'Suggest an Event',
+                        style: AppTypography.headingStyle(
+                          fontSize: AppTypography.bodyMedium,
+                          fontWeight: AppTypography.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],

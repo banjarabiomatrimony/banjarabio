@@ -178,7 +178,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 62,
+      height: 74,
       child: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
           if (notification is ScrollStartNotification &&
@@ -481,7 +481,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
             child: Stack(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
                     gradient: gradient,
                     borderRadius: BorderRadius.circular(16),
@@ -505,8 +505,8 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                     children: [
                       // ─── High-Impact Icon Shield with Colored Outline ───
                       Container(
-                        width: 38,
-                        height: 38,
+                        width: 30,
+                        height: 30,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: Colors.black.withValues(alpha: 0.22),
@@ -521,7 +521,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                         ),
                         child: leadingWidget,
                       ),
-                      const SizedBox(width: 9),
+                      const SizedBox(width: 8),
 
                       // ─── Text Column + Highlight Micro-Badge ───
                       Column(
@@ -537,7 +537,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: AppTypography.black,
-                                  fontSize: AppTypography.bodySmall,
+                                  fontSize: AppTypography.labelMedium,
                                   letterSpacing: 0.1,
                                 ),
                               ),
@@ -545,10 +545,10 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                               if (isPausedCard)
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 6, vertical: 1.5),
+                                      horizontal: 5, vertical: 1),
                                   decoration: BoxDecoration(
                                     color: Colors.amberAccent,
-                                    borderRadius: BorderRadius.circular(6),
+                                    borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: Text(
                                     'PAUSED',
@@ -565,10 +565,10 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                               else if (badgeText != null)
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 6, vertical: 1.5),
+                                      horizontal: 5, vertical: 1),
                                   decoration: BoxDecoration(
                                     color: badgeColor ?? AppColors.goldTint100,
-                                    borderRadius: BorderRadius.circular(6),
+                                    borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: Text(
                                     badgeText,
@@ -582,7 +582,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                                 ),
                             ],
                           ),
-                          const SizedBox(height: 2.0),
+                          const SizedBox(height: 1.0),
                           Text(
                             subtitle,
                             style: TextStyle(
@@ -594,6 +594,8 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                                   : AppTypography.medium,
                               fontSize: AppTypography.labelSmall,
                             ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),

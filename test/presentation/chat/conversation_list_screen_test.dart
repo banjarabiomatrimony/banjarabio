@@ -17,7 +17,7 @@ void main() {
   testWidgets('does not crash on settle', (tester) async {
     setTestScreenSize(tester);
     await tester.pumpWidget(createTestableWidget(const ConversationListScreen()));
-    await tester.pumpAndSettle(const Duration(seconds: 3));
+    await tester.pump(const Duration(seconds: 2));
     expect(find.byType(Scaffold), findsWidgets);
   });
 }

@@ -42,11 +42,16 @@ void main() {
       expect(SubscriptionConfig.getFeatures(PlanType.biodata_unlock), SubscriptionConfig.biodataUnlock);
     });
 
-    test('getAllPaidPlans returns 2 plans (mass_market, mass_market_annual) during growth campaign', () {
+    test('getAllPaidPlans returns self-service paid plans', () {
       final plans = SubscriptionConfig.getAllPaidPlans();
+      expect(plans.isNotEmpty, true);
+      expect(plans.map((p) => p.key), containsAll([PlanType.standard, PlanType.silver, PlanType.gold, PlanType.platinum]));
+    });
+
+    test('getBvsSubsidizedPlans returns 2 subsidized plans', () {
+      final plans = SubscriptionConfig.getBvsSubsidizedPlans();
       expect(plans.length, 2);
-      expect(plans[0].key, PlanType.mass_market);
-      expect(plans[1].key, PlanType.mass_market_annual);
+      expect(plans.map((p) => p.key), containsAll([PlanType.mass_market, PlanType.mass_market_annual]));
     });
 
     test('calculateSavings returns positive value for paid plans', () {

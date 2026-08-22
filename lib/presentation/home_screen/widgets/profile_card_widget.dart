@@ -1045,43 +1045,55 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.auto_awesome_rounded,
-                      color: AppColors.rose400,
-                      size: 13,
-                    ),
-                    SizedBox(width: 1.5.w),
-                    Text(
-                      info.displayBadgeText,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: AppTypography.extraBold,
-                        fontSize: AppTypography.labelSmall,
+                Flexible(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.auto_awesome_rounded,
+                        color: AppColors.rose400,
+                        size: 13,
                       ),
-                    ),
-                  ],
+                      SizedBox(width: 1.5.w),
+                      Flexible(
+                        child: Text(
+                          info.displayBadgeText,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: AppTypography.extraBold,
+                            fontSize: AppTypography.labelSmall,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      info.displaySubtext,
-                      style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.95),
-                        fontWeight: AppTypography.bold,
-                        fontSize: AppTypography.labelSmall,
+                const SizedBox(width: 6),
+                Flexible(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          info.displaySubtext,
+                          style: TextStyle(
+                            color: Colors.white.withValues(alpha: 0.95),
+                            fontWeight: AppTypography.bold,
+                            fontSize: AppTypography.labelSmall,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 4),
-                    const Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: AppColors.rose200,
-                      size: 9.5,
-                    ),
-                  ],
+                      const SizedBox(width: 4),
+                      const Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: AppColors.rose200,
+                        size: 9.5,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

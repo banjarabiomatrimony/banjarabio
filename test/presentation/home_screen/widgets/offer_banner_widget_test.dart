@@ -52,13 +52,14 @@ void main() {
         await tester.pump(const Duration(milliseconds: 100));
       }
       
-      expect(find.byType(PageView), findsOneWidget);
+      expect(find.byType(ListView), findsOneWidget);
 
-      // Clean up cache manager timers
+      // Clean up cache manager timers and unmount
+      await tester.pumpWidget(const SizedBox());
       await tester.pump(const Duration(seconds: 10));
     });
 
-    testWidgets('shows nothing when no banners found', (tester) async {
+    testWidgets('shows standard promotional cards when no backend banners found', (tester) async {
       fakeSupabase.rpcResponse = [];
 
       await tester.pumpWidget(createWidgetUnderTest());
@@ -66,8 +67,11 @@ void main() {
         await tester.pump(const Duration(milliseconds: 100));
       }
       
-      expect(find.byType(PageView), findsNothing);
-      expect(find.byType(SizedBox), findsWidgets); // Shrink box
+      expect(find.byType(ListView), findsOneWidget);
+
+      // Clean up cache manager timers and unmount
+      await tester.pumpWidget(const SizedBox());
+      await tester.pump(const Duration(seconds: 10));
     });
   });
 }

@@ -69,8 +69,9 @@ void main() {
 
       expect(json['id'], 'uuid-123');
       expect(json['full_name'], 'John');
-      expect(json['phone_number'], isNull); // Removed for privacy in toJson
-      expect(json['photos'], isNull); // Removed in toJson (handled separately)
+      expect(json['phone_number'], '1234567890');
+      expect(json['photos'], isNotNull);
+      expect((json['photos'] as List).length, 1);
       expect(json['is_premium'], true);
     });
 

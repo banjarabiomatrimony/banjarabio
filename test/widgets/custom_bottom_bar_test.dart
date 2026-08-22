@@ -38,10 +38,10 @@ void main() {
 
     // Verify 5 active nav items exist
     expect(find.text('Home'), findsOneWidget);
-    expect(find.text('Chat'), findsOneWidget); // Localized or fallback Connect/Chat label
+    expect(find.text('Inbox'), findsOneWidget);
     expect(find.text('Biodata'), findsOneWidget);
     expect(find.text('Services'), findsOneWidget);
-    expect(find.text('Menu'), findsOneWidget);
+    expect(find.text('Account'), findsOneWidget);
 
     // Tap on Biodata tab (index 2)
     await tester.tap(find.text('Biodata'));
@@ -53,8 +53,8 @@ void main() {
     await tester.pump();
     expect(tappedIndex, 3);
 
-    // Tap on Menu tab (index 4)
-    await tester.tap(find.text('Menu'));
+    // Tap on Account tab (index 4)
+    await tester.tap(find.text('Account'));
     await tester.pump();
     expect(tappedIndex, 4);
   });

@@ -28,16 +28,16 @@ void main() {
       ),
     );
 
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
 
-    // 1. Verify App Bar
-    expect(find.text('Wedding Services Marketplace'), findsOneWidget);
+    // 1. Verify App Bar and Header
+    expect(find.text('Services'), findsOneWidget);
+    expect(find.text('Banjara Wedding Services Hub'), findsOneWidget);
 
-    // 2. Verify Category Tiles
-    expect(find.text('DJ & Sound'), findsOneWidget);
-    expect(find.text('Mandap & Decor'), findsOneWidget);
-    expect(find.text('Catering'), findsOneWidget);
-    expect(find.text('Photography'), findsOneWidget);
-    expect(find.text('Register'), findsOneWidget);
+    // 2. Verify Category Tiles & Actions
+    expect(find.text('DJ & Sound System'), findsOneWidget);
+    expect(find.text('Mandap & Theme Decor'), findsOneWidget);
+    expect(find.text('+ Vendor'), findsOneWidget);
   });
 }

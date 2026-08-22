@@ -105,6 +105,8 @@ void main() {
       final bioBtn = find.textContaining('Bio');
       expect(bioBtn, findsWidgets);
       
+      await tester.ensureVisible(bioBtn.first);
+      await tester.pumpAndSettle();
       await tester.tap(bioBtn.first);
       
       // AI generation has a 1s delay in code

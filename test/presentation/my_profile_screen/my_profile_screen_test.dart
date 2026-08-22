@@ -25,7 +25,7 @@ void main() {
   testWidgets('shows error or profile after load', (tester) async {
     setTestScreenSize(tester);
     await tester.pumpWidget(createTestableWidget(const MyProfileScreen()));
-    await tester.pumpAndSettle(const Duration(seconds: 3));
+    await tester.pump(const Duration(seconds: 2));
     expect(find.byType(Scaffold), findsWidgets);
   });
 }

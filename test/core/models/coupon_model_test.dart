@@ -2,21 +2,27 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:banjarabio/core/models/coupon_model.dart';
 
 void main() {
-  final now = DateTime.now();
-  final today = DateTime(now.year, now.month, now.day);
-  final sampleJson = {
-    'id': 'c1',
-    'code': 'SAVE20',
-    'offer_name': '20% Off',
-    'description': 'Special discount',
-    'valid_until': today.toIso8601String(),
-    'discount_percentage': 20,
-    'is_active': true,
-    'created_at': now.toIso8601String(),
-    'updated_at': now.toIso8601String(),
-    'banner_url': 'https://example.com/banner.jpg',
-    'target_filters': {'gender': 'Male'},
-  };
+  late DateTime now;
+  late DateTime today;
+  late Map<String, dynamic> sampleJson;
+
+  setUp(() {
+    now = DateTime.now();
+    today = DateTime(now.year, now.month, now.day);
+    sampleJson = {
+      'id': 'c1',
+      'code': 'SAVE20',
+      'offer_name': '20% Off',
+      'description': 'Special discount',
+      'valid_until': today.toIso8601String(),
+      'discount_percentage': 20,
+      'is_active': true,
+      'created_at': now.toIso8601String(),
+      'updated_at': now.toIso8601String(),
+      'banner_url': 'https://example.com/banner.jpg',
+      'target_filters': {'gender': 'Male'},
+    };
+  });
 
   group('CouponModel - fromJson', () {
     test('fromJson parses all fields', () {

@@ -5,6 +5,7 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:banjarabio/presentation/profile_detail_screen/widgets/action_buttons_widget.dart';
+import '../../../helpers/widget_test_helpers.dart';
 
 /// Wraps widget with Sizer and Localization
 Widget wrapWithSizer(Widget child) {
@@ -29,6 +30,7 @@ void main() {
           TestWidgetsFlutterBinding.ensureInitialized();
       binding.platformDispatcher.views.first.physicalSize = const Size(1080, 1920);
       binding.platformDispatcher.views.first.devicePixelRatio = 1.0;
+      setupWidgetTestMocks();
     });
 
     tearDown(() {
@@ -36,6 +38,7 @@ void main() {
           TestWidgetsFlutterBinding.ensureInitialized();
       binding.platformDispatcher.views.first.resetPhysicalSize();
       binding.platformDispatcher.views.first.resetDevicePixelRatio();
+      tearDownWidgetTestMocks();
     });
 
     testWidgets('displays SAVE when not bookmarked', (tester) async {
@@ -54,6 +57,7 @@ void main() {
           ),
         ),
       );
+      await tester.pump();
 
       expect(find.textContaining(RegExp('Save', caseSensitive: false)), findsOneWidget);
     });
@@ -74,6 +78,7 @@ void main() {
           ),
         ),
       );
+      await tester.pump();
 
       expect(find.textContaining(RegExp('Saved', caseSensitive: false)), findsOneWidget);
     });
@@ -95,6 +100,7 @@ void main() {
           ),
         ),
       );
+      await tester.pump();
 
       await tester.tap(find.textContaining(RegExp('Save', caseSensitive: false)));
       await tester.pump();
@@ -138,6 +144,7 @@ void main() {
           ),
         ),
       );
+      await tester.pump();
 
       expect(find.textContaining(RegExp('Save', caseSensitive: false)), findsOneWidget);
 

@@ -474,7 +474,9 @@ class _EducationProfessionSectionState
                     size: 18,
                   ),
                   SizedBox(width: 3.w),
-                  Text(_getLocalizedIncome(key), overflow: TextOverflow.ellipsis),
+                  Expanded(
+                    child: Text(_getLocalizedIncome(key), overflow: TextOverflow.ellipsis),
+                  ),
                 ],
               ),
             );
@@ -567,7 +569,9 @@ class _EducationProfessionSectionState
                     size: 18,
                   ),
                   SizedBox(width: 3.w),
-                  Text(_getLocalizedEducation(context, education), overflow: TextOverflow.ellipsis),
+                  Expanded(
+                    child: Text(_getLocalizedEducation(context, education), overflow: TextOverflow.ellipsis),
+                  ),
                 ],
               ),
             );
@@ -715,7 +719,9 @@ class _EducationProfessionSectionState
                     size: 18,
                   ),
                   SizedBox(width: 3.w),
-                  Text(_getLocalizedProfession(context, profession), overflow: TextOverflow.ellipsis),
+                  Expanded(
+                    child: Text(_getLocalizedProfession(context, profession), overflow: TextOverflow.ellipsis),
+                  ),
                 ],
               ),
             );

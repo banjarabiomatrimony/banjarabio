@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:banjarabio/theme/app_theme.dart';
+import 'package:banjarabio/theme/app_colors.dart';
 
 void main() {
   group('AppTheme - light color constants', () {
@@ -45,7 +46,7 @@ void main() {
     });
 
     test('onSecondaryLight is dark', () {
-      expect(AppTheme.onSecondaryLight, const Color(0xFF1D1B20));
+      expect(AppTheme.onSecondaryLight, AppColors.canvasNearBlack);
     });
   });
 
@@ -55,7 +56,7 @@ void main() {
     });
 
     test('primaryVariantDark is correct', () {
-      expect(AppTheme.primaryVariantDark, const Color(0xFF7D1629));
+      expect(AppTheme.primaryVariantDark, AppColors.crimson700);
     });
 
     test('secondaryDark is soft champagne gold', () {

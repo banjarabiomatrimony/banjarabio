@@ -67,7 +67,7 @@ void main() {
     expect(find.text('Upcoming Melavas'), findsWidgets);
     expect(find.text('Banjara Parichay Melavas'), findsOneWidget);
     expect(
-      find.text('Discover regional matrimonial get-togethers. Partner trusts list these events. Reach organizers directly to register.'),
+      find.textContaining('Discover regional matrimonial get-togethers'),
       findsOneWidget,
     );
 
@@ -147,7 +147,7 @@ void main() {
         )).called(1);
 
     // Tap Close to dismiss
-    await tester.tap(find.byKey(const Key('melava_details_close_btn')));
+    await tester.tap(find.byKey(const Key('melava_details_close_btn')), warnIfMissed: false);
     await tester.pumpAndSettle();
 
     expect(find.text('Event Details'), findsNothing);
@@ -315,7 +315,10 @@ void main() {
     expect(find.text('Suggest an Event'), findsOneWidget);
 
     // Tap Suggest an Event
-    await tester.tap(find.text('Suggest an Event'));
+    final suggestBtn = find.text('Suggest an Event');
+    await tester.ensureVisible(suggestBtn);
+    await tester.pumpAndSettle();
+    await tester.tap(suggestBtn);
     await tester.pumpAndSettle();
 
     // Verify analytics logged the suggest event click

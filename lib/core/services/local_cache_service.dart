@@ -82,7 +82,7 @@ class LocalCacheService {
 
   bool getPendingRewardsFlag() {
     final box = _getBox(boxAppMetadata);
-    return box.get('pending_rewards_flag', defaultValue: false) as bool;
+    return box.get('pending_rewards_flag', defaultValue: false) == true;
   }
 
   Future<void> clearPendingRewardsFlag() async {
@@ -256,7 +256,8 @@ class LocalCacheService {
   /// Returns true if the current user logged in via Pathway A (relative browse)
   /// and has NOT created their own candidate biodata yet.
   bool isRelativeBrowseMode() {
-    return getRelativeIntent() != null || _getBox(boxAppMetadata).get('is_relative_browse', defaultValue: false) as bool;
+    return getRelativeIntent() != null ||
+        (_getBox(boxAppMetadata).get('is_relative_browse', defaultValue: false) == true);
   }
 
   Future<void> setRelativeBrowseMode(bool value) async {
@@ -279,7 +280,7 @@ class LocalCacheService {
 
   bool isGuestMode() {
     final box = _getBox(boxAppMetadata);
-    return box.get('is_guest_mode', defaultValue: false) as bool;
+    return box.get('is_guest_mode', defaultValue: false) == true;
   }
 
   Future<void> setGuestTourCompleted(bool completed) async {
@@ -289,7 +290,7 @@ class LocalCacheService {
 
   bool isGuestTourCompleted() {
     final box = _getBox(boxAppMetadata);
-    return box.get('is_guest_tour_completed', defaultValue: false) as bool;
+    return box.get('is_guest_tour_completed', defaultValue: false) == true;
   }
 
   Future<void> setTourStageCompleted(String stageName, bool completed) async {
@@ -299,7 +300,7 @@ class LocalCacheService {
 
   bool isTourStageCompleted(String stageName) {
     final box = _getBox(boxAppMetadata);
-    return box.get('tour_${stageName}_completed', defaultValue: false) as bool;
+    return box.get('tour_${stageName}_completed', defaultValue: false) == true;
   }
 
   @visibleForTesting

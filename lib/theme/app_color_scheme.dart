@@ -311,6 +311,11 @@ extension AppColorSchemeX on BuildContext {
   /// Container(color: colors.canvas);
   /// Text('Hello', style: TextStyle(color: colors.textPrimary));
   /// ```
-  AppColorScheme get colors =>
-      Theme.of(this).extension<AppColorScheme>()!;
+  AppColorScheme get colors {
+    final ext = Theme.of(this).extension<AppColorScheme>();
+    if (ext != null) return ext;
+    return Theme.of(this).brightness == Brightness.dark
+        ? AppColorScheme.dark()
+        : AppColorScheme.light();
+  }
 }

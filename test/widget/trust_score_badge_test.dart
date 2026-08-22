@@ -21,7 +21,7 @@ void main() {
   }
 
   group('TrustScoreBadge visibility', () {
-    testWidgets('score below threshold renders empty', (tester) async {
+    testWidgets('score below threshold renders basic level badge', (tester) async {
       tester.view.physicalSize = const Size(1080, 1920);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(() => tester.view.resetPhysicalSize());
@@ -29,9 +29,9 @@ void main() {
       await tester.pumpWidget(buildBadge(20));
       await tester.pump();
 
-      // Score 20 < level2 (50) → SizedBox.shrink
-      expect(find.byType(SizedBox), findsWidgets);
-      expect(find.byType(CircularProgressIndicator), findsNothing);
+      // Score 20 = Basic level, renders progress indicator ring and shield
+      expect(find.byType(CircularProgressIndicator), findsWidgets);
+      expect(find.byIcon(Icons.shield), findsOneWidget);
     });
 
     testWidgets('score at threshold renders badge', (tester) async {

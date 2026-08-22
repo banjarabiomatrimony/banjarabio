@@ -102,7 +102,7 @@ void main() {
       // 3. Select Income
       await tester.tap(getDropdown(2));
       await tester.pumpAndSettle();
-      await tester.tap(find.textContaining('Lakh').first);
+      await tester.tap(find.textContaining('Year').last);
       await tester.pumpAndSettle();
 
       expect(isValid, isTrue);

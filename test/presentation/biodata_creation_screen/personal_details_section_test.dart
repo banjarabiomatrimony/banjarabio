@@ -146,17 +146,25 @@ void main() {
       await tester.pumpAndSettle();
 
       // 5. Select Gotra
+      await tester.ensureVisible(findDropdown('Gotra'));
+      await tester.pumpAndSettle();
       await tester.tap(findDropdown('Gotra'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Aaloth').last);
       await tester.pumpAndSettle();
 
       // 6. Fill Phone Number (index 1)
-      await tester.enterText(find.byType(TextFormField).at(1), '9876543210');
+      final phoneField = find.byType(TextFormField).at(1);
+      await tester.ensureVisible(phoneField);
+      await tester.pumpAndSettle();
+      await tester.enterText(phoneField, '9876543210');
       await tester.pumpAndSettle();
 
       // 7. Fill Age (index 2)
-      await tester.enterText(find.byType(TextFormField).at(2), '25');
+      final ageField = find.byType(TextFormField).at(2);
+      await tester.ensureVisible(ageField);
+      await tester.pumpAndSettle();
+      await tester.enterText(ageField, '25');
       await tester.pumpAndSettle();
 
       expect(isValid, isTrue);

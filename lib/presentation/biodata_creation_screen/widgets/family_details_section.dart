@@ -496,7 +496,13 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(AppLocalizations.of(context)?.aboutYourself ?? 'About Yourself', style: theme.textTheme.titleLarge),
+              Flexible(
+                child: Text(
+                  AppLocalizations.of(context)?.aboutYourself ?? 'About Yourself',
+                  style: theme.textTheme.titleLarge,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
               TextButton.icon(
                 onPressed: _isGeneratingBio ? null : _generateBio,
                 icon: _isGeneratingBio
