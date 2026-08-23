@@ -207,82 +207,88 @@ class _UserTypeSelectionScreenState extends ConsumerState<UserTypeSelectionScree
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (modalContext) {
-        return Container(
-          decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1A1114) : Colors.white,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-            border: Border.all(
-              color: isDark
-                  ? Colors.white.withValues(alpha: 0.15)
-                  : AppColors.categoryAstro.withValues(alpha: 0.25),
-              width: 1.5,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: isDark ? 0.60 : 0.20),
-                blurRadius: 30,
-                offset: const Offset(0, -6),
+          return Container(
+            constraints: BoxConstraints(maxHeight: 85.h),
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xFF1A1114) : Colors.white,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+              border: Border.all(
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.15)
+                    : AppColors.categoryAstro.withValues(alpha: 0.25),
+                width: 1.5,
               ),
-            ],
-          ),
-          padding: EdgeInsets.fromLTRB(5.w, 1.5.h, 5.w, 3.h),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Handle Pill
-              Center(
-                child: Container(
-                  width: 42,
-                  height: 4.5,
-                  decoration: BoxDecoration(
-                    color: isDark ? Colors.white24 : AppColors.slate300,
-                    borderRadius: BorderRadius.circular(3),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: isDark ? 0.60 : 0.20),
+                  blurRadius: 30,
+                  offset: const Offset(0, -6),
+                ),
+              ],
+            ),
+            padding: EdgeInsets.fromLTRB(5.w, 1.5.h, 5.w, 3.h),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Handle Pill
+                Center(
+                  child: Container(
+                    width: 42,
+                    height: 4.5,
+                    decoration: BoxDecoration(
+                      color: isDark ? Colors.white24 : AppColors.slate300,
+                      borderRadius: BorderRadius.circular(3),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 2.0.h),
+                SizedBox(height: 2.0.h),
 
-              // Title & Icon
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppColors.categoryAstro.withValues(alpha: 0.15),
-                      shape: BoxShape.circle,
+                // Title & Icon
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppColors.categoryAstro.withValues(alpha: 0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.language_rounded, size: 22, color: AppColors.categoryAstroDark),
                     ),
-                    child: const Icon(Icons.language_rounded, size: 22, color: AppColors.categoryAstroDark),
-                  ),
-                  SizedBox(width: 2.5.w),
-                  Flexible(
-                    child: Text(
-                      'निवडा तुमची भाषा / Select Language',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontFamily: AppTypography.headingFontFamily,
-                        fontWeight: AppTypography.extraBold,
-                        fontSize: AppTypography.bodyLarge,
-                        color: theme.colorScheme.onSurface,
+                    SizedBox(width: 2.5.w),
+                    Flexible(
+                      child: Text(
+                        'निवडा तुमची भाषा / Select Language',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontFamily: AppTypography.headingFontFamily,
+                          fontWeight: AppTypography.extraBold,
+                          fontSize: AppTypography.bodyLarge,
+                          color: theme.colorScheme.onSurface,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 0.6.h),
-              Text(
-                'तुम्हाला सोयीस्कर असलेली भाषा निवडा',
-                style: TextStyle(
-                  fontSize: AppTypography.labelSmall,
-                  color: theme.colorScheme.onSurfaceVariant,
+                  ],
                 ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 2.0.h),
+                SizedBox(height: 0.6.h),
+                Text(
+                  'तुम्हाला सोयीस्कर असलेली भाषा निवडा',
+                  style: TextStyle(
+                    fontSize: AppTypography.labelSmall,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 2.0.h),
 
-              // Language List Cards
-              ...languages.map((lang) {
+                // Language List Cards (Scrollable for smaller screens)
+                Flexible(
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: languages.map((lang) {
                 final isSelected = lang['code'] == activeCode;
                 final primaryColor = isSelected ? AppColors.categoryAstroDark : theme.colorScheme.onSurface;
 
@@ -402,11 +408,14 @@ class _UserTypeSelectionScreenState extends ConsumerState<UserTypeSelectionScree
                     ),
                   ),
                 );
-              }),
-            ],
+              }).toList(),
+            ),
           ),
-        );
-      },
+        ),
+      ],
+    ),
+  );
+},
     );
   }
 

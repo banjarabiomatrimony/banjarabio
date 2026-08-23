@@ -1075,7 +1075,7 @@
   "brothersCount": "{count, plural, =1{1 ಸಹೋದರ} other{{count} ಸಹೋದರರು}}",
   "browseMatchesDesc": "ಮಗ, ಮಗಳು, ಸಂಬಂಧಿಕರಿಗೆ ಸೂಕ್ತ ಸಂಬಂಧ ಹುಡುಕಿ.",
   "browseMatchesSubtitle": "ಕೆಲವು ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಿ ಮತ್ತು ಸೂಕ್ತ ಸಂಬಂಧಗಳನ್ನು ನೋಡಿ",
-  "browseMatchesTitle": "🔍 ಸಂಬಂಧ ಹುಡುಕಿ (Browse Matches)",
+  "browseMatchesTitle": "ಸಂಬಂಧ ಹುಡುಕಿ",
   "browseProfiles": "ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಬ್ರೌಸ್ ಮಾಡಿ",
   "bulkDiscount": "{percent}% ರಿಯಾಯಿತಿ",
   "business": "ವ್ಯಾಪಾರ",

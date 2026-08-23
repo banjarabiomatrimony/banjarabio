@@ -1075,7 +1075,7 @@
   "brothersCount": "{count, plural, =1{1 भाई} other{{count} भाई}}",
   "browseMatchesDesc": "बेटे, बेटी, रिश्तेदार के लिए उपयुक्त रिश्ता खोजें.",
   "browseMatchesSubtitle": "कुछ सवालों के जवाब दें और उपयुक्त रिश्ते देखें",
-  "browseMatchesTitle": "🔍 रिश्ता खोजें (Browse Matches)",
+  "browseMatchesTitle": "रिश्ता खोजें",
   "browseProfiles": "प्रोफ़ाइल ब्राउज़ करें",
   "bulkDiscount": "{percent}% की छूट",
   "business": "व्यवसाय",

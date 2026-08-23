@@ -488,25 +488,43 @@ class _AccountDeletionScreenState extends State<AccountDeletionScreen>
 
     try {
       final authRepository = AuthRepository();
-      await authRepository.deleteAccount();
+      final result = await authRepository.deleteAccount();
 
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)?.accountAndAllDataDeletedSuccessfully ??
-                  'Account and all data deleted successfully.',
+      if (!mounted) return;
+
+      await result.fold(
+        onSuccess: (_) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context)?.accountAndAllDataDeletedSuccessfully ??
+                    'Account and all data deleted successfully.',
+              ),
+              backgroundColor: Colors.green,
             ),
-            backgroundColor: Colors.green,
-          ),
-        );
-        // Navigate to splash/login and clear stack
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          AppRoutes.splash,
-          (route) => false,
-        );
-      }
+          );
+          // Navigate to splash/login and clear stack
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            AppRoutes.splash,
+            (route) => false,
+          );
+        },
+        onFailure: (error) {
+          if (!mounted) return;
+          setState(() => _isLoading = false);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context)?.failedToDeleteAccount(error) ??
+                    'Failed to delete account: $error',
+              ),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+        },
+      );
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);

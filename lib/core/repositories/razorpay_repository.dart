@@ -14,6 +14,7 @@ import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/core/repositories/subscription_repository.dart';
 import 'package:banjarabio/shared/billing/razorpay_billing_constants.dart';
 import 'package:banjarabio/shared/billing/razorpay_billing_registry.dart';
+import 'package:banjarabio/core/constants/app_version.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 
 /// [RazorpayRepository]
@@ -207,7 +208,7 @@ class RazorpayRepository extends IsolateFirstRepository with WidgetsBindingObser
           appId: 'BJBIO',
           appName: RazorpayBillingRegistry.config.appName,
           source: 'BanjaraBio_App',
-          version: '1.1.3+18',
+          version: kAppVersion,
           platform: Platform.isAndroid ? 'android' : (Platform.isIOS ? 'ios' : 'unknown'),
           device: 'unknown',
           os: Platform.operatingSystemVersion,

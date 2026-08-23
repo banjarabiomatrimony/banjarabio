@@ -79,7 +79,7 @@ class _InitialLanguageScreenState extends ConsumerState<InitialLanguageScreen>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 8.h),
+              SizedBox(height: 2.5.h),
               
               // App logo or icon
               SlideTransition(
@@ -89,7 +89,7 @@ class _InitialLanguageScreenState extends ConsumerState<InitialLanguageScreen>
                   opacity: Tween<double>(begin: 0.0, end: 1.0)
                       .animate(CurvedAnimation(parent: _controller, curve: const Interval(0.0, 0.5))),
                   child: Container(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(18),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.surface,
                       shape: BoxShape.circle,
@@ -101,12 +101,12 @@ class _InitialLanguageScreenState extends ConsumerState<InitialLanguageScreen>
                         ),
                       ],
                     ),
-                    child: Icon(Icons.language_rounded, size: 40, color: theme.colorScheme.primary),
+                    child: Icon(Icons.language_rounded, size: 36, color: theme.colorScheme.primary),
                   ),
                 ),
               ),
 
-              SizedBox(height: 3.h),
+              SizedBox(height: 1.5.h),
 
               // Title
               SlideTransition(
@@ -126,7 +126,7 @@ class _InitialLanguageScreenState extends ConsumerState<InitialLanguageScreen>
                 ),
               ),
               
-              SizedBox(height: 5.h),
+              SizedBox(height: 2.h),
 
               // Language Cards
               Expanded(

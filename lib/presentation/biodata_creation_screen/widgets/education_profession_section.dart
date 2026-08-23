@@ -283,7 +283,7 @@ class _EducationProfessionSectionState
                   label: l10n?.educationDetails ?? 'Education Details',
                   controller: _educationDetailsController,
                   hint: l10n?.egSpecializationOrHonors ?? 'e.g. Specialization or Honors',
-                  icon: 'menu_book',
+                  iconData: Icons.menu_book_rounded,
                   onChanged: (val) => widget.onUpdate('educationDetails', val),
                 ),
               ],
@@ -310,7 +310,7 @@ class _EducationProfessionSectionState
                   label: l10n?.jobDetails ?? 'Job Details',
                   controller: _jobDetailsController,
                   hint: l10n?.egSeniorSoftwareEngineer ?? 'e.g. Senior Software Engineer',
-                  icon: 'business_center',
+                  iconData: Icons.business_center_rounded,
                   onChanged: (val) => widget.onUpdate('jobDetails', val),
                 ),
                 SizedBox(height: 2.h),
@@ -319,7 +319,7 @@ class _EducationProfessionSectionState
                   label: l10n?.companyName ?? 'Company Name',
                   controller: _companyController,
                   hint: l10n?.whereDoYouWork ?? 'Where do you work?',
-                  icon: 'location_city',
+                  iconData: Icons.location_city_rounded,
                   onChanged: (val) => widget.onUpdate('company', val),
                 ),
                 SizedBox(height: 2.h),
@@ -800,7 +800,8 @@ class _EducationProfessionSectionState
     required String label,
     required TextEditingController controller,
     required String hint,
-    required String icon,
+    String? icon,
+    IconData? iconData,
     int maxLines = 1,
     Function(String)? onChanged,
   }) {
@@ -818,11 +819,17 @@ class _EducationProfessionSectionState
             fillColor: theme.colorScheme.surface,
             prefixIcon: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: CustomIconWidget(
-                iconName: icon,
-                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
-                size: 20,
-              ),
+              child: iconData != null
+                  ? Icon(
+                      iconData,
+                      color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
+                      size: 20,
+                    )
+                  : CustomIconWidget(
+                      iconName: icon ?? 'info_outline',
+                      color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
+                      size: 20,
+                    ),
             ),
             prefixIconConstraints: const BoxConstraints(minWidth: 40),
             contentPadding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 4.w),

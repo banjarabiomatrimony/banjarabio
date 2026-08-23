@@ -3,7 +3,6 @@
 import 'dart:io';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,8 +36,6 @@ class PhotoManagementScreen extends StatefulWidget {
 class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
   final ImagePicker _imagePicker = ImagePicker();
   final PhotoPickerService _photoPickerService = PhotoPickerService();
-  CameraController? _cameraController;
-  List<CameraDescription>? _cameras;
   bool _isSelectionMode = false;
   bool _isPremiumUser = false;
   bool _isImageProcessing = false;
@@ -57,7 +54,6 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
   @override
   void initState() {
     super.initState();
-    _initializeCamera();
     _loadInitialData();
   }
 
@@ -119,7 +115,6 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
 
   @override
   void dispose() {
-    _cameraController?.dispose();
     super.dispose();
   }
 
@@ -139,43 +134,7 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
     }
   }
 
-  Future<void> _initializeCamera() async {
-    try {
-      _cameras = await availableCameras();
-      if (_cameras != null && _cameras!.isNotEmpty) {
-        final camera = kIsWeb
-            ? _cameras!.firstWhere(
-                (c) => c.lensDirection == CameraLensDirection.front,
-                orElse: () => _cameras!.first,
-              )
-            : _cameras!.firstWhere(
-                (c) => c.lensDirection == CameraLensDirection.back,
-                orElse: () => _cameras!.first,
-              );
 
-        _cameraController = CameraController(
-          camera,
-          kIsWeb ? ResolutionPreset.medium : ResolutionPreset.high,
-        );
-
-        await _cameraController!.initialize();
-
-        if (!kIsWeb) {
-          try {
-            await _cameraController!.setFlashMode(FlashMode.auto);
-          } catch (e) {
-            AppLogger.debug('PhotoManagementScreen', 'Flash mode not supported: $e');
-          }
-        }
-
-        if (mounted) {
-          setState(() {});
-        }
-      }
-    } catch (e) {
-      AppLogger.error('PhotoManagementScreen', 'Camera initialization error: $e');
-    }
-  }
 
   Future<bool> _requestCameraPermission() async {
     if (kIsWeb) return true;
@@ -308,24 +267,26 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
 
   Future<void> _capturePhoto({Map<String, dynamic>? replacePhotoData}) async {
     if (_isImageProcessing) return;
-    
+
     if (!await _requestCameraPermission()) {
       if (mounted) _showPermissionDeniedDialog('Camera');
       return;
     }
 
-    if (_cameraController == null || !_cameraController!.value.isInitialized) {
-      await _initializeCamera();
-    }
+    try {
+      final XFile? image = await _imagePicker.pickImage(
+        source: ImageSource.camera,
+        maxWidth: 1200,
+        maxHeight: 1200,
+        imageQuality: 80,
+        requestFullMetadata: false,
+      );
 
-    if (mounted && _cameraController != null && _cameraController!.value.isInitialized) {
-      try {
-        final XFile photo = await _cameraController!.takePicture();
-        if (!mounted) return;
-        await _processCapturedImage(photo.path, replacePhotoData: replacePhotoData);
-      } catch (e) {
-        if (mounted) _showErrorSnackBar(e.toString());
+      if (image != null && mounted) {
+        await _processCapturedImage(image.path, replacePhotoData: replacePhotoData);
       }
+    } catch (e) {
+      if (mounted) _showErrorSnackBar(e.toString());
     }
   }
 

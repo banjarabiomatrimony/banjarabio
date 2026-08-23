@@ -479,7 +479,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Answer a few questions and see suitable matches';
 
   @override
-  String get browseMatchesTitle => 'Search Matches (Browse)';
+  String get browseMatchesTitle => 'Browse Matches';
 
   @override
   String get browseProfiles => 'Browse Profiles';

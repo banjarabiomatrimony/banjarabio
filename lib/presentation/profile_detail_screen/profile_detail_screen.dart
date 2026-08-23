@@ -51,6 +51,9 @@ class ProfileDetailScreen extends ConsumerStatefulWidget {
 /// Backwards compatibility alias
 typedef MatchProfileScreen = ProfileDetailScreen;
 
+// TODO(refactor): This screen is a near-duplicate of match_profile_screen.dart.
+// Both should be consolidated into a single shared widget in a future refactor.
+
 class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
   final ScrollController _scrollController = ScrollController();
   final ShareRepository _shareRepository = ShareRepository();
@@ -58,6 +61,8 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
   Map<String, dynamic>? _profileData;
   bool _showAppBarTitle = false;
   int _selectedTabIndex = 0;
+  bool _hasTrackedView = false;
+  bool _hasInitializedArgs = false; // Guard against didChangeDependencies re-runs
 
   @override
   void initState() {
@@ -67,13 +72,14 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
     // Check and start profile detail tour for guests
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ProfileGuidedTour.checkAndStart(context, ref);
-      _trackProfileView();
     });
   }
 
   Future<void> _trackProfileView() async {
+    if (_hasTrackedView) return;
     final profileId = _profileData?['id']?.toString();
     if (profileId == null) return;
+    _hasTrackedView = true;
 
     final usageRepo = UsageRepository();
     final canView = await usageRepo.canViewProfile();
@@ -83,23 +89,6 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
           ChatRepository().trackView(profileId);
           await usageRepo.incrementProfileView();
         } else {
-          // Limit reached - Ads currently disabled
-          /*
-          if (mounted) {
-            showDialog(
-              context: context,
-              builder: (context) => RewardedAdDialog(
-                rewardType: AdRewardType.profileViews,
-                onRewardGranted: () async {
-                  await usageRepo.grantAdReward(AdRewardType.profileViews);
-                  if (mounted) {
-                    Fluttertoast.showToast(msg: AppLocalizations.of(context)?.extraViewsUnlocked(5) ?? "5 Extra Views Unlocked!");
-                  }
-                },
-              ),
-            );
-          }
-          */
           if (mounted) {
             Fluttertoast.showToast(msg: AppLocalizations.of(context)?.dailyViewLimitReached ?? 'Daily view limit reached.');
           }
@@ -108,8 +97,6 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
       onFailure: (error) async => debugPrint('Error checking view limit: $error'),
     );
   }
-
-
 
   void _onScroll() {
     // Show title when header is mostly collapsed (60.h is total height)
@@ -124,17 +111,22 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Get profile data from route arguments
+    // Guard: Only process route arguments once to prevent redundant re-assignment
+    // on MediaQuery/theme changes that trigger didChangeDependencies rebuilds.
+    if (_hasInitializedArgs) return;
+
     final args = ModalRoute.of(context)?.settings.arguments;
     if (args != null) {
+      _hasInitializedArgs = true;
       if (args is Map<String, dynamic>) {
         // Passed full profile data
         _profileData = args;
+        if (!_hasTrackedView) {
+          _trackProfileView();
+        }
       } else if (args is String) {
         // Passed profile ID (e.g. from deep link)
-        if (_profileData == null && !_isLoading) {
-          _loadProfile(args);
-        }
+        _loadProfile(args);
       }
     }
   }
@@ -154,6 +146,9 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
               setState(() {
                 _profileData = profile.toDisplayMap();
               });
+              if (!_hasTrackedView) {
+                _trackProfileView();
+              }
             }
           }
         },

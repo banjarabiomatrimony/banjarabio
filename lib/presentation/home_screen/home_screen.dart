@@ -140,6 +140,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Timer? _shimmerFallback;
   Timer? _instagramTimer;
   StreamSubscription<List<ProfileModel>>? _feedSubscription;
+  DateTime? _lastResumeLoadTime; // Throttle for app-resume feed reload
 
   // Search and Location state
   final TextEditingController _searchController = TextEditingController();
@@ -189,8 +190,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     _shareRepository = widget.shareRepository ?? ShareRepository();
     _usageRepository = widget.usageRepository ?? UsageRepository();
 
-    // 🎯 CRITICAL FIX: Synchronously initialize filters for Relative Browse Mode
-    if (LocalCacheService().isRelativeBrowseMode()) {
+    // 🎯 CRITICAL FIX: Synchronously initialize filters for Relative Browse Mode only if no own profile
+    final cachedOwnProfile = LocalCacheService().getOwnProfile();
+    final bool hasOwnProfile = cachedOwnProfile != null;
+
+    if (hasOwnProfile) {
+      LocalCacheService().clearRelativeBrowseSession();
+    } else if (LocalCacheService().isRelativeBrowseMode()) {
       final intent = LocalCacheService().getRelativeIntent();
       if (intent != null) {
         final gender = intent['target_gender'] ?? intent['targetGender'];
@@ -252,7 +258,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       _checkPostStartupRewards();
-      // 🚀 ALWAYS REFRESH PROFILES WHEN USER OPENS / RETURNS TO THE APP
+
+      // 🛡️ Throttle: Skip reload if last resume was < 30 seconds ago.
+      // Prevents rapid app-switches (notification tray, etc.) from hammering the RPC.
+      final now = DateTime.now();
+      if (_lastResumeLoadTime != null &&
+          now.difference(_lastResumeLoadTime!).inSeconds < 30) {
+        AppLogger.debug('HomeScreen', '📱 App resumed: Skipped reload (throttled, last was ${now.difference(_lastResumeLoadTime!).inSeconds}s ago)');
+        return;
+      }
+      _lastResumeLoadTime = now;
+
       AppLogger.debug('HomeScreen', '📱 App resumed: Triggering fresh API call for profiles');
       _loadData(clearCache: true);
     }
@@ -485,9 +501,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       // ProfileRepository.getProfiles now fetches it in parallel internally.
 
       // Get profiles with location fallback to user's own details if none selected AND not overridden
-      // 🚀 GUEST & RELATIVE FIX: For relative browse mode, always ensure relative filters are applied
+      // 🚀 GUEST & RELATIVE FIX: For relative browse mode, ensure relative filters are applied only if user has no own profile
+      final cachedProfile = _ownProfile ?? (LocalCacheService().getOwnProfile() != null ? ProfileModel.fromJson(LocalCacheService().getOwnProfile()!) : null);
+      final bool hasOwnProfile = cachedProfile != null && !isGuest;
+
       FilterCriteria applyFilters = _currentFilters;
-      if (LocalCacheService().isRelativeBrowseMode()) {
+      if (!hasOwnProfile && LocalCacheService().isRelativeBrowseMode()) {
         final intent = LocalCacheService().getRelativeIntent();
         if (intent != null) {
           final targetGender = intent['target_gender'] ?? intent['targetGender'];
@@ -499,16 +518,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
             district: applyFilters.district ?? district,
           );
         }
-      } else if (!isGuest &&
+      } else if (hasOwnProfile &&
           !_isLocationOverridden &&
           _currentFilters.state == null &&
           _currentFilters.district == null &&
-          _currentFilters.taluka == null &&
-          _ownProfile != null) {
+          _currentFilters.taluka == null) {
         applyFilters = _currentFilters.copyWith(
-          state: _ownProfile!.state,
-          district: _ownProfile!.district,
-          taluka: _ownProfile!.taluka,
+          state: cachedProfile.state,
+          district: cachedProfile.district,
+          taluka: cachedProfile.taluka,
         );
       }
 
@@ -548,7 +566,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     changed = true;
                   }
                 }
-                if (changed) {
+                if (changed && mounted) {
                   ref.read(bookmarkNotifierProvider.notifier).initializeBookmarks(merged);
                 }
               } catch (_) {}
@@ -1061,7 +1079,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               if (!_isLoading && _errorMessage == null && _selectedTab != 1)
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: EdgeInsets.zero,
+                    padding: const EdgeInsets.only(top: 2.0, bottom: 2.0),
                     child: OfferBannerWidget(
                       gender: _ownProfile?.gender,
                       currentPlan: _ownProfile?.planType.name,

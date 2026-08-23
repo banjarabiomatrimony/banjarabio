@@ -101,11 +101,17 @@ class TactileDetailChip extends StatelessWidget {
                         color: resolvedColor,
                         size: 16,
                       )
-                    : CustomIconWidget(
-                        iconName: iconName!,
-                        color: resolvedColor,
-                        size: 16,
-                      ),
+                    : (iconName != null && iconName!.isNotEmpty
+                        ? CustomIconWidget(
+                            iconName: iconName!,
+                            color: resolvedColor,
+                            size: 16,
+                          )
+                        : Icon(
+                            Icons.info_outline_rounded,
+                            color: resolvedColor,
+                            size: 16,
+                          )),
               ),
             ),
             SizedBox(width: 2.5.w),

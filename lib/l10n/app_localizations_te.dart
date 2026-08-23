@@ -484,7 +484,7 @@ class AppLocalizationsTe extends AppLocalizations {
       'కొన్ని ప్రశ్నలకు సమాధానం ఇవ్వండి మరియు తగిన సంబంధాలు చూడండి';
 
   @override
-  String get browseMatchesTitle => '🔍 సంబంధం వెతకండి (Browse Matches)';
+  String get browseMatchesTitle => 'సంబంధం వెతకండి';
 
   @override
   String get browseProfiles => 'ప్రొఫైల్‌లు బ్రౌజ్ చేయండి';

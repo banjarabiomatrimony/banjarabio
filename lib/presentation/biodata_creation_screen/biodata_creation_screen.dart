@@ -3,6 +3,7 @@ import 'dart:io' as io;
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sizer/sizer.dart';
 
@@ -28,6 +29,7 @@ import 'package:banjarabio/presentation/biodata_creation_screen/widgets/creation
 import 'package:banjarabio/presentation/biodata_creation_screen/widgets/creation_discard_dialog.dart';
 import 'package:banjarabio/presentation/biodata_creation_screen/widgets/creation_form_data_mapper.dart';
 import 'package:banjarabio/presentation/biodata_creation_screen/models/creation_step_config.dart';
+import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 
 /// Biodata Creation Screen for structured profile building
@@ -266,19 +268,13 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
   }
 
   Future<void> _nextStep() async {
+    // 1. Trigger inline validation on all form fields on current screen
+    _formKey.currentState?.validate();
+
     final missingFields = _getMissingFields(step: _currentCreationStep);
  
     if (missingFields.isNotEmpty && !_isAdminEdit) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(context)?.pleaseComplete(missingFields.join(', ')) ??
-                'Please complete: ${missingFields.join(', ')}',
-          ),
-          backgroundColor: Theme.of(context).colorScheme.error,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      _handleMissingFields(missingFields);
       return;
     }
  
@@ -295,6 +291,39 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
         setState(() => _currentStep++);
       }
     }
+  }
+
+  /// Option 1: Inline Auto-Scroll + Haptic Feedback + Non-Intrusive Floating Micro-Toast
+  void _handleMissingFields(List<String> missingFields) {
+    if (!mounted || missingFields.isEmpty) return;
+
+    // 1. Trigger haptic alert
+    HapticFeedback.heavyImpact();
+
+    // 2. Auto-scroll to top of section so user immediately sees the highlighted field
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 380),
+        curve: Curves.easeOutCubic,
+      );
+    }
+
+    // 3. Display instant floating top micro-toast
+    final firstMissing = missingFields.first;
+    final message = missingFields.length == 1
+        ? '⚠️ Please enter $firstMissing'
+        : '⚠️ Please enter $firstMissing (+${missingFields.length - 1} required)';
+
+    Fluttertoast.cancel();
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.TOP,
+      backgroundColor: const Color(0xFFC94B4B),
+      textColor: Colors.white,
+      fontSize: 14.0,
+    );
   }
 
   void _previousStep() {
@@ -454,6 +483,8 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
         case 'profileCreatedBy': return l10n.profileCreatedByTitle;
         case 'gender': return l10n.gender;
         case 'height': return l10n.height;
+        case 'fatherName': return l10n.fatherName;
+        case 'motherName': return l10n.motherName;
         case 'education': return l10n.education;
         case 'profession': return l10n.profession;
         case 'annualIncome': return l10n.annualIncome;
@@ -660,15 +691,7 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
       // Final validation
       final missingFields = _getMissingFields();
       if (missingFields.isNotEmpty && !_isAdminEdit) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)?.pleaseComplete(missingFields.join(', ')) ??
-                  'Please complete: ${missingFields.join(', ')}',
-            ),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
+        _handleMissingFields(missingFields);
         return;
       }
 
@@ -698,8 +721,13 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
             // ✅ Draft Cleanup: Clear draft after successful save (skip for admin edits)
             if (!_isAdminEdit) {
               SessionManager.instance.clearBiodataDraft();
+              await LocalCacheService().clearRelativeBrowseSession();
+              await LocalCacheService().setGuestMode(false);
+              await LocalCacheService().clearHomeFeed();
+              _profileRepository.clearFeedCache();
             }
 
+            if (!mounted) return;
             if (_isEditMode || _isAdminEdit) {
               Navigator.of(context).pop(savedProfile);
             } else {
@@ -793,6 +821,14 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
                 isEditMode: _isEditMode || _isAdminEdit,
                 onStepTapped: (_isEditMode || _isAdminEdit)
                     ? (index) {
+                        if (index > _currentStep && !_isAdminEdit) {
+                          // Check if current step has missing compulsory fields
+                          final missing = _getMissingFields(step: _currentCreationStep);
+                          if (missing.isNotEmpty) {
+                            _handleMissingFields(missing);
+                            return;
+                          }
+                        }
                         setState(() => _currentStep = index);
                       }
                     : null,

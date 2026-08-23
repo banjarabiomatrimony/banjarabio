@@ -26,9 +26,6 @@ class ShareRepository extends IsolateFirstRepository {
   // ---------------------------------------------------------------------------
   // 1. Singleton & Dependencies
   // ---------------------------------------------------------------------------
-  // ---------------------------------------------------------------------------
-  // 1. Singleton & Dependencies
-  // ---------------------------------------------------------------------------
   static final ShareRepository _instance = ShareRepository._internal();
 
   /// Factory constructor returns the singleton instance

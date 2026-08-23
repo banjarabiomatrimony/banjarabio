@@ -165,7 +165,6 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             SliverAppBar(
-              expandedHeight: _summary != null ? 240.0 : 120.0,
               pinned: true,
               backgroundColor: _kBgDark,
               foregroundColor: Colors.white,
@@ -180,53 +179,52 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
                   onPressed: _handleLogout,
                 ),
               ],
-              flexibleSpace: FlexibleSpaceBar(
-                background: SafeArea(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      // Search Bar
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                        child: TextField(
-                          style: TextStyle(color: Colors.white, fontSize: AppTypography.bodyLarge),
-                          decoration: InputDecoration(
-                            hintText: 'Search leads...',
-                            hintStyle: const TextStyle(color: Colors.white38),
-                            prefixIcon: const Icon(Icons.search, color: Colors.white54),
-                            filled: true,
-                            fillColor: _kSurfaceColor,
-                            contentPadding: const EdgeInsets.symmetric(),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
-                          onChanged: (val) {
-                            _searchQuery = val;
-                            _applyFilters();
-                          },
+            ),
+            // Search Bar & Metric Cards in dedicated non-collapsing sliver
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Search Bar
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    child: TextField(
+                      style: TextStyle(color: Colors.white, fontSize: AppTypography.bodyLarge),
+                      decoration: InputDecoration(
+                        hintText: 'Search leads...',
+                        hintStyle: const TextStyle(color: Colors.white38),
+                        prefixIcon: const Icon(Icons.search, color: Colors.white54),
+                        filled: true,
+                        fillColor: _kSurfaceColor,
+                        contentPadding: const EdgeInsets.symmetric(),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
                         ),
                       ),
-                      // Summary Horizontal Scroll
-                      if (_summary != null)
-                        SizedBox(
-                          height: 100,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            children: [
-                              _buildMetricCard('Total Leads', '${_summary?['total_assigned'] ?? 0}', Icons.people, Colors.blue),
-                              _buildMetricCard('Pending', '${_summary?['not_called'] ?? 0}', Icons.hourglass_top, Colors.orange),
-                              _buildMetricCard('Follow Up', '${_summary?['follow_up'] ?? 0}', Icons.sync, Colors.amber),
-                              _buildMetricCard('Updated Today', '${_summary?['updated_today'] ?? 0}', Icons.update, Colors.green),
-                              _buildMetricCard('Calls Today', '${_summary?['calls_today'] ?? 0}', Icons.headset_mic, Colors.purple),
-                            ],
-                          ),
-                        ),
-                    ],
+                      onChanged: (val) {
+                        _searchQuery = val;
+                        _applyFilters();
+                      },
+                    ),
                   ),
-                ),
+                  // Summary Horizontal Scroll
+                  if (_summary != null)
+                    SizedBox(
+                      height: 100,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        children: [
+                          _buildMetricCard('Total Leads', '${_summary?['total_assigned'] ?? 0}', Icons.people, Colors.blue),
+                          _buildMetricCard('Pending', '${_summary?['not_called'] ?? 0}', Icons.hourglass_top, Colors.orange),
+                          _buildMetricCard('Follow Up', '${_summary?['follow_up'] ?? 0}', Icons.sync, Colors.amber),
+                          _buildMetricCard('Updated Today', '${_summary?['updated_today'] ?? 0}', Icons.update, Colors.green),
+                          _buildMetricCard('Calls Today', '${_summary?['calls_today'] ?? 0}', Icons.headset_mic, Colors.purple),
+                        ],
+                      ),
+                    ),
+                ],
               ),
             ),
             // Filter Chips sticky header

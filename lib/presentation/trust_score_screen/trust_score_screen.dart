@@ -29,8 +29,7 @@ class TrustScoreScreen extends ConsumerStatefulWidget {
   ConsumerState<TrustScoreScreen> createState() => _TrustScoreScreenState();
 }
 
-class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen>
-    with SingleTickerProviderStateMixin {
+class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen> {
   late final TrustScoreRepository _trustScoreRepository;
   late final ProfileRepository _profileRepository;
   bool _isLoading = true;

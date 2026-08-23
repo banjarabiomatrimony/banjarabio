@@ -49,7 +49,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
   AnimationController? _shimmerController;
   AnimationController? _entranceController;
   AnimationController? _pulseController;
-  TabController? _tabController;
 
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _headerSlide;
@@ -128,10 +127,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
     _pulseAnimation = Tween<double>(begin: 0.96, end: 1.04).animate(
       CurvedAnimation(parent: _pulseController!, curve: Curves.easeInOut),
     );
-
-    // Only show tabs if VIP plans are enabled
-    final tabCount = SubscriptionConfig.hasEnabledVipPlans ? 2 : 1;
-    _tabController ??= TabController(length: tabCount, vsync: this);
   }
 
   @override
@@ -146,7 +141,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
     _shimmerController?.dispose();
     _entranceController?.dispose();
     _pulseController?.dispose();
-    _tabController?.dispose();
     _couponController.dispose();
     super.dispose();
   }

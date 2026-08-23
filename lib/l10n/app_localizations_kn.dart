@@ -480,7 +480,7 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಕೆಲವು ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಿ ಮತ್ತು ಸೂಕ್ತ ಸಂಬಂಧಗಳನ್ನು ನೋಡಿ';
 
   @override
-  String get browseMatchesTitle => '🔍 ಸಂಬಂಧ ಹುಡುಕಿ (Browse Matches)';
+  String get browseMatchesTitle => 'ಸಂಬಂಧ ಹುಡುಕಿ';
 
   @override
   String get browseProfiles => 'ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಬ್ರೌಸ್ ಮಾಡಿ';

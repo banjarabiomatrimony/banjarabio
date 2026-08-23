@@ -1,6 +1,7 @@
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/supabase_client.dart';
@@ -244,38 +245,95 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   }
 
   Widget _buildBottomNavBar(ThemeData theme) {
+    final isDark = theme.brightness == Brightness.dark;
     final List<Map<String, dynamic>> items = [
-      {'key': 'Dashboard', 'label': 'Dash', 'icon': Icons.dashboard_outlined, 'activeIcon': Icons.dashboard},
+      {'key': 'Dashboard', 'label': 'Dashboard', 'icon': Icons.dashboard_outlined, 'activeIcon': Icons.dashboard},
       {'key': 'Review', 'label': 'Review', 'icon': Icons.rate_review_outlined, 'activeIcon': Icons.rate_review},
-      {'key': 'Payments', 'label': 'Pay', 'icon': Icons.payments_outlined, 'activeIcon': Icons.payments},
+      {'key': 'Payments', 'label': 'Payments', 'icon': Icons.payments_outlined, 'activeIcon': Icons.payments},
       {'key': 'Offers', 'label': 'Offers', 'icon': Icons.local_offer_outlined, 'activeIcon': Icons.local_offer},
       {'key': 'Creators', 'label': 'Creators', 'icon': Icons.campaign_outlined, 'activeIcon': Icons.campaign},
-      {'key': 'Discounts', 'label': 'Discs', 'icon': Icons.percent_outlined, 'activeIcon': Icons.percent},
+      {'key': 'Discounts', 'label': 'Discounts', 'icon': Icons.percent_outlined, 'activeIcon': Icons.percent},
       {'key': 'Team', 'label': 'Team', 'icon': Icons.headset_mic_outlined, 'activeIcon': Icons.headset_mic},
       {'key': 'Users', 'label': 'Users', 'icon': Icons.people_outlined, 'activeIcon': Icons.people},
     ];
 
-    int currentIndex = items.indexWhere((item) => item['key'] == _activeTab);
-    if (currentIndex == -1) currentIndex = 0;
-
     return Container(
       decoration: BoxDecoration(
         color: theme.cardColor,
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: AppColors.opacity10), blurRadius: 10, offset: const Offset(0, -5))],
+        border: Border(
+          top: BorderSide(
+            color: theme.colorScheme.outline.withValues(alpha: AppColors.opacity12),
+          ),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.06),
+            blurRadius: 12,
+            offset: const Offset(0, -3),
+          ),
+        ],
       ),
-      child: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (index) => setState(() => _activeTab = items[index]['key']),
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: theme.cardColor,
-        selectedItemColor: theme.colorScheme.primary,
-        unselectedItemColor: theme.hintColor,
-        selectedLabelStyle: const TextStyle(fontWeight: AppTypography.bold),
-        items: items.map((item) => BottomNavigationBarItem(
-          icon: Icon(item['icon']),
-          activeIcon: Icon(item['activeIcon']),
-          label: item['label'],
-        )).toList(),
+      child: SafeArea(
+        top: false,
+        child: SizedBox(
+          height: 60,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            itemCount: items.length,
+            separatorBuilder: (_, _) => const SizedBox(width: 8),
+            itemBuilder: (context, index) {
+              final item = items[index];
+              final isSelected = item['key'] == _activeTab;
+
+              return InkWell(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  setState(() => _activeTab = item['key']);
+                },
+                borderRadius: BorderRadius.circular(20),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? theme.colorScheme.primary
+                        : (isDark ? Colors.white.withValues(alpha: 0.05) : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5)),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: isSelected
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.outline.withValues(alpha: AppColors.opacity12),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        isSelected ? item['activeIcon'] : item['icon'],
+                        size: 18,
+                        color: isSelected
+                            ? theme.colorScheme.onPrimary
+                            : theme.colorScheme.onSurfaceVariant,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        item['label'],
+                        style: TextStyle(
+                          fontSize: AppTypography.bodySmall,
+                          fontWeight: isSelected ? AppTypography.bold : AppTypography.medium,
+                          color: isSelected
+                              ? theme.colorScheme.onPrimary
+                              : theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
       ),
     );
   }

@@ -178,7 +178,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 74,
+      height: 68,
       child: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
           if (notification is ScrollStartNotification &&
@@ -199,7 +199,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
           controller: _scrollController,
           scrollDirection: Axis.horizontal,
           physics: const BouncingScrollPhysics(),
-          padding: EdgeInsets.symmetric(horizontal: 3.5.w),
+          padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 3),
           children: [
             // ─── 1. 📸 Instagram (Follow Daily Match Updates) ───
             _buildAnimatedMiniCard(
@@ -481,10 +481,10 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
             child: Stack(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
                     gradient: gradient,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(18),
                     border: Border.all(
                       color: effectiveBorderColor,
                       width: isPausedCard ? 2.0 : 1.3,
@@ -505,8 +505,8 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                     children: [
                       // ─── High-Impact Icon Shield with Colored Outline ───
                       Container(
-                        width: 30,
-                        height: 30,
+                        width: 38,
+                        height: 38,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: Colors.black.withValues(alpha: 0.22),
@@ -521,7 +521,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                         ),
                         child: leadingWidget,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 10),
 
                       // ─── Text Column + Highlight Micro-Badge ───
                       Column(
@@ -537,7 +537,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: AppTypography.black,
-                                  fontSize: AppTypography.labelMedium,
+                                  fontSize: AppTypography.labelLarge,
                                   letterSpacing: 0.1,
                                 ),
                               ),
@@ -599,12 +599,12 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                           ),
                         ],
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 10),
 
                       // ─── Interactive Trailing Indicator ───
                       Container(
-                        width: 22,
-                        height: 22,
+                        width: 26,
+                        height: 26,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: isPausedCard
@@ -619,7 +619,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                           color: isPausedCard
                               ? AppColors.amberDeepText
                               : Colors.white,
-                          size: isPausedCard ? 12 : 9.5,
+                          size: isPausedCard ? 14 : 11,
                         ),
                       ),
                     ],

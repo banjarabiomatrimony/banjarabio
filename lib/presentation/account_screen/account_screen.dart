@@ -1218,7 +1218,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen>
         if (context.mounted) {
           Navigator.pushNamedAndRemoveUntil(
             context,
-            AppRoutes.onboardingSelection,
+            AppRoutes.userTypeSelection,
             (route) => false,
           );
         }
@@ -1555,74 +1555,84 @@ class _OfficialChannelAnimatedCardState
 
                 // Animated Badge (e.g. Pulsing Online or Instagram 10K+)
                 if (widget.isLivePulsing)
-                  AnimatedBuilder(
-                    animation: _pulseAnimation,
-                    builder: (context, child) {
-                      return Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 7, vertical: 3),
-                        decoration: BoxDecoration(
-                          color: AppColors.greenLightBg,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color:
-                                AppColors.successDark.withValues(alpha: AppColors.opacity40),
-                            width: 0.8,
+                  Flexible(
+                    child: AnimatedBuilder(
+                      animation: _pulseAnimation,
+                      builder: (context, child) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 7, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: AppColors.greenLightBg,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color:
+                                  AppColors.successDark.withValues(alpha: AppColors.opacity40),
+                              width: 0.8,
+                            ),
                           ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Transform.scale(
-                              scale: _pulseAnimation.value,
-                              child: Container(
-                                width: 6,
-                                height: 6,
-                                decoration: BoxDecoration(
-                                  color: AppColors.success,
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: AppColors.successDark
-                                          .withValues(alpha: AppColors.opacity60),
-                                      blurRadius: 4,
-                                      spreadRadius: 1,
-                                    ),
-                                  ],
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Transform.scale(
+                                scale: _pulseAnimation.value,
+                                child: Container(
+                                  width: 6,
+                                  height: 6,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.success,
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: AppColors.successDark
+                                            .withValues(alpha: AppColors.opacity60),
+                                        blurRadius: 4,
+                                        spreadRadius: 1,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              widget.badgeText,
-                              style: TextStyle(
-                                color: AppColors.success,
-                                fontSize: AppTypography.labelTiny,
-                                fontWeight: AppTypography.extraBold,
+                              const SizedBox(width: 4),
+                              Flexible(
+                                child: Text(
+                                  widget.badgeText,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: AppColors.success,
+                                    fontSize: AppTypography.labelTiny,
+                                    fontWeight: AppTypography.extraBold,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   )
                 else
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                    decoration: BoxDecoration(
-                      gradient: widget.badgeGradient,
-                      color: widget.badgeGradient == null
-                          ? AppColors.rose100
-                          : null,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      widget.badgeText,
-                      style: TextStyle(
-                        color: widget.badgeTextColor ?? AppColors.materialPink700,
-                        fontSize: AppTypography.labelTiny,
-                        fontWeight: AppTypography.extraBold,
+                  Flexible(
+                    child: Container(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                      decoration: BoxDecoration(
+                        gradient: widget.badgeGradient,
+                        color: widget.badgeGradient == null
+                            ? AppColors.rose100
+                            : null,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        widget.badgeText,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: widget.badgeTextColor ?? AppColors.materialPink700,
+                          fontSize: AppTypography.labelTiny,
+                          fontWeight: AppTypography.extraBold,
+                        ),
                       ),
                     ),
                   ),

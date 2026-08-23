@@ -285,7 +285,7 @@ class _LocationPreferencesSectionState
                   label: AppLocalizations.of(context)?.village ?? 'Village',
                   controller: _villageController,
                   hint: AppLocalizations.of(context)?.currentVillageHint ?? 'Current village',
-                  icon: 'home',
+                  iconData: Icons.home_rounded,
                   onChanged: (val) {
                     widget.onUpdate('village', val);
                     _updateLegacyLocation();
@@ -299,7 +299,7 @@ class _LocationPreferencesSectionState
                   label: AppLocalizations.of(context)?.nativePlace ?? 'Native Place',
                   controller: _nativePlaceController,
                   hint: AppLocalizations.of(context)?.originalVillageHint ?? 'Original village',
-                  icon: 'location_city',
+                  iconData: Icons.location_city_rounded,
                   onChanged: (val) => widget.onUpdate('nativePlace', val),
                 ),
               ),
@@ -313,7 +313,7 @@ class _LocationPreferencesSectionState
             label: AppLocalizations.of(context)?.partnerExpectations ?? 'Partner Expectations',
             controller: _partnerExpectationController,
             hint: AppLocalizations.of(context)?.partnerExpectationsHint ?? 'Describe what you are looking for...',
-            icon: 'star',
+            iconData: Icons.star_rounded,
             maxLines: 4,
             onChanged: (val) => widget.onUpdate('partnerExpectations', val),
           ),
@@ -492,7 +492,8 @@ class _LocationPreferencesSectionState
     required String label,
     required TextEditingController controller,
     required String hint,
-    required String icon,
+    String? icon,
+    IconData? iconData,
     int maxLines = 1,
     Function(String)? onChanged,
   }) {
@@ -506,11 +507,17 @@ class _LocationPreferencesSectionState
           maxLines: maxLines,
           decoration: InputDecoration(
             hintText: hint,
-            prefixIcon: CustomIconWidget(
-              iconName: icon,
-              color: theme.colorScheme.onSurfaceVariant,
-              size: 20,
-            ),
+            prefixIcon: iconData != null
+                ? Icon(
+                    iconData,
+                    color: theme.colorScheme.onSurfaceVariant,
+                    size: 20,
+                  )
+                : CustomIconWidget(
+                    iconName: icon ?? 'info_outline',
+                    color: theme.colorScheme.onSurfaceVariant,
+                    size: 20,
+                  ),
           ),
           onChanged: onChanged,
         ),
@@ -524,7 +531,8 @@ class _LocationPreferencesSectionState
     required String? value,
     required List<String> items,
     required bool isRequired,
-    required String icon,
+    String? icon,
+    IconData? iconData,
     required Function(String?) onChanged,
     required String hintText,
     bool enabled = true,
@@ -552,11 +560,17 @@ class _LocationPreferencesSectionState
           decoration: InputDecoration(
             hintText: hintText,
             filled: true,
-            prefixIcon: CustomIconWidget(
-              iconName: icon,
-              color: theme.colorScheme.onSurfaceVariant,
-              size: 20,
-            ),
+            prefixIcon: iconData != null
+                ? Icon(
+                    iconData,
+                    color: theme.colorScheme.onSurfaceVariant,
+                    size: 20,
+                  )
+                : CustomIconWidget(
+                    iconName: icon ?? 'info_outline',
+                    color: theme.colorScheme.onSurfaceVariant,
+                    size: 20,
+                  ),
             fillColor: enabled
                 ? theme.colorScheme.surface
                 : theme.colorScheme.surfaceContainerHighest.withValues(

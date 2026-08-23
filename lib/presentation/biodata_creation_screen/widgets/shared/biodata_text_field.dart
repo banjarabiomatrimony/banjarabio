@@ -13,7 +13,8 @@ class BiodataTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
   final String hint;
-  final String icon;
+  final String? icon;
+  final IconData? iconData;
   final bool required;
   final bool isAdminEdit;
   final TextInputType? keyboardType;
@@ -25,13 +26,14 @@ class BiodataTextField extends StatelessWidget {
     required this.controller,
     required this.label,
     required this.hint,
-    required this.icon,
+    this.icon,
+    this.iconData,
     required this.required,
     this.isAdminEdit = false,
     this.keyboardType,
     this.inputFormatters,
     this.onChanged,
-  });
+  }) : assert(icon != null || iconData != null, 'Must provide either icon or iconData');
 
   @override
   Widget build(BuildContext context) {
@@ -68,11 +70,17 @@ class BiodataTextField extends StatelessWidget {
             ),
             prefixIcon: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: CustomIconWidget(
-                iconName: icon,
-                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
-                size: 20,
-              ),
+              child: iconData != null
+                  ? Icon(
+                      iconData,
+                      color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
+                      size: 20,
+                    )
+                  : CustomIconWidget(
+                      iconName: icon!,
+                      color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
+                      size: 20,
+                    ),
             ),
             prefixIconConstraints: const BoxConstraints(minWidth: 40),
             filled: true,

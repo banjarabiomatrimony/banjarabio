@@ -23,7 +23,7 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
+class _ChatScreenState extends State<ChatScreen> {
   final ChatRepository _chatRepository = ChatRepository();
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
@@ -96,6 +96,9 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 
     if (!response.isSuccess) {
       if (mounted) {
+        if (directText == null && _messageController.text.isEmpty) {
+          _messageController.text = text;
+        }
         if (response.errorMessage.contains('FREE_LIMIT_REACHED')) {
           UpgradeDialog.showMessagingLimit(context);
         } else {

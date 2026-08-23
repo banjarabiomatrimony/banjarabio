@@ -297,6 +297,23 @@ class ProfileModel {
       }
     }
 
+    final DateTime? parsedDob = (json['date_of_birth'] != null || json['dateOfBirth'] != null)
+        ? parseDate(json['date_of_birth'] ?? json['dateOfBirth'])
+        : null;
+
+    int resolvedAge = (json['age'] as num?)?.toInt() ?? 0;
+    if (parsedDob != null) {
+      final now = DateTime.now();
+      int ageFromDob = now.year - parsedDob.year;
+      if (now.month < parsedDob.month || (now.month == parsedDob.month && now.day < parsedDob.day)) {
+        ageFromDob--;
+      }
+      if (ageFromDob >= 18 && (resolvedAge <= 0 || resolvedAge == 18)) {
+        resolvedAge = ageFromDob;
+      }
+    }
+    if (resolvedAge <= 0) resolvedAge = 18;
+
     return ProfileModel(
       id: json['id']?.toString() ?? '',
       userId: json['user_id']?.toString() ?? '',
@@ -304,10 +321,8 @@ class ProfileModel {
       fullName: json['full_name']?.toString() ?? '',
       surname: json['surname']?.toString() ?? '',
       gotra: json['gotra']?.toString(),
-      age: (json['age'] as num?)?.toInt() ?? 18,
-      dateOfBirth: json['date_of_birth'] != null
-          ? parseDate(json['date_of_birth'])
-          : null,
+      age: resolvedAge,
+      dateOfBirth: parsedDob,
       gender: json['gender']?.toString() ?? 'Female',
       height: json['height']?.toString() ?? "5'5\"",
       complexion: json['complexion']?.toString(),

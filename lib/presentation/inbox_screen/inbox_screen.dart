@@ -129,6 +129,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen>
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: CustomAppBar(
         automaticallyImplyLeading: false,
+        centerTitle: false,
         leadingWidth: 140,
         leading: Padding(
           padding: const EdgeInsets.only(left: 12),

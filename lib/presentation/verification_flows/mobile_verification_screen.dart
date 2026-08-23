@@ -207,7 +207,8 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
 
     return Scaffold(
       appBar: CustomAppBar(title: AppLocalizations.of(context)?.mobileVerification ?? 'Mobile Verification'),
-      body: Padding(
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         padding: EdgeInsets.all(5.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,16 +231,6 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
                 color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
-            /*
-            Text(
-              _isOtpSent
-                  ? 'We have sent a verification code to +91 ${_mobileController.text}'
-                  : 'We will send you a One Time Password (OTP) to verify your number.',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-            */
             SizedBox(height: 4.h),
 
             if (!_isOtpSent) ...[
@@ -276,9 +267,7 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
                       : Text(AppLocalizations.of(context)?.verifyMobile ?? 'Verify Mobile'),
                 ),
               ),
-            ] /* else ...[
-               // Legacy OTP UI commented out
-            ] */,
+            ],
           ],
         ),
       ),

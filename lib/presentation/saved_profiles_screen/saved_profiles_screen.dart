@@ -92,7 +92,7 @@ class _SavedProfilesScreenState extends ConsumerState<SavedProfilesScreen> {
                     changed = true;
                   }
                 }
-                if (changed) {
+                if (changed && mounted) {
                   ref.read(bookmarkNotifierProvider.notifier).initializeBookmarks(merged);
                 }
               } catch (_) {}

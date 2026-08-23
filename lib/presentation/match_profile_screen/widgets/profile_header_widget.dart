@@ -677,22 +677,26 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget>
                   ),
                 ),
               ),
-              Positioned(
-                top: 5.h,
-                left: 3.w,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: AppColors.opacity60),
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.close_rounded,
-                      color: Colors.white,
-                      size: 22,
+              SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: AppColors.opacity60),
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.close_rounded,
+                          color: Colors.white,
+                          size: 22,
+                        ),
+                        onPressed: () => Navigator.of(context).pop(),
+                        tooltip: 'Close',
+                      ),
                     ),
-                    onPressed: () => Navigator.of(context).pop(),
-                    tooltip: 'Close',
                   ),
                 ),
               ),

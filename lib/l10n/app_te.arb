@@ -1075,7 +1075,7 @@
   "brothersCount": "{count, plural, =1{1 సోదరుడు} other{{count} సోదరులు}}",
   "browseMatchesDesc": "కొడుకు, కూతురు, బంధువుల కోసం తగిన సంబంధం వెతకండి.",
   "browseMatchesSubtitle": "కొన్ని ప్రశ్నలకు సమాధానం ఇవ్వండి మరియు తగిన సంబంధాలు చూడండి",
-  "browseMatchesTitle": "🔍 సంబంధం వెతకండి (Browse Matches)",
+  "browseMatchesTitle": "సంబంధం వెతకండి",
   "browseProfiles": "ప్రొఫైల్‌లు బ్రౌజ్ చేయండి",
   "bulkDiscount": "{percent}% తగ్గింపు",
   "business": "వ్యాపారం",

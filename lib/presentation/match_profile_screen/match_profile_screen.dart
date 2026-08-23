@@ -61,6 +61,8 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
   Map<String, dynamic>? _profileData;
   bool _showAppBarTitle = false;
   int _selectedTabIndex = 0;
+  bool _hasInitializedArgs = false; // Guard against didChangeDependencies re-runs
+  bool _hasTrackedView = false; // Ensure view is tracked exactly once
 
   @override
   void initState() {
@@ -70,8 +72,17 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
     // Check and start profile detail tour for guests
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ProfileGuidedTour.checkAndStart(context, ref);
-      _trackProfileView();
+      // For Map args, _profileData is populated by didChangeDependencies
+      // which runs before this callback. Track view if data is ready.
+      _tryTrackProfileView();
     });
+  }
+
+  /// Attempts to track a profile view exactly once, when data is ready.
+  void _tryTrackProfileView() {
+    if (_hasTrackedView || _profileData == null) return;
+    _hasTrackedView = true;
+    _trackProfileView();
   }
 
   Future<void> _trackProfileView() async {
@@ -127,17 +138,19 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Get profile data from route arguments
+    // Guard: Only process route arguments once to prevent redundant re-assignment
+    // on MediaQuery/theme changes that trigger didChangeDependencies rebuilds.
+    if (_hasInitializedArgs) return;
+
     final args = ModalRoute.of(context)?.settings.arguments;
     if (args != null) {
+      _hasInitializedArgs = true;
       if (args is Map<String, dynamic>) {
         // Passed full profile data
         _profileData = args;
       } else if (args is String) {
         // Passed profile ID (e.g. from deep link)
-        if (_profileData == null && !_isLoading) {
-          _loadProfile(args);
-        }
+        _loadProfile(args);
       }
     }
   }
@@ -157,6 +170,8 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
               setState(() {
                 _profileData = profile.toDisplayMap();
               });
+              // Bug 6 fix: Track view after deep-link profile is loaded
+              _tryTrackProfileView();
             }
           }
         },

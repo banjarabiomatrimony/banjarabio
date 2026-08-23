@@ -130,7 +130,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
   // Predefined Banjara community surnames
   final List<String> _banjaraSurnames = [
     'Rathod',
-    'Chauhan',
+    'Chavhan',
     'Jadhav',
     'Pawar',
     'Ade',
@@ -183,7 +183,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
       'Tarabaanni',
       'Vislaavath',
     ],
-    'Chauhan': [
+    'Chavhan': [
       'Dumaavath / Chauradiya',
       'Keluth',
       'Lavidiya / Lavhadiya',
@@ -285,8 +285,24 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
       _selectedDOB = null;
     }
 
-    // Ensure empty string is treated as null for dropdown
-    final surname = widget.formData['surname']?.toString();
+    if (_selectedDOB != null && (_ageController.text.trim().isEmpty || _ageController.text.trim() == '0')) {
+      final now = DateTime.now();
+      int derivedAge = now.year - _selectedDOB!.year;
+      if (now.month < _selectedDOB!.month || (now.month == _selectedDOB!.month && now.day < _selectedDOB!.day)) {
+        derivedAge--;
+      }
+      if (derivedAge >= 18) {
+        _ageController.text = derivedAge.toString();
+        widget.onUpdate('age', derivedAge.toString());
+      }
+    }
+
+    // Ensure empty string is treated as null for dropdown, and normalize Chauhan -> Chavhan
+    var surname = widget.formData['surname']?.toString();
+    if (surname != null && surname.trim().toLowerCase() == 'chauhan') {
+      surname = 'Chavhan';
+      widget.onUpdate('surname', 'Chavhan');
+    }
     _selectedSurname = (surname != null && surname.isNotEmpty) ? surname : null;
 
     if (_selectedSurname != null) {
@@ -321,7 +337,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
     }
 
     final createdBy = (widget.formData['profileCreatedBy'] ?? widget.formData['profile_created_by'])?.toString();
-    _selectedProfileBy = (createdBy != null && createdBy.isNotEmpty) ? createdBy : null;
+    _selectedProfileBy = (createdBy != null && createdBy.trim().isNotEmpty) ? createdBy : 'Self';
 
     final gender = widget.formData['gender']?.toString();
     _selectedGender = (gender != null && gender.isNotEmpty) ? gender : null;
@@ -450,6 +466,9 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
   }
 
   List<String> _getGotrasForSurname(String surname) {
+    if (surname.trim().toLowerCase() == 'chauhan') {
+      return _surnameGotraMap['Chavhan'] ?? [];
+    }
     return _surnameGotraMap[surname] ?? [];
   }
 
@@ -464,11 +483,10 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
         title: AppLocalizations.of(context)?.basicInformation ?? 'Basic Information',
         icon: Icons.person_outline_rounded,
         children: [
-          // ProfileCreatedBy is optional in lite mode, shown but not required
           if (!widget.isLite)
             BiodataDropdownField(
               label: AppLocalizations.of(context)?.profileCreatedByTitle ?? 'Profile Created By',
-              value: _selectedProfileBy,
+              value: _selectedProfileBy ?? 'Self',
               items: _getProfileByOptions(context).map((e) => DropdownMenuItem(
                 value: e['key'],
                 child: Row(
@@ -483,12 +501,12 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
                   ],
                 ),
               )).toList(),
-              icon: 'account_circle',
+              iconData: Icons.account_circle_rounded,
               onChanged: (val) {
                 setState(() {
-                  _selectedProfileBy = val;
+                  _selectedProfileBy = val ?? 'Self';
                 });
-                widget.onUpdate('profileCreatedBy', val);
+                widget.onUpdate('profileCreatedBy', val ?? 'Self');
                 _validateForm();
               },
             ),
@@ -514,7 +532,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
             controller: _nameController,
             label: AppLocalizations.of(context)?.fullName ?? 'Full Name',
             hint: AppLocalizations.of(context)?.enterFullName ?? 'Enter your full name',
-            icon: 'badge',
+            iconData: Icons.badge_rounded,
             required: true,
             isAdminEdit: widget.isAdminEdit,
             onChanged: (value) => widget.onUpdate('name', value),
@@ -524,7 +542,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
             controller: _phoneController,
             label: AppLocalizations.of(context)?.mobileNumber ?? 'Mobile Number',
             hint: '9876543210',
-            icon: 'phone_android',
+            iconData: Icons.phone_android_rounded,
             required: true,
             isAdminEdit: widget.isAdminEdit,
             keyboardType: TextInputType.phone,
@@ -583,7 +601,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
               controller: _ageController,
               label: AppLocalizations.of(context)?.age ?? 'Age',
               hint: '25',
-              icon: 'cake',
+              iconData: Icons.cake_rounded,
               required: true,
               isAdminEdit: widget.isAdminEdit,
               keyboardType: TextInputType.number,
@@ -607,7 +625,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
                     controller: _birthPlaceController,
                     label: AppLocalizations.of(context)?.birthPlace ?? 'Birth Place',
                     hint: 'Nagpur',
-                    icon: 'location_on',
+                    iconData: Icons.location_on_rounded,
                     required: false,
                     isAdminEdit: widget.isAdminEdit,
                     onChanged: (value) => widget.onUpdate('birthPlace', value),
@@ -619,7 +637,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
                     controller: _birthTimeController,
                     label: AppLocalizations.of(context)?.birthTime ?? 'Birth Time',
                     hint: '10:30 AM',
-                    icon: 'schedule',
+                    iconData: Icons.access_time_rounded,
                     required: false,
                     isAdminEdit: widget.isAdminEdit,
                     onChanged: (value) => widget.onUpdate('birthTime', value),
@@ -664,7 +682,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
                         ],
                       ),
                     )).toList(),
-                    icon: 'brush',
+                    iconData: Icons.palette_rounded,
                     onChanged: (val) {
                       setState(() => _selectedComplexion = val);
                       widget.onUpdate('complexion', val);
@@ -690,7 +708,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
                         ],
                       ),
                     )).toList(),
-                    icon: 'vaccines',
+                    iconData: Icons.bloodtype_rounded,
                     onChanged: (val) {
                       setState(() => _selectedBloodGroup = val);
                       widget.onUpdate('bloodGroup', val);
@@ -725,7 +743,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
                   ),
                 );
               }).toList(),
-              icon: 'favorite',
+              iconData: Icons.favorite_rounded,
               onChanged: (val) {
                 setState(() => _selectedMaritalStatus = val);
                 widget.onUpdate('maritalStatus', val);

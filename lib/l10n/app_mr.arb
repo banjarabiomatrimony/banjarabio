@@ -1075,7 +1075,7 @@
   "brothersCount": "{count, plural, =1{1 भाऊ} other{{count} भाऊ}}",
   "browseMatchesDesc": "मुलगा, मुलगी, नातेवाईक यांच्यासाठी योग्य स्थळ शोधा.",
   "browseMatchesSubtitle": "काही प्रश्नांची उत्तरे द्या आणि योग्य स्थळे पहा",
-  "browseMatchesTitle": "🔍 स्थळ शोधा (Browse Matches)",
+  "browseMatchesTitle": "स्थळ शोधा",
   "browseProfiles": "प्रोफाइल ब्राउझ करा",
   "bulkDiscount": "{percent}% सूट",
   "business": "व्यवसाय",

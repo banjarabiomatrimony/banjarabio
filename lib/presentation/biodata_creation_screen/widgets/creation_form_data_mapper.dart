@@ -97,7 +97,8 @@ class CreationFormDataMapper {
     newData['height'] = data['height']?.toString() ?? '';
     newData['surname'] = data['surname']?.toString() ?? '';
     newData['gotra'] = data['gotra']?.toString() ?? '';
-    newData['profileCreatedBy'] = (data['profileCreatedBy'] ?? data['profile_created_by'])?.toString() ?? '';
+    final createdByRaw = (data['profileCreatedBy'] ?? data['profile_created_by'])?.toString();
+    newData['profileCreatedBy'] = (createdByRaw != null && createdByRaw.trim().isNotEmpty) ? createdByRaw : 'Self';
     newData['gender'] = data['gender']?.toString() ?? '';
     newData['education'] = data['education']?.toString() ?? '';
     newData['profession'] = data['profession']?.toString() ?? '';
@@ -108,22 +109,33 @@ class CreationFormDataMapper {
 
     final dynamic dobData = data['rawDateOfBirth'] ?? data['dateOfBirth'] ?? data['date_of_birth'] ?? data['dob'];
     if (dobData != null) {
+      DateTime? parsedDob;
       if (dobData is DateTime) {
-        newData['dateOfBirth'] = dobData;
+        parsedDob = dobData;
       } else {
         final str = dobData.toString().trim();
-        DateTime? parsed = DateTime.tryParse(str);
-        if (parsed == null && str.isNotEmpty && str != 'Not Entered') {
+        parsedDob = DateTime.tryParse(str);
+        if (parsedDob == null && str.isNotEmpty && str != 'Not Entered') {
           try {
-            parsed = DateFormat('dd MMM yyyy').parse(str);
+            parsedDob = DateFormat('dd MMM yyyy').parse(str);
           } catch (_) {
             try {
-              parsed = DateFormat('yyyy-MM-dd').parse(str);
+              parsedDob = DateFormat('yyyy-MM-dd').parse(str);
             } catch (_) {}
           }
         }
-        if (parsed != null) {
-          newData['dateOfBirth'] = parsed;
+      }
+      if (parsedDob != null) {
+        newData['dateOfBirth'] = parsedDob;
+        if (newData['age'] == null || newData['age'] == '' || newData['age'] == '0') {
+          final now = DateTime.now();
+          int derivedAge = now.year - parsedDob.year;
+          if (now.month < parsedDob.month || (now.month == parsedDob.month && now.day < parsedDob.day)) {
+            derivedAge--;
+          }
+          if (derivedAge >= 18) {
+            newData['age'] = derivedAge.toString();
+          }
         }
       }
     }
@@ -220,7 +232,12 @@ class CreationFormDataMapper {
     addIfPresent('name', 'full_name');
     addIfPresent('phone_number', 'phone_number');
     addIfPresent('phoneNumber', 'phone_number');
-    addIfPresent('surname', 'surname');
+    addIfPresent('surname', 'surname', transform: (v) {
+      if (v == null) return null;
+      final s = v.toString().trim();
+      if (s.toLowerCase() == 'chauhan') return 'Chavhan';
+      return s;
+    });
     addIfPresent('gotra', 'gotra');
     addIfPresent('age', 'age', transform: (v) => int.tryParse(v.toString()));
     addIfPresent('dateOfBirth', 'date_of_birth', transform: (v) {
@@ -232,7 +249,16 @@ class CreationFormDataMapper {
       }
       return null;
     });
-    addIfPresent('gender', 'gender');
+    addIfPresent('gender', 'gender', transform: (v) {
+      if (v == null) return null;
+      final str = v.toString().trim();
+      if (str.toLowerCase() == 'male' || str.toLowerCase() == 'men' || str.toLowerCase() == 'groom' || str.toLowerCase() == 'm') {
+        return 'Male';
+      } else if (str.toLowerCase() == 'female' || str.toLowerCase() == 'women' || str.toLowerCase() == 'bride' || str.toLowerCase() == 'f') {
+        return 'Female';
+      }
+      return str.isNotEmpty ? str : null;
+    });
     addIfPresent('height', 'height');
     addIfPresent('complexion', 'complexion');
     addIfPresent('bloodGroup', 'blood_group');
@@ -283,7 +309,20 @@ class CreationFormDataMapper {
 
     addIfPresent('aboutSelf', 'about_self');
     addIfPresent('partnerExpectations', 'partner_expectations');
-    addIfPresent('expectation', 'expectation');
+    // Derive age from date_of_birth if missing, null, or zero
+    if ((data['age'] == null || (data['age'] is int && (data['age'] as int) <= 0)) && data['date_of_birth'] != null) {
+      final dob = DateTime.tryParse(data['date_of_birth'].toString());
+      if (dob != null) {
+        final now = DateTime.now();
+        int calculated = now.year - dob.year;
+        if (now.month < dob.month || (now.month == dob.month && now.day < dob.day)) {
+          calculated--;
+        }
+        if (calculated >= 18) {
+          data['age'] = calculated;
+        }
+      }
+    }
 
     data['updated_at'] = DateTime.now().toIso8601String();
 

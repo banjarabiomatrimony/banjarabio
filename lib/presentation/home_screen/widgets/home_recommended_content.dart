@@ -123,7 +123,7 @@ class HomeRecommendedContent {
               maxCrossAxisExtent: 500,
               mainAxisSpacing: 8,
               crossAxisSpacing: 8,
-              mainAxisExtent: 60.h,
+              mainAxisExtent: 50.h,
             ),
             delegate: SliverChildBuilderDelegate(
               (context, index) => const ProfileCardSkeleton(),
@@ -233,7 +233,7 @@ class HomeRecommendedContent {
               maxCrossAxisExtent: 600,
               mainAxisSpacing: 8,
               crossAxisSpacing: 8,
-              mainAxisExtent: 60.h,
+              mainAxisExtent: 50.h,
             ),
             delegate: SliverChildBuilderDelegate((context, index) {
               final isPremium = SessionManager.instance.isPremium;

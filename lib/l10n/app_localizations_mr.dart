@@ -484,7 +484,7 @@ class AppLocalizationsMr extends AppLocalizations {
       'काही प्रश्नांची उत्तरे द्या आणि योग्य स्थळे पहा';
 
   @override
-  String get browseMatchesTitle => '🔍 स्थळ शोधा (Browse Matches)';
+  String get browseMatchesTitle => 'स्थळ शोधा';
 
   @override
   String get browseProfiles => 'प्रोफाइल ब्राउझ करा';

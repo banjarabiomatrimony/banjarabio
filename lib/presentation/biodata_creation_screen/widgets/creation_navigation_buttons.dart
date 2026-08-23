@@ -165,18 +165,22 @@ class CreationNavigationButtons extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(
-                              isLastStep
-                                  ? (isLite
-                                      ? 'Find Matches 💍'
-                                      : (isEditMode
-                                          ? (AppLocalizations.of(context)?.updateProfile ?? 'Update Profile')
-                                          : (AppLocalizations.of(context)?.saveBiodata ?? 'Save Biodata')))
-                                  : (AppLocalizations.of(context)?.next ?? 'Next Section'),
-                              style: TextStyle(
-                                color: theme.colorScheme.onPrimary,
-                                fontWeight: AppTypography.extraBold,
-                                fontSize: AppTypography.bodyMedium,
+                            Flexible(
+                              child: Text(
+                                isLastStep
+                                    ? (isLite
+                                        ? 'Find Matches 💍'
+                                        : (isEditMode
+                                            ? (AppLocalizations.of(context)?.updateProfile ?? 'Update Profile')
+                                            : (AppLocalizations.of(context)?.saveBiodata ?? 'Save Biodata')))
+                                    : (AppLocalizations.of(context)?.next ?? 'Next Section'),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: theme.colorScheme.onPrimary,
+                                  fontWeight: AppTypography.extraBold,
+                                  fontSize: AppTypography.bodyMedium,
+                                ),
                               ),
                             ),
                             SizedBox(width: 1.5.w),

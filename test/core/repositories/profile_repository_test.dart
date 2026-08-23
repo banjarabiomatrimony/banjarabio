@@ -59,6 +59,7 @@ void main() {
     when(() => mockCacheService.saveOwnProfile(any())).thenAnswer((_) async {});
     when(() => mockCacheService.clearOwnProfile()).thenAnswer((_) async {});
     when(() => mockCacheService.getHomeFeed()).thenReturn([]);
+    when(() => mockCacheService.clearHomeFeed()).thenAnswer((_) async {});
     when(() => mockCacheService.isGuestMode()).thenReturn(false);
     when(() => mockCacheService.isRelativeBrowseMode()).thenReturn(false);
     when(() => mockCacheService.saveHomeFeed(any())).thenAnswer((_) async {});
@@ -102,6 +103,33 @@ void main() {
       expect(result.isSuccess, true);
       expect(result.data.fullName, 'New Name');
       verify(() => mockCacheService.saveOwnProfile(any())).called(1);
+    });
+
+    test('createProfile normalizes gender and clears feed cache', () async {
+      final profileTable = fakeSupabase.from('profiles') as dynamic;
+      final mockData = {
+        'id': 'p2',
+        'user_id': 'test-user-2',
+        'full_name': 'Rahul Rathod',
+        'surname': 'Rathod',
+        'age': 28,
+        'gender': 'Male',
+        'created_at': DateTime.now().toIso8601String(),
+      };
+      
+      profileTable.builder.responseData = [mockData];
+
+      final inputData = {
+        'user_id': 'test-user-2',
+        'full_name': 'Rahul Rathod',
+        'gender': 'men',
+      };
+
+      final result = await profileRepository.createProfile(inputData);
+
+      expect(result.isSuccess, true);
+      expect(inputData['gender'], 'Male');
+      verify(() => mockCacheService.clearHomeFeed()).called(1);
     });
 
     test('updatePersonalData calls RPC and clears cache', () async {

@@ -11,7 +11,8 @@ class BiodataDropdownField extends StatelessWidget {
   final String label;
   final String? value;
   final List<DropdownMenuItem<String>> items;
-  final String icon;
+  final String? icon;
+  final IconData? iconData;
   final Function(String?) onChanged;
 
   const BiodataDropdownField({
@@ -19,9 +20,10 @@ class BiodataDropdownField extends StatelessWidget {
     required this.label,
     required this.value,
     required this.items,
-    required this.icon,
+    this.icon,
+    this.iconData,
     required this.onChanged,
-  });
+  }) : assert(icon != null || iconData != null, 'Must provide either icon or iconData');
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +44,17 @@ class BiodataDropdownField extends StatelessWidget {
             fillColor: theme.colorScheme.surface,
             prefixIcon: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: CustomIconWidget(
-                iconName: icon,
-                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
-                size: 20,
-              ),
+              child: iconData != null
+                  ? Icon(
+                      iconData,
+                      color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
+                      size: 20,
+                    )
+                  : CustomIconWidget(
+                      iconName: icon!,
+                      color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity70),
+                      size: 20,
+                    ),
             ),
             prefixIconConstraints: const BoxConstraints(minWidth: 40),
             contentPadding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 4.w),

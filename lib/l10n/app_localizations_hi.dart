@@ -481,7 +481,7 @@ class AppLocalizationsHi extends AppLocalizations {
       'कुछ सवालों के जवाब दें और उपयुक्त रिश्ते देखें';
 
   @override
-  String get browseMatchesTitle => '🔍 रिश्ता खोजें (Browse Matches)';
+  String get browseMatchesTitle => 'रिश्ता खोजें';
 
   @override
   String get browseProfiles => 'प्रोफ़ाइल ब्राउज़ करें';

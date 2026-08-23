@@ -13,6 +13,8 @@ import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/services/local_cache_service.dart';
+import 'package:banjarabio/core/session_manager.dart';
 import 'package:banjarabio/theme/app_colors.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -70,6 +72,25 @@ class _FilterScreenState extends State<FilterScreen>
   void initState() {
     super.initState();
     _currentFilters = widget.initialFilters ?? const FilterCriteria();
+
+    // 🌟 OPTION 1: Auto-default looking-for gender based on User Profile or Relative Intake
+    if (_currentFilters.gender == null || _currentFilters.gender!.isEmpty) {
+      final ownProfile = SessionManager.instance.currentProfile;
+      final relativeIntent = LocalCacheService().getRelativeIntent();
+      final isRelativeMode = LocalCacheService().isRelativeBrowseMode();
+
+      if (ownProfile != null && ownProfile.gender.isNotEmpty) {
+        final g = ownProfile.gender.toLowerCase();
+        if (g == 'male') {
+          _currentFilters = _currentFilters.copyWith(gender: 'female');
+        } else if (g == 'female') {
+          _currentFilters = _currentFilters.copyWith(gender: 'male');
+        }
+      } else if (isRelativeMode && relativeIntent != null && relativeIntent['target_gender'] != null) {
+        _currentFilters = _currentFilters.copyWith(gender: relativeIntent['target_gender']);
+      }
+    }
+
     _districtController.text = _currentFilters.district ?? '';
     _initAnimations();
     _loadUserStatus();
@@ -171,6 +192,14 @@ class _FilterScreenState extends State<FilterScreen>
           if (mounted && profile != null) {
             setState(() {
               _isPremium = profile.isPremium;
+              if (_currentFilters.gender == null || _currentFilters.gender!.isEmpty) {
+                final g = profile.gender.toLowerCase();
+                if (g == 'male') {
+                  _currentFilters = _currentFilters.copyWith(gender: 'female');
+                } else if (g == 'female') {
+                  _currentFilters = _currentFilters.copyWith(gender: 'male');
+                }
+              }
             });
           }
         },
@@ -230,7 +259,19 @@ class _FilterScreenState extends State<FilterScreen>
     int count = 0;
     // Tier 1
     if (_currentFilters.minAge != null || _currentFilters.maxAge != null) count++;
-    if (_currentFilters.gender != null && _currentFilters.gender!.isNotEmpty) count++;
+    if (_currentFilters.gender != null && _currentFilters.gender!.isNotEmpty) {
+      final ownProfile = SessionManager.instance.currentProfile;
+      final relativeIntent = LocalCacheService().getRelativeIntent();
+      String defaultGender = '';
+      if (ownProfile != null && ownProfile.gender.isNotEmpty) {
+        defaultGender = ownProfile.gender.toLowerCase() == 'male' ? 'female' : 'male';
+      } else if (relativeIntent != null && relativeIntent['target_gender'] != null) {
+        defaultGender = (relativeIntent['target_gender'] ?? '').toLowerCase();
+      }
+      if (defaultGender.isEmpty || _currentFilters.gender!.toLowerCase() != defaultGender) {
+        count++;
+      }
+    }
     if (_currentFilters.hasPhoto == true) count++;
     if (_currentFilters.maritalStatus != null && _currentFilters.maritalStatus!.isNotEmpty) count++;
     if (_currentFilters.state != null && _currentFilters.state!.isNotEmpty) count++;
@@ -333,8 +374,26 @@ class _FilterScreenState extends State<FilterScreen>
 
   void _resetFilters() {
     HapticFeedback.lightImpact();
+
+    // Auto-preserve the smart default gender on reset
+    String defaultGender = '';
+    final ownProfile = SessionManager.instance.currentProfile;
+    final relativeIntent = LocalCacheService().getRelativeIntent();
+    final isRelativeMode = LocalCacheService().isRelativeBrowseMode();
+
+    if (ownProfile != null && ownProfile.gender.isNotEmpty) {
+      final g = ownProfile.gender.toLowerCase();
+      if (g == 'male') {
+        defaultGender = 'female';
+      } else if (g == 'female') {
+        defaultGender = 'male';
+      }
+    } else if (isRelativeMode && relativeIntent != null && relativeIntent['target_gender'] != null) {
+      defaultGender = relativeIntent['target_gender'] ?? '';
+    }
+
     setState(() {
-      _currentFilters = const FilterCriteria();
+      _currentFilters = FilterCriteria(gender: defaultGender.isNotEmpty ? defaultGender : null);
       _districtController.clear();
     });
   }
@@ -642,10 +701,10 @@ class _FilterScreenState extends State<FilterScreen>
         width: double.infinity,
         padding: EdgeInsets.fromLTRB(2.5.w, 0.2.h, 2.5.w, 0.8.h),
         decoration: BoxDecoration(
-          color: theme.appBarTheme.backgroundColor ?? (isDark ? AppColors.canvasCharcoal : Colors.white),
+          color: Colors.transparent,
           border: Border(
             bottom: BorderSide(
-              color: isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : AppColors.slate200,
+              color: Colors.white.withValues(alpha: 0.12),
             ),
           ),
         ),
@@ -733,15 +792,15 @@ class _FilterScreenState extends State<FilterScreen>
                 ? null
                 : (isHovered
                     ? null
-                    : (isDark ? AppColors.canvasRichDark : AppColors.slate100)),
+                    : Colors.black.withValues(alpha: 0.24)),
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
               color: isSelected
                   ? Colors.white.withValues(alpha: 0.95)
                   : (isHovered
                       ? color.withValues(alpha: 0.65)
-                      : (isDark ? Colors.white.withValues(alpha: AppColors.opacity10) : AppColors.slate300)),
-              width: isSelected ? 1.6 : 1.0,
+                      : Colors.white.withValues(alpha: 0.22)),
+              width: isSelected ? 1.4 : 1.0,
             ),
             boxShadow: isSelected
                 ? [
@@ -776,7 +835,7 @@ class _FilterScreenState extends State<FilterScreen>
                 child: Icon(
                   icon,
                   size: 13,
-                  color: isSelected ? Colors.white : (isHovered ? color : (isDark ? Colors.white70 : AppColors.slate600)),
+                  color: isSelected ? Colors.white : (isHovered ? color : Colors.white),
                 ),
               ),
               SizedBox(width: 1.4.w),
@@ -785,7 +844,7 @@ class _FilterScreenState extends State<FilterScreen>
                 style: TextStyle(
                   color: isSelected
                       ? Colors.white
-                      : (isHovered ? color : (isDark ? Colors.white70 : AppColors.slate700)),
+                      : (isHovered ? color : Colors.white),
                   fontWeight: isSelected ? AppTypography.black : (isHovered ? AppTypography.extraBold : AppTypography.semiBold),
                   fontSize: AppTypography.labelMedium,
                   letterSpacing: isSelected ? 0.2 : 0.05,
@@ -1020,63 +1079,115 @@ class _FilterScreenState extends State<FilterScreen>
   // ===========================================================================
 
   Widget _buildGenderSection(ThemeData theme, bool isDark) {
-    final selectedGender = _currentFilters.gender ?? '';
+    final selectedGender = (_currentFilters.gender ?? '').toLowerCase();
+    final ownProfile = SessionManager.instance.currentProfile;
+    final relativeIntent = LocalCacheService().getRelativeIntent();
+    final isRelativeMode = LocalCacheService().isRelativeBrowseMode();
 
-    Widget buildGenderPill(String label, String value, IconData icon, Color color) {
-      final isSelected = selectedGender.toLowerCase() == value.toLowerCase();
+    String? contextBadgeText;
+    IconData contextBadgeIcon = Icons.auto_awesome_rounded;
+    Color contextBadgeColor = AppColors.categoryAstro;
+
+    if (ownProfile != null && ownProfile.gender.isNotEmpty) {
+      final ownGender = ownProfile.gender.toLowerCase();
+      if (ownGender == 'male') {
+        contextBadgeText = 'Auto-Matched for your Profile (as Groom)';
+        contextBadgeIcon = Icons.lock_outline_rounded;
+        contextBadgeColor = AppColors.categoryPersonal;
+      } else if (ownGender == 'female') {
+        contextBadgeText = 'Auto-Matched for your Profile (as Bride)';
+        contextBadgeIcon = Icons.lock_outline_rounded;
+        contextBadgeColor = AppColors.skyBlue;
+      }
+    } else if (isRelativeMode && relativeIntent != null) {
+      final rel = relativeIntent['relation'] ?? 'Family';
+      contextBadgeText = 'Auto-Set for Relative Search ($rel)';
+      contextBadgeIcon = Icons.family_restroom_rounded;
+      contextBadgeColor = AppColors.goldSoft;
+    }
+
+    Widget buildGenderCard({
+      required String label,
+      required String subtitle,
+      required String value,
+      required IconData icon,
+      required Color color,
+      required LinearGradient gradient,
+    }) {
+      final isSelected = selectedGender == value.toLowerCase();
       return Expanded(
         child: TactilePressable(
           onTap: () {
             HapticFeedback.selectionClick();
             setState(() {
               _currentFilters = _currentFilters.copyWith(
-                gender: isSelected ? '' : value,
+                gender: value,
               );
             });
           },
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 220),
+            duration: const Duration(milliseconds: 240),
             curve: Curves.easeOutCubic,
-            padding: EdgeInsets.symmetric(vertical: 1.3.h),
+            padding: EdgeInsets.symmetric(vertical: 1.4.h, horizontal: 3.w),
             decoration: BoxDecoration(
-              gradient: isSelected
-                  ? LinearGradient(
-                      colors: [color, color.withValues(alpha: AppColors.opacity85)],
-                    )
-                  : null,
+              gradient: isSelected ? gradient : null,
               color: isSelected
                   ? null
                   : (isDark ? AppColors.canvasRichDark : AppColors.slate100),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(18),
               border: Border.all(
                 color: isSelected ? color : (isDark ? Colors.white10 : AppColors.slate200),
-                width: isSelected ? 1.6 : 1,
+                width: isSelected ? 1.8 : 1.0,
               ),
               boxShadow: isSelected
                   ? [
                       BoxShadow(
-                        color: color.withValues(alpha: 0.38),
+                        color: color.withValues(alpha: isDark ? 0.35 : 0.25),
                         blurRadius: 10,
                         offset: const Offset(0, 3),
                       ),
                     ]
                   : null,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  icon,
-                  size: 17,
-                  color: isSelected ? Colors.white : (isDark ? Colors.white70 : AppColors.slate600),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      icon,
+                      size: 20,
+                      color: isSelected ? Colors.white : (isDark ? Colors.white70 : AppColors.slate700),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      label,
+                      style: TextStyle(
+                        fontWeight: isSelected ? AppTypography.black : AppTypography.bold,
+                        fontSize: AppTypography.titleSmall,
+                        color: isSelected ? Colors.white : (isDark ? Colors.white : AppColors.slate800),
+                      ),
+                    ),
+                    if (isSelected) ...[
+                      const SizedBox(width: 5),
+                      const Icon(
+                        Icons.check_circle_rounded,
+                        size: 15,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ],
                 ),
-                const SizedBox(width: 6),
+                const SizedBox(height: 3),
                 Text(
-                  label,
+                  subtitle,
                   style: TextStyle(
-                    fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
-                    fontSize: AppTypography.bodySmall,
-                    color: isSelected ? Colors.white : (isDark ? Colors.white : AppColors.slate800),
+                    fontSize: AppTypography.labelTiny,
+                    fontWeight: isSelected ? AppTypography.semiBold : AppTypography.medium,
+                    color: isSelected
+                        ? Colors.white.withValues(alpha: AppColors.opacity85)
+                        : (isDark ? Colors.white54 : AppColors.slate500),
                   ),
                 ),
               ],
@@ -1112,14 +1223,64 @@ class _FilterScreenState extends State<FilterScreen>
             title: AppLocalizations.of(context)?.lookingForGender ?? 'Looking For (Gender)',
             subtitle: AppLocalizations.of(context)?.selectMatchPreference ?? 'Select match preference for groom or bride search',
           ),
+          if (contextBadgeText != null) ...[
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              decoration: BoxDecoration(
+                color: contextBadgeColor.withValues(alpha: isDark ? 0.18 : 0.12),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: contextBadgeColor.withValues(alpha: isDark ? 0.45 : 0.35),
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(contextBadgeIcon, size: 13, color: contextBadgeColor),
+                  const SizedBox(width: 6),
+                  Flexible(
+                    child: Text(
+                      contextBadgeText,
+                      style: TextStyle(
+                        fontSize: AppTypography.labelSmall,
+                        fontWeight: AppTypography.bold,
+                        color: isDark ? Colors.white : AppColors.slate800,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
           SizedBox(height: 1.6.h),
           Row(
             children: [
-              buildGenderPill(AppLocalizations.of(context)?.all ?? 'All', '', Icons.people_outline_rounded, AppColors.categorySecurity),
-              SizedBox(width: 2.w),
-              buildGenderPill(AppLocalizations.of(context)?.bride ?? 'Bride', 'female', Icons.female_rounded, AppColors.categoryPersonal),
-              SizedBox(width: 2.w),
-              buildGenderPill(AppLocalizations.of(context)?.groom ?? 'Groom', 'male', Icons.male_rounded, AppColors.skyBlue),
+              buildGenderCard(
+                label: AppLocalizations.of(context)?.bride ?? 'Bride',
+                subtitle: 'Looking for Bride',
+                value: 'female',
+                icon: Icons.female_rounded,
+                color: AppColors.categoryPersonal,
+                gradient: const LinearGradient(
+                  colors: [AppColors.crimsonRose, AppColors.crimsonDeep],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              SizedBox(width: 3.w),
+              buildGenderCard(
+                label: AppLocalizations.of(context)?.groom ?? 'Groom',
+                subtitle: 'Looking for Groom',
+                value: 'male',
+                icon: Icons.male_rounded,
+                color: AppColors.skyBlue,
+                gradient: const LinearGradient(
+                  colors: [AppColors.skyBlue, AppColors.deepIndigo],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
             ],
           ),
         ],
@@ -1130,6 +1291,7 @@ class _FilterScreenState extends State<FilterScreen>
   Widget _buildAgeSection(ThemeData theme, bool isDark) {
     final double minAge = (_currentFilters.minAge ?? 18).toDouble().clamp(_minAgeLimit, _maxAgeLimit);
     final double maxAge = (_currentFilters.maxAge ?? 60).toDouble().clamp(minAge, _maxAgeLimit);
+    final int spanYears = (maxAge - minAge).toInt();
 
     final RangeValues currentRange = RangeValues(minAge, maxAge);
 
@@ -1143,28 +1305,45 @@ class _FilterScreenState extends State<FilterScreen>
           });
         },
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 180),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOutCubic,
+          padding: EdgeInsets.symmetric(horizontal: 3.2.w, vertical: 0.75.h),
           decoration: BoxDecoration(
+            gradient: isSelected
+                ? const LinearGradient(
+                    colors: [AppColors.categoryFamily, AppColors.violetDeep],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )
+                : null,
             color: isSelected
-                ? AppColors.categoryFamily.withValues(alpha: AppColors.opacity20)
+                ? null
                 : (isDark ? AppColors.canvasRichDark : AppColors.slate100),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: isSelected
-                  ? AppColors.categoryFamily
+                  ? Colors.white.withValues(alpha: 0.9)
                   : (isDark ? Colors.white10 : AppColors.slate200),
-              width: isSelected ? 1.4 : 1,
+              width: isSelected ? 1.4 : 1.0,
             ),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: AppColors.categoryFamily.withValues(alpha: isDark ? 0.35 : 0.25),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]
+                : null,
           ),
           child: Text(
             label,
             style: TextStyle(
-              fontWeight: isSelected ? AppTypography.bold : AppTypography.medium,
+              fontWeight: isSelected ? AppTypography.extraBold : AppTypography.semiBold,
               fontSize: AppTypography.labelSmall,
               color: isSelected
-                  ? AppColors.categoryFamily
-                  : (isDark ? Colors.white70 : AppColors.slate600),
+                  ? Colors.white
+                  : (isDark ? Colors.white70 : AppColors.slate700),
             ),
           ),
         ),
@@ -1172,18 +1351,18 @@ class _FilterScreenState extends State<FilterScreen>
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+      padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(
         color: isDark ? AppColors.canvasDeepDark : Colors.white,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(22),
         border: Border.all(
           color: isDark ? Colors.white.withValues(alpha: AppColors.opacity8) : AppColors.slate200,
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -1191,7 +1370,7 @@ class _FilterScreenState extends State<FilterScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: _buildSectionHeader(
@@ -1199,48 +1378,67 @@ class _FilterScreenState extends State<FilterScreen>
                   icon: Icons.cake_rounded,
                   iconAccent: AppColors.categoryFamily,
                   title: AppLocalizations.of(context)?.ageRange ?? 'Age Range',
+                  subtitle: 'Set preferred age bracket for matches',
                 ),
               ),
+              const SizedBox(width: 8),
               AnimatedContainer(
-                duration: const Duration(milliseconds: 180),
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3.5),
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     colors: [AppColors.categoryFamily, AppColors.violetDeep],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(14),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.categoryFamily.withValues(alpha: AppColors.opacity30),
-                      blurRadius: 6,
+                      color: AppColors.categoryFamily.withValues(alpha: isDark ? 0.40 : 0.25),
+                      blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
                   ],
                 ),
-                child: Text(
-                  AppLocalizations.of(context)?.ageRangeYears(minAge.toInt(), maxAge.toInt()) ?? '${minAge.toInt()} - ${maxAge.toInt()} yrs',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: AppTypography.extraBold,
-                    fontSize: AppTypography.labelSmall,
-                  ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      '${minAge.toInt()} – ${maxAge.toInt()} Yrs',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: AppTypography.black,
+                        fontSize: AppTypography.labelMedium,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                    Text(
+                      '$spanYears yrs span',
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: AppColors.opacity85),
+                        fontWeight: AppTypography.medium,
+                        fontSize: AppTypography.labelTiny,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 2),
+          SizedBox(height: 1.2.h),
 
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
               activeTrackColor: AppColors.categoryFamily,
-              inactiveTrackColor: AppColors.categoryFamily.withValues(alpha: 0.18),
+              inactiveTrackColor: AppColors.categoryFamily.withValues(alpha: 0.16),
               thumbColor: AppColors.categoryFamily,
-              overlayColor: AppColors.categoryFamily.withValues(alpha: AppColors.opacity20),
+              overlayColor: AppColors.categoryFamily.withValues(alpha: 0.16),
               rangeThumbShape: const RoundRangeSliderThumbShape(
-                enabledThumbRadius: 8.5,
+                enabledThumbRadius: 9.5,
                 elevation: 3,
               ),
-              trackHeight: 3.5,
+              trackHeight: 4.5,
             ),
             child: RangeSlider(
               values: currentRange,
@@ -1252,6 +1450,9 @@ class _FilterScreenState extends State<FilterScreen>
                 '${currentRange.end.toInt()} yrs',
               ),
               onChanged: (RangeValues values) {
+                if (values.start.round() != minAge.toInt() || values.end.round() != maxAge.toInt()) {
+                  HapticFeedback.selectionClick();
+                }
                 setState(() {
                   _currentFilters = _currentFilters.copyWith(
                     minAge: values.start.round(),
@@ -1262,23 +1463,48 @@ class _FilterScreenState extends State<FilterScreen>
             ),
           ),
 
-          const SizedBox(height: 2),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${_minAgeLimit.toInt()} Yrs',
+                  style: TextStyle(
+                    fontSize: AppTypography.labelTiny,
+                    color: isDark ? Colors.white38 : AppColors.slate400,
+                    fontWeight: AppTypography.semiBold,
+                  ),
+                ),
+                Text(
+                  '${_maxAgeLimit.toInt()} Yrs',
+                  style: TextStyle(
+                    fontSize: AppTypography.labelTiny,
+                    color: isDark ? Colors.white38 : AppColors.slate400,
+                    fontWeight: AppTypography.semiBold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          SizedBox(height: 1.4.h),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
             child: Row(
               children: [
-                buildPresetPill('18-25', 18, 25),
+                buildPresetPill('18 – 25', 18, 25),
                 const SizedBox(width: 6),
-                buildPresetPill('22-28', 22, 28),
+                buildPresetPill('21 – 28', 21, 28),
                 const SizedBox(width: 6),
-                buildPresetPill('25-32', 25, 32),
+                buildPresetPill('25 – 32', 25, 32),
                 const SizedBox(width: 6),
-                buildPresetPill('28-35', 28, 35),
+                buildPresetPill('28 – 35', 28, 35),
                 const SizedBox(width: 6),
-                buildPresetPill('35-45', 35, 45),
+                buildPresetPill('32 – 42', 32, 42),
                 const SizedBox(width: 6),
-                buildPresetPill('Any Age', 18, 60),
+                buildPresetPill('Any Age (18–60)', 18, 60),
               ],
             ),
           ),
@@ -1726,7 +1952,7 @@ class _FilterScreenState extends State<FilterScreen>
     final gotraOptions = [
       'Pawar / Pramara',
       'Rathod',
-      'Chauhan / Chawan',
+      'Chavhan / Chawan',
       'Jadhav',
       'Vaditya',
       'Naik',
@@ -1765,7 +1991,7 @@ class _FilterScreenState extends State<FilterScreen>
     final gotraOptions = [
       'Pawar / Pramara',
       'Rathod',
-      'Chauhan / Chawan',
+      'Chavhan / Chawan',
       'Jadhav',
       'Vaditya',
       'Naik',

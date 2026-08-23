@@ -52,7 +52,9 @@ class MelavaScreen extends ConsumerStatefulWidget {
 }
 
 class _MelavaScreenState extends ConsumerState<MelavaScreen> {
-  // Static mock data for Phase 0
+  // ⚠️ PHASE 0: Static mock data — replace with backend API when Melava feature goes live.
+  // Contacts are intentionally empty to prevent users from calling fake placeholder numbers.
+  // Dates are illustrative only and must be managed from a database in production.
   final List<MelavaEvent> _events = const [
     MelavaEvent(
       id: 'pune_2026',
@@ -61,7 +63,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       date: 'Sunday, November 8, 2026',
       time: '10:00 AM - 5:00 PM',
       venue: 'Banjara Bhavan, Near Shivaji Nagar Metro Station, Pune, Maharashtra 411005',
-      contact: '+919876543210',
+      contact: '',
       description: 'Annual Parichay Melava organized in collaboration with Banjara Seva Sangh, Pune. Dedicated to bridging the gap for urban, IT, and multi-field professionals in Western Maharashtra. Includes live matchmaking and family networking slots.',
       partnerType: 'Verified Trust Partner',
       focus: 'IT & Urban Professionals',
@@ -75,7 +77,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       date: 'Saturday, November 21, 2026',
       time: '9:00 AM - 6:00 PM',
       venue: 'Naik Ground, Pusad Road, Washim, Maharashtra 444505',
-      contact: '+919876543211',
+      contact: '',
       description: 'One of Central India\'s largest regional Melavas hosted by Vasantrao Naik Smruti Trust. A prestigious annual gathering focusing on rural-urban matchmaking, uniting families from across Vidarbha with verified profile exchanges.',
       partnerType: 'Verified Trust Partner',
       focus: 'Vidarbha Region Families',
@@ -89,7 +91,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       date: 'Sunday, December 6, 2026',
       time: '11:00 AM - 4:00 PM',
       venue: 'Banjara Community Hall, Hebbal, Bengaluru, Karnataka 560024',
-      contact: '+919876543212',
+      contact: '',
       description: 'Organized by Karnataka Banjara Vikas Sabha. Tailored for Lambani/Banjara families in South India. Offers multilingual profile listings and focused coordination for candidates from Karnataka and border regions.',
       partnerType: 'Official Digital Partner',
       focus: 'South Indian Families',
@@ -103,7 +105,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       date: 'Sunday, December 20, 2026',
       time: '10:00 AM - 5:00 PM',
       venue: 'Banjara Bhavan, Road No. 10, Banjara Hills, Hyderabad, Telangana 500034',
-      contact: '+919876543213',
+      contact: '',
       description: 'Organized by All India Banjara Seva Sangh, Telangana. Focuses on high-educated individuals, government employees, and IT/corporate professionals from Telangana and Andhra Pradesh.',
       partnerType: 'Official Digital Partner',
       focus: 'High-Ed & Corporate Pros',
@@ -117,7 +119,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       date: 'Sunday, December 13, 2026',
       time: '10:00 AM - 6:00 PM',
       venue: 'Vasantrao Naik Sabhagruh, VIP Road, Nanded, Maharashtra 431602',
-      contact: '+919876543214',
+      contact: '',
       description: 'Grand matrimonial gathering by Nanded Gor Sena & Banjara Seva Samiti. Highlights profiles of graduates, engineers, doctors, and professionals from Nanded, Latur, and Hingoli districts.',
       partnerType: 'Verified Trust Partner',
       focus: 'Graduates & Professionals',
@@ -131,7 +133,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       date: 'Sunday, January 10, 2027',
       time: '9:30 AM - 5:30 PM',
       venue: 'Sevalal Mangal Karyalaya, Darwha Road, Yavatmal, Maharashtra 445001',
-      contact: '+919876543215',
+      contact: '',
       description: 'Hosted by Yavatmal Gor Banjara Parishad. A traditional event focused on strengthening community ties, offering personalized matchmaking tables and verified offline profile directory booklets.',
       partnerType: 'Verified Trust Partner',
       focus: 'Traditional Family Ties',
@@ -145,7 +147,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       date: 'Sunday, January 24, 2027',
       time: '10:00 AM - 5:00 PM',
       venue: 'Banjara Samaj Hall, Sector 3, Ghansoli, Navi Mumbai, Maharashtra 400701',
-      contact: '+919876543216',
+      contact: '',
       description: 'Organized by Gor Banjara Social Foundation, Mumbai. Specifically serves families residing in Mumbai, Thane, Navi Mumbai, and surrounding cities. Ideal for finding urban and well-settled matches.',
       partnerType: 'Official Digital Partner',
       focus: 'Metropolitan Graduates',
@@ -159,7 +161,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       date: 'Saturday, February 6, 2027',
       time: '10:00 AM - 5:00 PM',
       venue: 'Naik Sabhagruh, Garkheda Area, Chhatrapati Sambhajinagar (Aurangabad), Maharashtra 431005',
-      contact: '+919876543217',
+      contact: '',
       description: 'A premier Marathwada region matrimonial meet organized by Marathwada Banjara Vikas Manch. Designed to support parents in direct face-to-face talks and verified biodata exchange.',
       partnerType: 'Verified Trust Partner',
       focus: 'Marathwada Regional Special',
@@ -173,7 +175,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       date: 'Sunday, February 21, 2027',
       time: '10:00 AM - 4:00 PM',
       venue: 'Banjara Bhavan, Near Railway Station, Jalgaon, Maharashtra 425001',
-      contact: '+919876543218',
+      contact: '',
       description: 'Hosted by Khandesh Gor Banjara Sangh. Connecting families across Jalgaon, Dhule, and Nandurbar. Provides a printed directory of community profiles to all attending parents.',
       partnerType: 'Verified Trust Partner',
       focus: 'Khandesh Region Special',
@@ -187,7 +189,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       date: 'Sunday, March 7, 2027',
       time: '10:00 AM - 4:30 PM',
       venue: 'Banjara Community Hall, Hunter Road, Hanamkonda, Warangal, Telangana 506001',
-      contact: '+919876543219',
+      contact: '',
       description: 'Organized by Kakatiya Banjara Welfare Association. Serves the Lambada community in Northern Telangana, with a strong focus on candidates in government services, education, and professional sectors.',
       partnerType: 'Official Digital Partner',
       focus: 'Public Sector & Grads',
@@ -201,7 +203,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       date: 'Sunday, March 21, 2027',
       time: '10:00 AM - 5:00 PM',
       venue: 'Sevalal Kalyana Mantapa, Jewargi Road, Kalaburagi, Karnataka 585102',
-      contact: '+919876543220',
+      contact: '',
       description: 'Organized by Kalaburagi Banjara Seva Sangha. Facilitates matrimonial alliances across the North Karnataka-Maharashtra border region, with native Lambani and Kannada speaking assistance.',
       partnerType: 'Official Digital Partner',
       focus: 'Karnataka Border Region',
@@ -215,7 +217,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       date: 'Sunday, April 4, 2027',
       time: '9:30 AM - 4:30 PM',
       venue: 'Banjara Bhavan, Sholapur Road, Vijayapura, Karnataka 586103',
-      contact: '+919876543221',
+      contact: '',
       description: 'Hosted by Vijayapura Lambani Welfare Trust. Connects families across Vijayapura and Bagalkot. Promotes preserving community heritage while matching modern, educated brides and grooms.',
       partnerType: 'Verified Trust Partner',
       focus: 'Preserving Heritage Matches',
@@ -229,7 +231,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       date: 'Sunday, April 18, 2027',
       time: '10:00 AM - 5:00 PM',
       venue: 'Banjara Kalyan Board Community Hall, Malviya Nagar, Jaipur, Rajasthan 302017',
-      contact: '+919876543222',
+      contact: '',
       description: 'Organized by Rajasthan Banjara Mahasabha. Provides an opportunity for North-Western Banjara families (Rajasthan, Haryana, Delhi NCR) to interact and find regional matches.',
       partnerType: 'Verified Trust Partner',
       focus: 'North-Western Alliances',
@@ -243,7 +245,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       date: 'Sunday, May 2, 2027',
       time: '10:00 AM - 5:00 PM',
       venue: 'Banjara Dharamshala, Near Sevalal Temple, Indore, Madhya Pradesh 452001',
-      contact: '+919876543223',
+      contact: '',
       description: 'MP Banjara Seva Trust\'s leading event for the community in Madhya Pradesh. Focuses on profile sharing, on-stage self-introductions, and parent interaction sessions.',
       partnerType: 'Verified Trust Partner',
       focus: 'Central India Matrimony',
@@ -257,7 +259,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       date: 'Sunday, May 16, 2027',
       time: '4:00 PM - 7:00 PM IST',
       venue: 'Online Zoom Meeting (Global Virtual Event)',
-      contact: '+919876543224',
+      contact: '',
       description: 'BanjaraBio\'s flagship virtual matrimonial event for the global diaspora. Connects highly-educated professionals and NRIs working across the USA, UK, Canada, Australia, Europe, and Middle East. Conducted entirely online via Zoom.',
       partnerType: 'BanjaraBio Exclusive',
       focus: 'NRI & Global Professionals',
@@ -1167,7 +1169,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
     // Log telemetry event
     await AnalyticsService.logEvent('melava_suggest_event_tap');
 
-    final String whatsappUrl = 'https://wa.me/+919876543210?text=${Uri.encodeComponent("Hello BanjaraBio, I would like to suggest a Parichay Melava event for my region...")}';
+    final String whatsappUrl = 'https://wa.me/918186050406?text=${Uri.encodeComponent("Hello BanjaraBio, I would like to suggest a Parichay Melava event for my region...")}';
     final Uri uri = Uri.parse(whatsappUrl);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);

@@ -311,7 +311,13 @@ class AuthRepository {
     }
   }
 
-  /// Delete own account and all data
+  /// Delete own account and all data.
+  ///
+  /// Deletion order: Photos → Profile → Auth user (server-side) → Sign out.
+  /// Note: The Supabase client SDK cannot delete auth users directly.
+  /// Auth user removal is delegated to `fn_delete_auth_user` RPC (SECURITY DEFINER)
+  /// which calls `auth.users` delete. If the RPC does not exist yet, deletion
+  /// proceeds gracefully — the admin is notified and can clean up manually.
   Future<BackendResponse<void>> deleteAccount() async {
     try {
       final userId = currentUserId;
@@ -346,7 +352,17 @@ class AuthRepository {
         phone: profileRes.data?.phoneNumber,
       );
 
-      // 4. Delete from Auth
+      // 4. Best-effort: Delete auth user via server-side RPC
+      // This requires a SECURITY DEFINER function with service_role access.
+      // If the RPC doesn't exist yet, we log and continue — admin can clean up.
+      try {
+        await _supabase.rpc('fn_delete_auth_user');
+      } catch (e) {
+        AppLogger.warn('AuthRepository', 'fn_delete_auth_user RPC not available or failed: $e. '
+            'Auth user record may persist. Admin notified for manual cleanup.');
+      }
+
+      // 5. Sign out locally
       await signOut();
       return BackendResponse.success(null);
     } catch (e) {

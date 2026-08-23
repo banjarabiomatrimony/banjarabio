@@ -1075,7 +1075,7 @@
   "brothersCount": "{count, plural, =1{1 brother} other{{count} brothers}}",
   "browseMatchesDesc": "Search suitable matches for son, daughter, relative.",
   "browseMatchesSubtitle": "Answer a few questions and see suitable matches",
-  "browseMatchesTitle": "Search Matches (Browse)",
+  "browseMatchesTitle": "Browse Matches",
   "browseProfiles": "Browse Profiles",
   "bulkDiscount": "{percent}% OFF",
   "business": "Business",

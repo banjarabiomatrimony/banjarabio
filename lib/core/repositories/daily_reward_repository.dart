@@ -69,7 +69,12 @@ class DailyRewardRepository {
   Future<BackendResponse<DailyRewardModel>> claimDailyReward() async {
     try {
       final response = await _supabase.rpc('fn_claim_daily_reward');
-      final data = response as Map<String, dynamic>;
+
+      // Safe cast: RPC may return null or unexpected types
+      if (response == null || response is! Map<String, dynamic>) {
+        return BackendResponse.failure('Unexpected reward response format');
+      }
+      final data = response;
       
       if (data['status'] == 'success') {
         return BackendResponse.success(

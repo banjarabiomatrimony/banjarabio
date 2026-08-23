@@ -29,7 +29,7 @@ class OnboardingValidator {
           final hasGotras = [
             'Rathod', 'राठोड',
             'Pawar', 'पवार',
-            'Chauhan', 'चव्हाण',
+            'Chavhan', 'Chauhan', 'चव्हाण',
             'Jadhav', 'जाधव',
             'Ade', 'आडे',
           ].contains(surname);
@@ -39,15 +39,18 @@ class OnboardingValidator {
         }
         if (_isEmpty(formData['gender'])) missing.add('gender');
 
-        // Full mode requires age, height, and profileCreatedBy; lite mode skips it
+        // Full mode requires age and height; lite mode skips it
         if (!isLite) {
           if (_isEmpty(formData['age'])) missing.add('age');
           if (_isEmpty(formData['height'])) missing.add('height');
-          if (_isEmpty(formData['profileCreatedBy'])) missing.add('profileCreatedBy');
         }
         break;
 
-      case CreationStep.family: // Optional for now (both modes)
+      case CreationStep.family:
+        if (!isLite) {
+          if (_isEmpty(formData['fatherName'])) missing.add('fatherName');
+          if (_isEmpty(formData['motherName'])) missing.add('motherName');
+        }
         break;
 
       case CreationStep.education:

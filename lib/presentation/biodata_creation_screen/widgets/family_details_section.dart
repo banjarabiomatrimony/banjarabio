@@ -329,7 +329,7 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
             controller: _fatherNameController,
             label: AppLocalizations.of(context)?.fatherName ?? "Father's Name",
             hint: AppLocalizations.of(context)?.fatherName ?? "Enter father's name",
-            icon: 'person',
+            iconData: Icons.person_rounded,
             required: true,
             onChanged: (val) => widget.onUpdate('fatherName', val),
             theme: theme,
@@ -339,7 +339,7 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
             controller: _fatherOccupationController,
             label: AppLocalizations.of(context)?.fatherOccupation ?? "Father's Occupation",
             hint: AppLocalizations.of(context)?.profession ?? 'e.g. Retired Government Officer',
-            icon: 'work',
+            iconData: Icons.work_rounded,
             onChanged: (val) => widget.onUpdate('fatherOccupation', val),
             theme: theme,
           ),
@@ -350,7 +350,7 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
             controller: _motherNameController,
             label: AppLocalizations.of(context)?.motherName ?? "Mother's Name",
             hint: AppLocalizations.of(context)?.motherName ?? "Enter mother's name",
-            icon: 'person',
+            iconData: Icons.face_rounded,
             required: true,
             onChanged: (val) => widget.onUpdate('motherName', val),
             theme: theme,
@@ -360,7 +360,7 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
             controller: _motherOccupationController,
             label: AppLocalizations.of(context)?.motherOccupation ?? "Mother's Occupation",
             hint: AppLocalizations.of(context)?.homemaker ?? 'e.g. Homemaker',
-            icon: 'work_outline',
+            iconData: Icons.home_work_rounded,
             onChanged: (val) => widget.onUpdate('motherOccupation', val),
             theme: theme,
           ),
@@ -462,7 +462,7 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
                     value: key,
                     child: Text(_getLocalizedFamilyType(context, key), overflow: TextOverflow.ellipsis),
                   )).toList(),
-                  icon: 'groups',
+                  iconData: Icons.groups_rounded,
                   onChanged: (val) {
                     setState(() => _selectedFamilyType = val);
                     widget.onUpdate('familyType', val);
@@ -479,7 +479,7 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
                     value: key,
                     child: Text(_getLocalizedFamilyStatus(context, key), overflow: TextOverflow.ellipsis),
                   )).toList(),
-                  icon: 'home',
+                  iconData: Icons.home_rounded,
                   onChanged: (val) {
                     setState(() => _selectedFamilyStatus = val);
                     widget.onUpdate('familyStatus', val);
@@ -563,7 +563,8 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
     required TextEditingController controller,
     required String label,
     required String hint,
-    required String icon,
+    String? icon,
+    IconData? iconData,
     required ThemeData theme,
     bool required = false,
     TextInputType? keyboardType,
@@ -600,11 +601,17 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
               : null,
           decoration: InputDecoration(
             hintText: hint,
-            prefixIcon: CustomIconWidget(
-              iconName: icon,
-              color: theme.colorScheme.onSurfaceVariant,
-              size: 20,
-            ),
+            prefixIcon: iconData != null
+                ? Icon(
+                    iconData,
+                    color: theme.colorScheme.onSurfaceVariant,
+                    size: 20,
+                  )
+                : CustomIconWidget(
+                    iconName: icon ?? 'info_outline',
+                    color: theme.colorScheme.onSurfaceVariant,
+                    size: 20,
+                  ),
           ),
           onChanged: onChanged,
         ),
@@ -724,7 +731,8 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
     required String label,
     required String? value,
     required List<DropdownMenuItem<String>> items,
-    required String icon,
+    String? icon,
+    IconData? iconData,
     required Function(String?) onChanged,
   }) {
     return Column(
@@ -736,11 +744,17 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
           initialValue: value != null && items.any((i) => i.value == value) ? value : null,
           isExpanded: true,
           decoration: InputDecoration(
-            prefixIcon: CustomIconWidget(
-              iconName: icon,
-              color: theme.colorScheme.onSurfaceVariant,
-              size: 20,
-            ),
+            prefixIcon: iconData != null
+                ? Icon(
+                    iconData,
+                    color: theme.colorScheme.onSurfaceVariant,
+                    size: 20,
+                  )
+                : CustomIconWidget(
+                    iconName: icon ?? 'info_outline',
+                    color: theme.colorScheme.onSurfaceVariant,
+                    size: 20,
+                  ),
           ),
           items: items,
           onChanged: onChanged,

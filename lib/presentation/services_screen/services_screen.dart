@@ -350,7 +350,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
           );
         },
       ),
-    );
+    ).whenComplete(() => searchController.dispose());
   }
 
   void _openVendorInquirySheet(
@@ -927,7 +927,13 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
           );
         },
       ),
-    );
+    ).whenComplete(() {
+      nameController.dispose();
+      phoneController.dispose();
+      talukaVillageController.dispose();
+      dateController.dispose();
+      noteController.dispose();
+    });
   }
 
   List<String> _getQuickChipsForService(String serviceTitle) {

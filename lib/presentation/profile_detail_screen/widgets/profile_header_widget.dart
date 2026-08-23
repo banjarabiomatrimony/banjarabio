@@ -303,21 +303,25 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
                   ),
                 ),
               ),
-              Positioned(
-                top: 4.h,
-                left: 2.w,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: AppColors.opacity50),
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    icon: const CustomIconWidget(
-                      iconName: 'close',
-                      color: Colors.white,
+              SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: AppColors.opacity50),
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                        icon: const CustomIconWidget(
+                          iconName: 'close',
+                          color: Colors.white,
+                        ),
+                        onPressed: () => Navigator.of(context).pop(),
+                        tooltip: 'Close',
+                      ),
                     ),
-                    onPressed: () => Navigator.of(context).pop(),
-                    tooltip: 'Close',
                   ),
                 ),
               ),

@@ -104,7 +104,10 @@ class ProfileRepository extends IsolateFirstRepository {
   String? get lastRequestedDistrict => _lastRequestedDistrict;
   String? get lastSelectedState => _lastSelectedState;
 
-  // Stream for live feed updates across the app (SWR background refresh sync)
+  // Stream for live feed updates across the app (SWR background refresh sync).
+  // Note: This broadcast StreamController is intentionally never closed.
+  // ProfileRepository is a singleton — it lives for the app's entire process lifetime.
+  // The isClosed guard in _notifyFeedUpdated provides safety if hot-restart disposes it.
   final StreamController<List<ProfileModel>> _feedStreamController =
       StreamController<List<ProfileModel>>.broadcast();
 
@@ -127,6 +130,38 @@ class ProfileRepository extends IsolateFirstRepository {
     Map<String, dynamic> profileData,
   ) async {
     try {
+      // Normalize gender if provided
+      if (profileData.containsKey('gender') && profileData['gender'] != null) {
+        final g = profileData['gender'].toString().trim().toLowerCase();
+        if (g == 'male' || g == 'men' || g == 'groom' || g == 'm') {
+          profileData['gender'] = 'Male';
+        } else if (g == 'female' || g == 'women' || g == 'bride' || g == 'f') {
+          profileData['gender'] = 'Female';
+        }
+      }
+
+      // Normalize surname if Chauhan
+      if (profileData.containsKey('surname') && profileData['surname'] != null) {
+        if (profileData['surname'].toString().trim().toLowerCase() == 'chauhan') {
+          profileData['surname'] = 'Chavhan';
+        }
+      }
+
+      // Auto-calculate age from date_of_birth if age is missing or 0
+      if ((profileData['age'] == null || (profileData['age'] is int && (profileData['age'] as int) <= 0)) && profileData['date_of_birth'] != null) {
+        final dob = DateTime.tryParse(profileData['date_of_birth'].toString());
+        if (dob != null) {
+          final now = DateTime.now();
+          int derivedAge = now.year - dob.year;
+          if (now.month < dob.month || (now.month == dob.month && now.day < dob.day)) {
+            derivedAge--;
+          }
+          if (derivedAge >= 18) {
+            profileData['age'] = derivedAge;
+          }
+        }
+      }
+
       final response = await _supabase
           .from('profiles')
           .upsert(profileData, onConflict: 'user_id')
@@ -135,6 +170,8 @@ class ProfileRepository extends IsolateFirstRepository {
 
       final profile = ProfileModel.fromJson(response);
       _updateMemoryCache(profile);
+      clearFeedCache();
+      await _cacheService.clearHomeFeed();
 
       // Check and complete referral flow if applicable
       await _checkPendingReferral(profile.userId);
@@ -160,6 +197,36 @@ class ProfileRepository extends IsolateFirstRepository {
     Map<String, dynamic> updates,
   ) async {
     try {
+      if (updates.containsKey('gender') && updates['gender'] != null) {
+        final g = updates['gender'].toString().trim().toLowerCase();
+        if (g == 'male' || g == 'men' || g == 'groom' || g == 'm') {
+          updates['gender'] = 'Male';
+        } else if (g == 'female' || g == 'women' || g == 'bride' || g == 'f') {
+          updates['gender'] = 'Female';
+        }
+      }
+
+      if (updates.containsKey('surname') && updates['surname'] != null) {
+        if (updates['surname'].toString().trim().toLowerCase() == 'chauhan') {
+          updates['surname'] = 'Chavhan';
+        }
+      }
+
+      // Auto-calculate age from date_of_birth if age is missing or 0
+      if ((updates['age'] == null || (updates['age'] is int && (updates['age'] as int) <= 0)) && updates['date_of_birth'] != null) {
+        final dob = DateTime.tryParse(updates['date_of_birth'].toString());
+        if (dob != null) {
+          final now = DateTime.now();
+          int derivedAge = now.year - dob.year;
+          if (now.month < dob.month || (now.month == dob.month && now.day < dob.day)) {
+            derivedAge--;
+          }
+          if (derivedAge >= 18) {
+            updates['age'] = derivedAge;
+          }
+        }
+      }
+
       final response = await _supabase
           .from('profiles')
           .update(updates)
@@ -177,6 +244,8 @@ class ProfileRepository extends IsolateFirstRepository {
       );
 
       _updateMemoryCache(profile);
+      clearFeedCache();
+      await _cacheService.clearHomeFeed();
 
       // Update local storage to keep offline data in sync
       await _cacheService.saveOwnProfile(profile.toJson());
@@ -478,6 +547,12 @@ class ProfileRepository extends IsolateFirstRepository {
       final bool isGuest = _cacheService.isGuestMode();
       final bool isRelativeBrowse = _cacheService.isRelativeBrowseMode();
       
+      final cleanGender = (filters?.gender != null &&
+              filters!.gender!.trim().isNotEmpty &&
+              filters.gender!.trim().toLowerCase() != 'all')
+          ? filters.gender!.trim()
+          : null;
+
       final rpcFuture = _readClient.rpc(
         'fn_get_filtered_feed',
         params: {
@@ -491,7 +566,7 @@ class ProfileRepository extends IsolateFirstRepository {
           'p_taluka': filters?.taluka,
           // 🔍 PATHWAY A: Pass explicit gender for relative browse users
           // (they have no own profile, so auto-detection returns NULL)
-          'p_gender': filters?.gender,
+          'p_gender': cleanGender,
         },
       ).timeout(Duration(seconds: (isGuest || isRelativeBrowse) ? 10 : 20));
 
@@ -544,7 +619,7 @@ class ProfileRepository extends IsolateFirstRepository {
             'p_state': filters.state,
             'p_district': null, // Remove district filter
             'p_taluka': null,   // Remove taluka filter
-            'p_gender': filters.gender,
+            'p_gender': cleanGender,
           },
         ).timeout(const Duration(seconds: 15));
 
@@ -1037,6 +1112,16 @@ class ProfileRepository extends IsolateFirstRepository {
     _cacheTimestamp = null;
     _cachedFeed = null;
     _feedCacheTimestamp = null;
+  }
+
+  void clearFeedCache() {
+    _cachedFeed = null;
+    _feedCacheTimestamp = null;
+    _lastFeedFilters = null;
+    _lastSearchQuery = null;
+    _isDistrictFallback = false;
+    _lastRequestedDistrict = null;
+    _lastSelectedState = null;
   }
 
   bool _isFeedCacheValid(FilterCriteria? filters, String? query) {

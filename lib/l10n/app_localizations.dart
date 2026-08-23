@@ -953,7 +953,7 @@ abstract class AppLocalizations {
   /// No description provided for @browseMatchesTitle.
   ///
   /// In en, this message translates to:
-  /// **'Search Matches (Browse)'**
+  /// **'Browse Matches'**
   String get browseMatchesTitle;
 
   /// No description provided for @browseProfiles.

@@ -1,16 +1,18 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
+import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/core/session_manager.dart';
 import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/theme/app_colors.dart';
+import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 
 /// Premium Global-Standard Hero Banner for Relative Browse Mode.
 /// Features a royal burgundy mesh gradient, frosted glassmorphic filter chip,
-/// ambient glow accents, and a metallic gold CTA with subtle micro-animation.
+/// ambient glow accents, shimmering glint sweep, and a metallic gold CTA with tactile micro-animation.
 class RelativeBrowseHeroCard extends StatefulWidget {
   final String? activeChipLabel;
   final VoidCallback? onEditSearch;
@@ -28,8 +30,9 @@ class RelativeBrowseHeroCard extends StatefulWidget {
 }
 
 class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late final AnimationController _pulseController;
+  late final AnimationController _glintController;
   late final Animation<double> _scaleAnimation;
   bool _hasDraft = false;
 
@@ -41,12 +44,17 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
       duration: const Duration(milliseconds: 2400),
     )..repeat(reverse: true);
 
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.03).animate(
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.035).animate(
       CurvedAnimation(
         parent: _pulseController,
         curve: Curves.easeInOutSine,
       ),
     );
+
+    _glintController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2800),
+    )..repeat();
 
     _checkSavedDraft();
   }
@@ -70,6 +78,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
   @override
   void dispose() {
     _pulseController.dispose();
+    _glintController.dispose();
     super.dispose();
   }
 
@@ -107,7 +116,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.h),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(22),
           gradient: const LinearGradient(
             colors: [
               AppColors.maroonDarkest, // Deep Royal Velvet Burgundy
@@ -118,7 +127,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
             end: Alignment.bottomRight,
           ),
           border: Border.all(
-            color: Colors.white.withValues(alpha: 0.18),
+            color: Colors.white.withValues(alpha: 0.22),
             width: 1.2,
           ),
           boxShadow: [
@@ -131,7 +140,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(22),
           child: Stack(
             children: [
               // ── Ambient Background Accents ──
@@ -186,17 +195,17 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 2.8.w, vertical: 0.6.h),
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.14),
+                              color: Colors.white.withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(24),
                               border: Border.all(
-                                color: Colors.white.withValues(alpha: AppColors.opacity25),
+                                color: Colors.white.withValues(alpha: AppColors.opacity30),
                               ),
                             ),
                             child: Row(
                               children: [
                                 const Icon(
                                   Icons.explore_rounded,
-                                  size: 13,
+                                  size: 14,
                                   color: AppColors.categoryVip,
                                 ),
                                 SizedBox(width: 1.5.w),
@@ -208,7 +217,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: AppTypography.labelMedium,
-                                      fontWeight: AppTypography.bold,
+                                      fontWeight: AppTypography.extraBold,
                                       letterSpacing: 0.1,
                                     ),
                                   ),
@@ -220,49 +229,46 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
 
                         SizedBox(width: 2.w),
 
-                        // Change Filter Button ("बदला")
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: _handleEditSearch,
-                            borderRadius: BorderRadius.circular(16),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 2.6.w, vertical: 0.5.h),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: AppColors.opacity25),
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(
-                                  color: Colors.white.withValues(alpha: 0.22),
+                        // Change Filter Button ("बदला") with TactilePressable
+                        TactilePressable(
+                          onTap: _handleEditSearch,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 2.8.w, vertical: 0.6.h),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: AppColors.opacity30),
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.25),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.edit_note_rounded,
+                                  size: 14,
+                                  color: Colors.white.withValues(alpha: 0.95),
                                 ),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.edit_note_rounded,
-                                    size: 13.5,
-                                    color: Colors.white.withValues(alpha: 0.95),
+                                SizedBox(width: 1.w),
+                                Text(
+                                  'बदला',
+                                  style: TextStyle(
+                                    fontFamily: AppTypography.headingFontFamily,
+                                    color: Colors.white,
+                                    fontSize: AppTypography.labelMedium,
+                                    fontWeight: AppTypography.bold,
                                   ),
-                                  SizedBox(width: 1.w),
-                                  Text(
-                                    'बदला',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: AppTypography.labelMedium,
-                                      fontWeight: AppTypography.semiBold,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ],
                     ),
 
-                    SizedBox(height: 1.3.h),
+                    SizedBox(height: 1.4.h),
 
-                    // ── Card Headline & Subtitle ──
+                    // ── Card Headline & Subtitle + Pulsing Metallic Gold CTA ──
                     Row(
                       children: [
                         Expanded(
@@ -274,9 +280,10 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                                     ? 'अपूर्ण बायोडेटा पूर्ण करा'
                                     : 'उमेदवाराचा बायोडेटा उपलब्ध आहे का?',
                                 style: TextStyle(
+                                  fontFamily: AppTypography.headingFontFamily,
                                   color: Colors.white,
                                   fontSize: AppTypography.bodySmall,
-                                  fontWeight: AppTypography.extraBold,
+                                  fontWeight: AppTypography.black,
                                   letterSpacing: -0.2,
                                   height: 1.2,
                                 ),
@@ -289,7 +296,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                                 style: TextStyle(
                                   color: Colors.white.withValues(alpha: AppColors.opacity85),
                                   fontSize: AppTypography.labelMedium,
-                                  fontWeight: AppTypography.regular,
+                                  fontWeight: AppTypography.medium,
                                   height: 1.25,
                                 ),
                               ),
@@ -298,7 +305,7 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                         ),
                         SizedBox(width: 2.5.w),
 
-                        // ── Pulsing Metallic Gold CTA Button ──
+                        // ── Pulsing Metallic Gold CTA Button with Sheen Glint ──
                         AnimatedBuilder(
                           animation: _pulseController,
                           builder: (context, child) {
@@ -307,52 +314,68 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
                               child: child,
                             );
                           },
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: _handleCreateBiodata,
-                              borderRadius: BorderRadius.circular(14),
-                              child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.1.h),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(14),
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      AppColors.goldGlow, // Soft Bright Gold
-                                      AppColors.goldSoft, // Rich Amber Gold
-                                      AppColors.categoryAstro, // Deep Gold
-                                    ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: AppColors.amber600.withValues(alpha: 0.45),
-                                      blurRadius: 10,
-                                      offset: const Offset(0, 3),
-                                    ),
+                          child: TactilePressable(
+                            onTap: _handleCreateBiodata,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.1.h),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    AppColors.goldGlow, // Soft Bright Gold
+                                    AppColors.goldSoft, // Rich Amber Gold
+                                    AppColors.categoryAstro, // Deep Gold
                                   ],
-                                  border: Border.all(
-                                    color: Colors.white.withValues(alpha: AppColors.opacity60),
-                                  ),
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
                                 ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.amber600.withValues(alpha: 0.45),
+                                    blurRadius: 12,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
+                                border: Border.all(
+                                  color: Colors.white.withValues(alpha: AppColors.opacity60),
+                                ),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: Stack(
                                   children: [
-                                    const Icon(
-                                      Icons.auto_awesome_rounded,
-                                      size: 15,
-                                      color: AppColors.amberBgDark,
-                                    ),
-                                    SizedBox(width: 1.2.w),
-                                    Text(
-                                      _hasDraft ? 'बायोडेटा पूर्ण करा' : 'बायोडेटा बनवा',
-                                      style: TextStyle(
-                                        color: AppColors.amberBgDark,
-                                        fontSize: AppTypography.labelMedium,
-                                        fontWeight: AppTypography.black,
-                                        letterSpacing: 0.1,
+                                    Positioned.fill(
+                                      child: AnimatedBuilder(
+                                        animation: _glintController,
+                                        builder: (context, child) {
+                                          return CustomPaint(
+                                            painter: _HeroSheenGlintPainter(
+                                              percent: _glintController.value,
+                                            ),
+                                          );
+                                        },
                                       ),
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(
+                                          Icons.auto_awesome_rounded,
+                                          size: 15,
+                                          color: AppColors.amberBgDark,
+                                        ),
+                                        SizedBox(width: 1.2.w),
+                                        Text(
+                                          _hasDraft ? 'बायोडेटा पूर्ण करा' : 'बायोडेटा बनवा',
+                                          style: TextStyle(
+                                            fontFamily: AppTypography.headingFontFamily,
+                                            color: AppColors.amberBgDark,
+                                            fontSize: AppTypography.labelMedium,
+                                            fontWeight: AppTypography.black,
+                                            letterSpacing: 0.1,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -407,4 +430,43 @@ class _RelativeBrowseHeroCardState extends State<RelativeBrowseHeroCard>
       ),
     );
   }
+}
+
+/// 🌟 Shimmering Diagonal Light-Sweep Glint Painter for Hero CTA
+class _HeroSheenGlintPainter extends CustomPainter {
+  final double percent;
+
+  _HeroSheenGlintPainter({required this.percent});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final double glintWidth = size.width * 0.45;
+    final double totalDistance = size.width + glintWidth * 2;
+    final double currentX = -glintWidth + (totalDistance * percent);
+
+    final Paint paint = Paint()
+      ..shader = LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Colors.white.withValues(alpha: 0.0),
+          Colors.white.withValues(alpha: 0.35),
+          Colors.white.withValues(alpha: 0.0),
+        ],
+        stops: const [0.0, 0.5, 1.0],
+      ).createShader(Rect.fromLTWH(currentX, 0, glintWidth, size.height));
+
+    final Path path = Path()
+      ..moveTo(currentX, 0)
+      ..lineTo(currentX + glintWidth, 0)
+      ..lineTo(currentX + glintWidth - (size.height * math.tan(0.35)), size.height)
+      ..lineTo(currentX - (size.height * math.tan(0.35)), size.height)
+      ..close();
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant _HeroSheenGlintPainter oldDelegate) =>
+      oldDelegate.percent != percent;
 }

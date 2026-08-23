@@ -145,8 +145,8 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
     final theme = Theme.of(context);
     final topPadding = MediaQuery.of(context).padding.top;
     final double headerHeight = _isSearchExpanded
-        ? (11.5.h + topPadding)
-        : (6.6.h + topPadding);
+        ? (10.0.h + topPadding)
+        : (4.6.h + topPadding);
 
     return SliverAppBar(
       floating: true,
@@ -176,7 +176,7 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
               ),
             ],
           ),
-          padding: EdgeInsets.fromLTRB(3.5.w, topPadding + 0.15.h, 3.5.w, 0.15.h),
+          padding: EdgeInsets.fromLTRB(3.5.w, topPadding + 0.05.h, 3.5.w, 0.05.h),
           child: SingleChildScrollView(
             physics: const NeverScrollableScrollPhysics(),
             child: Column(
@@ -193,7 +193,7 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
                   _buildSearchRow(context, theme),
                 ],
 
-                SizedBox(height: 0.75.h),
+                SizedBox(height: 0.4.h),
 
                 // ─── ROW 2: ANIMATED HORIZONTAL DISCOVERY STRIP ───
                 // [ 0: ⚡ Filter ] -> [ 1: ✨ All Matches ] -> [ 2: 🌟 Daily (10) ] -> [ 3: 📍 Near Me ] -> [ 4: 👑 VIP Verified ] -> [ 5: 🔍 Search ]
@@ -258,7 +258,7 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
           key: _isHomeTourActive ? TourKeys.locationKey : null,
           onTap: widget.onLocationTap,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.45.h),
+            padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.8.h),
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: AppColors.opacity15),
               borderRadius: BorderRadius.circular(20),
@@ -610,7 +610,7 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 260),
                   curve: Curves.easeOutCubic,
-                  padding: const EdgeInsets.symmetric(vertical: 5.5, horizontal: 9.5),
+                  padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 9.5),
                   decoration: BoxDecoration(
                     gradient: isActive ? activeGradient : null,
                     color: isActive ? null : Colors.black.withValues(alpha: 0.24),
@@ -769,7 +769,7 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
               AnimatedContainer(
                 duration: const Duration(milliseconds: 260),
                 curve: Curves.easeOutCubic,
-                padding: const EdgeInsets.symmetric(vertical: 5.5, horizontal: 9.5),
+                padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 9.5),
                 decoration: BoxDecoration(
                   gradient: hasActiveFilters
                       ? const LinearGradient(
