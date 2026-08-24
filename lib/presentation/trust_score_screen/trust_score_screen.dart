@@ -14,10 +14,12 @@ import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/features/trust_score/providers/trust_score_providers.dart';
 import 'package:banjarabio/features/trust_score/repository/trust_score_repository.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
-import 'package:banjarabio/widgets/tactile/tactile_back_button.dart';
+import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 import 'package:banjarabio/widgets/branded_refresh_indicator.dart';
 import 'package:banjarabio/widgets/skeleton_loaders.dart';
+import 'package:banjarabio/widgets/state_orchestration/bespoke_state_container.dart';
+import 'package:banjarabio/widgets/state_orchestration/empty_state_config.dart';
 import 'package:banjarabio/presentation/trust_score_screen/widgets/trust_score_share_card.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 
@@ -146,13 +148,82 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: CustomAppBar(
-        leading: const TactileBackButton(),
-        title: l10n?.trustScoreDiscounts ?? 'Trust Score & Discounts',
+        automaticallyImplyLeading: false,
+        leadingWidth: 175,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // ⬅️ Tactile Back Button
+              TactilePressable(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.maybePop(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: (theme.appBarTheme.foregroundColor ?? Colors.white)
+                        .withValues(alpha: isDark ? AppColors.opacity12 : AppColors.opacity15),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: theme.appBarTheme.foregroundColor ?? Colors.white,
+                    size: 15,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+
+              // 👑 App Logo
+              ClipOval(
+                child: Container(
+                  width: 24,
+                  height: 24,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: const AppLogoImage(
+                    width: 24,
+                    height: 24,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 5),
+
+              // 🏷️ Wordmark
+              Image.asset(
+                'assets/logo/brand_kit/wordmark.png',
+                height: 20,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) =>
+                    const SizedBox.shrink(),
+              ),
+            ],
+          ),
+        ),
+        titleWidget: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            l10n?.trustScore ?? 'Trust Score',
+            maxLines: 1,
+            style: (theme.appBarTheme.titleTextStyle ?? theme.textTheme.titleMedium)?.copyWith(
+              fontSize: AppTypography.headingSmall,
+              fontWeight: AppTypography.bold,
+              color: theme.appBarTheme.foregroundColor ?? Colors.white,
+              letterSpacing: 0.1,
+            ),
+          ),
+        ),
         actions: [
           TactilePressable(
             onTap: _showShareCard,
@@ -161,74 +232,93 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen> {
               margin: EdgeInsets.only(right: 3.w),
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
+                color: (theme.appBarTheme.foregroundColor ?? Colors.white)
+                    .withValues(alpha: isDark ? AppColors.opacity12 : AppColors.opacity15),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.share_rounded,
                 size: 20,
-                color: theme.colorScheme.primary,
+                color: theme.appBarTheme.foregroundColor ?? Colors.white,
               ),
             ),
           ),
         ],
       ),
-      body: _isLoading
-          ? const TrustScoreSkeleton()
-          : BrandedRefreshIndicator(
-              onRefresh: _loadTrustScore,
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(
-                  parent: BouncingScrollPhysics(),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: BespokeStateContainer(
+        isLoading: _isLoading,
+        isEmpty: _profile == null && !_isLoading,
+        skeleton: const TrustScoreSkeleton(),
+        emptyConfig: EmptyStateConfig(
+          icon: Icons.shield_outlined,
+          badgeText: 'TRUST & VERIFICATION',
+          accentColor: AppColors.gold,
+          iconGradient: const LinearGradient(
+            colors: [AppColors.gold, AppColors.goldDark],
+          ),
+          title: 'Unable to Load Trust Score 🛡️',
+          description: 'We could not fetch your verification metrics. Please check your connection and retry.',
+          ctaText: '✨ Retry Calculation',
+          onCtaTap: () {
+            HapticFeedback.selectionClick();
+            _loadTrustScore();
+          },
+        ),
+        contentBuilder: (context) => BrandedRefreshIndicator(
+          onRefresh: _loadTrustScore,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(
+              parent: BouncingScrollPhysics(),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildScoreCard(theme),
+                SizedBox(height: 2.h),
+                _buildDiscountCard(theme),
+                SizedBox(height: 2.5.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildScoreCard(theme),
-                    SizedBox(height: 2.h),
-                    _buildDiscountCard(theme),
-                    SizedBox(height: 2.5.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            'Verifications Checklist',
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: AppTypography.extraBold,
-                              fontSize: AppTypography.headingSmall,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                    Flexible(
+                      child: Text(
+                        'Verifications Checklist',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: AppTypography.extraBold,
+                          fontSize: AppTypography.headingSmall,
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 2.5.w,
-                            vertical: 0.4.h,
-                          ),
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            'Max 100 Pts',
-                            style: TextStyle(
-                              fontSize: AppTypography.labelSmall,
-                              fontWeight: AppTypography.bold,
-                              color: theme.colorScheme.primary,
-                            ),
-                          ),
-                        ),
-                      ],
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    SizedBox(height: 1.2.h),
-                    _buildVerificationList(theme),
-                    SizedBox(height: 3.h),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 2.5.w,
+                        vertical: 0.4.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        'Max 100 Pts',
+                        style: TextStyle(
+                          fontSize: AppTypography.labelSmall,
+                          fontWeight: AppTypography.bold,
+                          color: theme.colorScheme.primary,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-              ),
+                SizedBox(height: 1.2.h),
+                _buildVerificationList(theme),
+                SizedBox(height: 3.h),
+              ],
             ),
+          ),
+        ),
+      ),
     );
   }
 

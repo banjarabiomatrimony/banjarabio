@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
-import 'package:banjarabio/presentation/home_screen/widgets/empty_state_widget.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/profile_card_widget.dart';
 // import 'package:banjarabio/presentation/home_screen/widgets/swipeable_card_deck.dart';
 import 'package:banjarabio/widgets/shimmer_widget.dart';
+import 'package:banjarabio/widgets/state_orchestration/bespoke_state_container.dart';
+import 'package:banjarabio/widgets/state_orchestration/empty_state_config.dart';
 import 'package:banjarabio/widgets/ads/banner_ad_widget.dart';
 
 /// Recommended tab content slivers extracted from HomeScreen.build().
@@ -115,118 +117,63 @@ class HomeRecommendedContent {
             ),
           ),
         ),
-      if (isLoading)
-        SliverPadding(
-          padding: const EdgeInsets.all(8.0),
-          sliver: SliverGrid(
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 500,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-              mainAxisExtent: 50.h,
-            ),
-            delegate: SliverChildBuilderDelegate(
-              (context, index) => const ProfileCardSkeleton(),
-              childCount: 4,
-            ),
-          ),
-        )
-      else if (errorMessage != null)
-        SliverFillRemaining(
-          hasScrollBody: false,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CustomIconWidget(
-                  iconName: 'error_outline',
-                  color: theme.colorScheme.error,
-                  size: 48,
+      SliverBespokeStateContainer(
+        isLoading: isLoading,
+        isEmpty: profiles.isEmpty,
+        skeleton: CustomScrollView(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.all(8.0),
+              sliver: SliverGrid(
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 500,
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 8,
+                  mainAxisExtent: 50.h,
                 ),
-                SizedBox(height: 2.h),
-                Text(errorMessage, textAlign: TextAlign.center),
-                SizedBox(height: 2.h),
-                ElevatedButton.icon(
-                  onPressed: onLoadData,
-                  icon: const CustomIconWidget(
-                    iconName: 'refresh',
-                    size: 18,
-                    color: Colors.white,
-                  ),
-                  label: Text(AppLocalizations.of(context)?.retry ?? 'Retry'),
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) => const ProfileCardSkeleton(),
+                  childCount: 16,
                 ),
-              ],
+              ),
             ),
-          ),
-        )
-      else if (profiles.isEmpty)
-        SliverFillRemaining(
-          hasScrollBody: false,
-          child: activeFilterCount > 0
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CustomIconWidget(
-                        iconName: 'filter_list_off',
-                        color: theme.colorScheme.onSurfaceVariant,
-                        size: 64,
-                      ),
-                      SizedBox(height: 2.h),
-                      Text(
-                        AppLocalizations.of(context)?.noProfilesMatchYourFilters ?? 'No profiles match your filters',
-                        style: theme.textTheme.titleMedium,
-                      ),
-                      SizedBox(height: 1.h),
-                      Text(
-                        AppLocalizations.of(context)?.tryAdjustingYourFilterCriteria ?? 'Try adjusting your filter criteria',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                      SizedBox(height: 3.h),
-                      OutlinedButton.icon(
-                        onPressed: onClearFilters,
-                        icon: const CustomIconWidget(
-                          iconName: 'clear_all',
-                          size: 18,
-                          color: Colors.red,
-                        ),
-                        label: Text(AppLocalizations.of(context)?.clearAllFilters ?? 'Clear All Filters'),
-                      ),
-                    ],
-                  ),
-                )
-              : EmptyStateWidget(
-                  onAdjustFilters: onOpenFilterSheet,
+          ],
+        ),
+        emptyConfig: activeFilterCount > 0
+            ? EmptyStateConfig(
+                icon: Icons.filter_list_off_rounded,
+                badgeText: 'FILTERED RESULTS',
+                accentColor: AppColors.crimsonRose,
+                iconGradient: const LinearGradient(
+                  colors: [AppColors.crimsonRose, AppColors.crimsonBlush],
                 ),
-        )
-      // ── COMMENTED OUT: Swipe Mode ──
-      // else if (isSwipeMode)
-      //   SliverFillRemaining(
-      //     hasScrollBody: false,
-      //     child: Padding(
-      //       padding: EdgeInsets.only(bottom: 1.0.h),
-      //       child: SwipeableCardDeck(
-      //         profiles: profiles,
-      //         onTap: onOpenProfileDetail,
-      //         onInterest: (profile) => onShowSharingOptions(profile),
-      //         onSkip: (profile) {
-      //           final nextIdx = profiles.indexWhere((p) => p.id == profile.id) + 3;
-      //           if (nextIdx < profiles.length) {
-      //             onEnrichProfileLazy(profiles[nextIdx]);
-      //           }
-      //         },
-      //         onSuperLike: (profile) => onShowSharingOptions(profile),
-      //         onShare: (profile) => onShowSharingOptions(profile),
-      //         onBookmark: (profile) => onToggleBookmark(profile.id, profile.isBookmarked),
-      //         onLoadMore: onLoadMoreProfiles,
-      //       ),
-      //     ),
-      //   )
-      else
-        // ── Grid Mode (Standard Feed) ──
-        SliverPadding(
+                title: AppLocalizations.of(context)?.noProfilesMatchYourFilters ?? 'No Matches in Current Filters 🔍',
+                description: AppLocalizations.of(context)?.tryAdjustingYourFilterCriteria ??
+                    'Try adjusting or clearing your age, education, or location filters to view more profiles.',
+                ctaText: AppLocalizations.of(context)?.clearAllFilters ?? '✨ Clear All Filters',
+                onCtaTap: () {
+                  HapticFeedback.selectionClick();
+                  onClearFilters();
+                },
+              )
+            : EmptyStateConfig(
+                icon: Icons.favorite_border_rounded,
+                badgeText: 'COMMUNITY FEED',
+                accentColor: AppColors.crimsonRose,
+                iconGradient: const LinearGradient(
+                  colors: [AppColors.crimsonRose, AppColors.crimsonBlush],
+                ),
+                title: 'No New Profiles Found ✨',
+                description: 'New community matrimonial profiles are added regularly. Adjust search preferences or refresh.',
+                ctaText: '✨ Adjust Search Filters',
+                onCtaTap: () {
+                  HapticFeedback.selectionClick();
+                  onOpenFilterSheet();
+                },
+              ),
+        content: SliverPadding(
           padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
           sliver: SliverGrid(
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
@@ -269,6 +216,7 @@ class HomeRecommendedContent {
                 : profiles.length + (profiles.length ~/ 5)),
           ),
         ),
+      ),
       if (isFetchingMore)
         SliverToBoxAdapter(
           child: Padding(

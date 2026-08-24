@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/widgets/shimmer_widget.dart';
+import 'package:banjarabio/widgets/state_orchestration/bespoke_state_container.dart';
+import 'package:banjarabio/widgets/state_orchestration/empty_state_config.dart';
 
 /// Loading and error scaffolds for ProfileDetailScreen.
 /// Extracted from the build method's early-return branches.
@@ -47,30 +48,27 @@ class ProfileErrorScaffold extends StatelessWidget {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text(AppLocalizations.of(context)?.profile ?? 'Profile'),
+        title: Text(AppLocalizations.of(context)?.profile ?? 'Profile Details'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomIconWidget(
-              iconName: 'error_outline',
-              color: theme.colorScheme.error,
-              size: 48,
-            ),
-            SizedBox(height: 2.h),
-            Text(
-              AppLocalizations.of(context)?.profileDataNotFound ?? 'Profile data not found',
-              style: theme.textTheme.titleMedium,
-            ),
-            SizedBox(height: 2.h),
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(AppLocalizations.of(context)?.goBack ?? 'Go Back'),
-            ),
-          ],
+      body: BespokeStateContainer(
+        isLoading: false,
+        isEmpty: true,
+        skeleton: const ProfileDetailSkeleton(),
+        emptyConfig: EmptyStateConfig(
+          icon: Icons.person_off_rounded,
+          badgeText: 'PROFILE STATUS',
+          accentColor: AppColors.crimsonRose,
+          iconGradient: const LinearGradient(
+            colors: [AppColors.crimsonRose, AppColors.crimsonMaroon],
+          ),
+          title: AppLocalizations.of(context)?.profileDataNotFound ?? 'Profile Not Found 👤',
+          description: 'This candidate biodata is currently unavailable or has been deactivated by the member.',
+          ctaText: AppLocalizations.of(context)?.goBack ?? '✨ Return to Discovery',
+          onCtaTap: () => Navigator.of(context).pop(),
         ),
+        contentBuilder: (_) => const SizedBox.shrink(),
       ),
     );
   }
 }
+

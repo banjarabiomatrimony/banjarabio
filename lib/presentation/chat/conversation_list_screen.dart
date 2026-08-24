@@ -8,6 +8,8 @@ import 'package:banjarabio/core/models/chat_model.dart';
 import 'package:banjarabio/core/repositories/chat_repository.dart';
 import 'package:banjarabio/presentation/chat/chat_screen.dart';
 import 'package:banjarabio/widgets/skeleton_loaders.dart';
+import 'package:banjarabio/widgets/state_orchestration/bespoke_state_container.dart';
+import 'package:banjarabio/widgets/state_orchestration/empty_state_config.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
@@ -35,6 +37,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
   String _activeFilter = 'All'; // 'All', 'Unread'
   final Set<String> _pinnedIds = {};
   List<ProfileShare> _cachedMatches = [];
+  late final Stream<List<ConversationModel>> _conversationsStream;
 
   static const List<String> _animatedHints = [
     'Search "Pooja Rathod"...',
@@ -47,6 +50,7 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
   @override
   void initState() {
     super.initState();
+    _conversationsStream = _chatRepository.getConversationsStream();
     _startHintAnimation();
     _loadMutualMatches();
     _searchFocusNode.addListener(() {
@@ -110,9 +114,9 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
 
             // 2. Main Stream delivering Live Conversations & Filtered List
             StreamBuilder<List<ConversationModel>>(
-              stream: _chatRepository.getConversationsStream(),
+              stream: _conversationsStream,
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
+                if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData) {
                   return SliverMainAxisGroup(
                     slivers: [
                       // Filter chips rail visible even during loading
@@ -297,48 +301,52 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
                       ),
                     ),
 
-                    // 4. Content or Filtered Empty State
-                    if (conversations.isEmpty)
-                      if (_activeFilter != 'All')
-                        SliverFillRemaining(
-                          hasScrollBody: false,
-                          child: _buildFilteredEmptyState(theme, isDark),
-                        )
-                      else
-                        SliverToBoxAdapter(
-                          child: _buildPremiumEmptyState(theme, isDark),
-                        )
-                    else ...[
-                      SliverToBoxAdapter(
-                        child: _buildActiveConnectionsReel(conversations, theme, isDark),
-                      ),
-                      SliverPadding(
-                        padding: EdgeInsets.symmetric(horizontal: 4.w),
-                        sliver: SliverList(
-                          delegate: SliverChildBuilderDelegate((context, index) {
-                            final conversation = conversations[index];
-                            return TweenAnimationBuilder<double>(
-                              tween: Tween(begin: 0.0, end: 1.0),
-                              duration: Duration(milliseconds: 220 + (index.clamp(0, 7) * 45)),
-                              curve: Curves.easeOutCubic,
-                              builder: (context, val, child) {
-                                return Transform.translate(
-                                  offset: Offset(0, 18 * (1 - val)),
-                                  child: Opacity(
-                                    opacity: val.clamp(0.0, 1.0),
-                                    child: child,
-                                  ),
-                                );
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.only(bottom: 1.2.h),
-                                child: _buildConversationTile(conversation, theme, isDark),
-                              ),
-                            );
-                          }, childCount: conversations.length),
+                    // 4. Content or Filtered Empty State with Preview Skeleton
+                    SliverBespokeStateContainer(
+                      isLoading: false,
+                      isEmpty: conversations.isEmpty,
+                      skeleton: const SingleChildScrollView(
+                        physics: NeverScrollableScrollPhysics(),
+                        child: ConversationListSkeleton(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
                         ),
                       ),
-                    ],
+                      emptyConfig: _getSubPillEmptyConfig(context, isDark),
+                      content: SliverMainAxisGroup(
+                        slivers: [
+                          SliverToBoxAdapter(
+                            child: _buildActiveConnectionsReel(conversations, theme, isDark),
+                          ),
+                          SliverPadding(
+                            padding: EdgeInsets.symmetric(horizontal: 4.w),
+                            sliver: SliverList(
+                              delegate: SliverChildBuilderDelegate((context, index) {
+                                final conversation = conversations[index];
+                                return TweenAnimationBuilder<double>(
+                                  tween: Tween(begin: 0.0, end: 1.0),
+                                  duration: Duration(milliseconds: 220 + (index.clamp(0, 7) * 45)),
+                                  curve: Curves.easeOutCubic,
+                                  builder: (context, val, child) {
+                                    return Transform.translate(
+                                      offset: Offset(0, 18 * (1 - val)),
+                                      child: Opacity(
+                                        opacity: val.clamp(0.0, 1.0),
+                                        child: child,
+                                      ),
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.only(bottom: 1.2.h),
+                                    child: _buildConversationTile(conversation, theme, isDark),
+                                  ),
+                                );
+                              }, childCount: conversations.length),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 );
               },
@@ -716,104 +724,172 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
     );
   }
 
-  Widget _buildFilteredEmptyState(ThemeData theme, bool isDark) {
-    IconData emptyIcon = Icons.filter_list_off_rounded;
-    String title = 'No Conversations Found';
-    String description = 'No conversations match the "$_activeFilter" filter.';
-
+  EmptyStateConfig _getSubPillEmptyConfig(BuildContext context, bool isDark) {
     if (_activeFilter == 'Unread') {
-      emptyIcon = Icons.mark_chat_read_rounded;
-      title = 'You\'re All Caught Up! ✨';
-      description = 'No unread messages right now. All family conversations are up to date.';
-    } else if (_activeFilter.startsWith('Matches')) {
-      emptyIcon = Icons.favorite_border_rounded;
-      title = 'No Match Chats Yet 💍';
-      description = 'Start chatting with your mutual matches to begin your sacred journey.';
-    } else if (_activeFilter.startsWith('Biodata')) {
-      emptyIcon = Icons.description_outlined;
-      title = 'No Biodata Shared Yet 📄';
-      description = 'Exchange biodata PDFs with mutual connections to review family profiles.';
-    }
-
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: isDark ? Colors.white.withValues(alpha: AppColors.opacity5) : AppColors.primaryLight,
-                border: Border.all(
-                  color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity20),
-                  width: 1.2,
-                ),
-              ),
-              child: Icon(
-                emptyIcon,
-                size: 32,
-                color: AppColors.crimsonRose,
-              ),
-            ),
-            const SizedBox(height: 14),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: AppTypography.bodyLarge,
-                fontWeight: AppTypography.black,
-                color: isDark ? Colors.white : AppColors.slate900,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 6),
-            Text(
-              description,
-              style: TextStyle(
-                fontSize: AppTypography.labelSmall,
-                color: isDark ? Colors.white60 : AppColors.slate500,
-                height: 1.4,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            TactilePressable(
-              onTap: () {
-                HapticFeedback.lightImpact();
-                setState(() {
-                  _activeFilter = 'All';
-                });
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      return EmptyStateConfig(
+        icon: Icons.mark_chat_read_rounded,
+        badgeText: 'ALL CAUGHT UP',
+        accentColor: AppColors.crimsonBlush,
+        iconGradient: const LinearGradient(
+          colors: [AppColors.crimsonBlush, AppColors.crimsonRose],
+        ),
+        title: 'You\'re All Caught Up! ✨',
+        description: 'No unread messages right now. All your matrimonial conversations are up to date.',
+        ctaText: '✨ Show All Conversations',
+        onCtaTap: () {
+          HapticFeedback.selectionClick();
+          setState(() => _activeFilter = 'All');
+        },
+      );
+    } else if (_activeFilter.startsWith('Matches') || _activeFilter == 'Matches 💍') {
+      return EmptyStateConfig(
+        icon: Icons.favorite_rounded,
+        badgeText: 'MUTUAL MATCH CHATS',
+        accentColor: AppColors.categoryAstro,
+        iconGradient: const LinearGradient(
+          colors: [AppColors.categoryAstro, AppColors.categoryAstroDark],
+        ),
+        title: 'No Mutual Match Chats Yet 💍',
+        description: 'Direct conversations with mutual connections will be cataloged here for quick family access.',
+        ctaText: '💍 Discover Matched Profiles',
+        onCtaTap: () {
+          HapticFeedback.selectionClick();
+          setState(() => _activeFilter = 'All');
+        },
+      );
+    } else if (_activeFilter.startsWith('Biodata') || _activeFilter == 'Biodata 📄') {
+      return EmptyStateConfig(
+        icon: Icons.description_rounded,
+        badgeText: 'SHARED BIODATA',
+        accentColor: AppColors.categoryLocation,
+        iconGradient: const LinearGradient(
+          colors: [AppColors.categoryLocation, AppColors.categoryLocationDark],
+        ),
+        title: 'No Biodata Shared in Chats 📄',
+        description: 'Exchange official PDF biodata and family details in mutual chats to review candidate profiles together.',
+        ctaText: '📄 View All Conversations',
+        onCtaTap: () {
+          HapticFeedback.selectionClick();
+          setState(() => _activeFilter = 'All');
+        },
+      );
+    } else {
+      // 💬 Default 'All' Conversations
+      return EmptyStateConfig(
+        icon: Icons.forum_rounded,
+        badgeText: 'LIVE CHATS',
+        accentColor: AppColors.crimsonRose,
+        iconGradient: const LinearGradient(
+          colors: [AppColors.crimsonRose, AppColors.crimsonBlush],
+        ),
+        title: 'No Conversations Yet 💬',
+        description: 'When you connect with mutual matches, your live family conversations will appear here.',
+        ctaText: '✨ Explore Matches on Home',
+        onCtaTap: () {
+          HapticFeedback.selectionClick();
+          Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (route) => false);
+        },
+        customContent: _cachedMatches.isNotEmpty
+            ? Container(
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [AppColors.crimsonRose, AppColors.crimsonBlush],
+                  color: isDark ? AppColors.canvasRichDark : AppColors.slate50,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: AppColors.categoryAstro.withValues(alpha: 0.3),
                   ),
-                  borderRadius: BorderRadius.circular(14),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity30),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.stars_rounded, size: 14, color: AppColors.categoryAstro),
+                        const SizedBox(width: 5),
+                        Text(
+                          '${_cachedMatches.length} Mutual Matches Ready to Chat',
+                          style: TextStyle(
+                            fontSize: AppTypography.labelSmall,
+                            fontWeight: AppTypography.bold,
+                            color: isDark ? Colors.white : AppColors.slate900,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      height: 64,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: _cachedMatches.length,
+                        separatorBuilder: (context, index) => const SizedBox(width: 8),
+                        itemBuilder: (context, index) {
+                          final match = _cachedMatches[index];
+                          return TactilePressable(
+                            onTap: () async {
+                              HapticFeedback.lightImpact();
+                              final otherId = match.recipientId == SessionManager.instance.profileId
+                                  ? match.sharerId
+                                  : (match.recipientId ?? match.sharerId);
+                              if (otherId.isNotEmpty) {
+                                final convRes = await _chatRepository.getOrCreateConversation(otherId);
+                                if (convRes.isSuccess && context.mounted) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => ChatScreen(conversation: convRes.data),
+                                    ),
+                                  );
+                                }
+                              }
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: isDark ? AppColors.surfaceDark28 : Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: AppColors.crimsonRose.withValues(alpha: 0.25),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ClipOval(
+                                    child: SizedBox(
+                                      width: 32,
+                                      height: 32,
+                                      child: CustomImageWidget(
+                                        imageUrl: match.sharedProfileImage ?? '',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    match.sharedProfileName ?? match.sharerName ?? 'Match',
+                                    style: TextStyle(
+                                      fontSize: AppTypography.labelTiny,
+                                      fontWeight: AppTypography.bold,
+                                      color: isDark ? Colors.white : AppColors.slate800,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  const Icon(Icons.arrow_forward_ios_rounded, size: 10, color: AppColors.crimsonRose),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),
-                child: Text(
-                  '✨ Show All Conversations',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: AppTypography.labelSmall,
-                    fontWeight: AppTypography.extraBold,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+              )
+            : null,
+      );
+    }
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1330,210 +1406,6 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
           ),
         ),
       ),
-    );
-  }
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // 🌟 4. LUXURY BRANDED EMPTY STATE WITH MUTUAL MATCHES CAROUSEL
-  // ═══════════════════════════════════════════════════════════════════════════
-  Widget _buildPremiumEmptyState(ThemeData theme, bool isDark) {
-    if (_cachedMatches.isNotEmpty) {
-      return ListView(
-        physics: const BouncingScrollPhysics(),
-        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-        children: [
-          // 👑 Mutual Matches Waiting Nudge
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              gradient: isDark
-                  ? const LinearGradient(
-                      colors: [AppColors.bloodRedBg, AppColors.crimsonBlack],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    )
-                  : const LinearGradient(
-                      colors: [AppColors.primaryLight, AppColors.rose100],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(
-                color: AppColors.crimsonRose.withValues(alpha: isDark ? 0.35 : 0.25),
-                width: 1.2,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.crimsonRose.withValues(alpha: AppColors.opacity8),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [AppColors.categoryAstro, AppColors.categoryAstroDark],
-                        ),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.favorite_rounded,
-                        color: Colors.white,
-                        size: 14,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '✨ ${_cachedMatches.length} Mutual Matches Waiting!',
-                            style: TextStyle(
-                              fontSize: AppTypography.bodyMedium,
-                              fontWeight: AppTypography.black,
-                              color: isDark ? Colors.white : AppColors.slate900,
-                            ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            'You both expressed mutual interest. Say hello to start the family conversation!',
-                            style: TextStyle(
-                              fontSize: AppTypography.labelSmall,
-                              color: isDark ? Colors.white60 : AppColors.slate500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 14),
-                SizedBox(
-                  height: 145,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: _cachedMatches.length,
-                    separatorBuilder: (context, index) => const SizedBox(width: 10),
-                    itemBuilder: (context, index) {
-                      final match = _cachedMatches[index];
-                      return Container(
-                        width: 125,
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: isDark ? AppColors.surfaceDark28 : Colors.white,
-                          borderRadius: BorderRadius.circular(18),
-                          border: Border.all(
-                            color: AppColors.categoryAstro.withValues(alpha: AppColors.opacity35),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.05),
-                              blurRadius: 6,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 44,
-                              height: 44,
-                              padding: const EdgeInsets.all(2),
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                gradient: LinearGradient(
-                                  colors: [AppColors.categoryAstro, AppColors.crimsonRose],
-                                ),
-                              ),
-                              child: ClipOval(
-                                child: CustomImageWidget(
-                                  imageUrl: match.sharedProfileImage ?? '',
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              match.sharedProfileName ?? match.sharerName ?? 'Match',
-                              style: TextStyle(
-                                fontSize: AppTypography.labelSmall,
-                                fontWeight: AppTypography.extraBold,
-                                color: isDark ? Colors.white : AppColors.slate900,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 5),
-                            TactilePressable(
-                              onTap: () async {
-                                HapticFeedback.lightImpact();
-                                final otherId = match.recipientId == SessionManager.instance.profileId
-                                    ? match.sharerId
-                                    : (match.recipientId ?? match.sharerId);
-                                if (otherId.isNotEmpty) {
-                                  final convRes = await _chatRepository.getOrCreateConversation(otherId);
-                                  if (convRes.isSuccess && context.mounted) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => ChatScreen(conversation: convRes.data),
-                                      ),
-                                    );
-                                  }
-                                }
-                              },
-                              pressedScale: 0.92,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                                decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [AppColors.crimsonRose, AppColors.wineRed],
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Text(
-                                  'Say Hi 👋',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: AppTypography.labelTiny,
-                                    fontWeight: AppTypography.black,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 1.5.h),
-          const ConversationListSkeleton(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-          ),
-        ],
-      );
-    }
-
-    return const ConversationListSkeleton(
-      itemCount: 12,
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
     );
   }
 

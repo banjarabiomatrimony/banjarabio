@@ -15,6 +15,9 @@ import 'package:banjarabio/core/services/analytics_service.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
+import 'package:banjarabio/widgets/shimmer_widget.dart';
+import 'package:banjarabio/widgets/state_orchestration/bespoke_state_container.dart';
+import 'package:banjarabio/widgets/state_orchestration/empty_state_config.dart';
 import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/presentation/vendor_registration_screen/vendor_registration_screen.dart';
 import 'package:banjarabio/theme/app_color_scheme.dart';
@@ -2507,77 +2510,55 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
   Widget _buildWeddingServicesGrid(ThemeData theme, bool isDark) {
     final filteredServices = _getFilteredAndSortedServices();
 
-    if (filteredServices.isEmpty) {
-      return Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
-        decoration: BoxDecoration(
-          color: isDark ? AppColors.surfaceDark : theme.cardColor,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: isDark
-                ? Colors.white.withValues(alpha: AppColors.opacity8)
-                : Colors.black.withValues(alpha: 0.06),
-          ),
+    return BespokeStateContainer(
+      isLoading: false,
+      isEmpty: filteredServices.isEmpty,
+      skeleton: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 1.15,
         ),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity10),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(Icons.search_off_rounded,
-                  color: theme.colorScheme.primary, size: 32),
+        itemCount: 6,
+        itemBuilder: (context, index) {
+          return ShimmerWidget.rectangular(
+            height: double.infinity,
+            shapeBorder: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
             ),
-            SizedBox(height: 1.5.h),
-            Text(
-              'No services match your active filters',
-              style:               AppTypography.labelStyle(
-                color: theme.colorScheme.onSurface,
-                fontSize: AppTypography.bodyMedium,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 0.5.h),
-            Text(
-              'Try adjusting your budget or district filter to discover vendors.',
-              style: TextStyle(
-                fontSize: AppTypography.labelSmall,
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 2.h),
-            ElevatedButton.icon(
-              onPressed: _resetAllFilters,
-              icon: const Icon(Icons.restart_alt_rounded, size: 18),
-              label: Text(AppLocalizations.of(context)?.resetAllFilters ?? 'Reset All Filters'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: theme.colorScheme.primary,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        childAspectRatio: 1.15,
+          );
+        },
       ),
-      itemCount: filteredServices.length,
-      itemBuilder: (context, index) {
+      emptyConfig: EmptyStateConfig(
+        icon: Icons.search_off_rounded,
+        badgeText: 'VENDOR DIRECTORY',
+        accentColor: AppColors.gold,
+        iconGradient: const LinearGradient(
+          colors: [AppColors.gold, AppColors.goldDark],
+        ),
+        title: 'No Vendors in Current Filters 🏛️',
+        description: 'Try adjusting your budget or district filter to discover community verified vendors.',
+        ctaText: AppLocalizations.of(context)?.resetAllFilters ?? '✨ Reset All Filters',
+        onCtaTap: () {
+          HapticFeedback.selectionClick();
+          _resetAllFilters();
+        },
+      ),
+      contentBuilder: (context) {
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            childAspectRatio: 1.15,
+          ),
+          itemCount: filteredServices.length,
+          itemBuilder: (context, index) {
         final item = filteredServices[index];
         final color = item['color'] as Color;
         final icon = item['icon'] as IconData;
@@ -2742,6 +2723,8 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
         );
       },
     );
+  },
+);
   }
 
   Widget _buildSectionTitle(String title, String subtitle) {

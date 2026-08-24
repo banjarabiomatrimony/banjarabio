@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -13,6 +14,8 @@ import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/core/utils/tour_keys.dart';
 import 'package:banjarabio/widgets/skeleton_loaders.dart';
 import 'package:banjarabio/widgets/branded_refresh_indicator.dart';
+import 'package:banjarabio/widgets/state_orchestration/bespoke_state_container.dart';
+import 'package:banjarabio/widgets/state_orchestration/empty_state_config.dart';
 import 'package:banjarabio/presentation/shared_profiles_screen/widgets/shared_profile_card_widget.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
@@ -594,180 +597,190 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
       displayProfiles.add(displayMap);
     });
 
-    if (displayProfiles.isEmpty) {
-      final skeletonType = isSharedByMe == true
-          ? SharedProfileSkeletonType.sent
-          : (isSharedByMe == false
-              ? SharedProfileSkeletonType.received
-              : SharedProfileSkeletonType.matched);
-      return SharedProfilesScreenSkeleton(type: skeletonType);
-    }
+    final skeletonType = isSharedByMe == true
+        ? SharedProfileSkeletonType.sent
+        : (isSharedByMe == false
+            ? SharedProfileSkeletonType.received
+            : SharedProfileSkeletonType.matched);
 
-    return BrandedRefreshIndicator(
-      onRefresh: _handleRefresh,
-      child: ListView.builder(
-        physics: const BouncingScrollPhysics(),
-        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-        itemCount: displayProfiles.length + 1,
-        itemBuilder: (context, index) {
-          // Top 0: Hero Highlights Banner
-          if (index == 0) {
-            return _buildHeroHighlightsBanner(context, isSharedByMe, displayProfiles.length);
-          }
+    return BespokeStateContainer(
+      isLoading: _isLoading,
+      isEmpty: displayProfiles.isEmpty,
+      errorMessage: _errorMessage,
+      onRetry: _loadShares,
+      skeleton: SharedProfilesScreenSkeleton(
+        type: skeletonType,
+        physics: const NeverScrollableScrollPhysics(),
+      ),
+      emptyConfig: _getEmptyConfig(context, isSharedByMe),
+      contentBuilder: (context) {
+        return BrandedRefreshIndicator(
+          onRefresh: _handleRefresh,
+          child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+            itemCount: displayProfiles.length + 1,
+            itemBuilder: (context, index) {
+              // Top 0: Hero Highlights Banner
+              if (index == 0) {
+                return _buildHeroHighlightsBanner(context, isSharedByMe, displayProfiles.length);
+              }
 
-          final profile = displayProfiles[index - 1];
-          final shareId = profile['id']?.toString() ?? '';
-          final allShareIds =
-              (profile['allShareIds'] as List<dynamic>?)
-                  ?.map((e) => e.toString())
-                  .toList() ??
-              [shareId];
-          final isSelected = allShareIds.any(
-            (id) => _selectedItems.contains(id),
-          );
+              final profile = displayProfiles[index - 1];
+              final shareId = profile['id']?.toString() ?? '';
+              final allShareIds =
+                  (profile['allShareIds'] as List<dynamic>?)
+                      ?.map((e) => e.toString())
+                      .toList() ??
+                  [shareId];
+              final isSelected = allShareIds.any(
+                (id) => _selectedItems.contains(id),
+              );
 
-          return TweenAnimationBuilder<double>(
-            tween: Tween(begin: 0.0, end: 1.0),
-            duration: Duration(milliseconds: 200 + ((index - 1).clamp(0, 8) * 50)),
-            curve: Curves.easeOutCubic,
-            builder: (context, val, child) {
-              return Transform.translate(
-                offset: Offset(0, 16 * (1 - val)),
-                child: Opacity(
-                  opacity: val.clamp(0.0, 1.0),
-                  child: child,
+              return TweenAnimationBuilder<double>(
+                tween: Tween(begin: 0.0, end: 1.0),
+                duration: Duration(milliseconds: 200 + ((index - 1).clamp(0, 8) * 50)),
+                curve: Curves.easeOutCubic,
+                builder: (context, val, child) {
+                  return Transform.translate(
+                    offset: Offset(0, 16 * (1 - val)),
+                    child: Opacity(
+                      opacity: val.clamp(0.0, 1.0),
+                      child: child,
+                    ),
+                  );
+                },
+                child: RepaintBoundary(
+                  child: SharedProfileCardWidget(
+                    profile: profile,
+                    isSharedByMe: isSharedByMe ?? true,
+                    isSelected: isSelected,
+                    isSelectionMode: _isSelectionMode,
+                    onTap: () async {
+                      if (_isSelectionMode) {
+                        for (var id in allShareIds) {
+                          _toggleSelection(id);
+                        }
+                      } else {
+                        // Mark all as viewed if it's a share with me
+                        if (isSharedByMe == false) {
+                          for (var id in allShareIds) {
+                            final markRes = await _shareRepository.markAsViewed(id);
+                            await markRes.fold(
+                              onSuccess: (_) async {
+                                AppLogger.debug('SharedProfilesScreen', 'Marked share $id as viewed');
+                              },
+                              onFailure: (err) async {
+                                AppLogger.error('SharedProfilesScreen', 'Failed to mark share $id: $err');
+                              },
+                            );
+                          }
+                        }
+                        // Navigate to profile detail using ID for full data loading
+                        if (context.mounted) {
+                          Navigator.of(context, rootNavigator: true).pushNamed(
+                            AppRoutes.profileDetail,
+                            arguments: profile['sharedProfileId'] ?? profile['id'],
+                          );
+                        }
+                      }
+                    },
+                    onLongPress: () {
+                      for (var id in allShareIds) {
+                        _toggleSelection(id);
+                      }
+                    },
+                    onReshare: () async {
+                      try {
+                        // Get original method (unformatted)
+                        final sharesList = isSharedByMe == null
+                            ? _matchedProfiles
+                            : isSharedByMe
+                            ? _sharedByMe
+                            : _sharedWithMe;
+                        final originalShare = sharesList.firstWhere(
+                          (s) => s.id == shareId,
+                          orElse: () => sharesList.firstWhere(
+                            (s) => s.sharedProfileId == profile['sharedProfileId'],
+                          ),
+                        );
+
+                        final shareRes = await _shareRepository.shareProfile(
+                          sharedProfileId: profile['sharedProfileId'] ?? '',
+                          sharingMethod: originalShare.sharingMethod,
+                          recipientId: originalShare.recipientId,
+                          recipientName: originalShare.recipientName,
+                          recipientRelation: originalShare.recipientRelation,
+                          profileName: profile['sharedProfileName'],
+                        );
+
+                        await shareRes.fold(
+                          onSuccess: (_) async {
+                            if (mounted) {
+                              Fluttertoast.showToast(
+                                msg: 'Reshared successfully',
+                                backgroundColor: Colors.green,
+                                textColor: Colors.white,
+                              );
+                              await _loadShares();
+                            }
+                          },
+                          onFailure: (error) async {
+                            if (mounted) {
+                              Fluttertoast.showToast(
+                                msg: 'Failed to reshare: $error',
+                                backgroundColor: Theme.of(context).colorScheme.error,
+                                textColor: Colors.white,
+                              );
+                            }
+                          },
+                        );
+                      } catch (e) {
+                        if (mounted) {
+                          Fluttertoast.showToast(
+                            msg: 'Error: $e',
+                            backgroundColor: theme.colorScheme.error,
+                            textColor: Colors.white,
+                          );
+                        }
+                      }
+                    },
+                    onRemove: () async {
+                      try {
+                        for (var id in allShareIds) {
+                          final delRes = await _shareRepository.deleteShare(id);
+                          await delRes.fold(
+                            onSuccess: (_) async {},
+                            onFailure: (err) async {
+                              AppLogger.error('SharedProfilesScreen', 'Failed to delete share $id: $err');
+                            },
+                          );
+                        }
+                        if (mounted) {
+                          Fluttertoast.showToast(
+                            msg: 'Removed from history',
+                            backgroundColor: Colors.green,
+                            textColor: Colors.white,
+                          );
+                          await _loadShares();
+                        }
+                      } catch (e) {
+                        if (mounted) {
+                          Fluttertoast.showToast(
+                            msg: 'Error: $e',
+                            backgroundColor: theme.colorScheme.error,
+                            textColor: Colors.white,
+                          );
+                        }
+                      }
+                    },
+                  ),
                 ),
               );
             },
-            child: RepaintBoundary(
-              child: SharedProfileCardWidget(
-                profile: profile,
-                isSharedByMe: isSharedByMe ?? true,
-                isSelected: isSelected,
-                isSelectionMode: _isSelectionMode,
-                onTap: () async {
-                  if (_isSelectionMode) {
-                    for (var id in allShareIds) {
-                      _toggleSelection(id);
-                    }
-                  } else {
-                    // Mark all as viewed if it's a share with me
-                    if (isSharedByMe == false) {
-                      for (var id in allShareIds) {
-                        final markRes = await _shareRepository.markAsViewed(id);
-                        await markRes.fold(
-                          onSuccess: (_) async {
-                            AppLogger.debug('SharedProfilesScreen', 'Marked share $id as viewed');
-                          },
-                          onFailure: (err) async {
-                            AppLogger.error('SharedProfilesScreen', 'Failed to mark share $id: $err');
-                          },
-                        );
-                      }
-                    }
-                    // Navigate to profile detail using ID for full data loading
-                    if (context.mounted) {
-                      Navigator.of(context, rootNavigator: true).pushNamed(
-                        AppRoutes.profileDetail,
-                        arguments: profile['sharedProfileId'] ?? profile['id'],
-                      );
-                    }
-                  }
-                },
-                onLongPress: () {
-                  for (var id in allShareIds) {
-                    _toggleSelection(id);
-                  }
-                },
-                onReshare: () async {
-                try {
-                  // Get original method (unformatted)
-                  final sharesList = isSharedByMe == null
-                      ? _matchedProfiles
-                      : isSharedByMe
-                      ? _sharedByMe
-                      : _sharedWithMe;
-                  final originalShare = sharesList.firstWhere(
-                    (s) => s.id == shareId,
-                    orElse: () => sharesList.firstWhere(
-                      (s) => s.sharedProfileId == profile['sharedProfileId'],
-                    ),
-                  );
-
-                  final shareRes = await _shareRepository.shareProfile(
-                    sharedProfileId: profile['sharedProfileId'] ?? '',
-                    sharingMethod: originalShare.sharingMethod,
-                    recipientId: originalShare.recipientId,
-                    recipientName: originalShare.recipientName,
-                    recipientRelation: originalShare.recipientRelation,
-                    profileName: profile['sharedProfileName'],
-                  );
-
-                  await shareRes.fold(
-                    onSuccess: (_) async {
-                      if (mounted) {
-                        Fluttertoast.showToast(
-                          msg: 'Reshared successfully',
-                          backgroundColor: Colors.green,
-                          textColor: Colors.white,
-                        );
-                        await _loadShares();
-                      }
-                    },
-                    onFailure: (error) async {
-                      if (mounted) {
-                        Fluttertoast.showToast(
-                          msg: 'Failed to reshare: $error',
-                          backgroundColor: Theme.of(context).colorScheme.error,
-                          textColor: Colors.white,
-                        );
-                      }
-                    },
-                  );
-                } catch (e) {
-                  if (mounted) {
-                    Fluttertoast.showToast(
-                      msg: 'Error: $e',
-                      backgroundColor: theme.colorScheme.error,
-                      textColor: Colors.white,
-                    );
-                  }
-                }
-              },
-              onRemove: () async {
-                try {
-                  for (var id in allShareIds) {
-                    final delRes = await _shareRepository.deleteShare(id);
-                    await delRes.fold(
-                      onSuccess: (_) async {},
-                      onFailure: (err) async {
-                        AppLogger.error('SharedProfilesScreen', 'Failed to delete share $id: $err');
-                      },
-                    );
-                  }
-                  if (mounted) {
-                    Fluttertoast.showToast(
-                      msg: 'Removed from history',
-                      backgroundColor: Colors.green,
-                      textColor: Colors.white,
-                    );
-                    await _loadShares();
-                  }
-                } catch (e) {
-                  if (mounted) {
-                    Fluttertoast.showToast(
-                      msg: 'Error: $e',
-                      backgroundColor: theme.colorScheme.error,
-                      textColor: Colors.white,
-                    );
-                  }
-                }
-              },
-              ),
-            ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -872,6 +885,64 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
         ],
       ),
     );
+  }
+
+  EmptyStateConfig _getEmptyConfig(BuildContext context, bool? isSharedByMe) {
+    if (isSharedByMe == false) {
+      // 📥 Received
+      return EmptyStateConfig(
+        icon: Icons.move_to_inbox_rounded,
+        badgeText: 'RECEIVED REQUESTS',
+        accentColor: AppColors.categoryCareerDark,
+        iconGradient: const LinearGradient(
+          colors: [AppColors.categoryCareer, AppColors.categoryCareerDark],
+        ),
+        title: 'No Received Requests Yet 📥',
+        description:
+            'When other Banjara community members or families send you connection requests, they will appear here for you to accept or review.',
+        ctaText: '✨ Explore Matches on Home',
+        onCtaTap: () {
+          HapticFeedback.selectionClick();
+          Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (route) => false);
+        },
+      );
+    } else if (isSharedByMe == null) {
+      // 💍 Matched
+      return EmptyStateConfig(
+        icon: Icons.favorite_rounded,
+        badgeText: 'MUTUAL MATCHES',
+        accentColor: AppColors.categoryAstro,
+        iconGradient: const LinearGradient(
+          colors: [AppColors.categoryAstro, AppColors.categoryAstroDark],
+        ),
+        title: 'No Mutual Matches Yet 💍',
+        description:
+            'When both families accept connection requests, mutual matches unlock here for direct chatting and family discussions.',
+        ctaText: '✨ Discover Matches',
+        onCtaTap: () {
+          HapticFeedback.selectionClick();
+          Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (route) => false);
+        },
+      );
+    } else {
+      // 📤 Sent
+      return EmptyStateConfig(
+        icon: Icons.outbox_rounded,
+        badgeText: 'SENT PROFILES',
+        accentColor: AppColors.categoryFamily,
+        iconGradient: const LinearGradient(
+          colors: [AppColors.categoryFamily, AppColors.categoryFamilyDark],
+        ),
+        title: 'No Sent Requests Yet 📤',
+        description:
+            'Profiles you express interest in or share with family members will be neatly tracked here.',
+        ctaText: '✨ Browse Community Profiles',
+        onCtaTap: () {
+          HapticFeedback.selectionClick();
+          Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (route) => false);
+        },
+      );
+    }
   }
 }
 

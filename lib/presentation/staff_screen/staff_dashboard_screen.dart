@@ -11,6 +11,7 @@ import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/presentation/staff_screen/volunteer_tabs_widget.dart';
 import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/theme/app_colors.dart';
+import 'package:banjarabio/widgets/logout_confirmation_dialog.dart';
 
 const _kBgDark = AppColors.canvasCharcoal;
 const _kSurfaceColor = AppColors.canvasRichDark;
@@ -842,6 +843,9 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
   }
 
   Future<void> _handleLogout() async {
+    final confirmed = await LogoutConfirmationDialog.show(context);
+    if (confirmed != true || !mounted) return;
+
     try {
       await AppSupabaseClient.client.auth.signOut();
       if (mounted) {

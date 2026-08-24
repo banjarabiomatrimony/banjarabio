@@ -9,8 +9,11 @@ import 'package:banjarabio/core/services/analytics_service.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/theme/app_colors.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
-import 'package:banjarabio/widgets/tactile/tactile_back_button.dart';
+import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
+import 'package:banjarabio/widgets/shimmer_widget.dart';
+import 'package:banjarabio/widgets/state_orchestration/bespoke_state_container.dart';
+import 'package:banjarabio/widgets/state_orchestration/empty_state_config.dart';
 import 'package:flutter/services.dart';
 
 
@@ -1085,85 +1088,7 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
     );
   }
 
-  Widget _buildEmptyState(ThemeData theme) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 6.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: EdgeInsets.all(4.w),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity8),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.search_off_rounded,
-                size: 48,
-                color: theme.colorScheme.primary,
-              ),
-            ),
-            SizedBox(height: 2.h),
-            Text(
-              'No Parichay Melavas Found',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: AppTypography.bold,
-                fontFamily: AppTypography.headingFontFamily,
-              ),
-            ),
-            SizedBox(height: 1.h),
-            Text(
-              "We couldn't find any events matching your search or filters. Don't see an event in your region?",
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-            SizedBox(height: 3.h),
-            TactilePressable(
-              onTap: () {
-                HapticFeedback.lightImpact();
-                _suggestEvent();
-              },
-              pressedScale: 0.95,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 1.5.h),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: theme.colorScheme.primary.withValues(alpha: AppColors.opacity25),
-                      blurRadius: 10,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.add_comment_rounded, color: Colors.white, size: 18),
-                    SizedBox(width: 2.w),
-                    Flexible(
-                      child: Text(
-                        'Suggest an Event',
-                        style: AppTypography.headingStyle(
-                          fontSize: AppTypography.bodyMedium,
-                          fontWeight: AppTypography.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+
 
   Future<void> _suggestEvent() async {
     // Log telemetry event
@@ -1220,12 +1145,82 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final localizations = AppLocalizations.of(context);
 
     return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: CustomAppBar(
-        leading: const TactileBackButton(),
-        title: localizations?.upcomingMelavas ?? 'Upcoming Melavas',
+        automaticallyImplyLeading: false,
+        leadingWidth: 175,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // ⬅️ Tactile Back Button
+              TactilePressable(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.maybePop(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: (theme.appBarTheme.foregroundColor ?? Colors.white)
+                        .withValues(alpha: isDark ? AppColors.opacity12 : AppColors.opacity15),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: theme.appBarTheme.foregroundColor ?? Colors.white,
+                    size: 15,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+
+              // 👑 App Logo
+              ClipOval(
+                child: Container(
+                  width: 24,
+                  height: 24,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: const AppLogoImage(
+                    width: 24,
+                    height: 24,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 5),
+
+              // 🏷️ Wordmark
+              Image.asset(
+                'assets/logo/brand_kit/wordmark.png',
+                height: 20,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) =>
+                    const SizedBox.shrink(),
+              ),
+            ],
+          ),
+        ),
+        titleWidget: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            localizations?.upcomingMelavas ?? 'Upcoming Melavas',
+            maxLines: 1,
+            style: (theme.appBarTheme.titleTextStyle ?? theme.textTheme.titleMedium)?.copyWith(
+              fontSize: AppTypography.headingSmall,
+              fontWeight: AppTypography.bold,
+              color: theme.appBarTheme.foregroundColor ?? Colors.white,
+              letterSpacing: 0.1,
+            ),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 12.h), // Spacing for bottom floating bar
@@ -1353,14 +1348,52 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
             ),
             SizedBox(height: 2.h),
 
-            // Melava events list
-            _filteredEvents.isEmpty
-                ? _buildEmptyState(theme)
-                : ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: _filteredEvents.length,
-                    itemBuilder: (context, index) {
+            // Melava events list with BespokeStateContainer
+            BespokeStateContainer(
+              isLoading: false,
+              isEmpty: _filteredEvents.isEmpty,
+              skeleton: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 6,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: 2.h),
+                    child: ShimmerWidget.rectangular(
+                      height: 28.h,
+                      shapeBorder: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              emptyConfig: EmptyStateConfig(
+                icon: Icons.event_busy_rounded,
+                badgeText: 'SAMMELAN DIRECTORY',
+                accentColor: AppColors.gold,
+                iconGradient: const LinearGradient(
+                  colors: [AppColors.gold, AppColors.goldDark],
+                ),
+                title: 'No Upcoming Events in this Region 🎪',
+                description:
+                    'We are actively coordinating with regional trusts. Try searching "All" or check back soon for upcoming events.',
+                ctaText: '✨ View All Regional Events',
+                onCtaTap: () {
+                  HapticFeedback.selectionClick();
+                  setState(() {
+                    _selectedState = 'All';
+                    _searchController.clear();
+                    _searchQuery = '';
+                  });
+                },
+              ),
+              contentBuilder: (context) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _filteredEvents.length,
+                  itemBuilder: (context, index) {
                       final event = _filteredEvents[index];
                       return Padding(
                         padding: EdgeInsets.only(bottom: 2.h),
@@ -1737,7 +1770,9 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
                         ),
                       );
                     },
-                  ),
+                  );
+              },
+            ),
             SizedBox(height: 2.h),
 
             // 🏢 Organizer Partnership Callout Card

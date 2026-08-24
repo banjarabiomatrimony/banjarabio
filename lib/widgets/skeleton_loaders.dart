@@ -59,7 +59,7 @@ class ConversationListSkeleton extends StatelessWidget {
 
   const ConversationListSkeleton({
     super.key,
-    this.itemCount = 10,
+    this.itemCount = 20,
     this.physics = const BouncingScrollPhysics(),
     this.shrinkWrap = false,
   });
@@ -239,25 +239,25 @@ class SharedProfilesScreenSkeleton extends StatelessWidget {
   const SharedProfilesScreenSkeleton({
     super.key,
     this.type = SharedProfileSkeletonType.received,
-    this.itemCount = 8,
+    this.itemCount = 20,
     this.physics = const BouncingScrollPhysics(),
   });
 
   const SharedProfilesScreenSkeleton.received({
     super.key,
-    this.itemCount = 8,
+    this.itemCount = 20,
     this.physics = const BouncingScrollPhysics(),
   }) : type = SharedProfileSkeletonType.received;
 
   const SharedProfilesScreenSkeleton.matched({
     super.key,
-    this.itemCount = 8,
+    this.itemCount = 20,
     this.physics = const BouncingScrollPhysics(),
   }) : type = SharedProfileSkeletonType.matched;
 
   const SharedProfilesScreenSkeleton.sent({
     super.key,
-    this.itemCount = 8,
+    this.itemCount = 20,
     this.physics = const BouncingScrollPhysics(),
   }) : type = SharedProfileSkeletonType.sent;
 
@@ -1204,7 +1204,7 @@ class TrustScoreSkeleton extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────
 class GenericListSkeleton extends StatelessWidget {
   final int itemCount;
-  const GenericListSkeleton({super.key, this.itemCount = 6});
+  const GenericListSkeleton({super.key, this.itemCount = 20});
 
   @override
   Widget build(BuildContext context) {
@@ -1463,4 +1463,341 @@ class SubscriptionSkeleton extends StatelessWidget {
     );
   }
 }
+
+// ─────────────────────────────────────────────────────────────
+//  Notifications / Activity Hub Screen Skeleton
+// ─────────────────────────────────────────────────────────────
+class NotificationsScreenSkeleton extends StatelessWidget {
+  final int itemCount;
+  final ScrollPhysics physics;
+
+  const NotificationsScreenSkeleton({
+    super.key,
+    this.itemCount = 20,
+    this.physics = const NeverScrollableScrollPhysics(),
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return ListView.separated(
+      physics: physics,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      itemCount: itemCount,
+      separatorBuilder: (_, index) => const SizedBox(height: 8),
+      itemBuilder: (context, index) {
+        return Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: isDark ? AppColors.canvasCharcoal : Colors.white,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: isDark
+                  ? Colors.white.withValues(alpha: AppColors.opacity8)
+                  : Colors.grey.shade200,
+            ),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Icon Circle / Avatar Skeleton
+              const ShimmerWidget.circular(
+                width: 44,
+                height: 44,
+              ),
+              const SizedBox(width: 12),
+
+              // Title and Body lines
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ShimmerWidget.rectangular(
+                          height: 14,
+                          width: 40.w,
+                          shapeBorder: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        ShimmerWidget.rectangular(
+                          height: 10,
+                          width: 12.w,
+                          shapeBorder: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    ShimmerWidget.rectangular(
+                      height: 12,
+                      width: 65.w,
+                      shapeBorder: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    ShimmerWidget.rectangular(
+                      height: 10,
+                      width: 35.w,
+                      shapeBorder: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+//  Photo Management Screen Skeleton
+// ─────────────────────────────────────────────────────────────
+class PhotoManagementSkeleton extends StatelessWidget {
+  const PhotoManagementSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.all(4.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Banner Skeleton
+          ShimmerWidget.rectangular(
+            height: 6.h,
+            shapeBorder: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          SizedBox(height: 2.h),
+
+          // Section Title
+          ShimmerWidget.rectangular(
+            width: 35.w,
+            height: 2.2.h,
+            shapeBorder: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6),
+            ),
+          ),
+          SizedBox(height: 1.5.h),
+
+          // Primary Hero Photo Skeleton
+          ShimmerWidget.rectangular(
+            height: 28.h,
+            shapeBorder: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+          SizedBox(height: 2.5.h),
+
+          // Sub Section Title
+          ShimmerWidget.rectangular(
+            width: 45.w,
+            height: 2.2.h,
+            shapeBorder: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6),
+            ),
+          ),
+          SizedBox(height: 1.5.h),
+
+          // Photo Grid Skeletons (3x2 Grid)
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 3.w,
+              mainAxisSpacing: 3.w,
+              childAspectRatio: 0.8,
+            ),
+            itemCount: 6,
+            itemBuilder: (context, index) {
+              return ShimmerWidget.rectangular(
+                height: double.infinity,
+                shapeBorder: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+//  Pulsing Empty State Overlay (Breathing Skeleton + Frosted Card)
+// ─────────────────────────────────────────────────────────────
+class PulsingEmptyStateOverlay extends StatefulWidget {
+  final Widget skeleton;
+  final Widget card;
+  final bool isDark;
+  final double skeletonOpacityMin;
+  final double skeletonOpacityMax;
+  final double frostedOpacityMin;
+  final double frostedOpacityMax;
+
+  const PulsingEmptyStateOverlay({
+    super.key,
+    required this.skeleton,
+    required this.card,
+    required this.isDark,
+    this.skeletonOpacityMin = 0.68,
+    this.skeletonOpacityMax = 0.80,
+    this.frostedOpacityMin = 0.12,
+    this.frostedOpacityMax = 0.25,
+  });
+
+  @override
+  State<PulsingEmptyStateOverlay> createState() => _PulsingEmptyStateOverlayState();
+}
+
+class _PulsingEmptyStateOverlayState extends State<PulsingEmptyStateOverlay>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _pulseAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2200),
+    )..repeat(reverse: true);
+    _pulseAnimation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOutCubic,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _pulseAnimation,
+      builder: (context, _) {
+        final val = _pulseAnimation.value;
+        final skeletonOpacity = widget.skeletonOpacityMin +
+            (val * (widget.skeletonOpacityMax - widget.skeletonOpacityMin));
+        final baseFrostedMin = widget.isDark
+            ? (widget.frostedOpacityMin + 0.08)
+            : widget.frostedOpacityMin;
+        final baseFrostedMax = widget.isDark
+            ? (widget.frostedOpacityMax + 0.08)
+            : widget.frostedOpacityMax;
+        final frostedOpacity =
+            baseFrostedMin + (val * (baseFrostedMax - baseFrostedMin));
+        final cardScale = 0.985 + (val * 0.015);
+
+        return Stack(
+          children: [
+            // 1. Structured Preview Skeleton with clearly visible breathing pulse
+            Positioned.fill(
+              child: IgnorePointer(
+                child: Opacity(
+                  opacity: skeletonOpacity.clamp(0.0, 1.0),
+                  child: widget.skeleton,
+                ),
+              ),
+            ),
+
+            // 2. Translucent Frosted Glass Barrier
+            Positioned.fill(
+              child: Container(
+                color: (widget.isDark ? AppColors.canvasDeepDark : AppColors.slate50)
+                    .withValues(alpha: frostedOpacity.clamp(0.0, 1.0)),
+              ),
+            ),
+
+            // 3. Floating High-Contrast Centered Empty State Details Card
+            Center(
+              child: Transform.scale(
+                scale: cardScale,
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+                  child: widget.card,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+/// 👁️ Premium Who Viewed Me Analytics Skeleton
+class WhoViewedMeSkeleton extends StatelessWidget {
+  final int itemCount;
+  const WhoViewedMeSkeleton({super.key, this.itemCount = 20});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+      child: Column(
+        children: [
+          ShimmerWidget.rectangular(
+            height: 8.h,
+            shapeBorder: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+          SizedBox(height: 2.h),
+          ...List.generate(
+            itemCount,
+            (index) => Padding(
+              padding: EdgeInsets.only(bottom: 1.5.h),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 6.w,
+                    child: Column(
+                      children: [
+                        const ShimmerWidget.circular(width: 10, height: 10),
+                        SizedBox(height: 0.8.h),
+                        const ShimmerWidget.rectangular(height: 60, width: 2),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 2.w),
+                  Expanded(
+                    child: ShimmerWidget.rectangular(
+                      height: 9.h,
+                      shapeBorder: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
 

@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
@@ -12,11 +13,12 @@ import 'package:banjarabio/core/services/ad_reward_service.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/providers/home_tab_provider.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
-import 'package:banjarabio/widgets/tactile/tactile_back_button.dart';
+import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 import 'package:banjarabio/widgets/branded_refresh_indicator.dart';
-import 'package:banjarabio/widgets/branded_empty_state.dart';
-import 'package:banjarabio/widgets/shimmer_widget.dart';
+import 'package:banjarabio/widgets/skeleton_loaders.dart';
+import 'package:banjarabio/widgets/state_orchestration/bespoke_state_container.dart';
+import 'package:banjarabio/widgets/state_orchestration/empty_state_config.dart';
 
 class WhoViewedMeScreen extends ConsumerStatefulWidget {
   const WhoViewedMeScreen({super.key});
@@ -65,8 +67,76 @@ class _WhoViewedMeScreenState extends ConsumerState<WhoViewedMeScreen> {
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: CustomAppBar(
-        leading: const TactileBackButton(),
-        title: AppLocalizations.of(context)?.whoViewedMe ?? 'Who Viewed Me',
+        automaticallyImplyLeading: false,
+        leadingWidth: 175,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // ⬅️ Tactile Back Button
+              TactilePressable(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.maybePop(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: (theme.appBarTheme.foregroundColor ?? Colors.white)
+                        .withValues(alpha: isDark ? AppColors.opacity12 : AppColors.opacity15),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: theme.appBarTheme.foregroundColor ?? Colors.white,
+                    size: 15,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+
+              // 👑 App Logo
+              ClipOval(
+                child: Container(
+                  width: 24,
+                  height: 24,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: const AppLogoImage(
+                    width: 24,
+                    height: 24,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 5),
+
+              // 🏷️ Wordmark
+              Image.asset(
+                'assets/logo/brand_kit/wordmark.png',
+                height: 20,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) =>
+                    const SizedBox.shrink(),
+              ),
+            ],
+          ),
+        ),
+        titleWidget: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            AppLocalizations.of(context)?.whoViewedMe ?? 'Who Viewed Me',
+            maxLines: 1,
+            style: (theme.appBarTheme.titleTextStyle ?? theme.textTheme.titleMedium)?.copyWith(
+              fontSize: AppTypography.headingSmall,
+              fontWeight: AppTypography.bold,
+              color: theme.appBarTheme.foregroundColor ?? Colors.white,
+              letterSpacing: 0.1,
+            ),
+          ),
+        ),
         actions: [
           if (_views.isNotEmpty)
             Container(
@@ -101,67 +171,39 @@ class _WhoViewedMeScreenState extends ConsumerState<WhoViewedMeScreen> {
             ),
         ],
       ),
-      body: _isLoading
-          ? _buildLoadingSkeleton(theme)
-          : _views.isEmpty
-              ? _buildEmptyState(theme)
-              : BrandedRefreshIndicator(
-                  onRefresh: _loadViews,
-                  child: _buildTimelineList(theme, isDark),
-                ),
+      body: BespokeStateContainer(
+        isLoading: _isLoading,
+        isEmpty: _views.isEmpty,
+        skeleton: const WhoViewedMeSkeleton(),
+        emptyConfig: EmptyStateConfig(
+          icon: Icons.visibility_off_rounded,
+          badgeText: 'VISITOR ANALYTICS',
+          accentColor: AppColors.crimsonRose,
+          iconGradient: const LinearGradient(
+            colors: [AppColors.crimsonRose, AppColors.crimsonMaroon],
+          ),
+          title: AppLocalizations.of(context)?.noViewsYet ?? 'No Profile Views Yet 👁️',
+          description: AppLocalizations.of(context)?.completeYourProfileToGetNoticed ??
+              'Complete your biodata, add a verified photo, and boost your trust score to get noticed by potential matches!',
+          ctaText: '✨ Explore Matches',
+          onCtaTap: () {
+            HapticFeedback.selectionClick();
+            ref.read(homeTabProvider.notifier).state = 0;
+            Navigator.popUntil(context, (route) => route.isFirst);
+          },
+        ),
+        contentBuilder: (context) => BrandedRefreshIndicator(
+          onRefresh: _loadViews,
+          child: _buildTimelineList(theme, isDark),
+        ),
+      ),
       bottomNavigationBar: (!SessionManager.instance.isPremium && !_isUnlockedByAd && _views.length > 3)
           ? _buildUnlockBanner(theme, isDark)
           : null,
     );
   }
 
-  Widget _buildLoadingSkeleton(ThemeData theme) {
-    return SingleChildScrollView(
-      physics: const NeverScrollableScrollPhysics(),
-      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
-      child: Column(
-        children: [
-          ShimmerWidget.rectangular(
-            height: 8.h,
-            shapeBorder: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-          ),
-          SizedBox(height: 2.h),
-          ...List.generate(
-            6,
-            (index) => Padding(
-              padding: EdgeInsets.only(bottom: 1.5.h),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 6.w,
-                    child: Column(
-                      children: [
-                        const ShimmerWidget.circular(width: 10, height: 10),
-                        SizedBox(height: 0.8.h),
-                        const ShimmerWidget.rectangular(height: 60, width: 2),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 2.w),
-                  Expanded(
-                    child: ShimmerWidget.rectangular(
-                      height: 9.h,
-                      shapeBorder: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+
 
   Widget _buildTimelineList(ThemeData theme, bool isDark) {
     final bool isPremium = SessionManager.instance.isPremium;
@@ -902,20 +944,7 @@ class _WhoViewedMeScreenState extends ConsumerState<WhoViewedMeScreen> {
     );
   }
 
-  Widget _buildEmptyState(ThemeData theme) {
-    final l10n = AppLocalizations.of(context);
-    return BrandedEmptyState(
-      icon: Icons.visibility_off_rounded,
-      title: l10n?.noViewsYet ?? 'No Profile Views Yet',
-      description: l10n?.completeYourProfileToGetNoticed ??
-          'Complete your biodata, add a verified photo, and boost your trust score to get noticed by potential matches!',
-      ctaText: 'Explore Matches',
-      onCtaPressed: () {
-        ref.read(homeTabProvider.notifier).state = 0;
-        Navigator.popUntil(context, (route) => route.isFirst);
-      },
-    );
-  }
+
 
   String _relativeTime(DateTime date) {
     final now = DateTime.now();

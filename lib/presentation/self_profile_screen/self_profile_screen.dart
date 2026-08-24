@@ -26,7 +26,8 @@ import 'package:banjarabio/presentation/match_profile_screen/widgets/profile_tru
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 import 'package:banjarabio/widgets/shimmer_widget.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
-import 'package:banjarabio/widgets/glassmorphism_container.dart';
+import 'package:banjarabio/widgets/state_orchestration/bespoke_state_container.dart';
+import 'package:banjarabio/widgets/state_orchestration/empty_state_config.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/presentation/self_profile_screen/widgets/completion_badge_widget.dart';
 
@@ -389,101 +390,31 @@ class _SelfProfileScreenState extends ConsumerState<SelfProfileScreen>
               ),
             )
           : _profile == null
-          ? Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w),
-                child: GlassmorphismContainer(
-                  color: theme.colorScheme.primary,
-                  opacity: 0.05,
-                  blur: 10,
-                  borderRadius: BorderRadius.circular(32),
-                  padding: EdgeInsets.all(8.w),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      AppLogoImage(height: 8.h),
-                      SizedBox(height: 3.h),
-                      Text(
-                        AppLocalizations.of(context)?.biodataRequired ??
-                            'Biodata Required',
-                        style: theme.textTheme.headlineSmall?.copyWith(
-                          fontWeight: AppTypography.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 1.5.h),
-                      Text(
-                        AppLocalizations.of(context)?.guestRestrictionMessage ??
-                            'To interact with profiles, express interest, or send messages, you need to create your own biodata first.',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 4.h),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            LocalCacheService().setGuestMode(false);
-                            Navigator.of(
-                              context,
-                              rootNavigator: true,
-                            ).pushReplacementNamed(AppRoutes.biodataCreation);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: theme.colorScheme.primary,
-                            foregroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(vertical: 1.8.h),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            elevation: 0,
-                          ),
-                          child: Text(
-                            AppLocalizations.of(context)?.createProfile ??
-                                'Create My Biodata',
-                            style: TextStyle(
-                              fontFamily: AppTypography.bodyFontFamily,
-                              fontWeight: AppTypography.bold,
-                              fontSize: AppTypography.bodyLarge,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: OutlinedButton(
-                          onPressed: () {
-                            LocalCacheService().setGuestMode(false);
-                            Navigator.of(
-                              context,
-                              rootNavigator: true,
-                            ).pushReplacementNamed(
-                              AppRoutes.onboardingSelection,
-                            );
-                          },
-                          style: OutlinedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(vertical: 1.8.h),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                          child: Text(
-                            AppLocalizations.of(context)?.exitGuestMode ??
-                                'Exit Guest Mode',
-                            style: TextStyle(
-                              fontFamily: AppTypography.bodyFontFamily,
-                              fontWeight: AppTypography.bold,
-                              fontSize: AppTypography.bodyLarge,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+          ? BespokeStateContainer(
+              isLoading: false,
+              isEmpty: true,
+              skeleton: const ProfileDetailSkeleton(),
+              emptyConfig: EmptyStateConfig(
+                icon: Icons.assignment_ind_rounded,
+                badgeText: 'BIODATA REQUIRED',
+                accentColor: AppColors.crimsonRose,
+                iconGradient: const LinearGradient(
+                  colors: [AppColors.crimsonRose, AppColors.crimsonMaroon],
                 ),
+                title: AppLocalizations.of(context)?.biodataRequired ?? 'Biodata Required 📝',
+                description: AppLocalizations.of(context)?.guestRestrictionMessage ??
+                    'To interact with profiles, express interest, or send messages, you need to create your own biodata first.',
+                ctaText: AppLocalizations.of(context)?.createProfile ?? '✨ Create My Biodata',
+                onCtaTap: () {
+                  HapticFeedback.selectionClick();
+                  LocalCacheService().setGuestMode(false);
+                  Navigator.of(
+                    context,
+                    rootNavigator: true,
+                  ).pushReplacementNamed(AppRoutes.biodataCreation);
+                },
               ),
+              contentBuilder: (_) => const SizedBox.shrink(),
             )
           : RefreshIndicator(
               onRefresh: () => _loadProfile(forceRefresh: true),

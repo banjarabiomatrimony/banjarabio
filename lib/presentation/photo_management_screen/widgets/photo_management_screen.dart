@@ -20,11 +20,13 @@ import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/widgets/upgrade_dialog.dart';
 import 'package:banjarabio/presentation/photo_management_screen/widgets/widgets/cultural_guidelines_widget.dart';
 import 'package:banjarabio/presentation/photo_management_screen/widgets/widgets/photo_grid_widget.dart';
-import 'package:banjarabio/presentation/photo_management_screen/widgets/widgets/photo_upload_widget.dart';
 import 'package:banjarabio/core/repositories/photo_repository.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/core/models/subscription_model.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/widgets/skeleton_loaders.dart';
+import 'package:banjarabio/widgets/state_orchestration/bespoke_state_container.dart';
+import 'package:banjarabio/widgets/state_orchestration/empty_state_config.dart';
 
 class PhotoManagementScreen extends StatefulWidget {
   const PhotoManagementScreen({super.key});
@@ -39,6 +41,7 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
   bool _isSelectionMode = false;
   bool _isPremiumUser = false;
   bool _isImageProcessing = false;
+  bool _isLoading = true;
 
   final Set<String> _selectedPhotos = {};
 
@@ -58,10 +61,14 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
   }
 
   Future<void> _loadInitialData() async {
+    setState(() => _isLoading = true);
     await Future.wait([
       _loadSubscriptionStatus(),
       _loadProfileAndPhotos(),
     ]);
+    if (mounted) {
+      setState(() => _isLoading = false);
+    }
   }
 
   Future<void> _loadProfileAndPhotos() async {
@@ -903,31 +910,48 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
                 ),
               ),
             Expanded(
-              child: _photos.isEmpty
-                  ? PhotoUploadWidget(
-                      onAddPhoto: _showAddPhotoOptions,
-                      isPremium: _isPremiumUser,
-                    )
-                  : PhotoGridWidget(
-                      photos: _photos,
-                      isSelectionMode: _isSelectionMode,
-                      onPhotoTap: (photo) {
-                        if (_isSelectionMode) {
-                          _togglePhotoSelection(photo['id']);
-                        } else {
-                          _showPhotoOptions(photo);
-                        }
-                      },
-                      onPhotoLongPress: (photo) {
-                        if (!_isSelectionMode) {
-                          _toggleSelectionMode();
-                          _togglePhotoSelection(photo['id']);
-                        }
-                      },
-                      onAddPhoto: _showAddPhotoOptions,
-                      isPremium: _isPremiumUser,
-                      maxPhotos: _isPremiumUser ? 6 : 1,
-                    ),
+              child: BespokeStateContainer(
+                isLoading: _isLoading,
+                isEmpty: _photos.isEmpty,
+                skeleton: const PhotoManagementSkeleton(),
+                emptyConfig: EmptyStateConfig(
+                  icon: Icons.add_a_photo_rounded,
+                  badgeText: 'PROFILE PHOTOS',
+                  accentColor: AppColors.crimsonRose,
+                  iconGradient: const LinearGradient(
+                    colors: [AppColors.crimsonRose, AppColors.crimsonBlush],
+                  ),
+                  title: 'No Photos Uploaded Yet 📸',
+                  description: 'Profiles with clear photos receive 3x more match interests and family responses.',
+                  ctaText: '✨ Upload First Photo',
+                  onCtaTap: () {
+                    HapticFeedback.selectionClick();
+                    _showAddPhotoOptions();
+                  },
+                ),
+                contentBuilder: (context) {
+                  return PhotoGridWidget(
+                    photos: _photos,
+                    isSelectionMode: _isSelectionMode,
+                    onPhotoTap: (photo) {
+                      if (_isSelectionMode) {
+                        _togglePhotoSelection(photo['id']);
+                      } else {
+                        _showPhotoOptions(photo);
+                      }
+                    },
+                    onPhotoLongPress: (photo) {
+                      if (!_isSelectionMode) {
+                        _toggleSelectionMode();
+                        _togglePhotoSelection(photo['id']);
+                      }
+                    },
+                    onAddPhoto: _showAddPhotoOptions,
+                    isPremium: _isPremiumUser,
+                    maxPhotos: _isPremiumUser ? 6 : 1,
+                  );
+                },
+              ),
             ),
           ],
         ),

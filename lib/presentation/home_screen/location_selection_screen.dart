@@ -9,6 +9,8 @@ import 'package:banjarabio/core/data/location_data.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
+import 'package:banjarabio/widgets/state_orchestration/bespoke_state_container.dart';
+import 'package:banjarabio/widgets/state_orchestration/empty_state_config.dart';
 import 'package:banjarabio/theme/app_colors.dart';
 
 class LocationSelectionScreen extends StatefulWidget {
@@ -1449,32 +1451,29 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen>
     final totalCount = stateMatches.length + districtMatches.length + talukaMatches.length;
 
     if (totalCount == 0) {
-      return Padding(
-        padding: EdgeInsets.symmetric(vertical: 8.h),
-        child: Center(
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  color: Colors.amber.withValues(alpha: AppColors.opacity12),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Icons.search_off_rounded, size: 40, color: AppColors.categoryAstro),
-              ),
-              SizedBox(height: 2.h),
-              Text(
-                'No locations found for "$query"',
-                style: TextStyle(fontWeight: AppTypography.extraBold, fontSize: AppTypography.bodyMedium),
-              ),
-              SizedBox(height: 0.5.h),
-              Text(
-                'Try searching for another state, district or city.',
-                style: TextStyle(color: Colors.grey, fontSize: AppTypography.bodySmall),
-              ),
-            ],
+      return BespokeStateContainer(
+        isLoading: false,
+        isEmpty: true,
+        skeleton: const SizedBox.shrink(),
+        emptyConfig: EmptyStateConfig(
+          icon: Icons.search_off_rounded,
+          badgeText: 'LOCATION SEARCH',
+          accentColor: AppColors.categoryAstro,
+          iconGradient: const LinearGradient(
+            colors: [AppColors.categoryAstro, AppColors.categoryAstroDark],
           ),
+          title: 'No Locations Found for "$query" 📍',
+          description: 'Try searching for another state, district, or taluka name in India.',
+          ctaText: '✨ Clear Search Query',
+          onCtaTap: () {
+            HapticFeedback.selectionClick();
+            _searchController.clear();
+            setState(() {
+              _searchQuery = '';
+            });
+          },
         ),
+        contentBuilder: (_) => const SizedBox.shrink(),
       );
     }
 

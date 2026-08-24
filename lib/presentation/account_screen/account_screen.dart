@@ -18,6 +18,7 @@ import 'package:banjarabio/presentation/melava_screen/melava_screen.dart';
 import 'package:banjarabio/presentation/my_profile_screen/widgets/vouch_share_modal.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
+import 'package:banjarabio/widgets/logout_confirmation_dialog.dart';
 
 /// 👑 My Profile & Community Hub (Tab 4) - Ultra-Premium Edition
 /// Exact same placements with luxury micro-interactions, spring physics, and royal finishes.
@@ -1167,49 +1168,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen>
   }
 
   Future<void> _handleLogout(BuildContext context) async {
-    final l10n = AppLocalizations.of(context);
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-        title: Text(
-          'Logout Confirmation',
-          style: TextStyle(
-            fontSize: AppTypography.headingSmall,
-            fontWeight: AppTypography.bold,
-          ),
-        ),
-        content: Text(
-          'Are you sure you want to log out of your account?',
-          style: TextStyle(fontSize: AppTypography.bodyMedium),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: Text(
-              l10n?.cancel ?? 'Cancel',
-              style: TextStyle(fontSize: AppTypography.bodySmall),
-            ),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-            ),
-            onPressed: () => Navigator.pop(ctx, true),
-            child: Text(
-              l10n?.logout ?? 'Logout',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: AppTypography.bold,
-                fontSize: AppTypography.bodySmall,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+    final confirmed = await LogoutConfirmationDialog.show(context);
 
     if (confirmed == true && context.mounted) {
       try {

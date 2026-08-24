@@ -11,6 +11,7 @@ import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/core/repositories/influencer_repository.dart';
 import 'package:banjarabio/core/theme/app_gradients.dart';
 import 'package:banjarabio/widgets/glassmorphism_container.dart';
+import 'package:banjarabio/widgets/logout_confirmation_dialog.dart';
 
 // Tab imports
 import 'package:banjarabio/presentation/admin_screen/tabs/admin_overview_tab.dart';
@@ -109,6 +110,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   }
 
   Future<void> _handleLogout() async {
+    final confirmed = await LogoutConfirmationDialog.show(context);
+    if (confirmed != true || !mounted) return;
+
     try {
       await AppSupabaseClient.client.auth.signOut();
       if (mounted) {

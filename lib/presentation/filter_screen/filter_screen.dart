@@ -59,7 +59,7 @@ class _FilterScreenState extends State<FilterScreen>
   void _initAnimations() {
     _animController ??= AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 350),
+      duration: const Duration(milliseconds: 200),
     )..forward();
 
     _fadeAnimation ??= CurvedAnimation(
@@ -73,9 +73,12 @@ class _FilterScreenState extends State<FilterScreen>
     super.initState();
     _currentFilters = widget.initialFilters ?? const FilterCriteria();
 
+    // ⚡ Synchronously hydrate status from SessionManager cache for 0ms delay
+    final ownProfile = SessionManager.instance.currentProfile;
+    _isPremium = SessionManager.instance.isPremium;
+
     // 🌟 OPTION 1: Auto-default looking-for gender based on User Profile or Relative Intake
     if (_currentFilters.gender == null || _currentFilters.gender!.isEmpty) {
-      final ownProfile = SessionManager.instance.currentProfile;
       final relativeIntent = LocalCacheService().getRelativeIntent();
       final isRelativeMode = LocalCacheService().isRelativeBrowseMode();
 
@@ -190,17 +193,11 @@ class _FilterScreenState extends State<FilterScreen>
       profileRes.fold(
         onSuccess: (profile) {
           if (mounted && profile != null) {
-            setState(() {
-              _isPremium = profile.isPremium;
-              if (_currentFilters.gender == null || _currentFilters.gender!.isEmpty) {
-                final g = profile.gender.toLowerCase();
-                if (g == 'male') {
-                  _currentFilters = _currentFilters.copyWith(gender: 'female');
-                } else if (g == 'female') {
-                  _currentFilters = _currentFilters.copyWith(gender: 'male');
-                }
-              }
-            });
+            if (_isPremium != profile.isPremium) {
+              setState(() {
+                _isPremium = profile.isPremium;
+              });
+            }
           }
         },
         onFailure: (error) {
@@ -211,7 +208,7 @@ class _FilterScreenState extends State<FilterScreen>
       final planRes = await _subscriptionRepository.getPlanType();
       planRes.fold(
         onSuccess: (plan) {
-          if (mounted) {
+          if (mounted && _planType != plan) {
             setState(() {
               _planType = plan;
             });

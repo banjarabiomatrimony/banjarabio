@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
-import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/core/app_export.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:banjarabio/core/services/persistent_cache_manager.dart';
 import 'package:banjarabio/notification/core/notification_history.dart';
 import 'package:banjarabio/notification/core/notification_payload.dart';
 import 'package:banjarabio/notification/features/notification_navigator.dart';
-import 'package:banjarabio/theme/app_colors.dart';
+import 'package:banjarabio/widgets/skeleton_loaders.dart';
+import 'package:banjarabio/widgets/state_orchestration/bespoke_state_container.dart';
+import 'package:banjarabio/widgets/state_orchestration/empty_state_config.dart';
+import 'package:banjarabio/widgets/custom_app_bar.dart';
+import 'package:banjarabio/widgets/app_logo_image.dart';
+import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 
 /// Activity Hub Screen — an in-app Notification Center.
 ///
@@ -44,24 +50,124 @@ class _ActivityHubScreenState extends State<ActivityHubScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: AppColors.neutral100,
-      appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context)?.activity ?? 'Activity',
-          style: TextStyle(fontWeight: AppTypography.bold, fontSize: AppTypography.headingLarge),
+      backgroundColor: theme.scaffoldBackgroundColor,
+      appBar: CustomAppBar(
+        automaticallyImplyLeading: false,
+        leadingWidth: 175,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // ⬅️ Tactile Back Button
+              TactilePressable(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.maybePop(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: (theme.appBarTheme.foregroundColor ?? Colors.white)
+                        .withValues(alpha: isDark ? AppColors.opacity12 : AppColors.opacity15),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: theme.appBarTheme.foregroundColor ?? Colors.white,
+                    size: 15,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+
+              // 👑 App Logo
+              ClipOval(
+                child: Container(
+                  width: 24,
+                  height: 24,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: const AppLogoImage(
+                    width: 24,
+                    height: 24,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 5),
+
+              // 🏷️ Wordmark
+              Image.asset(
+                'assets/logo/brand_kit/wordmark.png',
+                height: 20,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) =>
+                    const SizedBox.shrink(),
+              ),
+            ],
+          ),
         ),
-        centerTitle: false,
+        titleWidget: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            AppLocalizations.of(context)?.activity ?? 'Notifications',
+            maxLines: 1,
+            style: (theme.appBarTheme.titleTextStyle ?? theme.textTheme.titleMedium)?.copyWith(
+              fontSize: AppTypography.headingSmall,
+              fontWeight: AppTypography.bold,
+              color: theme.appBarTheme.foregroundColor ?? Colors.white,
+              letterSpacing: 0.1,
+            ),
+          ),
+        ),
         actions: [
           if (_store.unreadCount > 0)
-            TextButton.icon(
-              onPressed: () {
-                setState(() => _store.markAllAsRead());
-              },
-              icon: const Icon(Icons.done_all_rounded, size: 18),
-              label: Text(AppLocalizations.of(context)?.readAll ?? 'Read All'),
-              style: TextButton.styleFrom(
-                foregroundColor: AppColors.softRed,
+            Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: Center(
+                child: TactilePressable(
+                  onTap: () {
+                    HapticFeedback.selectionClick();
+                    setState(() => _store.markAllAsRead());
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: (theme.appBarTheme.foregroundColor ?? Colors.white)
+                          .withValues(alpha: isDark ? AppColors.opacity12 : AppColors.opacity15),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: (theme.appBarTheme.foregroundColor ?? Colors.white)
+                            .withValues(alpha: isDark ? 0.20 : 0.30),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.done_all_rounded,
+                          size: 14,
+                          color: theme.appBarTheme.foregroundColor ?? Colors.white,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          AppLocalizations.of(context)?.readAll ?? 'Read All',
+                          style: TextStyle(
+                            fontSize: AppTypography.labelSmall,
+                            fontWeight: AppTypography.bold,
+                            color: theme.appBarTheme.foregroundColor ?? Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
         ],
@@ -73,37 +179,43 @@ class _ActivityHubScreenState extends State<ActivityHubScreen> {
 
           const SizedBox(height: 4),
 
-          // Notification list
+          // Notification list with Bespoke State Orchestration
           Expanded(
-            child: _filteredItems.isEmpty
-                ? _buildEmptyState()
-                : ListView.separated(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 8),
-                    itemCount: _filteredItems.length,
-                    separatorBuilder: (context2, index2) => const SizedBox(height: 8),
-                    itemBuilder: (context, index) {
-                      final item = _filteredItems[index];
-                      return _NotificationCard(
-                        item: item,
-                        onTap: () {
-                          setState(() => _store.markAsRead(item.id));
-                          if (item.route != null) {
-                            final uri = Uri.tryParse(item.route!);
-                            if (uri != null) {
-                              NotificationNavigator().handleNotificationTap(
-                                NotificationPayload(
-                                  id: item.id,
-                                  route: item.route,
-                                  data: {'profile_id': item.route},
-                                ),
-                              );
-                            }
+            child: BespokeStateContainer(
+              isLoading: false,
+              isEmpty: _filteredItems.isEmpty,
+              skeleton: const NotificationsScreenSkeleton(),
+              emptyConfig: _getEmptyConfig(context),
+              contentBuilder: (context) {
+                return ListView.separated(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 8),
+                  itemCount: _filteredItems.length,
+                  separatorBuilder: (context2, index2) => const SizedBox(height: 8),
+                  itemBuilder: (context, index) {
+                    final item = _filteredItems[index];
+                    return _NotificationCard(
+                      item: item,
+                      onTap: () {
+                        setState(() => _store.markAsRead(item.id));
+                        if (item.route != null) {
+                          final uri = Uri.tryParse(item.route!);
+                          if (uri != null) {
+                            NotificationNavigator().handleNotificationTap(
+                              NotificationPayload(
+                                id: item.id,
+                                route: item.route,
+                                data: {'profile_id': item.route},
+                              ),
+                            );
                           }
-                        },
-                      );
-                    },
-                  ),
+                        }
+                      },
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -123,10 +235,13 @@ class _ActivityHubScreenState extends State<ActivityHubScreen> {
           final isSelected = _selectedFilter == value;
           return FilterChip(
             selected: isSelected,
+            showCheckmark: false,
             label: Text(label),
-            onSelected: (_) => setState(() => _selectedFilter = value),
-            selectedColor: AppColors.softRed.withValues(alpha: AppColors.opacity15),
-            checkmarkColor: AppColors.softRed,
+            onSelected: (_) {
+              setState(() => _selectedFilter = value);
+            },
+            backgroundColor: Colors.white,
+            selectedColor: AppColors.softRed.withValues(alpha: AppColors.opacity12),
             labelStyle: TextStyle(
               fontSize: AppTypography.bodyMedium,
               fontWeight: isSelected ? AppTypography.semiBold : AppTypography.regular,
@@ -148,48 +263,61 @@ class _ActivityHubScreenState extends State<ActivityHubScreen> {
     );
   }
 
-  Widget _buildEmptyState() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(40),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                color: AppColors.softRed.withValues(alpha: AppColors.opacity8),
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                child: Text('🔔', style: TextStyle(fontSize: AppTypography.displayLarge)),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              _selectedFilter == 'all'
-                  ? 'No notifications yet'
-                  : 'No notifications in this category',
-              style: TextStyle(
-                fontSize: AppTypography.headingSmall,
-                fontWeight: AppTypography.semiBold,
-                color: AppColors.cardDark,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'When someone shows interest or sends a message,\nyou\'ll see it here.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: AppTypography.bodyLarge,
-                color: Colors.grey.shade500,
-                height: 1.4,
-              ),
-            ),
-          ],
-        ),
+  EmptyStateConfig _getEmptyConfig(BuildContext context) {
+    final (icon, badge, title, desc, color) = switch (_selectedFilter) {
+      'interestReceived' => (
+        Icons.favorite_rounded,
+        'INTERESTS',
+        'No Interests Received Yet ❤️',
+        'When members express interest in your profile, notifications will show here.',
+        AppColors.crimsonRose,
       ),
+      'matchFound' => (
+        Icons.celebration_rounded,
+        'MATCH ALERTS',
+        'No New Match Alerts Yet 💍',
+        'When compatible community matches are found, you\'ll receive instant alerts here.',
+        AppColors.categoryAstro,
+      ),
+      'chatMessage' => (
+        Icons.chat_rounded,
+        'MESSAGES',
+        'No New Messages 💬',
+        'Unread conversation alerts and replies from connections will arrive here.',
+        AppColors.crimsonBlush,
+      ),
+      'profileView' => (
+        Icons.visibility_rounded,
+        'PROFILE VIEWS',
+        'No Recent Profile Views 👀',
+        'Discover who visited your profile and viewed your matrimonial biodata.',
+        AppColors.categoryCareerDark,
+      ),
+      _ => (
+        Icons.notifications_active_rounded,
+        'ALL CAUGHT UP',
+        'No Notifications Yet 🔔',
+        'When someone shows interest, sends a message, or views your profile, you\'ll see it here.',
+        AppColors.crimsonRose,
+      ),
+    };
+
+    return EmptyStateConfig(
+      icon: icon,
+      badgeText: badge,
+      title: title,
+      description: desc,
+      accentColor: color,
+      iconGradient: LinearGradient(
+        colors: [color, color.withValues(alpha: 0.8)],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+      ctaText: '✨ Explore Profiles on Home',
+      onCtaTap: () {
+        HapticFeedback.selectionClick();
+        Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (route) => false);
+      },
     );
   }
 }

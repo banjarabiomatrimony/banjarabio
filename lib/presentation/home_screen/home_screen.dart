@@ -838,10 +838,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   }
 
   void _openFilterSheet() async {
+    HapticFeedback.selectionClick();
     final result = await Navigator.push<FilterCriteria>(
       context,
-      MaterialPageRoute(
-        builder: (context) => FilterScreen(initialFilters: _currentFilters),
+      PageRouteBuilder<FilterCriteria>(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            FilterScreen(initialFilters: _currentFilters),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0.0, 0.06);
+          const end = Offset.zero;
+          const curve = Curves.easeOutCubic;
+          final tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 220),
       ),
     );
 

@@ -11,9 +11,10 @@ import 'package:banjarabio/features/referral/providers/referral_invite_notifier.
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/presentation/referral_screen/widgets/referral_tier_card.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
-import 'package:banjarabio/widgets/tactile/tactile_back_button.dart';
+import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 import 'package:banjarabio/widgets/tactile/tactile_category_card.dart';
+import 'package:banjarabio/widgets/shimmer_widget.dart';
 import 'package:banjarabio/theme/app_category_theme.dart';
 import 'package:banjarabio/theme/app_colors.dart';
 
@@ -60,16 +61,106 @@ class _ReferralInviteScreenState extends ConsumerState<ReferralInviteScreen>
   Widget build(BuildContext context) {
     final asyncState = ref.watch(referralInviteProvider);
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: CustomAppBar(
-        leading: const TactileBackButton(),
-        title: l10n?.inviteARelative ?? 'Refer & Earn',
+        automaticallyImplyLeading: false,
+        leadingWidth: 175,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // ⬅️ Tactile Back Button
+              TactilePressable(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.maybePop(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: (theme.appBarTheme.foregroundColor ?? Colors.white)
+                        .withValues(alpha: isDark ? AppColors.opacity12 : AppColors.opacity15),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: theme.appBarTheme.foregroundColor ?? Colors.white,
+                    size: 15,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+
+              // 👑 App Logo
+              ClipOval(
+                child: Container(
+                  width: 24,
+                  height: 24,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: const AppLogoImage(
+                    width: 24,
+                    height: 24,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 5),
+
+              // 🏷️ Wordmark
+              Image.asset(
+                'assets/logo/brand_kit/wordmark.png',
+                height: 20,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) =>
+                    const SizedBox.shrink(),
+              ),
+            ],
+          ),
+        ),
+        titleWidget: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            l10n?.inviteARelative ?? 'Refer & Earn',
+            maxLines: 1,
+            style: (theme.appBarTheme.titleTextStyle ?? theme.textTheme.titleMedium)?.copyWith(
+              fontSize: AppTypography.headingSmall,
+              fontWeight: AppTypography.bold,
+              color: theme.appBarTheme.foregroundColor ?? Colors.white,
+              letterSpacing: 0.1,
+            ),
+          ),
+        ),
       ),
       body: asyncState.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+          child: Column(
+            children: [
+              ShimmerWidget.rectangular(
+                height: 22.h,
+                shapeBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              ),
+              SizedBox(height: 2.h),
+              ShimmerWidget.rectangular(
+                height: 12.h,
+                shapeBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              ),
+              SizedBox(height: 2.h),
+              ShimmerWidget.rectangular(
+                height: 26.h,
+                shapeBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              ),
+            ],
+          ),
+        ),
         error: (error, _) => _buildError(context, theme, error),
         data: (data) => _buildContent(context, theme, data, l10n),
       ),
