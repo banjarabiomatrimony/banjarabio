@@ -14,6 +14,7 @@ import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/features/trust_score/providers/trust_score_providers.dart';
 import 'package:banjarabio/features/trust_score/repository/trust_score_repository.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 import 'package:banjarabio/widgets/branded_refresh_indicator.dart';
@@ -93,13 +94,11 @@ class _TrustScoreScreenState extends ConsumerState<TrustScoreScreen> {
       }
       if (mounted) {
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)?.failedToLoadTrustScoreStats ??
-                  'Failed to load trust score stats',
-            ),
-          ),
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'trust_score',
+          fallbackMessage: AppLocalizations.of(context)?.failedToLoadTrustScoreStats,
         );
       }
     }

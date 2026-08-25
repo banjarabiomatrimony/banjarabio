@@ -194,7 +194,26 @@ class AppLocalizationsMr extends AppLocalizations {
       'सर्व विभागांचे पुनरावलोकन करा आणि तुमचे प्रोफाइल पूर्ण करण्यासाठी \"बायोडेटा जतन करा\" वर क्लिक करा. तुमचा बायोडेटा तुमच्या गोपनीयता सेटिंग्जवर आधारित समुदायातील इतर सदस्यांना दिसेल.';
 
   @override
+  String get alreadyExpressedInterest =>
+      'तुम्ही या प्रोफाइलमध्ये आधीच स्वारस्य व्यक्त केले आहे.';
+
+  @override
   String get alreadyHaveProfileLogin => 'प्रोफाईल आहे? लॉगिन करा';
+
+  @override
+  String get alreadyInShortlist =>
+      'हे प्रोफाइल आधीच तुमच्या शॉर्टलिस्टमध्ये आहे.';
+
+  @override
+  String get duplicateRecordError => 'हा रेकॉर्ड आधीच अस्तित्वात आहे.';
+
+  @override
+  String get networkErrorMessage =>
+      'कृपया तुमचे इंटरनेट कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.';
+
+  @override
+  String get permissionDeniedError =>
+      'तुम्हाला ही क्रिया करण्याची परवानगी नाही.';
 
   @override
   String get alternateRelativeContactNumberOptional =>
@@ -1351,7 +1370,7 @@ class AppLocalizationsMr extends AppLocalizations {
   String get employmentSector => 'Employment Sector';
 
   @override
-  String get emptyStr => '₹';
+  String get emptyStr => '';
 
   @override
   String get enableNotifications => 'Enable Notifications';
@@ -1374,10 +1393,22 @@ class AppLocalizationsMr extends AppLocalizations {
   String get enterEducationDetails => 'तुमचे शिक्षण तपशील प्रविष्ट करा';
 
   @override
+  String get enterFatherName => 'वडिलांचे नाव प्रविष्ट करा';
+
+  @override
   String get enterFullName => 'तुमचे पूर्ण नाव प्रविष्ट करा';
 
   @override
   String get enterMobileNumber => 'मोबाईल नंबर टाका';
+
+  @override
+  String get enterMotherName => 'आईचे नाव प्रविष्ट करा';
+
+  @override
+  String get fatherOccupationHint => 'उदा. सेवानिवृत्त अधिकारी / शेतकरी';
+
+  @override
+  String get motherOccupationHint => 'उदा. गृहिणी';
 
   @override
   String get enterProfessionDetails => 'तुमचे व्यवसाय तपशील प्रविष्ट करा';

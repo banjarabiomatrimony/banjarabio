@@ -10,6 +10,7 @@ import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 import 'package:banjarabio/core/repositories/auth_repository.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 /// ⚠️ Permanent Account Deletion Screen — Ultra-Premium Guard Edition
 /// Features staggered entrance physics, warning consequence cards, explicit consent checkbox, and irreversible action safeguards.
@@ -495,14 +496,10 @@ class _AccountDeletionScreenState extends State<AccountDeletionScreen>
       await result.fold(
         onSuccess: (_) {
           if (!mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                AppLocalizations.of(context)?.accountAndAllDataDeletedSuccessfully ??
-                    'Account and all data deleted successfully.',
-              ),
-              backgroundColor: Colors.green,
-            ),
+          AppFeedback.showSuccess(
+            context,
+            AppLocalizations.of(context)?.accountAndAllDataDeletedSuccessfully ??
+                'Account and all data deleted successfully.',
           );
           // Navigate to splash/login and clear stack
           Navigator.pushNamedAndRemoveUntil(
@@ -514,28 +511,22 @@ class _AccountDeletionScreenState extends State<AccountDeletionScreen>
         onFailure: (error) {
           if (!mounted) return;
           setState(() => _isLoading = false);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                AppLocalizations.of(context)?.failedToDeleteAccount(error) ??
-                    'Failed to delete account: $error',
-              ),
-              backgroundColor: Theme.of(context).colorScheme.error,
-            ),
+          AppFeedback.showError(
+            context,
+            error,
+            contextTag: 'auth',
+            fallbackMessage: AppLocalizations.of(context)?.failedToDeleteAccount(''),
           );
         },
       );
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)?.failedToDeleteAccount(e.toString()) ??
-                  'Failed to delete account: ${e.toString()}',
-            ),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'auth',
+          fallbackMessage: AppLocalizations.of(context)?.failedToDeleteAccount(''),
         );
       }
     }

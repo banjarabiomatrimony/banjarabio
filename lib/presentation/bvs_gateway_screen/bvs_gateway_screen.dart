@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
@@ -191,28 +191,28 @@ class _BvsGatewayScreenState extends State<BvsGatewayScreen>
 
       if (mounted) {
         if (response.isSuccess) {
-          Fluttertoast.showToast(
-            msg: AppLocalizations.of(context)?.paymentSuccessfulWelcome(
+          AppFeedback.showSuccess(
+            context,
+            AppLocalizations.of(context)?.paymentSuccessfulWelcome(
                     SubscriptionConfig.getDisplayName(
                         planType, AppLocalizations.of(context))) ??
                 'Payment successful! BVS Subsidized Plan Activated',
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
           );
         } else {
-          Fluttertoast.showToast(
-            msg: response.errorMessage,
-            backgroundColor: Theme.of(context).colorScheme.error,
-            textColor: Colors.white,
+          AppFeedback.showError(
+            context,
+            response.errorMessage,
+            contextTag: 'subscription',
           );
         }
       }
     } catch (e) {
       if (mounted) {
-        Fluttertoast.showToast(
-          msg: 'Payment error: $e',
-          backgroundColor: Theme.of(context).colorScheme.error,
-          textColor: Colors.white,
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'subscription',
+          fallbackMessage: 'Payment error',
         );
       }
     } finally {
@@ -500,10 +500,9 @@ Banti Shankar Rathod (7020797849)''';
     await Clipboard.setData(ClipboardData(text: message));
     if (mounted) {
       setState(() => _isCopied = true);
-      Fluttertoast.showToast(
-        msg: l10n?.bvsCopyMessageToast ?? '🚩 BVS invite message copied!',
-        backgroundColor: AppColors.crimsonDeep,
-        textColor: Colors.white,
+      AppFeedback.showSuccess(
+        context,
+        l10n?.bvsCopyMessageToast ?? '🚩 BVS invite message copied!',
       );
       Future.delayed(const Duration(seconds: 3), () {
         if (mounted) setState(() => _isCopied = false);

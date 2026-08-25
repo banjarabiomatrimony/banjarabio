@@ -28,3 +28,13 @@ This rule establishes mandatory standards for Flutter & Mobile App development a
 6. **Onboarding & Draft Resumption**:
    - Active in-app sign-in routes directly forward with pre-filled metadata.
    - Cold starts with incomplete profiles display a one-tap resume banner.
+
+7. **Mandatory Centralized Error Handling & Feedback Architecture (`ErrorMessageMapper` & `AppFeedback`)**:
+   - **Never use raw error messages or ad-hoc SnackBars/Toasts**: Never display raw error strings, database schema exceptions (`PostgrestException`), or unhandled exceptions directly to users.
+   - **Error Translation**: ALWAYS pass all backend exceptions, Supabase/Postgrest errors, Auth exceptions, and validation failures through `ErrorMessageMapper.getFriendlyMessage(context, error, ...)` / `ErrorMessageMapper.toUserFriendlyMessage(...)`.
+   - **UI Feedback Dispatch**: ALWAYS use `AppFeedback` for UI notifications:
+     - `AppFeedback.showError(context, error, contextTag: ..., fallbackMessage: ...)` (handles haptics + localized error mapping automatically)
+     - `AppFeedback.showSuccess(context, message)`
+     - `AppFeedback.showWarning(context, message)`
+     - `AppFeedback.showInfo(context, message)`
+   - **Inline Form Errors**: When setting inline form field error states (e.g., `errorText` or form state validation), resolve user-facing copy via `ErrorMessageMapper.getFriendlyMessage(context, key, ...)` to ensure localized, clean, schema-safe copy.

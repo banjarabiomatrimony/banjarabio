@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 /// Options menu (Block / Report) extracted from ProfileDetailScreen.
 /// Handles _showOptionsMenu, _confirmBlock, _executeBlock,
@@ -21,34 +21,31 @@ class ProfileOptionsMenu {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) {
-        final theme = Theme.of(context);
-        return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: Icon(Icons.block, color: theme.colorScheme.error),
-                title: Text(AppLocalizations.of(context)?.blockUser ?? 'Block User'),
-                subtitle: Text(AppLocalizations.of(context)?.youWillNoLongerSeeThisProfile ?? 'You will no longer see this profile'),
-                onTap: () {
-                  Navigator.pop(context);
-                  _confirmBlock(context: context, profileData: profileData);
-                },
+      builder: (context) => SafeArea(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.block, color: Colors.red),
+              title: Text(
+                AppLocalizations.of(context)?.blockUser ?? 'Block User',
+                style: const TextStyle(color: Colors.red),
               ),
-              ListTile(
-                leading: const Icon(Icons.report, color: Colors.orange),
-                title: Text(AppLocalizations.of(context)?.reportUser ?? 'Report User'),
-                subtitle: Text(AppLocalizations.of(context)?.inappropriateContentOrFakeProfile ?? 'Inappropriate content or fake profile'),
-                onTap: () {
-                  Navigator.pop(context);
-                  _showReportDialog(context: context, profileData: profileData);
-                },
-              ),
-            ],
-          ),
-        );
-      },
+              onTap: () {
+                Navigator.pop(context);
+                _confirmBlock(context: context, profileData: profileData);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.report_problem),
+              title: Text(AppLocalizations.of(context)?.reportUser ?? 'Report User'),
+              onTap: () {
+                Navigator.pop(context);
+                _showReportDialog(context: context, profileData: profileData);
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -58,30 +55,29 @@ class ProfileOptionsMenu {
   }) {
     showDialog(
       context: context,
-      builder: (context) {
-        final theme = Theme.of(context);
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)?.blockUser ?? 'Block User?'),
-          content: Text(
-            AppLocalizations.of(context)?.areYouSureYouWantToBlockThisUserYouWillN ??
-                'Are you sure you want to block this user? You will not be able to see their profile again.',
+      builder: (context) => AlertDialog(
+        title: Text(AppLocalizations.of(context)?.blockUser ?? 'Block User'),
+        content: Text(
+          AppLocalizations.of(context)?.areYouSureYouWantToBlockThisUserYouWillN ??
+              'Are you sure you want to block this user? You will not be able to see their profile again.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _executeBlock(context: context, profileData: profileData);
+            },
+            child: Text(
+              AppLocalizations.of(context)?.blockUser ?? 'Block',
+              style: const TextStyle(color: Colors.red),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                _executeBlock(context: context, profileData: profileData);
-              },
-              style: ElevatedButton.styleFrom(backgroundColor: theme.colorScheme.error),
-              child: Text(AppLocalizations.of(context)?.block ?? 'Block'),
-            ),
-          ],
-        );
-      },
+          ),
+        ],
+      ),
     );
   }
 
@@ -98,27 +94,30 @@ class ProfileOptionsMenu {
         onSuccess: (_) async {
           if (context.mounted) {
             Navigator.pop(context); // Close profile detail
-            Fluttertoast.showToast(
-              msg: AppLocalizations.of(context)?.userBlockedSuccessfully ?? 'User blocked successfully',
-              backgroundColor: Colors.green,
-              textColor: Colors.white,
+            AppFeedback.showSuccess(
+              context,
+              AppLocalizations.of(context)?.userBlockedSuccessfully ?? 'User blocked successfully',
             );
           }
         },
         onFailure: (error) async {
           if (context.mounted) {
-            Fluttertoast.showToast(
-              msg: AppLocalizations.of(context)?.failedToBlockUser(error.toString()) ?? 'Failed to block user: $error',
-              backgroundColor: Theme.of(context).colorScheme.error,
-              textColor: Colors.white,
+            AppFeedback.showError(
+              context,
+              error,
+              contextTag: 'block',
+              fallbackMessage: AppLocalizations.of(context)?.failedToBlockUser(''),
             );
           }
         },
       );
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)?.errorOccurred(e.toString()) ?? 'Error: $e')),
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'block',
+          fallbackMessage: AppLocalizations.of(context)?.failedToBlockUser(''),
         );
       }
     }
@@ -175,19 +174,19 @@ class ProfileOptionsMenu {
       await res.fold(
         onSuccess: (_) async {
           if (context.mounted) {
-            Fluttertoast.showToast(
-              msg: AppLocalizations.of(context)?.reportSubmittedReview ?? 'Report submitted. Our team will review it within 24 hours.',
-              backgroundColor: Colors.green,
-              textColor: Colors.white,
+            AppFeedback.showSuccess(
+              context,
+              AppLocalizations.of(context)?.reportSubmittedReview ?? 'Report submitted. Our team will review it within 24 hours.',
             );
           }
         },
         onFailure: (error) async {
           if (context.mounted) {
-            Fluttertoast.showToast(
-              msg: AppLocalizations.of(context)?.failedToSubmitReport(error.toString()) ?? 'Failed to submit report: $error',
-              backgroundColor: Theme.of(context).colorScheme.error,
-              textColor: Colors.white,
+            AppFeedback.showError(
+              context,
+              error,
+              contextTag: 'report',
+              fallbackMessage: AppLocalizations.of(context)?.failedToSubmitReport(''),
             );
           }
         },
@@ -195,8 +194,11 @@ class ProfileOptionsMenu {
     } catch (e) {
       AppLogger.error('ProfileOptionsMenu', 'Error reporting user: $e');
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)?.errorOccurred(e.toString()) ?? 'Error: $e')),
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'report',
+          fallbackMessage: AppLocalizations.of(context)?.failedToSubmitReport(''),
         );
       }
     }

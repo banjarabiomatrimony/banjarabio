@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/core/repositories/share_repository.dart';
 import 'package:banjarabio/core/repositories/usage_repository.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 import 'package:banjarabio/widgets/upgrade_dialog.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/guest_restricted_dialog.dart';
+import 'package:banjarabio/widgets/smart_auth_gate.dart';
 
 /// Interest confirmation dialog + execution logic extracted from
 /// HomeScreen._handleInterest / _executeInterest.
@@ -16,15 +17,16 @@ class HomeInterestHandler {
   HomeInterestHandler._();
 
   /// Shows the interest confirmation dialog.
-  static void show({
+  static Future<void> show({
     required BuildContext context,
     required ProfileModel profile,
     required ShareRepository shareRepository,
     required UsageRepository usageRepository,
-  }) {
+  }) async {
     if (LocalCacheService().isGuestMode()) {
-      GuestRestrictedDialog.show(context);
-      return;
+      final result = await GuestRestrictedDialog.show(context, intent: SmartAuthIntent.expressInterest, profileName: profile.fullName);
+      if (result != SmartAuthResult.success) return;
+      if (!context.mounted) return;
     }
 
     HapticFeedback.mediumImpact();
@@ -97,19 +99,18 @@ class HomeInterestHandler {
           shareResponse.fold(
             onSuccess: (_) {
               if (context.mounted) {
-                Fluttertoast.showToast(
-                  msg: AppLocalizations.of(context)?.interestShared(profile.fullName) ?? 'Interest shared with ${profile.fullName}!',
-                  backgroundColor: Colors.green,
-                  textColor: Colors.white,
+                AppFeedback.showSuccess(
+                  context,
+                  AppLocalizations.of(context)?.interestShared(profile.fullName) ?? 'Interest shared with ${profile.fullName}!',
                 );
               }
             },
             onFailure: (error) {
               if (context.mounted) {
-                Fluttertoast.showToast(
-                  msg: AppLocalizations.of(context)?.shareFailed(error.toString()) ?? 'Share failed: $error',
-                  backgroundColor: Theme.of(context).colorScheme.error,
-                  textColor: Colors.white,
+                AppFeedback.showError(
+                  context,
+                  error,
+                  contextTag: 'interest',
                 );
               }
             },
@@ -117,17 +118,21 @@ class HomeInterestHandler {
         },
         onFailure: (error) {
           if (context.mounted) {
-            Fluttertoast.showToast(
-              msg: AppLocalizations.of(context)?.errorCheckingShareLimits(error.toString()) ?? 'Error checking share limits: $error',
-              backgroundColor: Theme.of(context).colorScheme.error,
-              textColor: Colors.white,
+            AppFeedback.showError(
+              context,
+              error,
+              contextTag: 'interest',
             );
           }
         },
       );
     } catch (e) {
       if (context.mounted) {
-        Fluttertoast.showToast(msg: AppLocalizations.of(context)?.errorCheckingShareLimits(e.toString()) ?? 'Error: $e');
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'interest',
+        );
       }
     }
   }

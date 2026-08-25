@@ -9,6 +9,8 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/models/referral_stats_model.dart';
 import 'package:banjarabio/features/referral/providers/referral_invite_notifier.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/core/utils/error_message_mapper.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 import 'package:banjarabio/presentation/referral_screen/widgets/referral_tier_card.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
@@ -188,7 +190,11 @@ class _ReferralInviteScreenState extends ConsumerState<ReferralInviteScreen>
             ),
             SizedBox(height: 1.h),
             Text(
-              error.toString(),
+              ErrorMessageMapper.toUserFriendlyMessage(
+                error,
+                context: context,
+                contextTag: 'referral',
+              ),
               style: theme.textTheme.bodySmall,
               textAlign: TextAlign.center,
               maxLines: 3,
@@ -613,16 +619,10 @@ class _ReferralInviteScreenState extends ConsumerState<ReferralInviteScreen>
     }
     Clipboard.setData(ClipboardData(text: text));
     HapticFeedback.lightImpact();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          AppLocalizations.of(context)?.referralLinkCopiedToClipboard ??
-              '🎉 Copied to clipboard!',
-        ),
-        backgroundColor: AppColors.categoryLocation,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      ),
+    AppFeedback.showSuccess(
+      context,
+      AppLocalizations.of(context)?.referralLinkCopiedToClipboard ??
+          '🎉 Copied to clipboard!',
     );
   }
 

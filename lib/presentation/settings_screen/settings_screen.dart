@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 import 'package:banjarabio/core/repositories/auth_repository.dart';
 import 'package:banjarabio/core/providers/profile_providers.dart';
@@ -392,9 +392,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
         }
       } catch (e) {
         if (context.mounted) {
-          Fluttertoast.showToast(
-            msg: 'Failed to logout. Please try again.',
-            toastLength: Toast.LENGTH_LONG,
+          AppFeedback.showError(
+            context,
+            e,
+            contextTag: 'auth',
+            fallbackMessage: 'Failed to logout. Please try again.',
           );
         }
       }

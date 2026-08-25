@@ -210,7 +210,7 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen>
     await LocalCacheService().clearRelativeBrowseSession();
     if (!mounted) return;
     Navigator.of(context, rootNavigator: true)
-        .pushReplacementNamed(AppRoutes.onboardingSelection);
+        .pushReplacementNamed(AppRoutes.userTypeSelection);
   }
 
   Future<void> _onProceed() async {
@@ -229,7 +229,12 @@ class _RelativeIntakeScreenState extends State<RelativeIntakeScreen>
     if (widget.embedded && widget.onProceed != null) {
       widget.onProceed!();
     } else {
-      Navigator.of(context).pushReplacementNamed(AppRoutes.authentication);
+      // 🚀 SMART RESOLVER: Skip auth wall — route directly to HomeScreen as guest
+      await LocalCacheService().setGuestMode(true);
+      await LocalCacheService().setRelativeBrowseMode(true);
+      if (!mounted) return;
+      Navigator.of(context, rootNavigator: true)
+          .pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
     }
   }
 

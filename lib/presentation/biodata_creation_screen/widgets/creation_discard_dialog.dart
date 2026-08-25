@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/app_export.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 /// Discard changes confirmation dialog for the biodata creation flow.
 /// Extracted from BiodataCreationScreen PopScope logic.
@@ -45,14 +44,9 @@ class CreationDiscardDialog {
       if (context.mounted) {
         final l10n = AppLocalizations.of(context);
         final biodataDraftSavedMsg = l10n?.discardChangesBody ?? 'Your progress is saved as a draft.';
-        Fluttertoast.cancel();
-        Fluttertoast.showToast(
-          msg: '💾 $biodataDraftSavedMsg',
-          toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 2,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: AppColors.categoryLocation,
-          textColor: Colors.white,
+        AppFeedback.showInfo(
+          context,
+          '💾 $biodataDraftSavedMsg',
         );
         if (isAdminEdit) {
           Navigator.of(context).pop();

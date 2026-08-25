@@ -14,6 +14,7 @@ import 'package:banjarabio/core/models/subscription_model.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/theme/app_colors.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 class CouponManagementTab extends StatefulWidget {
   final ThemeData theme;
@@ -49,8 +50,11 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
         onFailure: (error) {
           setState(() => _isLoading = false);
           AppLogger.error('CouponManagementTab', 'Error loading coupons: $error');
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(AppLocalizations.of(context)?.errorLoadingAdminCoupons ?? 'Failed to load coupon offers.'))
+          AppFeedback.showError(
+            context,
+            error,
+            contextTag: 'admin',
+            fallbackMessage: AppLocalizations.of(context)?.errorLoadingAdminCoupons ?? 'Failed to load coupon offers.',
           );
         },
       );
@@ -409,11 +413,11 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
                                       _loadCoupons();
                                     },
                                     onFailure: (err) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                          content: Text(AppLocalizations.of(context)?.errorAdminActionFailed ?? 'Failed to add coupon'),
-                                          backgroundColor: Colors.red,
-                                        ),
+                                      AppFeedback.showError(
+                                        context,
+                                        err,
+                                        contextTag: 'admin',
+                                        fallbackMessage: AppLocalizations.of(context)?.errorAdminActionFailed ?? 'Failed to add coupon',
                                       );
                                     },
                                   );
@@ -582,8 +586,11 @@ class _CouponManagementTabState extends State<CouponManagementTab> {
       onSuccess: (_) => _loadCoupons(),
       onFailure: (err) {
         AppLogger.error('CouponManagementTab', 'Toggle coupon failed: $err');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)?.errorAdminActionFailed ?? 'The requested action could not be completed.')),
+        AppFeedback.showError(
+          context,
+          err,
+          contextTag: 'admin',
+          fallbackMessage: AppLocalizations.of(context)?.errorAdminActionFailed ?? 'The requested action could not be completed.',
         );
       },
     );

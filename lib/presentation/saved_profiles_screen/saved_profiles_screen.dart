@@ -8,6 +8,8 @@ import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/core/providers/home_tab_provider.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
+import 'package:banjarabio/core/utils/error_message_mapper.dart';
 import 'package:banjarabio/features/bookmarks/providers/bookmark_notifier.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
@@ -113,7 +115,11 @@ class _SavedProfilesScreenState extends ConsumerState<SavedProfilesScreen> {
         onFailure: (error) {
           if (mounted) {
             setState(() {
-              _errorMessage = AppLocalizations.of(context)?.failedToLoadBookmarks(error.toString()) ?? 'Failed to load bookmarks: $error';
+              _errorMessage = ErrorMessageMapper.toUserFriendlyMessage(
+                error,
+                context: context,
+                contextTag: 'shortlist',
+              );
               _isLoading = false;
             });
           }
@@ -122,7 +128,11 @@ class _SavedProfilesScreenState extends ConsumerState<SavedProfilesScreen> {
     } catch (e) {
       if (mounted) {
         setState(() {
-          _errorMessage = AppLocalizations.of(context)?.anErrorOccurred(e.toString()) ?? 'An error occurred: $e';
+          _errorMessage = ErrorMessageMapper.toUserFriendlyMessage(
+            e,
+            context: context,
+            contextTag: 'shortlist',
+          );
           _isLoading = false;
         });
       }
@@ -154,10 +164,11 @@ class _SavedProfilesScreenState extends ConsumerState<SavedProfilesScreen> {
         AppLogger.error('SavedProfilesScreen', '[BOOKMARK] SavedProfilesScreen > toggle($profileId) > FAILED | $e');
       }
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)?.failedToUpdateBookmark(e.toString()) ?? 'Failed to update bookmark: ${e.toString()}'),
-          ),
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'shortlist',
+          fallbackMessage: AppLocalizations.of(context)?.failedToUpdateBookmark(''),
         );
       }
     }

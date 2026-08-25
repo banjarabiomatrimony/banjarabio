@@ -6,6 +6,7 @@ import 'package:banjarabio/core/data/location_data.dart';
 import 'package:banjarabio/core/repositories/volunteer_repository.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/theme/app_colors.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 /// Ultra-fast paper biodata digitizer dialog for trust volunteers at Melava events.
 class MelavaBiodataDigitizerDialog extends StatefulWidget {
@@ -128,11 +129,11 @@ class _MelavaBiodataDigitizerDialogState
       onFailure: (error) {
         setState(() => _isSubmitting = false);
         AppLogger.error('MelavaDigitizer', 'Registration failed: $error');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $error'),
-            backgroundColor: Colors.redAccent,
-          ),
+        AppFeedback.showError(
+          context,
+          error,
+          contextTag: 'biodata',
+          fallbackMessage: 'Registration failed. Please try again.',
         );
       },
     );

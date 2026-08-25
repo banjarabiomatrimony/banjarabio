@@ -15,7 +15,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 import 'package:banjarabio/core/models/profile_share_model.dart';
 import 'package:banjarabio/core/repositories/share_repository.dart';
 
@@ -1142,16 +1142,25 @@ class _ConversationListScreenState extends ConsumerState<ConversationListScreen>
           setState(() {
             if (_pinnedIds.contains(conversation.id)) {
               _pinnedIds.remove(conversation.id);
-              Fluttertoast.showToast(msg: AppLocalizations.of(context)?.conversationUnpinned ?? 'Conversation unpinned');
+              AppFeedback.showInfo(
+                context,
+                AppLocalizations.of(context)?.conversationUnpinned ?? 'Conversation unpinned',
+              );
             } else {
               _pinnedIds.add(conversation.id);
-              Fluttertoast.showToast(msg: AppLocalizations.of(context)?.conversationPinnedToTop ?? 'Conversation pinned to top 📌');
+              AppFeedback.showInfo(
+                context,
+                AppLocalizations.of(context)?.conversationPinnedToTop ?? 'Conversation pinned to top 📌',
+              );
             }
           });
           return false;
         } else {
           HapticFeedback.lightImpact();
-          Fluttertoast.showToast(msg: AppLocalizations.of(context)?.chatConversationArchived ?? 'Chat conversation archived');
+          AppFeedback.showInfo(
+            context,
+            AppLocalizations.of(context)?.chatConversationArchived ?? 'Chat conversation archived',
+          );
           return false;
         }
       },

@@ -20,6 +20,8 @@ class BiodataTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final Function(String)? onChanged;
+  final String? errorText;
+  final Widget? suffix;
 
   const BiodataTextField({
     super.key,
@@ -33,6 +35,8 @@ class BiodataTextField extends StatelessWidget {
     this.keyboardType,
     this.inputFormatters,
     this.onChanged,
+    this.errorText,
+    this.suffix,
   }) : assert(icon != null || iconData != null, 'Must provide either icon or iconData');
 
   @override
@@ -83,6 +87,9 @@ class BiodataTextField extends StatelessWidget {
                     ),
             ),
             prefixIconConstraints: const BoxConstraints(minWidth: 40),
+            suffixIcon: suffix,
+            errorText: errorText,
+            errorMaxLines: 2,
             filled: true,
             fillColor: theme.colorScheme.surface,
             contentPadding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 4.w),

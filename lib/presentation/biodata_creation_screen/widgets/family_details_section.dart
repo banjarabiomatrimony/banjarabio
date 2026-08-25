@@ -328,7 +328,7 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
           _buildTextField(
             controller: _fatherNameController,
             label: AppLocalizations.of(context)?.fatherName ?? "Father's Name",
-            hint: AppLocalizations.of(context)?.fatherName ?? "Enter father's name",
+            hint: AppLocalizations.of(context)?.enterFatherName ?? "Enter father's name",
             iconData: Icons.person_rounded,
             required: true,
             onChanged: (val) => widget.onUpdate('fatherName', val),
@@ -338,7 +338,7 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
           _buildTextField(
             controller: _fatherOccupationController,
             label: AppLocalizations.of(context)?.fatherOccupation ?? "Father's Occupation",
-            hint: AppLocalizations.of(context)?.profession ?? 'e.g. Retired Government Officer',
+            hint: AppLocalizations.of(context)?.fatherOccupationHint ?? 'e.g. Retired Government Officer',
             iconData: Icons.work_rounded,
             onChanged: (val) => widget.onUpdate('fatherOccupation', val),
             theme: theme,
@@ -349,7 +349,7 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
           _buildTextField(
             controller: _motherNameController,
             label: AppLocalizations.of(context)?.motherName ?? "Mother's Name",
-            hint: AppLocalizations.of(context)?.motherName ?? "Enter mother's name",
+            hint: AppLocalizations.of(context)?.enterMotherName ?? "Enter mother's name",
             iconData: Icons.face_rounded,
             required: true,
             onChanged: (val) => widget.onUpdate('motherName', val),
@@ -359,7 +359,7 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
           _buildTextField(
             controller: _motherOccupationController,
             label: AppLocalizations.of(context)?.motherOccupation ?? "Mother's Occupation",
-            hint: AppLocalizations.of(context)?.homemaker ?? 'e.g. Homemaker',
+            hint: AppLocalizations.of(context)?.motherOccupationHint ?? 'e.g. Homemaker',
             iconData: Icons.home_work_rounded,
             onChanged: (val) => widget.onUpdate('motherOccupation', val),
             theme: theme,
@@ -579,7 +579,7 @@ class _FamilyDetailsSectionState extends State<FamilyDetailsSection> {
             if (required && !widget.isAdminEdit) ...[
               SizedBox(width: 1.w),
               Text(
-                AppLocalizations.of(context)?.emptyStr ?? '*',
+                '*',
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: theme.colorScheme.error,
                 ),

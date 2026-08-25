@@ -20,6 +20,7 @@ import 'package:banjarabio/core/services/guest_guided_tour_service.dart';
 import 'package:banjarabio/core/utils/tour_keys.dart';
 import 'package:banjarabio/notification/features/notification_bridge.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/guest_restricted_dialog.dart';
+import 'package:banjarabio/widgets/smart_auth_gate.dart';
 import 'package:banjarabio/notification/features/nudge_engine.dart';
 import 'package:banjarabio/core/session_manager.dart';
 import 'package:banjarabio/core/services/biodata_preload_service.dart';
@@ -450,7 +451,7 @@ class MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
             physics: const NeverScrollableScrollPhysics(),
             child: CustomBottomBar(
               currentIndex: ref.watch(homeTabProvider),
-              onTap: (index) {
+              onTap: (index) async {
                 final cache = LocalCacheService();
                 if (index != 0 && (cache.isGuestMode() || cache.isRelativeBrowseMode())) {
                   // Relative browse & guest: only Home tab (0) allowed
@@ -458,8 +459,8 @@ class MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
                   if (cache.isRelativeBrowseMode() && index == 3) {
                     // Melavas allowed for relative browse
                   } else {
-                    GuestRestrictedDialog.show(context);
-                    return;
+                    final result = await GuestRestrictedDialog.show(context);
+                    if (result != SmartAuthResult.success) return;
                   }
                 }
                 if (ref.read(homeTabProvider) != index) {

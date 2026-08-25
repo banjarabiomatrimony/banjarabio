@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/theme/app_colors.dart';
@@ -147,7 +147,10 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
       _verifiedOnly = false;
       _selectedFilterIndex = 0;
     });
-    Fluttertoast.showToast(msg: AppLocalizations.of(context)?.filtersResetToDefault ?? 'Filters reset to default');
+    AppFeedback.showInfo(
+      context,
+      AppLocalizations.of(context)?.filtersResetToDefault ?? 'Filters reset to default',
+    );
   }
 
   Future<void> _launchUrlExternal(String urlString) async {
@@ -157,11 +160,17 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         if (!mounted) return;
-        Fluttertoast.showToast(msg: AppLocalizations.of(context)?.couldNotLaunchUrl ?? 'Could not launch URL');
+        AppFeedback.showError(
+          context,
+          AppLocalizations.of(context)?.couldNotLaunchUrl ?? 'Could not launch URL',
+        );
       }
     } catch (_) {
       if (!mounted) return;
-      Fluttertoast.showToast(msg: AppLocalizations.of(context)?.errorLaunchingLink ?? 'Error launching link');
+      AppFeedback.showError(
+        context,
+        AppLocalizations.of(context)?.errorLaunchingLink ?? 'Error launching link',
+      );
     }
   }
 
@@ -821,14 +830,18 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     final note = noteController.text.trim();
 
                     if (name.isEmpty) {
-                      Fluttertoast.showToast(
-                          msg: 'Please enter your name');
+                      AppFeedback.showWarning(
+                        context,
+                        'Please enter your name',
+                      );
                       return;
                     }
 
                     if (phone.isEmpty || phone.length < 10) {
-                      Fluttertoast.showToast(
-                          msg: 'Please enter valid 10-digit WhatsApp number');
+                      AppFeedback.showWarning(
+                        context,
+                        'Please enter valid 10-digit WhatsApp number',
+                      );
                       return;
                     }
 

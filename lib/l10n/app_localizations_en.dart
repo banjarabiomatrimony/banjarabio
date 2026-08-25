@@ -193,7 +193,25 @@ class AppLocalizationsEn extends AppLocalizations {
       'Review all sections and click \"Save Biodata\" to complete your profile. Your biodata will be visible to other community members based on your privacy settings.';
 
   @override
+  String get alreadyExpressedInterest =>
+      'You have already expressed interest in this profile.';
+
+  @override
   String get alreadyHaveProfileLogin => 'Already have a profile? Login';
+
+  @override
+  String get alreadyInShortlist => 'This profile is already in your shortlist.';
+
+  @override
+  String get duplicateRecordError => 'This record already exists.';
+
+  @override
+  String get networkErrorMessage =>
+      'Please check your internet connection and try again.';
+
+  @override
+  String get permissionDeniedError =>
+      'You do not have permission to perform this action.';
 
   @override
   String get alternateRelativeContactNumberOptional =>
@@ -1349,7 +1367,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get employmentSector => 'Employment Sector';
 
   @override
-  String get emptyStr => '₹';
+  String get emptyStr => '';
 
   @override
   String get enableNotifications => 'Enable Notifications';
@@ -1372,10 +1390,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterEducationDetails => 'Enter your education details';
 
   @override
+  String get enterFatherName => 'Enter father\'s name';
+
+  @override
   String get enterFullName => 'Enter your full name';
 
   @override
   String get enterMobileNumber => 'Enter mobile number';
+
+  @override
+  String get enterMotherName => 'Enter mother\'s name';
+
+  @override
+  String get fatherOccupationHint => 'e.g. Retired Government Officer';
+
+  @override
+  String get motherOccupationHint => 'e.g. Homemaker';
 
   @override
   String get enterProfessionDetails => 'Enter your profession details';

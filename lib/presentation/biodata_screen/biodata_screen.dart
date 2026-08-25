@@ -17,10 +17,10 @@ import 'package:banjarabio/core/services/pdf/biodata_translations.dart';
 import 'package:banjarabio/core/services/pdf_service.dart';
 import 'package:banjarabio/core/providers/profile_providers.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/core/models/subscription_config.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/core/services/biodata_preload_service.dart';
@@ -233,10 +233,9 @@ class _BiodataScreenState extends ConsumerState<BiodataScreen>
       _pdfData = null; // Show smooth skeleton on canvas while generating
     });
     _generatePdf();
-    Fluttertoast.showToast(
-      msg: 'Applied ${kBiodataTemplates[index].name} Theme ✨',
-      backgroundColor: AppColors.crimsonRose,
-      textColor: Colors.white,
+    AppFeedback.showSuccess(
+      context,
+      'Applied ${kBiodataTemplates[index].name} Theme ✨',
     );
   }
 
@@ -248,10 +247,9 @@ class _BiodataScreenState extends ConsumerState<BiodataScreen>
       _pdfData = null; // Show smooth skeleton on canvas while generating
     });
     _generatePdf();
-    Fluttertoast.showToast(
-      msg: 'Biodata Language: $lang 🚩',
-      backgroundColor: AppColors.categoryLocation,
-      textColor: Colors.white,
+    AppFeedback.showInfo(
+      context,
+      'Biodata Language: $lang 🚩',
     );
   }
 
@@ -268,18 +266,16 @@ class _BiodataScreenState extends ConsumerState<BiodataScreen>
       if (response.isSuccess) {
         await _loadData();
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)?.paymentSuccessfulPdfUnlocked ?? 'Payment Successful! PDF Unlocked.'),
-            backgroundColor: Colors.green,
-          ),
+        AppFeedback.showSuccess(
+          context,
+          AppLocalizations.of(context)?.paymentSuccessfulPdfUnlocked ?? 'Payment Successful! PDF Unlocked.',
         );
       } else if (!response.errorMessage.toLowerCase().contains('cancelled')) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)?.paymentFailedError(response.errorMessage) ?? 'Payment Failed: ${response.errorMessage}'),
-            backgroundColor: Colors.red,
-          ),
+        AppFeedback.showError(
+          context,
+          response.errorMessage,
+          contextTag: 'subscription',
+          fallbackMessage: AppLocalizations.of(context)?.paymentFailedError(''),
         );
       }
     }
@@ -2315,10 +2311,9 @@ class _BiodataScreenState extends ConsumerState<BiodataScreen>
                         subject: '🚩 बंजाराबायो (BanjaraBio) मॅट्रीमोनी बायोडाटा',
                       );
                     } else {
-                      Fluttertoast.showToast(
-                        msg: 'Generating PDF, please wait a moment...',
-                        backgroundColor: AppColors.crimsonRose,
-                        textColor: Colors.white,
+                      AppFeedback.showInfo(
+                        context,
+                        'Generating PDF, please wait a moment...',
                       );
                     }
                   },

@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({super.key});
@@ -60,8 +61,9 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
 
   Future<void> _sendVerification() async {
     if (_emailController.text.isEmpty || !_emailController.text.contains('@')) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)?.pleaseEnterAValidEmailAddress ?? 'Please enter a valid email address')),
+      AppFeedback.showWarning(
+        context,
+        AppLocalizations.of(context)?.pleaseEnterAValidEmailAddress ?? 'Please enter a valid email address',
       );
       return;
     }
@@ -85,11 +87,9 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
               onSuccess: (_) async {
                 if (mounted) {
                   setState(() => _isLoading = false);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(AppLocalizations.of(context)?.emailVerifiedSuccessfully10Points ?? 'Email Verified Successfully! +10 Points'),
-                      backgroundColor: Colors.green,
-                    ),
+                  AppFeedback.showSuccess(
+                    context,
+                    AppLocalizations.of(context)?.emailVerifiedSuccessfully10Points ?? 'Email Verified Successfully! +10 Points',
                   );
                   Navigator.of(context).pop(true);
                 }
@@ -97,13 +97,11 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
               onFailure: (error) async {
                 if (mounted) {
                   setState(() => _isLoading = false);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        AppLocalizations.of(context)?.updateFailed(error.toString()) ??
-                            'Update failed: $error',
-                      ),
-                    ),
+                  AppFeedback.showError(
+                    context,
+                    error,
+                    contextTag: 'verification',
+                    fallbackMessage: AppLocalizations.of(context)?.updateFailed(''),
                   );
                 }
               },
@@ -111,8 +109,10 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
           } else {
             if (mounted) {
               setState(() => _isLoading = false);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(AppLocalizations.of(context)?.profileNotFound ?? 'Profile not found')),
+              AppFeedback.showError(
+                context,
+                AppLocalizations.of(context)?.profileNotFound ?? 'Profile not found',
+                contextTag: 'profile',
               );
             }
           }
@@ -120,42 +120,23 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
         onFailure: (error) async {
           if (mounted) {
             setState(() => _isLoading = false);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  AppLocalizations.of(context)?.failedToLoadProfileError(error.toString()) ??
-                      'Failed to load profile: $error',
-                ),
-              ),
+            AppFeedback.showError(
+              context,
+              error,
+              contextTag: 'profile',
+              fallbackMessage: AppLocalizations.of(context)?.failedToLoadProfileError(''),
             );
           }
         },
       );
-      /* Legacy OTP Flow
-      await _authRepository.sendEmailOtp(_emailController.text);
-
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-          _isSent = true;
-          _startTimer();
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)?.verificationLinkcodeSent ?? 'Verification link/code sent!')),
-        );
-      }
-      */
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(
+        AppFeedback.showError(
           context,
-        ).showSnackBar(SnackBar(
-          content: Text(
-            AppLocalizations.of(context)?.errorWithLabel(e.toString()) ??
-                'Error: ${e.toString()}',
-          ),
-        ));
+          e,
+          contextTag: 'verification',
+        );
       }
     }
   }
@@ -163,9 +144,10 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   /* Legacy OTP Flow
   Future<void> _verifyOtp() async {
     if (_otpController.text.length < 6) {
-      ScaffoldMessenger.of(
+      AppFeedback.showWarning(
         context,
-      ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)?.pleaseEnter6DigitOtp ?? 'Please enter 6-digit OTP')));
+        AppLocalizations.of(context)?.pleaseEnter6DigitOtp ?? 'Please enter 6-digit OTP',
+      );
       return;
     }
 
@@ -180,11 +162,9 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       if (success) {
         if (mounted) {
           setState(() => _isLoading = false);
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(AppLocalizations.of(context)?.emailVerifiedSuccessfully10Points ?? 'Email Verified Successfully! +10 Points'),
-              backgroundColor: Colors.green,
-            ),
+          AppFeedback.showSuccess(
+            context,
+            AppLocalizations.of(context)?.emailVerifiedSuccessfully10Points ?? 'Email Verified Successfully! +10 Points',
           );
           Navigator.of(context).pop(true);
         }
@@ -194,8 +174,11 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Verification failed: ${e.toString()}')),
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'verification',
+          fallbackMessage: 'Verification failed',
         );
       }
     }
@@ -210,30 +193,29 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       if (user?.emailConfirmedAt != null) {
         if (mounted) {
           setState(() => _isLoading = false);
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(AppLocalizations.of(context)?.verified10PointsAddedToTrustScore ?? 'Verified! +10 Points added to Trust Score'),
-              backgroundColor: Colors.green,
-            ),
+          AppFeedback.showSuccess(
+            context,
+            AppLocalizations.of(context)?.verified10PointsAddedToTrustScore ?? 'Verified! +10 Points added to Trust Score',
           );
           Navigator.of(context).pop(true);
         }
       } else {
         if (mounted) {
           setState(() => _isLoading = false);
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(AppLocalizations.of(context)?.notVerifiedYetPleaseClickTheLinkInYourEm ?? 'Not verified yet. Please click the link in your email.',
-              ),
-            ),
+          AppFeedback.showInfo(
+            context,
+            AppLocalizations.of(context)?.notVerifiedYetPleaseClickTheLinkInYourEm ?? 'Not verified yet. Please click the link in your email.',
           );
         }
       }
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error checking status: ${e.toString()}')),
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'verification',
+          fallbackMessage: 'Error checking status',
         );
       }
     }

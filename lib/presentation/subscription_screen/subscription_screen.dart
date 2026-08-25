@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
@@ -193,12 +193,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)
-                  ?.failedToLoadSubscription(e.toString()) ??
-              'Failed to load subscription: $e',
-          backgroundColor: Theme.of(context).colorScheme.error,
-          textColor: Colors.white,
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'subscription',
+          fallbackMessage: AppLocalizations.of(context)?.failedToLoadSubscription(''),
         );
       }
     }
@@ -230,33 +229,30 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
 
       if (mounted) {
         if (response.isSuccess) {
-          Fluttertoast.showToast(
-            msg: AppLocalizations.of(context)?.paymentSuccessfulWelcome(
+          AppFeedback.showSuccess(
+            context,
+            AppLocalizations.of(context)?.paymentSuccessfulWelcome(
                     SubscriptionConfig.getDisplayName(
                         planType, AppLocalizations.of(context))) ??
                 'Payment successful! Welcome',
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
           );
           _loadCurrentSubscription(forceRefresh: true);
         } else {
-          Fluttertoast.showToast(
-            msg: AppLocalizations.of(context)
-                    ?.paymentFailedError(response.errorMessage) ??
-                'Payment failed: ${response.errorMessage}',
-            backgroundColor: Theme.of(context).colorScheme.error,
-            textColor: Colors.white,
+          AppFeedback.showError(
+            context,
+            response.errorMessage,
+            contextTag: 'subscription',
+            fallbackMessage: AppLocalizations.of(context)?.paymentFailedError(''),
           );
         }
       }
     } catch (e) {
       if (mounted) {
-        Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)
-                  ?.unexpectedErrorOccurred(e.toString()) ??
-              'An unexpected error occurred: $e',
-          backgroundColor: Theme.of(context).colorScheme.error,
-          textColor: Colors.white,
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'subscription',
+          fallbackMessage: AppLocalizations.of(context)?.unexpectedErrorOccurred(''),
         );
       }
     } finally {
@@ -278,18 +274,17 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
       response.fold(
         onSuccess: (coupon) {
           setState(() => _appliedCoupon = coupon);
-          Fluttertoast.showToast(
-            msg: 'Coupon applied: ${coupon?.discountPercentage}% off!',
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
+          AppFeedback.showSuccess(
+            context,
+            'Coupon applied: ${coupon?.discountPercentage}% off!',
           );
         },
         onFailure: (error) {
           setState(() => _appliedCoupon = null);
-          Fluttertoast.showToast(
-            msg: error,
-            backgroundColor: Theme.of(context).colorScheme.error,
-            textColor: Colors.white,
+          AppFeedback.showError(
+            context,
+            error,
+            contextTag: 'coupon',
           );
         },
       );

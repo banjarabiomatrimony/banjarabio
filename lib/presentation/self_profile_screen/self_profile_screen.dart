@@ -4,7 +4,7 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:sizer/sizer.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 
 import 'package:banjarabio/core/app_export.dart';
@@ -14,6 +14,7 @@ import 'package:banjarabio/core/models/subscription_model.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/core/repositories/subscription_repository.dart';
 import 'package:banjarabio/core/services/guest_guided_tour_service.dart';
+import 'package:banjarabio/core/utils/error_message_mapper.dart';
 import 'package:banjarabio/core/utils/tour_keys.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/presentation/match_profile_screen/widgets/education_profession_card_widget.dart';
@@ -174,11 +175,11 @@ class _SelfProfileScreenState extends ConsumerState<SelfProfileScreen>
           );
           if (mounted) {
             setState(() {
-              _errorMessage =
-                  AppLocalizations.of(
-                    context,
-                  )?.failedToLoadProfileError(error.toString()) ??
-                  'Failed to load profile: $error';
+              _errorMessage = ErrorMessageMapper.toUserFriendlyMessage(
+                error,
+                context: context,
+                contextTag: 'profile',
+              );
               _isLoading = false;
             });
           }
@@ -191,9 +192,11 @@ class _SelfProfileScreenState extends ConsumerState<SelfProfileScreen>
       );
       if (mounted) {
         setState(() {
-          _errorMessage =
-              AppLocalizations.of(context)?.criticalFailure(e.toString()) ??
-              'Critical failure: $e';
+          _errorMessage = ErrorMessageMapper.toUserFriendlyMessage(
+            e,
+            context: context,
+            contextTag: 'profile',
+          );
           _isLoading = false;
         });
       }
@@ -964,10 +967,9 @@ class _SelfProfileScreenState extends ConsumerState<SelfProfileScreen>
                               ClipboardData(text: _profile!.displayId),
                             );
                             HapticFeedback.lightImpact();
-                            Fluttertoast.showToast(
-                              msg: 'Profile ID copied: ${_profile!.displayId}',
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
+                            AppFeedback.showSuccess(
+                              context,
+                              'Profile ID copied: ${_profile!.displayId}',
                             );
                           },
                           borderRadius: BorderRadius.circular(6),

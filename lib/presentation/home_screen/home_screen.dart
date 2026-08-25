@@ -3,7 +3,6 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:sizer/sizer.dart';
 import 'dart:async';
@@ -23,8 +22,10 @@ import 'package:banjarabio/core/services/scroll_velocity_service.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 
 import 'package:banjarabio/core/services/deep_link_service.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 import 'package:banjarabio/features/bookmarks/providers/bookmark_notifier.dart';
 import 'package:banjarabio/widgets/upgrade_dialog.dart';
+import 'package:banjarabio/widgets/smart_auth_gate.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/instagram_follow_interstitial.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/guest_restricted_dialog.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/offer_banner_widget.dart';
@@ -678,8 +679,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     bool isCurrentlyBookmarked,
   ) async {
     if (LocalCacheService().isGuestMode() || LocalCacheService().isRelativeBrowseMode()) {
-      GuestRestrictedDialog.show(context);
-      return;
+      final result = await GuestRestrictedDialog.show(context, intent: SmartAuthIntent.saveProfile);
+      if (result != SmartAuthResult.success) return;
     }
     
     HapticFeedback.lightImpact();
@@ -693,10 +694,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           AppLogger.error('HomeScreen', '[BOOKMARK] HomeScreen > toggle($profileId) > FAILED | $e');
         }
         if (mounted) {
-          Fluttertoast.showToast(
-            msg: AppLocalizations.of(context)?.failedToUpdateBookmark(e.toString()) ?? 'Failed to update bookmark: $e',
-            backgroundColor: Theme.of(context).colorScheme.error,
-            textColor: Colors.white,
+          AppFeedback.showError(
+            context,
+            e,
+            contextTag: 'shortlist',
+            fallbackMessage: AppLocalizations.of(context)?.failedToUpdateBookmark(''),
           );
         }
       }
@@ -875,8 +877,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   void _openProfileDetail(ProfileModel profile) async {
     if (LocalCacheService().isGuestMode()) {
-      GuestRestrictedDialog.show(context);
-      return;
+      final result = await GuestRestrictedDialog.show(context, intent: SmartAuthIntent.viewContact);
+      if (result != SmartAuthResult.success) return;
     }
     // 🔍 PATHWAY A: Relative browse users CAN view profile details (read-only).
     // This is the core use case — they're searching on behalf of someone.
@@ -924,10 +926,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       },
       onFailure: (error) {
         if (mounted) {
-          Fluttertoast.showToast(
-            msg: AppLocalizations.of(context)?.errorCheckingViewLimits(error.toString()) ?? 'Error checking view limits: $error',
-            backgroundColor: Theme.of(context).colorScheme.error,
-            textColor: Colors.white,
+          AppFeedback.showError(
+            context,
+            error,
+            contextTag: 'view_limit',
+            fallbackMessage: AppLocalizations.of(context)?.errorCheckingViewLimits(''),
           );
         }
       },
@@ -943,10 +946,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     );
   }
 
-  void _handleInterest(ProfileModel profile) {
+  void _handleInterest(ProfileModel profile) async {
     if (LocalCacheService().isRelativeBrowseMode()) {
-      GuestRestrictedDialog.show(context);
-      return;
+      final result = await GuestRestrictedDialog.show(context, intent: SmartAuthIntent.expressInterest);
+      if (result != SmartAuthResult.success || !mounted) return;
     }
     HomeInterestHandler.show(
       context: context,
@@ -958,8 +961,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   void _handleMessage(ProfileModel profile) async {
     if (LocalCacheService().isRelativeBrowseMode()) {
-      GuestRestrictedDialog.show(context);
-      return;
+      final result = await GuestRestrictedDialog.show(context, intent: SmartAuthIntent.openChat);
+      if (result != SmartAuthResult.success || !mounted) return;
     }
 
     if (profile.isMatched) {
@@ -976,13 +979,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         },
         onFailure: (err) {
           if (mounted) {
-            Fluttertoast.showToast(
-              msg: AppLocalizations.of(context)?.failedToStartChat(err.toString()) ?? 'Failed to start chat: $err',
+            AppFeedback.showError(
+              context,
+              err,
+              contextTag: 'chat',
+              fallbackMessage: AppLocalizations.of(context)?.failedToStartChat(''),
             );
           }
         },
       );
     } else {
+      if (!mounted) return;
       showModalBottomSheet(
         context: context,
         isScrollControlled: true,

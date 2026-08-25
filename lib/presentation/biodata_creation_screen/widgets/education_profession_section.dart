@@ -514,7 +514,7 @@ class _EducationProfessionSectionState
             ),
             if (!widget.isAdminEdit) ...[
               SizedBox(width: 1.w),
-              Text(AppLocalizations.of(context)?.emptyStr ?? '*',
+              Text('*',
                 style: theme.textTheme.titleSmall?.copyWith(color: theme.colorScheme.error, fontWeight: AppTypography.bold),
               ),
             ],
@@ -661,7 +661,7 @@ class _EducationProfessionSectionState
             Text(AppLocalizations.of(context)?.profession ?? 'Profession', style: theme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.bold)),
             if (!widget.isAdminEdit) ...[
               SizedBox(width: 1.w),
-              Text(AppLocalizations.of(context)?.emptyStr ?? '*',
+              Text('*',
                 style: theme.textTheme.titleSmall?.copyWith(color: theme.colorScheme.error, fontWeight: AppTypography.bold),
               ),
             ],

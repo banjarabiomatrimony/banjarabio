@@ -120,6 +120,33 @@ class ProfileRepository extends IsolateFirstRepository {
     }
   }
 
+  /// Checks whether a given phone number is available for registration/update.
+  /// Returns `true` if available (not used by any other account), `false` if taken.
+  Future<BackendResponse<bool>> checkPhoneAvailable({
+    required String phoneNumber,
+    String? excludeUserId,
+  }) async {
+    try {
+      final cleaned = phoneNumber.replaceAll(RegExp(r'\D'), '');
+      if (cleaned.length < 10) {
+        return BackendResponse.success(true);
+      }
+
+      final normalized = cleaned.length >= 10 ? cleaned.substring(cleaned.length - 10) : cleaned;
+
+      final res = await _supabase.rpc('fn_check_phone_available', params: {
+        'p_phone': normalized,
+        if (excludeUserId != null || _supabase.auth.currentUser?.id != null)
+          'p_exclude_user_id': excludeUserId ?? _supabase.auth.currentUser?.id,
+      });
+
+      return BackendResponse.success(res == true);
+    } catch (e) {
+      AppLogger.error('ProfileRepository', 'Error checking phone availability: $e');
+      return BackendResponse.failure(e.toString());
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // 3. Write Operations (Create / Update / Delete)
   // ---------------------------------------------------------------------------
@@ -144,6 +171,14 @@ class ProfileRepository extends IsolateFirstRepository {
       if (profileData.containsKey('surname') && profileData['surname'] != null) {
         if (profileData['surname'].toString().trim().toLowerCase() == 'chauhan') {
           profileData['surname'] = 'Chavhan';
+        }
+      }
+
+      // Normalize phone number to 10 digits
+      if (profileData.containsKey('phone_number') && profileData['phone_number'] != null) {
+        final rawPhone = profileData['phone_number'].toString().replaceAll(RegExp(r'\D'), '');
+        if (rawPhone.length >= 10) {
+          profileData['phone_number'] = rawPhone.substring(rawPhone.length - 10);
         }
       }
 
@@ -209,6 +244,14 @@ class ProfileRepository extends IsolateFirstRepository {
       if (updates.containsKey('surname') && updates['surname'] != null) {
         if (updates['surname'].toString().trim().toLowerCase() == 'chauhan') {
           updates['surname'] = 'Chavhan';
+        }
+      }
+
+      // Normalize phone number to 10 digits
+      if (updates.containsKey('phone_number') && updates['phone_number'] != null) {
+        final rawPhone = updates['phone_number'].toString().replaceAll(RegExp(r'\D'), '');
+        if (rawPhone.length >= 10) {
+          updates['phone_number'] = rawPhone.substring(rawPhone.length - 10);
         }
       }
 

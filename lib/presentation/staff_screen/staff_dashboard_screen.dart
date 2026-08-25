@@ -12,6 +12,7 @@ import 'package:banjarabio/presentation/staff_screen/volunteer_tabs_widget.dart'
 import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/theme/app_colors.dart';
 import 'package:banjarabio/widgets/logout_confirmation_dialog.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 const _kBgDark = AppColors.canvasCharcoal;
 const _kSurfaceColor = AppColors.canvasRichDark;
@@ -812,7 +813,7 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
 
   void _showSnack(String msg) {
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg), backgroundColor: _kAccentColor));
+      AppFeedback.showInfo(context, msg);
     }
   }
 

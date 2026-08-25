@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
+import 'package:banjarabio/core/repositories/profile_repository.dart';
+import 'package:banjarabio/core/utils/error_message_mapper.dart';
 import 'package:banjarabio/widgets/custom_icon_widget.dart';
 
 // Extracted widgets
@@ -245,6 +248,12 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
     ],
   };
 
+  final ProfileRepository _profileRepository = ProfileRepository();
+  Timer? _phoneCheckTimer;
+  bool _isCheckingPhone = false;
+  String? _phoneError;
+  String? _lastCheckedPhone;
+
   @override
   void initState() {
     super.initState();
@@ -255,6 +264,73 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
     _customSurnameController.addListener(_validateForm);
     // Trigger initial validation for Edit Mode / Pre-filled data
     WidgetsBinding.instance.addPostFrameCallback((_) => _validateForm());
+  }
+
+  void _onPhoneChanged(String value) {
+    widget.onUpdate('phone_number', value);
+    _phoneCheckTimer?.cancel();
+
+    final cleaned = value.replaceAll(RegExp(r'\D'), '');
+    if (cleaned.isEmpty) {
+      setState(() {
+        _phoneError = null;
+        _isCheckingPhone = false;
+      });
+      _validateForm();
+      return;
+    }
+
+    if (cleaned.length < 10) {
+      setState(() {
+        _phoneError = ErrorMessageMapper.getFriendlyMessage(
+          context,
+          'invalid_phone_number',
+          contextTag: 'profile',
+          fallbackMessage: AppLocalizations.of(context)?.pleaseEnterAValid10DigitMobileNumber ??
+              'Please enter a valid 10-digit mobile number',
+        );
+        _isCheckingPhone = false;
+      });
+      _validateForm();
+      return;
+    }
+
+    final normalized = cleaned.length >= 10 ? cleaned.substring(cleaned.length - 10) : cleaned;
+    if (normalized == _lastCheckedPhone && _phoneError == null) {
+      return;
+    }
+
+    if (widget.isAdminEdit) {
+      setState(() {
+        _phoneError = null;
+      });
+      _validateForm();
+      return;
+    }
+
+    _phoneCheckTimer = Timer(const Duration(milliseconds: 400), () async {
+      if (!mounted) return;
+      setState(() => _isCheckingPhone = true);
+
+      final res = await _profileRepository.checkPhoneAvailable(phoneNumber: normalized);
+      if (!mounted) return;
+
+      setState(() {
+        _isCheckingPhone = false;
+        _lastCheckedPhone = normalized;
+        if (res.isSuccess && res.data == false) {
+          _phoneError = ErrorMessageMapper.getFriendlyMessage(
+            context,
+            'phone_already_registered',
+            contextTag: 'profile',
+            fallbackMessage: 'This mobile number is already registered with another account.',
+          );
+        } else {
+          _phoneError = null;
+        }
+      });
+      _validateForm();
+    });
   }
 
   void _initializeData() {
@@ -385,6 +461,7 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
 
   @override
   void dispose() {
+    _phoneCheckTimer?.cancel();
     _nameController.removeListener(_validateForm);
     _phoneController.removeListener(_validateForm);
     _ageController.removeListener(_validateForm);
@@ -408,10 +485,13 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
     final hasValidSurname = _selectedSurname != null &&
         (_selectedSurname != 'Other' || _customSurnameController.text.trim().isNotEmpty);
 
+    final phoneCleaned = _phoneController.text.trim().replaceAll(RegExp(r'\D'), '');
+    final isPhoneValid = phoneCleaned.length == 10 && _phoneError == null;
+
     // Core identity fields required in both lite and full modes
     final coreValid =
         _nameController.text.trim().isNotEmpty &&
-        _phoneController.text.trim().length >= 10 &&
+        isPhoneValid &&
         hasValidSurname &&
         _selectedGender != null &&
         (!isGotraRequired || (_selectedGotra != null && _selectedGotra!.isNotEmpty));
@@ -546,11 +626,22 @@ class _PersonalDetailsSectionState extends State<PersonalDetailsSection> {
             required: true,
             isAdminEdit: widget.isAdminEdit,
             keyboardType: TextInputType.phone,
+            errorText: _phoneError,
+            suffix: _isCheckingPhone
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: Padding(
+                      padding: EdgeInsets.all(12),
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  )
+                : null,
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
               LengthLimitingTextInputFormatter(10),
             ],
-            onChanged: (value) => widget.onUpdate('phone_number', value),
+            onChanged: _onPhoneChanged,
           ),
           SizedBox(height: 2.5.h),
           SurnameGotraSelectorWidget(

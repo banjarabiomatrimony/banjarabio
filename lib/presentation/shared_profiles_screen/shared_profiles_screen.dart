@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:sizer/sizer.dart';
 
@@ -281,10 +281,9 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
         await deleteRes.fold(
           onSuccess: (_) async {
             if (mounted) {
-              Fluttertoast.showToast(
-                msg: 'Deleted ${_selectedItems.length} share(s)',
-                backgroundColor: Colors.green,
-                textColor: Colors.white,
+              AppFeedback.showSuccess(
+                context,
+                'Deleted ${_selectedItems.length} share(s)',
               );
               setState(() {
                 _selectedItems.clear();
@@ -295,20 +294,21 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
           },
           onFailure: (error) async {
             if (mounted) {
-              Fluttertoast.showToast(
-                msg: 'Failed to delete: $error',
-                backgroundColor: Theme.of(context).colorScheme.error,
-                textColor: Colors.white,
+              AppFeedback.showError(
+                context,
+                error,
+                contextTag: 'share',
+                fallbackMessage: 'Failed to delete share',
               );
             }
           },
         );
       } catch (e) {
         if (mounted) {
-          Fluttertoast.showToast(
-            msg: 'Error: $e',
-            backgroundColor: Theme.of(context).colorScheme.error,
-            textColor: Colors.white,
+          AppFeedback.showError(
+            context,
+            e,
+            contextTag: 'share',
           );
         }
       }
@@ -552,8 +552,6 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
   }
 
   Widget _buildProfileList(bool? isSharedByMe) {
-    final theme = Theme.of(context);
-
     // Re-filter for current tab
     late List<ProfileShare> shares;
     if (isSharedByMe == null) {
@@ -613,14 +611,14 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
         physics: const NeverScrollableScrollPhysics(),
       ),
       emptyConfig: _getEmptyConfig(context, isSharedByMe),
-      contentBuilder: (context) {
+      contentBuilder: (_) {
         return BrandedRefreshIndicator(
           onRefresh: _handleRefresh,
           child: ListView.builder(
             physics: const BouncingScrollPhysics(),
             padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
             itemCount: displayProfiles.length + 1,
-            itemBuilder: (context, index) {
+            itemBuilder: (_, index) {
               // Top 0: Hero Highlights Banner
               if (index == 0) {
                 return _buildHeroHighlightsBanner(context, isSharedByMe, displayProfiles.length);
@@ -677,7 +675,7 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
                           }
                         }
                         // Navigate to profile detail using ID for full data loading
-                        if (context.mounted) {
+                        if (mounted) {
                           Navigator.of(context, rootNavigator: true).pushNamed(
                             AppRoutes.profileDetail,
                             arguments: profile['sharedProfileId'] ?? profile['id'],
@@ -717,30 +715,30 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
                         await shareRes.fold(
                           onSuccess: (_) async {
                             if (mounted) {
-                              Fluttertoast.showToast(
-                                msg: 'Reshared successfully',
-                                backgroundColor: Colors.green,
-                                textColor: Colors.white,
+                              AppFeedback.showSuccess(
+                                context,
+                                'Reshared successfully',
                               );
                               await _loadShares();
                             }
                           },
                           onFailure: (error) async {
                             if (mounted) {
-                              Fluttertoast.showToast(
-                                msg: 'Failed to reshare: $error',
-                                backgroundColor: Theme.of(context).colorScheme.error,
-                                textColor: Colors.white,
+                              AppFeedback.showError(
+                                context,
+                                error,
+                                contextTag: 'share',
+                                fallbackMessage: 'Failed to reshare',
                               );
                             }
                           },
                         );
                       } catch (e) {
                         if (mounted) {
-                          Fluttertoast.showToast(
-                            msg: 'Error: $e',
-                            backgroundColor: theme.colorScheme.error,
-                            textColor: Colors.white,
+                          AppFeedback.showError(
+                            context,
+                            e,
+                            contextTag: 'share',
                           );
                         }
                       }
@@ -757,19 +755,18 @@ class _SharedProfilesScreenState extends ConsumerState<SharedProfilesScreen>
                           );
                         }
                         if (mounted) {
-                          Fluttertoast.showToast(
-                            msg: 'Removed from history',
-                            backgroundColor: Colors.green,
-                            textColor: Colors.white,
+                          AppFeedback.showSuccess(
+                            context,
+                            'Removed from history',
                           );
                           await _loadShares();
                         }
                       } catch (e) {
                         if (mounted) {
-                          Fluttertoast.showToast(
-                            msg: 'Error: $e',
-                            backgroundColor: theme.colorScheme.error,
-                            textColor: Colors.white,
+                          AppFeedback.showError(
+                            context,
+                            e,
+                            contextTag: 'share',
                           );
                         }
                       }

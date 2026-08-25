@@ -8,8 +8,8 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/repositories/usage_repository.dart';
 import 'package:banjarabio/core/repositories/subscription_repository.dart';
 import 'package:banjarabio/core/repositories/share_repository.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:banjarabio/theme/app_colors.dart';
 
 /// 💌 Direct Note Bottom Sheet
@@ -203,9 +203,9 @@ class _DirectNoteBottomSheetState extends State<DirectNoteBottomSheet>
   Future<void> _sendDirectNote() async {
     final text = _noteController.text.trim();
     if (text.isEmpty) {
-      Fluttertoast.showToast(
-        msg:
-            AppLocalizations.of(context)?.pleaseSelectOrWriteShortNote ??
+      AppFeedback.showWarning(
+        context,
+        AppLocalizations.of(context)?.pleaseSelectOrWriteShortNote ??
             'Please select or write a short intro note',
       );
       return;
@@ -218,8 +218,10 @@ class _DirectNoteBottomSheetState extends State<DirectNoteBottomSheet>
       final myProfileId = await ShareRepository().getMyProfileId();
 
       if (myProfileId == null) {
-        Fluttertoast.showToast(
-          msg: 'You need a completed profile to send an intro note.',
+        if (!mounted) return;
+        AppFeedback.showWarning(
+          context,
+          'You need a completed profile to send an intro note.',
         );
         setState(() => _isSending = false);
         return;
@@ -241,29 +243,31 @@ class _DirectNoteBottomSheetState extends State<DirectNoteBottomSheet>
 
         if (mounted) {
           HapticFeedback.heavyImpact();
-          Fluttertoast.showToast(
-            msg: '💌 Direct Intro Note delivered to $_targetName!',
-            backgroundColor: AppColors.categoryLocation,
-            textColor: Colors.white,
+          AppFeedback.showSuccess(
+            context,
+            '💌 Direct Intro Note delivered to $_targetName!',
           );
           widget.onSuccess?.call();
           Navigator.of(context).pop();
         }
       } else {
         if (mounted) {
-          Fluttertoast.showToast(
-            msg: shareRes.errorMessage,
-            backgroundColor: Colors.red.shade700,
+          AppFeedback.showError(
+            context,
+            shareRes.errorMessage,
+            contextTag: 'interest',
+            fallbackMessage: AppLocalizations.of(context)?.failedToSendNote(''),
           );
           setState(() => _isSending = false);
         }
       }
     } catch (e) {
       if (mounted) {
-        Fluttertoast.showToast(
-          msg:
-              AppLocalizations.of(context)?.failedToSendNote(e.toString()) ??
-              'Failed to send note: $e',
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'interest',
+          fallbackMessage: AppLocalizations.of(context)?.failedToSendNote(''),
         );
         setState(() => _isSending = false);
       }

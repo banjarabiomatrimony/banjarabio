@@ -299,6 +299,60 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                           },
                         ),
 
+                  // 🔒 Guest Photo Blur: Obscure Female/Bride photos for unauthenticated guests
+                  // Male/Groom photos stay visible to hook parents of daughters (primary search demographic)
+                  if (LocalCacheService().isGuestMode() && widget.profile.gender == 'Female')
+                    Positioned.fill(
+                      child: ClipRRect(
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                          child: Container(
+                            color: Colors.black.withValues(alpha: 0.15),
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  width: 52,
+                                  height: 52,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white.withValues(alpha: 0.18),
+                                    border: Border.all(
+                                      color: Colors.white.withValues(alpha: 0.30),
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                  child: const Icon(
+                                    Icons.lock_outline_rounded,
+                                    color: Colors.white,
+                                    size: 24,
+                                  ),
+                                ),
+                                SizedBox(height: 1.h),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.5.h),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withValues(alpha: 0.50),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    '🔒 Sign in to see photo',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: AppTypography.labelSmall,
+                                      fontWeight: AppTypography.semiBold,
+                                      letterSpacing: 0.3,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
                   // 📸 Touch Navigation Zones (Left/Right to cycle photos)
                   if (photos.length > 1)
                     Positioned.fill(

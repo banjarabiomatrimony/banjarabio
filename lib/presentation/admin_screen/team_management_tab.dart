@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/repositories/admin_repository.dart';
 import 'package:banjarabio/theme/app_colors.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 /// [TeamManagementTab]
 ///
@@ -415,8 +416,9 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
                     final email = emailCtrl.text.trim();
                     final pass = passCtrl.text.trim();
                     if (name.isEmpty || email.isEmpty || pass.length < 6) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Please fill all fields (password min 6 chars)')),
+                      AppFeedback.showWarning(
+                        context,
+                        'Please fill all fields (password min 6 chars)',
                       );
                       return;
                     }
@@ -437,8 +439,9 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
 
   Future<void> _hireStaff(String name, String email, String password, String department, String designation) async {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('⏳ Creating $designation account...')),
+    AppFeedback.showInfo(
+      context,
+      'Creating $designation account...',
     );
 
     final res = await _repo.hireStaff(
@@ -451,16 +454,20 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
     res.fold(
       onSuccess: (data) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('✅ Hired $name as $designation!')),
+          AppFeedback.showSuccess(
+            context,
+            'Hired $name as $designation!',
           );
         }
         _loadTelecallers();
       },
       onFailure: (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('❌ Hire failed: $e')),
+          AppFeedback.showError(
+            context,
+            e,
+            contextTag: 'admin',
+            fallbackMessage: 'Hire failed',
           );
         }
       },
@@ -1007,8 +1014,9 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
   }
 
   Future<void> _manualAssign(String staffId, String stage, String gender, int limit) async {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('⏳ Assigning leads...')),
+    AppFeedback.showInfo(
+      context,
+      '⏳ Assigning leads...',
     );
     final res = await _repo.manualAssignLeads(
       staffUserId: staffId,
@@ -1019,14 +1027,18 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
     res.fold(
       onSuccess: (data) {
         final count = data['assigned'] ?? 0;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('✅ Successfully assigned $count leads!')),
+        AppFeedback.showSuccess(
+          context,
+          '✅ Successfully assigned $count leads!',
         );
         _loadTelecallers();
         _loadInventory();
       },
-      onFailure: (e) => ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('❌ Assignment failed: $e')),
+      onFailure: (e) => AppFeedback.showError(
+        context,
+        e,
+        contextTag: 'admin',
+        fallbackMessage: 'Assignment failed',
       ),
     );
   }
@@ -1053,15 +1065,20 @@ class _TeamManagementTabState extends State<TeamManagementTab> {
     res.fold(
       onSuccess: (data) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('✅ Auto-assigned ${data['assigned'] ?? 0} profiles')),
+          AppFeedback.showSuccess(
+            context,
+            '✅ Auto-assigned ${data['assigned'] ?? 0} profiles',
           );
         }
         _loadTelecallers();
       },
       onFailure: (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('❌ $e')));
+          AppFeedback.showError(
+            context,
+            e,
+            contextTag: 'admin',
+          );
         }
       },
     );

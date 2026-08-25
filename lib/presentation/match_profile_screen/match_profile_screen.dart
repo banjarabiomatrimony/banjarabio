@@ -3,7 +3,6 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/core/app_export.dart';
@@ -12,6 +11,7 @@ import 'package:banjarabio/core/models/profile_share_model.dart';
 import 'package:banjarabio/core/repositories/share_repository.dart';
 import 'package:banjarabio/core/repositories/usage_repository.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 import 'package:banjarabio/widgets/upgrade_dialog.dart';
 import 'package:banjarabio/features/bookmarks/providers/bookmark_notifier.dart';
 import 'package:banjarabio/presentation/match_profile_screen/widgets/action_buttons_widget.dart';
@@ -31,6 +31,7 @@ import 'package:banjarabio/presentation/match_profile_screen/widgets/profile_opt
 import 'package:banjarabio/presentation/match_profile_screen/widgets/profile_guided_tour.dart';
 import 'package:banjarabio/presentation/match_profile_screen/widgets/profile_loading_states.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/guest_restricted_dialog.dart';
+import 'package:banjarabio/widgets/smart_auth_gate.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/presentation/match_profile_screen/widgets/similar_profiles_carousel.dart';
 // import '../../core/services/ad_reward_service.dart';
@@ -107,7 +108,7 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
                 onRewardGranted: () async {
                   await usageRepo.grantAdReward(AdRewardType.profileViews);
                   if (mounted) {
-                    Fluttertoast.showToast(msg: AppLocalizations.of(context)?.extraViewsUnlocked(5) ?? "5 Extra Views Unlocked!");
+                    AppFeedback.showSuccess(context, AppLocalizations.of(context)?.extraViewsUnlocked(5) ?? "5 Extra Views Unlocked!");
                   }
                 },
               ),
@@ -115,7 +116,10 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
           }
           */
           if (mounted) {
-            Fluttertoast.showToast(msg: AppLocalizations.of(context)?.dailyViewLimitReached ?? 'Daily view limit reached.');
+            AppFeedback.showWarning(
+              context,
+              AppLocalizations.of(context)?.dailyViewLimitReached ?? 'Daily view limit reached.',
+            );
           }
         }
       },
@@ -478,12 +482,14 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
         profile['horoscopeUrl'] != null;
 
     if (hasKundali) {
-      Fluttertoast.showToast(
-        msg: AppLocalizations.of(context)?.horoscopeChartVerified ?? 'Horoscope chart verified & matched.',
+      AppFeedback.showInfo(
+        context,
+        AppLocalizations.of(context)?.horoscopeChartVerified ?? 'Horoscope chart verified & matched.',
       );
     } else {
-      Fluttertoast.showToast(
-        msg: AppLocalizations.of(context)?.fullKundaliAvailableOnMutual ?? 'Full Kundali chart available on mutual match interest.',
+      AppFeedback.showInfo(
+        context,
+        AppLocalizations.of(context)?.fullKundaliAvailableOnMutual ?? 'Full Kundali chart available on mutual match interest.',
       );
     }
   }
@@ -502,8 +508,8 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
 
   void _handleShare(Map<String, dynamic> profile) async {
     if (LocalCacheService().isGuestMode()) {
-      GuestRestrictedDialog.show(context);
-      return;
+      final result = await GuestRestrictedDialog.show(context, profileName: profile['name']?.toString());
+      if (result != SmartAuthResult.success) return;
     }
     if (!mounted) return;
 
@@ -536,29 +542,28 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
             });
           }
 
-          Fluttertoast.showToast(
-            msg: msg,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
+          AppFeedback.showSuccess(
+            context,
+            msg,
           );
         }
       },
       onFailure: (error) {
         if (mounted) {
-          Fluttertoast.showToast(
-            msg: error,
-            backgroundColor: Theme.of(context).colorScheme.error,
-            textColor: Colors.white,
+          AppFeedback.showError(
+            context,
+            error,
+            contextTag: 'share',
           );
         }
       },
     );
   }
 
-  void _handleDirectNote(Map<String, dynamic> profile) {
+  void _handleDirectNote(Map<String, dynamic> profile) async {
     if (LocalCacheService().isGuestMode()) {
-      GuestRestrictedDialog.show(context);
-      return;
+      final result = await GuestRestrictedDialog.show(context, intent: SmartAuthIntent.openChat, profileName: profile['name']?.toString());
+      if (result != SmartAuthResult.success || !mounted) return;
     }
     showModalBottomSheet(
       context: context,
@@ -573,10 +578,9 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
               _profileData!['status'] = 'pending_sent';
             }
           });
-          Fluttertoast.showToast(
-            msg: AppLocalizations.of(context)?.directNoteSentToast ?? 'Direct Note sent with high priority! 💌',
-            backgroundColor: AppColors.categoryLocation,
-            textColor: Colors.white,
+          AppFeedback.showSuccess(
+            context,
+            AppLocalizations.of(context)?.directNoteSentToast ?? 'Direct Note sent with high priority! 💌',
           );
         },
       ),
@@ -585,8 +589,8 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
 
   void _handleAcceptInterest(Map<String, dynamic> profile) async {
     if (LocalCacheService().isGuestMode()) {
-      GuestRestrictedDialog.show(context);
-      return;
+      final result = await GuestRestrictedDialog.show(context, intent: SmartAuthIntent.expressInterest, profileName: profile['name']?.toString());
+      if (result != SmartAuthResult.success || !mounted) return;
     }
     final otherUserId = profile['userId']?.toString() ?? profile['id']?.toString();
     if (otherUserId == null) return;
@@ -598,17 +602,16 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
       }
     });
 
-    Fluttertoast.showToast(
-      msg: AppLocalizations.of(context)?.connectionAcceptedToast ?? 'Connection Accepted! You can now chat directly 🎉',
-      backgroundColor: AppColors.categoryLocation,
-      textColor: Colors.white,
+    AppFeedback.showSuccess(
+      context,
+      AppLocalizations.of(context)?.connectionAcceptedToast ?? 'Connection Accepted! You can now chat directly 🎉',
     );
   }
 
   void _handleDeclineInterest(Map<String, dynamic> profile) async {
     if (LocalCacheService().isGuestMode()) {
-      GuestRestrictedDialog.show(context);
-      return;
+      final result = await GuestRestrictedDialog.show(context, profileName: profile['name']?.toString());
+      if (result != SmartAuthResult.success || !mounted) return;
     }
 
     setState(() {
@@ -618,22 +621,25 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
       }
     });
 
-    Fluttertoast.showToast(
-      msg: AppLocalizations.of(context)?.interestDeclinedToast ?? 'Interest declined',
-      backgroundColor: Colors.grey.shade700,
-      textColor: Colors.white,
+    AppFeedback.showInfo(
+      context,
+      AppLocalizations.of(context)?.interestDeclinedToast ?? 'Interest declined',
     );
   }
 
   void _handleMessage(Map<String, dynamic> profile) async {
     if (LocalCacheService().isGuestMode()) {
-      GuestRestrictedDialog.show(context);
-      return;
+      final result = await GuestRestrictedDialog.show(context, intent: SmartAuthIntent.openChat, profileName: profile['name']?.toString());
+      if (result != SmartAuthResult.success || !mounted) return;
     }
     // 🚨 CRITICAL: Use 'userId' (camelCase) to match ProfileModel.toDisplayMap() structure
     final otherUserId = profile['userId']?.toString();
     if (otherUserId == null) {
-      Fluttertoast.showToast(msg: AppLocalizations.of(context)?.userIdNotFound ?? 'User ID not found');
+      AppFeedback.showError(
+        context,
+        AppLocalizations.of(context)?.userIdNotFound ?? 'User ID not found',
+        contextTag: 'chat',
+      );
       return;
     }
 
@@ -646,7 +652,10 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
     }
 
     if (mounted) {
-      Fluttertoast.showToast(msg: AppLocalizations.of(context)?.openingConversation ?? 'Opening conversation...');
+      AppFeedback.showInfo(
+        context,
+        AppLocalizations.of(context)?.openingConversation ?? 'Opening conversation...',
+      );
     }
 
     final chatRepo = ChatRepository();
@@ -664,39 +673,28 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
       },
       onFailure: (error) {
         if (error.toString().contains('FREE_LIMIT_REACHED')) {
-          // Show Ad Reward option instead of just Upgrade (Disabled for now)
-          /*
-          showDialog(
-            context: context,
-            builder: (context) => RewardedAdDialog(
-              rewardType: AdRewardType.directMessage,
-              onRewardGranted: () async {
-                await UsageRepository().grantAdReward(AdRewardType.directMessage);
-                if (mounted) {
-                  Fluttertoast.showToast(msg: AppLocalizations.of(context)?.oneMessageUnlocked ?? "1 Message Unlocked!");
-                }
-              },
-            ),
-          );
-          */
           if (mounted) {
-             Fluttertoast.showToast(msg: AppLocalizations.of(context)?.dailyMessageLimitReached ?? 'Daily message limit reached.');
+            AppFeedback.showWarning(
+              context,
+              AppLocalizations.of(context)?.dailyMessageLimitReached ?? 'Daily message limit reached.',
+            );
           }
         } else if (mounted) {
-          Fluttertoast.showToast(
-            msg: AppLocalizations.of(context)?.failedToStartChat(error.toString()) ?? 'Failed to start chat: $error',
-            backgroundColor: Theme.of(context).colorScheme.error,
-            textColor: Colors.white,
+          AppFeedback.showError(
+            context,
+            error,
+            contextTag: 'chat',
+            fallbackMessage: AppLocalizations.of(context)?.failedToStartChat(''),
           );
         }
       },
     );
   }
 
-  void _handleInterest(Map<String, dynamic> profile) {
+  void _handleInterest(Map<String, dynamic> profile) async {
     if (LocalCacheService().isGuestMode()) {
-      GuestRestrictedDialog.show(context);
-      return;
+      final result = await GuestRestrictedDialog.show(context, intent: SmartAuthIntent.expressInterest, profileName: profile['name']?.toString());
+      if (result != SmartAuthResult.success || !mounted) return;
     }
     final profileName = profile['name']?.toString() ?? 'User';
     
@@ -757,14 +755,20 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
     final myProfileId = await _shareRepository.getMyProfileId();
     if (myProfileId == null) {
       if (mounted) {
-        Fluttertoast.showToast(msg: l10n?.youNeedAProfileToShareIt ?? 'You need a profile to share it.');
+        AppFeedback.showWarning(
+          context,
+          l10n?.youNeedAProfileToShareIt ?? 'You need a profile to share it.',
+        );
       }
       return;
     }
 
     // 3. Execute share
     if (mounted) {
-      Fluttertoast.showToast(msg: l10n?.sharingProfile ?? 'Sharing profile...');
+      AppFeedback.showInfo(
+        context,
+        l10n?.sharingProfile ?? 'Sharing profile...',
+      );
     }
 
     final res = await _shareRepository.shareProfile(
@@ -781,8 +785,8 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
 
   Future<void> _handleBookmark(Map<String, dynamic> profile) async {
     if (LocalCacheService().isGuestMode()) {
-      GuestRestrictedDialog.show(context);
-      return;
+      final result = await GuestRestrictedDialog.show(context, intent: SmartAuthIntent.saveProfile, profileName: profile['name']?.toString());
+      if (result != SmartAuthResult.success) return;
     }
     final profileId = profile['id']?.toString();
     if (profileId == null) return;
@@ -800,12 +804,11 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
         if (kDebugMode) {
           AppLogger.debug('ProfileDetailScreen', '[BOOKMARK] ProfileDetailScreen > toggle($profileId) > SUCCESS > now: $isNowBookmarked');
         }
-        Fluttertoast.showToast(
-          msg: isNowBookmarked 
+        AppFeedback.showSuccess(
+          context,
+          isNowBookmarked 
               ? (AppLocalizations.of(context)?.profileSaved ?? 'Profile saved!') 
               : (AppLocalizations.of(context)?.profileRemovedFromSaved ?? 'Profile removed from saved'),
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
         );
       }
     } catch (e) {
@@ -813,19 +816,20 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
         AppLogger.error('ProfileDetailScreen', '[BOOKMARK] ProfileDetailScreen > toggle($profileId) > FAILED | $e');
       }
       if (mounted) {
-        Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)?.failedToUpdateBookmark(e.toString()) ?? 'Failed to update bookmark: $e',
-          backgroundColor: Theme.of(context).colorScheme.error,
-          textColor: Colors.white,
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'shortlist',
+          fallbackMessage: AppLocalizations.of(context)?.failedToUpdateBookmark(''),
         );
       }
     }
   }
 
-  void _showOptionsMenu() {
+  void _showOptionsMenu() async {
     if (LocalCacheService().isGuestMode()) {
-      GuestRestrictedDialog.show(context);
-      return;
+      final result = await GuestRestrictedDialog.show(context);
+      if (result != SmartAuthResult.success || !mounted) return;
     }
     ProfileOptionsMenu.show(
       context: context,

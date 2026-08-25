@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
@@ -13,20 +12,22 @@ import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/widgets/upgrade_dialog.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/guest_restricted_dialog.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/widgets/smart_auth_gate.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 /// Shows the profile sharing bottom sheet with WhatsApp, Link, and Status Card options.
 class HomeSharingSheet {
   HomeSharingSheet._();
 
-  static void show(
+  static Future<void> show(
     BuildContext context, {
     required ProfileModel profile,
     required ShareRepository shareRepository,
     required UsageRepository usageRepository,
-  }) {
+  }) async {
     if (LocalCacheService().isGuestMode()) {
-      GuestRestrictedDialog.show(context);
-      return;
+      final result = await GuestRestrictedDialog.show(context, profileName: profile.fullName);
+      if (result != SmartAuthResult.success) return;
     }
 
     HapticFeedback.selectionClick();
@@ -196,20 +197,19 @@ class _ShareOptionTile extends StatelessWidget {
                       successMsg = l10n?.profileSharedWith(profile.fullName) ??
                           'Profile shared with ${profile.fullName}';
                     }
-                    Fluttertoast.showToast(
-                      msg: successMsg,
-                      backgroundColor: Colors.green,
-                      textColor: Colors.white,
+                    AppFeedback.showSuccess(
+                      context,
+                      successMsg,
                     );
                   }
                 },
                 onFailure: (error) {
                   if (context.mounted) {
-                    Fluttertoast.showToast(
-                      msg: AppLocalizations.of(context)?.shareFailed(error.toString()) ??
-                          'Share failed: $error',
-                      backgroundColor: Theme.of(context).colorScheme.error,
-                      textColor: Colors.white,
+                    AppFeedback.showError(
+                      context,
+                      error,
+                      contextTag: 'interest',
+                      fallbackMessage: AppLocalizations.of(context)?.shareFailed(''),
                     );
                   }
                 },
@@ -217,11 +217,11 @@ class _ShareOptionTile extends StatelessWidget {
             },
             onFailure: (error) {
               if (context.mounted) {
-                Fluttertoast.showToast(
-                  msg: AppLocalizations.of(context)?.errorCheckingShareLimits(error.toString()) ??
-                      'Error checking share limits: $error',
-                  backgroundColor: Theme.of(context).colorScheme.error,
-                  textColor: Colors.white,
+                AppFeedback.showError(
+                  context,
+                  error,
+                  contextTag: 'share',
+                  fallbackMessage: AppLocalizations.of(context)?.errorCheckingShareLimits(''),
                 );
               }
             },
@@ -229,10 +229,10 @@ class _ShareOptionTile extends StatelessWidget {
         } catch (e) {
           AppLogger.error('HomeSharingSheet', 'Share error: $e');
           if (context.mounted) {
-            Fluttertoast.showToast(
-              msg: e.toString().replaceAll('Exception: ', ''),
-              backgroundColor: Theme.of(context).colorScheme.error,
-              textColor: Colors.white,
+            AppFeedback.showError(
+              context,
+              e,
+              contextTag: 'share',
             );
           }
         }

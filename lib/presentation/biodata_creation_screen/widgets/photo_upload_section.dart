@@ -6,11 +6,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/services/photo_picker_service.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/theme/app_colors.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 /// Robust photo upload section with crash-resistant processing
 /// Uses isolate-based compression via PhotoPickerService
@@ -131,16 +131,11 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
       await _addPhotoToList(result.filePath!);
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              result.compressedSizeKB != null
-                  ? AppLocalizations.of(context)?.photoAddedWithKb(result.compressedSizeKB!) ?? 'Photo added (${result.compressedSizeKB}KB)'
-                  : AppLocalizations.of(context)?.photoAdded ?? 'Photo added successfully',
-            ),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            duration: const Duration(seconds: 2),
-          ),
+        AppFeedback.showSuccess(
+          context,
+          result.compressedSizeKB != null
+              ? AppLocalizations.of(context)?.photoAddedWithKb(result.compressedSizeKB!) ?? 'Photo added (${result.compressedSizeKB}KB)'
+              : AppLocalizations.of(context)?.photoAdded ?? 'Photo added successfully',
         );
       }
     } catch (e) {
@@ -150,27 +145,11 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
       });
 
       if (mounted) {
-        final errorMessage = e.toString().replaceAll('Exception: ', '');
-        final isPermissionError = errorMessage.toLowerCase().contains(
-          'permission',
-        );
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              isPermissionError
-                  ? AppLocalizations.of(context)?.permissionDeniedSettings ?? 'Permission denied. Please enable access in Settings.'
-                  : 'Error: $errorMessage',
-            ),
-            backgroundColor: Theme.of(context).colorScheme.error,
-            action: isPermissionError
-                ? SnackBarAction(
-                    label: AppLocalizations.of(context)?.openSettings ?? 'Open Settings',
-                    textColor: Colors.white,
-                    onPressed: () => openAppSettings(),
-                  )
-                : null,
-          ),
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'photo',
+          fallbackMessage: AppLocalizations.of(context)?.failedToProcessImage,
         );
       }
     } finally {
@@ -298,7 +277,7 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final maxPhotos = _isPremiumUser ? _premiumPhotoLimit : _freePhotoLimit;
+    final maxPhotos = widget.isAdminEdit ? _premiumPhotoLimit : (_isPremiumUser ? _premiumPhotoLimit : _freePhotoLimit);
 
     return SingleChildScrollView(
       padding: EdgeInsets.all(4.w),

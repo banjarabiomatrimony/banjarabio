@@ -22,6 +22,7 @@ import 'package:banjarabio/presentation/photo_management_screen/widgets/widgets/
 import 'package:banjarabio/presentation/photo_management_screen/widgets/widgets/photo_grid_widget.dart';
 import 'package:banjarabio/core/repositories/photo_repository.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 import 'package:banjarabio/core/models/subscription_model.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/widgets/skeleton_loaders.dart';
@@ -114,7 +115,7 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
           });
         },
         onFailure: (error) {
-          _showErrorSnackBar(AppLocalizations.of(context)?.failedToLoadPhotosError(error.toString()) ?? 'Failed to load photos: $error');
+          _showErrorSnackBar(error);
         },
       );
     }
@@ -544,7 +545,7 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
       }
       },
       onFailure: (error) {
-        _showErrorSnackBar(AppLocalizations.of(context)?.failedToUpdatePrimaryPhotoError(error.toString()) ?? 'Failed to update primary photo: $error');
+        _showErrorSnackBar(error);
       },
     );
   }
@@ -754,7 +755,7 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
                 },
                 onFailure: (error) {
                   if (mounted) {
-                    _showErrorSnackBar(l10n?.failedToDeletePhotoError(error.toString()) ?? 'Failed to delete photo: $error');
+                    _showErrorSnackBar(error);
                   }
                 },
               );
@@ -803,40 +804,38 @@ class _PhotoManagementScreenState extends State<PhotoManagementScreen> {
 
   void _showSuccessSnackBar(String message) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 2),
-      ),
+    AppFeedback.showSuccess(
+      context,
+      message,
     );
   }
 
-  void _showErrorSnackBar(String message) {
+  void _showErrorSnackBar(dynamic error) {
     if (!mounted) return;
     final isPermissionError =
-        message.toLowerCase().contains('permission') ||
-        message.toLowerCase().contains('denied');
+        error.toString().toLowerCase().contains('permission') ||
+        error.toString().toLowerCase().contains('denied');
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          isPermissionError
-              ? 'Permission denied. Please enable access in Settings.'
-              : message,
+    if (isPermissionError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Permission denied. Please enable access in Settings.'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+          behavior: SnackBarBehavior.floating,
+          action: SnackBarAction(
+            label: AppLocalizations.of(context)?.openSettings ?? 'Open Settings',
+            textColor: Colors.white,
+            onPressed: () => openAppSettings(),
+          ),
         ),
-        backgroundColor: Theme.of(context).colorScheme.error,
-        behavior: SnackBarBehavior.floating,
-        action: isPermissionError
-            ? SnackBarAction(
-                label: AppLocalizations.of(context)?.openSettings ?? 'Open Settings',
-                textColor: Colors.white,
-                onPressed: () => openAppSettings(),
-              )
-            : null,
-      ),
-    );
+      );
+    } else {
+      AppFeedback.showError(
+        context,
+        error,
+        contextTag: 'photo',
+      );
+    }
   }
 
   @override

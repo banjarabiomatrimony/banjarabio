@@ -20,7 +20,8 @@ class OnboardingValidator {
     switch (step) {
       case CreationStep.personal:
         if (_isEmpty(formData['name'])) missing.add('name');
-        if (_isEmpty(formData['phone_number'])) missing.add('phone_number');
+        final phone = formData['phone_number']?.toString().replaceAll(RegExp(r'\D'), '') ?? '';
+        if (phone.length != 10) missing.add('phone_number');
         if (_isEmpty(formData['surname'])) {
           missing.add('surname');
         } else {

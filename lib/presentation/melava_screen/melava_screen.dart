@@ -14,6 +14,7 @@ import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 import 'package:banjarabio/widgets/shimmer_widget.dart';
 import 'package:banjarabio/widgets/state_orchestration/bespoke_state_container.dart';
 import 'package:banjarabio/widgets/state_orchestration/empty_state_config.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 import 'package:flutter/services.dart';
 
 
@@ -347,12 +348,9 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       await launchUrl(phoneUri);
     } else {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)?.couldNotLaunchDialer ?? 'Could not launch phone dialer',
-            ),
-          ),
+        AppFeedback.showError(
+          context,
+          AppLocalizations.of(context)?.couldNotLaunchDialer ?? 'Could not launch phone dialer',
         );
       }
     }
@@ -374,13 +372,10 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)?.couldNotLaunchWhatsApp ??
-                  'Could not launch WhatsApp',
-            ),
-          ),
+        AppFeedback.showError(
+          context,
+          AppLocalizations.of(context)?.couldNotLaunchWhatsApp ??
+              'Could not launch WhatsApp',
         );
       }
     }
@@ -432,12 +427,9 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       await Share.share(message);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)?.couldNotTriggerSharing ?? 'Could not trigger sharing',
-            ),
-          ),
+        AppFeedback.showError(
+          context,
+          AppLocalizations.of(context)?.couldNotTriggerSharing ?? 'Could not trigger sharing',
         );
       }
     }
@@ -1100,12 +1092,9 @@ class _MelavaScreenState extends ConsumerState<MelavaScreen> {
       await launchUrl(uri);
     } else {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)?.couldNotLaunchWhatsApp ?? 'Could not launch WhatsApp',
-            ),
-          ),
+        AppFeedback.showError(
+          context,
+          AppLocalizations.of(context)?.couldNotLaunchWhatsApp ?? 'Could not launch WhatsApp',
         );
       }
     }

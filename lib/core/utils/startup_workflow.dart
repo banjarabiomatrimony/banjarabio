@@ -8,7 +8,7 @@ import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/core/services/startup_orchestrator.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 class StartupWorkflow {
   static final ProfileRepository _profileRepository = ProfileRepository();
@@ -101,12 +101,9 @@ class StartupWorkflow {
           if (hasProfile) {
             // Identity Intelligence Toast feedback for existing profile detection
             final l10n = AppLocalizations.of(context);
-            Fluttertoast.showToast(
-              msg: l10n?.welcomeBackAccountFound ?? 'Welcome back! Your account has been found.',
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.BOTTOM,
-              backgroundColor: AppColors.categoryAstroDark,
-              textColor: Colors.white,
+            AppFeedback.showSuccess(
+              context,
+              l10n?.welcomeBackAccountFound ?? 'Welcome back! Your account has been found.',
             );
 
             // Role-based routing
@@ -133,6 +130,12 @@ class StartupWorkflow {
         onFailure: (error) async {
           AppLogger.error('StartupWorkflow', 'getOwnProfile error during startup: $error');
           if (!context.mounted) return;
+
+          // 🌐 Graceful toast for connectivity issues
+          AppFeedback.showWarning(
+            context,
+            '⚠️ Limited connection — showing cached data',
+          );
 
           // 🛡️ CRITICAL AUTH LOOP FIX: User IS authenticated in Supabase.
           // Do NOT push AppRoutes.authentication, as that re-triggers authStateChanges -> infinite loop!

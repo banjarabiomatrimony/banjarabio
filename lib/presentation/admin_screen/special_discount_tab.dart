@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/repositories/admin_repository.dart';
 import 'package:banjarabio/widgets/glassmorphism_container.dart';
 import 'package:banjarabio/theme/app_colors.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 class SpecialDiscountTab extends StatefulWidget {
   final ThemeData theme;
@@ -69,11 +70,9 @@ class _SpecialDiscountTabState extends State<SpecialDiscountTab> {
       setState(() => _isSubmitting = false);
       response.fold(
         onSuccess: (_) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Special discount granted successfully!'),
-              backgroundColor: Colors.green,
-            ),
+          AppFeedback.showSuccess(
+            context,
+            'Special discount granted successfully!',
           );
           _userIdController.clear();
           _discountController.clear();
@@ -82,11 +81,11 @@ class _SpecialDiscountTabState extends State<SpecialDiscountTab> {
           });
         },
         onFailure: (error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Failed to grant discount: $error'),
-              backgroundColor: Colors.red,
-            ),
+          AppFeedback.showError(
+            context,
+            error,
+            contextTag: 'admin',
+            fallbackMessage: 'Failed to grant discount',
           );
         },
       );

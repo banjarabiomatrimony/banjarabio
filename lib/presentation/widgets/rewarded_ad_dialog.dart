@@ -4,6 +4,7 @@ import 'package:banjarabio/core/services/ad_reward_service.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/theme/app_colors.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 /// [RewardedAdDialog]
 /// 
@@ -51,10 +52,9 @@ class _RewardedAdDialogState extends State<RewardedAdDialog> {
     } else {
       AppLogger.debug('RewardedAdDialog', '❌ [RewardedDialog:NOT_READY] Ad could not be fetched in time. Showing snackbar.');
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(AppLocalizations.of(context)?.adNotReady ??
-                  'Ad not ready yet. Please try again in a moment.')),
+        AppFeedback.showInfo(
+          context,
+          AppLocalizations.of(context)?.adNotReady ?? 'Ad not ready yet. Please try again in a moment.',
         );
       }
     }

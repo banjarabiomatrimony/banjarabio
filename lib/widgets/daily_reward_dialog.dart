@@ -7,6 +7,7 @@ import 'package:lottie/lottie.dart';
 import 'package:banjarabio/core/models/daily_reward_model.dart';
 import 'package:banjarabio/core/repositories/daily_reward_repository.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 import 'package:banjarabio/theme/app_colors.dart';
 
 class DailyRewardDialog extends StatefulWidget {
@@ -151,12 +152,9 @@ class _DailyRewardDialogState extends State<DailyRewardDialog>
           if (mounted) Navigator.of(context).pop(_status);
         });
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(res.errorMessage),
-            backgroundColor: Colors.red.shade700,
-            behavior: SnackBarBehavior.floating,
-          ),
+        AppFeedback.showError(
+          context,
+          res.errorMessage,
         );
         setState(() => _isClaiming = false);
       }

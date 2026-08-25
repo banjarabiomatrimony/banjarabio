@@ -7,6 +7,7 @@ import 'package:banjarabio/widgets/staggered_list_animation.dart';
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/presentation/admin_screen/admin_helpers.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 /// Creators / Influencer management tab with list, metrics, and add/edit form.
 class AdminCreatorsTab extends StatefulWidget {
@@ -214,9 +215,18 @@ class _CreatorFormState extends State<_CreatorForm> {
           );
 
     setState(() => _isSubmitting = false);
-    response.fold(onSuccess: (_) => widget.onSuccess(), onFailure: (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e), backgroundColor: Colors.red, behavior: SnackBarBehavior.floating));
-    });
+    response.fold(
+      onSuccess: (_) => widget.onSuccess(),
+      onFailure: (e) {
+        if (mounted) {
+          AppFeedback.showError(
+            context,
+            e,
+            contextTag: 'admin',
+          );
+        }
+      },
+    );
   }
 
   @override

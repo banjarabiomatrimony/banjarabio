@@ -12,6 +12,7 @@ import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/services/csv_export_service.dart';
 import 'package:banjarabio/theme/app_colors.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 /// User management tab with search, gender / premium / tester sub-tabs,
 /// verification chips, and edit navigation.
@@ -69,8 +70,11 @@ class _AdminUsersTabState extends State<AdminUsersTab> {
           if (mounted) {
             setState(() => _isLoading = false);
             AppLogger.error('AdminUsersTab', 'Error loading users: $error');
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(AppLocalizations.of(context)?.errorLoadingAdminUsers ?? 'Could not fetch user list.')),
+            AppFeedback.showError(
+              context,
+              error,
+              contextTag: 'admin',
+              fallbackMessage: AppLocalizations.of(context)?.errorLoadingAdminUsers ?? 'Could not fetch user list.',
             );
           }
         },
@@ -87,16 +91,21 @@ class _AdminUsersTabState extends State<AdminUsersTab> {
         onSuccess: (_) async => await _loadUsers(''),
         onFailure: (error) {
           if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(AppLocalizations.of(context)?.failedToVerify(error) ?? 'Failed to verify: $error')),
+            AppFeedback.showError(
+              context,
+              error,
+              contextTag: 'admin',
+              fallbackMessage: AppLocalizations.of(context)?.failedToVerify(''),
             );
           }
         },
       );
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)?.errorPrefix(e.toString()) ?? 'Error: $e')),
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'admin',
         );
       }
     }

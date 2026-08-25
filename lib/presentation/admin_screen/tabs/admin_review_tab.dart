@@ -11,6 +11,7 @@ import 'package:banjarabio/widgets/glassmorphism_container.dart';
 import 'package:banjarabio/widgets/staggered_list_animation.dart';
 import 'package:banjarabio/presentation/admin_screen/admin_helpers.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 /// Review tab handling Verifications and References with
 /// detailed review dialog, proof viewing, and admin actions.
@@ -88,29 +89,35 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
         onSuccess: (_) async {
           await _loadData(); // Reload list
           if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(status == 'on_hold' 
-                    ? (AppLocalizations.of(context)?.onHold ?? 'On Hold')
-                    : (AppLocalizations.of(context)?.requestProcessedSuccessfullyMsg(status) ?? 'Request $status successfully')),
-                backgroundColor: status == 'approved' ? Colors.green : (status == 'on_hold' ? Colors.orange : Colors.red),
-              ),
-            );
+            final msg = status == 'on_hold' 
+                ? (AppLocalizations.of(context)?.onHold ?? 'On Hold')
+                : (AppLocalizations.of(context)?.requestProcessedSuccessfullyMsg(status) ?? 'Request $status successfully');
+            if (status == 'approved') {
+              AppFeedback.showSuccess(context, msg);
+            } else if (status == 'on_hold') {
+              AppFeedback.showWarning(context, msg);
+            } else {
+              AppFeedback.showInfo(context, msg);
+            }
           }
         },
         onFailure: (error) {
           if (mounted) {
-            ScaffoldMessenger.of(
+            AppFeedback.showError(
               context,
-            ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)?.errorPrefix(error) ?? 'Error: $error')));
+              error,
+              contextTag: 'admin',
+            );
           }
         },
       );
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
+        AppFeedback.showError(
           context,
-        ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)?.errorPrefix(e.toString()) ?? 'Error: $e')));
+          e,
+          contextTag: 'admin',
+        );
       }
     }
   }
@@ -273,29 +280,33 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
         onSuccess: (_) async {
           await _loadData(); // Reload list
           if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(status == 'verified' 
-                    ? (AppLocalizations.of(context)?.referenceVerified ?? 'Reference Verified')
-                    : (AppLocalizations.of(context)?.referenceRejected ?? 'Reference Rejected')),
-                backgroundColor: status == 'verified' ? Colors.green : Colors.red,
-              ),
-            );
+            final msg = status == 'verified' 
+                ? (AppLocalizations.of(context)?.referenceVerified ?? 'Reference Verified')
+                : (AppLocalizations.of(context)?.referenceRejected ?? 'Reference Rejected');
+            if (status == 'verified') {
+              AppFeedback.showSuccess(context, msg);
+            } else {
+              AppFeedback.showInfo(context, msg);
+            }
           }
         },
         onFailure: (error) {
           if (mounted) {
-            ScaffoldMessenger.of(
+            AppFeedback.showError(
               context,
-            ).showSnackBar(SnackBar(content: Text('Error: $error')));
+              error,
+              contextTag: 'admin',
+            );
           }
         },
       );
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
+        AppFeedback.showError(
           context,
-        ).showSnackBar(SnackBar(content: Text('Error: $e')));
+          e,
+          contextTag: 'admin',
+        );
       }
     }
   }
@@ -569,10 +580,10 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                                         : () {
                                             if (action == 'rejected' &&
                                                 selectedReason == null) {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(const SnackBar(
-                                                      content: Text(
-                                                          'Please select a rejection reason')));
+                                              AppFeedback.showWarning(
+                                                context,
+                                                'Please select a rejection reason',
+                                              );
                                               return;
                                             }
                                             Navigator.pop(context);
@@ -1097,11 +1108,9 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                     _viewVideo(fullVideoUrl);
                   } else if (response != null && !response.isSuccess) {
                     // Feedback that the missing file is acknowledged and marked as "viewed"
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Acknowledged: Missing file marked as processed.'),
-                        duration: Duration(seconds: 2),
-                      )
+                    AppFeedback.showInfo(
+                      context,
+                      'Acknowledged: Missing file marked as processed.',
                     );
                   }
                 },
@@ -1189,11 +1198,9 @@ class _AdminReviewTabState extends State<AdminReviewTab> {
                         if (url != null) {
                           _viewImage(url);
                         } else if (isError) {
-                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Acknowledged: Missing file marked as processed.'),
-                              duration: Duration(seconds: 2),
-                            )
+                          AppFeedback.showInfo(
+                            context,
+                            'Acknowledged: Missing file marked as processed.',
                           );
                         }
                       },

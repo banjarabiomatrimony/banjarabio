@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/core/data/location_data.dart';
@@ -293,18 +293,18 @@ class _VendorRegistrationScreenState
 
   Future<void> _submitRegistration() async {
     if (!_formKey.currentState!.validate()) {
-      Fluttertoast.showToast(
-        msg:
-            AppLocalizations.of(context)?.pleaseFillAllRequiredFields ??
+      AppFeedback.showWarning(
+        context,
+        AppLocalizations.of(context)?.pleaseFillAllRequiredFields ??
             'Please fill all required fields',
       );
       return;
     }
 
     if (!_agreedToTerms) {
-      Fluttertoast.showToast(
-        msg:
-            AppLocalizations.of(context)?.pleaseAcceptVendorPartnerTerms ??
+      AppFeedback.showWarning(
+        context,
+        AppLocalizations.of(context)?.pleaseAcceptVendorPartnerTerms ??
             'Please accept the vendor partner terms',
       );
       return;
@@ -350,7 +350,11 @@ class _VendorRegistrationScreenState
     if (response.isSuccess) {
       _showSuccessDialog(response.data);
     } else {
-      Fluttertoast.showToast(msg: response.errorMessage);
+      AppFeedback.showError(
+        context,
+        response.errorMessage,
+        contextTag: 'vendor',
+      );
     }
   }
 

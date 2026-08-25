@@ -545,7 +545,7 @@ class _LocationPreferencesSectionState
             Text(label, style: theme.textTheme.titleMedium),
             if (isRequired && !widget.isAdminEdit) ...[
               SizedBox(width: 1.w),
-              Text(AppLocalizations.of(context)?.emptyStr ?? '*',
+              Text('*',
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: theme.colorScheme.error,
                 ),

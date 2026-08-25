@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/providers/profile_providers.dart';
@@ -57,11 +57,17 @@ class _AccountScreenState extends ConsumerState<AccountScreen>
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         if (!mounted) return;
-        Fluttertoast.showToast(msg: AppLocalizations.of(context)?.couldNotLaunchUrl ?? 'Could not launch URL');
+        AppFeedback.showError(
+          context,
+          AppLocalizations.of(context)?.couldNotLaunchUrl ?? 'Could not launch URL',
+        );
       }
     } catch (_) {
       if (!mounted) return;
-      Fluttertoast.showToast(msg: AppLocalizations.of(context)?.errorLaunchingLink ?? 'Error launching link');
+      AppFeedback.showError(
+        context,
+        AppLocalizations.of(context)?.errorLaunchingLink ?? 'Error launching link',
+      );
     }
   }
 
@@ -875,9 +881,9 @@ class _AccountScreenState extends ConsumerState<AccountScreen>
                     brandColor: AppColors.materialPink,
                     isLivePulsing: true,
                     onTap: () {
-                      Fluttertoast.showToast(
-                        msg: '💍 Over 1,200+ Banjara marriages celebrated!',
-                        toastLength: Toast.LENGTH_SHORT,
+                      AppFeedback.showInfo(
+                        context,
+                        '💍 Over 1,200+ Banjara marriages celebrated!',
                       );
                     },
                   ),
@@ -898,9 +904,9 @@ class _AccountScreenState extends ConsumerState<AccountScreen>
                     brandColor: AppColors.materialBlueDark,
                     isLivePulsing: true,
                     onTap: () {
-                      Fluttertoast.showToast(
-                        msg: '👥 Largest verified Banjara matrimony network',
-                        toastLength: Toast.LENGTH_SHORT,
+                      AppFeedback.showInfo(
+                        context,
+                        '👥 Largest verified Banjara matrimony network',
                       );
                     },
                   ),
@@ -924,9 +930,9 @@ class _AccountScreenState extends ConsumerState<AccountScreen>
                     brandColor: AppColors.success,
                     isLivePulsing: true,
                     onTap: () {
-                      Fluttertoast.showToast(
-                        msg: '🛡️ 100% traditional Gotra exogamy verified',
-                        toastLength: Toast.LENGTH_SHORT,
+                      AppFeedback.showInfo(
+                        context,
+                        '🛡️ 100% traditional Gotra exogamy verified',
                       );
                     },
                   ),
@@ -1183,9 +1189,11 @@ class _AccountScreenState extends ConsumerState<AccountScreen>
         }
       } catch (e) {
         if (context.mounted) {
-          Fluttertoast.showToast(
-            msg: 'Failed to logout. Please try again.',
-            toastLength: Toast.LENGTH_LONG,
+          AppFeedback.showError(
+            context,
+            e,
+            contextTag: 'auth',
+            fallbackMessage: 'Failed to logout. Please try again.',
           );
         }
       }
@@ -1964,11 +1972,9 @@ class _MenuProfileCardState extends State<_MenuProfileCard>
                                         onTap: () {
                                           Clipboard.setData(ClipboardData(
                                               text: widget.profile.displayId));
-                                          Fluttertoast.showToast(
-                                            msg:
-                                                'Profile ID copied: ${widget.profile.displayId}',
-                                            toastLength: Toast.LENGTH_SHORT,
-                                            gravity: ToastGravity.BOTTOM,
+                                          AppFeedback.showSuccess(
+                                            context,
+                                            'Profile ID copied: ${widget.profile.displayId}',
                                           );
                                         },
                                         borderRadius: BorderRadius.circular(6),

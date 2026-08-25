@@ -194,7 +194,26 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಎಲ್ಲಾ ವಿಭಾಗಗಳನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಪೂರ್ಣಗೊಳಿಸಲು \"ಬಯೋಡೇಟಾ ಉಳಿಸಿ\" ಕ್ಲಿಕ್ ಮಾಡಿ. ನಿಮ್ಮ ಗೌಪ್ಯತೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳ ಆಧಾರದ ಮೇಲೆ ನಿಮ್ಮ ಬಯೋಡೇಟಾ ಇತರ ಸಮುದಾಯದ ಸದಸ್ಯರಿಗೆ ಗೋಚರಿಸುತ್ತದೆ.';
 
   @override
+  String get alreadyExpressedInterest =>
+      'ನೀವು ಈಗಾಗಲೇ ಈ ಪ್ರೊಫೈಲ್‌ನಲ್ಲಿ ಆಸಕ್ತಿಯನ್ನು ವ್ಯಕ್ತಪಡಿಸಿದ್ದೀರಿ.';
+
+  @override
   String get alreadyHaveProfileLogin => 'ಖಾತೆ ಇದೆಯೇ? ಲಾಗಿನ್ ಮಾಡಿ';
+
+  @override
+  String get alreadyInShortlist =>
+      'ಈ ಪ್ರೊಫೈಲ್ ಈಗಾಗಲೇ ನಿಮ್ಮ ಶಾರ್ಟ್‌ಲಿಸ್ಟ್‌ನಲ್ಲಿದೆ.';
+
+  @override
+  String get duplicateRecordError => 'ಈ ದಾಖಲೆ ಈಗಾಗಲೇ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ.';
+
+  @override
+  String get networkErrorMessage =>
+      'ದಯವಿಟ್ಟು ನಿಮ್ಮ ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.';
+
+  @override
+  String get permissionDeniedError =>
+      'ಈ ಕ್ರಿಯೆಯನ್ನು ನಿರ್ವಹಿಸಲು ನಿಮಗೆ ಅನುಮತಿಯಿಲ್ಲ.';
 
   @override
   String get alternateRelativeContactNumberOptional =>
@@ -1352,7 +1371,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get employmentSector => 'Employment Sector';
 
   @override
-  String get emptyStr => '₹';
+  String get emptyStr => '';
 
   @override
   String get enableNotifications => 'Enable Notifications';
@@ -1375,10 +1394,22 @@ class AppLocalizationsKn extends AppLocalizations {
   String get enterEducationDetails => 'ನಿಮ್ಮ ಶಿಕ್ಷಣ ವಿವರಗಳನ್ನು ನಮೂದಿಸಿ';
 
   @override
+  String get enterFatherName => 'ತಂದೆಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ';
+
+  @override
   String get enterFullName => 'ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರು ನಮೂದಿಸಿ';
 
   @override
   String get enterMobileNumber => 'Enter mobile number';
+
+  @override
+  String get enterMotherName => 'ತಾಯಿಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ';
+
+  @override
+  String get fatherOccupationHint => 'ಉದಾ. ನಿವೃತ್ತ ಅಧಿಕಾರಿ / ರೈತ';
+
+  @override
+  String get motherOccupationHint => 'ಉದಾ. ಗೃಹಿಣಿ';
 
   @override
   String get enterProfessionDetails => 'ನಿಮ್ಮ ವೃತ್ತಿ ವಿವರಗಳನ್ನು ನಮೂದಿಸಿ';

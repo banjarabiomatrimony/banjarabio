@@ -7,6 +7,7 @@ import 'package:banjarabio/core/repositories/trust_score_repository.dart';
 import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 class VideoIntroScreen extends StatefulWidget {
   const VideoIntroScreen({super.key});
@@ -36,14 +37,11 @@ class _VideoIntroScreenState extends State<VideoIntroScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
+        AppFeedback.showError(
           context,
-        ).showSnackBar(SnackBar(
-          content: Text(
-            AppLocalizations.of(context)?.errorWithLabel(e.toString()) ??
-                'Error: $e',
-          ),
-        ));
+          e,
+          contextTag: 'verification',
+        );
       }
     }
   }
@@ -66,13 +64,11 @@ class _VideoIntroScreenState extends State<VideoIntroScreen> {
         onSuccess: (_) async => uploadSuccess = true,
         onFailure: (error) async {
           if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  AppLocalizations.of(context)?.uploadFailed(error) ??
-                      'Video upload failed: $error',
-                ),
-              ),
+            AppFeedback.showError(
+              context,
+              error,
+              contextTag: 'verification',
+              fallbackMessage: AppLocalizations.of(context)?.uploadFailed(''),
             );
           }
           // Reset loading state on failure
@@ -118,14 +114,11 @@ class _VideoIntroScreenState extends State<VideoIntroScreen> {
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(
+        AppFeedback.showError(
           context,
-        ).showSnackBar(SnackBar(
-          content: Text(
-            AppLocalizations.of(context)?.errorWithLabel(e.toString()) ??
-                'Error: ${e.toString()}',
-          ),
-        ));
+          e,
+          contextTag: 'verification',
+        );
       }
     }
   }

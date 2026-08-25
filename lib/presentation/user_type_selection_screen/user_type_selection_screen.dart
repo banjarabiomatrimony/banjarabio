@@ -8,12 +8,15 @@ import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/theme/app_colors.dart';
 import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/utils/startup_workflow.dart';
 import 'package:banjarabio/widgets/app_logo_image.dart';
+import 'package:banjarabio/widgets/smart_auth_gate.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 import 'package:banjarabio/presentation/authentication_screen/authentication_screen.dart';
 import 'package:banjarabio/core/session_manager.dart';
@@ -205,6 +208,8 @@ class _UserTypeSelectionScreenState extends ConsumerState<UserTypeSelectionScree
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      isDismissible: !isFirstTime,
+      enableDrag: !isFirstTime,
       backgroundColor: Colors.transparent,
       builder: (modalContext) {
           return Container(
@@ -445,9 +450,10 @@ class _UserTypeSelectionScreenState extends ConsumerState<UserTypeSelectionScree
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } else if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(AppLocalizations.of(context)?.couldNotLaunchWhatsApp ?? 'Could not launch WhatsApp'),
-      ));
+      AppFeedback.showError(
+        context,
+        AppLocalizations.of(context)?.couldNotLaunchWhatsApp ?? 'Could not launch WhatsApp',
+      );
     }
   }
 
@@ -456,9 +462,10 @@ class _UserTypeSelectionScreenState extends ConsumerState<UserTypeSelectionScree
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } else if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Could not launch Instagram'),
-      ));
+      AppFeedback.showError(
+        context,
+        'Could not launch Instagram',
+      );
     }
   }
 
@@ -466,12 +473,23 @@ class _UserTypeSelectionScreenState extends ConsumerState<UserTypeSelectionScree
 
   void _browseMatches() => Navigator.of(context).pushNamed(AppRoutes.relativeIntake);
 
-  void _createBiodata() {
+  void _createBiodata() async {
     AppLogger.debug('UserTypeSelectionScreen', '_createBiodata called. isAuthenticated: $_isAuthenticated');
     if (_isAuthenticated) {
       Navigator.of(context).pushNamed(AppRoutes.biodataCreation);
     } else {
-      _tabController.animateTo(0);
+      // 🛡️ SmartAuthGate: Show intent-aware auth bottom sheet instead of tab switch
+      final result = await SmartAuthGate.show(
+        context,
+        intent: SmartAuthIntent.createBiodata,
+      );
+      if (result == SmartAuthResult.success && mounted) {
+        // Post-auth routing: check if profile exists
+        await StartupWorkflow.navigateBasedOnStatus(
+          context,
+          targetRouteOnNoProfile: AppRoutes.biodataCreation,
+        );
+      }
     }
   }
 

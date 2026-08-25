@@ -195,7 +195,26 @@ class AppLocalizationsTe extends AppLocalizations {
       'అన్ని విభాగాలను సమీక్షించండి మరియు మీ ప్రొఫైల్‌ను పూర్తి చేయడానికి \"బయోడేటాను సేవ్ చేయి\" క్లిక్ చేయండి. మీ గోప్యతా సెట్టింగ్‌ల ఆధారంగా మీ బయోడేటా ఇతర సామాజిక సభ్యులకు కనిపిస్తుంది.';
 
   @override
+  String get alreadyExpressedInterest =>
+      'మీరు ఇప్పటికే ఈ ప్రొఫైల్‌పై ఆసక్తిని వ్యక్తం చేశారు.';
+
+  @override
   String get alreadyHaveProfileLogin => 'ఖాతా ఉందా? లాగిన్ చేయండి';
+
+  @override
+  String get alreadyInShortlist =>
+      'ఈ ప్రొఫైల్ ఇప్పటికే మీ షార్ట్‌లిస్ట్‌లో ఉంది.';
+
+  @override
+  String get duplicateRecordError => 'ఈ రికార్డ్ ఇప్పటికే ఉంది.';
+
+  @override
+  String get networkErrorMessage =>
+      'దయచేసి మీ ఇంటర్నెట్ కనెక్షన్‌ని తనిಖీ చేసి మళ్లీ ప్రయత్నించండి.';
+
+  @override
+  String get permissionDeniedError =>
+      'ఈ చర్యను నిర్వహించడానికి మీకు అనుమతి లేదు.';
 
   @override
   String get alternateRelativeContactNumberOptional =>
@@ -1355,7 +1374,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String get employmentSector => 'Employment Sector';
 
   @override
-  String get emptyStr => '₹';
+  String get emptyStr => '';
 
   @override
   String get enableNotifications => 'Enable Notifications';
@@ -1378,10 +1397,22 @@ class AppLocalizationsTe extends AppLocalizations {
   String get enterEducationDetails => 'మీ విద్యా వివరాలు నమోదు చేయండి';
 
   @override
+  String get enterFatherName => 'తండ్రి పేరు నమోదు చేయండి';
+
+  @override
   String get enterFullName => 'మీ పూర్తి పేరు నమోదు చేయండి';
 
   @override
   String get enterMobileNumber => 'Enter mobile number';
+
+  @override
+  String get enterMotherName => 'తల్లి పేరు నమోదు చేయండి';
+
+  @override
+  String get fatherOccupationHint => 'ఉదా. రిటైర్డ్ అధికారి / రైతు';
+
+  @override
+  String get motherOccupationHint => 'ఉదా. గృహిణి';
 
   @override
   String get enterProfessionDetails => 'మీ వృత్తి వివరాలు నమోదు చేయండి';

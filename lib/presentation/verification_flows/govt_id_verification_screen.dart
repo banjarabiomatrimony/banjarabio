@@ -12,6 +12,7 @@ import 'package:banjarabio/presentation/verification_flows/document_camera_scree
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/theme/app_colors.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 class GovtIdVerificationScreen extends StatefulWidget {
   const GovtIdVerificationScreen({super.key});
@@ -277,13 +278,10 @@ class _GovtIdVerificationScreenState extends State<GovtIdVerificationScreen> {
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)?.errorWithLabel(e.toString()) ??
-                  'Error: ${e.toString()}',
-            ),
-          ),
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'verification',
         );
       }
     }

@@ -12,6 +12,7 @@ import 'package:banjarabio/core/repositories/influencer_repository.dart';
 import 'package:banjarabio/core/theme/app_gradients.dart';
 import 'package:banjarabio/widgets/glassmorphism_container.dart';
 import 'package:banjarabio/widgets/logout_confirmation_dialog.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 // Tab imports
 import 'package:banjarabio/presentation/admin_screen/tabs/admin_overview_tab.dart';
@@ -84,11 +85,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         if (profile == null || !profile.isAdmin) {
           if (mounted) {
             Navigator.of(context).pop();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(AppLocalizations.of(context)?.unauthorizedAccessAdminsOnly ?? 'Unauthorized access. Admins only.'),
-                backgroundColor: Colors.red,
-              ),
+            AppFeedback.showError(
+              context,
+              AppLocalizations.of(context)?.unauthorizedAccessAdminsOnly ?? 'Unauthorized access. Admins only.',
+              contextTag: 'admin',
             );
           }
           return;
@@ -98,11 +98,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       onFailure: (error) {
         if (mounted) {
           Navigator.of(context).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context)?.errorPrefix(error) ?? 'Error validating access: $error'),
-              backgroundColor: Colors.red,
-            ),
+          AppFeedback.showError(
+            context,
+            error,
+            contextTag: 'admin',
+            fallbackMessage: AppLocalizations.of(context)?.errorPrefix(''),
           );
         }
       },

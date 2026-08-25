@@ -14,7 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:printing/printing.dart';
 import 'package:sizer/sizer.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 
 import 'package:banjarabio/core/models/profile_model.dart';
@@ -359,10 +359,10 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
         AppLogger.debug('BiodataEditorScreen', 'Stack trace: $stackTrace');
         if (mounted) {
           setState(() => _isGeneratingPdf = false);
-          Fluttertoast.showToast(
-            msg: AppLocalizations.of(context)?.previewGenerationFailed ?? 'Preview generation failed. Please try again.',
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
+          AppFeedback.showError(
+            context,
+            AppLocalizations.of(context)?.previewGenerationFailed ?? 'Preview generation failed. Please try again.',
+            contextTag: 'pdf',
           );
         }
       }
@@ -691,10 +691,10 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
     } catch (e) {
       AppLogger.error('BiodataEditorScreen', 'Error sharing PDF: $e');
       if (mounted) {
-        Fluttertoast.showToast(
-          msg: tempLocalizations?.failedToSharePdf ?? 'Failed to share PDF',
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
+        AppFeedback.showError(
+          context,
+          tempLocalizations?.failedToSharePdf ?? 'Failed to share PDF',
+          contextTag: 'pdf',
         );
       }
     }
@@ -716,10 +716,10 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
     } catch (e) {
       AppLogger.error('BiodataEditorScreen', 'Error printing PDF: $e');
       if (mounted) {
-        Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)?.failedToPrintPdf ?? 'Failed to print PDF',
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
+        AppFeedback.showError(
+          context,
+          AppLocalizations.of(context)?.failedToPrintPdf ?? 'Failed to print PDF',
+          contextTag: 'pdf',
         );
       }
     }
@@ -753,20 +753,19 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
       }));
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)?.pdfSavedToDownloads(file.path) ?? 'PDF Saved to Downloads: ${file.path}'),
-            action: SnackBarAction(label: AppLocalizations.of(context)?.ok ?? 'OK', onPressed: () {}),
-          ),
+        AppFeedback.showSuccess(
+          context,
+          AppLocalizations.of(context)?.pdfSavedToDownloads(file.path) ?? 'PDF Saved to Downloads: ${file.path}',
         );
       }
     } catch (e) {
       AppLogger.error('BiodataEditorScreen', 'Error downloading PDF: $e');
       if (mounted) {
-        Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)?.failedToSavePdf(e.toString()) ?? 'Failed to save PDF: $e',
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'pdf',
+          fallbackMessage: AppLocalizations.of(context)?.failedToSavePdf(''),
         );
       }
     }
@@ -790,10 +789,9 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
 
         if (response.isSuccess) {
           AppLogger.debug('BiodataEditorScreen', '[RAZORPAY] BiodataEditorScreen > Payment SUCCESS | refreshing profile from cache');
-          Fluttertoast.showToast(
-            msg: AppLocalizations.of(context)?.paymentSuccessful ?? 'Payment successful! Templates unlocked.',
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
+          AppFeedback.showSuccess(
+            context,
+            AppLocalizations.of(context)?.paymentSuccessful ?? 'Payment successful! Templates unlocked.',
           );
           // Use cache: RazorpayRepository already refreshed profile before completing.
           // Avoid forceRefresh here to prevent redundant network call that can fail
@@ -801,10 +799,11 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
           _refreshProfileFromCacheAfterPayment();
         } else {
           AppLogger.error('BiodataEditorScreen', '[RAZORPAY] BiodataEditorScreen > Payment FAILED | ${response.errorMessage}');
-          Fluttertoast.showToast(
-            msg: AppLocalizations.of(context)?.paymentFailed(response.errorMessage) ?? 'Payment failed: ${response.errorMessage}',
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
+          AppFeedback.showError(
+            context,
+            response.errorMessage,
+            contextTag: 'subscription',
+            fallbackMessage: AppLocalizations.of(context)?.paymentFailed(''),
           );
           // On timeout, webhook may have updated profile - try cache first
           if (response.errorMessage.toLowerCase().contains('timed out')) {
@@ -815,10 +814,11 @@ class _BiodataEditorScreenState extends State<BiodataEditorScreen>
     } catch (e) {
       if (mounted) {
         setState(() => _isProcessingPayment = false);
-        Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)?.unexpectedError(e.toString()) ?? 'An unexpected error occurred: $e',
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'subscription',
+          fallbackMessage: AppLocalizations.of(context)?.unexpectedError(''),
         );
       }
     }

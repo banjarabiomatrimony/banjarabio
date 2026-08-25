@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 /// Options menu (Block / Report) extracted from ProfileDetailScreen.
 /// Handles _showOptionsMenu, _confirmBlock, _executeBlock,
@@ -98,27 +98,30 @@ class ProfileOptionsMenu {
         onSuccess: (_) async {
           if (context.mounted) {
             Navigator.pop(context); // Close profile detail
-            Fluttertoast.showToast(
-              msg: AppLocalizations.of(context)?.userBlockedSuccessfully ?? 'User blocked successfully',
-              backgroundColor: Colors.green,
-              textColor: Colors.white,
+            AppFeedback.showSuccess(
+              context,
+              AppLocalizations.of(context)?.userBlockedSuccessfully ?? 'User blocked successfully',
             );
           }
         },
         onFailure: (error) async {
           if (context.mounted) {
-            Fluttertoast.showToast(
-              msg: AppLocalizations.of(context)?.failedToBlockUser(error.toString()) ?? 'Failed to block user: $error',
-              backgroundColor: Theme.of(context).colorScheme.error,
-              textColor: Colors.white,
+            AppFeedback.showError(
+              context,
+              error,
+              contextTag: 'block',
+              fallbackMessage: AppLocalizations.of(context)?.failedToBlockUser(''),
             );
           }
         },
       );
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)?.errorOccurred(e.toString()) ?? 'Error: $e')),
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'block',
+          fallbackMessage: AppLocalizations.of(context)?.failedToBlockUser(''),
         );
       }
     }
@@ -175,19 +178,19 @@ class ProfileOptionsMenu {
       await res.fold(
         onSuccess: (_) async {
           if (context.mounted) {
-            Fluttertoast.showToast(
-              msg: AppLocalizations.of(context)?.reportSubmittedReview ?? 'Report submitted. Our team will review it within 24 hours.',
-              backgroundColor: Colors.green,
-              textColor: Colors.white,
+            AppFeedback.showSuccess(
+              context,
+              AppLocalizations.of(context)?.reportSubmittedReview ?? 'Report submitted. Our team will review it within 24 hours.',
             );
           }
         },
         onFailure: (error) async {
           if (context.mounted) {
-            Fluttertoast.showToast(
-              msg: AppLocalizations.of(context)?.failedToSubmitReport(error.toString()) ?? 'Failed to submit report: $error',
-              backgroundColor: Theme.of(context).colorScheme.error,
-              textColor: Colors.white,
+            AppFeedback.showError(
+              context,
+              error,
+              contextTag: 'report',
+              fallbackMessage: AppLocalizations.of(context)?.failedToSubmitReport(''),
             );
           }
         },
@@ -195,8 +198,11 @@ class ProfileOptionsMenu {
     } catch (e) {
       AppLogger.error('ProfileOptionsMenu', 'Error reporting user: $e');
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)?.errorOccurred(e.toString()) ?? 'Error: $e')),
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'report',
+          fallbackMessage: AppLocalizations.of(context)?.failedToSubmitReport(''),
         );
       }
     }

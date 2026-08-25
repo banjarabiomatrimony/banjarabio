@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/repositories/trust_score_repository.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 class ReferenceVerificationScreen extends StatefulWidget {
   const ReferenceVerificationScreen({super.key});
@@ -42,9 +43,10 @@ class _ReferenceVerificationScreenState
         _mobile1Controller.text.isEmpty ||
         _name2Controller.text.isEmpty ||
         _mobile2Controller.text.isEmpty) {
-      ScaffoldMessenger.of(
+      AppFeedback.showWarning(
         context,
-      ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)?.pleaseFillAllFields ?? 'Please fill all fields')));
+        AppLocalizations.of(context)?.pleaseFillAllFields ?? 'Please fill all fields',
+      );
       return;
     }
 
@@ -71,8 +73,9 @@ class _ReferenceVerificationScreenState
                   _isLoading = false;
                   _isSent = true;
                 });
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(AppLocalizations.of(context)?.requestsSentSuccessfully ?? 'Requests sent successfully!')),
+                AppFeedback.showSuccess(
+                  context,
+                  AppLocalizations.of(context)?.requestsSentSuccessfully ?? 'Requests sent successfully!',
                 );
               }
             },
@@ -88,14 +91,11 @@ class _ReferenceVerificationScreenState
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(
+        AppFeedback.showError(
           context,
-        ).showSnackBar(SnackBar(
-          content: Text(
-            AppLocalizations.of(context)?.errorWithLabel(e.toString()) ??
-                'Error: ${e.toString()}',
-          ),
-        ));
+          e,
+          contextTag: 'verification',
+        );
       }
     }
   }

@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart' as url_launcher;
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/theme/app_colors.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 /// Launches the phone dialer for the given [phone] number.
 Future<void> launchCaller(BuildContext context, String phone) async {
@@ -13,8 +14,9 @@ Future<void> launchCaller(BuildContext context, String phone) async {
       await url_launcher.launchUrl(url);
     } else {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not launch dialer')),
+        AppFeedback.showError(
+          context,
+          'Could not launch dialer',
         );
       }
     }
@@ -32,8 +34,9 @@ Future<void> launchWhatsApp(BuildContext context, String phone) async {
   } catch (e) {
     AppLogger.error('AdminHelpers', 'Error launching WhatsApp: $e');
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Could not launch WhatsApp')),
+      AppFeedback.showError(
+        context,
+        'Could not launch WhatsApp',
       );
     }
   }

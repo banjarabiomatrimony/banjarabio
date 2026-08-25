@@ -87,7 +87,7 @@ class PremiumUpgradeModal extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(AppLocalizations.of(context)?.emptyStr ?? '₹',
+                        Text('₹',
                           style: theme.textTheme.titleLarge?.copyWith(
                             color: theme.colorScheme.primary,
                           ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/app_export.dart';
@@ -13,6 +12,8 @@ import 'package:banjarabio/core/repositories/subscription_repository.dart';
 import 'package:banjarabio/core/repositories/usage_repository.dart';
 import 'package:banjarabio/widgets/upgrade_dialog.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
+import 'package:banjarabio/core/utils/error_message_mapper.dart';
 
 class ChatScreen extends StatefulWidget {
   final ConversationModel conversation;
@@ -102,14 +103,11 @@ class _ChatScreenState extends State<ChatScreen> {
         if (response.errorMessage.contains('FREE_LIMIT_REACHED')) {
           UpgradeDialog.showMessagingLimit(context);
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                AppLocalizations.of(context)
-                        ?.failedToSendMessage(response.errorMessage) ??
-                    'Failed to send message: ${response.errorMessage}',
-              ),
-            ),
+          AppFeedback.showError(
+            context,
+            response.errorMessage,
+            contextTag: 'chat',
+            fallbackMessage: AppLocalizations.of(context)?.failedToSendMessage(''),
           );
         }
       }
@@ -192,7 +190,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   onTap: () {
                     Clipboard.setData(ClipboardData(text: message.messageText));
                     Navigator.pop(context);
-                    Fluttertoast.showToast(msg: AppLocalizations.of(context)?.copiedToClipboard ?? 'Copied to clipboard');
+                    AppFeedback.showSuccess(
+                      context,
+                      AppLocalizations.of(context)?.copiedToClipboard ?? 'Copied to clipboard',
+                    );
                   },
                 ),
               ],
@@ -286,7 +287,10 @@ class _ChatScreenState extends State<ChatScreen> {
                         Navigator.pop(context);
                         if (isDirect) {
                           _sendMessage(opt['text'] as String);
-                          Fluttertoast.showToast(msg: AppLocalizations.of(context)?.officialBiodataPdfShared ?? 'Official Biodata PDF Shared 📄');
+                          AppFeedback.showSuccess(
+                            context,
+                            AppLocalizations.of(context)?.officialBiodataPdfShared ?? 'Official Biodata PDF Shared 📄',
+                          );
                         } else {
                           _messageController.text = opt['text'] as String;
                           _messageController.selection = TextSelection.fromPosition(
@@ -374,11 +378,17 @@ class _ChatScreenState extends State<ChatScreen> {
 
           if (snapshot.hasError) {
             return Center(
-              child: Text(
-                AppLocalizations.of(context)
-                        ?.errorWithLabel(snapshot.error.toString()) ??
-                    'Error: ${snapshot.error}',
-                style: TextStyle(color: theme.colorScheme.error),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 4.w),
+                child: Text(
+                  ErrorMessageMapper.toUserFriendlyMessage(
+                    snapshot.error,
+                    context: context,
+                    contextTag: 'chat',
+                  ),
+                  style: TextStyle(color: theme.colorScheme.error),
+                  textAlign: TextAlign.center,
+                ),
               ),
             );
           }
@@ -582,7 +592,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 arguments: widget.conversation.otherParticipantId,
               );
             } else if (value == 'block') {
-              Fluttertoast.showToast(msg: AppLocalizations.of(context)?.userBlockRequestSubmitted ?? 'User block request submitted');
+              AppFeedback.showInfo(
+                context,
+                AppLocalizations.of(context)?.userBlockRequestSubmitted ?? 'User block request submitted',
+              );
             }
           },
           itemBuilder: (context) => [

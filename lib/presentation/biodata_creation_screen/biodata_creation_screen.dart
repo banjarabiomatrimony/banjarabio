@@ -4,7 +4,7 @@ import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/core/app_export.dart';
@@ -182,14 +182,9 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
       if (mounted) {
         final l10n = AppLocalizations.of(context);
         final biodataDraftRestoredMsg = l10n?.biodataDraftRestored ?? 'Biodata draft restored!';
-        Fluttertoast.cancel();
-        Fluttertoast.showToast(
-          msg: '📝 $biodataDraftRestoredMsg',
-          toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 2,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: AppColors.categoryAstroDark,
-          textColor: Colors.white,
+        AppFeedback.showInfo(
+          context,
+          '📝 $biodataDraftRestoredMsg',
         );
       }
     } else if (!_isEditMode) {
@@ -309,20 +304,15 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
       );
     }
 
-    // 3. Display instant floating top micro-toast
+    // 3. Display instant floating warning
     final firstMissing = missingFields.first;
     final message = missingFields.length == 1
         ? '⚠️ Please enter $firstMissing'
         : '⚠️ Please enter $firstMissing (+${missingFields.length - 1} required)';
 
-    Fluttertoast.cancel();
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.TOP,
-      backgroundColor: const Color(0xFFC94B4B),
-      textColor: Colors.white,
-      fontSize: 14.0,
+    AppFeedback.showWarning(
+      context,
+      message,
     );
   }
 
@@ -632,11 +622,9 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
                     onFailure: (error) async {
                       AppLogger.error('BiodataCreationScreen', 'Failed to upload photo $photoPath: $error');
                       if (mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n?.failedToUploadPhoto((i + 1).toString()) ?? 'Failed to upload photo ${i + 1}'),
-                            backgroundColor: Colors.orange,
-                          ),
+                        AppFeedback.showWarning(
+                          context,
+                          l10n?.failedToUploadPhoto((i + 1).toString()) ?? 'Failed to upload photo ${i + 1}',
                         );
                       }
                     },
@@ -661,11 +649,11 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
         },
         onFailure: (error) {
           if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(l10n?.failedToSaveProfile(error.toString()) ?? 'Failed to save profile: $error'),
-                backgroundColor: Colors.red,
-              ),
+            AppFeedback.showError(
+              context,
+              error,
+              contextTag: 'profile',
+              fallbackMessage: l10n?.failedToSaveProfile(''),
             );
           }
         },
@@ -675,11 +663,11 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
       AppLogger.error('BiodataCreationScreen', 'Error saving profile: $e');
       AppLogger.debug('BiodataCreationScreen', 'Stack trace: $stackTrace');
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n?.failedToSaveProfile(e.toString()) ?? 'Failed to save: ${e.toString()}'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'profile',
+          fallbackMessage: l10n?.failedToSaveProfile(''),
         );
       }
       return null;
@@ -707,10 +695,9 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
             AnalyticsService.logSignUpSuccess(savedProfile.id);
           }
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context)?.biodataSavedSuccessfully ?? 'Biodata saved successfully!'),
-            ),
+          AppFeedback.showSuccess(
+            context,
+            AppLocalizations.of(context)?.biodataSavedSuccessfully ?? 'Biodata saved successfully!',
           );
 
           // Wait before navigation
@@ -787,14 +774,9 @@ class _BiodataCreationScreenState extends State<BiodataCreationScreen>
                   onPressed: () {
                     final l10n = AppLocalizations.of(context);
                     final biodataDraftSavedMsg = l10n?.discardChangesBody ?? 'Your progress is saved as a draft.';
-                    Fluttertoast.cancel();
-                    Fluttertoast.showToast(
-                      msg: '💾 $biodataDraftSavedMsg',
-                      toastLength: Toast.LENGTH_SHORT,
-                      timeInSecForIosWeb: 2,
-                      gravity: ToastGravity.BOTTOM,
-                      backgroundColor: AppColors.categoryLocation,
-                      textColor: Colors.white,
+                    AppFeedback.showInfo(
+                      context,
+                      '💾 $biodataDraftSavedMsg',
                     );
                     // Navigate to user type selection for new users, home for existing, pop for admin
                     if (_isAdminEdit) {

@@ -13,6 +13,7 @@ import 'package:banjarabio/core/services/analytics_service.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
 import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/core/utils/startup_workflow.dart';
+import 'package:banjarabio/core/utils/error_message_mapper.dart';
 
 /// Authentication screen with Google Sign-In.
 /// 
@@ -218,9 +219,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
           if (mounted) {
             setState(() {
               _isLoading = false;
-              _errorMessage = AppLocalizations.of(context)
-                      ?.failedSignInGoogle(error.toString()) ??
-                  'Failed to sign in with Google: $error';
+              _errorMessage = ErrorMessageMapper.toUserFriendlyMessage(
+                error,
+                context: context,
+                contextTag: 'auth',
+                fallbackMessage: AppLocalizations.of(context)?.failedSignInGoogle(''),
+              );
             });
           }
         },
@@ -280,7 +284,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
               _isLoading = false;
               _errorMessage = error.contains('Invalid login credentials')
                   ? (AppLocalizations.of(context)?.invalidEmailOrPassword ?? 'Invalid email or password')
-                  : (AppLocalizations.of(context)?.loginFailed(error.toString()) ?? 'Login failed: $error');
+                  : ErrorMessageMapper.toUserFriendlyMessage(
+                      error,
+                      context: context,
+                      contextTag: 'auth',
+                      fallbackMessage: AppLocalizations.of(context)?.loginFailed(''),
+                    );
             });
           }
         },

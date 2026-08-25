@@ -15,6 +15,7 @@ import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/theme/app_colors.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 class CommunityIdScreen extends StatefulWidget {
   const CommunityIdScreen({super.key});
@@ -248,14 +249,10 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
     if (userId == null) return;
 
     if (_proofImage == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(context)?.uploadBvsCardPrompt ??
-                'Please upload your Banjara Virasat Sangh (BVS) Membership Card',
-          ),
-          backgroundColor: Colors.redAccent,
-        ),
+      AppFeedback.showWarning(
+        context,
+        AppLocalizations.of(context)?.uploadBvsCardPrompt ??
+            'Please upload your Banjara Virasat Sangh (BVS) Membership Card',
       );
       return;
     }
@@ -271,13 +268,11 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
         onSuccess: (p) async => proofUrl = p,
         onFailure: (error) async {
           if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  AppLocalizations.of(context)?.uploadFailed(error) ??
-                      'Proof upload failed: $error',
-                ),
-              ),
+            AppFeedback.showError(
+              context,
+              error,
+              contextTag: 'verification',
+              fallbackMessage: AppLocalizations.of(context)?.uploadFailed(''),
             );
           }
         },
@@ -471,13 +466,11 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
         onFailure: (error) async {
           if (mounted) {
             setState(() => _isLoading = false);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  AppLocalizations.of(context)?.errorWithLabel(error) ??
-                      'Submission failed: $error',
-                ),
-              ),
+            AppFeedback.showError(
+              context,
+              error,
+              contextTag: 'verification',
+              fallbackMessage: AppLocalizations.of(context)?.errorWithLabel(''),
             );
           }
         },
@@ -485,13 +478,10 @@ class _CommunityIdScreenState extends State<CommunityIdScreen>
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)?.errorWithLabel(e.toString()) ??
-                  'Error: ${e.toString()}',
-            ),
-          ),
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'verification',
         );
       }
     }

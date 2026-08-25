@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:banjarabio/core/models/profile_model.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 /// 📊 CSV EXPORT SERVICE
 /// Converts domain models (Users, Payments) to CSV strings and triggers native file sharing.
@@ -23,8 +24,9 @@ class CsvExportService {
   }) async {
     try {
       if (profiles.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No user profiles to export.')),
+        AppFeedback.showInfo(
+          context,
+          'No user profiles to export.',
         );
         return false;
       }
@@ -71,8 +73,11 @@ class CsvExportService {
     } catch (e) {
       AppLogger.error('CsvExportService', 'Failed to export users to CSV: $e');
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Export failed: $e')),
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'admin',
+          fallbackMessage: 'Export failed. Please try again.',
         );
       }
       return false;
@@ -87,8 +92,9 @@ class CsvExportService {
   }) async {
     try {
       if (payments.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No payment records to export.')),
+        AppFeedback.showInfo(
+          context,
+          'No payment records to export.',
         );
         return false;
       }
@@ -130,8 +136,11 @@ class CsvExportService {
     } catch (e) {
       AppLogger.error('CsvExportService', 'Failed to export payments to CSV: $e');
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Export failed: $e')),
+        AppFeedback.showError(
+          context,
+          e,
+          contextTag: 'admin',
+          fallbackMessage: 'Export failed. Please try again.',
         );
       }
       return false;

@@ -12,6 +12,7 @@ import 'package:banjarabio/widgets/app_logo_image.dart';
 import 'package:banjarabio/widgets/tactile/tactile_pressable.dart';
 import 'package:banjarabio/widgets/tactile/tactile_category_card.dart';
 import 'package:banjarabio/theme/app_category_theme.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 /// 💍 Claim Marriage Gift / Success Story Screen - Ultra-Premium Tactile Edition
 /// Features:
@@ -110,27 +111,19 @@ class _MarriageRewardFormScreenState extends State<MarriageRewardFormScreen>
     if (mounted) {
       res.fold(
         onSuccess: (_) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                AppLocalizations.of(context)?.successSubmission ??
-                    '🎉 Success! Your reward claim has been submitted for review.',
-              ),
-              backgroundColor: AppColors.categoryLocation,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            ),
+          AppFeedback.showSuccess(
+            context,
+            AppLocalizations.of(context)?.successSubmission ??
+                '🎉 Success! Your reward claim has been submitted for review.',
           );
           Navigator.pop(context);
         },
         onFailure: (error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context)?.failedWithError(error.toString()) ?? 'Failed: $error'),
-              backgroundColor: AppColors.trustLow,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            ),
+          AppFeedback.showError(
+            context,
+            error,
+            contextTag: 'reward',
+            fallbackMessage: AppLocalizations.of(context)?.failedWithError(''),
           );
         },
       );

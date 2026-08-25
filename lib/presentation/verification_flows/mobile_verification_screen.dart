@@ -6,6 +6,7 @@ import 'package:sizer/sizer.dart';
 import 'package:banjarabio/core/repositories/profile_repository.dart';
 import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/widgets/custom_icon_widget.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 class MobileVerificationScreen extends StatefulWidget {
   const MobileVerificationScreen({super.key});
@@ -36,10 +37,9 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
 
   void _sendOtp() async {
     if (_mobileController.text.length != 10) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)?.pleaseEnterAValid10DigitMobileNumber ?? 'Please enter a valid 10-digit mobile number'),
-        ),
+      AppFeedback.showWarning(
+        context,
+        AppLocalizations.of(context)?.pleaseEnterAValid10DigitMobileNumber ?? 'Please enter a valid 10-digit mobile number',
       );
       return;
     }
@@ -54,20 +54,37 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
       await response.fold(
         onSuccess: (profile) async {
           if (profile != null) {
+            // Check if phone number is already registered with another account
+            final checkRes = await profileRepository.checkPhoneAvailable(
+              phoneNumber: _mobileController.text.trim(),
+              excludeUserId: profile.userId,
+            );
+
+            if (checkRes.isSuccess && checkRes.data == false) {
+              if (mounted) {
+                setState(() => _isLoading = false);
+                AppFeedback.showError(
+                  context,
+                  'phone_already_registered',
+                  contextTag: 'profile',
+                  fallbackMessage: 'This mobile number is already registered with another account.',
+                );
+              }
+              return;
+            }
+
             final updateRes = await profileRepository.updateProfile(
               profile.userId,
-              {'phone_verified': true, 'phone_number': _mobileController.text},
+              {'phone_verified': true, 'phone_number': _mobileController.text.trim()},
             );
 
             await updateRes.fold(
               onSuccess: (_) async {
                 if (mounted) {
                   setState(() => _isLoading = false);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(AppLocalizations.of(context)?.mobileVerifiedSuccessfully10Points ?? 'Mobile Verified Successfully! +10 Points'),
-                      backgroundColor: Colors.green,
-                    ),
+                  AppFeedback.showSuccess(
+                    context,
+                    AppLocalizations.of(context)?.mobileVerifiedSuccessfully10Points ?? 'Mobile Verified Successfully! +10 Points',
                   );
                   Navigator.of(context).pop(true);
                 }
@@ -75,13 +92,11 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
               onFailure: (error) async {
                 if (mounted) {
                   setState(() => _isLoading = false);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        AppLocalizations.of(context)?.updateFailed(error) ??
-                            'Failed to update profile: $error',
-                      ),
-                    ),
+                  AppFeedback.showError(
+                    context,
+                    error,
+                    contextTag: 'verification',
+                    fallbackMessage: AppLocalizations.of(context)?.updateFailed(error) ?? 'Failed to update profile',
                   );
                 }
               },
@@ -89,8 +104,10 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
           } else {
             if (mounted) {
               setState(() => _isLoading = false);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(AppLocalizations.of(context)?.profileNotFound ?? 'Profile not found')),
+              AppFeedback.showError(
+                context,
+                AppLocalizations.of(context)?.profileNotFound ?? 'Profile not found',
+                contextTag: 'profile',
               );
             }
           }
@@ -98,13 +115,11 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
         onFailure: (error) async {
           if (mounted) {
             setState(() => _isLoading = false);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  AppLocalizations.of(context)?.failedToLoadProfileError(error) ??
-                      'Failed to load profile: $error',
-                ),
-              ),
+            AppFeedback.showError(
+              context,
+              error,
+              contextTag: 'profile',
+              fallbackMessage: AppLocalizations.of(context)?.failedToLoadProfileError(''),
             );
           }
         },
@@ -127,14 +142,11 @@ class _MobileVerificationScreenState extends State<MobileVerificationScreen> {
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(
+        AppFeedback.showError(
           context,
-        ).showSnackBar(SnackBar(
-          content: Text(
-            AppLocalizations.of(context)?.errorWithLabel(e.toString()) ??
-                'Error: ${e.toString()}',
-          ),
-        ));
+          e,
+          contextTag: 'profile',
+        );
       }
     }
   }

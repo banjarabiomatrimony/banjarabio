@@ -8,6 +8,7 @@ import 'package:banjarabio/core/supabase_client.dart';
 import 'package:banjarabio/presentation/staff_screen/widgets/melava_biodata_digitizer_dialog.dart';
 import 'package:banjarabio/routes/app_routes.dart';
 import 'package:banjarabio/theme/app_colors.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 /// Self-contained volunteer tabs widget that can be embedded inside any host Scaffold.
 /// Manages its own TabController, state, and VolunteerRepository interactions.
@@ -141,7 +142,10 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
     if (!mounted) return;
     res.fold(
       onSuccess: (list) => setState(() { _searchResults = list; _isSearching = false; }),
-      onFailure: (e) { setState(() => _isSearching = false); _snack(e); },
+      onFailure: (e) {
+        setState(() => _isSearching = false);
+        AppFeedback.showError(context, e, contextTag: 'volunteer');
+      },
     );
   }
 
@@ -156,7 +160,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
     if (!mounted) return;
     res.fold(
       onSuccess: (d) {
-        _snack('✅ ${d['message'] ?? 'Profile registered'}');
+        AppFeedback.showSuccess(context, d['message'] ?? 'Profile registered successfully');
         for (final c in _regFields.values) { c.clear(); }
         setState(() {
           _regSelectedState = null;
@@ -168,7 +172,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
         });
         _loadStats();
       },
-      onFailure: (e) => _snack('❌ $e'),
+      onFailure: (e) => AppFeedback.showError(context, e, contextTag: 'volunteer'),
     );
     setState(() => _isRegistering = false);
   }
@@ -199,7 +203,7 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
 
         setState(() { _editingProfile = full; _tabCtrl.animateTo(2); });
       },
-      onFailure: (e) => _snack(e),
+      onFailure: (e) => AppFeedback.showError(context, e, contextTag: 'volunteer'),
     );
   }
 
@@ -220,22 +224,20 @@ class VolunteerTabsWidgetState extends State<VolunteerTabsWidget>
     if (!mounted) return;
     res.fold(
       onSuccess: (_) {
-        _snack('✅ Profile updated');
+        AppFeedback.showSuccess(context, 'Profile updated successfully');
         _loadStats();
         setState(() {
           _editingProfile = null;
         });
       },
-      onFailure: (e) => _snack('❌ $e'),
+      onFailure: (e) => AppFeedback.showError(context, e, contextTag: 'volunteer'),
     );
     setState(() => _isSaving = false);
   }
 
   void _snack(String msg) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(msg), behavior: SnackBarBehavior.floating),
-    );
+    AppFeedback.showInfo(context, msg);
   }
 
   Future<void> _logout() async {

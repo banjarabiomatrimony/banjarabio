@@ -13,6 +13,8 @@ class BiodataDropdownField extends StatelessWidget {
   final List<DropdownMenuItem<String>> items;
   final String? icon;
   final IconData? iconData;
+  final bool required;
+  final bool isAdminEdit;
   final Function(String?) onChanged;
 
   const BiodataDropdownField({
@@ -22,6 +24,8 @@ class BiodataDropdownField extends StatelessWidget {
     required this.items,
     this.icon,
     this.iconData,
+    this.required = false,
+    this.isAdminEdit = false,
     required this.onChanged,
   }) : assert(icon != null || iconData != null, 'Must provide either icon or iconData');
 
@@ -32,7 +36,21 @@ class BiodataDropdownField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: theme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.bold)),
+        Row(
+          children: [
+            Text(label, style: theme.textTheme.titleSmall?.copyWith(fontWeight: AppTypography.bold)),
+            if (required && !isAdminEdit) ...[
+              SizedBox(width: 1.w),
+              Text(
+                '*',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  color: theme.colorScheme.error,
+                  fontWeight: AppTypography.bold,
+                ),
+              ),
+            ],
+          ],
+        ),
         SizedBox(height: 1.h),
         DropdownButtonFormField<String>(
           initialValue: value != null && items.any((i) => i.value == value) ? value : null,

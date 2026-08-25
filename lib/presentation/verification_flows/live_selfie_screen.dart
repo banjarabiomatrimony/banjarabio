@@ -8,6 +8,7 @@ import 'package:banjarabio/widgets/custom_app_bar.dart';
 import 'package:banjarabio/services/photo_picker_service.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
 import 'package:banjarabio/theme/app_colors.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 
 class LiveSelfieScreen extends StatefulWidget {
   const LiveSelfieScreen({super.key});
@@ -35,14 +36,11 @@ class _LiveSelfieScreenState extends State<LiveSelfieScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
+        AppFeedback.showError(
           context,
-        ).showSnackBar(SnackBar(
-          content: Text(
-            AppLocalizations.of(context)?.errorWithLabel(e.toString()) ??
-                'Error capturing photo: $e',
-          ),
-        ));
+          e,
+          contextTag: 'verification',
+        );
       }
     } finally {
       setState(() => _isLoading = false);
@@ -69,13 +67,11 @@ class _LiveSelfieScreenState extends State<LiveSelfieScreen> {
         onSuccess: (_) async => uploadSuccess = true,
         onFailure: (error) async {
           if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  AppLocalizations.of(context)?.uploadFailed(error) ??
-                      'Upload failed: $error',
-                ),
-              ),
+            AppFeedback.showError(
+              context,
+              error,
+              contextTag: 'verification',
+              fallbackMessage: AppLocalizations.of(context)?.uploadFailed(''),
             );
           }
         },
@@ -220,14 +216,11 @@ class _LiveSelfieScreenState extends State<LiveSelfieScreen> {
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(
+        AppFeedback.showError(
           context,
-        ).showSnackBar(SnackBar(
-          content: Text(
-            AppLocalizations.of(context)?.errorWithLabel(e.toString()) ??
-                'Error: ${e.toString()}',
-          ),
-        ));
+          e,
+          contextTag: 'verification',
+        );
       }
     }
   }

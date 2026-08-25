@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sizer/sizer.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:banjarabio/core/utils/app_feedback_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:banjarabio/core/models/profile_model.dart';
@@ -96,13 +96,9 @@ class _VouchShareModalState extends State<VouchShareModal>
   void _handleCopyLink() {
     HapticFeedback.selectionClick();
     Clipboard.setData(ClipboardData(text: _inviteText));
-    Fluttertoast.cancel();
-    Fluttertoast.showToast(
-      msg: '📋 निमंत्रण मेसेज आणि लिंक कॉपी झाली!',
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: AppColors.green500,
-      textColor: Colors.white,
+    AppFeedback.showSuccess(
+      context,
+      '📋 निमंत्रण मेसेज आणि लिंक कॉपी झाली!',
     );
   }
 

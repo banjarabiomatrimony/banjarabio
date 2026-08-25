@@ -434,11 +434,41 @@ abstract class AppLocalizations {
   /// **'Review all sections and click \"Save Biodata\" to complete your profile. Your biodata will be visible to other community members based on your privacy settings.'**
   String get almostDoneReview;
 
+  /// No description provided for @alreadyExpressedInterest.
+  ///
+  /// In en, this message translates to:
+  /// **'You have already expressed interest in this profile.'**
+  String get alreadyExpressedInterest;
+
   /// No description provided for @alreadyHaveProfileLogin.
   ///
   /// In en, this message translates to:
   /// **'Already have a profile? Login'**
   String get alreadyHaveProfileLogin;
+
+  /// No description provided for @alreadyInShortlist.
+  ///
+  /// In en, this message translates to:
+  /// **'This profile is already in your shortlist.'**
+  String get alreadyInShortlist;
+
+  /// No description provided for @duplicateRecordError.
+  ///
+  /// In en, this message translates to:
+  /// **'This record already exists.'**
+  String get duplicateRecordError;
+
+  /// No description provided for @networkErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check your internet connection and try again.'**
+  String get networkErrorMessage;
+
+  /// No description provided for @permissionDeniedError.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have permission to perform this action.'**
+  String get permissionDeniedError;
 
   /// No description provided for @alternateRelativeContactNumberOptional.
   ///
@@ -2519,7 +2549,7 @@ abstract class AppLocalizations {
   /// No description provided for @emptyStr.
   ///
   /// In en, this message translates to:
-  /// **'₹'**
+  /// **''**
   String get emptyStr;
 
   /// No description provided for @enableNotifications.
@@ -2558,6 +2588,12 @@ abstract class AppLocalizations {
   /// **'Enter your education details'**
   String get enterEducationDetails;
 
+  /// No description provided for @enterFatherName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter father\'s name'**
+  String get enterFatherName;
+
   /// No description provided for @enterFullName.
   ///
   /// In en, this message translates to:
@@ -2569,6 +2605,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter mobile number'**
   String get enterMobileNumber;
+
+  /// No description provided for @enterMotherName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter mother\'s name'**
+  String get enterMotherName;
+
+  /// No description provided for @fatherOccupationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Retired Government Officer'**
+  String get fatherOccupationHint;
+
+  /// No description provided for @motherOccupationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Homemaker'**
+  String get motherOccupationHint;
 
   /// No description provided for @enterProfessionDetails.
   ///

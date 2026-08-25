@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:banjarabio/core/theme/app_gradients.dart';
@@ -100,13 +99,6 @@ class _ActionButtonsWidgetState extends State<ActionButtonsWidget> {
                         _isBookmarked = !_isBookmarked;
                       });
                       widget.onBookmark(widget.profileData);
-                      Fluttertoast.showToast(
-                        msg: _isBookmarked
-                            ? (AppLocalizations.of(context)?.profileSaved ??
-                                'Profile saved!')
-                            : (AppLocalizations.of(context)?.profileRemovedFromSaved ??
-                                'Profile removed from saved'),
-                      );
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 1.w),
