@@ -293,7 +293,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   }
 
   Future<void> _loadDailyRewardStatus() async {
-    if (LocalCacheService().isGuestMode()) return;
     final res = await DailyRewardRepository().getRewardStatus();
     if (mounted && res.isSuccess) {
       setState(() {

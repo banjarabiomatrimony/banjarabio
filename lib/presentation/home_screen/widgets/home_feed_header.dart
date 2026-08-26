@@ -292,86 +292,87 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
         ),
 
         // ─── 3. Right: Daily Reward Gamification Streak Badge ───
-        if (widget.dailyRewardStatus != null)
-          TactilePressable(
-            onTap: () async {
-              final updatedStatus = await DailyRewardDialog.show(context, widget.dailyRewardStatus!);
+        TactilePressable(
+          onTap: () async {
+            final effectiveStatus = widget.dailyRewardStatus ??
+                const DailyRewardModel(streakCount: 1, isClaimedToday: false);
+            final updatedStatus = await DailyRewardDialog.show(context, effectiveStatus);
+            if (updatedStatus != null) {
               widget.onRewardUpdated(updatedStatus);
-            },
-            child: AnimatedBuilder(
-              animation: _pulseController ?? const AlwaysStoppedAnimation(0.0),
-              builder: (context, child) {
-                final isClaimed = widget.dailyRewardStatus!.isClaimedToday;
-                final streak = widget.dailyRewardStatus!.streakCount;
-                final pulse = _pulseController?.value ?? 0.0;
+            }
+          },
+          child: AnimatedBuilder(
+            animation: _pulseController ?? const AlwaysStoppedAnimation(0.0),
+            builder: (context, child) {
+              final isClaimed = widget.dailyRewardStatus?.isClaimedToday ?? false;
+              final streak = widget.dailyRewardStatus?.streakCount ?? 1;
+              final pulse = _pulseController?.value ?? 0.0;
 
-                if (isClaimed) {
-                  return Container(
-                    padding: EdgeInsets.symmetric(horizontal: 2.2.w, vertical: 0.4.h),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.14),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.18),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.card_giftcard_rounded, color: AppColors.goldTint200, size: 13),
-                        SizedBox(width: 1.w),
-                        Text(
-                          streak > 0 ? 'Day $streak' : 'Claimed',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: AppTypography.labelSmall,
-                            fontWeight: AppTypography.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-
+              if (isClaimed) {
                 return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 2.4.w, vertical: 0.4.h),
+                  padding: EdgeInsets.symmetric(horizontal: 2.2.w, vertical: 0.4.h),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [AppColors.categoryAstro, AppColors.categoryAstroDark],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
+                    color: Colors.white.withValues(alpha: 0.14),
                     borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.categoryAstro.withValues(alpha: 0.35 + (pulse * 0.25)),
-                        blurRadius: 8 + (pulse * 4),
-                        spreadRadius: pulse * 1.2,
-                      ),
-                    ],
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.18),
+                    ),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.card_giftcard_rounded, color: Colors.white, size: 13),
+                      const Icon(Icons.card_giftcard_rounded, color: AppColors.goldTint200, size: 13),
                       SizedBox(width: 1.w),
                       Text(
-                        'Claim',
+                        streak > 0 ? 'Day $streak' : 'Claimed',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: AppTypography.labelSmall,
-                          fontWeight: AppTypography.extraBold,
-                          letterSpacing: 0.2,
+                          fontWeight: AppTypography.bold,
                         ),
                       ),
                     ],
                   ),
                 );
-              },
-            ),
-          )
-        else
-          const SizedBox.shrink(),
+              }
+
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 2.4.w, vertical: 0.4.h),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [AppColors.categoryAstro, AppColors.categoryAstroDark],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.categoryAstro.withValues(alpha: 0.35 + (pulse * 0.25)),
+                      blurRadius: 8 + (pulse * 4),
+                      spreadRadius: pulse * 1.2,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.card_giftcard_rounded, color: Colors.white, size: 13),
+                    SizedBox(width: 1.w),
+                    Text(
+                      'Claim',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: AppTypography.labelSmall,
+                        fontWeight: AppTypography.extraBold,
+                        letterSpacing: 0.2,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
       ],
     );
   }

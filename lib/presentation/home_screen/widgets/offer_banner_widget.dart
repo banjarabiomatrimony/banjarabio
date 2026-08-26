@@ -178,7 +178,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 74,
+      height: 54,
       child: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
           if (notification is ScrollStartNotification &&
