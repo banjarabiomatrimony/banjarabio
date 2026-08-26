@@ -36,7 +36,7 @@ import 'package:banjarabio/presentation/home_screen/widgets/home_sharing_sheet.d
 import 'package:banjarabio/presentation/home_screen/widgets/home_recommended_content.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/home_daily_content.dart';
 import 'package:banjarabio/presentation/home_screen/widgets/home_interest_handler.dart';
-import 'package:banjarabio/widgets/ads/banner_ad_widget.dart';
+// import 'package:banjarabio/widgets/ads/banner_ad_widget.dart';
 import 'package:banjarabio/presentation/filter_screen/filter_screen.dart';
 import 'package:banjarabio/presentation/home_screen/location_selection_screen.dart';
 import 'package:banjarabio/widgets/branded_refresh_indicator.dart';
@@ -1111,11 +1111,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   ),
                 ),
                 
-               // 📢 Interleaved Banner Ad (omitted for Premium subscribers)
-               if (!_isLoading && _errorMessage == null && _selectedTab == 0 && !SessionManager.instance.isPremium)
-                  const SliverToBoxAdapter(
-                    child: BannerAdWidget(),
-                  ),
+                // 📢 Top Feed Banner Ad disabled for clean first-impression UX (interleaved ads still appear in feed)
+                // if (!_isLoading && _errorMessage == null && _selectedTab == 0 && !SessionManager.instance.isPremium)
+                //   const SliverToBoxAdapter(
+                //     child: BannerAdWidget(),
+                //   ),
 
               // ══════════════════════════════════════════════════════
               // RECOMMENDED / ALL MATCHES (0), NEAR ME (2), VIP (3)
