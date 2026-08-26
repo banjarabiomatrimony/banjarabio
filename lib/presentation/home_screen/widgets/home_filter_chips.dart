@@ -29,8 +29,8 @@ class HomeFilterChips extends StatelessWidget {
 
     return SliverToBoxAdapter(
       child: Container(
-        padding: EdgeInsets.fromLTRB(4.w, 0.8.h, 4.w, 0.6.h),
-        height: 6.2.h,
+        padding: EdgeInsets.fromLTRB(3.5.w, 0.2.h, 3.5.w, 0.2.h),
+        height: 4.8.h,
         child: ListView(
           scrollDirection: Axis.horizontal,
           physics: const BouncingScrollPhysics(),

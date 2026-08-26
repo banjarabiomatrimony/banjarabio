@@ -178,7 +178,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 96,
+      height: 58,
       child: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
           if (notification is ScrollStartNotification &&
@@ -199,7 +199,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
           controller: _scrollController,
           scrollDirection: Axis.horizontal,
           physics: const BouncingScrollPhysics(),
-          padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 3),
+          padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1),
           children: [
             // ─── 1. 📸 Instagram (Follow Daily Match Updates) ───
             _buildAnimatedMiniCard(
@@ -481,13 +481,13 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
             child: Stack(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
                     gradient: gradient,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(14),
                     border: Border.all(
                       color: effectiveBorderColor,
-                      width: isPausedCard ? 2.0 : 1.3,
+                      width: isPausedCard ? 1.6 : 1.0,
                     ),
                     boxShadow: [
                       BoxShadow(
@@ -495,8 +495,8 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                             ? Colors.amberAccent.withValues(alpha: glowAlpha)
                             : (outlineBorderColor?.withValues(alpha: AppColors.opacity40) ??
                                 gradient.colors.first.withValues(alpha: AppColors.opacity35)),
-                        blurRadius: isPausedCard ? 14 : 7,
-                        offset: const Offset(0, 3),
+                        blurRadius: isPausedCard ? 10 : 5,
+                        offset: const Offset(0, 2),
                       ),
                     ],
                   ),
@@ -505,8 +505,8 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                     children: [
                       // ─── High-Impact Icon Shield with Colored Outline ───
                       Container(
-                        width: 34,
-                        height: 34,
+                        width: 28,
+                        height: 28,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: Colors.black.withValues(alpha: 0.22),
@@ -516,12 +516,11 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                                 ? Colors.amberAccent
                                 : (outlineBorderColor?.withValues(alpha: AppColors.opacity85) ??
                                     Colors.white.withValues(alpha: AppColors.opacity40)),
-                            width: 1.3,
                           ),
                         ),
                         child: leadingWidget,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 6),
 
                       // ─── Text Column + Highlight Micro-Badge ───
                       Column(

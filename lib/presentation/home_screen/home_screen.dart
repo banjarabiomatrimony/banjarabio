@@ -1102,12 +1102,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               // 🎁 Dynamic Offer & Services Mini-Strip
               if (!_isLoading && _errorMessage == null && _selectedTab != 1)
                 SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 2.0, bottom: 2.0),
-                    child: OfferBannerWidget(
-                      gender: _ownProfile?.gender,
-                      currentPlan: _ownProfile?.planType.name,
-                    ),
+                  child: OfferBannerWidget(
+                    gender: _ownProfile?.gender,
+                    currentPlan: _ownProfile?.planType.name,
                   ),
                 ),
                 
