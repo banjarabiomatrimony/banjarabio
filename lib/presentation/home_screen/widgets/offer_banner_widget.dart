@@ -178,7 +178,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 58,
+      height: 74,
       child: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
           if (notification is ScrollStartNotification &&
@@ -207,17 +207,17 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
               outlineBorderColor: AppColors.rose200,
               leadingWidget: Image.asset(
                 'assets/icons/instagram_icon.png',
-                width: 28,
-                height: 28,
+                width: 32,
+                height: 32,
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) => SvgPicture.asset(
                   'assets/images/social/instagram.svg',
-                  width: 28,
-                  height: 28,
+                  width: 32,
+                  height: 32,
                   placeholderBuilder: (_) => const Icon(
                     Icons.camera_alt_rounded,
                     color: Colors.white,
-                    size: 24,
+                    size: 26,
                   ),
                 ),
               ),
@@ -244,17 +244,17 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
               outlineBorderColor: AppColors.cyanAccent,
               leadingWidget: Image.asset(
                 'assets/icons/whatsapp_icon.png',
-                width: 28,
-                height: 28,
+                width: 32,
+                height: 32,
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) => SvgPicture.asset(
                   'assets/images/social/whatsapp.svg',
-                  width: 28,
-                  height: 28,
+                  width: 32,
+                  height: 32,
                   placeholderBuilder: (_) => const Icon(
                     Icons.chat_bubble_rounded,
                     color: Colors.white,
-                    size: 24,
+                    size: 26,
                   ),
                 ),
               ),
@@ -281,18 +281,18 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
               leadingWidget: ClipOval(
                 child: Image.asset(
                   'assets/sanjay rathod.webp',
-                  width: 32,
-                  height: 32,
+                  width: 36,
+                  height: 36,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) => Image.asset(
                     'assets/images/bvs_logo_gold.png',
-                    width: 28,
-                    height: 28,
+                    width: 32,
+                    height: 32,
                     fit: BoxFit.cover,
                     errorBuilder: (ctx, err, stack) => const Icon(
                       Icons.person_rounded,
                       color: Colors.amberAccent,
-                      size: 24,
+                      size: 26,
                     ),
                   ),
                 ),
@@ -348,8 +348,8 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
               outlineBorderColor: AppColors.rose100,
               leadingWidget: const ClipOval(
                 child: AppLogoImage(
-                  width: 32,
-                  height: 32,
+                  width: 36,
+                  height: 36,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -388,7 +388,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                 child: const Icon(
                   Icons.workspace_premium_rounded,
                   color: Colors.white,
-                  size: 28,
+                  size: 30,
                 ),
               ),
               badgeText: '🔥 50% OFF',
@@ -416,7 +416,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                 leadingWidget: const Icon(
                   Icons.campaign_rounded,
                   color: Colors.white,
-                  size: 28,
+                  size: 30,
                 ),
                 badgeText: '✨ SPECIAL',
                 badgeColor: AppColors.blue100,
@@ -481,13 +481,13 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
             child: Stack(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
                     gradient: gradient,
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: effectiveBorderColor,
-                      width: isPausedCard ? 1.6 : 1.0,
+                      width: isPausedCard ? 1.8 : 1.2,
                     ),
                     boxShadow: [
                       BoxShadow(
@@ -495,7 +495,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                             ? Colors.amberAccent.withValues(alpha: glowAlpha)
                             : (outlineBorderColor?.withValues(alpha: AppColors.opacity40) ??
                                 gradient.colors.first.withValues(alpha: AppColors.opacity35)),
-                        blurRadius: isPausedCard ? 10 : 5,
+                        blurRadius: isPausedCard ? 12 : 6,
                         offset: const Offset(0, 2),
                       ),
                     ],
@@ -505,8 +505,8 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                     children: [
                       // ─── High-Impact Icon Shield with Colored Outline ───
                       Container(
-                        width: 28,
-                        height: 28,
+                        width: 38,
+                        height: 38,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: Colors.black.withValues(alpha: 0.22),
@@ -520,7 +520,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                         ),
                         child: leadingWidget,
                       ),
-                      const SizedBox(width: 6),
+                      const SizedBox(width: 8),
 
                       // ─── Text Column + Highlight Micro-Badge ───
                       Column(
@@ -536,16 +536,16 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: AppTypography.black,
-                                  fontSize: AppTypography.labelLarge,
+                                  fontSize: AppTypography.titleSmall,
                                   height: 1.15,
                                   letterSpacing: 0.1,
                                 ),
                               ),
-                              const SizedBox(width: 5),
+                              const SizedBox(width: 6),
                               if (isPausedCard)
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 4, vertical: 1),
+                                      horizontal: 5, vertical: 1.5),
                                   decoration: BoxDecoration(
                                     color: Colors.amberAccent,
                                     borderRadius: BorderRadius.circular(4),
@@ -566,7 +566,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                               else if (badgeText != null)
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 4, vertical: 1),
+                                      horizontal: 5, vertical: 1.5),
                                   decoration: BoxDecoration(
                                     color: badgeColor ?? AppColors.goldTint100,
                                     borderRadius: BorderRadius.circular(4),
@@ -584,7 +584,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                                 ),
                             ],
                           ),
-                          const SizedBox(height: 1.0),
+                          const SizedBox(height: 2.0),
                           Text(
                             subtitle,
                             style: TextStyle(
@@ -594,7 +594,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                               fontWeight: isPausedCard
                                   ? AppTypography.black
                                   : AppTypography.medium,
-                              fontSize: AppTypography.labelSmall,
+                              fontSize: AppTypography.labelMedium,
                               height: 1.15,
                             ),
                             maxLines: 1,
@@ -606,8 +606,8 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
 
                       // ─── Interactive Trailing Indicator ───
                       Container(
-                        width: 26,
-                        height: 26,
+                        width: 28,
+                        height: 28,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: isPausedCard
@@ -622,7 +622,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                           color: isPausedCard
                               ? AppColors.amberDeepText
                               : Colors.white,
-                          size: isPausedCard ? 14 : 11,
+                          size: isPausedCard ? 14 : 12,
                         ),
                       ),
                     ],
