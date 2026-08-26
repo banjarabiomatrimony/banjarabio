@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:banjarabio/core/repositories/photo_repository.dart';
 import 'package:banjarabio/core/services/network_aware_quality_service.dart';
 import 'package:banjarabio/core/services/persistent_cache_manager.dart';
+import 'package:banjarabio/core/media_pipeline/media_pipeline.dart';
 import 'package:banjarabio/widgets/shimmer_widget.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/constants/app_typography.dart';
@@ -50,10 +51,12 @@ class CustomImageWidget extends StatefulWidget {
     this.semanticLabel,
     this.cacheWidth,
     this.cacheHeight,
+    this.blurHash,
     this.isHighQuality = false,
   });
 
   final String? imageUrl;
+  final String? blurHash;
   final double? height;
   final double? width;
   final BoxFit? fit;
@@ -220,26 +223,13 @@ class _CustomImageWidgetState extends State<CustomImageWidget> {
   }
 
   int _calculateOptimalCache(BuildContext context, double? dimension) {
-    final double dpr = MediaQuery.maybeOf(context)?.devicePixelRatio ?? 1.0;
-    
-    // 🚨 SIGNAL 3 FIX: When dimension is null, infinity, or <= 0,
-    // use the SCREEN width instead of hardcoded 1000-1500px defaults.
-    // Previously, ProfileCardWidget passed double.infinity which caused
-    // images to decode at 1000-1500px instead of ~360px display size.
     if (dimension == null || dimension <= 0 || !dimension.isFinite) {
-      final screenWidth = MediaQuery.maybeOf(context)?.size.width ?? 360.0;
-      final result = screenWidth * dpr;
-      return result.isFinite ? result.round().clamp(100, 1500) : 500;
+      return DisplayCachePolicy.getCardCacheWidth(context);
     }
-    try {
-      if (!dpr.isFinite) return 500;
-      final double result = dimension * dpr;
-      if (!result.isFinite) return 500;
-      // Cap at 1500px to prevent memory pressure on low-end devices
-      return result.round().clamp(100, 1500);
-    } catch (_) {
-      return 500;
+    if (dimension <= 150) {
+      return DisplayCachePolicy.getThumbnailCacheWidth(context);
     }
+    return DisplayCachePolicy.computeCustomCacheWidth(dimension, context);
   }
 
   Widget _buildFileImage(BuildContext context) {
@@ -332,17 +322,24 @@ class _CustomImageWidgetState extends State<CustomImageWidget> {
       placeholderFadeInDuration: Duration.zero,
       fadeOutDuration: Duration.zero,
       fadeInDuration: const Duration(milliseconds: 80),
-      // 🚨 SIGNAL 3 FIX: Removed LQIP (dual-image) placeholder.
-      // Previously each card loaded BOTH a 50px thumbnail AND the full image
-      // simultaneously, causing 40+ concurrent gralloc4 allocations with 20 cards.
-      // Now uses shimmer-only placeholder to cut concurrent image ops in half.
-      placeholder: (context, url) => ShimmerWidget.rectangular(
-        height: widget.height ?? double.infinity,
-        width: widget.width ?? double.infinity,
-        shapeBorder: RoundedRectangleBorder(
-          borderRadius: widget.radius ?? BorderRadius.zero,
-        ),
-      ),
+      // ⚡ Layer 5: Progressive Shimmer or Instant BlurHash placeholder
+      placeholder: (context, url) {
+        if (widget.blurHash != null && widget.blurHash!.isNotEmpty) {
+          return ProgressivePlaceholderBuilder.buildAdaptivePlaceholder(
+            blurHash: widget.blurHash,
+            width: widget.width,
+            height: widget.height,
+            borderRadius: widget.radius,
+          );
+        }
+        return ShimmerWidget.rectangular(
+          height: widget.height ?? double.infinity,
+          width: widget.width ?? double.infinity,
+          shapeBorder: RoundedRectangleBorder(
+            borderRadius: widget.radius ?? BorderRadius.zero,
+          ),
+        );
+      },
       errorWidget: (context, url, error) {
         // Fall back to original URL if optimization failed
         if (!_hasFailedOptimized && widget.imageUrl != null && optimizedUrl != widget.imageUrl) {

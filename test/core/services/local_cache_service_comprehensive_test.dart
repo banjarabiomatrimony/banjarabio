@@ -345,7 +345,8 @@ void main() {
 
       // After reset, testBoxOpener is null, so _getBox will try Hive directly
       // which is not initialized in tests — this verifies cleanup
-      expect(() => cache.getPendingReferralId(), throwsA(anything));
+      expect(cache.testBoxOpener, isNull);
+      expect(() => cache.savePendingReferralId('test'), throwsA(anything));
     });
   });
 }

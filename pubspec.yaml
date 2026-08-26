@@ -117,155 +117,160 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/images/biodata_templates/
-    - assets/images/onboarding/
     - assets/images/social/
   fonts:
-    - family: Lato
-      fonts:
-        - asset: assets/fonts/Lato/Lato-Regular.ttf
-        - asset: assets/fonts/Lato/Lato-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Lato/Lato-Light.ttf
-          weight: 300
-        - asset: assets/fonts/Lato/Lato-Italic.ttf
-          style: italic
-    - family: Roboto
-      fonts:
-        - asset: assets/fonts/Roboto/static/Roboto-Regular.ttf
-        - asset: assets/fonts/Roboto/static/Roboto-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Roboto/static/Roboto-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Roboto/static/Roboto-Italic.ttf
-          style: italic
-    - family: OpenSans
-      fonts:
-        - asset: assets/fonts/Open_Sans/static/OpenSans-Regular.ttf
-        - asset: assets/fonts/Open_Sans/static/OpenSans-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/Open_Sans/static/OpenSans-Bold.ttf
-          weight: 700
-    - family: Poppins
-      fonts:
-        - asset: assets/fonts/Poppins/Poppins-Thin.ttf
-          weight: 100
-        - asset: assets/fonts/Poppins/Poppins-ExtraLight.ttf
-          weight: 200
-        - asset: assets/fonts/Poppins/Poppins-Light.ttf
-          weight: 300
-        - asset: assets/fonts/Poppins/Poppins-Regular.ttf
-        - asset: assets/fonts/Poppins/Poppins-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Poppins/Poppins-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/Poppins/Poppins-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Poppins/Poppins-ExtraBold.ttf
-          weight: 800
-        - asset: assets/fonts/Poppins/Poppins-Black.ttf
-          weight: 900
-        - asset: assets/fonts/Poppins/Poppins-Italic.ttf
-          style: italic
-        - asset: assets/fonts/Poppins/Poppins-BoldItalic.ttf
-          weight: 700
-          style: italic
-    - family: SFPro
-      fonts:
-        - asset: assets/fonts/SF_Pro/SF-Pro-Text-Regular.otf
-        - asset: assets/fonts/SF_Pro/SF-Pro-Text-Medium.otf
-          weight: 500
-        - asset: assets/fonts/SF_Pro/SF-Pro-Text-Semibold.otf
-          weight: 600
-        - asset: assets/fonts/SF_Pro/SF-Pro-Text-Bold.otf
-          weight: 700
-        - asset: assets/fonts/SF_Pro/SF-Pro-Text-Light.otf
-          weight: 300
-        - asset: assets/fonts/SF_Pro/SF-Pro-Text-RegularItalic.otf
-          style: italic
-    - family: Inter
-      fonts:
-        - asset: assets/fonts/Inter/Inter-Regular.ttf
-        - asset: assets/fonts/Inter/Inter-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Inter/Inter-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/Inter/Inter-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Inter/Inter-Light.ttf
-          weight: 300
-        - asset: assets/fonts/Inter/Inter-Italic.ttf
-          style: italic
-    - family: Montserrat
-      fonts:
-        - asset: assets/fonts/Montserrat/Montserrat-Regular.ttf
-        - asset: assets/fonts/Montserrat/Montserrat-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Montserrat/Montserrat-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/Montserrat/Montserrat-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Montserrat/Montserrat-Light.ttf
-          weight: 300
-        - asset: assets/fonts/Montserrat/Montserrat-Italic.ttf
-          style: italic
-    - family: Nunito
-      fonts:
-        - asset: assets/fonts/Nunito/Nunito-Regular.ttf
-        - asset: assets/fonts/Nunito/Nunito-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Nunito/Nunito-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/Nunito/Nunito-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Nunito/Nunito-Light.ttf
-          weight: 300
-        - asset: assets/fonts/Nunito/Nunito-Italic.ttf
-          style: italic
-    - family: GeneralSans
-      fonts:
-        - asset: assets/fonts/General_Sans/GeneralSans-Regular.ttf
-        - asset: assets/fonts/General_Sans/GeneralSans-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/General_Sans/GeneralSans-Semibold.ttf
-          weight: 600
-        - asset: assets/fonts/General_Sans/GeneralSans-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/General_Sans/GeneralSans-Light.ttf
-          weight: 300
-    - family: Quicksand
-      fonts:
-        - asset: assets/fonts/Quicksand/Quicksand-Regular.ttf
-        - asset: assets/fonts/Quicksand/Quicksand-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Quicksand/Quicksand-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/Quicksand/Quicksand-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Quicksand/Quicksand-Light.ttf
-          weight: 300
     - family: Outfit
       fonts:
+        - asset: assets/fonts/Outfit/Outfit-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Outfit/Outfit-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Outfit/Outfit-Light.ttf
+          weight: 300
         - asset: assets/fonts/Outfit/Outfit-Regular.ttf
+          weight: 400
         - asset: assets/fonts/Outfit/Outfit-Medium.ttf
           weight: 500
         - asset: assets/fonts/Outfit/Outfit-SemiBold.ttf
           weight: 600
         - asset: assets/fonts/Outfit/Outfit-Bold.ttf
           weight: 700
-        - asset: assets/fonts/Outfit/Outfit-Light.ttf
-          weight: 300
+        - asset: assets/fonts/Outfit/Outfit-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Outfit/Outfit-Black.ttf
+          weight: 900
     - family: PlusJakartaSans
       fonts:
+        - asset: assets/fonts/PlusJakartaSans/PlusJakartaSans-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/PlusJakartaSans/PlusJakartaSans-Light.ttf
+          weight: 300
         - asset: assets/fonts/PlusJakartaSans/PlusJakartaSans-Regular.ttf
+          weight: 400
         - asset: assets/fonts/PlusJakartaSans/PlusJakartaSans-Medium.ttf
           weight: 500
         - asset: assets/fonts/PlusJakartaSans/PlusJakartaSans-SemiBold.ttf
           weight: 600
         - asset: assets/fonts/PlusJakartaSans/PlusJakartaSans-Bold.ttf
           weight: 700
-        - asset: assets/fonts/PlusJakartaSans/PlusJakartaSans-Light.ttf
+        - asset: assets/fonts/PlusJakartaSans/PlusJakartaSans-ExtraBold.ttf
+          weight: 800
+    - family: GeneralSans
+      fonts:
+        - asset: assets/fonts/General_Sans/GeneralSans-Light.ttf
           weight: 300
-        - asset: assets/fonts/PlusJakartaSans/PlusJakartaSans-Italic.ttf
-          style: italic
+        - asset: assets/fonts/General_Sans/GeneralSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/General_Sans/GeneralSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/General_Sans/GeneralSans-Semibold.ttf
+          weight: 600
+        - asset: assets/fonts/General_Sans/GeneralSans-Bold.ttf
+          weight: 700
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter/Inter-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Inter/Inter-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Inter/Inter-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter/Inter-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter/Inter-Bold.ttf
+          weight: 700
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/Lato/Lato-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Lato/Lato-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Lato/Lato-Bold.ttf
+          weight: 700
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat/Montserrat-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Montserrat/Montserrat-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Montserrat/Montserrat-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Montserrat/Montserrat-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Montserrat/Montserrat-Bold.ttf
+          weight: 700
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito/Nunito-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Nunito/Nunito-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Nunito/Nunito-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Nunito/Nunito-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Nunito/Nunito-Bold.ttf
+          weight: 700
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/Open_Sans/static/OpenSans-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Open_Sans/static/OpenSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Open_Sans/static/OpenSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Open_Sans/static/OpenSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Open_Sans/static/OpenSans-Bold.ttf
+          weight: 700
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins/Poppins-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Poppins/Poppins-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Poppins/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins/Poppins-Bold.ttf
+          weight: 700
+    - family: Quicksand
+      fonts:
+        - asset: assets/fonts/Quicksand/Quicksand-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Quicksand/Quicksand-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Quicksand/Quicksand-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Quicksand/Quicksand-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Quicksand/Quicksand-Bold.ttf
+          weight: 700
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto/static/Roboto-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Roboto/static/Roboto-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Roboto/static/Roboto-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Roboto/static/Roboto-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Roboto/static/Roboto-Bold.ttf
+          weight: 700
+    - family: SFPro
+      fonts:
+        - asset: assets/fonts/SF_Pro/SF-Pro-Text-Light.otf
+          weight: 300
+        - asset: assets/fonts/SF_Pro/SF-Pro-Text-Regular.otf
+          weight: 400
+        - asset: assets/fonts/SF_Pro/SF-Pro-Text-Medium.otf
+          weight: 500
+        - asset: assets/fonts/SF_Pro/SF-Pro-Text-Semibold.otf
+          weight: 600
+        - asset: assets/fonts/SF_Pro/SF-Pro-Text-Bold.otf
+          weight: 700
+
 
 

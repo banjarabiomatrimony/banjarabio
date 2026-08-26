@@ -11,8 +11,9 @@ class VouchRepository {
   @visibleForTesting
   VouchRepository.internal();
 
-  SupabaseClient get _supabase => Supabase.instance.client;
-  SupabaseClient get _readClient => ReadReplicaClient.getClient();
+  static SupabaseClient? testClient;
+  SupabaseClient get _supabase => testClient ?? Supabase.instance.client;
+  SupabaseClient get _readClient => testClient ?? ReadReplicaClient.getClient();
 
   /// Vouch for a profile
   /// [vouchedId] is the profile ID being vouched for

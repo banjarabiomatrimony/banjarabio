@@ -14,6 +14,12 @@ class LocalCacheService {
     return Hive.box(name);
   }
 
+  Box<dynamic>? _getBoxOrNull(String name) {
+    if (testBoxOpener != null) return testBoxOpener!(name);
+    if (Hive.isBoxOpen(name)) return Hive.box(name);
+    return null;
+  }
+
   static const String boxAppMetadata = 'app_metadata';
   static const String boxOwnProfile = 'own_profile';
   static const String boxBookmarks = 'bookmarks';
@@ -36,8 +42,8 @@ class LocalCacheService {
   }
 
   String? getPendingReferralId() {
-    final box = _getBox(boxAppMetadata);
-    return box.get('pending_referral_id') as String?;
+    final box = _getBoxOrNull(boxAppMetadata);
+    return box?.get('pending_referral_id') as String?;
   }
 
   Future<void> clearPendingReferralId() async {
@@ -51,8 +57,8 @@ class LocalCacheService {
   }
 
   String? getPendingProfileId() {
-    final box = _getBox(boxAppMetadata);
-    return box.get('pending_profile_id') as String?;
+    final box = _getBoxOrNull(boxAppMetadata);
+    return box?.get('pending_profile_id') as String?;
   }
 
   Future<void> clearPendingProfileId() async {
@@ -66,8 +72,8 @@ class LocalCacheService {
   }
 
   String? getPendingPromoCode() {
-    final box = _getBox(boxAppMetadata);
-    return box.get('pending_promo_code') as String?;
+    final box = _getBoxOrNull(boxAppMetadata);
+    return box?.get('pending_promo_code') as String?;
   }
 
   Future<void> clearPendingPromoCode() async {
@@ -81,8 +87,8 @@ class LocalCacheService {
   }
 
   bool getPendingRewardsFlag() {
-    final box = _getBox(boxAppMetadata);
-    return box.get('pending_rewards_flag', defaultValue: false) == true;
+    final box = _getBoxOrNull(boxAppMetadata);
+    return box?.get('pending_rewards_flag', defaultValue: false) == true;
   }
 
   Future<void> clearPendingRewardsFlag() async {
@@ -96,8 +102,8 @@ class LocalCacheService {
   }
 
   DateTime? getLastInstagramPromptDate() {
-    final box = _getBox(boxAppMetadata);
-    final dateStr = box.get('last_instagram_prompt_date') as String?;
+    final box = _getBoxOrNull(boxAppMetadata);
+    final dateStr = box?.get('last_instagram_prompt_date') as String?;
     if (dateStr == null) return null;
     return DateTime.tryParse(dateStr);
   }
@@ -110,8 +116,8 @@ class LocalCacheService {
   }
 
   String? getThemeMode() {
-    final box = _getBox(boxAppMetadata);
-    return box.get('theme_mode') as String?;
+    final box = _getBoxOrNull(boxAppMetadata);
+    return box?.get('theme_mode') as String?;
   }
 
   Future<void> clearThemeMode() async {
@@ -127,13 +133,13 @@ class LocalCacheService {
   }
 
   Map<String, dynamic>? getOwnProfile() {
-    final box = _getBox(boxOwnProfile);
-    final data = box.get('profile');
+    final box = _getBoxOrNull(boxOwnProfile);
+    final data = box?.get('profile');
     if (data == null) return null;
     return _toMapStringDynamic(data as Map);
   }
 
-  /// Recursively converts Map/List from Hive (dynamic keys/values) to Map&lt;String,dynamic&gt;.
+  /// Recursively converts Map/List from Hive (dynamic keys/values) to `Map<String, dynamic>`.
   static dynamic _toMapStringDynamic(dynamic v) {
     if (v is Map) {
       return v.map(
@@ -157,8 +163,8 @@ class LocalCacheService {
   }
 
   List<Map<String, dynamic>> getBookmarks() {
-    final box = _getBox(boxBookmarks);
-    final data = box.get('list');
+    final box = _getBoxOrNull(boxBookmarks);
+    final data = box?.get('list');
     if (data == null) return [];
     return (data as List)
         .map((e) => Map<String, dynamic>.from(e as Map))
@@ -173,8 +179,8 @@ class LocalCacheService {
   }
 
   List<Map<String, dynamic>> getHomeFeed() {
-    final box = _getBox(boxHomeFeed);
-    final data = box.get('initial_page');
+    final box = _getBoxOrNull(boxHomeFeed);
+    final data = box?.get('initial_page');
     if (data == null) return [];
     return (data as List)
         .map((e) => _toMapStringDynamic(e as Map))
@@ -207,8 +213,8 @@ class LocalCacheService {
   }
 
   List<String> getSearchHistory() {
-    final box = _getBox(boxSearchHistory);
-    return List<String>.from(box.get('history', defaultValue: []));
+    final box = _getBoxOrNull(boxSearchHistory);
+    return List<String>.from(box?.get('history', defaultValue: []) ?? []);
   }
 
   Future<void> clearSearchHistory() async {
@@ -236,8 +242,8 @@ class LocalCacheService {
   }
 
   Map<String, String?>? getRelativeIntent() {
-    final box = _getBox(boxAppMetadata);
-    final data = box.get('relative_intent');
+    final box = _getBoxOrNull(boxAppMetadata);
+    final data = box?.get('relative_intent');
     if (data == null) return null;
     final map = Map<String, dynamic>.from(data as Map);
     return {
@@ -257,7 +263,7 @@ class LocalCacheService {
   /// and has NOT created their own candidate biodata yet.
   bool isRelativeBrowseMode() {
     return getRelativeIntent() != null ||
-        (_getBox(boxAppMetadata).get('is_relative_browse', defaultValue: false) == true);
+        (_getBoxOrNull(boxAppMetadata)?.get('is_relative_browse', defaultValue: false) == true);
   }
 
   Future<void> setRelativeBrowseMode(bool value) async {
@@ -265,7 +271,7 @@ class LocalCacheService {
     await box.put('is_relative_browse', value);
   }
 
-  /// Clears relative browse intent data and disables relative browse mode.
+  /// Clears relative browse session.
   Future<void> clearRelativeBrowseSession() async {
     await clearRelativeIntent();
     await setRelativeBrowseMode(false);
@@ -279,8 +285,8 @@ class LocalCacheService {
   }
 
   bool isGuestMode() {
-    final box = _getBox(boxAppMetadata);
-    return box.get('is_guest_mode', defaultValue: false) == true;
+    final box = _getBoxOrNull(boxAppMetadata);
+    return box?.get('is_guest_mode', defaultValue: false) == true;
   }
 
   Future<void> setGuestTourCompleted(bool completed) async {
@@ -289,8 +295,8 @@ class LocalCacheService {
   }
 
   bool isGuestTourCompleted() {
-    final box = _getBox(boxAppMetadata);
-    return box.get('is_guest_tour_completed', defaultValue: false) == true;
+    final box = _getBoxOrNull(boxAppMetadata);
+    return box?.get('is_guest_tour_completed', defaultValue: false) == true;
   }
 
   Future<void> setTourStageCompleted(String stageName, bool completed) async {
@@ -299,8 +305,8 @@ class LocalCacheService {
   }
 
   bool isTourStageCompleted(String stageName) {
-    final box = _getBox(boxAppMetadata);
-    return box.get('tour_${stageName}_completed', defaultValue: false) == true;
+    final box = _getBoxOrNull(boxAppMetadata);
+    return box?.get('tour_${stageName}_completed', defaultValue: false) == true;
   }
 
   @visibleForTesting

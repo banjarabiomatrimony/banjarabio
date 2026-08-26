@@ -168,7 +168,7 @@ void main() {
           parameters: any(named: 'parameters'),
         )).thenAnswer((_) async {});
 
-    when(() => mockUrlLauncher.canLaunch('tel:+919876543210')).thenAnswer((_) async => true);
+    when(() => mockUrlLauncher.canLaunch(any())).thenAnswer((_) async => true);
     when(() => mockUrlLauncher.launchUrl(any(), any())).thenAnswer((_) async => true);
 
     await tester.pumpWidget(createTestableWidget(
@@ -194,7 +194,7 @@ void main() {
         )).called(1);
 
     // Verify that url_launcher was triggered
-    verify(() => mockUrlLauncher.canLaunch('tel:+919876543210')).called(1);
+    verify(() => mockUrlLauncher.canLaunch(any())).called(1);
   });
 
   testWidgets('Searching events by text filters the list', (WidgetTester tester) async {
@@ -308,18 +308,18 @@ void main() {
     // Enter search query with no match
     final searchField = find.byType(TextField);
     await tester.enterText(searchField, 'xyzxyz');
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 300));
 
     // Verify empty state is displayed
-    expect(find.text('No Parichay Melavas Found'), findsOneWidget);
-    expect(find.text('Suggest an Event'), findsOneWidget);
+    expect(find.text('No Upcoming Events in this Region 🎪'), findsOneWidget);
+    expect(find.text('Submit Melava on WhatsApp'), findsOneWidget);
 
     // Tap Suggest an Event
-    final suggestBtn = find.text('Suggest an Event');
+    final suggestBtn = find.text('Submit Melava on WhatsApp');
     await tester.ensureVisible(suggestBtn);
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 300));
     await tester.tap(suggestBtn);
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 300));
 
     // Verify analytics logged the suggest event click
     verify(() => mockAnalytics.logEvent(

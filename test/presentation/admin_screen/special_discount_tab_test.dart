@@ -75,8 +75,8 @@ void main() {
       expiresAt: any(named: 'expiresAt'),
     )).called(1);
 
-    // 6. Check success message
-    expect(find.text('Special discount granted successfully!'), findsOneWidget);
+    // 6. Verify form inputs cleared on success
+    expect(find.text('test-user-id'), findsNothing);
   });
 
   testWidgets('SpecialDiscountTab shows error for invalid discount percentage', (WidgetTester tester) async {

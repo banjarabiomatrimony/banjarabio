@@ -2,7 +2,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 
 class EmailRepository {
-  final SupabaseClient _supabase = Supabase.instance.client;
+  static SupabaseClient? testClient;
+  SupabaseClient get _supabase => testClient ?? Supabase.instance.client;
 
   Future<Map<String, dynamic>> getPreferences() async {
     try {

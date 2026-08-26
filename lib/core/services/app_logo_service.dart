@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 /// Global cache for the app logo. Load once at startup, use everywhere.
@@ -12,6 +13,9 @@ class AppLogoService {
 
   /// Cached logo bytes. Null until [warmUp] has been called and completed.
   Uint8List? get logoBytes => _bytes;
+
+  @visibleForTesting
+  set logoBytes(Uint8List? bytes) => _bytes = bytes;
 
   /// True if logo is ready to use.
   bool get isReady => _bytes != null;

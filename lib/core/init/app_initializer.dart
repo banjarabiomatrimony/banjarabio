@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/services/global_watchdog.dart';
 import 'package:banjarabio/core/init/startup_tasks.dart';
 import 'package:banjarabio/core/init/error_handling.dart';
 import 'package:banjarabio/core/init/system_chrome_config.dart';
+import 'package:banjarabio/core/media_pipeline/media_pipeline.dart';
 
 /// Top-level initialization orchestrator for BanjaraBio.
 ///
@@ -32,9 +32,8 @@ class AppInitializer {
     // 🚀 Register all phased startup tasks with the orchestrator
     StartupTasks.registerAll();
 
-    // 🚨 SIGNAL 3 FIX: Strict image cache limits for low-end devices
-    PaintingBinding.instance.imageCache.maximumSize = 50;
-    PaintingBinding.instance.imageCache.maximumSizeBytes = 20 << 20; // 20MB
+    // 🛡️ LAYER 4: Global Memory Cache Guard (40MB / 60 bitmaps ceiling with LRU eviction)
+    MemoryCacheGuard.initialize();
 
     // 🚨 Custom error handling (Crashlytics + debounced error widget)
     ErrorHandlingConfig.configure();

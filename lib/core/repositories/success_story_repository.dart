@@ -8,7 +8,8 @@ class SuccessStoryRepository extends IsolateFirstRepository {
   factory SuccessStoryRepository() => _instance;
   SuccessStoryRepository._internal();
 
-  SupabaseClient get _supabase => Supabase.instance.client;
+  static SupabaseClient? testClient;
+  SupabaseClient get _supabase => testClient ?? Supabase.instance.client;
 
   Future<BackendResponse<void>> submitSuccessStory(SuccessStoryModel story) async {
     try {

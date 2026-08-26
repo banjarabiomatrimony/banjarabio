@@ -12,7 +12,8 @@ class VendorRepository {
 
   static const String _localVendorKeyPrefix = 'vendor_self_registration_';
 
-  SupabaseClient get _supabase => Supabase.instance.client;
+  static SupabaseClient? testClient;
+  SupabaseClient get _supabase => testClient ?? Supabase.instance.client;
 
   /// 📝 Register a new vendor (Network Effect Self-Registration)
   Future<BackendResponse<VendorModel>> registerVendor({

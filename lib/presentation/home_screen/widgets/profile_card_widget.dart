@@ -270,6 +270,7 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                   photos.length <= 1
                       ? CustomImageWidget(
                           imageUrl: primaryPhoto?['url'] as String?,
+                          blurHash: primaryPhoto?['blurHash'] as String?,
                           width: double.infinity,
                           height: double.infinity,
                           fit: BoxFit.cover,
@@ -285,6 +286,7 @@ class _ProfileCardWidgetState extends State<ProfileCardWidget>
                             final photo = photos[index] as Map<String, dynamic>;
                             final child = CustomImageWidget(
                               imageUrl: photo['url'] as String?,
+                              blurHash: photo['blurHash'] as String?,
                               width: double.infinity,
                               height: double.infinity,
                               fit: BoxFit.cover,

@@ -178,7 +178,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 68,
+      height: 96,
       child: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
           if (notification is ScrollStartNotification &&
@@ -481,10 +481,10 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
             child: Stack(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
                     gradient: gradient,
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: effectiveBorderColor,
                       width: isPausedCard ? 2.0 : 1.3,
@@ -505,8 +505,8 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                     children: [
                       // ─── High-Impact Icon Shield with Colored Outline ───
                       Container(
-                        width: 38,
-                        height: 38,
+                        width: 34,
+                        height: 34,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: Colors.black.withValues(alpha: 0.22),
@@ -521,7 +521,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                         ),
                         child: leadingWidget,
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 8),
 
                       // ─── Text Column + Highlight Micro-Badge ───
                       Column(
@@ -538,17 +538,18 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                                   color: Colors.white,
                                   fontWeight: AppTypography.black,
                                   fontSize: AppTypography.labelLarge,
+                                  height: 1.15,
                                   letterSpacing: 0.1,
                                 ),
                               ),
-                              const SizedBox(width: 6),
+                              const SizedBox(width: 5),
                               if (isPausedCard)
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 1),
+                                      horizontal: 4, vertical: 1),
                                   decoration: BoxDecoration(
                                     color: Colors.amberAccent,
-                                    borderRadius: BorderRadius.circular(5),
+                                    borderRadius: BorderRadius.circular(4),
                                   ),
                                   child: Text(
                                     'PAUSED',
@@ -556,6 +557,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                                       color: AppColors.amberDeepText,
                                       fontWeight: AppTypography.black,
                                       fontSize: AppTypography.labelSmall,
+                                      height: 1.1,
                                       letterSpacing: 0.2,
                                     ),
                                   ),
@@ -565,10 +567,10 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                               else if (badgeText != null)
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 1),
+                                      horizontal: 4, vertical: 1),
                                   decoration: BoxDecoration(
                                     color: badgeColor ?? AppColors.goldTint100,
-                                    borderRadius: BorderRadius.circular(5),
+                                    borderRadius: BorderRadius.circular(4),
                                   ),
                                   child: Text(
                                     badgeText,
@@ -576,6 +578,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                                       color: badgeTextColor ?? AppColors.amberDarkestText,
                                       fontWeight: AppTypography.black,
                                       fontSize: AppTypography.labelSmall,
+                                      height: 1.1,
                                       letterSpacing: 0.2,
                                     ),
                                   ),
@@ -593,6 +596,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
                                   ? AppTypography.black
                                   : AppTypography.medium,
                               fontSize: AppTypography.labelSmall,
+                              height: 1.15,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,

@@ -96,10 +96,30 @@ void main() {
   });
 
   group('OnboardingValidator — Family Details', () {
-    test('no fields required (optional step)', () {
+    test('full mode requires fatherName and motherName', () {
       final missing = OnboardingValidator.getMissingFields(
         step: CreationStep.family,
         formData: {},
+      );
+      expect(missing, containsAll(['fatherName', 'motherName']));
+    });
+
+    test('complete family form returns no missing fields', () {
+      final missing = OnboardingValidator.getMissingFields(
+        step: CreationStep.family,
+        formData: {
+          'fatherName': 'Kishan',
+          'motherName': 'Sunita',
+        },
+      );
+      expect(missing, isEmpty);
+    });
+
+    test('lite mode requires no family fields', () {
+      final missing = OnboardingValidator.getMissingFields(
+        step: CreationStep.family,
+        formData: {},
+        isLite: true,
       );
       expect(missing, isEmpty);
     });

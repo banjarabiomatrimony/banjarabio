@@ -1204,22 +1204,25 @@ class TrustScoreSkeleton extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────
 class GenericListSkeleton extends StatelessWidget {
   final int itemCount;
-  const GenericListSkeleton({super.key, this.itemCount = 20});
+  const GenericListSkeleton({super.key, this.itemCount = 6});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: List.generate(itemCount, (index) {
-        return Padding(
-          padding: EdgeInsets.only(bottom: 2.h),
-          child: ShimmerWidget.rectangular(
-            height: 9.h,
-            shapeBorder: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+    return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
+      child: Column(
+        children: List.generate(itemCount, (index) {
+          return Padding(
+            padding: EdgeInsets.only(bottom: 2.h),
+            child: ShimmerWidget.rectangular(
+              height: 9.h,
+              shapeBorder: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 }

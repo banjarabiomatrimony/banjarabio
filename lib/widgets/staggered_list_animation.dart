@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 /// Wraps a child widget and animates it with a staggered slide-up + fade-in
@@ -36,6 +37,7 @@ class _StaggeredListItemState extends State<StaggeredListItem>
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
+  Timer? _delayTimer;
 
   @override
   void initState() {
@@ -63,13 +65,18 @@ class _StaggeredListItemState extends State<StaggeredListItem>
     );
 
     // Stagger the start based on index
-    Future.delayed(widget.delay * widget.index, () {
-      if (mounted) _controller.forward();
-    });
+    if (widget.delay == Duration.zero || widget.index == 0) {
+      _controller.forward();
+    } else {
+      _delayTimer = Timer(widget.delay * widget.index, () {
+        if (mounted) _controller.forward();
+      });
+    }
   }
 
   @override
   void dispose() {
+    _delayTimer?.cancel();
     _controller.dispose();
     super.dispose();
   }

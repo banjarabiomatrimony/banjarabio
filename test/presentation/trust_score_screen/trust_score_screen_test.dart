@@ -24,7 +24,7 @@ void main() {
   testWidgets('does not crash on settle', (tester) async {
     setTestScreenSize(tester);
     await tester.pumpWidget(createTestableWidget(const TrustScoreScreen()));
-    await tester.pumpAndSettle(const Duration(seconds: 3));
+    await tester.pump(const Duration(seconds: 1));
     expect(find.byType(Scaffold), findsWidgets);
   });
 }

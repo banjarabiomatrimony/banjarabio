@@ -101,19 +101,19 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     final l10n = AppLocalizations.of(context);
     final List<_OnboardingPage> pages = [
       _OnboardingPage(
-        imagePath: 'assets/images/onboarding/matchmaking.png',
+        icon: Icons.favorite_rounded,
         title: l10n?.findYourPerfectMatch ?? 'Find Your Perfect Match',
         subtitle: l10n?.discoverProfilesFromYourCommunityNsmartM ?? 'Discover profiles from your community.\nSmart matchmaking powered by compatibility scores.',
         bgGradient: const [AppTheme.primaryLight, AppTheme.primaryVariantLight],
       ),
       _OnboardingPage(
-        imagePath: 'assets/images/onboarding/verified.png',
+        icon: Icons.verified_user_rounded,
         title: l10n?.verifiedTrusted ?? 'Verified & Trusted',
         subtitle: l10n?.everyProfileIsVerifiedWithIdSelfieRefere ?? 'Every profile is verified with ID, selfie & references.\nTrust Score ensures genuine connections.',
         bgGradient: const [AppTheme.successLight, AppTheme.successVariantLight],
       ),
       _OnboardingPage(
-        imagePath: 'assets/images/onboarding/family.png',
+        icon: Icons.family_restroom_rounded,
         title: l10n?.familyFirstValues ?? 'Family-First Values',
         subtitle: l10n?.shareProfilesWithYourFamilyInstantlyNbui ?? 'Share profiles with your family instantly.\nBuilt for the way Indian families make decisions.',
         bgGradient: [AppTheme.secondaryVariantLight, AppTheme.secondaryVariantLight.withValues(alpha: AppColors.opacity85)],
@@ -255,6 +255,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 height: 60.w,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: AppColors.opacity15),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: AppColors.opacity20),
@@ -263,15 +264,11 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     ),
                   ],
                 ),
-                child: ClipOval(
-                  child: Image.asset(
-                    page.imagePath,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Icon(
-                      Icons.favorite_rounded,
-                      size: 15.w,
-                      color: Colors.white,
-                    ),
+                child: Center(
+                  child: Icon(
+                    page.icon,
+                    size: 25.w,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -338,13 +335,13 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
 /// Data model for each onboarding step.
 class _OnboardingPage {
-  final String imagePath;
+  final IconData icon;
   final String title;
   final String subtitle;
   final List<Color> bgGradient;
 
   const _OnboardingPage({
-    required this.imagePath,
+    required this.icon,
     required this.title,
     required this.subtitle,
     required this.bgGradient,

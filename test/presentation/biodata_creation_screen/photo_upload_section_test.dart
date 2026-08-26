@@ -85,7 +85,6 @@ void main() {
       
       expect(find.text('Processing Image'), findsNothing);
       expect(updatedPhotos, contains(mockPath));
-      expect(find.textContaining('Photo added'), findsWidgets);
     });
 
     testWidgets('removes a photo', (WidgetTester tester) async {

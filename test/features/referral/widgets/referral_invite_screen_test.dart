@@ -13,6 +13,7 @@ import 'package:banjarabio/core/models/backend_response.dart';
 import 'package:banjarabio/core/models/referral_stats_model.dart';
 import 'package:banjarabio/core/repositories/referral_repository.dart';
 import 'package:banjarabio/presentation/referral_screen/referral_invite_screen.dart';
+import 'package:banjarabio/widgets/shimmer_widget.dart';
 
 class MockReferralRepository extends Mock implements ReferralRepository {}
 
@@ -61,7 +62,7 @@ void main() {
 
       await pumpScreen(tester);
       await tester.pump();
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.byType(ShimmerWidget), findsWidgets);
 
       statsCompleter.complete(
           BackendResponse.success(ReferralStatsModel.empty('u1')));

@@ -51,6 +51,13 @@ class FakeSupabaseClient extends Fake implements SupabaseClient {
       debugPrint('🧪 FakeSupabaseClient.rpc: Matched action=$action, returning type=${res.runtimeType}');
       return FakePostgrestFilterBuilder<T>(res as T);
     }
+    if (rpcResponses.containsKey(fn)) {
+      final res = rpcResponses[fn];
+      return FakePostgrestFilterBuilder<T>(res as T);
+    }
+    if (fn == 'fn_check_phone_available') {
+      return FakePostgrestFilterBuilder<T>(true as T);
+    }
 
     return FakePostgrestFilterBuilder<T>(rpcResponse as T);
   }
