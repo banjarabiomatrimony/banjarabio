@@ -47,7 +47,7 @@ const List<BiodataTemplate> kBiodataTemplates = [
   BiodataTemplate(
     type: BiodataTemplateType.royalGold,
     name: 'Royal Gold',
-    assetPath: 'assets/images/biodata_templates/template_1.png',
+    assetPath: 'assets/images/biodata_templates/template_1.webp',
     accentColor: AppColors.darkGoldenrod,
     marginLeft: 60,
     marginTop: 85,
@@ -60,7 +60,7 @@ const List<BiodataTemplate> kBiodataTemplates = [
   BiodataTemplate(
     type: BiodataTemplateType.sacredMaroon,
     name: 'Sacred Maroon',
-    assetPath: 'assets/images/biodata_templates/template_2.png',
+    assetPath: 'assets/images/biodata_templates/template_2.webp',
     accentColor: AppColors.crimsonDeep,
     marginLeft: 65,
     marginTop: 100,
@@ -73,7 +73,7 @@ const List<BiodataTemplate> kBiodataTemplates = [
   BiodataTemplate(
     type: BiodataTemplateType.lotusGreen,
     name: 'Lotus Green',
-    assetPath: 'assets/images/biodata_templates/template_3.png',
+    assetPath: 'assets/images/biodata_templates/template_3.webp',
     accentColor: AppColors.success,
     marginLeft: 58,
     marginTop: 90,
@@ -86,7 +86,7 @@ const List<BiodataTemplate> kBiodataTemplates = [
   BiodataTemplate(
     type: BiodataTemplateType.peacockBlue,
     name: 'Peacock Blue',
-    assetPath: 'assets/images/biodata_templates/template_4.png',
+    assetPath: 'assets/images/biodata_templates/template_4.webp',
     accentColor: AppColors.blue800,
     marginLeft: 70,
     marginTop: 100,
@@ -99,7 +99,7 @@ const List<BiodataTemplate> kBiodataTemplates = [
   BiodataTemplate(
     type: BiodataTemplateType.mandalaRose,
     name: 'Mandala Rose',
-    assetPath: 'assets/images/biodata_templates/template_5.png',
+    assetPath: 'assets/images/biodata_templates/template_5.webp',
     accentColor: AppColors.materialPink700,
     marginLeft: 58,
     marginTop: 85,
@@ -112,7 +112,7 @@ const List<BiodataTemplate> kBiodataTemplates = [
   BiodataTemplate(
     type: BiodataTemplateType.saffronDiya,
     name: 'Saffron Diya',
-    assetPath: 'assets/images/biodata_templates/template_6.png',
+    assetPath: 'assets/images/biodata_templates/template_6.webp',
     accentColor: AppColors.deepOrange,
     marginLeft: 58,
     marginTop: 95,
@@ -125,7 +125,7 @@ const List<BiodataTemplate> kBiodataTemplates = [
   BiodataTemplate(
     type: BiodataTemplateType.paisleyPurple,
     name: 'Paisley Purple',
-    assetPath: 'assets/images/biodata_templates/template_7.png',
+    assetPath: 'assets/images/biodata_templates/template_7.webp',
     accentColor: AppColors.materialPurpleDark,
     marginLeft: 65,
     marginTop: 95,
@@ -139,7 +139,7 @@ const List<BiodataTemplate> kBiodataTemplates = [
   BiodataTemplate(
     type: BiodataTemplateType.divineTeal,
     name: 'Divine Teal',
-    assetPath: 'assets/images/biodata_templates/template_8.png',
+    assetPath: 'assets/images/biodata_templates/template_8.webp',
     accentColor: AppColors.teal,
     marginLeft: 58,
     marginTop: 135,
@@ -154,7 +154,7 @@ const List<BiodataTemplate> kBiodataTemplates = [
   BiodataTemplate(
     type: BiodataTemplateType.burgundyLattice,
     name: 'Burgundy Lattice',
-    assetPath: 'assets/images/biodata_templates/template_9.png',
+    assetPath: 'assets/images/biodata_templates/template_9.webp',
     accentColor: AppColors.primaryDark,
     marginLeft: 55,
     marginTop: 85,
@@ -168,7 +168,7 @@ const List<BiodataTemplate> kBiodataTemplates = [
   BiodataTemplate(
     type: BiodataTemplateType.ivoryClassic,
     name: 'Ivory Classic',
-    assetPath: 'assets/images/biodata_templates/template_10.png',
+    assetPath: 'assets/images/biodata_templates/template_10.webp',
     accentColor: AppColors.darkGoldenrod,
     marginLeft: 48,
     marginTop: 60,

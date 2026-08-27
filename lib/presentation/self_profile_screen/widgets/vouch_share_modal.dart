@@ -244,7 +244,7 @@ class _VouchShareModalState extends State<VouchShareModal>
                                 Row(
                                   children: [
                                     Image.asset(
-                                      'assets/logo/BanjaraBio.png',
+                                      'assets/logo/BanjaraBio.webp',
                                       height: 28,
                                       errorBuilder: (context, error, stackTrace) =>
                                           const SizedBox.shrink(),

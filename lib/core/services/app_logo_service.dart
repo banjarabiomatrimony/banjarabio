@@ -25,7 +25,7 @@ class AppLogoService {
     if (_bytes != null || _loading) return;
     _loading = true;
     try {
-      final data = await rootBundle.load('assets/logo/BanjaraBio.png');
+      final data = await rootBundle.load('assets/logo/BanjaraBio.webp');
       _bytes = data.buffer.asUint8List();
     } catch (e) {
       // Ignore; logo is optional

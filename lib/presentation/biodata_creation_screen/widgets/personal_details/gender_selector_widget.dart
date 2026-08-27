@@ -60,7 +60,7 @@ class GenderSelectorWidget extends StatelessWidget {
             final isMale = gender == 'Male';
 
             // 🧬 PRO SCALE: High-visibility image-based backgrounds
-            final imagePath = isMale ? 'assets/images/gender_male.png' : 'assets/images/gender_female.png';
+            final imagePath = isMale ? 'assets/images/gender_male.webp' : 'assets/images/gender_female.webp';
             final baseColor = isMale ? Colors.blue.shade700 : Colors.pink.shade600;
 
             return Expanded(

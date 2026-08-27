@@ -583,7 +583,7 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Image.asset(
-            widget.gender == 'Female' ? 'assets/images/gender_female.png' : 'assets/images/gender_male.png',
+            widget.gender == 'Female' ? 'assets/images/gender_female.webp' : 'assets/images/gender_male.webp',
             width: 40,
             height: 40,
             fit: BoxFit.cover,

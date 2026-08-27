@@ -78,6 +78,14 @@ class FCMService implements NotificationBase {
     await _setupInteractions();
     await requestPermission();
 
+    // Subscribe to broadcast topics for global announcements and update alerts
+    try {
+      await _fcm?.subscribeToTopic('all_users');
+      await _fcm?.subscribeToTopic('app_updates');
+    } catch (e) {
+      AppLogger.debug('FcmService', 'Topic subscription bypassed: $e');
+    }
+
     // Sync token immediately if user is already logged in
     final currentUser = _supabase.auth.currentUser;
     if (currentUser != null) {

@@ -47,6 +47,7 @@ import 'package:banjarabio/widgets/daily_reward_dialog.dart';
 import 'package:banjarabio/core/repositories/chat_repository.dart';
 import 'package:banjarabio/presentation/match_profile_screen/widgets/direct_note_bottom_sheet.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/update_ecosystem/update_ecosystem.dart';
 
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -251,6 +252,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       if (mounted && _isLoading && _profiles.isEmpty) {
         AppLogger.warn('HomeScreen', '⚠️ HomeScreen: Shimmer safety fallback triggered');
         setState(() => _isLoading = false);
+      }
+    });
+
+    // 🚀 Check for Application Updates (Zero delay, background evaluated)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        AppUpdateManager.instance.checkAndPrompt(context);
       }
     });
   }

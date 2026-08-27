@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:banjarabio/core/config/banjara_billing_config.dart';
 import 'package:banjarabio/core/supabase_client.dart';
+import 'package:banjarabio/core/update_ecosystem/update_ecosystem.dart';
 import 'package:banjarabio/shared/billing/razorpay_billing_registry.dart';
 import 'package:banjarabio/core/app_export.dart';
 import 'package:banjarabio/core/services/local_cache_service.dart';
@@ -60,10 +61,17 @@ class StartupTasks {
       try {
         await ReadReplicaClient.initialize();
         await AppSupabaseClient.initialize();
+
+        // 🚀 Initialize Universal In-App Update Ecosystem
+        await AppUpdateManager.instance.initialize(
+          config: const AppUpdateConfig(
+            source: SupabaseUpdateSource(),
+          ),
+        );
       } catch (e) {
-        if (kDebugMode) AppLogger.error('StartupTasks', 'Failed to initialize Supabase: $e');
+        if (kDebugMode) AppLogger.error('StartupTasks', 'Failed to initialize Supabase / Update Ecosystem: $e');
       }
-    }, name: 'Supabase Init');
+    }, name: 'Supabase & Update Init');
   }
 
   // ─── BACKGROUND: Lightweight warm-ups (8s after interactive) ───────────

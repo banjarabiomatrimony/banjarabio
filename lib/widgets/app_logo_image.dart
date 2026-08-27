@@ -34,7 +34,7 @@ class AppLogoImage extends StatelessWidget {
       );
     } else {
       image = Image.asset(
-        'assets/logo/BanjaraBio.png',
+        'assets/logo/BanjaraBio.webp',
         width: width,
         height: height,
         fit: fit,

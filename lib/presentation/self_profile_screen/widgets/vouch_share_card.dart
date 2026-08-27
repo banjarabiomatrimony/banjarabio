@@ -96,7 +96,7 @@ class VouchShareCard extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Image.asset(
-                          'assets/logo/BanjaraBio.png',
+                          'assets/logo/BanjaraBio.webp',
                           height: 32,
                           errorBuilder: (context, error, stackTrace) =>
                               const SizedBox.shrink(),
@@ -402,7 +402,7 @@ class VouchShareCard extends StatelessWidget {
                           size: 88,
                           gapless: false,
                           embeddedImage:
-                              const AssetImage('assets/logo/BanjaraBio.png'),
+                              const AssetImage('assets/logo/BanjaraBio.webp'),
                           embeddedImageStyle: const QrEmbeddedImageStyle(
                             size: Size(20, 20),
                           ),

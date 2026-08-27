@@ -204,7 +204,7 @@ class ProfileShareCard extends StatelessWidget {
                       data: _qrData,
                       size: 220,
                       gapless: false,
-                      embeddedImage: const AssetImage('assets/logo/BanjaraBio.png'),
+                      embeddedImage: const AssetImage('assets/logo/BanjaraBio.webp'),
                       embeddedImageStyle: const QrEmbeddedImageStyle(
                         size: Size(50, 50),
                       ),
