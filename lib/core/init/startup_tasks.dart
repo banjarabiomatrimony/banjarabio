@@ -25,6 +25,7 @@ import 'package:banjarabio/services/ads/ad_service.dart';
 import 'package:banjarabio/services/ads/app_open_ad_manager.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
 import 'package:banjarabio/core/services/read_replica_client.dart';
+import 'package:banjarabio/core/services/shader_warmup_service.dart';
 
 /// Registers all phased startup tasks with the [StartupOrchestrator].
 ///
@@ -43,7 +44,7 @@ class StartupTasks {
     _registerIdleFirebaseTasks();
   }
 
-  // ─── BOOTING: Hive DB + Session (required for navigation) ───────────────
+  // ─── BOOTING: Hive DB + Session + Shader Warm-up (required for navigation) ───
 
   static void _registerBootingTasks() {
     StartupOrchestrator().registerTask(StartupPhase.booting, () async {
@@ -51,7 +52,9 @@ class StartupTasks {
       await LocalCacheService().init();
       PerformanceService().initialize();
       await SessionManager.instance.init();
-    }, name: 'Core DB & Session');
+      // 🚀 Pre-warm Impeller/Skia shader pipelines & typography during splash window
+      ShaderWarmupService().warmUp();
+    }, name: 'Core DB, Session & Shader Warmup');
   }
 
   // ─── CRITICAL: Supabase (required for auth check) ──────────────────────

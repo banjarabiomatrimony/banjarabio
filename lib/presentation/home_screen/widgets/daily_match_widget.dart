@@ -252,15 +252,16 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
 
     return GestureDetector(
       onTap: _revealMatch,
-      child: AnimatedBuilder(
-        animation: _pulseAnim,
-        builder: (context, child) {
-          return Transform.scale(
-            scale: _pulseAnim.value,
-            child: child,
-          );
-        },
-        child: Container(
+      child: RepaintBoundary(
+        child: AnimatedBuilder(
+          animation: _pulseAnim,
+          builder: (context, child) {
+            return Transform.scale(
+              scale: _pulseAnim.value,
+              child: child,
+            );
+          },
+          child: Container(
           margin: EdgeInsets.symmetric(horizontal: 6.w),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(28),
@@ -350,8 +351,9 @@ class _DailyMatchWidgetState extends State<DailyMatchWidget>
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildRevealedCard(ProfileModel profile, ThemeData theme) {
     // 🧬 PERFORMANCE: Lazy mapping for revealed card

@@ -13,6 +13,7 @@ import 'package:banjarabio/core/init/app_navigator_key.dart';
 import 'package:banjarabio/core/providers/locale_provider.dart';
 import 'package:banjarabio/core/services/deep_link_service.dart';
 import 'package:banjarabio/core/services/app_logger.dart';
+import 'package:banjarabio/core/media_pipeline/media_pipeline.dart';
 import 'package:banjarabio/core/utils/text_scale_config.dart';
 import 'package:banjarabio/l10n/app_localizations.dart';
 import 'package:banjarabio/services/ads/app_open_ad_manager.dart';
@@ -91,6 +92,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     // Initialize Deep Link Service
     DeepLinkService().init(navigatorKey);
+  }
+
+  @override
+  void didHaveMemoryPressure() {
+    super.didHaveMemoryPressure();
+    AppLogger.warn('MyApp', '🚨 OS Memory Pressure detected — clearing image caches');
+    MemoryCacheGuard.clearMemoryCache();
   }
 
   @override

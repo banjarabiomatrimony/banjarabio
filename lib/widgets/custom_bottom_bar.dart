@@ -256,15 +256,17 @@ class _CustomBottomBarState extends State<CustomBottomBar>
                           3: [AppColors.materialPurple700, AppColors.materialPurpleDark, Colors.white, AppColors.goldGlow],
                           4: [AppColors.materialBlue, AppColors.materialBlueDark, Colors.white, AppColors.goldGlow],
                         };
-                        return CustomPaint(
-                          size: Size(barWidth, contentHeight - 1.5),
-                          painter: CelebrationSparkPainter(
-                            tappedIndex: _lastTappedIndex!,
-                            itemCount: itemCount,
-                            progress: _particleController.value,
-                            screenWidth: barWidth,
-                            sparkColors: tabSparkColors[_lastTappedIndex!] ??
-                                tabSparkColors[0]!,
+                        return RepaintBoundary(
+                          child: CustomPaint(
+                            size: Size(barWidth, contentHeight - 1.5),
+                            painter: CelebrationSparkPainter(
+                              tappedIndex: _lastTappedIndex!,
+                              itemCount: itemCount,
+                              progress: _particleController.value,
+                              screenWidth: barWidth,
+                              sparkColors: tabSparkColors[_lastTappedIndex!] ??
+                                  tabSparkColors[0]!,
+                            ),
                           ),
                         );
                       },

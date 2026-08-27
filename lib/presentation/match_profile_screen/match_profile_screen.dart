@@ -150,8 +150,13 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
     if (args != null) {
       _hasInitializedArgs = true;
       if (args is Map<String, dynamic>) {
-        // Passed full profile data
+        // Passed profile data (instantly displays hero card header)
         _profileData = args;
+        // 🚀 Lazy enrich full biography and family details in background if needed
+        final profileId = args['id']?.toString() ?? args['user_id']?.toString();
+        if (profileId != null && (args['about_self'] == null || args['father_name'] == null)) {
+          _loadProfile(profileId, isBackgroundEnrichment: true);
+        }
       } else if (args is String) {
         // Passed profile ID (e.g. from deep link)
         _loadProfile(args);
@@ -159,10 +164,12 @@ class _MatchProfileScreenState extends ConsumerState<MatchProfileScreen> {
     }
   }
 
-  Future<void> _loadProfile(String profileId) async {
-    setState(() {
-      _isLoading = true;
-    });
+  Future<void> _loadProfile(String profileId, {bool isBackgroundEnrichment = false}) async {
+    if (!isBackgroundEnrichment) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
 
     try {
       final response = await ProfileRepository().getProfileById(profileId);

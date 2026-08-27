@@ -473,12 +473,13 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
             ? Colors.amberAccent
             : (outlineBorderColor ?? Colors.white.withValues(alpha: 0.45));
 
-        return Transform.scale(
-          scale: scale,
-          child: TactilePressable(
-            onTap: () => _handleCardTap(cardId: cardId, onOpen: onTap),
-            pressedScale: 0.96,
-            child: Stack(
+        return RepaintBoundary(
+          child: Transform.scale(
+            scale: scale,
+            child: TactilePressable(
+              onTap: () => _handleCardTap(cardId: cardId, onOpen: onTap),
+              pressedScale: 0.96,
+              child: Stack(
               children: [
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -646,10 +647,11 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget>
               ],
             ),
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
 }
 
 /// Custom painter rendering a luxury diagonal glint reflection across the card
