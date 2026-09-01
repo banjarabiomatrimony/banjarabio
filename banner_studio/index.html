@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>बंजारा वर-वधू परिचय मेळावा - 10x20 ft Hoarding Banner Studio</title>
+  
+  <!-- Marathi & Royal Modern Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Noto+Sans+Devanagari:wght@400;600;700;800;900&family=Poppins:wght@400;600;700;800;900&family=Rozha+One&family=Yatra+One&display=swap" rel="stylesheet">
+  
+  <!-- html2canvas, jspdf and qrcode libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Control Bar -->
+  <header class="studio-header">
+    <div class="header-left">
+      <div class="brand-badge">
+        <span class="pulse-dot"></span>
+        <strong>BanjaraBio</strong> Print Studio
+      </div>
+      <span class="tag">10 × 20 FT (2:1 HOARDING MASTER)</span>
+    </div>
+
+    <div class="header-center">
+      <div class="theme-selector">
+        <label>रंगसंगती (Theme):</label>
+        <button class="theme-btn active" data-theme="maroon-gold" onclick="setTheme('maroon-gold')">
+          <span class="theme-swatch" style="background: linear-gradient(135deg, #780206, #061161);"></span>
+          शाही महावस्त्र (Royal Maroon)
+        </button>
+        <button class="theme-btn" data-theme="crimson-gold" onclick="setTheme('crimson-gold')">
+          <span class="theme-swatch" style="background: linear-gradient(135deg, #b31217, #e52d27);"></span>
+          भव्य भगवा-लाल (Saffron Crimson)
+        </button>
+        <button class="theme-btn" data-theme="navy-gold" onclick="setTheme('navy-gold')">
+          <span class="theme-swatch" style="background: linear-gradient(135deg, #0f2027, #203a43);"></span>
+          रॉयल नेव्ही (Royal Navy)
+        </button>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <button class="btn btn-outline" onclick="toggleEditor()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+        मजकूर बदला (Edit Text)
+      </button>
+      
+      <div class="export-dropdown">
+        <button class="btn btn-primary" onclick="exportHighRes(4)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          फ्लेक्स प्रिंट मास्टर (8K Ultra-HD)
+        </button>
+        <button class="btn btn-secondary" onclick="exportHighRes(2)" title="WhatsApp आणि सोशल मीडियासाठी">
+          📱 4K HD
+        </button>
+      </div>
+
+      <button class="btn btn-outline" onclick="exportPDF()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        प्रिंट PDF (Print PDF)
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Canvas Container -->
+  <main class="canvas-viewport">
+    <div class="scale-indicator">
+      <span>प्रमाण: <strong>२० फूट रुंदी × १० फूट उंची (2000px × 1000px @ Canvas Standard)</strong></span>
+      <span>फ्लेक्स व होर्डिंग प्रिंटिंगसाठी १००% रेडी</span>
+    </div>
+
+    <!-- THE 20x10 FT BANNER (Ratio 2:1) -->
+    <div id="banner-canvas" class="banner-hoarding theme-maroon-gold">
+      
+      <!-- Rich Royal Background Ambient Layers -->
+      <div class="bg-divine-sunburst"></div>
+      <div class="bg-royal-mandap-arch"></div>
+      <div class="bg-mandala-center"></div>
+      <div class="bg-pattern-overlay"></div>
+      <div class="bg-sparkle-layer"></div>
+      <div class="bg-festive-diyas">
+        <div class="diya-light left-diya">🪔</div>
+        <div class="diya-light right-diya">🪔</div>
+      </div>
+      <div class="bg-vignette"></div>
+
+      <!-- Ornate Border Frame -->
+      <div class="royal-outer-border"></div>
+      <div class="royal-inner-border"></div>
+      <div class="corner-ornament top-left"></div>
+      <div class="corner-ornament top-right"></div>
+      <div class="corner-ornament bottom-left"></div>
+      <div class="corner-ornament bottom-right"></div>
+
+      <!-- Top Holy & Partner Logos Header Bar -->
+      <div class="banner-top-bar">
+        <!-- Left: Jagadamba Durga Mata Deity -->
+        <div class="deity-box left-deity-box">
+          <div class="deity-avatar-wrap">
+            <div class="deity-halo"></div>
+            <img id="img-jagadamba" class="deity-img" alt="जगदंबा माता" src="jagadamba_mata.jpg">
+          </div>
+          <div class="deity-title" id="txt-deity-left">।। जगदंबा माता प्रसन्न ।।</div>
+        </div>
+
+        <!-- Center: Partner Logos (Banjara Virasat Sangh & BanjaraBio) -->
+        <div class="center-logos-box">
+          <div class="presented-by-badge" id="txt-presented-by">।। संयुक्त विद्यमाने ।।</div>
+          <div class="partner-logos-wrap">
+            <div class="partner-logo-item-block">
+              <div class="partner-logo-item" title="बंजारा विरासत संघ">
+                <img id="img-bvs-logo" class="partner-logo-img" alt="बंजारा विरासत संघ" src="bvs_logo_unity.jpg">
+              </div>
+              <span class="partner-logo-text">बंजारा विरासत संघ</span>
+            </div>
+
+            <div class="partner-logo-item-block">
+              <div class="partner-logo-item" title="बंजाराबायो">
+                <img id="img-top-logo" class="partner-logo-img" alt="BanjaraBio" src="banjarabio_logo.webp">
+              </div>
+              <span class="partner-logo-text">बंजाराबायो (BanjaraBio)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Sant Sevalal Maharaj Deity -->
+        <div class="deity-box right-deity-box">
+          <div class="deity-avatar-wrap">
+            <div class="deity-halo"></div>
+            <img id="img-sevalal" class="deity-img" alt="संत सेवालाल महाराज" src="sevalal3.jpeg">
+          </div>
+          <div class="deity-title" id="txt-deity-center">।। जय सेवालाल ।।</div>
+        </div>
+      </div>
+
+      <!-- Main Banner Body Content -->
+      <div class="banner-main-grid">
+
+        <!-- Left Pillar: Chief Guest (Sanjaybhau Rathod) -->
+        <aside class="pillar-column guest-pillar">
+          <div class="guest-card">
+            <div class="guest-aura"></div>
+            <div class="guest-frame">
+              <img id="img-sanjay" class="guest-photo" alt="मा. ना. संजयभाऊ राठोड" src="sanjay_rathod.webp">
+            </div>
+            
+            <div class="guest-title-plate">
+              <div class="protocol-badge">।। शुभहस्ते व प्रमुख उपस्थिती ।।</div>
+              <h2 class="guest-name" id="txt-guest-name">मा. ना. संजयभाऊ राठोड</h2>
+              <p class="guest-designation" id="txt-guest-desig">कॅबिनेट मंत्री, मृद व जलसंधारण</p>
+              <div class="guest-sub-tag" id="txt-guest-sub">महाराष्ट्र राज्य</div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Center Pillar: Mega Event Details -->
+        <section class="pillar-column center-event-pillar">
+          
+          <div class="event-headline-badge">
+            <span class="sparkle">✨</span>
+            <span id="txt-event-tag">बंजारा समाजातील उपवर-वधू व पालकांसाठी सुवर्णसंधी</span>
+            <span class="sparkle">✨</span>
+          </div>
+
+          <div class="main-event-title-container">
+            <h1 class="main-event-title" id="txt-main-title">
+              भव्य बंजारा वर-वधू परिचय मेळावा
+            </h1>
+            <div class="edition-ribbon">
+              <div class="ribbon-tail left"></div>
+              <span class="ribbon-text" id="txt-edition">★ प्रथम वर्ष - २०२६ ★</span>
+              <div class="ribbon-tail right"></div>
+            </div>
+          </div>
+
+          <!-- Festival Badge -->
+          <div class="event-timing-banner">
+            <div class="timing-icon">🪔</div>
+            <div class="festive-title" id="txt-festive-occ">दिवाळीच्या शुभ पर्वावर भव्य आयोजन !</div>
+            <div class="timing-icon">🪔</div>
+          </div>
+
+          <!-- Single Prominent City Spotlight (दारव्हा) -->
+          <div class="single-city-container">
+            <div class="single-city-card animated-city-card">
+              <div class="city-shine"></div>
+              <div class="city-beacon-ring"></div>
+              <div class="city-main-content">
+                <span class="city-marker-pulse">📍</span>
+                <span class="city-prefix">मेळावा प्रमुख केंद्र :</span>
+                <h3 class="city-single-name" id="txt-city-1">दारव्हा</h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2 Unified Registration Cards (Left-Right Split Layout) -->
+          <div class="reg-options-row unified-reg-row">
+            
+            <!-- Option 1: Direct Phone / WhatsApp Card -->
+            <div class="reg-option-card option-phone unified-option-card option-center-phone">
+              <div class="card-glow-aura"></div>
+              <div class="option-badge">पर्याय १ • थेट संपर्क</div>
+              
+              <div class="option-card-inner-stack">
+                <div class="phone-action-pill">
+                  <div class="pill-shine"></div>
+                  <div class="whatsapp-official-icon">
+                    <svg viewBox="0 0 1024 1024" width="40" height="40">
+                      <defs>
+                        <linearGradient id="waGrad" gradientUnits="userSpaceOnUse" x1="512" y1="0" x2="512" y2="1024">
+                          <stop offset="0" stop-color="#25D366"/>
+                          <stop offset="1" stop-color="#128C7E"/>
+                        </linearGradient>
+                      </defs>
+                      <rect width="1024" height="1024" rx="220" fill="url(#waGrad)"/>
+                      <path fill="#FFFFFF" d="M783.3 243.2C714 173.8 621.8 135.6 523.5 135.6c-202.4 0-367.1 164.7-367.2 367.1 0 64.7 16.9 127.9 49 183.5L153.2 876.4l194.7-51c53.6 29.2 114 44.7 175.5 44.7h.2c202.4 0 367.1-164.7 367.2-367.1 0-98.1-38.1-190.3-107.5-259.8zM523.5 808h-.1c-54.8 0-108.5-14.7-155.3-42.5l-11.1-6.6-115.5 30.3 30.8-112.6-7.3-11.5c-30.6-48.6-46.7-104.7-46.7-162.4.1-168.2 137-305.1 305.3-305.1 81.5 0 158.2 31.8 215.8 89.5s89.3 134.3 89.3 215.9c0 168.2-137 305-305.3 305zm167.4-228.5c-9.2-4.6-54.3-26.8-62.7-29.8-8.4-3.1-14.5-4.6-20.6 4.6-6.1 9.2-23.7 29.8-29.1 36-5.4 6.1-10.7 6.9-19.9 2.3-9.2-4.6-38.7-14.3-73.8-45.5-27.3-24.3-45.7-54.4-51-63.5-5.4-9.2-.6-14.1 4-18.7 4.1-4.1 9.2-10.7 13.8-16.1 4.6-5.4 6.1-9.2 9.2-15.3 3.1-6.1 1.5-11.5-.8-16.1-2.3-4.6-20.6-49.7-28.3-68.1-7.4-17.9-15-15.5-20.6-15.7-5.3-.3-11.5-.3-17.6-.3s-16.1 2.3-24.5 11.5-32.1 31.4-32.1 76.5c0 45.1 32.9 88.8 37.5 94.9 4.6 6.1 64.7 98.8 156.7 138.5 21.9 9.5 39 15.1 52.3 19.3 22 7 42 6 57.8 3.6 17.6-2.6 54.3-22.2 61.9-43.6 7.6-21.4 7.6-39.8 5.4-43.6-2.3-3.8-8.4-6.1-17.6-10.7z"/>
+                    </svg>
+                  </div>
+                  <div class="phone-digits-wrap">
+                    <span class="action-phone-number" id="txt-phone">+91 8186050406</span>
+                  </div>
+                </div>
+                <div class="option-sub-caption">★ फोन किंवा WhatsApp द्वारे थेट नाव नोंदवा ★</div>
+              </div>
+            </div>
+
+            <!-- Option 2: BanjaraBio App + Big QR Scanner Card -->
+            <div class="reg-option-card option-app unified-option-card option-split-horizontal">
+              <div class="card-glow-aura"></div>
+              <div class="option-badge app-badge">पर्याय २ • ॲप नोंदणी</div>
+              
+              <div class="split-card-content">
+                <!-- Left Side: Logo & Text -->
+                <div class="split-left-pane">
+                  <div class="app-mini-logo-wrap">
+                    <img id="img-logo" class="app-logo-img" alt="BanjaraBio Logo" src="banjarabio_logo.webp">
+                  </div>
+                  <div class="split-text-stack">
+                    <span class="app-sub-label">★ प्ले स्टोअरवरून डाउनलोड करा ★</span>
+                    <strong class="option-main-title">BanjaraBio</strong>
+                    <span class="app-sub-feature">मोफत विवाह ॲप व स्थळे</span>
+                  </div>
+                </div>
+
+                <!-- Right Side: Big QR Code -->
+                <div class="split-right-pane">
+                  <div class="qr-action-capsule">
+                    <div class="qr-box animated-qr-box integrated-qr-box">
+                      <div class="qr-corner tl"></div>
+                      <div class="qr-corner tr"></div>
+                      <div class="qr-corner bl"></div>
+                      <div class="qr-corner br"></div>
+                      <div class="qr-laser"></div>
+                      <div id="qrcode-box"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- Right Pillar: Organizer (Bantibhau Rathod - Aligned symmetrically with Sanjaybhau) -->
+        <aside class="pillar-column organizer-pillar">
+          <div class="organizer-card guest-card-symmetric">
+            <div class="guest-aura"></div>
+            <div class="organizer-frame guest-frame">
+              <img id="img-banti" class="organizer-photo" alt="बंटी राठोड" src="banti_rathod.png">
+            </div>
+            
+            <div class="guest-title-plate organizer-title-plate">
+              <div class="protocol-badge org-badge-symmetric">।। संकल्पना व आयोजक ।।</div>
+              <h2 class="guest-name organizer-name" id="txt-org-name">बंटीभाऊ राठोड</h2>
+              <p class="guest-designation organizer-role" id="txt-org-role">संस्थापक, बंजाराबायो (BanjaraBio)</p>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+
+      <!-- Mega Footer Strip (Royal 3-Zone Community Footer) -->
+      <footer class="banner-footer-strip animated-footer-strip">
+        <div class="footer-shine"></div>
+        
+        <!-- Left: Urgent Announcement -->
+        <div class="footer-col footer-col-left">
+          <div class="footer-speaker-badge">
+            <span class="pulsing-speaker">📢</span>
+          </div>
+          <div class="footer-text-group">
+            <strong class="urgent-head" id="txt-footer-urgency">नाव नोंदणी सुरू झाली आहे !</strong>
+            <span class="urgent-sub" id="txt-footer-note">सर्व बंजारा समाज बांधवांनी त्वरित नाव नोंदवावे</span>
+          </div>
+        </div>
+
+        <!-- Center: Special Attractive Incentive Badge -->
+        <div class="footer-col footer-col-center">
+          <div class="footer-special-offer-pill">
+            <span class="offer-star">★</span>
+            <span class="offer-text" id="txt-offer-note">पुढील वर्षी लग्न ठरवू इच्छिणाऱ्या उपवर-वधू व पालकांनी त्वरित नोंदणी करावी</span>
+            <span class="offer-star">★</span>
+          </div>
+        </div>
+
+        <!-- Right: Official Digital Platform Authority -->
+        <div class="footer-col footer-col-right">
+          <div class="footer-brand-wrap">
+            <div class="footer-logo-box">
+              <img class="footer-logo-img" alt="BanjaraBio" src="banjarabio_logo.webp">
+            </div>
+            <div class="footer-brand-text">
+              <strong class="brand-title">बंजाराबायो मॅट्रिमोनी</strong>
+              <span class="brand-subtitle">समाजाचा नंबर १ विश्वासू डिजिटल मंच</span>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- Live Editor Drawer Modal -->
+  <div id="editor-drawer" class="editor-drawer">
+    <div class="drawer-header">
+      <h3>बॅनर मजकूर संपादन (Banner Text Editor)</h3>
+      <button class="close-btn" onclick="toggleEditor()">✕</button>
+    </div>
+    
+    <div class="drawer-body">
+      <div class="form-row">
+        <div class="form-group col">
+          <label>डावा देव/माता मजकूर (Left Deity):</label>
+          <input type="text" id="inp-deity-left" value="।। जगदंबा माता प्रसन्न ।।" oninput="syncText('txt-deity-left', this.value)">
+        </div>
+        <div class="form-group col">
+          <label>मध्यवर्ती दैवत मजकूर (Center Deity):</label>
+          <input type="text" id="inp-deity-center" value="।। जय सेवालाल ।।" oninput="syncText('txt-deity-center', this.value)">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>उजवा कोपरा टॅग (Top Right Badge):</label>
+        <input type="text" id="inp-constituency" value="अखिल भारतीय गोर बंजारा समाज" oninput="syncText('txt-constituency', this.value)">
+      </div>
+
+      <div class="form-group">
+        <label>प्रमुख अतिथी नाव (Chief Guest Name):</label>
+        <input type="text" id="inp-guest-name" value="मा. ना. संजयभाऊ राठोड" oninput="syncText('txt-guest-name', this.value)">
+      </div>
+
+      <div class="form-group">
+        <label>प्रमुख अतिथी पद (Chief Guest Designation):</label>
+        <input type="text" id="inp-guest-desig" value="कॅबिनेट मंत्री, मृद व जलसंधारण" oninput="syncText('txt-guest-desig', this.value)">
+      </div>
+
+      <div class="form-group">
+        <label>मेळाव्याचे मुख्य नाव (Event Title):</label>
+        <input type="text" id="inp-main-title" value="भव्य बंजारा वर-वधू परिचय मेळावा" oninput="syncText('txt-main-title', this.value)">
+      </div>
+
+      <div class="form-group">
+        <label>वर्ष / आवृत्ती (Edition):</label>
+        <input type="text" id="inp-edition" value="★ प्रथम वर्ष - २०२६ ★" oninput="syncText('txt-edition', this.value)">
+      </div>
+
+      <div class="form-group">
+        <label>कालावधी / सण (Festive Occasion):</label>
+        <input type="text" id="inp-festive" value="दिवाळीच्या शुभ पर्वावर आयोजित !" oninput="syncText('txt-festive-occ', this.value)">
+      </div>
+
+      <div class="form-group">
+        <label>मेळावा मुख्य शहर (Host City):</label>
+        <input type="text" id="inp-city-1" value="दारव्हा" oninput="syncText('txt-city-1', this.value)">
+      </div>
+
+      <div class="form-group">
+        <label>आयोजक नाव (Organizer Name):</label>
+        <input type="text" id="inp-org-name" value="बंटीभाऊ राठोड" oninput="syncText('txt-org-name', this.value)">
+      </div>
+
+      <div class="form-group">
+        <label>आयोजक पद (Organizer Role):</label>
+        <input type="text" id="inp-org-role" value="संस्थापक, बंजाराबायो (BanjaraBio)" oninput="syncText('txt-org-role', this.value)">
+      </div>
+
+      <div class="form-group">
+        <label>आयोजक फोटो झूम (Photo Zoom): <span id="lbl-zoom" style="color:var(--primary-gold)">1.45x</span></label>
+        <input type="range" id="inp-zoom" min="1.0" max="2.2" step="0.02" value="1.45" oninput="adjustPhoto()">
+      </div>
+
+      <div class="form-group">
+        <label>आयोजक फोटो स्थान (Photo Position Y): <span id="lbl-pos" style="color:var(--primary-gold)">20%</span></label>
+        <input type="range" id="inp-pos" min="0" max="100" step="1" value="20" oninput="adjustPhoto()">
+      </div>
+
+      <div class="form-group">
+        <label>संपर्क फोन नंबर (Contact Number):</label>
+        <input type="text" id="inp-phone" value="+91 8186050406" oninput="syncText('txt-phone', this.value)">
+      </div>
+
+      <div class="form-group">
+        <label>मुलींसाठी सवलत संदेश (Offer Note):</label>
+        <input type="text" id="inp-offer" value="वधूंसाठी (मुलींसाठी) विशेष सवलत" oninput="syncText('txt-offer-girl', this.value)">
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Asset Data and Studio App Logic with Cache Buster -->
+  <script src="assets_data.js?v=3"></script>
+  <script src="app.js?v=3"></script>
+</body>
+</html>
