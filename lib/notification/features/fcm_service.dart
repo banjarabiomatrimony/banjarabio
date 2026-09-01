@@ -74,9 +74,8 @@ class FCMService implements NotificationBase {
         FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
       }
 
-    // 1. Initial configuration & permission request
+    // 1. Initial configuration
     await _setupInteractions();
-    await requestPermission();
 
     // Subscribe to broadcast topics for global announcements and update alerts
     try {
@@ -174,6 +173,17 @@ class FCMService implements NotificationBase {
 
     AppLogger.debug('FcmService', '🔔 [FCMService] Permission granted: $granted');
     return granted;
+  }
+
+  /// Checks current notification authorization status without popping a system dialog.
+  Future<bool> hasPermission() async {
+    try {
+      final NotificationSettings? settings = await _fcm?.getNotificationSettings();
+      return settings?.authorizationStatus == AuthorizationStatus.authorized ||
+          settings?.authorizationStatus == AuthorizationStatus.provisional;
+    } catch (_) {
+      return false;
+    }
   }
 
   /// Manually sync token for a specific user.

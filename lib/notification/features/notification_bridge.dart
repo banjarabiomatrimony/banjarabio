@@ -162,6 +162,13 @@ class NotificationBridge {
 
     if (alreadyAsked) return;
 
+    // If permission was already granted at the system level, don't show interstitial UI
+    final isAlreadyGranted = await _fcm.hasPermission();
+    if (isAlreadyGranted) {
+      await prefs.setBool(_prefKeyPermissionAsked, true);
+      return;
+    }
+
     if (!context.mounted) return;
 
     final shouldAsk = await showModalBottomSheet<bool>(
