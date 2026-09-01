@@ -19,6 +19,23 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
+-- 1.5 Deduplicate test/mock records with identical phone numbers before creating index
+WITH duplicate_phones AS (
+    SELECT id,
+           ROW_NUMBER() OVER (
+               PARTITION BY public.fn_normalize_phone(phone_number)
+               ORDER BY created_at DESC
+           ) as rn
+    FROM public.profiles
+    WHERE phone_number IS NOT NULL AND trim(phone_number) != ''
+      AND length(regexp_replace(phone_number, '\D', '', 'g')) >= 10
+)
+UPDATE public.profiles
+SET phone_number = NULL
+WHERE id IN (
+    SELECT id FROM duplicate_phones WHERE rn > 1
+);
+
 -- 2. Partial unique index on normalized 10-digit phone number
 CREATE UNIQUE INDEX IF NOT EXISTS idx_profiles_normalized_phone
 ON public.profiles (public.fn_normalize_phone(phone_number))

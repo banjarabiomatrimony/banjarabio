@@ -552,9 +552,55 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
           ),
           const SizedBox(width: 6),
 
-          // ─── 5. 🔍 Search (Electric Indigo Active State) ───
+          // ─── 5. ⚡ Active (Cyan & Electric Green Pulse) ───
           _buildAnimatedCategoryChip(
             index: 5,
+            icon: Icons.bolt_rounded,
+            label: 'Active',
+            isActive: widget.selectedTab == 4,
+            activeGradient: const LinearGradient(
+              colors: [Color(0xFF0093E9), Color(0xFF80D0C7)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            activeTextColor: Colors.white,
+            activeGlowColor: const Color(0xFF0093E9).withValues(alpha: AppColors.opacity50),
+            iconAnimationType: _IconAnimType.pulse,
+            onTap: () {
+              _scrollToChip(5);
+              if (widget.selectedTab == 4) return;
+              HapticFeedback.selectionClick();
+              widget.onTabChanged(4);
+            },
+          ),
+          const SizedBox(width: 6),
+
+          // ─── 6. 🆕 Newest (Rose Orange Shimmer) ───
+          _buildAnimatedCategoryChip(
+            index: 6,
+            icon: Icons.fiber_new_rounded,
+            label: 'Newest',
+            isActive: widget.selectedTab == 5,
+            activeGradient: const LinearGradient(
+              colors: [Color(0xFFFF512F), Color(0xFFDD2476)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            activeTextColor: Colors.white,
+            activeGlowColor: const Color(0xFFFF512F).withValues(alpha: AppColors.opacity50),
+            iconAnimationType: _IconAnimType.twinkle,
+            onTap: () {
+              _scrollToChip(6);
+              if (widget.selectedTab == 5) return;
+              HapticFeedback.selectionClick();
+              widget.onTabChanged(5);
+            },
+          ),
+          const SizedBox(width: 6),
+
+          // ─── 7. 🔍 Search (Electric Indigo Active State) ───
+          _buildAnimatedCategoryChip(
+            index: 7,
             icon: _isSearchExpanded ? Icons.search_off_rounded : Icons.search_rounded,
             label: 'Search',
             isActive: _isSearchExpanded,
@@ -567,7 +613,7 @@ class _HomeFeedHeaderState extends State<HomeFeedHeader> with TickerProviderStat
             activeGlowColor: AppColors.categoryCareer.withValues(alpha: AppColors.opacity50),
             iconAnimationType: _IconAnimType.none,
             onTap: () {
-              _scrollToChip(5);
+              _scrollToChip(7);
               _toggleSearch();
             },
           ),

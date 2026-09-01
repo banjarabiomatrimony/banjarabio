@@ -74,6 +74,7 @@ class ProfileRepository extends IsolateFirstRepository {
     _feedCacheTimestamp = null;
     _lastFeedFilters = null;
     _lastSearchQuery = null;
+    _lastSortBy = null;
     _isDistrictFallback = false;
     _lastRequestedDistrict = null;
     _lastSelectedState = null;
@@ -93,6 +94,7 @@ class ProfileRepository extends IsolateFirstRepository {
   List<ProfileModel>? _cachedFeed;
   FilterCriteria? _lastFeedFilters;
   String? _lastSearchQuery;
+  String? _lastSortBy;
   DateTime? _feedCacheTimestamp;
 
   // District Fallback Discovery State
@@ -531,6 +533,7 @@ class ProfileRepository extends IsolateFirstRepository {
     String? lastCreatedAt,
     FilterCriteria? filters,
     String? searchQuery,
+    String sortBy = 'smart',
     bool forceRefresh = false,
   }) async {
     try {
@@ -543,8 +546,8 @@ class ProfileRepository extends IsolateFirstRepository {
       // 0. 🧬 PRO SCALE: Stale-While-Revalidate (SWR) Caching
       // 1. Memory Cache (Valid for 5 mins)
       final isInitialLoad = lastCreatedAt == null;
-      if (isInitialLoad && !forceRefresh && _isFeedCacheValid(filters, searchQuery)) {
-        AppLogger.debug('ProfileRepository', 'ProfileRepository: Returning Memory Cached Feed');
+      if (isInitialLoad && !forceRefresh && _isFeedCacheValid(filters, searchQuery, sortBy)) {
+        AppLogger.debug('ProfileRepository', 'ProfileRepository: Returning Memory Cached Feed ($sortBy)');
         
         // Avoid duplicate background refreshes
         if (activeFetchFuture == null && !_isPerformingBackgroundFetch) {
@@ -552,13 +555,14 @@ class ProfileRepository extends IsolateFirstRepository {
             limit: limit,
             filters: filters,
             searchQuery: searchQuery,
+            sortBy: sortBy,
           );
         }
         return BackendResponse.success(_cachedFeed!);
       }
 
         // 2. Disk Cache (Hive) - Persistent across app restarts
-      if (isInitialLoad && !forceRefresh && filters == null && (searchQuery == null || searchQuery.isEmpty)) {
+      if (isInitialLoad && !forceRefresh && sortBy == 'smart' && filters == null && (searchQuery == null || searchQuery.isEmpty)) {
         final diskFeedJson = _cacheService.getHomeFeed();
         if (diskFeedJson.isNotEmpty) {
           AppLogger.debug('ProfileRepository', 'ProfileRepository: Returning Disk Cached Feed (SWR)');
@@ -569,6 +573,7 @@ class ProfileRepository extends IsolateFirstRepository {
           );
           
           _cachedFeed = diskProfiles;
+          _lastSortBy = sortBy;
           _feedCacheTimestamp = DateTime.now(); // Mark as memory cached now
 
           // Trigger background refresh to get fresh data
@@ -577,6 +582,7 @@ class ProfileRepository extends IsolateFirstRepository {
               limit: limit,
               filters: filters,
               searchQuery: searchQuery,
+              sortBy: sortBy,
             );
           }
           
@@ -610,6 +616,7 @@ class ProfileRepository extends IsolateFirstRepository {
           // 🔍 PATHWAY A: Pass explicit gender for relative browse users
           // (they have no own profile, so auto-detection returns NULL)
           'p_gender': cleanGender,
+          'p_sort_by': sortBy,
         },
       ).timeout(Duration(seconds: (isGuest || isRelativeBrowse) ? 10 : 20));
 
@@ -663,6 +670,7 @@ class ProfileRepository extends IsolateFirstRepository {
             'p_district': null, // Remove district filter
             'p_taluka': null,   // Remove taluka filter
             'p_gender': cleanGender,
+            'p_sort_by': sortBy,
           },
         ).timeout(const Duration(seconds: 15));
 
@@ -745,11 +753,12 @@ class ProfileRepository extends IsolateFirstRepository {
         _cachedFeed = enrichedProfiles;
         _lastFeedFilters = filters;
         _lastSearchQuery = searchQuery;
+        _lastSortBy = sortBy;
         _feedCacheTimestamp = DateTime.now();
 
         // 7. 🧬 PRO SCALE: Persist Default Feed to Disk
-        // We only persist the "default" feed (no filters/search) to drive instant startup.
-        if (filters == null && (searchQuery == null || searchQuery.isEmpty)) {
+        // We only persist the "default" feed (no filters/search, smart sort) to drive instant startup.
+        if (sortBy == 'smart' && filters == null && (searchQuery == null || searchQuery.isEmpty)) {
           final feedJson = enrichedProfiles.map((p) => p.toJson()).toList();
           _cacheService.saveHomeFeed(feedJson);
         }
@@ -1167,12 +1176,13 @@ class ProfileRepository extends IsolateFirstRepository {
     _lastSelectedState = null;
   }
 
-  bool _isFeedCacheValid(FilterCriteria? filters, String? query) {
+  bool _isFeedCacheValid(FilterCriteria? filters, String? query, [String sortBy = 'smart']) {
     return _cachedFeed != null &&
         _feedCacheTimestamp != null &&
         DateTime.now().difference(_feedCacheTimestamp!) < _cacheDuration &&
         _lastFeedFilters == filters &&
-        _lastSearchQuery == query;
+        _lastSearchQuery == query &&
+        _lastSortBy == sortBy;
   }
 
   /// Background refresh helper for SWR
@@ -1180,6 +1190,7 @@ class ProfileRepository extends IsolateFirstRepository {
     required int limit,
     FilterCriteria? filters,
     String? searchQuery,
+    String sortBy = 'smart',
   }) async {
     // 🛡️ RECURSION & TEST GUARD: Block re-entry and skip background refresh in unit tests
     if (_isPerformingBackgroundFetch || testClient != null) return;
@@ -1193,6 +1204,7 @@ class ProfileRepository extends IsolateFirstRepository {
         limit: limit,
         filters: filters,
         searchQuery: searchQuery,
+        sortBy: sortBy,
         forceRefresh: true,
       );
       

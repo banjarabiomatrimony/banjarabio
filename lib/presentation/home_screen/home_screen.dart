@@ -545,6 +545,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         lastCreatedAt: isLoadMore ? _lastCreatedAt : null,
         filters: applyFilters,
         searchQuery: _searchController.text,
+        sortBy: _getSortByForTab(_selectedTab),
         forceRefresh: clearCache,
       ).timeout(
         Duration(seconds: isGuest ? 10 : 30),
@@ -1071,7 +1072,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 },
                 selectedTab: _selectedTab,
                 // isSwipeMode: _isSwipeMode, // Commented out swipe mode
-                onTabChanged: (tab) => Future.microtask(() => setState(() => _selectedTab = tab)),
+                onTabChanged: _onTabChanged,
                 // onViewModeChanged: (swipe) => setState(() => _isSwipeMode = swipe), // Commented out swipe mode
               ),
 
@@ -1122,13 +1123,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 //   ),
 
               // ══════════════════════════════════════════════════════
-              // RECOMMENDED / ALL MATCHES (0), NEAR ME (2), VIP (3)
+              // RECOMMENDED / ALL MATCHES (0), NEAR ME (2), VIP (3), ACTIVE (4), NEWEST (5)
               // ══════════════════════════════════════════════════════
               if (_selectedTab != 1) ...HomeRecommendedContent.buildSlivers(
                 context: context,
                 isLoading: _isLoading,
                 errorMessage: _errorMessage,
-                profiles: _getFilteredProfilesForTab(_selectedTab),
+                profiles: _profiles,
                 isSwipeMode: false, // Commented out swipe mode
                 activeFilterCount: _activeFilterCount,
                 isFetchingMore: _isFetchingMore,
@@ -1281,27 +1282,35 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     );
   }
 
-  List<ProfileModel> _getFilteredProfilesForTab(int tab) {
+  String _getSortByForTab(int tab) {
     switch (tab) {
       case 2:
-        // Near Me tab
-        final userDistrict = _ownProfile?.district?.toLowerCase() ?? '';
-        final userState = _ownProfile?.state?.toLowerCase() ?? '';
-        final near = _profiles.where((p) {
-          final pDist = p.district?.toLowerCase() ?? '';
-          final pState = p.state?.toLowerCase() ?? '';
-          return (userDistrict.isNotEmpty && pDist == userDistrict) ||
-              (userState.isNotEmpty && pState == userState);
-        }).toList();
-        return near.isNotEmpty ? near : _profiles;
+        return 'near_me';
       case 3:
-        // VIP Verified tab
-        final vip = _profiles.where((p) => p.isVerified || p.isPremium).toList();
-        return vip.isNotEmpty ? vip : _profiles;
+        return 'verified';
+      case 4:
+        return 'active';
+      case 5:
+        return 'latest';
       case 0:
       default:
-        // All Matches
-        return _profiles;
+        return 'smart';
+    }
+  }
+
+  void _onTabChanged(int tab) {
+    if (_selectedTab == tab) return;
+    setState(() {
+      _selectedTab = tab;
+      if (tab != 1) {
+        _isLoading = true;
+        _lastCreatedAt = null;
+        _hasMore = true;
+        _profiles = [];
+      }
+    });
+    if (tab != 1) {
+      _loadData();
     }
   }
 }
