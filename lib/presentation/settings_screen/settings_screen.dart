@@ -40,8 +40,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
 
   static const _languages = [
     {'code': 'en', 'label': 'English', 'native': 'English'},
-    {'code': 'mr', 'label': 'Marathi', 'native': 'मराठी'},
     {'code': 'hi', 'label': 'Hindi', 'native': 'हिंदी'},
+    {'code': 'mr', 'label': 'Marathi', 'native': 'मराठी'},
     {'code': 'te', 'label': 'Telugu', 'native': 'తెలుగు'},
     {'code': 'kn', 'label': 'Kannada', 'native': 'ಕನ್ನಡ'},
   ];

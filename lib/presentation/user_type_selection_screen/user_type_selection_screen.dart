@@ -198,229 +198,315 @@ class _UserTypeSelectionScreenState extends ConsumerState<UserTypeSelectionScree
         WidgetsBinding.instance.platformDispatcher.locale.languageCode;
 
     final languages = [
-      {'code': 'mr', 'label': 'Marathi', 'native': 'मराठी', 'sub': 'बंजारा समाजासाठी पहिली पसंती'},
       {'code': 'en', 'label': 'English', 'native': 'English', 'sub': 'Universal Language'},
       {'code': 'hi', 'label': 'Hindi', 'native': 'हिंदी', 'sub': 'राष्ट्रभाषा'},
+      {'code': 'mr', 'label': 'Marathi', 'native': 'मराठी', 'sub': 'बंजारा समाजासाठी पहिली पसंती'},
       {'code': 'te', 'label': 'Telugu', 'native': 'తెలుగు', 'sub': 'తెలుగు మాట్లాడే వారి కోసం'},
       {'code': 'kn', 'label': 'Kannada', 'native': 'ಕನ್ನಡ', 'sub': 'ಕರ್ನಾಟಕದ ಬಂಜಾರ ಬಾಂಧವರಿಗಾಗಿ'},
     ];
 
+    String selectedCode = activeCode;
+
+    String getContinueButtonLabel(String code) {
+      switch (code) {
+        case 'mr':
+          return 'मराठीमध्ये पुढे चालू ठेवा';
+        case 'hi':
+          return 'हिंदी में आगे बढ़ें';
+        case 'te':
+          return 'తెలుగులో కొనసాగించండి';
+        case 'kn':
+          return 'ಕನ್ನಡದಲ್ಲಿ ಮುಂದುವರಿಯಿರಿ';
+        case 'en':
+        default:
+          return 'Continue in English';
+      }
+    }
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       isDismissible: !isFirstTime,
       enableDrag: !isFirstTime,
       backgroundColor: Colors.transparent,
       builder: (modalContext) {
-          return Container(
-            constraints: BoxConstraints(maxHeight: 85.h),
-            decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF1A1114) : Colors.white,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-              border: Border.all(
-                color: isDark
-                    ? Colors.white.withValues(alpha: 0.15)
-                    : AppColors.categoryAstro.withValues(alpha: 0.25),
-                width: 1.5,
+        return StatefulBuilder(
+          builder: (ctx, setModalState) {
+            return Container(
+              constraints: BoxConstraints(maxHeight: 82.h),
+              decoration: BoxDecoration(
+                color: isDark ? const Color(0xFF1A1114) : Colors.white,
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+                border: Border.all(
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.15)
+                      : AppColors.categoryAstro.withValues(alpha: 0.25),
+                  width: 1.5,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: isDark ? 0.60 : 0.20),
+                    blurRadius: 30,
+                    offset: const Offset(0, -6),
+                  ),
+                ],
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: isDark ? 0.60 : 0.20),
-                  blurRadius: 30,
-                  offset: const Offset(0, -6),
-                ),
-              ],
-            ),
-            padding: EdgeInsets.fromLTRB(5.w, 1.5.h, 5.w, 3.h),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Handle Pill
-                Center(
-                  child: Container(
-                    width: 42,
-                    height: 4.5,
-                    decoration: BoxDecoration(
-                      color: isDark ? Colors.white24 : AppColors.slate300,
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 2.0.h),
-
-                // Title & Icon
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: AppColors.categoryAstro.withValues(alpha: 0.15),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(Icons.language_rounded, size: 22, color: AppColors.categoryAstroDark),
-                    ),
-                    SizedBox(width: 2.5.w),
-                    Flexible(
-                      child: Text(
-                        'निवडा तुमची भाषा / Select Language',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontFamily: AppTypography.headingFontFamily,
-                          fontWeight: AppTypography.extraBold,
-                          fontSize: AppTypography.bodyLarge,
-                          color: theme.colorScheme.onSurface,
+              child: SafeArea(
+                top: false,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(5.w, 1.5.h, 5.w, 1.5.h),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Handle Pill
+                      Center(
+                        child: Container(
+                          width: 42,
+                          height: 4.5,
+                          decoration: BoxDecoration(
+                            color: isDark ? Colors.white24 : AppColors.slate300,
+                            borderRadius: BorderRadius.circular(3),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 0.6.h),
-                Text(
-                  'तुम्हाला सोयीस्कर असलेली भाषा निवडा',
-                  style: TextStyle(
-                    fontSize: AppTypography.labelSmall,
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 2.0.h),
+                      SizedBox(height: 1.6.h),
 
-                // Language List Cards (Scrollable for smaller screens)
-                Flexible(
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: languages.map((lang) {
-                final isSelected = lang['code'] == activeCode;
-                final primaryColor = isSelected ? AppColors.categoryAstroDark : theme.colorScheme.onSurface;
-
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 1.0.h),
-                  child: TactilePressable(
-                    onTap: () {
-                      HapticFeedback.mediumImpact();
-                      final code = lang['code']!;
-                      ref.read(localeProvider.notifier).setLocale(Locale(code));
-                      Navigator.of(modalContext).pop();
-                    },
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.2.h),
-                      decoration: BoxDecoration(
-                        gradient: isSelected
-                            ? LinearGradient(
-                                colors: [
-                                  AppColors.goldTint100.withValues(alpha: isDark ? 0.35 : 0.65),
-                                  AppColors.goldTint200.withValues(alpha: isDark ? 0.20 : 0.40),
-                                ],
-                              )
-                            : null,
-                        color: isSelected
-                            ? null
-                            : (isDark ? Colors.white.withValues(alpha: 0.05) : AppColors.slate50),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: isSelected
-                              ? AppColors.categoryAstro
-                              : (isDark ? Colors.white12 : AppColors.slate200),
-                          width: isSelected ? 1.8 : 1.0,
-                        ),
-                        boxShadow: isSelected
-                            ? [
-                                BoxShadow(
-                                  color: AppColors.categoryAstro.withValues(alpha: 0.25),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ]
-                            : null,
-                      ),
-                      child: Row(
+                      // Title & Icon
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            width: 36,
-                            height: 36,
+                            padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
+                              color: AppColors.categoryAstro.withValues(alpha: 0.15),
                               shape: BoxShape.circle,
-                              color: isSelected
-                                  ? AppColors.categoryAstroDark
-                                  : (isDark ? Colors.white10 : AppColors.slate200),
                             ),
-                            child: Center(
-                              child: Text(
-                                lang['native']!.substring(0, 1),
-                                style: TextStyle(
-                                  fontWeight: AppTypography.bold,
-                                  fontSize: 16,
-                                  color: isSelected ? Colors.white : theme.colorScheme.onSurface,
-                                ),
+                            child: const Icon(Icons.language_rounded, size: 22, color: AppColors.categoryAstroDark),
+                          ),
+                          SizedBox(width: 2.5.w),
+                          Flexible(
+                            child: Text(
+                              'निवडा तुमची भाषा / Select Language',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontFamily: AppTypography.headingFontFamily,
+                                fontWeight: AppTypography.extraBold,
+                                fontSize: AppTypography.bodyLarge,
+                                color: theme.colorScheme.onSurface,
                               ),
                             ),
                           ),
-                          SizedBox(width: 3.5.w),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        lang['native']!,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontFamily: AppTypography.headingFontFamily,
-                                          fontWeight: AppTypography.bold,
-                                          fontSize: AppTypography.bodyMedium,
-                                          color: primaryColor,
-                                        ),
+                        ],
+                      ),
+                      SizedBox(height: 0.4.h),
+                      Text(
+                        'तुम्हाला सोयीस्कर असलेली भाषा निवडा',
+                        style: TextStyle(
+                          fontSize: AppTypography.labelSmall,
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 1.5.h),
+
+                      // Language List Cards (Scrollable for smaller screens)
+                      Flexible(
+                        child: SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: languages.map((lang) {
+                              final isSelected = lang['code'] == selectedCode;
+                              final primaryColor = isSelected ? AppColors.categoryAstroDark : theme.colorScheme.onSurface;
+
+                              return Padding(
+                                padding: EdgeInsets.only(bottom: 0.8.h),
+                                child: TactilePressable(
+                                  onTap: () {
+                                    HapticFeedback.selectionClick();
+                                    setModalState(() {
+                                      selectedCode = lang['code']!;
+                                    });
+                                  },
+                                  child: AnimatedContainer(
+                                    duration: const Duration(milliseconds: 200),
+                                    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.0.h),
+                                    decoration: BoxDecoration(
+                                      gradient: isSelected
+                                          ? LinearGradient(
+                                              colors: [
+                                                AppColors.goldTint100.withValues(alpha: isDark ? 0.35 : 0.65),
+                                                AppColors.goldTint200.withValues(alpha: isDark ? 0.20 : 0.40),
+                                              ],
+                                            )
+                                          : null,
+                                      color: isSelected
+                                          ? null
+                                          : (isDark ? Colors.white.withValues(alpha: 0.05) : AppColors.slate50),
+                                      borderRadius: BorderRadius.circular(14),
+                                      border: Border.all(
+                                        color: isSelected
+                                            ? AppColors.categoryAstro
+                                            : (isDark ? Colors.white12 : AppColors.slate200),
+                                        width: isSelected ? 1.8 : 1.0,
                                       ),
+                                      boxShadow: isSelected
+                                          ? [
+                                              BoxShadow(
+                                                color: AppColors.categoryAstro.withValues(alpha: 0.25),
+                                                blurRadius: 10,
+                                                offset: const Offset(0, 2),
+                                              ),
+                                            ]
+                                          : null,
                                     ),
-                                    SizedBox(width: 2.w),
-                                    Flexible(
-                                      child: Text(
-                                        '(${lang['label']})',
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: AppTypography.labelSmall,
-                                          color: theme.colorScheme.onSurfaceVariant,
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 34,
+                                          height: 34,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: isSelected
+                                                ? AppColors.categoryAstroDark
+                                                : (isDark ? Colors.white10 : AppColors.slate200),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              lang['native']!.substring(0, 1),
+                                              style: TextStyle(
+                                                fontWeight: AppTypography.bold,
+                                                fontSize: 15,
+                                                color: isSelected ? Colors.white : theme.colorScheme.onSurface,
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                        SizedBox(width: 3.w),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Flexible(
+                                                    child: Text(
+                                                      lang['native']!,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                        fontFamily: AppTypography.headingFontFamily,
+                                                        fontWeight: AppTypography.bold,
+                                                        fontSize: AppTypography.bodyMedium,
+                                                        color: primaryColor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 2.w),
+                                                  Flexible(
+                                                    child: Text(
+                                                      '(${lang['label']})',
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                        fontSize: AppTypography.labelSmall,
+                                                        color: theme.colorScheme.onSurfaceVariant,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Text(
+                                                lang['sub']!,
+                                                style: TextStyle(
+                                                  fontSize: 10,
+                                                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        if (isSelected)
+                                          const Icon(
+                                            Icons.check_circle_rounded,
+                                            color: AppColors.categoryAstroDark,
+                                            size: 22,
+                                          )
+                                        else
+                                          Icon(
+                                            Icons.circle_outlined,
+                                            color: isDark ? Colors.white24 : AppColors.slate300,
+                                            size: 22,
+                                          ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                                Text(
-                                  lang['sub']!,
-                                  style: TextStyle(
-                                    fontSize: 10.5,
-                                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
                                   ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+
+                      // ── PROMINENT CONFIRMATION BUTTON ──
+                      SizedBox(height: 1.4.h),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TactilePressable(
+                          onTap: () {
+                            HapticFeedback.mediumImpact();
+                            ref.read(localeProvider.notifier).setLocale(Locale(selectedCode));
+                            Navigator.of(modalContext).pop();
+                          },
+                          pressedScale: 0.97,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 1.4.h),
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [
+                                  AppColors.categoryAstroDark,
+                                  AppColors.categoryAstro,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.categoryAstro.withValues(alpha: 0.35),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 4),
                                 ),
                               ],
                             ),
-                          ),
-                          if (isSelected)
-                            const Icon(
-                              Icons.check_circle_rounded,
-                              color: AppColors.categoryAstroDark,
-                              size: 22,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  getContinueButtonLabel(selectedCode),
+                                  style: const TextStyle(
+                                    fontFamily: AppTypography.headingFontFamily,
+                                    fontWeight: AppTypography.bold,
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                    letterSpacing: 0.3,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 18),
+                              ],
                             ),
-                        ],
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                );
-              }).toList(),
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-},
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
